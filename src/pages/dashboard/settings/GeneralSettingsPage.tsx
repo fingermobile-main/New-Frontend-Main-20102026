@@ -1,0 +1,61 @@
+import React from 'react';
+import { useAppContext } from '../../../contexts/AppContext';
+
+const GeneralSettingsPage = () => {
+    const { settings, updateSettings, showToast } = useAppContext();
+    const [siteName, setSiteName] = React.useState('FingerMobile Protocol');
+    const [siteDescription, setSiteDescription] = React.useState('The official community platform.');
+    const [isSaving, setIsSaving] = React.useState(false);
+
+    const handleSave = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSaving(true);
+        try {
+            updateSettings({ ...settings, siteName, siteDescription } as any);
+            showToast('Settings saved successfully', 'success');
+        } catch (err: any) {
+            showToast(err.message || 'Failed to save settings', 'error');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    return (
+        <div>
+            <h1 className="text-2xl font-bold mb-6">General Settings</h1>
+            <div className="max-w-2xl">
+                <form onSubmit={handleSave} className="bg-white p-8 rounded-xl shadow-md space-y-6">
+                    <div>
+                        <label htmlFor="siteName" className="block text-sm font-medium text-gray-700">Site Name</label>
+                        <input
+                            id="siteName"
+                            type="text"
+                            value={siteName}
+                            onChange={(e) => setSiteName(e.target.value)}
+                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="siteDescription" className="block text-sm font-medium text-gray-700">Site Description</label>
+                        <textarea
+                            id="siteDescription"
+                            value={siteDescription}
+                            onChange={(e) => setSiteDescription(e.target.value)}
+                            rows={3}
+                            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div className="pt-4 border-t flex justify-end">
+                        <button type="submit" disabled={isSaving} className="px-6 py-2 text-sm font-semibold bg-brand-blue text-white rounded-full hover:bg-blue-700 disabled:bg-gray-400">
+                            {isSaving ? 'Saving...' : 'Save Settings'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default GeneralSettingsPage;

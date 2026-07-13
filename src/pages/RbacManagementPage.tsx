@@ -1,0 +1,379 @@
+import React from 'react';
+import { useState } from 'react';
+import RbacDashboard from '../components/dashboard/RbacDashboard';
+import useRbacData from '../hooks/useRbacData';
+import MainLayout from '../components/layout/MainLayout';
+import { useAppContext } from "../contexts/AppContext";
+import { logError } from '../utils/errorLogger';
+import AnimatedAvatar from '../components/AnimatedAvatar';
+import { EyeIcon, PencilIcon, TrashIcon, PlusIcon, UserGroupIcon, KeyIcon, BuildingOfficeIcon, UserCircleIcon } from '../icons';
+
+// Use FranchiseLocation type from the hook
+interface FranchiseLocation {
+  id: string;
+  name: string;
+  type?: 'continent' | 'country' | 'state' | 'region';
+  children?: FranchiseLocation[];
+}
+
+const RbacManagementPage: React.FC = () => {
+  const { showToast, ficBalance } = useAppContext();
+  const { data, loading, error, refreshData } = useRbacData();
+
+  const [activeView, setActiveView] = React.useState('dashboard');
+  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['continent-1']));
+
+  React.useEffect(() => {
+    if (error) {
+      showToast(`Error: ${error}`, "error");
+    }
+  }, [error, showToast]);
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="flex justify-center items-center h-64 text-gray-700">
+          Loading RBAC data...
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <MainLayout>
+        <div className="flex flex-col justify-center items-center h-64 text-red-500">
+          <p>Error: {error}</p>
+          <button
+            onClick={refreshData}
+            className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg"
+          >
+            Retry
+          </button>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (!data) {
+    return (
+      <MainLayout>
+        <div className="flex justify-center items-center h-64 text-gray-500">
+          No RBAC data available.
+        </div>
+      </MainLayout>
+    );
+  }
+
+  const { roles, departments, franchiseLocations } = data;
+
+  return (
+    <MainLayout>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="mb-10">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-xl">
+              <KeyIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-3xl font-bold text-gray-900">RBAC Management</h1>
+              <p className="text-gray-600">Manage roles, permissions, and access controls for the platform</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+            <div className="flex flex-wrap gap-2 mb-6">
+              <button 
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  activeView === 'dashboard' 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                onClick={() => setActiveView('dashboard')}
+              >
+                Dashboard
+              </button>
+              <button 
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  activeView === 'roles' 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                onClick={() => setActiveView('roles')}
+              >
+                Roles & Permissions
+              </button>
+              <button 
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  activeView === 'departments' 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                onClick={() => setActiveView('departments')}
+              >
+                Departments
+              </button>
+              <button 
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  activeView === 'franchise' 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                onClick={() => setActiveView('franchise')}
+              >
+                Franchise Locations
+              </button>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+              <div className="p-6">
+                {activeView === 'dashboard' && <RbacDashboard />}
+                
+                {activeView === 'roles' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Roles & Permissions Management</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <div className="bg-gray-50 rounded-xl p-6">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Create New Role</h3>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Role Name</label>
+                            <input 
+                              type="text" 
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Enter role name" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea 
+                              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Enter role description"
+                              rows={3}
+                            ></textarea>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                            <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                              <option>Select department</option>
+                              {departments.map((dept: any) => (
+                                <option key={dept.id} value={dept.name}>{dept.name}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2.5 rounded-lg">
+                            Create Role
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 rounded-xl p-6">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Assign Permissions</h3>
+                        <div className="space-y-3 max-h-96 overflow-y-auto p-2">
+                          {[
+                            'Member Management',
+                            'Content Moderation',
+                            'Financial Reports',
+                            'Marketing Campaigns',
+                            'Product Management',
+                            'System Monitoring',
+                            'Analytics Dashboard',
+                            'Franchise Management',
+                            'Investor Communications',
+                            'Support Ticket Management'
+                          ].map((permission, index) => (
+                            <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-gray-200">
+                              <input 
+                                type="checkbox" 
+                                id={`perm-${index}`}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              />
+                              <label htmlFor={`perm-${index}`} className="ml-3 text-gray-700">
+                                {permission}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {activeView === 'departments' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Department Management</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {departments.map((dept: any) => (
+                        <div key={dept.id} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-5 border border-gray-200">
+                          <h3 className="font-bold text-gray-900 text-lg">{dept.name}</h3>
+                          <div className="flex justify-between mt-4">
+                            <div>
+                              <p className="text-gray-600 text-sm">Members</p>
+                              <p className="text-gray-900 font-bold">{dept.members}</p>
+                            </div>
+                            <div>
+                              <p className="text-gray-600 text-sm">Features</p>
+                              <p className="text-gray-900 font-bold">{dept.features}</p>
+                            </div>
+                          </div>
+                          <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg">
+                            Manage
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {activeView === 'franchise' && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Franchise Location Management</h2>
+                    <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-lg font-bold text-gray-900">Franchise Hierarchy</h3>
+                        <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg flex items-center">
+                          <PlusIcon className="h-4 w-4 mr-1" />
+                          Add Location
+                        </button>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        {franchiseLocations.map((continent: FranchiseLocation) => (
+                          <div key={continent.id} className="border border-gray-300 rounded-xl">
+                            <div
+                              className={`p-4 bg-gradient-to-r from-gray-100 to-gray-50 font-bold text-gray-900 flex items-center cursor-pointer ${
+                                expandedNodes.has(continent.id) ? 'bg-gradient-to-r from-blue-50 to-indigo-50' : ''
+                              }`}
+                              onClick={() => {
+                                if (continent.children && continent.children.length > 0) {
+                                  setExpandedNodes(prev => {
+                                    const newSet = new Set(prev);
+                                    if (newSet.has(continent.id)) {
+                                      newSet.delete(continent.id);
+                                    } else {
+                                      newSet.add(continent.id);
+                                    }
+                                    return newSet;
+                                  });
+                                }
+                              }}
+                            >
+                              {continent.children && continent.children.length > 0 && (
+                                <span className="mr-2">
+                                  {expandedNodes.has(continent.id) ? '▼' : '►'}
+                                </span>
+                              )}
+                              {continent.name}
+                            </div>
+
+                            {expandedNodes.has(continent.id) && (
+                              <div className="p-4 space-y-3">
+                                {continent.children?.map((country: FranchiseLocation) => (
+                                  <div key={country.id} className="ml-4 border-l-2 border-gray-300 pl-4">
+                                    <div
+                                      className={`font-medium text-gray-700 flex items-center cursor-pointer ${
+                                        expandedNodes.has(country.id) ? 'bg-blue-50' : ''
+                                      }`}
+                                      onClick={() => {
+                                        if (country.children && country.children.length > 0) {
+                                          setExpandedNodes(prev => {
+                                            const newSet = new Set(prev);
+                                            if (newSet.has(country.id)) {
+                                              newSet.delete(country.id);
+                                            } else {
+                                              newSet.add(country.id);
+                                            }
+                                            return newSet;
+                                          });
+                                        }
+                                      }}
+                                    >
+                                      {country.children && country.children.length > 0 && (
+                                        <span className="mr-2">
+                                          {expandedNodes.has(country.id) ? '▼' : '►'}
+                                        </span>
+                                      )}
+                                      {country.name}
+                                    </div>
+
+                                    {expandedNodes.has(country.id) && (
+                                      <div className="mt-2 space-y-2">
+                                        {country.children?.map((state: FranchiseLocation) => (
+                                          <div key={state.id} className="ml-4 text-sm text-gray-600 bg-gray-100 p-2 rounded-lg">
+                                            {state.name}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
+                Admin FIC Balance
+              </h2>
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                  Add Funds
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">RBAC Actions</h2>
+              <div className="space-y-3">
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <KeyIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  Manage Access
+                </button>
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <UserGroupIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  Assign Roles
+                </button>
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <BuildingOfficeIcon className="h-5 w-5 text-blue-600 mr-3" />
+                  Department Setup
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+              <h3 className="font-bold text-gray-900 mb-2">Access Control Tips</h3>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Follow principle of least privilege</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Regularly audit permissions</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Review role assignments quarterly</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default RbacManagementPage;
