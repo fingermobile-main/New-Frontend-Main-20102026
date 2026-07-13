@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: fingermobile_postgres_ci
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fingermobile_platform_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - "./FINGERMOBILE HTML/platform pages html/migrations:/docker-entrypoint-initdb.d"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fingermobile_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: fingermobile_redis_ci
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fingermobile_network
+
+  # Backend API
+  backend:
+    build:
+      context: "./FingerMobile Protocol/apps/backend"
+      dockerfile: Dockerfile
+    container_name: fingermobile_backend_ci
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/fingermobile_platform_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - fingermobile_network
+
+  # Frontend
+  frontend:
+    build:
+      context: "./FingerMobile Protocol/apps/frontend-main"
+      dockerfile: Dockerfile
+    container_name: fingermobile_frontend_ci
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - fingermobile_network
+
+  # Platform Pages (Static Server)
+  platform-pages:
+    build:
+      context: "./FINGERMOBILE HTML/platform pages html"
+      dockerfile: Dockerfile
+    container_name: fingermobile_pages_ci
+    ports:
+      - "3003:3003"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/fingermobile_platform_db
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - fingermobile_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  fingermobile_network:
+    driver: bridge

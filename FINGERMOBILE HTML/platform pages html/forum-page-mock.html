@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FingerMobile Protocol - Community Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#3B82F6',
+                        'brand-purple': '#8B5CF6',
+                        'brand-orange': '#F97316'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(to right, #3B82F6, #8B5CF6);
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+        .avatar-ring {
+            border: 2px solid #3B82F6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <img src="logos/FingerMobile orange logo.webp" alt="FingerMobile Logo" class="h-8 w-auto mr-2">
+                        <span class="text-xl font-bold bg-gradient-to-r from-brand-blue to-brand-purple text-transparent bg-clip-text">
+                            FingerMobile
+                        </span>
+                    </a>
+                </div>
+                
+                <nav class="hidden md:flex space-x-4">
+                    <a href="#" class="text-gray-700 hover:text-brand-blue px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-brand-blue px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-store mr-1"></i> Marketplace
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-brand-blue px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-gem mr-1"></i> Gems
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-brand-blue px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-trophy mr-1"></i> Hallmarks
+                    </a>
+                    <a href="#" class="text-brand-blue px-3 py-2 rounded-md text-sm font-medium border-b-2 border-brand-blue">
+                        <i class="fas fa-comments mr-1"></i> Forum
+                    </a>
+                </nav>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-full text-gray-500 hover:text-brand-blue hover:bg-blue-50 focus:outline-none">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <button class="relative p-2 rounded-full text-gray-500 hover:text-brand-blue hover:bg-blue-50 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                    </button>
+                    
+                    <button class="p-2 rounded-full text-gray-500 hover:text-brand-blue hover:bg-blue-50 focus:outline-none">
+                        <i class="fas fa-envelope"></i>
+                    </button>
+                    
+                    <button class="gradient-bg text-white p-2 rounded-full hover:opacity-90 focus:outline-none">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="h-8 w-8 rounded-full avatar-ring">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Forum Header -->
+        <div class="mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Community Forum</h1>
+                    <p class="text-gray-600 mt-2">Connect with other users and discuss topics related to FingerMobile</p>
+                </div>
+                <button class="mt-4 md:mt-0 bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 font-medium">
+                    New Topic
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-gray-500">Total Topics</p>
+                    <p class="text-2xl font-bold">1,248</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-gray-500">Total Posts</p>
+                    <p class="text-2xl font-bold">8,721</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-gray-500">Active Users</p>
+                    <p class="text-2xl font-bold">2,103</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <p class="text-sm text-gray-500">Online Now</p>
+                    <p class="text-2xl font-bold">142</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <!-- Category Filter -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex flex-wrap -mb-px">
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-indigo-500 text-indigo-600">
+                                All Topics
+                            </button>
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Announcements
+                            </button>
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Discussions
+                            </button>
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Help
+                            </button>
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Marketplace
+                            </button>
+                            <button class="py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                Technical
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Forum Posts -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="border-b border-gray-200 px-6 py-3">
+                        <div class="grid grid-cols-12 gap-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <div class="col-span-6">Topic</div>
+                            <div class="col-span-2 text-center">Replies</div>
+                            <div class="col-span-2 text-center">Views</div>
+                            <div class="col-span-2">Last Post</div>
+                        </div>
+                    </div>
+                    
+                    <div class="divide-y divide-gray-200">
+                        <!-- Pinned Post -->
+                        <div class="px-6 py-4 hover:bg-gray-50">
+                            <div class="grid grid-cols-12 gap-4">
+                                <div class="col-span-6">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 mr-3">
+                                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex items-center">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mr-2">
+                                                    Pinned
+                                                </span>
+                                                <a href="#" class="text-lg font-medium text-gray-900 hover:text-indigo-600">
+                                                    Welcome to FingerMobile Forum
+                                                </a>
+                                            </div>
+                                            <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                                                This is the official FingerMobile community forum. Feel free to discuss topics related to the platform, ask questions, and share your experiences.
+                                            </p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <span>Admin</span>
+                                                <span class="mx-1">•</span>
+                                                <span>2 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">24</span>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">128</span>
+                                </div>
+                                <div class="col-span-2 flex items-center">
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <span>2h ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Regular Post -->
+                        <div class="px-6 py-4 hover:bg-gray-50">
+                            <div class="grid grid-cols-12 gap-4">
+                                <div class="col-span-6">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 mr-3">
+                                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex items-center">
+                                                <a href="#" class="text-lg font-medium text-gray-900 hover:text-indigo-600">
+                                                    How to create digital assets?
+                                                </a>
+                                            </div>
+                                            <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                                                I'm new to the platform and would like to know the best practices for creating digital assets. Any tips or resources would be appreciated!
+                                            </p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <span>DigitalCreator</span>
+                                                <span class="mx-1">•</span>
+                                                <span>5 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">8</span>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">42</span>
+                                </div>
+                                <div class="col-span-2 flex items-center">
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <span>1h ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Another Regular Post -->
+                        <div class="px-6 py-4 hover:bg-gray-50">
+                            <div class="grid grid-cols-12 gap-4">
+                                <div class="col-span-6">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 mr-3">
+                                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex items-center">
+                                                <a href="#" class="text-lg font-medium text-gray-900 hover:text-indigo-600">
+                                                    New marketplace features
+                                                </a>
+                                            </div>
+                                            <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                                                Just discovered the new marketplace features. The ability to tokenize content is game-changing!
+                                            </p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <span>MarketplaceUser</span>
+                                                <span class="mx-1">•</span>
+                                                <span>1 day ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">15</span>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">87</span>
+                                </div>
+                                <div class="col-span-2 flex items-center">
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <span>5h ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="lg:w-1/4">
+                <!-- User Info -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex items-center">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12"></div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-medium text-gray-900">John Doe</h3>
+                            <p class="text-sm text-gray-500">Member</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-center">
+                        <div>
+                            <p class="text-lg font-bold text-gray-900">42</p>
+                            <p class="text-xs text-gray-500">Posts</p>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-gray-900">128</p>
+                            <p class="text-xs text-gray-500">Likes</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Popular Topics -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Popular Topics</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="text-sm font-medium text-gray-900 hover:text-indigo-600">
+                                How to tokenize your content
+                            </a>
+                            <p class="text-xs text-gray-500 mt-1">142 replies • 892 views</p>
+                        </li>
+                        <li>
+                            <a href="#" class="text-sm font-medium text-gray-900 hover:text-indigo-600">
+                                Marketplace best practices
+                            </a>
+                            <p class="text-xs text-gray-500 mt-1">87 replies • 421 views</p>
+                        </li>
+                        <li>
+                            <a href="#" class="text-sm font-medium text-gray-900 hover:text-indigo-600">
+                                Upcoming platform features
+                            </a>
+                            <p class="text-xs text-gray-500 mt-1">63 replies • 312 views</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Forum Stats -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Forum Stats</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Topics</span>
+                            <span class="text-sm font-medium text-gray-900">1,248</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Posts</span>
+                            <span class="text-sm font-medium text-gray-900">8,721</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Members</span>
+                            <span class="text-sm font-medium text-gray-900">5,421</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500">Online</span>
+                            <span class="text-sm font-medium text-gray-900">142</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

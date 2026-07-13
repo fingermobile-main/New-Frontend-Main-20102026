@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0021f3">
+    <title>Dancia-4TV - FingerMobile</title>
+    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root{--fm-primary:#0021f3;--fm-primary-dark:#0018b3;--fm-secondary:#6366f1}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+        .burger-menu-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:40;opacity:0;visibility:hidden;transition:all .3s ease}
+        .burger-menu-overlay.active{opacity:1;visibility:visible}
+        .burger-menu{position:fixed;top:0;left:-320px;width:320px;max-width:85vw;height:100vh;background:#fff;z-index:50;transition:left .3s ease;overflow-y:auto;box-shadow:2px 0 10px rgba(0,0,0,0.1)}
+        .burger-menu.active{left:0}
+        .burger-menu-header{background:linear-gradient(135deg,#0021f3 0%,#6366f1 100%);padding:24px 20px;color:#fff;position:relative}
+        .burger-menu-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .burger-menu-profile{display:flex;align-items:center;margin-top:12px}
+        .burger-menu-profile img{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.3)}
+        .burger-menu-section{padding:16px 0;border-bottom:1px solid #e5e7eb}
+        .burger-menu-section-title{padding:0 20px 8px;font-size:11px;font-weight:600;text-transform:uppercase;color:#6b7280;letter-spacing:.05em}
+        .burger-menu-item{display:flex;align-items:center;padding:12px 20px;color:#1f2937;text-decoration:none;transition:all .2s;border-left:3px solid transparent}
+        .burger-menu-item:hover{background:#f3f4f6;border-left-color:#0021f3}
+        .burger-menu-item.active{background:#eef2ff;border-left-color:#0021f3;color:#0021f3;font-weight:600}
+        .burger-menu-item svg{width:20px;height:20px;margin-right:12px}
+        .fm-header{background:linear-gradient(135deg,#0021f3 0%,#6366f1 100%);box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        .fm-logo{height:32px}
+        @media(min-width:768px){.fm-logo{height:40px}}
+        .video-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);overflow:hidden;transition:all .2s}
+        .video-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+        .video-thumbnail{position:relative;padding-top:56.25%;background:#1f2937}
+        .video-thumbnail img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+        .live-badge{position:absolute;top:8px;left:8px;background:#ef4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+        .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .play-btn svg{width:24px;height:24px;color:#fff;margin-left:2px}
+        button,a{min-height:44px}
+        @media screen and (max-width:768px){input,select,textarea{font-size:16px!important}}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="fm-header text-white shadow-lg sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center flex-1">
+                        <button id="burger-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-20 focus:outline-none mr-2" aria-label="Open menu">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        </button>
+                        <div class="flex-shrink-0 flex items-center">
+                            <img src="./assets/icons/logo.png" alt="FingerMobile" class="fm-logo">
+                            <h1 class="ml-2 text-lg md:text-xl font-bold">Dancia-4TV</h1>
+                        </div>
+                        <nav class="hidden md:ml-6 md:flex md:space-x-8">
+                            <a href="member_landing_page.html" class="text-indigo-200 hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                            <a href="dancia4_tv_mobile_optimized.html" class="bg-white bg-opacity-20 text-white px-3 py-2 rounded-md text-sm font-medium">Dancia-4TV</a>
+                            <a href="wallet_page.html" class="text-indigo-200 hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Wallet</a>
+                            <a href="marketplace_page.html" class="text-indigo-200 hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Marketplace</a>
+                        </nav>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="hidden md:inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 focus:outline-none">Go Live</button>
+                        <button class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-indigo-700 bg-white hover:bg-indigo-50 focus:outline-none" aria-label="Go live">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        </button>
+                        <button class="p-2 rounded-full text-indigo-200 hover:text-white focus:outline-none" aria-label="Notifications">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </button>
+                        <button class="flex text-sm rounded-full focus:outline-none" aria-label="Profile">
+                            <img class="h-8 w-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Burger Menu Overlay -->
+        <div id="burger-menu-overlay" class="burger-menu-overlay"></div>
+
+        <!-- Burger Menu -->
+        <div id="burger-menu" class="burger-menu">
+            <div class="burger-menu-header">
+                <button id="burger-menu-close" class="burger-menu-close" aria-label="Close menu">
+                    <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <div class="burger-menu-profile">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile">
+                    <div class="ml-3"><div class="font-semibold">John Doe</div><div class="text-sm opacity-90">💰 12.45 FIC</div></div>
+                </div>
+            </div>
+            <div class="burger-menu-section">
+                <div class="burger-menu-section-title">Community</div>
+                <a href="community_page_enhanced.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Community</span></a>
+                <a href="forum_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg><span>Forum</span><span class="burger-menu-item-badge">24</span></a>
+                <a href="groups_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span>Groups</span></a>
+                <a href="messages_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg><span>Messages</span><span class="burger-menu-item-badge">3</span></a>
+            </div>
+            <div class="burger-menu-section">
+                <div class="burger-menu-section-title">Platform</div>
+                <a href="member_landing_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>Home</span></a>
+                <a href="subscriptions_mobile_optimized.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg><span>Subscriptions</span></a>
+                <a href="referrals_mobile_optimized.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Referrals</span></a>
+                <a href="hallmarks_mobile_optimized.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg><span>Hallmarks</span></a>
+                <a href="fic_vault_mobile_optimized.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span>FIC Vault</span></a>
+                <a href="dancia4_tv_mobile_optimized.html" class="burger-menu-item active"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Dancia-4TV</span></a>
+                <a href="finger_wars_mobile_optimized.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Finger Wars</span></a>
+            </div>
+            <div class="burger-menu-section">
+                <div class="burger-menu-section-title">Account</div>
+                <a href="wallet_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg><span>Wallet</span></a>
+                <a href="marketplace_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg><span>Marketplace</span></a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+                <div class="max-w-7xl mx-auto py-8 md:py-12 px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-2xl md:text-4xl font-extrabold">Dancia-4TV</h1>
+                    <p class="mt-2 md:mt-4 text-base md:text-xl text-blue-100 max-w-3xl mx-auto">Stream, watch, and discover amazing content from creators worldwide</p>
+                </div>
+            </div>
+
+            <!-- Live Now -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                        <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+                        Live Now
+                    </h2>
+                    <a href="#" class="text-sm text-indigo-600 font-medium">See all</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Live Stream 1 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=640&h=360&fit=crop" alt="Live stream">
+                            <span class="live-badge">LIVE</span>
+                            <div class="play-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Beatwave NG Live Concert</h3>
+                                    <p class="text-sm text-gray-500">DJ MaxBeats</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-red-500 text-sm">
+                                        <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        2.4K
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Stream 2 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=640&h=360&fit=crop" alt="Live stream">
+                            <span class="live-badge">LIVE</span>
+                            <div class="play-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Finger Wars Championship</h3>
+                                    <p class="text-sm text-gray-500">FM Esports</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-red-500 text-sm">
+                                        <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        5.1K
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+                <div class="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
+                    <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-full whitespace-nowrap">All</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full whitespace-nowrap hover:bg-gray-100">Music</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full whitespace-nowrap hover:bg-gray-100">Gaming</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full whitespace-nowrap hover:bg-gray-100">Tech</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full whitespace-nowrap hover:bg-gray-100">Education</button>
+                    <button class="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full whitespace-nowrap hover:bg-gray-100">Sports</button>
+                </div>
+            </div>
+
+            <!-- Trending Videos -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 md:pb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Trending</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Video 1 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=640&h=360&fit=crop" alt="Video">
+                            <div class="play-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">12:34</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 text-sm">Creating Beats with AI</h3>
+                            <p class="text-xs text-gray-500 mt-1">ProducerLab</p>
+                            <div class="flex items-center text-gray-500 text-xs mt-2">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                45.2K views
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video 2 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=640&h=360&fit=crop" alt="Video">
+                            <div class="play-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">8:21</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 text-sm">Top 10 Gaming Setups 2026</h3>
+                            <p class="text-xs text-gray-500 mt-1">TechReview</p>
+                            <div class="flex items-center text-gray-500 text-xs mt-2">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                32.8K views
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video 3 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=640&h=360&fit=crop" alt="Video">
+                            <div class="play-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <span class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">24:15</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 text-sm">FIC Token Explained</h3>
+                            <p class="text-xs text-gray-500 mt-1">CryptoAcademy</p>
+                            <div class="flex items-center text-gray-500 text-xs mt-2">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                28.1K views
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 mt-auto">
+            <div class="max-w-7xl mx-auto py-4 md:py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                    <div class="flex items-center justify-center md:justify-start mb-3 md:mb-0">
+                        <img src="./assets/icons/logo.png" alt="FingerMobile" class="h-6 md:h-8 mr-2">
+                        <p class="text-sm text-gray-500">&copy; 2026 FingerMobile Protocol. All rights reserved.</p>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Privacy Policy</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Terms of Service</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Support</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function(){const b=document.getElementById('burger-menu-button'),m=document.getElementById('burger-menu'),o=document.getElementById('burger-menu-overlay'),c=document.getElementById('burger-menu-close');function open(){m.classList.add('active');o.classList.add('active');document.body.style.overflow='hidden'}function close(){m.classList.remove('active');o.classList.remove('active');document.body.style.overflow=''}if(b)b.addEventListener('click',open);if(c)c.addEventListener('click',close);if(o)o.addEventListener('click',close);m.querySelectorAll('.burger-menu-item').forEach(i=>i.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&m.classList.contains('active'))close()})})();
+    </script>
+</body>
+</html>

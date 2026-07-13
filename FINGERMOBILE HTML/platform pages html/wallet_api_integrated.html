@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0021f3">
+    <title>Wallet - FingerMobile (API Integrated)</title>
+    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Include API Client and Data Models -->
+    <script src="./api-client.js" defer></script>
+    <script src="./data-models.js" defer></script>
+    <script src="./fm-utils.js" defer></script>
+    
+    <style>
+        :root{--fm-primary:#0021f3;--fm-primary-dark:#0018b3;--fm-secondary:#6366f1}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+        .burger-menu-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:40;opacity:0;visibility:hidden;transition:all .3s ease}
+        .burger-menu-overlay.active{opacity:1;visibility:visible}
+        .burger-menu{position:fixed;top:0;left:-320px;width:320px;max-width:85vw;height:100vh;background:#fff;z-index:50;transition:left .3s ease;overflow-y:auto;box-shadow:2px 0 10px rgba(0,0,0,0.1)}
+        .burger-menu.active{left:0}
+        .burger-menu-header{background:linear-gradient(135deg,#0021f3 0%,#6366f1 100%);padding:24px 20px;color:#fff;position:relative}
+        .burger-menu-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .burger-menu-profile{display:flex;align-items:center;margin-top:12px}
+        .burger-menu-profile img{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.3)}
+        .burger-menu-section{padding:16px 0;border-bottom:1px solid #e5e7eb}
+        .burger-menu-section-title{padding:0 20px 8px;font-size:11px;font-weight:600;text-transform:uppercase;color:#6b7280;letter-spacing:.05em}
+        .burger-menu-item{display:flex;align-items:center;padding:12px 20px;color:#1f2937;text-decoration:none;transition:all .2s;border-left:3px solid transparent}
+        .burger-menu-item:hover{background:#f3f4f6;border-left-color:#0021f3}
+        .burger-menu-item.active{background:#eef2ff;border-left-color:#0021f3;color:#0021f3;font-weight:600}
+        .burger-menu-item svg{width:20px;height:20px;margin-right:12px}
+        .burger-menu-item-badge{margin-left:auto;background:#ef4444;color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px}
+        .fm-header{background:linear-gradient(135deg,#0021f3 0%,#6366f1 100%);box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+        .fm-logo{height:32px}
+        @media(min-width:768px){.fm-logo{height:40px}}
+        button,a{min-height:44px}
+        @media screen and (max-width:768px){input,select,textarea{font-size:16px!important}}
+        
+        /* Wallet-specific styles */
+        .balance-card{background:linear-gradient(135deg,#0021f3 0%,#6366f1 100%);border-radius:16px;padding:24px;color:#fff;box-shadow:0 8px 24px rgba(0,33,243,0.3)}
+        .action-btn{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:all .2s;cursor:pointer}
+        .action-btn:hover{box-shadow:0 4px 16px rgba(0,0,0,0.15);transform:translateY(-2px)}
+        .action-btn-icon{width:48px;height:48px;border-radius:12px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
+        .transaction-item{background:#fff;border-radius:12px;padding:16px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+        .skeleton{background:linear-gradient(90deg,#f0f0f0 0%,#e0e0e0 50%,#f0f0f0 100%);background-size:200% 100%;animation:skeleton-loading 1.5s ease-in-out infinite;border-radius:4px}
+        @keyframes skeleton-loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;z-index:9999}
+        .loading-spinner{display:inline-block;width:40px;height:40px;border:4px solid rgba(0,33,243,0.2);border-top-color:#0021f3;border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="fm-header text-white shadow-lg sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center flex-1">
+                        <button id="burger-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-20 focus:outline-none mr-2" aria-label="Open menu">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        </button>
+                        <div class="flex-shrink-0 flex items-center">
+                            <img src="./assets/icons/logo.png" alt="FingerMobile" class="fm-logo">
+                            <h1 class="ml-2 text-lg md:text-xl font-bold">Wallet</h1>
+                        </div>
+                        <nav class="hidden md:ml-6 md:flex md:space-x-8">
+                            <a href="member_landing_page.html" class="text-indigo-200 hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                            <a href="#" class="bg-white bg-opacity-20 text-white px-3 py-2 rounded-md text-sm font-medium">Wallet</a>
+                            <a href="financials_page.html" class="text-indigo-200 hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Financials</a>
+                        </nav>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 rounded-full text-indigo-200 hover:text-white focus:outline-none" aria-label="Notifications">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </button>
+                        <button class="flex text-sm rounded-full focus:outline-none" aria-label="Profile">
+                            <img id="header-avatar" class="h-8 w-8 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Burger Menu -->
+        <div id="burger-menu-overlay" class="burger-menu-overlay"></div>
+        <div id="burger-menu" class="burger-menu">
+            <div class="burger-menu-header">
+                <button id="burger-menu-close" class="burger-menu-close" aria-label="Close menu">
+                    <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <div class="burger-menu-profile">
+                    <img id="menu-avatar" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile">
+                    <div class="ml-3"><div id="menu-username" class="font-semibold">Loading...</div><div id="menu-balance" class="text-sm opacity-90">💰 -- FIC</div></div>
+                </div>
+            </div>
+            <div class="burger-menu-section">
+                <div class="burger-menu-section-title">Finance</div>
+                <a href="wallet_page.html" class="burger-menu-item active"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg><span>Wallet</span></a>
+                <a href="financials_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span>Financials</span></a>
+                <a href="portfolio_page.html" class="burger-menu-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span>Portfolio</span></a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto py-4 md:py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Balance Card -->
+                <div class="balance-card mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-medium opacity-90">Total Balance</h2>
+                        <button id="toggle-balance" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                    <div id="balance-display" class="text-4xl md:text-5xl font-bold mb-2">
+                        <span class="skeleton inline-block w-48 h-12"></span>
+                    </div>
+                    <div id="balance-usd" class="text-sm opacity-75">
+                        <span class="skeleton inline-block w-32 h-4"></span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-4 gap-3 mb-6">
+                    <div class="action-btn" onclick="showAction('send')">
+                        <div class="action-btn-icon bg-blue-100">
+                            <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Send</div>
+                    </div>
+                    <div class="action-btn" onclick="showAction('receive')">
+                        <div class="action-btn-icon bg-green-100">
+                            <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Receive</div>
+                    </div>
+                    <div class="action-btn" onclick="showAction('swap')">
+                        <div class="action-btn-icon bg-purple-100">
+                            <svg class="h-6 w-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Swap</div>
+                    </div>
+                    <div class="action-btn" onclick="showAction('buy')">
+                        <div class="action-btn-icon bg-orange-100">
+                            <svg class="h-6 w-6 text-orange-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Buy</div>
+                    </div>
+                </div>
+
+                <!-- Transactions -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-4 py-3 md:px-6 md:py-5 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-base md:text-lg font-medium text-gray-900">Recent Transactions</h2>
+                            <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">View All</button>
+                        </div>
+                    </div>
+                    <div id="transactions-list" class="p-4">
+                        <!-- Skeleton loading -->
+                        <div class="transaction-item skeleton">
+                            <div class="flex items-center">
+                                <div class="skeleton w-10 h-10 rounded-full"></div>
+                                <div class="ml-3 flex-1">
+                                    <div class="skeleton h-4 w-32 mb-2"></div>
+                                    <div class="skeleton h-3 w-24"></div>
+                                </div>
+                                <div class="skeleton h-5 w-20"></div>
+                            </div>
+                        </div>
+                        <div class="transaction-item skeleton">
+                            <div class="flex items-center">
+                                <div class="skeleton w-10 h-10 rounded-full"></div>
+                                <div class="ml-3 flex-1">
+                                    <div class="skeleton h-4 w-32 mb-2"></div>
+                                    <div class="skeleton h-3 w-24"></div>
+                                </div>
+                                <div class="skeleton h-5 w-20"></div>
+                            </div>
+                        </div>
+                        <div class="transaction-item skeleton">
+                            <div class="flex items-center">
+                                <div class="skeleton w-10 h-10 rounded-full"></div>
+                                <div class="ml-3 flex-1">
+                                    <div class="skeleton h-4 w-32 mb-2"></div>
+                                    <div class="skeleton h-3 w-24"></div>
+                                </div>
+                                <div class="skeleton h-5 w-20"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 mt-auto">
+            <div class="max-w-7xl mx-auto py-4 md:py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                    <div class="flex items-center justify-center md:justify-start mb-3 md:mb-0">
+                        <img src="./assets/icons/logo.png" alt="FingerMobile" class="h-6 md:h-8 mr-2">
+                        <p class="text-sm text-gray-500">&copy; 2026 FingerMobile Protocol. All rights reserved.</p>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Privacy Policy</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Terms of Service</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Support</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Burger Menu JavaScript -->
+    <script>
+        (function(){const b=document.getElementById('burger-menu-button'),m=document.getElementById('burger-menu'),o=document.getElementById('burger-menu-overlay'),c=document.getElementById('burger-menu-close');function open(){m.classList.add('active');o.classList.add('active');document.body.style.overflow='hidden'}function close(){m.classList.remove('active');o.classList.remove('active');document.body.style.overflow=''}if(b)b.addEventListener('click',open);if(c)c.addEventListener('click',close);if(o)o.addEventListener('click',close);m.querySelectorAll('.burger-menu-item').forEach(i=>i.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&m.classList.contains('active'))close()})})();
+    </script>
+
+    <!-- API Integration JavaScript -->
+    <script>
+        // ===== Wallet Page API Integration =====
+        
+        let currentWallet = null;
+        let balanceVisible = true;
+
+        // Initialize page
+        async function initWalletPage() {
+            try {
+                showLoading();
+                
+                // Check authentication
+                if (!API.isAuthenticated()) {
+                    window.location.href = 'onboarding_mobile_optimized.html';
+                    return;
+                }
+                
+                // Load wallet data
+                await Promise.all([
+                    loadWalletBalance(),
+                    loadTransactions(),
+                    loadUserProfile()
+                ]);
+                
+            } catch (error) {
+                console.error('Failed to initialize wallet page:', error);
+                FM.showNotification('Failed to load wallet data', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load wallet balance from API
+        async function loadWalletBalance() {
+            try {
+                const response = await API.getWalletBalance();
+                currentWallet = Models.Wallet.fromAPI(response.data);
+                
+                // Update UI
+                updateBalanceDisplay();
+                document.getElementById('menu-balance').textContent = `💰 ${Models.Wallet.formatBalance(currentWallet)}`;
+                
+            } catch (error) {
+                console.error('Failed to load balance:', error);
+                document.getElementById('balance-display').innerHTML = '<span class="text-red-500">Failed to load</span>';
+            }
+        }
+
+        // Update balance display
+        function updateBalanceDisplay() {
+            if (!currentWallet) return;
+            
+            const balanceEl = document.getElementById('balance-display');
+            const usdEl = document.getElementById('balance-usd');
+            
+            if (balanceVisible) {
+                balanceEl.textContent = Models.Wallet.formatBalance(currentWallet);
+                usdEl.textContent = `≈ $${(currentWallet.balance * 0.15).toFixed(2)} USD`;
+            } else {
+                balanceEl.textContent = '••••••';
+                usdEl.textContent = '';
+            }
+        }
+
+        // Load transactions from API
+        async function loadTransactions() {
+            try {
+                const response = await API.getWalletHistory({ limit: 10 });
+                const transactions = response.data.map(t => Models.Transaction.fromAPI(t));
+                
+                renderTransactions(transactions);
+                
+            } catch (error) {
+                console.error('Failed to load transactions:', error);
+                document.getElementById('transactions-list').innerHTML = '<p class="text-center text-gray-500 py-8">Failed to load transactions</p>';
+            }
+        }
+
+        // Render transactions list
+        function renderTransactions(transactions) {
+            const container = document.getElementById('transactions-list');
+            
+            if (transactions.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 py-8">No transactions yet</p>';
+                return;
+            }
+            
+            container.innerHTML = transactions.map(tx => `
+                <div class="transaction-item">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-${tx.type === 'transfer' ? 'blue' : tx.type === 'purchase' ? 'green' : 'purple'}-100 flex items-center justify-center">
+                            <span class="text-xl">${Models.Transaction.getTypeIcon(tx)}</span>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <div class="text-sm font-medium text-gray-900">${Models.Transaction.getTypeLabel(tx)}</div>
+                            <div class="text-xs text-gray-500">${FM.Format.date(tx.created_at)}</div>
+                        </div>
+                        <div class="text-sm font-semibold ${tx.from_member_id === FM.Storage.get('member_id') ? 'text-red-600' : 'text-green-600'}">
+                            ${tx.from_member_id === FM.Storage.get('member_id') ? '-' : '+'}${tx.amount.toFixed(2)} FIC
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load user profile
+        async function loadUserProfile() {
+            try {
+                const response = await API.getMemberProfile();
+                const member = Models.Member.fromAPI(response.data);
+                
+                // Update UI
+                document.getElementById('menu-username').textContent = Models.Member.getDisplayName(member);
+                document.getElementById('menu-avatar').src = Models.Member.getAvatarURL(member);
+                document.getElementById('header-avatar').src = Models.Member.getAvatarURL(member);
+                
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+
+        // Toggle balance visibility
+        document.getElementById('toggle-balance').addEventListener('click', () => {
+            balanceVisible = !balanceVisible;
+            updateBalanceDisplay();
+        });
+
+        // Show action modal
+        function showAction(action) {
+            FM.showNotification(`${action.charAt(0).toUpperCase() + action.slice(1)} feature coming soon!`, 'info');
+        }
+
+        // Show/hide loading
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWalletPage);
+        } else {
+            initWalletPage();
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-4 md:py-6 px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                <div class="flex items-center justify-center md:justify-start mb-3 md:mb-0">
+                    <img src="./assets/icons/logo.png" alt="FingerMobile" class="h-6 md:h-8 mr-2">
+                    <p class="text-sm text-gray-500">&copy; 2026 FingerMobile Protocol. All rights reserved.</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Privacy Policy</a>
+                    <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Terms of Service</a>
+                    <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Support</a>
+                    <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

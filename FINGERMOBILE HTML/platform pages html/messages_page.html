@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Messages</h1>
+                            <p class="mt-1 text-sm text-gray-500">Connect with your community</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                New Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Conversations List -->
+                    <div class="lg:w-1/3">
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                                <h2 class="text-lg font-medium text-gray-900">Conversations</h2>
+                            </div>
+                            <div class="overflow-hidden">
+                                <ul class="divide-y divide-gray-200">
+                                    <!-- Conversation 1 -->
+                                    <li class="px-4 py-4 hover:bg-gray-50 cursor-pointer">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 relative">
+                                                <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/women/3.jpg" alt="Sarah Johnson">
+                                                <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                            </div>
+                                            <div class="ml-4 flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900 truncate">Sarah Johnson</h3>
+                                                    <span class="text-xs text-gray-500">2m ago</span>
+                                                </div>
+                                                <p class="text-sm text-gray-500 truncate">Thanks for the collaboration opportunity! I'm excited to work together on this project.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <!-- Conversation 2 (Active) -->
+                                    <li class="px-4 py-4 bg-indigo-50 border-l-4 border-indigo-500">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 relative">
+                                                <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                                <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                            </div>
+                                            <div class="ml-4 flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900 truncate">Michael Chen</h3>
+                                                    <span class="text-xs text-gray-500">15m ago</span>
+                                                </div>
+                                                <p class="text-sm text-gray-900 truncate font-medium">Did you check the latest design mockups? I've added some comments.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <!-- Conversation 3 -->
+                                    <li class="px-4 py-4 hover:bg-gray-50 cursor-pointer">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 relative">
+                                                <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/women/4.jpg" alt="Emma Wilson">
+                                                <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-gray-300"></span>
+                                            </div>
+                                            <div class="ml-4 flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900 truncate">Emma Wilson</h3>
+                                                    <span class="text-xs text-gray-500">1h ago</span>
+                                                </div>
+                                                <p class="text-sm text-gray-500 truncate">The meeting has been rescheduled to next Tuesday at 2 PM.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <!-- Conversation 4 -->
+                                    <li class="px-4 py-4 hover:bg-gray-50 cursor-pointer">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 relative">
+                                                <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                    <span class="text-indigo-800 font-medium">T</span>
+                                                </div>
+                                                <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-gray-300"></span>
+                                            </div>
+                                            <div class="ml-4 flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900 truncate">Tech Community</h3>
+                                                    <span class="text-xs text-gray-500">3h ago</span>
+                                                </div>
+                                                <p class="text-sm text-gray-500 truncate">Alex posted: "Just launched our new open-source project!"</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <!-- Conversation 5 -->
+                                    <li class="px-4 py-4 hover:bg-gray-50 cursor-pointer">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 relative">
+                                                <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/men/3.jpg" alt="David Rodriguez">
+                                                <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                            </div>
+                                            <div class="ml-4 flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900 truncate">David Rodriguez</h3>
+                                                    <span class="text-xs text-gray-500">1d ago</span>
+                                                </div>
+                                                <p class="text-sm text-gray-500 truncate">Let's schedule a call to discuss the partnership details.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Online Contacts -->
+                        <div class="mt-6 bg-white rounded-lg shadow">
+                            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                                <h2 class="text-lg font-medium text-gray-900">Online Now</h2>
+                            </div>
+                            <div class="p-4">
+                                <div class="grid grid-cols-4 gap-4">
+                                    <div class="text-center">
+                                        <div class="relative inline-block">
+                                            <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/women/5.jpg" alt="Lisa Anderson">
+                                            <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                        </div>
+                                        <p class="mt-1 text-xs text-gray-900 truncate">Lisa</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="relative inline-block">
+                                            <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/men/4.jpg" alt="James Taylor">
+                                            <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                        </div>
+                                        <p class="mt-1 text-xs text-gray-900 truncate">James</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="relative inline-block">
+                                            <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/women/6.jpg" alt="Patricia Moore">
+                                            <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                        </div>
+                                        <p class="mt-1 text-xs text-gray-900 truncate">Patricia</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="relative inline-block">
+                                            <img class="h-12 w-12 rounded-full" src="https://randomuser.me/api/portraits/men/5.jpg" alt="Robert Jackson">
+                                            <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                        </div>
+                                        <p class="mt-1 text-xs text-gray-900 truncate">Robert</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Window -->
+                    <div class="lg:w-2/3">
+                        <div class="bg-white rounded-lg shadow flex flex-col h-full">
+                            <!-- Chat Header -->
+                            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 relative">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                            <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400"></span>
+                                        </div>
+                                        <div class="ml-4">
+                                            <h3 class="text-lg font-medium text-gray-900">Michael Chen</h3>
+                                            <p class="text-sm text-gray-500">Online</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-3">
+                                        <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Chat Messages -->
+                            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                                <!-- Message 1 (Received) -->
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="bg-gray-100 rounded-lg px-4 py-2">
+                                            <p class="text-sm text-gray-800">Hi there! I wanted to follow up on the design mockups we discussed yesterday.</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500">10:24 AM</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 2 (Sent) -->
+                                <div class="flex items-start justify-end">
+                                    <div class="mr-3">
+                                        <div class="bg-indigo-500 text-white rounded-lg px-4 py-2">
+                                            <p class="text-sm">Sure thing! I've reviewed them and added some comments. Let me know what you think.</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500 text-right">10:25 AM</div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="You">
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 3 (Received) -->
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="bg-gray-100 rounded-lg px-4 py-2">
+                                            <p class="text-sm text-gray-800">I saw your comments. The new color scheme looks great! I especially like the accent colors you chose.</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500">10:27 AM</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 4 (Received) -->
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="bg-gray-100 rounded-lg px-4 py-2">
+                                            <p class="text-sm text-gray-800">Do you have time for a quick call this afternoon to discuss the next steps?</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500">10:30 AM</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 5 (Sent) -->
+                                <div class="flex items-start justify-end">
+                                    <div class="mr-3">
+                                        <div class="bg-indigo-500 text-white rounded-lg px-4 py-2">
+                                            <p class="text-sm">Yes, I'm free after 2 PM. Does that work for you?</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500 text-right">10:32 AM</div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="You">
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 6 (Received) -->
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael Chen">
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="bg-gray-100 rounded-lg px-4 py-2">
+                                            <p class="text-sm text-gray-800">Perfect! Let's schedule it for 2:30 PM. I'll send you a calendar invite.</p>
+                                        </div>
+                                        <div class="mt-1 text-xs text-gray-500">10:33 AM</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Message Input -->
+                            <div class="border-t border-gray-200 p-4">
+                                <div class="flex items-center">
+                                    <div class="flex space-x-2">
+                                        <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="flex-1 mx-4">
+                                        <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Type a message...">
+                                    </div>
+                                    <button type="button" class="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>

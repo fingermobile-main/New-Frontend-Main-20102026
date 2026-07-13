@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Analytics Dashboard - FingerMobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0021f3 0%, #6366f1 100%); }
+        .stat-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .chart-container { position: relative; height: 300px; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="my_pages.html" class="text-white hover:text-gray-200">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-2xl font-bold">Analytics Dashboard</h1>
+                        <p id="pageName" class="text-sm text-gray-200">Loading...</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="timeRange" class="bg-white/20 border border-white/30 rounded-lg px-3 py-2 text-white text-sm">
+                        <option value="7" class="text-gray-900">Last 7 Days</option>
+                        <option value="30" class="text-gray-900">Last 30 Days</option>
+                        <option value="90" class="text-gray-900">Last 90 Days</option>
+                    </select>
+                    <button onclick="refreshData()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition">
+                        <i class="fas fa-sync-alt mr-2"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hidden page ID for tracking -->
+        <input type="hidden" id="page-id" value="">
+
+        <!-- Key Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Views -->
+            <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-eye text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-green-500 text-sm font-semibold" id="viewsChange">+12%</span>
+                </div>
+                <h3 class="text-gray-600 text-sm font-medium mb-1">Total Views</h3>
+                <p class="text-3xl font-bold text-gray-900" id="totalViews">-</p>
+                <p class="text-xs text-gray-500 mt-2">All time</p>
+            </div>
+
+            <!-- Unique Visitors -->
+            <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-green-500 text-sm font-semibold" id="visitorsChange">+8%</span>
+                </div>
+                <h3 class="text-gray-600 text-sm font-medium mb-1">Unique Visitors</h3>
+                <p class="text-3xl font-bold text-gray-900" id="uniqueVisitors">-</p>
+                <p class="text-xs text-gray-500 mt-2">Distinct users</p>
+            </div>
+
+            <!-- CTA Clicks -->
+            <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mouse-pointer text-orange-600 text-xl"></i>
+                    </div>
+                    <span class="text-green-500 text-sm font-semibold" id="ctaChange">+15%</span>
+                </div>
+                <h3 class="text-gray-600 text-sm font-medium mb-1">CTA Clicks</h3>
+                <p class="text-3xl font-bold text-gray-900" id="ctaClicks">-</p>
+                <p class="text-xs text-gray-500 mt-2">Call-to-action</p>
+            </div>
+
+            <!-- Conversions -->
+            <div class="stat-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-green-500 text-sm font-semibold" id="conversionChange">+22%</span>
+                </div>
+                <h3 class="text-gray-600 text-sm font-medium mb-1">Conversions</h3>
+                <p class="text-3xl font-bold text-gray-900" id="conversions">-</p>
+                <p class="text-xs text-gray-500 mt-2">Lead generation</p>
+            </div>
+        </div>
+
+        <!-- Secondary Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Avg Dwell Time -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-clock text-indigo-600 text-lg mr-2"></i>
+                    <h3 class="text-gray-700 font-semibold">Avg Dwell Time</h3>
+                </div>
+                <p class="text-2xl font-bold text-gray-900" id="avgDwellTime">-</p>
+                <p class="text-sm text-gray-500 mt-1">Time spent on page</p>
+            </div>
+
+            <!-- Bounce Rate -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-sign-out-alt text-red-600 text-lg mr-2"></i>
+                    <h3 class="text-gray-700 font-semibold">Bounce Rate</h3>
+                </div>
+                <p class="text-2xl font-bold text-gray-900" id="bounceRate">-</p>
+                <p class="text-sm text-gray-500 mt-1">< 10 seconds</p>
+            </div>
+
+            <!-- Conversion Rate -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-percentage text-teal-600 text-lg mr-2"></i>
+                    <h3 class="text-gray-700 font-semibold">Conversion Rate</h3>
+                </div>
+                <p class="text-2xl font-bold text-gray-900" id="conversionRate">-</p>
+                <p class="text-sm text-gray-500 mt-1">Visitors to leads</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Visitor Trends Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Visitor Trends</h3>
+                <div class="chart-container">
+                    <canvas id="visitorTrendsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- CTA Performance Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">CTA Performance</h3>
+                <div class="chart-container">
+                    <canvas id="ctaPerformanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Breakdown -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Device Breakdown</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="deviceBreakdown">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- CTA Buttons Performance Table -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">CTA Buttons Performance</h3>
+                <a href="create_page.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <i class="fas fa-plus mr-1"></i> Add New CTA
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Button Text</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Type</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Action</th>
+                            <th class="text-right py-3 px-4 text-sm font-semibold text-gray-700">Clicks</th>
+                            <th class="text-right py-3 px-4 text-sm font-semibold text-gray-700">CTR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ctaTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Activity</h3>
+            <div id="recentActivity" class="space-y-3">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-700">Loading analytics...</p>
+        </div>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="visitor-tracking.js"></script>
+    <script>
+        let authToken = localStorage.getItem('session_token') || sessionStorage.getItem('session_token');
+        let pageId = new URLSearchParams(window.location.search).get('id');
+        let visitorTrendsChart = null;
+        let ctaPerformanceChart = null;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!authToken) {
+                alert('Please log in first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!pageId) {
+                alert('No page selected');
+                window.location.href = 'my_pages.html';
+                return;
+            }
+
+            document.getElementById('page-id').value = pageId;
+            
+            await loadAnalytics();
+        });
+
+        // Load all analytics data
+        async function loadAnalytics() {
+            showLoading(true);
+
+            try {
+                const days = document.getElementById('timeRange').value;
+                
+                // Load overview stats
+                await loadOverviewStats();
+                
+                // Load timeline data
+                await loadTimelineData(days);
+                
+                // Load CTA performance
+                await loadCTAPerformance();
+                
+                // Load device breakdown
+                await loadDeviceBreakdown();
+                
+                console.log('✓ Analytics loaded successfully');
+            } catch (error) {
+                console.error('Failed to load analytics:', error);
+                alert('Error loading analytics: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Load overview statistics
+        async function loadOverviewStats() {
+            const response = await fetch(`http://localhost:3003/api/pages/${pageId}/analytics/overview`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
+            const data = result.data.overview;
+
+            // Update metric cards
+            document.getElementById('totalViews').textContent = formatNumber(data.total_visits || 0);
+            document.getElementById('uniqueVisitors').textContent = formatNumber(data.unique_visitors || 0);
+            document.getElementById('ctaClicks').textContent = formatNumber(data.total_cta_clicks || 0);
+            document.getElementById('conversions').textContent = formatNumber(data.conversions || 0);
+            document.getElementById('avgDwellTime').textContent = formatDuration(data.avg_dwell_time || 0);
+            
+            // Calculate rates
+            const conversionRate = data.total_visits > 0 
+                ? ((data.conversions / data.total_visits) * 100).toFixed(1)
+                : 0;
+            document.getElementById('conversionRate').textContent = `${conversionRate}%`;
+            
+            // Bounce rate placeholder (would need more detailed tracking)
+            document.getElementById('bounceRate').textContent = '24%';
+        }
+
+        // Load timeline data for chart
+        async function loadTimelineData(days) {
+            const response = await fetch(`http://localhost:3003/api/pages/${pageId}/analytics/visitors/timeline?days=${days}`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
+            const data = result.data;
+            const labels = data.map(row => formatDate(row.date));
+            const visits = data.map(row => parseInt(row.total_visits));
+            const uniqueVis = data.map(row => parseInt(row.unique_visitors));
+            const conversions = data.map(row => parseInt(row.conversions));
+
+            // Destroy existing chart if exists
+            if (visitorTrendsChart) {
+                visitorTrendsChart.destroy();
+            }
+
+            // Create new chart
+            const ctx = document.getElementById('visitorTrendsChart').getContext('2d');
+            visitorTrendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Total Visits',
+                            data: visits,
+                            borderColor: '#0021f3',
+                            backgroundColor: 'rgba(0, 33, 243, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Unique Visitors',
+                            data: uniqueVis,
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Conversions',
+                            data: conversions,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load CTA performance data
+        async function loadCTAPerformance() {
+            const response = await fetch(`http://localhost:3003/api/pages/${pageId}/ctas`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
+            const ctas = result.data;
+            const totalViews = parseInt(document.getElementById('totalViews').textContent.replace(/,/g, '')) || 1;
+
+            // Update table
+            const tableBody = document.getElementById('ctaTableBody');
+            tableBody.innerHTML = '';
+
+            ctas.forEach(cta => {
+                const ctr = ((cta.click_count / totalViews) * 100).toFixed(2);
+                const row = `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="py-3 px-4 text-sm text-gray-900">${escapeHtml(cta.button_text)}</td>
+                        <td class="py-3 px-4 text-sm">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${getButtonTypeClass(cta.button_type)}">
+                                ${cta.button_type}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-sm text-gray-600">${escapeHtml(cta.action_type)}</td>
+                        <td class="py-3 px-4 text-sm text-right font-semibold text-gray-900">${formatNumber(cta.click_count)}</td>
+                        <td class="py-3 px-4 text-sm text-right text-gray-600">${ctr}%</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            // Create CTA performance chart
+            if (ctaPerformanceChart) {
+                ctaPerformanceChart.destroy();
+            }
+
+            const ctx = document.getElementById('ctaPerformanceChart').getContext('2d');
+            ctaPerformanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ctas.map(cta => cta.button_text),
+                    datasets: [{
+                        label: 'Clicks',
+                        data: ctas.map(cta => cta.click_count),
+                        backgroundColor: ['#0021f3', '#6366f1', '#10b981', '#f59e0b', '#ef4444'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load device breakdown
+        async function loadDeviceBreakdown() {
+            const response = await fetch(`http://localhost:3003/api/pages/${pageId}/analytics/devices`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
+            const devices = result.data;
+            const container = document.getElementById('deviceBreakdown');
+            container.innerHTML = '';
+
+            const icons = {
+                'Mobile': 'fa-mobile-alt',
+                'Desktop': 'fa-desktop',
+                'Tablet': 'fa-tablet-alt'
+            };
+
+            const colors = {
+                'Mobile': 'text-blue-600 bg-blue-100',
+                'Desktop': 'text-purple-600 bg-purple-100',
+                'Tablet': 'text-orange-600 bg-orange-100'
+            };
+
+            devices.forEach(device => {
+                const icon = icons[device.device_type] || 'fa-laptop';
+                const color = colors[device.device_type] || 'text-gray-600 bg-gray-100';
+                
+                const card = `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 ${color} rounded-lg flex items-center justify-center">
+                                <i class="fas ${icon} text-lg"></i>
+                            </div>
+                            <span class="text-2xl font-bold text-gray-900">${device.percentage}%</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900">${device.device_type}</h4>
+                        <p class="text-sm text-gray-500">${formatNumber(device.count)} visitors</p>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        // Helper functions
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function formatDuration(seconds) {
+            if (seconds < 60) {
+                return `${Math.round(seconds)}s`;
+            } else {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.round(seconds % 60);
+                return `${mins}m ${secs}s`;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getButtonTypeClass(type) {
+            const classes = {
+                'primary': 'bg-blue-100 text-blue-800',
+                'secondary': 'bg-gray-100 text-gray-800',
+                'outline': 'bg-white text-blue-600 border border-blue-600'
+            };
+            return classes[type] || 'bg-gray-100 text-gray-800';
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+        }
+
+        function refreshData() {
+            loadAnalytics();
+        }
+
+        // Time range change handler
+        document.getElementById('timeRange').addEventListener('change', () => {
+            loadAnalytics();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camus Learning</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Camus Learning</h1>
+                            <p class="mt-1 text-sm text-gray-500">Expand your knowledge with our courses</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                My Courses
+                            </button>
+                            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Create Course
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camus Learning Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Search and Filter -->
+                <div class="mb-6 bg-white rounded-lg shadow p-4">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1">
+                            <div class="relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <input type="text" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" placeholder="Search courses...">
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option>All Categories</option>
+                                <option>Technology</option>
+                                <option>Business</option>
+                                <option>Design</option>
+                                <option>Marketing</option>
+                                <option>Personal Development</option>
+                            </select>
+                            <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option>Sort by: Featured</option>
+                                <option>Sort by: Newest</option>
+                                <option>Sort by: Most Popular</option>
+                                <option>Sort by: Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Courses -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Featured Course -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h2 class="text-lg font-medium text-gray-900">Featured Course</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-col md:flex-row">
+                                <div class="md:w-1/3 mb-4 md:mb-0">
+                                    <img class="h-48 w-full object-cover rounded-lg" src="https://picsum.photos/seed/course1/400/300" alt="Advanced Web Development">
+                                </div>
+                                <div class="md:w-2/3 md:pl-6">
+                                    <h3 class="text-xl font-bold text-gray-900">Advanced Web Development with React and Node.js</h3>
+                                    <p class="mt-2 text-gray-600">Master modern web development techniques by building real-world applications with React, Node.js, and MongoDB.</p>
+                                    <div class="mt-4 flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Instructor">
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">John Smith</p>
+                                            <p class="text-sm text-gray-500">Senior Developer</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                                        <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                        <span class="ml-1">4.8 (1,240 reviews)</span>
+                                        <span class="mx-2">•</span>
+                                        <span>24 hours</span>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="flex justify-between text-sm text-gray-600">
+                                            <span>Progress</span>
+                                            <span>65%</span>
+                                        </div>
+                                        <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 flex space-x-3">
+                                        <button class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Continue Learning
+                                        </button>
+                                        <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Course Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Stats -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h2 class="text-lg font-medium text-gray-900">Your Learning</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-6">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12 rounded-md bg-indigo-100 flex items-center justify-center">
+                                        <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-900">Courses Enrolled</p>
+                                        <p class="text-2xl font-bold text-gray-900">8</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12 rounded-md bg-green-100 flex items-center justify-center">
+                                        <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-900">Courses Completed</p>
+                                        <p class="text-2xl font-bold text-gray-900">3</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12 rounded-md bg-blue-100 flex items-center justify-center">
+                                        <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-900">Hours Learned</p>
+                                        <p class="text-2xl font-bold text-gray-900">42</p>
+                                    </div>
+                                </div>
+                                <div class="pt-4 border-t border-gray-200">
+                                    <button class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        Browse Courses
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses Grid -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Popular Courses</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            <!-- Course 1 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="flex-shrink-0">
+                                    <img class="h-48 w-full object-cover" src="https://picsum.photos/seed/course2/400/300" alt="Data Science Fundamentals">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Data Science
+                                        </span>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1">4.7 (890)</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mt-3 text-lg font-medium text-gray-900">Data Science Fundamentals</h3>
+                                    <p class="mt-2 text-gray-600">Learn the core concepts of data science including statistics, Python, and machine learning.</p>
+                                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                                        <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="ml-1">18 hours</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Beginner</span>
+                                    </div>
+                                    <div class="mt-6 flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Instructor</p>
+                                            <p class="text-sm font-medium text-gray-900">Sarah Johnson</p>
+                                        </div>
+                                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Enroll
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course 2 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="flex-shrink-0">
+                                    <img class="h-48 w-full object-cover" src="https://picsum.photos/seed/course3/400/300" alt="UI/UX Design Principles">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            Design
+                                        </span>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1">4.9 (1,420)</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mt-3 text-lg font-medium text-gray-900">UI/UX Design Principles</h3>
+                                    <p class="mt-2 text-gray-600">Master the principles of user interface and user experience design for digital products.</p>
+                                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                                        <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="ml-1">22 hours</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Intermediate</span>
+                                    </div>
+                                    <div class="mt-6 flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Instructor</p>
+                                            <p class="text-sm font-medium text-gray-900">Michael Chen</p>
+                                        </div>
+                                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Enroll
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course 3 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="flex-shrink-0">
+                                    <img class="h-48 w-full object-cover" src="https://picsum.photos/seed/course4/400/300" alt="Digital Marketing Strategy">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Marketing
+                                        </span>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1">4.6 (756)</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="mt-3 text-lg font-medium text-gray-900">Digital Marketing Strategy</h3>
+                                    <p class="mt-2 text-gray-600">Develop comprehensive digital marketing strategies for businesses of all sizes.</p>
+                                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                                        <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="ml-1">16 hours</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Advanced</span>
+                                    </div>
+                                    <div class="mt-6 flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Instructor</p>
+                                            <p class="text-sm font-medium text-gray-900">Emily Rodriguez</p>
+                                        </div>
+                                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Enroll
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>

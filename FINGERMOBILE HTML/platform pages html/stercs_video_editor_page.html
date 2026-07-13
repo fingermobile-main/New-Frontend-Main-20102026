@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STERCS Video Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-xl font-bold leading-7 sm:text-2xl sm:truncate">STERCS Video Editor</h1>
+                            <p class="mt-1 text-sm text-gray-400">Edit and enhance your video content</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Export
+                            </button>
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Publish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Editor Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Timeline and Preview -->
+                    <div class="lg:w-3/4">
+                        <!-- Video Preview -->
+                        <div class="bg-black rounded-lg shadow mb-6">
+                            <div class="aspect-video bg-gray-800 rounded-t-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="mt-2 text-gray-500">Video Preview</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-800 rounded-b-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <button class="p-2 rounded-full hover:bg-gray-700">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <button class="p-2 rounded-full hover:bg-gray-700">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <button class="p-2 rounded-full hover:bg-gray-700">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="text-sm text-gray-400">
+                                        1:24 / 3:45
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="p-2 rounded-full hover:bg-gray-700">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                        </button>
+                                        <div class="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                            <div class="h-full bg-indigo-600" style="width: 35%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div class="bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-medium">Timeline</h2>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 text-sm bg-gray-700 rounded hover:bg-gray-600">Zoom In</button>
+                                    <button class="px-3 py-1 text-sm bg-gray-700 rounded hover:bg-gray-600">Zoom Out</button>
+                                </div>
+                            </div>
+                            
+                            <div class="overflow-x-auto">
+                                <div class="min-w-full">
+                                    <!-- Timeline ruler -->
+                                    <div class="h-6 border-b border-gray-700 relative">
+                                        <div class="absolute top-0 left-0 h-full w-full flex">
+                                            <!-- Time markers -->
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:00</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:05</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:10</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:15</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:20</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:25</div>
+                                            <div class="h-full border-l border-gray-600 flex items-start pl-1 text-xs text-gray-500" style="width: 100px;">0:30</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Video track -->
+                                    <div class="h-16 border-b border-gray-700 relative">
+                                        <div class="absolute top-0 left-0 h-full flex items-center">
+                                            <div class="h-12 bg-indigo-600 rounded mx-2 flex items-center" style="width: 300px;">
+                                                <div class="ml-2 text-sm">Main Video</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Audio track -->
+                                    <div class="h-16 border-b border-gray-700 relative">
+                                        <div class="absolute top-0 left-0 h-full flex items-center">
+                                            <div class="h-8 bg-green-600 rounded mx-2 flex items-center" style="width: 250px;">
+                                                <div class="ml-2 text-sm">Background Music</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Text track -->
+                                    <div class="h-16 relative">
+                                        <div class="absolute top-0 left-0 h-full flex items-center">
+                                            <div class="h-8 bg-yellow-600 rounded mx-2 flex items-center" style="width: 150px;">
+                                                <div class="ml-2 text-sm">Title Text</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools Panel -->
+                    <div class="lg:w-1/4">
+                        <div class="bg-gray-800 rounded-lg shadow p-6 mb-6">
+                            <h2 class="text-lg font-medium mb-4">Tools</h2>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Text</span>
+                                </button>
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m-2.828-9.9a9 9 0 012.828-2.828" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Effects</span>
+                                </button>
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Transitions</span>
+                                </button>
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Media</span>
+                                </button>
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Audio</span>
+                                </button>
+                                <button class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 flex flex-col items-center">
+                                    <svg class="h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                    </svg>
+                                    <span class="mt-1 text-xs">Overlays</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Properties Panel -->
+                        <div class="bg-gray-800 rounded-lg shadow p-6">
+                            <h2 class="text-lg font-medium mb-4">Properties</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Text Content</label>
+                                    <input type="text" class="block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-gray-700 text-white sm:text-sm" value="Your Title Here">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Font Size</label>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>Small</option>
+                                        <option selected>Medium</option>
+                                        <option>Large</option>
+                                        <option>Extra Large</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Text Color</label>
+                                    <div class="flex items-center">
+                                        <div class="h-8 w-8 rounded border border-gray-600 bg-white"></div>
+                                        <input type="text" class="ml-2 flex-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-gray-700 text-white sm:text-sm" value="#FFFFFF">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Position</label>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>Top Left</option>
+                                        <option>Top Center</option>
+                                        <option>Top Right</option>
+                                        <option selected>Center</option>
+                                        <option>Bottom Left</option>
+                                        <option>Bottom Center</option>
+                                        <option>Bottom Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Projects -->
+                <div class="mt-8 bg-gray-800 rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <h2 class="text-lg font-medium">Recent Projects</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-700 rounded-lg p-4 hover:border-indigo-500 cursor-pointer">
+                                <div class="bg-gray-700 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center">
+                                    <svg class="h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="mt-2 text-sm font-medium text-white">Product Launch</h3>
+                                <p class="text-xs text-gray-400">Edited 2 hours ago</p>
+                            </div>
+                            <div class="border border-gray-700 rounded-lg p-4 hover:border-indigo-500 cursor-pointer">
+                                <div class="bg-gray-700 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center">
+                                    <svg class="h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="mt-2 text-sm font-medium text-white">Marketing Ad</h3>
+                                <p class="text-xs text-gray-400">Edited 1 day ago</p>
+                            </div>
+                            <div class="border border-gray-700 rounded-lg p-4 hover:border-indigo-500 cursor-pointer">
+                                <div class="bg-gray-700 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center">
+                                    <svg class="h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="mt-2 text-sm font-medium text-white">Tutorial Series</h3>
+                                <p class="text-xs text-gray-400">Edited 3 days ago</p>
+                            </div>
+                            <div class="border-2 border-dashed border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500">
+                                <svg class="mx-auto h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span class="mt-2 text-sm font-medium text-white">New Project</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>

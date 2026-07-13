@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0021f3">
+    <title>FingerMobile - Profile Enhancement</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --fm-primary: #0021f3;
+            --fm-primary-dark: #0018b3;
+            --fm-secondary: #6366f1;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .video-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+        }
+        
+        .video-upload-area:hover {
+            border-color: var(--fm-primary);
+            background: #ebf4ff;
+        }
+        
+        .video-upload-area.dragover {
+            border-color: var(--fm-primary);
+            background: #dbeafe;
+            transform: scale(1.02);
+        }
+        
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            margin: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .skill-tag.selected {
+            background: linear-gradient(135deg, #0021f3 0%, #0018b3 100%);
+            box-shadow: 0 4px 16px rgba(0, 33, 243, 0.5);
+        }
+        
+        .proficiency-stars {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #cbd5e0;
+        }
+        
+        .star.active {
+            color: #fbbf24;
+            transform: scale(1.1);
+        }
+        
+        .star:hover {
+            transform: scale(1.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--fm-primary) 0%, var(--fm-secondary) 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 33, 243, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 33, 243, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--fm-primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 2px solid var(--fm-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #ebf4ff;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Header -->
+        <div class="card">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Profile Enhancement</h1>
+            <p class="text-gray-600">Add video introduction, showcase your skills, and get endorsements</p>
+        </div>
+
+        <!-- Profile Video Upload Section -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📹 Profile Video (3-5 seconds)</h2>
+            <p class="text-gray-600 mb-4">Upload a short video introduction to make your profile stand out</p>
+            
+            <div id="videoUploadArea" class="video-upload-area">
+                <div id="uploadPlaceholder">
+                    <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <p class="text-lg font-medium text-gray-700 mb-2">Drag & drop your video here</p>
+                    <p class="text-sm text-gray-500 mb-4">or click to browse files</p>
+                    <button class="btn-primary" onclick="document.getElementById('videoInput').click()">
+                        Choose Video
+                    </button>
+                    <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleVideoSelect(event)">
+                </div>
+                
+                <div id="videoPreview" style="display: none;">
+                    <video id="previewVideo" controls class="w-full rounded-lg mb-4"></video>
+                    <div class="flex gap-2 justify-center">
+                        <button class="btn-primary" onclick="uploadVideo()">Upload Video</button>
+                        <button class="btn-secondary" onclick="cancelVideoUpload()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="currentVideo" style="display: none;" class="mt-4">
+                <h3 class="font-semibold text-gray-700 mb-2">Current Profile Video:</h3>
+                <video id="uploadedVideo" controls class="w-full rounded-lg"></video>
+                <button class="btn-secondary mt-2" onclick="removeVideo()">Remove Video</button>
+            </div>
+        </div>
+
+        <!-- Skills Selection Section -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">💼 Add Your Skills</h2>
+            <p class="text-gray-600 mb-4">Select skills you're proficient in and set your expertise level</p>
+            
+            <!-- Search Skills -->
+            <div class="mb-4">
+                <input 
+                    type="text" 
+                    id="skillSearch" 
+                    placeholder="Search skills..." 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    oninput="searchSkills(this.value)"
+                >
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="mb-4 flex gap-2 flex-wrap">
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('all')">All</button>
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('technical')">Technical</button>
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('creative')">Creative</button>
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('business')">Business</button>
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('soft_skills')">Soft Skills</button>
+                <button class="btn-secondary text-sm" onclick="filterSkillsByCategory('data')">Data</button>
+            </div>
+            
+            <!-- Available Skills -->
+            <div id="availableSkills" class="mb-6">
+                <h3 class="font-semibold text-gray-700 mb-2">Available Skills:</h3>
+                <div id="skillsList" class="flex flex-wrap">
+                    <!-- Skills will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Selected Skills -->
+            <div id="selectedSkillsSection" style="display: none;">
+                <h3 class="font-semibold text-gray-700 mb-2">Your Skills:</h3>
+                <div id="mySkillsList" class="space-y-3">
+                    <!-- Selected skills with proficiency will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Endorsements Section -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">⭐ Skill Endorsements</h2>
+            <p class="text-gray-600 mb-4">Endorse other members' skills or view your endorsements</p>
+            
+            <div id="endorsementsList">
+                <p class="text-gray-500 text-center py-8">Loading endorsements...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Global variables
+        let authToken = localStorage.getItem('session_token') || sessionStorage.getItem('session_token');
+        let memberId = localStorage.getItem('member_id');
+        let selectedVideoFile = null;
+        let availableSkills = [];
+        let mySkills = [];
+        let currentCategory = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!authToken) {
+                showToast('Please login first', 'error');
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                return;
+            }
+            
+            await loadSkills();
+            await loadMySkills();
+            await loadCurrentVideo();
+            setupDragAndDrop();
+        });
+
+        // Setup drag and drop for video upload
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('videoUploadArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.add('dragover');
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.remove('dragover');
+                }, false);
+            });
+            
+            uploadArea.addEventListener('drop', handleDrop, false);
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0 && files[0].type.startsWith('video/')) {
+                handleVideoFile(files[0]);
+            } else {
+                showToast('Please drop a valid video file', 'error');
+            }
+        }
+
+        function handleVideoSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleVideoFile(file);
+            }
+        }
+
+        function handleVideoFile(file) {
+            // Validate file size (10MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                showToast('Video file too large. Maximum size is 10MB', 'error');
+                return;
+            }
+            
+            selectedVideoFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewVideo').src = e.target.result;
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                document.getElementById('videoPreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function uploadVideo() {
+            if (!selectedVideoFile) {
+                showToast('Please select a video file first', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const formData = new FormData();
+                formData.append('video', selectedVideoFile);
+                
+                const response = await fetch('/api/profile/video/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Upload failed');
+                }
+                
+                showToast('Video uploaded successfully!', 'success');
+                cancelVideoUpload();
+                await loadCurrentVideo();
+            } catch (error) {
+                console.error('Upload error:', error);
+                showToast(error.message || 'Failed to upload video', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function cancelVideoUpload() {
+            selectedVideoFile = null;
+            document.getElementById('uploadPlaceholder').style.display = 'block';
+            document.getElementById('videoPreview').style.display = 'none';
+            document.getElementById('videoInput').value = '';
+        }
+
+        async function loadCurrentVideo() {
+            try {
+                const response = await fetch(`/api/profile/video/${memberId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data && data.data.profile_video_url) {
+                        document.getElementById('uploadedVideo').src = data.data.profile_video_url;
+                        document.getElementById('currentVideo').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Load video error:', error);
+            }
+        }
+
+        async function removeVideo() {
+            if (!confirm('Are you sure you want to remove your profile video?')) {
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/profile/video', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showToast('Video removed successfully', 'success');
+                    document.getElementById('currentVideo').style.display = 'none';
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to remove video');
+                }
+            } catch (error) {
+                showToast(error.message || 'Failed to remove video', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function loadSkills() {
+            try {
+                const response = await fetch('/api/skills');
+                const data = await response.json();
+                
+                if (data.success) {
+                    availableSkills = data.data;
+                    displaySkills(availableSkills);
+                }
+            } catch (error) {
+                console.error('Load skills error:', error);
+                showToast('Failed to load skills', 'error');
+            }
+        }
+
+        function displaySkills(skills) {
+            const skillsList = document.getElementById('skillsList');
+            skillsList.innerHTML = '';
+            
+            skills.forEach(skill => {
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.textContent = skill.name;
+                skillTag.onclick = () => selectSkill(skill);
+                skillsList.appendChild(skillTag);
+            });
+        }
+
+        function searchSkills(query) {
+            if (!query) {
+                displaySkills(availableSkills.filter(s => currentCategory === 'all' || s.category === currentCategory));
+                return;
+            }
+            
+            const filtered = availableSkills.filter(skill => 
+                skill.name.toLowerCase().includes(query.toLowerCase()) &&
+                (currentCategory === 'all' || skill.category === currentCategory)
+            );
+            displaySkills(filtered);
+        }
+
+        function filterSkillsByCategory(category) {
+            currentCategory = category;
+            searchSkills(document.getElementById('skillSearch').value);
+        }
+
+        async function selectSkill(skill) {
+            // Check if already selected
+            if (mySkills.find(s => s.skill_id === skill.id)) {
+                showToast('You already have this skill', 'error');
+                return;
+            }
+            
+            // Show proficiency selector
+            const proficiency = await promptProficiency(skill.name);
+            if (!proficiency) return;
+            
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/profile/skills', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        skill_id: skill.id,
+                        proficiency_level: proficiency,
+                        years_experience: null
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to add skill');
+                }
+                
+                showToast('Skill added successfully!', 'success');
+                await loadMySkills();
+            } catch (error) {
+                showToast(error.message || 'Failed to add skill', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function promptProficiency(skillName) {
+            return new Promise((resolve) => {
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1002;';
+                
+                modal.innerHTML = `
+                    <div style="background: white; padding: 32px; border-radius: 16px; max-width: 400px; width: 90%;">
+                        <h3 class="text-xl font-bold mb-4">Rate your proficiency in ${skillName}</h3>
+                        <div class="proficiency-stars" id="starRating">
+                            ${[1,2,3,4,5].map(i => `<span class="star" data-level="${i}">★</span>`).join('')}
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">1 = Beginner, 5 = Expert</p>
+                        <div class="flex gap-2 mt-6">
+                            <button class="btn-primary flex-1" onclick="this.closest('div').dataset.selected='true'">Confirm</button>
+                            <button class="btn-secondary flex-1" onclick="this.closest('div').remove()">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                
+                let selectedLevel = 0;
+                const stars = modal.querySelectorAll('.star');
+                
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        selectedLevel = parseInt(star.dataset.level);
+                        stars.forEach((s, i) => {
+                            s.classList.toggle('active', i < selectedLevel);
+                        });
+                    });
+                });
+                
+                const confirmBtn = modal.querySelector('.btn-primary');
+                confirmBtn.addEventListener('click', () => {
+                    if (selectedLevel === 0) {
+                        alert('Please select a proficiency level');
+                        return;
+                    }
+                    modal.remove();
+                    resolve(selectedLevel);
+                });
+                
+                document.body.appendChild(modal);
+            });
+        }
+
+        async function loadMySkills() {
+            try {
+                const response = await fetch(`/api/profile/skills/${memberId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    mySkills = data.data;
+                    displayMySkills();
+                }
+            } catch (error) {
+                console.error('Load my skills error:', error);
+            }
+        }
+
+        function displayMySkills() {
+            const section = document.getElementById('selectedSkillsSection');
+            const list = document.getElementById('mySkillsList');
+            
+            if (mySkills.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            
+            section.style.display = 'block';
+            list.innerHTML = '';
+            
+            mySkills.forEach(skill => {
+                const skillCard = document.createElement('div');
+                skillCard.className = 'bg-gray-50 rounded-lg p-4';
+                skillCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">${skill.skill_name}</h4>
+                            <p class="text-sm text-gray-600">${skill.category}</p>
+                        </div>
+                        <button class="text-red-500 hover:text-red-700" onclick="removeSkill(${skill.skill_id})">✕</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600">Proficiency:</span>
+                        <div class="proficiency-stars">
+                            ${[1,2,3,4,5].map(i => `<span class="star ${i <= skill.proficiency_level ? 'active' : ''}">★</span>`).join('')}
+                        </div>
+                        <span class="text-sm text-gray-600 ml-2">(${skill.endorsement_count} endorsements)</span>
+                    </div>
+                `;
+                list.appendChild(skillCard);
+            });
+        }
+
+        async function removeSkill(skillId) {
+            if (!confirm('Remove this skill from your profile?')) return;
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`/api/profile/skills/${skillId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showToast('Skill removed', 'success');
+                    await loadMySkills();
+                }
+            } catch (error) {
+                showToast('Failed to remove skill', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

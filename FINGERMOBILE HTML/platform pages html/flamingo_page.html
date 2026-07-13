@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flamingo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-pink-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-gradient-to-r from-pink-500 to-rose-500 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">Flamingo</h1>
+                            <p class="mt-1 text-sm text-pink-200">Social networking and community engagement</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-pink-300 rounded-md shadow-sm text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                Create Post
+                            </button>
+                            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-pink-700 bg-white hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                Join Group
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flamingo Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                    <!-- Total Followers -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-pink-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Followers</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">12,458</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Following -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-rose-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Following</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">1,242</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Posts Created -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-fuchsia-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Posts</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">842</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Engagement Rate -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Engagement</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">4.8%</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feed and Trends -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Social Feed -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <h2 class="text-lg font-medium text-gray-900">Social Feed</h2>
+                                <button type="button" class="mt-3 md:mt-0 inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                    Create Post
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-6">
+                                <!-- Post 1 -->
+                                <div class="border border-gray-200 rounded-lg p-5">
+                                    <div class="flex items-start">
+                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/29.jpg" alt="User">
+                                        <div class="ml-3">
+                                            <div class="flex items-center">
+                                                <h4 class="text-sm font-medium text-gray-900">Sarah Johnson</h4>
+                                                <span class="ml-2 text-sm text-gray-500">@sarahj</span>
+                                                <span class="ml-2 text-sm text-gray-500">·</span>
+                                                <span class="ml-2 text-sm text-gray-500">2h</span>
+                                            </div>
+                                            <p class="mt-2 text-gray-700">Just joined the Flamingo community! Excited to connect with like-minded individuals and share my creative journey. #NewUser #Community</p>
+                                            <div class="mt-4 flex space-x-6">
+                                                <button class="flex items-center text-gray-500 hover:text-pink-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">24</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-blue-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">8</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-green-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">3</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Post 2 -->
+                                <div class="border border-gray-200 rounded-lg p-5">
+                                    <div class="flex items-start">
+                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/28.jpg" alt="User">
+                                        <div class="ml-3">
+                                            <div class="flex items-center">
+                                                <h4 class="text-sm font-medium text-gray-900">Michael Chen</h4>
+                                                <span class="ml-2 text-sm text-gray-500">@michaelc</span>
+                                                <span class="ml-2 text-sm text-gray-500">·</span>
+                                                <span class="ml-2 text-sm text-gray-500">4h</span>
+                                            </div>
+                                            <p class="mt-2 text-gray-700">Just finished my latest digital artwork! Inspired by the beautiful sunset I witnessed today. What do you think? #DigitalArt #Sunset #Creativity</p>
+                                            <div class="mt-3 bg-gray-200 border-2 border-dashed rounded-xl w-full h-64"></div>
+                                            <div class="mt-4 flex space-x-6">
+                                                <button class="flex items-center text-gray-500 hover:text-pink-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">142</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-blue-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">28</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-green-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">12</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Post 3 -->
+                                <div class="border border-gray-200 rounded-lg p-5">
+                                    <div class="flex items-start">
+                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/30.jpg" alt="User">
+                                        <div class="ml-3">
+                                            <div class="flex items-center">
+                                                <h4 class="text-sm font-medium text-gray-900">Emma Wilson</h4>
+                                                <span class="ml-2 text-sm text-gray-500">@emmaw</span>
+                                                <span class="ml-2 text-sm text-gray-500">·</span>
+                                                <span class="ml-2 text-sm text-gray-500">6h</span>
+                                            </div>
+                                            <p class="mt-2 text-gray-700">Excited to announce that my latest project just got featured in a major tech publication! Couldn't have done it without the support of this amazing community. #Success #CommunitySupport</p>
+                                            <div class="mt-4 flex space-x-6">
+                                                <button class="flex items-center text-gray-500 hover:text-pink-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">89</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-blue-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">15</span>
+                                                </button>
+                                                <button class="flex items-center text-gray-500 hover:text-green-500">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                                    </svg>
+                                                    <span class="ml-1 text-sm">7</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trends and Suggestions -->
+                    <div class="space-y-6">
+                        <!-- Trends -->
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                                <h2 class="text-lg font-medium text-gray-900">Trending Topics</h2>
+                            </div>
+                            <div class="p-6">
+                                <ul class="space-y-4">
+                                    <li>
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-pink-600">#DigitalArt</p>
+                                                    <p class="text-sm text-gray-500">2,458 posts</p>
+                                                </div>
+                                                <div class="text-sm text-gray-500">Trending</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-pink-600">#CommunitySupport</p>
+                                                    <p class="text-sm text-gray-500">1,842 posts</p>
+                                                </div>
+                                                <div class="text-sm text-gray-500">Trending</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-pink-600">#Creativity</p>
+                                                    <p class="text-sm text-gray-500">1,245 posts</p>
+                                                </div>
+                                                <div class="text-sm text-gray-500">Trending</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-pink-600">#NewUser</p>
+                                                    <p class="text-sm text-gray-500">987 posts</p>
+                                                </div>
+                                                <div class="text-sm text-gray-500">Trending</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-sm font-medium text-pink-600">#Success</p>
+                                                    <p class="text-sm text-gray-500">756 posts</p>
+                                                </div>
+                                                <div class="text-sm text-gray-500">Trending</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Suggestions -->
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                                <h2 class="text-lg font-medium text-gray-900">Suggested Connections</h2>
+                            </div>
+                            <div class="p-6">
+                                <ul class="space-y-4">
+                                    <li class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/29.jpg" alt="User">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">David Rodriguez</p>
+                                                <p class="text-sm text-gray-500">Digital Artist</p>
+                                            </div>
+                                        </div>
+                                        <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                            Follow
+                                        </button>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/31.jpg" alt="User">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">Lisa Anderson</p>
+                                                <p class="text-sm text-gray-500">Community Manager</p>
+                                            </div>
+                                        </div>
+                                        <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                            Follow
+                                        </button>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/30.jpg" alt="User">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">James Wilson</p>
+                                                <p class="text-sm text-gray-500">Tech Enthusiast</p>
+                                            </div>
+                                        </div>
+                                        <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                                            Follow
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Groups and Events -->
+                <div class="bg-white rounded-lg shadow mb-8">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <h2 class="text-lg font-medium text-gray-900">Groups & Events</h2>
+                            <div class="mt-4 md:mt-0">
+                                <div class="flex gap-2">
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm rounded-md">
+                                        <option>All Groups</option>
+                                        <option>Art & Design</option>
+                                        <option>Technology</option>
+                                        <option>Community</option>
+                                        <option>Creativity</option>
+                                    </select>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm rounded-md">
+                                        <option>Upcoming Events</option>
+                                        <option>This Week</option>
+                                        <option>This Month</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-32" />
+                                <div class="p-5">
+                                    <h3 class="text-lg font-medium text-gray-900">Digital Artists Community</h3>
+                                    <p class="mt-2 text-sm text-gray-600">Connect with fellow digital artists, share your work, and get feedback.</p>
+                                    <div class="mt-4 flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                            1,245 members
+                                        </span>
+                                        <button class="text-sm font-medium text-pink-600 hover:text-pink-500">
+                                            Join Group
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-32" />
+                                <div class="p-5">
+                                    <h3 class="text-lg font-medium text-gray-900">Tech Innovators</h3>
+                                    <p class="mt-2 text-sm text-gray-600">Discuss the latest trends in technology and innovation.</p>
+                                    <div class="mt-4 flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                            892 members
+                                        </span>
+                                        <button class="text-sm font-medium text-pink-600 hover:text-pink-500">
+                                            Join Group
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-32" />
+                                <div class="p-5">
+                                    <h3 class="text-lg font-medium text-gray-900">Community Support Network</h3>
+                                    <p class="mt-2 text-sm text-gray-600">Share resources and support each other in your creative journeys.</p>
+                                    <div class="mt-4 flex items-center justify-between">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                            2,156 members
+                                        </span>
+                                        <button class="text-sm font-medium text-pink-600 hover:text-pink-500">
+                                            Join Group
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6">
+                        <h2 class="text-lg font-medium text-white">Your Social Stats</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-5">
+                                <div class="text-sm font-medium text-pink-200">Profile Views</div>
+                                <div class="mt-2 text-3xl font-bold text-white">2,458</div>
+                                <div class="mt-1 text-sm text-pink-200">+12% this month</div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-5">
+                                <div class="text-sm font-medium text-pink-200">Post Engagement</div>
+                                <div class="mt-2 text-3xl font-bold text-white">4.8%</div>
+                                <div class="mt-1 text-sm text-pink-200">+0.5% this month</div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-5">
+                                <div class="text-sm font-medium text-pink-200">New Followers</div>
+                                <div class="mt-2 text-3xl font-bold text-white">142</div>
+                                <div class="mt-1 text-sm text-pink-200">+8 this week</div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-5">
+                                <div class="text-sm font-medium text-pink-200">Top Performing Post</div>
+                                <div class="mt-2 text-3xl font-bold text-white">1.2K</div>
+                                <div class="mt-1 text-sm text-pink-200">likes & comments</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>
