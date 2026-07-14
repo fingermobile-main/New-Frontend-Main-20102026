@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Target only the pages directory for Next.js-specific fixes, and other directories for general fixes
-const TARGET_DIRS = ['./FingerMobile Protocol/apps/frontend-main/src'];
+const TARGET_DIRS = ['./FingerMobile Protocol/apps/frontend-main/src']; // Adjust to your actual source folder
 
 const fixFile = async (filePath) => {
   let content = fs.readFileSync(filePath, 'utf8');
@@ -80,24 +79,8 @@ const fixFile = async (filePath) => {
     }
   }
 
-  // 2. Fix routing imports intelligently based on file location and existing imports
-  const usesReactRouterDOM = content.includes("from 'react-router-dom'");
-  const usesNextRouter = content.includes("from 'next/router'");
-  
-  // Apply routing fixes based on file path (Next.js pages directory vs other components)
-  const isPageFile = filePath.includes('/pages/') || filePath.includes('/app/');
-  
-  // Only fix routing if it's potentially a Next.js page file and doesn't use React Router DOM
-  if (isPageFile && !usesReactRouterDOM && (content.includes('useParams') && !usesNextRouter)) {
-    if (!content.includes("import { useRouter") && !content.includes("from 'next/router'")) {
-      content = `import { useRouter } from 'next/router';\n` + content;
-    }
-  }
-  
-  // Only replace navigate with router.push if this is a Next.js file (not using react-router-dom) and in page directory
-  if (isPageFile && !usesReactRouterDOM) {
-    content = content.replace(/navigate\(/g, 'router.push(');
-  }
+  // 2. Skip routing fixes since this is a React Router DOM project, not Next.js
+  // We'll only handle type interface patches
 
   // 3. Fix type interface patches
   if (filePath.includes('types') || filePath.includes('interfaces')) {
