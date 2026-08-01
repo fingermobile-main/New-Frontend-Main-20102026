@@ -115,3 +115,8 @@ Sleeper 13062026/cleanup_backup/
 
 # IMPORTANT: Core project files are NOT ignored
 # They are protected by the whitelist in safe_cleanup.js
+# Local backups and temporary archives
+backups/
+.tmp.driveupload/
+.migration-backups/
+FingerMobile Github 27072026/
