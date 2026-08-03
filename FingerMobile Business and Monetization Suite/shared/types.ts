@@ -63,7 +63,7 @@ export interface SeshatPage {
   id: string;
   ownerUserId: string;
   name: string;
-  description: string;
+  description?: string;
   followersCount: number;
   visibility: string;
   freeUntil: string | null;

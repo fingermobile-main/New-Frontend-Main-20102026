@@ -159,7 +159,7 @@ export const businessSuiteService = {
   },
   createSeshatPage(payload: {
     name: string
-    description: string
+    description?: string
     visibility: SeshatPage['visibility']
   }) {
     const user = repository.getUser()
@@ -193,7 +193,7 @@ export const businessSuiteService = {
   updateSeshatPage(payload: {
     id: string
     name: string
-    description: string
+    description?: string
     visibility: SeshatPage['visibility']
     billingPlan: SeshatPage['billingPlan']
   }) {

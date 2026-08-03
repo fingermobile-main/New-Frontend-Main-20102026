@@ -4,7 +4,7 @@ import { StatusBadge } from './StatusBadge';
 
 interface Program {
   name: string;
-  description: string;
+  description?: string;
   requirements: string[];
   key: string;
 }

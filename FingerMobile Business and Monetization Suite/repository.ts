@@ -44,7 +44,7 @@ export const repository = {
       id: String(row.id),
       ownerUserId: String(row.owner_user_id),
       name: String(row.name),
-      description: String(row.description),
+      description?: string(row.description),
       followersCount: Number(row.followers_count),
       visibility: row.visibility as SeshatPage['visibility'],
       freeUntil: String(row.free_until),
@@ -240,7 +240,7 @@ export const repository = {
     id: string
     ownerUserId: string
     name: string
-    description: string
+    description?: string
     visibility: SeshatPage['visibility']
     freeUntil: string
     createdAt: string
@@ -253,7 +253,7 @@ export const repository = {
   updateSeshatPage(input: {
     id: string
     name: string
-    description: string
+    description?: string
     visibility: SeshatPage['visibility']
     billingPlan: SeshatPage['billingPlan']
   }) {

@@ -7,7 +7,7 @@ export type { EstimateRequest, SeshatPage, PlatformConfig };
 export type Product = {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   price: number;
   status: string;
   features: string[];
