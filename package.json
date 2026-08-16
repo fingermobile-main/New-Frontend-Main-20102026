@@ -24,6 +24,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/sequelize": "^4.28.20",
     "@types/socket.io-client": "^1.4.36",
-    "@types/three": "^0.185.0"
+    "@types/three": "^0.185.0",
+    "eslint": "^8.57.0"
   }
 }
