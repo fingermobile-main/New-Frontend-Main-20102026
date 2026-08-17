@@ -1,24 +1,33 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import businessSuiteRoutes from './routes/business-suite.js'
-import './database.js' // Import database to initialize it
-import { requestContext } from './request-context.js'
-import { errorHandler } from './error-handler.js'
-import { notFoundHandler } from './not-found.js'
+// Import necessary modules
+import express from 'express';
+import cors from 'cors';
+import { router as businessSuiteRouter } from './business-suite-controller.js';
 
-dotenv.config()
+// Create Express app
+const app = express();
 
-const app: express.Application = express()
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-app.use(cors())
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-app.use(requestContext)
+// Mount the business suite routes under /api
+app.use('/api', businessSuiteRouter);
 
-app.use('/api', businessSuiteRoutes)
+// Basic health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
-app.use(errorHandler)
-app.use(notFoundHandler)
+// Catch-all handler for undefined routes
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
 
-export default app
+// Error handling middleware
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// Export the app
+export default app;

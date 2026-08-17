@@ -7,14 +7,51 @@ import type {
 } from './shared/types.js'
 
 // Re-export shared types so they can be imported from this file
+// Only keeping exports that aren't duplicated elsewhere in this file
 export type {
-  User,
-  SeshatPage,
-  MonetizationMetrics,
-  PlatformConfig,
   EstimateRequest,
   EstimateResponse,
 } from './shared/types.js'
+
+// User type is defined directly in this file rather than imported from shared
+export interface User {
+  id: string;
+  fullName: string;
+  email: string;
+  role: 'admin' | 'user' | 'moderator' | 'finance_admin' | 'business_admin' | 'super_admin';
+  age: number;
+  countryCode: string;
+  accountAgeDays: number;
+  createdAt: string;
+}
+
+// SeshatPage type is defined directly in this file rather than imported from shared
+export interface SeshatPage {
+  id: string;
+  ownerUserId: string;
+  name: string;
+  description?: string;
+  followersCount: number;
+  visibility: 'public' | 'private' | 'unlisted';
+  freeUntil: string;
+  billingPlan: 'free_trial' | 'basic' | 'premium' | 'enterprise';
+  verifiedBusiness: boolean;
+  createdAt: string;
+}
+
+// PlatformConfig type is defined directly in this file rather than imported from shared
+export interface PlatformConfig {
+  id: string;
+  minimumAge: number;
+  minimumPayoutThreshold: number;
+  seshatMonthlyFee: number;
+  seshatYearlyFee: number;
+  revenueSharePercentage: number;
+  giftsCashValue: number;
+  supportedCountries: string[];
+  policyVersion: string;
+  affiliateBonusPercentage: number;
+}
 
 export type UserRole =
   | 'member'
@@ -397,7 +434,7 @@ export interface WebhookEvent {
   id: string
   eventType: string
   payloadJson: string
-  status: 'received' | 'processed' | 'failed'
+  status: 'pending' | 'processed' | 'failed'
   receivedAt: string
 }
 
@@ -441,10 +478,10 @@ export interface Payout {
   seshatPageId: string
   payoutAccountId: string
   amount: number
-  status: 'pending' | 'scheduled' | 'paid' | 'held'
+  status: 'pending' | 'scheduled' | 'paid' | 'held' | 'processing' | 'cancelled'
   scheduledFor: string
   paidAt: string | null
-  holdReason: string
+  holdReason?: string
 }
 
 // Revenue Ledger Entry Interface
@@ -457,6 +494,25 @@ export interface RevenueLedgerEntry {
   reserveAmount: number
   taxAmount: number
   netAmount: number
-  settlementStatus: 'scheduled' | 'held' | 'paid'
+  settlementStatus: 'scheduled' | 'held' | 'paid' | 'pending' | 'settled' | 'returned'
   occurredAt: string
+}
+
+export interface MonetizationMetrics {
+  followers: number
+  watchMinutes60d: number
+  watchMinutes30d: number
+  postEngagement30d: number
+  returningViewers30d: number
+  uniqueViews30d: number
+  activeVideos: number
+  consecutiveFollowerDays: number
+  accountAgeDays: number
+  age: number
+  isEligibleCountry: boolean
+  originalContentScore: number
+  policyViolations: number
+  giftPurchaseEligible: boolean
+  verifiedBusiness: boolean
+  verifiedPayout: boolean
 }
