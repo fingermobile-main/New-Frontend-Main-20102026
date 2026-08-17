@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSuperViAuth } from '../contexts/SuperViAuthContext';
 
 interface Community {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   memberCount: number;
   isJoined: boolean;
   category: string;
@@ -12,10 +12,10 @@ interface Community {
 
 const CommunityPage: React.FC = () => {
   const { authState } = useSuperViAuth();
-  const [communities, setCommunities] = React.useState<Community[]>([]);
-  const [activeTab, setActiveTab] = React.useState<"my" | "discover">("my");
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [activeTab, setActiveTab] = useState<"my" | "discover">("my");
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Simulate API call to fetch communities
     const mockCommunities: Community[] = [
       {

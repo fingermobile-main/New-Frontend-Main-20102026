@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import StatCard from '../../components/StatCard';
 import TrendCard from '../../components/TrendCard';
@@ -109,10 +109,10 @@ const mockPosts = [
 const DashboardHomePage: React.FC = () => {
   const { showToast } = useAppContext();
   const { balance } = useWeb3();
-  const [stats] = React.useState(mockStats);
-  const [trends] = React.useState(mockTrends);
-  const [posts] = React.useState(mockPosts);
-  const [timeRange, setTimeRange] = React.useState("7d");
+  const [stats] = useState(mockStats);
+  const [trends] = useState(mockTrends);
+  const [posts] = useState(mockPosts);
+  const [timeRange, setTimeRange] = useState("7d");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -209,11 +209,12 @@ const DashboardHomePage: React.FC = () => {
             {posts.map((post) => (
               <PostCard
                 key={post.id}
-                post={post}
+                post={{
+                  ...post,
+                  pollOptions: post.pollOptions || [] // Ensure pollOptions is an array, not null
+                }}
                 onLike={(postId) => console.info("Like post", postId)}
-                onAddComment={(postId, commentText) =>
-                  console.info("Add comment", postId, commentText)
-                }
+                _onAddComment={() => console.info("Add comment")}
                 onOpenGiftModal={(post) => console.info("Open gift modal", post)}
                 onVote={(postId, voteType) =>
                   console.info("Vote", postId, voteType)

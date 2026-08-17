@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppContext } from "../contexts/AppContext";
+
+import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   BookOpenIcon, 
@@ -11,11 +12,10 @@ import {
   VideoCameraIcon,
   ClipboardCheckIcon
 } from '../icons';
-import type { Course, Enrollment, ProductFilters } from '../types';
+import type { Course, Enrollment } from '../types';
 import CourseCard from '../components/CourseCard';
 import EnhancedFilterBar from '../components/shared/EnhancedFilterBar';
 
-// --- Subcomponent: Stats Card (Moved up to prevent hoisting error) ---
 interface StatsCardProps {
   title: string;
   value: string;
@@ -35,12 +35,11 @@ const StatsCard: React.FC<StatsCardProps> = React.memo(({ title, value, icon }) 
     </div>
   </div>
 ));
-StatsCard.displayName = "StatsCard";
+StatsCard.displayName = 'StatsCard';
 
-// --- Subcomponent: Feature Card (Moved up to prevent hoisting error) ---
 interface FeatureCardProps {
   title: string;
-  description: string;
+  description?: string;
   icon: React.ReactNode;
 }
 
@@ -53,285 +52,211 @@ const FeatureCard: React.FC<FeatureCardProps> = React.memo(({ title, description
     <p className="mt-2 text-gray-600">{description}</p>
   </div>
 ));
-FeatureCard.displayName = "FeatureCard";
+FeatureCard.displayName = 'FeatureCard';
 
-// Mock courses data (replacing CAMUS_COURSES)
 const MOCK_COURSES: Course[] = [
   {
     id: 'course-1',
-    title: 'Web Development Fundamentals',
-    description: 'Learn the basics of HTML, CSS, and JavaScript to build modern websites.',
-    category: 'web development',
-    price: 49.99,
-    rating: 4.8,
-    enrolledCount: 1250,
-    instructor: {
-      id: 'inst-1',
-      name: 'Sarah Chen',
-      avatarUrl: ''
-    },
+    title: 'Introduction to Web Development',
+    description: 'Learn the basics of web development',
+    instructor: 'John Doe',
+    category: 'Development',
     duration: 8,
     level: 'beginner',
+    price: 0,
+    enrolledCount: 1250,
+    rating: 4.8,
     thumbnail: ''
   },
   {
     id: 'course-2',
-    title: 'Advanced React Patterns',
-    description: 'Master advanced React concepts including hooks, context, and performance optimization.',
-    category: 'web development',
-    price: 79.99,
-    rating: 4.9,
-    enrolledCount: 890,
-    instructor: {
-      id: 'inst-2',
-      name: 'Michael Rodriguez',
-      avatarUrl: ''
-    },
+    title: 'Advanced JavaScript',
+    description: 'Master advanced JavaScript concepts',
+    instructor: 'Jane Smith',
+    category: 'Development',
     duration: 6,
     level: 'advanced',
+    price: 49.99,
+    enrolledCount: 840,
+    rating: 4.9,
     thumbnail: ''
   },
   {
     id: 'course-3',
-    title: 'Data Science with Python',
-    description: 'Comprehensive introduction to data analysis, visualization, and machine learning with Python.',
-    category: 'data science',
-    price: 89.99,
-    rating: 4.7,
-    enrolledCount: 1560,
-    instructor: {
-      id: 'inst-3',
-      name: 'Dr. Emily Watson',
-      avatarUrl: ''
-    },
+    title: 'React Fundamentals',
+    description: 'Build modern UIs with React',
+    instructor: 'Bob Johnson',
+    category: 'Development',
     duration: 12,
     level: 'intermediate',
+    price: 29.99,
+    enrolledCount: 2100,
+    rating: 4.7,
     thumbnail: ''
   },
   {
     id: 'course-4',
-    title: 'Mobile App Development',
-    description: 'Build native iOS and Android applications using modern frameworks.',
-    category: 'mobile development',
-    price: 99.99,
-    rating: 4.6,
-    enrolledCount: 730,
-    instructor: {
-      id: 'inst-4',
-      name: 'Alex Thompson',
-      avatarUrl: ''
-    },
+    title: 'Node.js Backend Development',
+    description: 'Create scalable server-side applications',
+    instructor: 'Alice Williams',
+    category: 'Backend',
     duration: 10,
     level: 'intermediate',
+    price: 39.99,
+    enrolledCount: 950,
+    rating: 4.6,
     thumbnail: ''
   },
   {
     id: 'course-5',
-    title: 'UX Design Principles',
-    description: 'Learn user-centered design principles and create intuitive, accessible interfaces.',
-    category: 'design',
-    price: 69.99,
-    rating: 4.8,
-    enrolledCount: 920,
-    instructor: {
-      id: 'inst-5',
-      name: 'Jessica Kim',
-      avatarUrl: ''
-    },
+    title: 'UI/UX Design Principles',
+    description: 'Design beautiful and functional user interfaces',
+    instructor: 'Charlie Brown',
+    category: 'Design',
     duration: 8,
     level: 'beginner',
+    price: 19.99,
+    enrolledCount: 1600,
+    rating: 4.8,
     thumbnail: ''
   },
   {
     id: 'course-6',
-    title: 'Cloud Architecture',
-    description: 'Design and deploy scalable applications on cloud platforms like AWS and Azure.',
-    category: 'cloud computing',
-    price: 109.99,
-    rating: 4.7,
-    enrolledCount: 680,
-    instructor: {
-      id: 'inst-6',
-      name: 'David Park',
-      avatarUrl: ''
-    },
+    title: 'Database Design',
+    description: 'Learn to design efficient databases',
+    instructor: 'Diana Prince',
+    category: 'Backend',
     duration: 10,
     level: 'advanced',
+    price: 59.99,
+    enrolledCount: 720,
+    rating: 4.5,
     thumbnail: ''
   }
 ];
 
 interface CourseFilters {
-    query?: string;
-    category: string;
-    sortBy: string;
+  query?: string;
+  category?: string;
+  sortBy?: string;
 }
 
 const ELearningPage: React.FC = () => {
   const { member } = useAuth();
-  const { enrollments, showToast } = useAppContext();
+  const { enrollments } = useAppContext();
   const navigate = useNavigate();
-  const [filteredCourses, setFilteredCourses] = React.useState<Course[]>([]);
-  const [filters, setFilters] = React.useState<ProductFilters>({
-    search: '',
-    category: 'all',
-    minPrice: 0,
-    maxPrice: 1000,
-    sortBy: 'popular'
-  });
 
-  React.useEffect(() => {
-    setFilteredCourses(MOCK_COURSES);
-  }, []);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>(MOCK_COURSES);
 
-  // Required functions
-  const onLike = React.useCallback(async (_postId: string) => {
-    showToast('Like action triggered', 'info');
-  }, [showToast]);
-
-  const onAddComment = React.useCallback(async (_postId: string, _comment: string) => {
-    showToast('Comment action triggered', 'info');
-  }, [showToast]);
-
-  const onOpenGiftModal = React.useCallback(async (_postId: string) => {
-    showToast('Gift modal opened', 'info');
-  }, [showToast]);
-
-  const onOpenPaylinkModal = React.useCallback(async (_postId: string) => {
-    showToast('Paylink modal opened', 'info');
-  }, [showToast]);
-
-  const onVote = React.useCallback(async (_postId: string, _voteType: unknown) => {
-    const voteStr = typeof _voteType === 'string' ? _voteType : 'up';
-    showToast(`${voteStr} vote action triggered`, 'info');
-  }, [showToast]);
-
-  const handleDeletePost = React.useCallback(async (_postId?: string) => {
-    showToast('Delete post action triggered', 'info');
-  }, [showToast]);
-
-  const handleTokenizePost = React.useCallback(async (_postId?: string) => {
-    showToast('Tokenize post action triggered', 'info');
-  }, [showToast]);
-
-  const handleAiAssist = React.useCallback(async (..._args: unknown[]) => {
-    showToast('AI assist action triggered', 'info');
-    return { success: true, message: 'AI assist completed' };
-  }, [showToast]);
-
-  const applyFilters = React.useCallback((newFilters: CourseFilters) => {
+  const applyFilters = useCallback((newFilters: CourseFilters) => {
     let result = [...MOCK_COURSES];
-    
-    // Apply search filter
+
     if (newFilters.query) {
       const query = newFilters.query.toLowerCase();
-      result = result.filter(course => 
-        course.title.toLowerCase().includes(query) || 
-        (typeof course.instructor === 'object' && course.instructor.name?.toLowerCase().includes(query)) ||
-        course.description.toLowerCase().includes(query)
-      );
+      result = result.filter(course => {
+        const instructorName = typeof course.instructor === 'object' 
+          ? course.instructor?.name || '' 
+          : course.instructor || '';
+          
+        return (
+          course.title.toLowerCase().includes(query) || 
+          instructorName.toLowerCase().includes(query) ||
+          course.description.toLowerCase().includes(query)
+        );
+      });
     }
 
-    // Apply category filter
-    if (newFilters.category !== 'all') {
+    if (newFilters.category && newFilters.category !== 'all') {
       result = result.filter(course => course.category === newFilters.category);
     }
 
-    // Apply sorting
     switch (newFilters.sortBy) {
       case 'price_asc':
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => (a.price || 0) - (b.price || 0));
         break;
       case 'price_desc':
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a, b) => (b.price || 0) - (a.price || 0));
         break;
       case 'rating':
-        result.sort((a, b) => b.rating - a.rating);
+        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
       case 'students':
-        result.sort((a, b) => (b as any).enrolledCount - (a as any).enrolledCount);
+        result.sort((a, b) => (b.enrolledCount || 0) - (a.enrolledCount || 0));
         break;
       case 'popular':
       default:
-        // Sort by a combination of rating and students
-        result.sort((a, b) => (b.rating * (b as any).enrolledCount) - (a.rating * (a as any).enrolledCount));
+        result.sort((a, b) => 
+          ((b.rating || 0) * (b.enrolledCount || 0)) - ((a.rating || 0) * (a.enrolledCount || 0))
+        );
         break;
     }
 
     setFilteredCourses(result);
   }, []);
 
-  const handleFiltersChange = React.useCallback((newFilters: CourseFilters) => {
-    setFilters({
-      search: newFilters.query || '',
-      category: newFilters.category,
-      minPrice: 0,
-      maxPrice: 1000,
-      sortBy: newFilters.sortBy
-    });
-    applyFilters(newFilters);
-  }, [applyFilters]);
+  const categories = Array.from(
+    new Set(MOCK_COURSES.map((c) => c.category).filter(Boolean))
+  ) as string[];
 
-  const categories = [...new Set(MOCK_COURSES.map((c) => c.category))];
-
-  // Stats data
   const stats = [
     {
-      title: "Available Courses",
+      title: 'Available Courses',
       value: MOCK_COURSES.length.toString(),
       icon: <BookOpenIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Expert Instructors",
-      value: [...new Set(MOCK_COURSES.map((c) => typeof c.instructor === 'object' ? c.instructor?.id || '' : ''))].filter(Boolean).length.toString(),
+      title: 'Expert Instructors',
+      value: Array.from(
+        new Set(MOCK_COURSES.map((c) => typeof c.instructor === 'object' ? c.instructor?.id || '' : c.instructor))
+      ).filter(Boolean).length.toString(),
       icon: <AcademicCapIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Active Learners",
-      value: "10,000+",
+      title: 'Active Learners',
+      value: '10,000+',
       icon: <MemberGroupIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Completion Rate",
-      value: "87%",
+      title: 'Completion Rate',
+      value: '87%',
       icon: <ClipboardCheckIcon className="w-6 h-6 text-blue-600" />
     }
   ];
 
-  // Features
   const features = [
     {
-      title: "Interactive Learning",
-      description: "Engage with multimedia content, quizzes, and assignments to reinforce your learning.",
+      title: 'Interactive Learning',
+      description: 'Engage with multimedia content, quizzes, and assignments to reinforce your learning.',
       icon: <VideoCameraIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Progress Tracking",
-      description: "Monitor your learning journey with detailed progress reports and completion certificates.",
+      title: 'Progress Tracking',
+      description: 'Monitor your learning journey with detailed progress reports and completion certificates.',
       icon: <ChartBarIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Flexible Schedule",
-      description: "Learn at your own pace with 24/7 access to course materials from anywhere.",
+      title: 'Flexible Schedule',
+      description: 'Learn at your own pace with 24/7 access to course materials from anywhere.',
       icon: <ClockIcon className="w-6 h-6 text-blue-600" />
     },
     {
-      title: "Community Support",
-      description: "Connect with fellow learners and instructors through discussion forums and Q&A sessions.",
+      title: 'Community Support',
+      description: 'Connect with fellow learners and instructors through discussion forums and Q&A sessions.',
       icon: <MemberGroupIcon className="w-6 h-6 text-blue-600" />
     }
   ];
 
-  // Get member's enrolled courses
-  const memberEnrollments = member ? enrollments.filter((e: Enrollment) => e.memberId === member.id) : [];
-  const enrolledCourses = memberEnrollments.map((e: Enrollment) => MOCK_COURSES.find((c) => c.id === e.courseId)).filter(Boolean) as any[];
+  const memberEnrollments = member ? (enrollments as Enrollment[]).filter((e) => e.memberId === member.id) : [];
+  const enrolledCourses = memberEnrollments
+    .map((e) => MOCK_COURSES.find((c) => c.id === e.courseId))
+    .filter(Boolean) as Course[];
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 py-16">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <h1 className="text-3xl font-extrabold sm:text-4xl lg:text-5xl">
                 <span className="block">Transform Your Future with</span>
@@ -344,7 +269,7 @@ const ELearningPage: React.FC = () => {
                 {member ? (
                   <button
                     onClick={() => navigate('/camus/dashboard')}
-                    className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 md:py-4 sm:text-lg lg:text-xl md:px-10"
+                    className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors"
                   >
                     Continue Learning
                   </button>
@@ -352,13 +277,13 @@ const ELearningPage: React.FC = () => {
                   <>
                     <button
                       onClick={() => navigate('/auth/signup')}
-                      className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 md:py-4 sm:text-lg lg:text-xl md:px-10"
+                      className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors"
                     >
                       Get Started
                     </button>
                     <button
                       onClick={() => navigate('/camus')}
-                      className="px-8 py-3 border border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-blue-700 md:py-4 sm:text-lg lg:text-xl md:px-10"
+                      className="px-8 py-3 border border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-blue-700 transition-colors"
                     >
                       Explore Courses
                     </button>
@@ -366,49 +291,50 @@ const ELearningPage: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
-          <div className="mt-10 lg:mt-0">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Your Learning Journey</h2>
-              {member ? (
-                <div>
-                  <p className="mb-4 text-base sm:text-lg">Welcome back, {member.name}!</p>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm sm:text-base mb-1">
-                        <span>Enrolled Courses</span>
-                        <span>{enrolledCourses.length}</span>
+
+            <div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4">Your Learning Journey</h2>
+                {member ? (
+                  <div>
+                    <p className="mb-4 text-base sm:text-lg">Welcome back, {member.name}!</p>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between text-sm sm:text-base mb-1">
+                          <span>Enrolled Courses</span>
+                          <span>{enrolledCourses.length}</span>
+                        </div>
+                        <div className="w-full bg-white/20 rounded-full h-2">
+                          <div 
+                            className="bg-white h-2 rounded-full transition-all duration-300" 
+                            style={{ width: `${Math.min(100, (enrolledCourses.length / (MOCK_COURSES.length || 1)) * 100)}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="w-full bg-white/20 rounded-full h-2">
-                        <div 
-                          className="bg-white h-2 rounded-full" 
-                          style={{ width: `${Math.min(100, (enrolledCourses.length / (MOCK_COURSES.length || 1)) * 100)}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => navigate('/camus/dashboard/courses')}
-                      className="w-full py-2 bg-white text-blue-600 font-medium rounded-lg text-base sm:text-lg"
-                    >
-                      View My Courses
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <p className="mb-4">Join thousands of learners advancing their careers</p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/20 p-3 rounded-lg text-center">
-                      <BookOpenIcon className="w-8 h-8 mx-auto" />
-                      <p className="mt-2 text-sm sm:text-base">1000+ Courses</p>
-                    </div>
-                    <div className="bg-white/20 p-3 rounded-lg text-center">
-                      <AcademicCapIcon className="w-8 h-8 mx-auto" />
-                      <p className="mt-2 text-sm sm:text-base">Expert Instructors</p>
+                      <button
+                        onClick={() => navigate('/camus/dashboard/courses')}
+                        className="w-full py-2 bg-white text-blue-600 font-medium rounded-lg text-base sm:text-lg hover:bg-blue-50 transition-colors"
+                      >
+                        View My Courses
+                      </button>
                     </div>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div>
+                    <p className="mb-4 text-blue-100">Join thousands of learners advancing their careers</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white/20 p-4 rounded-lg text-center">
+                        <BookOpenIcon className="w-8 h-8 mx-auto" />
+                        <p className="mt-2 text-sm sm:text-base font-medium">1,000+ Courses</p>
+                      </div>
+                      <div className="bg-white/20 p-4 rounded-lg text-center">
+                        <AcademicCapIcon className="w-8 h-8 mx-auto" />
+                        <p className="mt-2 text-sm sm:text-base font-medium">Expert Instructors</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -416,7 +342,7 @@ const ELearningPage: React.FC = () => {
 
       {/* Stats Section */}
       <div className="py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
               <StatsCard 
@@ -431,8 +357,8 @@ const ELearningPage: React.FC = () => {
       </div>
 
       {/* Features Section */}
-      <div className="bg-gray-50 py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-gray-100 py-12 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Why Choose Our E-Learning Platform</h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-gray-500">
@@ -455,11 +381,11 @@ const ELearningPage: React.FC = () => {
 
       {/* Courses Section */}
       <div className="py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Featured Courses</h2>
-              <p className="mt-4 max-w-2xl text-base sm:text-lg lg:text-xl text-gray-500">
+              <p className="mt-2 max-w-2xl text-base sm:text-lg text-gray-500">
                 Hand-picked courses to advance your skills
               </p>
             </div>
@@ -478,9 +404,9 @@ const ELearningPage: React.FC = () => {
                 { value: 'price_asc', label: 'Price: Low to High' },
                 { value: 'price_desc', label: 'Price: High to Low' }
               ],
-              searchPlaceholder: "Search courses..."
-            } as any}
-            onFiltersChange={(filters: any) => handleFiltersChange(filters as any)}
+              searchPlaceholder: 'Search courses...'
+            }}
+            onFiltersChange={(filters: any) => applyFilters(filters)}
           />
 
           {filteredCourses.length === 0 ? (
@@ -496,10 +422,10 @@ const ELearningPage: React.FC = () => {
                   key={c.id} 
                   title={c.title}
                   description={c.description}
-                  instructor={typeof c.instructor === 'object' ? c.instructor.name : c.instructor}
+                  instructor={typeof c.instructor === 'object' ? c.instructor.name || 'Unknown Instructor' : c.instructor || 'Unknown Instructor'}
                   duration={String(c.duration || 0)}
                   level={c.level || 'beginner'}
-                  price={c.price}
+                  price={c.price || 0}
                   enrolled={c.enrolledCount || 0}
                 />
               ))}
@@ -509,7 +435,7 @@ const ELearningPage: React.FC = () => {
           <div className="mt-12 text-center">
             <button
               onClick={() => navigate('/camus')}
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base sm:text-lg font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base sm:text-lg font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors"
             >
               View All Courses
             </button>
@@ -518,15 +444,13 @@ const ELearningPage: React.FC = () => {
       </div>
 
       {/* Recommended Courses Section */}
-      <div className="py-12 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Recommended Courses</h2>
-              <p className="mt-4 max-w-2xl text-base sm:text-lg lg:text-xl text-gray-500">
-                Based on your interests and learning history
-              </p>
-            </div>
+      <div className="py-12 p-4 sm:p-6 lg:p-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Recommended Courses</h2>
+            <p className="mt-2 max-w-2xl text-base sm:text-lg text-gray-500">
+              Based on your interests and learning history
+            </p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -535,10 +459,10 @@ const ELearningPage: React.FC = () => {
                 key={c.id} 
                 title={c.title}
                 description={c.description}
-                instructor={typeof c.instructor === 'object' ? c.instructor.name : c.instructor}
+                instructor={typeof c.instructor === 'object' ? c.instructor.name || 'Unknown Instructor' : c.instructor || 'Unknown Instructor'}
                 duration={String(c.duration || 0)}
                 level={c.level || 'beginner'}
-                price={c.price}
+                price={c.price || 0}
                 enrolled={c.enrolledCount || 0}
               />
             ))}
@@ -554,14 +478,12 @@ const ELearningPage: React.FC = () => {
             <span className="block text-blue-200">Join our community of learners today.</span>
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <button
-                onClick={() => member ? navigate('/camus') : navigate('/auth/signup')}
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base sm:text-lg font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
-              >
-                {member ? 'Browse Courses' : 'Get started'}
-              </button>
-            </div>
+            <button
+              onClick={() => member ? navigate('/camus') : navigate('/auth/signup')}
+              className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base sm:text-lg font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors"
+            >
+              {member ? 'Browse Courses' : 'Get Started'}
+            </button>
           </div>
         </div>
       </div>

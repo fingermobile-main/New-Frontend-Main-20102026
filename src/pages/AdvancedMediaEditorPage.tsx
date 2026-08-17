@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import AdvancedMediaEditor from '../components/media/AdvancedMediaEditor';
 
 const AdvancedMediaEditorPage: React.FC = () => {

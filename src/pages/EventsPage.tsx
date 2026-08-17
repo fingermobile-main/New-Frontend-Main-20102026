@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
 import { generateICSFile } from '../utils/ics';
 import { CalendarIcon, GiftIcon, LinkIcon } from '../icons';
@@ -150,9 +152,9 @@ PaylinkModal.displayName = "PaylinkModal";
 
 const EventsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   
   // Sample events data since EVENTS is not available in constants
   const EVENTS: Event[] = [
@@ -170,7 +172,7 @@ const EventsPage: React.FC = () => {
     }
   ];
 
-  const handleAddToCalendar = React.useCallback((event: Event) => {
+  const handleAddToCalendar = useCallback((event: Event) => {
     if (!event.date && !event.startDate) return;
     generateICSFile({
       ...event,
@@ -180,7 +182,7 @@ const EventsPage: React.FC = () => {
     showToast('Event added to calendar');
   }, [showToast]);
 
-  const handleOpenGiftModal = React.useCallback((event: Event) => {
+  const handleOpenGiftModal = useCallback((event: Event) => {
     if (ficBalance < (event.ticketPrice || 0)) {
       showToast('Insufficient FIC balance to send gift', 'error');
       return;
@@ -190,7 +192,7 @@ const EventsPage: React.FC = () => {
     setShowGiftModal(true);
   }, [ficBalance, showToast]);
 
-  const handleOpenPaylinkModal = React.useCallback((event: Event) => {
+  const handleOpenPaylinkModal = useCallback((event: Event) => {
     if (ficBalance < (event.ticketPrice || 0)) {
       showToast('Insufficient FIC balance to create paylink', 'error');
       return;
@@ -200,14 +202,14 @@ const EventsPage: React.FC = () => {
     setShowPaylinkModal(true);
   }, [ficBalance, showToast]);
 
-  const handleSendGift = React.useCallback(() => {
+  const handleSendGift = useCallback(() => {
     if (!selectedEvent) return;
     showToast('Event ticket gift sent successfully');
     setShowGiftModal(false);
     setSelectedEvent(null);
   }, [selectedEvent, showToast]);
 
-  const handleCreatePaylink = React.useCallback(() => {
+  const handleCreatePaylink = useCallback(() => {
     if (!selectedEvent) return;
     showToast('Event ticket paylink created successfully');
     setShowPaylinkModal(false);

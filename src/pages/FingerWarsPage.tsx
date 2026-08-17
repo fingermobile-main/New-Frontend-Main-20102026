@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import apiService from '../services/apiService';
@@ -48,22 +48,22 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = React.memo(({ challenge, onClaim }) => {
-  const handleClaimReward = React.useCallback(() => {
-    onClaim(challenge.id);
+  const handleClaimReward = useCallback(() => {
+    onClaim(String(challenge.id)); // Ensure ID is string
   }, [challenge.id, onClaim]);
 
-  const isComplete = challenge.progress >= 100;
+  const isComplete = (challenge.progress || 0) >= 100; // Handle potentially undefined progress
 
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden hover:bg-gray-750 border border-gray-700/30 transition duration-150">
       <div className="p-5">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="font-bold text-base sm:text-lg text-white tracking-tight">{challenge.title}</h3>
+          <h3 className="font-bold text-base sm:text-lg text-white tracking-tight">{challenge.title || 'Untitled Challenge'}</h3> {/* Handle potentially missing title */}
           <span className="px-2.5 py-1 bg-yellow-500 text-gray-950 text-xs font-black rounded-md shrink-0 shadow-sm">
             {challenge.reward} FIC
           </span>
         </div>
-        <p className="text-gray-400 text-xs sm:text-sm mt-2 line-clamp-2">{challenge.description}</p>
+        <p className="text-gray-400 text-xs sm:text-sm mt-2 line-clamp-2">{challenge.description || 'No description available'}</p> {/* Handle potentially missing description */}
         
         <div className="mt-5">
           <div className="flex justify-between text-xs font-semibold mb-1 text-gray-300">
@@ -140,16 +140,16 @@ const FingerWarsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { challenges, loading, error, refreshData, claimReward } = useFingerWars();
   
-  const [isVoiceServiceInitialized, setIsVoiceServiceInitialized] = React.useState<boolean>(false);
+  const [isVoiceServiceInitialized, setIsVoiceServiceInitialized] = useState<boolean>(false);
   
-  const [filters, setFilters] = React.useState({
+  const [filters, setFilters] = useState({
     query: '',
     category: 'all',
     sortBy: 'newest'
   });
 
   // Initialize unified voice services
-  React.useEffect(() => {
+  useEffect(() => {
     let activeScope = true;
     const initializeVoiceService = async () => {
       try {
@@ -168,7 +168,7 @@ const FingerWarsPage: React.FC = () => {
     return () => { activeScope = false; };
   }, [showToast]);
 
-  const playVoiceLine = React.useCallback(async (voiceLine: VoiceLine | null) => {
+  const playVoiceLine = useCallback(async (voiceLine: VoiceLine | null) => {
     if (!voiceLine) {
       showToast('No voice line available to play', 'error');
       return;
@@ -182,7 +182,7 @@ const FingerWarsPage: React.FC = () => {
     }
   }, [showToast]);
 
-  const getRandomVoiceLineByCategory = React.useCallback((category: 'fingerwars' | 'combo' | 'stun' | 'general') => {
+  const getRandomVoiceLineByCategory = useCallback((category: 'fingerwars' | 'combo' | 'stun' | 'general') => {
     const voiceLine = VoiceLineService.getRandomVoiceLineByCategory(category);
     if (voiceLine) {
       playVoiceLine(voiceLine);
@@ -228,23 +228,23 @@ const FingerWarsPage: React.FC = () => {
     }
   };
 
-  const handleFiltersChange = React.useCallback((newFilters: { query?: string; category?: string; sortBy?: string; }) => {
+  const handleFiltersChange = useCallback((newFilters: { query?: string; category?: string; sortBy?: string; }) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
 
-  const handleClaimReward = React.useCallback((id: string | number) => {
+  const handleClaimReward = useCallback((id: string | number) => {
     if (claimReward) claimReward(String(id));
   }, [claimReward]);
 
   // Telemetry filtering and lookup calculations optimized via useMemo
-  const filteredChallenges = React.useMemo(() => {
+  const filteredChallenges = useMemo(() => {
     let result = [...((challenges || []) as unknown as ChallengeData[])];
 
     if (filters.query) {
       const searchNormalized = filters.query.toLowerCase();
       result = result.filter(challenge =>
-        challenge.title?.toLowerCase().includes(searchNormalized) ||
-        challenge.description?.toLowerCase().includes(searchNormalized)
+        (challenge.title || '').toLowerCase().includes(searchNormalized) ||
+        (challenge.description || '').toLowerCase().includes(searchNormalized)
       );
     }
 
@@ -344,7 +344,7 @@ const FingerWarsPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredChallenges.map(challenge => (
                 <ChallengeCard 
-                  key={challenge.id} 
+                  key={String(challenge.id)}
                   challenge={challenge} 
                   onClaim={handleClaimReward} 
                 />

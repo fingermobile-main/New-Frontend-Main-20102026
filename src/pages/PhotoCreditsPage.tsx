@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 
@@ -35,8 +35,8 @@ const MOCK_PHOTO_CREDITS = [
 
 const PhotoCreditsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
 
   const onLike = (photoId: string) => {
     // console.info('Liking photo credit:', photoId);

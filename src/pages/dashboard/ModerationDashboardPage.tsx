@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 
 const ModerationDashboardPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState("pending");
-  const [filter, setFilter] = React.useState("all");
+  const [activeTab, setActiveTab] = useState("pending");
+  const [filter, setFilter] = useState("all");
 
   // Mock data for content requiring moderation
   const pendingContent = [

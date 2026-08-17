@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 /*
  * FingerMobile Protocol™ - Monetization Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -14,10 +14,10 @@ import { useAppContext } from "../contexts/AppContext";
 const MonetizationPage: React.FC = () => {
   const { balance } = useWeb3();
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState('overview');
-  const [showTokenizeModal, setShowTokenizeModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedContent, setSelectedContent] = React.useState<any>(null);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [showTokenizeModal, setShowTokenizeModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedContent, setSelectedContent] = useState<any>(null);
 
   // Mock data for monetization stats
   const monetizationStats = {

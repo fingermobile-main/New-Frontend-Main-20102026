@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from '../../../contexts/AppContext';
 import type { NavigationSection } from '../../../types';
 
@@ -16,8 +18,8 @@ const SiteMenusPage: React.FC = () => {
     const { showToast } = useAppContext();
     // Note: Without DnD, editing order is currently disabled. 
     // Structure is just displayed.
-    const [structure] = React.useState<NavigationSection[]>(JSON.parse(JSON.stringify(navStructure)));
-    const [isSaving, setIsSaving] = React.useState(false);
+    const [structure] = useState<NavigationSection[]>(JSON.parse(JSON.stringify(navStructure)));
+    const [isSaving, setIsSaving] = useState(false);
     
     const handleSave = () => {
         setIsSaving(true);

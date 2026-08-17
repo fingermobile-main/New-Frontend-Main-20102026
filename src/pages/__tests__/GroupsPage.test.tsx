@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -15,8 +15,7 @@ jest.mock("../../components/layout/MainLayout", () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="main-layout">{children}</div>
-  ),
-}));
+  )}));
 
 // Mock the PostCard component
 jest.mock("../../components/PostCard", () => ({
@@ -25,37 +24,29 @@ jest.mock("../../components/PostCard", () => ({
     <div data-testid="post-card">
       <h2>{post.content}</h2>
     </div>
-  ),
-}));
+  )}));
 
 // Mock the LoadingSpinner component
 jest.mock("../../components/LoadingSpinner", () => ({
   __esModule: true,
-  default: () => <div data-testid="loading-spinner">Loading...</div>,
-}));
+  default: () => <div data-testid="loading-spinner">Loading...</div>}));
 
 // Mock contexts
 jest.mock("../../contexts/HapticFeedbackContext", () => ({
   useHaptic: () => ({
-    triggerHaptic: jest.fn(),
-  }),
-}));
+    triggerHaptic: jest.fn()})}));
 
 jest.mock("../../contexts/CommunityContext", () => ({
   useCommunity: () => ({
     displayOption: "card",
-    setDisplayOption: jest.fn(),
-  }),
-}));
+    setDisplayOption: jest.fn()})}));
 
 jest.mock("../../contexts/AppContext.tsx", () => ({
   useAppContext: () => ({
     ficBalance: 100,
     openModal: jest.fn(),
     showToast: jest.fn(),
-    handleAiAssist: jest.fn(),
-  }),
-}));
+    handleAiAssist: jest.fn()})}));
 
 describe("GroupsPage", () => {
   const mockGroups = [
@@ -69,8 +60,7 @@ describe("GroupsPage", () => {
       memberCount: 10,
       isMember: true,
       createdAt: "2023-01-01T00:00:00Z",
-      updatedAt: "2023-01-01T00:00:00Z",
-    },
+      updatedAt: "2023-01-01T00:00:00Z"},
     {
       id: "2",
       name: "Test Group 2",
@@ -81,8 +71,7 @@ describe("GroupsPage", () => {
       memberCount: 20,
       isMember: false,
       createdAt: "2023-01-02T00:00:00Z",
-      updatedAt: "2023-01-02T00:00:00Z",
-    },
+      updatedAt: "2023-01-02T00:00:00Z"},
   ] as any;
 
   beforeEach(() => {
@@ -97,8 +86,7 @@ describe("GroupsPage", () => {
       refreshGroups: jest.fn(),
       createGroup: jest.fn(),
       joinGroup: jest.fn(),
-      leaveGroup: jest.fn(),
-    });
+      leaveGroup: jest.fn()});
 
     render(<GroupsPage />);
 
@@ -113,8 +101,7 @@ describe("GroupsPage", () => {
       refreshGroups: jest.fn(),
       createGroup: jest.fn(),
       joinGroup: jest.fn(),
-      leaveGroup: jest.fn(),
-    });
+      leaveGroup: jest.fn()});
 
     render(<GroupsPage />);
 
@@ -134,8 +121,7 @@ describe("GroupsPage", () => {
       refreshGroups: jest.fn(),
       createGroup: jest.fn(),
       joinGroup: jest.fn(),
-      leaveGroup: jest.fn(),
-    });
+      leaveGroup: jest.fn()});
 
     render(<GroupsPage />);
 

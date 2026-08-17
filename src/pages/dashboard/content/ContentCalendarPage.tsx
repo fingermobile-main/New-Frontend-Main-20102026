@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import { PostContext } from '../../../contexts/PostContext';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -8,10 +8,10 @@ import type { Post } from '../../../types';
 const ContentCalendarPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { openModal } = useAppContext();
-  const postContext = React.useContext(PostContext);
+  const postContext = useContext(PostContext);
   const posts = postContext?.posts || [];
   const { member } = useAuth();
-  const [currentDate, setCurrentDate] = React.useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const memberPosts = member
     ? posts.filter((p: Post) => p.author.id === member.id)

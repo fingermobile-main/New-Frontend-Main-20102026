@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
 import { useWeb3 } from '../contexts/Web3Context';
@@ -9,7 +11,7 @@ const StorefrontsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
   const { balance } = useWeb3();
 
-  const [filters, setFilters] = React.useState({
+  const [filters, setFilters] = useState({
     query: '',
     category: 'all',
     sortBy: 'popular'
@@ -73,7 +75,7 @@ const StorefrontsPage: React.FC = () => {
     }
   ];
 
-  const [filteredStorefronts, setFilteredStorefronts] = React.useState(storefronts);
+  const [filteredStorefronts, setFilteredStorefronts] = useState(storefronts);
 
   // Assuming the type definition for FilterOptions includes optional values
   interface FilterOptions {

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import PageHeader from '../components/PageHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -14,7 +13,7 @@ import AnimatedAvatar from '../components/AnimatedAvatar';
 interface Group {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   members: number;
   online: number;
   privacy: 'public' | 'private' | 'secret';
@@ -28,7 +27,7 @@ interface Group {
 
 interface CreateGroupForm {
   name: string;
-  description: string;
+  description?: string;
   category: string;
   privacy: 'public' | 'private' | 'secret';
   isModerated: boolean;

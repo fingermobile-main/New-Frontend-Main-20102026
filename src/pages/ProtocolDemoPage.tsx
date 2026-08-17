@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";  // Fixed import path
 import protocolService from '../services/protocolService';
 import { generateRSAKeyPair } from '../utils/cryptoUtils';
@@ -34,17 +34,17 @@ interface ProtocolService {
 
 const ProtocolDemoPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [isConnected, setIsConnected] = React.useState(false);
-  const [clientId] = React.useState(`client-${Math.floor(Math.random() * 10000)}`);
-  const [logs, setLogs] = React.useState<string[]>([]);
-  const [messageType, setMessageType] = React.useState("notification");
-  const [messageContent, setMessageContent] = React.useState("");
-  const [destination, setDestination] = React.useState("server");
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [useEncryption, setUseEncryption] = React.useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [clientId] = useState(`client-${Math.floor(Math.random() * 10000)}`);
+  const [logs, setLogs] = useState<string[]>([]);
+  const [messageType, setMessageType] = useState("notification");
+  const [messageContent, setMessageContent] = useState("");
+  const [destination, setDestination] = useState("server");
+  const [isLoading, setIsLoading] = useState(false);
+  const [useEncryption, setUseEncryption] = useState(false);
 
   // Initialize the protocol service
-  React.useEffect(() => {
+  useEffect(() => {
     (protocolService as unknown as ProtocolService).initialize(clientId);
     addLog(`Protocol service initialized with client ID: ${clientId}`);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import AdvancedFingerWar from '../components/gaming/AdvancedFingerWar';
 import { useAdvancedFingerWar } from '../hooks/useAdvancedFingerWar';
@@ -8,8 +8,10 @@ import MainLayout from '../components/layout/MainLayout';
 
 const AdvancedFingerWarPage: React.FC = () => {
   const { member } = useAuth();
+  const memberIdString = member?.id ? (typeof member.id === 'string' ? member.id : String(member.id)) : undefined;
+  
   const { data, loading, error, refreshData } = useAdvancedFingerWar(
-    member?.id,
+    memberIdString,
   );
   const { ficBalance } = useAppContext();
 

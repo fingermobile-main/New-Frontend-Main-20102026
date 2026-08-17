@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { 
@@ -12,7 +12,7 @@ import {
 
 const ContactUsPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useWeb3 } from '../contexts/Web3Context';
 import { useAppContext } from "../contexts/AppContext";
 
@@ -6,7 +6,7 @@ import { useAppContext } from "../contexts/AppContext";
 interface VaultStatCardProps {
   title: string;
   value: string;
-  description: string;
+  description?: string;
   icon: React.ReactNode;
   color: string;
 }
@@ -37,7 +37,7 @@ interface VaultHistoryTableProps {
     type: string;
     amount: number;
     date: string;
-    description: string;
+    description?: string;
   }>;
 }
 
@@ -80,7 +80,7 @@ const VaultHistoryTable: React.FC<VaultHistoryTableProps> = React.memo(({ histor
                 {transaction.type === 'deposit' || transaction.type === 'interest' ? '+' : '-'}{transaction.amount} FIC
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
-                {transaction.description}
+                {transaction.description || 'No description'}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                 {transaction.date}
@@ -98,7 +98,7 @@ VaultHistoryTable.displayName = "VaultHistoryTable";
 // --- Subcomponent: Vault Security Card ---
 interface SecurityCardProps {
   title: string;
-  description: string;
+  description?: string;
   icon: React.ReactNode;
 }
 
@@ -175,49 +175,49 @@ ActionModal.displayName = "ActionModal";
 const FICVaultPage: React.FC = () => {
   const { balance: _balance } = useWeb3();
   const { ficBalance: _ficBalance, showToast } = useAppContext();
-  const [vaultBalance, setVaultBalance] = React.useState(1250); // Mock vault balance
-  const [amount, setAmount] = React.useState('');
-  const [showDepositModal, setShowDepositModal] = React.useState(false);
-  const [showWithdrawModal, setShowWithdrawModal] = React.useState(false);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+  const [vaultBalance, setVaultBalance] = useState(1250); // Mock vault balance
+  const [amount, setAmount] = useState('');
+  const [showDepositModal, setShowDepositModal] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
 
-  const onLike = React.useCallback(async (_postId: string) => {
+  const onLike = useCallback(async (_postId: string) => {
     showToast('Like action triggered', 'info');
   }, [showToast]);
 
-  const onAddComment = React.useCallback(async (_postId: string, _comment: string) => {
+  const onAddComment = useCallback(async (_postId: string, _comment: string) => {
     showToast('Add comment action triggered', 'info');
   }, [showToast]);
 
-  const onOpenGiftModal = React.useCallback(() => {
+  const onOpenGiftModal = useCallback(() => {
     setShowGiftModal(true);
     showToast('Gift modal opened', 'info');
   }, [showToast]);
 
-  const onOpenPaylinkModal = React.useCallback(() => {
+  const onOpenPaylinkModal = useCallback(() => {
     setShowPaylinkModal(true);
     showToast('Paylink modal opened', 'info');
   }, [showToast]);
 
-  const onVote = React.useCallback(async (_postId: string, _voteType: unknown) => {
+  const onVote = useCallback(async (_postId: string, _voteType: unknown) => {
     showToast('Vote action triggered', 'info');
   }, [showToast]);
 
-  const handleDeletePost = React.useCallback(async (_postId?: string) => {
+  const handleDeletePost = useCallback(async (_postId?: string) => {
     showToast('Delete post action triggered', 'info');
   }, [showToast]);
 
-  const handleTokenizePost = React.useCallback(async (_postId?: string) => {
+  const handleTokenizePost = useCallback(async (_postId?: string) => {
     showToast('Tokenize post action triggered', 'info');
   }, [showToast]);
 
-  const handleAiAssist = React.useCallback(async (..._args: unknown[]) => {
+  const handleAiAssist = useCallback(async (..._args: unknown[]) => {
     showToast('AI assist action triggered', 'info');
     return { success: true, message: 'AI assist completed' };
   }, [showToast]);
 
-  const [vaultHistory, setVaultHistory] = React.useState([
+  const [vaultHistory, setVaultHistory] = useState([
     { id: 1, type: 'deposit', amount: 500, date: '2023-06-10', description: 'Weekly savings' },
     { id: 2, type: 'interest', amount: 25, date: '2023-06-05', description: 'Vault interest' },
     { id: 3, type: 'deposit', amount: 500, date: '2023-06-01', description: 'Monthly deposit' },
@@ -225,9 +225,9 @@ const FICVaultPage: React.FC = () => {
     { id: 5, type: 'withdrawal', amount: 250, date: '2023-05-20', description: 'Emergency withdrawal' }
   ]);
 
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleDeposit = React.useCallback(async () => {
+  const handleDeposit = useCallback(async () => {
     if (!amount) {
       showToast('Please enter an amount', 'error');
       return;
@@ -271,7 +271,7 @@ const FICVaultPage: React.FC = () => {
     }
   }, [amount, _balance, showToast, vaultHistory]);
 
-  const handleWithdrawal = React.useCallback(async () => {
+  const handleWithdrawal = useCallback(async () => {
     if (!amount) {
       showToast('Please enter an amount', 'error');
       return;

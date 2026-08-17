@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import LegalLayout from '../../components/layout/LegalLayout';
 import { DocumentIcon } from '../../components/icons';
 import { useAppContext } from "contexts/AppContext";  // Using absolute path from src

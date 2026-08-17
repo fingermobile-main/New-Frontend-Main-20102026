@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { ShieldCheckIcon, FingerPrintIcon, LockClosedIcon, DeviceMobileIcon, UserCircleIcon, CreditCardIcon } from '../icons';
 

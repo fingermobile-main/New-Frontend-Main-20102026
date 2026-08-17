@@ -1,9 +1,9 @@
+import { useNavigate, NavLink } from 'react-router-dom';
 import React from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
-import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext';
 import { CAMUS_COURSES } from '../constants/camusConstants';
-import type { Course, Enrollment } from '../types';
 import {
   BookOpenIcon,
   MemberIcon,
@@ -12,7 +12,6 @@ import {
   ClipboardListIcon,
   CalendarIcon,
   BellIcon,
-  PlusIcon,
   ChartBarIcon,
   AcademicCapIcon,
   ChatIcon,
@@ -23,55 +22,92 @@ import {
 import InstructorDashboard from '../components/InstructorDashboard';
 import MainLayout from '../components/layout/MainLayout';
 
+interface Lesson {
+  id: string;
+  title: string;
+}
+
+interface Module {
+  id: string;
+  title: string;
+  lessons?: Lesson[];
+}
+
+interface CamusCourse {
+  id: string;
+  title: string;
+  instructorId?: string;
+  rating?: number;
+  status?: string;
+  modules?: Module[];
+}
+
+interface Enrollment {
+  memberId: string;
+  courseId: string;
+  completedLessons: string[];
+}
+
+interface EnrolledCourse extends CamusCourse {
+  enrollment: Enrollment;
+  progress: number;
+  completedLessonsCount: number;
+  totalLessons: number;
+}
+
+interface StatOption {
+  label: string;
+  value: string;
+  icon: string;
+}
+
+interface NavOption {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
 const CamusDashboardPage: React.FC = () => {
   const { member } = useAuth();
-  const { enrollments, showToast, ficBalance } = useAppContext();
+  const { enrollments, ficBalance } = useAppContext();
   const navigate = useNavigate();
-  const [notificationsOpen, setNotificationsOpen] = React.useState(false);
 
-  // Mock member role - in a real app this would come from the member object
-  const memberRole = member?.role || "student"; // student, instructor, supervisor, etc.
+  // Member role from context or default to student
+  const memberRole = member?.role || "student";
 
-  // Filter enrollments for current member
-  const memberEnrollments = member
-    // @ts-ignore - Auto-suppressed for compilation
-    ? enrollments.filter((e: any) => e.memberId === member.id)
+  // Filter enrollments for current member safely
+  const memberEnrollments: Enrollment[] = member
+    ? (enrollments as any[]).filter((e: any) => e.memberId === member.id)
     : [];
 
-  // Get enrolled courses
-  const enrolledCourses = memberEnrollments
-    .map((item: any) => {
-    // @ts-ignore - Auto-suppressed for compilation
-      const course = CAMUS_COURSES.find((c: any) => c.id === enrollment.courseId);
+  // Get enrolled courses and calculate progress
+  const enrolledCourses: EnrolledCourse[] = memberEnrollments
+    .map((enrollment) => {
+      const course = (CAMUS_COURSES as CamusCourse[]).find((c) => c.id === enrollment.courseId);
       if (!course) return null;
 
       const totalLessons = (course.modules || []).reduce(
-    // @ts-ignore - Auto-suppressed for compilation
-        (acc: number, mod: unknown) => acc + (mod.lessons?.length || 0),
+        (acc: number, mod: Module) => acc + (mod.lessons?.length || 0),
         0,
       );
-    // @ts-ignore - Auto-suppressed for compilation
-      const completedLessonsCount = enrollment.completedLessons.length;
+      const completedLessonsCount = enrollment.completedLessons?.length || 0;
       const progress =
         totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0;
 
       return {
         ...course,
-    // @ts-ignore - Auto-suppressed for compilation
         enrollment,
         progress,
         completedLessonsCount,
         totalLessons
       };
     })
-    .filter(Boolean) as any[];
+    .filter((c): c is EnrolledCourse => c !== null);
 
   // Calculate stats for enrolled courses
   const enrolledStats = enrolledCourses.reduce(
-    (acc: any, course: unknown) => {
-    // @ts-ignore - Auto-suppressed for compilation
+    (acc, course) => {
       if (course.progress === 100) acc.coursesCompleted += 1;
-    // @ts-ignore - Auto-suppressed for compilation
       if (course.progress > 0 && course.progress < 100) acc.coursesInProgress += 1;
       acc.totalEnrolled += 1;
       return acc;
@@ -80,27 +116,27 @@ const CamusDashboardPage: React.FC = () => {
   );
 
   // Get my courses if instructor
-    // @ts-ignore - Auto-suppressed for compilation
-  const myCourses = member ? CAMUS_COURSES.filter((course: any) => course.instructorId === member.id) : [];
+  const myCourses = member
+    ? (CAMUS_COURSES as CamusCourse[]).filter((course) => course.instructorId === member.id)
+    : [];
+
   const createdStats = {
     totalCourses: myCourses.length,
-    totalEnrollments: myCourses.reduce((acc: number, course: unknown) => {
+    totalEnrollments: myCourses.reduce((acc: number, course) => {
       const courseEnrollments = memberEnrollments.filter(
-    // @ts-ignore - Auto-suppressed for compilation
-        (e: Enrollment) => e.courseId === course.id,
+        (e) => e.courseId === course.id,
       );
       return acc + courseEnrollments.length;
     }, 0),
-    totalRevenue: 0, // TODO: Implement revenue calculation
+    totalRevenue: 0,
   };
 
-  const totalStudents = myCourses.reduce((acc: number, course: unknown) => {
-    // @ts-ignore - Auto-suppressed for compilation
-    return acc + enrollments.filter(($1: any) => e.courseId === course.id).length;
+  const totalStudents = myCourses.reduce((acc: number, course) => {
+    return acc + (enrollments as any[]).filter((e: any) => e.courseId === course.id).length;
   }, 0);
 
   // Stats for different member roles
-  const getStats = () => {
+  const getStats = (): StatOption[] => {
     if (memberRole === "instructor") {
       return [
         {
@@ -116,38 +152,37 @@ const CamusDashboardPage: React.FC = () => {
         {
           label: "Pending Approval",
           value: myCourses
-    // @ts-ignore - Auto-suppressed for compilation
-            .filter((c: any) => c.status === "pending")
+            .filter((c) => c.status === "pending")
             .length.toString(),
           icon: "pending"
         },
         { label: "Total Earnings", value: "₦0.00", icon: "earnings" }
       ];
-    } else {
-      return [
-        {
-          label: "Enrolled Courses",
-          value: enrolledStats.totalEnrolled.toString(),
-          icon: "courses"
-        },
-        {
-          label: "Active Courses",
-          value: enrolledStats.coursesInProgress.toString(),
-          icon: "active"
-        },
-        {
-          label: "Completed Courses",
-          value: enrolledStats.coursesCompleted.toString(),
-          icon: "completed"
-        },
-        { label: "Wishlist Items", value: "0", icon: "wishlist" }
-      ];
     }
+    
+    return [
+      {
+        label: "Enrolled Courses",
+        value: enrolledStats.totalEnrolled.toString(),
+        icon: "courses"
+      },
+      {
+        label: "Active Courses",
+        value: enrolledStats.coursesInProgress.toString(),
+        icon: "active"
+      },
+      {
+        label: "Completed Courses",
+        value: enrolledStats.coursesCompleted.toString(),
+        icon: "completed"
+      },
+      { label: "Wishlist Items", value: "0", icon: "wishlist" }
+    ];
   };
 
   // Navigation items based on member role
-  const getNavItems = () => {
-    const allMemberItems = [
+  const getNavItems = (): NavOption[] => {
+    const allMemberItems: NavOption[] = [
       {
         id: "dashboard",
         label: "Dashboard",
@@ -195,7 +230,7 @@ const CamusDashboardPage: React.FC = () => {
       }
     ];
 
-    const instructorItems = [
+    const instructorItems: NavOption[] = [
       {
         id: "my-courses",
         label: "My Courses",
@@ -264,9 +299,7 @@ const CamusDashboardPage: React.FC = () => {
   const stats = getStats();
 
   // Stat card component
-  const StatCard: React.FC<{
-    stat: { label: string; value: string; icon: string };
-  }> = ({ stat }) => (
+  const StatCard: React.FC<{ stat: StatOption }> = ({ stat }) => (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <div className="flex items-center">
         <div className="p-3 bg-blue-100 rounded-lg">
@@ -281,15 +314,13 @@ const CamusDashboardPage: React.FC = () => {
   );
 
   // In-progress course card
-  const InProgressCourseCard: React.FC<{
-    course: any;
-  }> = ({ course }) => (
+  const InProgressCourseCard: React.FC<{ course: EnrolledCourse }> = ({ course }) => (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
       <div className="flex justify-between">
         <h3 className="font-semibold text-gray-900">{course.title}</h3>
         <div className="flex items-center">
           <StarIcon className="w-4 h-4 text-yellow-400" />
-          <span className="text-sm text-gray-600 ml-1">{course.rating}</span>
+          <span className="text-sm text-gray-600 ml-1">{course.rating || 0}</span>
         </div>
       </div>
 
@@ -340,7 +371,7 @@ const CamusDashboardPage: React.FC = () => {
           <div className="md:w-64 flex-shrink-0">
             <nav className="bg-white rounded-lg shadow-sm p-4">
               <div className="space-y-1">
-                {navItems.map((item: any) => (
+                {navItems.map((item) => (
                   <NavLink
                     key={item.id}
                     to={`/camus/dashboard/${item.id}`}
@@ -386,15 +417,14 @@ const CamusDashboardPage: React.FC = () => {
                       Dashboard
                     </h1>
                     <p className="mt-1 text-sm text-gray-500">
-                      Welcome back, {member?.name}. Here's what's happening with
+                      Welcome back, {member?.name}. Here&apos;s what&apos;s happening with
                       your courses.
                     </p>
                   </div>
 
                   {/* Stats */}
                   <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    {stats.map((stat: any, index: number) => (
-    // @ts-ignore - Auto-suppressed for compilation
+                    {stats.map((stat, index) => (
                       <StatCard key={index} stat={stat} />
                     ))}
                   </div>
@@ -410,12 +440,11 @@ const CamusDashboardPage: React.FC = () => {
                       </button>
                     </div>
 
-                    {enrolledCourses.filter((course: any) => course.progress < 100).length >
-                    0 ? (
+                    {enrolledCourses.filter((course) => course.progress < 100).length > 0 ? (
                       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {enrolledCourses
-                          .filter((course: any) => course.progress < 100)
-                          .map((course: any) => (
+                          .filter((course) => course.progress < 100)
+                          .map((course) => (
                             <InProgressCourseCard
                               key={course.id}
                               course={course}

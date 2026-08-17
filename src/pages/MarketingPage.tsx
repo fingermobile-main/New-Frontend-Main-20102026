@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import MarketingDashboard from '../components/dashboard/MarketingDashboard';
 
 const MarketingPage: React.FC = () => {

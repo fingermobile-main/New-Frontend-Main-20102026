@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 // --- Domain Type Definitions ---
 interface LocationDetails {
   country: string;
@@ -10,7 +9,7 @@ interface LocationDetails {
 interface StatusUpdate {
   id: number;
   status: string;
-  description: string;
+  description?: string;
   alert_level: 'info' | 'warning' | 'critical';
   created_at: string;
 }
@@ -32,7 +31,7 @@ interface ShipmentListItemProps {
 }
 
 const ShipmentListItem: React.FC<ShipmentListItemProps> = React.memo(({ item, isSelected, onSelect }) => {
-  const handleSelect = React.useCallback(() => onSelect(item), [item, onSelect]);
+  const handleSelect = useCallback(() => onSelect(item), [item, onSelect]);
 
   return (
     <button
@@ -60,7 +59,7 @@ interface ShipmentDetailsPanelProps {
 }
 
 const ShipmentDetailsPanel: React.FC<ShipmentDetailsPanelProps> = React.memo(({ shipment, onContactCarrier }) => {
-  const structuralWarnings = React.useMemo(() => 
+  const structuralWarnings = useMemo(() => 
     shipment.status_updates.filter(u => u.alert_level === 'warning' || u.alert_level === 'critical')
   , [shipment.status_updates]);
 
@@ -108,10 +107,10 @@ ShipmentDetailsPanel.displayName = 'ShipmentDetailsPanel';
 
 // --- Main Container Page Component ---
 const MarketplaceTrackingPage: React.FC = () => {
-  const [shipments, setShipments] = React.useState<Shipment[]>([]);
-  const [selectedShipment, setSelectedShipment] = React.useState<Shipment | null>(null);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
-  const loadShipments = React.useCallback(async () => {
+  const loadShipments = useCallback(async () => {
     try {
       // Production fallback tracking mocks
       const mockShipments: Shipment[] = [
@@ -173,15 +172,15 @@ const MarketplaceTrackingPage: React.FC = () => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadShipments();
   }, [loadShipments]);
 
-  const handleSelectShipment = React.useCallback((item: Shipment) => {
+  const handleSelectShipment = useCallback((item: Shipment) => {
     setSelectedShipment(item);
   }, []);
 
-  const handleContactCarrier = React.useCallback(() => {
+  const handleContactCarrier = useCallback(() => {
     if (!selectedShipment) return;
     window.confirm(`Would you like to register a connection hook directly to the carrier line for ID: ${selectedShipment.tracking_number}?`);
   }, [selectedShipment]);

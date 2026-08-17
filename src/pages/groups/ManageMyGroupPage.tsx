@@ -1,5 +1,6 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+
 import { useAppContext } from '../../contexts/AppContext';
 import { GroupContext } from '../../contexts/GroupContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -11,17 +12,17 @@ const ManageMyGroupPage = () => {
     const navigate = useNavigate();
     const { member } = useAuth();
     const { showToast } = useAppContext();
-    const groupContext = React.useContext(GroupContext);
+    const groupContext = useContext(GroupContext);
     const groups = groupContext?.groups ?? [];
     const handleUpdateGroup = groupContext?.handleUpdateGroup ?? (async (_groupId: string, _updates: unknown) => {});
     
     const group = groups.find((g: Group) => g.id === groupId) as Group;
     
-    const [name, setName] = React.useState<string>(group?.name || '');
-    const [rules, setRules] = React.useState<string>(group?.rules || '');
-    const [isSaving, setIsSaving] = React.useState(false);
+    const [name, setName] = useState<string>(group?.name || '');
+    const [rules, setRules] = useState<string>(group?.rules || '');
+    const [isSaving, setIsSaving] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!group || group.owner.id !== member?.id) {
             navigate('/groups');
         }
@@ -71,4 +72,3 @@ const ManageMyGroupPage = () => {
 };
 
 export default ManageMyGroupPage;
-

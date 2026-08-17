@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import EnhancedEditorStudio from '../../components/editor/EnhancedEditorStudio';
 
 const EditorStudioPage: React.FC = () => {

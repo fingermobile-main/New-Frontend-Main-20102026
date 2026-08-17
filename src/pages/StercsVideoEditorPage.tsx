@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import StercsVideoEditor from '../components/dashboard/StercsVideoEditor';
 
 const StercsVideoEditorPage: React.FC = () => {

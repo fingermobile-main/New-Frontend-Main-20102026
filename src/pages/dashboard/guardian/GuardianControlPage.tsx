@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from '../../../contexts/AppContext';
 import {
   ShieldExclamationIcon,
@@ -20,7 +22,7 @@ interface Threat {
   target: string;
   reporter: string;
   timestamp: string;
-  description: string;
+  description?: string;
   resolved: boolean;
 }
 
@@ -35,9 +37,9 @@ interface ModerationItem {
 }
 
 const GuardianControlPage: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState("threats");
-  const [selectedThreat, setSelectedThreat] = React.useState<string | null>(null);
-  const [threats, setThreats] = React.useState<Threat[]>([
+  const [activeTab, setActiveTab] = useState("threats");
+  const [selectedThreat, setSelectedThreat] = useState<string | null>(null);
+  const [threats, setThreats] = useState<Threat[]>([
     {
       id: "threat-1",
       type: "abuse",
@@ -256,7 +258,7 @@ const GuardianControlPage: React.FC = () => {
       }`}
       onClick={() =>
         setSelectedThreat(selectedThreat === threat.id ? null : threat.id)
-      }
+      } role="button" tabIndex={0}
     >
       <div className="flex justify-between items-start">
         <div>

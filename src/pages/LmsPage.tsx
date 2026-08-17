@@ -1,6 +1,8 @@
-import React from 'react';
+import { useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
-import { useNavigate } from "react-router-dom";
+
 import { useAuth } from '../contexts/AuthContext';
 import {
   BookOpenIcon,
@@ -50,7 +52,7 @@ const LmsPage: React.FC = () => {
   const navigate = useNavigate();
   const { courses, assignments, showToast } = useAppContext();
 
-  const [myCourses, setMyCourses] = React.useState<Course[]> ([
+  const [myCourses, setMyCourses] = useState<Course[]> ([
     {
       id: "1",
       title: "Introduction to Digital Marketing",
@@ -99,13 +101,13 @@ const LmsPage: React.FC = () => {
     }
   ]);
 
-  const [filter, setFilter] = React.useState("");
+  const [filter, setFilter] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Component logic
   }, []);
 
-  const [myAssignments, setMyAssignments] = React.useState<Assignment[]> ([
+  const [myAssignments, setMyAssignments] = useState<Assignment[]> ([
     {
       id: "a1",
       title: "Marketing Strategy Analysis",
@@ -132,7 +134,7 @@ const LmsPage: React.FC = () => {
     }
   ]);
 
-  const [upcomingEvents, setUpcomingEvents] = React.useState<UpcomingEvent[]> ([
+  const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]> ([
     {
       id: "e1",
       title: "Live Q&A Session: JavaScript Best Practices",
@@ -156,7 +158,7 @@ const LmsPage: React.FC = () => {
     }
   ]);
 
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "courses" | "assignments" | "calendar"
   >("courses");
 

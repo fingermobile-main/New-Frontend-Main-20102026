@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.protocol-demo {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.protocol-demo h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.status-indicator {
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.controls button:hover {
+  background-color: #0056b3;
+}
+
+.controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.message-sender {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.message-sender input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.message-sender button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.message-sender button:hover {
+  background-color: #218838;
+}
+
+.message-sender button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.message-log {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.message-log h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.log-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}

@@ -1,9 +1,9 @@
-import React from 'react';
+import { useParams} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+
 import { useAppContext } from '../../contexts/AppContext';
 import type { Franchise } from '../../types';
 import AnimatedAvatar from '../../components/AnimatedAvatar';
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const FranchiseManagementPage: React.FC = () => {
   const { franchises } = useAppContext();

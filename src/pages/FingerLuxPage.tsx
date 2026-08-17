@@ -1,4 +1,7 @@
-import React from 'react';
+import { Link} from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
 import { useFingerLux } from '../hooks/useFingerLux';
 import type { BookingCategory } from '../types';
@@ -28,9 +31,9 @@ const BookingCard: React.FC<BookingCardProps> = React.memo(({
   onOpenGift, 
   onOpenPaylink 
 }) => {
-  const handleBookClick = React.useCallback(() => onBook(category), [category, onBook]);
-  const handleGiftClick = React.useCallback(() => onOpenGift(category), [category, onOpenGift]);
-  const handlePaylinkClick = React.useCallback(() => onOpenPaylink(category), [category, onOpenPaylink]);
+  const handleBookClick = useCallback(() => onBook(category), [category, onBook]);
+  const handleGiftClick = useCallback(() => onOpenGift(category), [category, onOpenGift]);
+  const handlePaylinkClick = useCallback(() => onOpenPaylink(category), [category, onOpenPaylink]);
 
   return (
     <div className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 to-indigo-950 text-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 border border-indigo-800/40">
@@ -39,7 +42,7 @@ const BookingCard: React.FC<BookingCardProps> = React.memo(({
         style={{ backgroundImage: `url(${category.image || ''})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-indigo-950/40 to-transparent"></div>
-        {category.icon && (
+        {category.icon && ( // Check if icon exists before using it
           <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-xl p-2.5 border border-white/10">
             <span className="text-xl leading-none block">{category.icon}</span>
           </div>
@@ -49,8 +52,8 @@ const BookingCard: React.FC<BookingCardProps> = React.memo(({
       <div className="p-6 relative">
         <div className="flex justify-between items-start gap-4 mb-3">
           <div>
-            <h3 className="text-xl font-bold tracking-tight mb-1">{category.name}</h3>
-            <p className="text-sm text-indigo-200/70 line-clamp-2">{category.description}</p>
+            <h3 className="text-xl font-bold tracking-tight mb-1">{category.name || 'Unnamed Category'}</h3> {/* Handle potentially missing name */}
+            <p className="text-sm text-indigo-200/70 line-clamp-2">{category.description || 'No description available'}</p> {/* Handle potentially missing description */}
           </div>
           <span className="text-xl font-extrabold shrink-0 text-amber-400">
             {category.price ?? 1000} <span className="text-xs font-semibold tracking-wider text-indigo-300">FIC</span>
@@ -109,14 +112,14 @@ const FingerLuxPage: React.FC = () => {
 
   const { ficBalance, showToast } = useAppContext();
   
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedCategory, setSelectedCategory] = React.useState<FingerLuxCategory | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<FingerLuxCategory | null>(null);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleBookNow = React.useCallback(async (category: FingerLuxCategory) => {
+  const handleBookNow = useCallback(async (category: FingerLuxCategory) => {
     const price = category.price ?? 1000;
     if (ficBalance < price) {
       showToast(`Insufficient FIC balance. Required: ${price} FIC`, "error");
@@ -126,7 +129,7 @@ const FingerLuxPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast(`Successfully booked ${category.name}`, "success");
+      showToast(`Successfully booked ${category.name || 'Service'}`, "success"); // Handle potentially missing name
     } catch {
       showToast("Failed to process booking", "error");
     } finally {
@@ -134,7 +137,7 @@ const FingerLuxPage: React.FC = () => {
     }
   }, [ficBalance, showToast]);
 
-  const onOpenGiftModal = React.useCallback((category: BookingCategory) => {
+  const onOpenGiftModal = useCallback((category: BookingCategory) => {
     if (ficBalance <= 0) {
       showToast("Insufficient FIC balance", "error");
       return;
@@ -150,7 +153,7 @@ const FingerLuxPage: React.FC = () => {
     setShowGiftModal(true);
   }, [ficBalance, showToast]);
 
-  const onOpenPaylinkModal = React.useCallback((category: BookingCategory) => {
+  const onOpenPaylinkModal = useCallback((category: BookingCategory) => {
     if (ficBalance <= 0) {
       showToast("Insufficient FIC balance", "error");
       return;
@@ -364,7 +367,7 @@ const FingerLuxPage: React.FC = () => {
       {showGiftModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Gift {selectedCategory?.name}</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Gift {selectedCategory?.name || 'Service'}</h3> {/* Handle potentially missing name */}
             <input 
               type="number" 
               value={giftAmount} 

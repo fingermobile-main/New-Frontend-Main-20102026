@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useWeb3 } from '../contexts/Web3Context';
 import { useAppContext } from "../contexts/AppContext";
 import { GiftIcon, LinkIcon } from '../icons';
@@ -10,25 +12,25 @@ interface Transaction {
   from?: string;
   to?: string;
   date: string;
-  description: string;
+  description?: string;
 }
 
 const MyWalletPage: React.FC = () => {
   const web3Data = useWeb3();
   const { balance, sendFIC } = web3Data;
   const { ficBalance, showToast } = useAppContext();
-  const [recipient, setRecipient] = React.useState('');
-  const [amount, setAmount] = React.useState('');
-  const [showSendModal, setShowSendModal] = React.useState(false);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedTransaction, setSelectedTransaction] = React.useState<Transaction | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState('');
-  const [paylinkAmount, setPaylinkAmount] = React.useState('');
-  const [paylinkDescription, setPaylinkDescription] = React.useState('');
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
+  const [paylinkDescription, setPaylinkDescription] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const [transactionHistory, setTransactionHistory] = React.useState<Transaction[]>([
+  const [transactionHistory, setTransactionHistory] = useState<Transaction[]>([
     { id: 1, type: 'received', amount: 250, from: 'Alex Johnson', date: '2023-06-15', description: 'Content monetization' },
     { id: 2, type: 'sent', amount: 50, to: 'Taylor Swift', date: '2023-06-12', description: 'Gift' },
     { id: 3, type: 'received', amount: 100, from: 'Platform Rewards', date: '2023-06-10', description: 'Loyalty rewards' },
@@ -301,7 +303,7 @@ const MyWalletPage: React.FC = () => {
                       {transaction.type === 'received' ? '+' : '-'}{transaction.amount} FIC
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {transaction.description}
+                      {transaction.description || 'No description'}
                       <div className="text-xs text-gray-400 mt-1">
                         {transaction.from ? `From: ${transaction.from}` : 
                          transaction.to ? `To: ${transaction.to}` : ''}

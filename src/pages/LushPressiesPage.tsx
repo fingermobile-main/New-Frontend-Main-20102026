@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
 import { 
   MemberIcon, 
   HeartIcon, 
@@ -26,7 +26,7 @@ interface Gift {
   price: number;
   imageUrl: string;
   category: string;
-} // Added missing closing brace for interface
+}
 
 interface Conversation {
   id: string;
@@ -35,18 +35,18 @@ interface Conversation {
   lastMessage: string;
   timestamp: string;
   unread: boolean;
-} // Added missing closing brace for interface
+}
 
 const LushPressiesPage: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState<'discover' | 'gifts' | 'messages' | 'analytics' | 'settings'>('discover');
-  const [profiles, setProfiles] = React.useState<MemberProfile[]>([]);
-  const [gifts, setGifts] = React.useState<Gift[]>([]);
-  const [conversations, setConversations] = React.useState<Conversation[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [activeTab, setActiveTab] = useState<'discover' | 'gifts' | 'messages' | 'analytics' | 'settings'>('discover');
+  const [profiles, setProfiles] = useState<MemberProfile[]>([]);
+  const [gifts, setGifts] = useState<Gift[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Simulate data fetching
     setTimeout(() => {
       // Mock profiles data

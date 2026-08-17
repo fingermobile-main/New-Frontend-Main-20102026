@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,15 +9,14 @@ import {
   StorefrontIcon,
   SearchIcon,
   FilterIcon,
-  SortIcon,
   CartIcon,
-  HeartIcon,
   StarIcon,
   ChartBarIcon,
   CubeIcon,
-  CurrencyDollarIcon
+  CurrencyDollarIcon,
+  PlusIcon,
+  XMarkIcon
 } from '../icons';
-import { toast } from 'react-toastify';
 import { storefrontService, Storefront, StorefrontProduct, InventoryItem } from '../services/storefrontService';
 
 // Types for Storefront features
@@ -54,10 +53,10 @@ const StorefrontPage: React.FC = () => {
   const { user } = useAuth();
   
   // State management
-  const [storefronts, setStorefronts] = React.useState<Storefront[]>([]);
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = React.useState<Product[]>([]);
-  const [filters, setFilters] = React.useState<StorefrontFilters>({
+  const [, setStorefronts] = useState<Storefront[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filters, setFilters] = useState<StorefrontFilters>({
     query: '',
     category: 'all',
     minPrice: 0,
@@ -65,87 +64,29 @@ const StorefrontPage: React.FC = () => {
     sortBy: 'newest',
     inStock: false
   });
-  const [analytics, setAnalytics] = React.useState<StorefrontAnalytics | null>(null);
-  const [inventory, setInventory] = React.useState<InventoryItem[]>([]);
-  const [alerts, setAlerts] = React.useState<InventoryAlert[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
-  const [sortBy, setSortBy] = React.useState<string>('newest');
-  const [showFilters, setShowFilters] = React.useState(false);
-  const [cart, setCart] = React.useState<any[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'browse' | 'my-store' | 'inventory' | 'analytics'>('browse');
-  const [showProductForm, setShowProductForm] = React.useState(false);
-  const [showRestockForm, setShowRestockForm] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
-  const [userStorefront, setUserStorefront] = React.useState<Storefront | null>(null);
+  
+  const [analytics] = useState<StorefrontAnalytics | null>(null);
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [alerts, setAlerts] = useState<InventoryAlert[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [cart, setCart] = useState<Product[]>([]);
+  const [activeTab, setActiveTab] = useState<'browse' | 'my-store' | 'inventory' | 'analytics'>('browse');
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [showRestockForm, setShowRestockForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [userStorefront, setUserStorefront] = useState<Storefront | null>(null);
 
-  // Load data on mount
-  React.useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  // Apply filters when they change
-  React.useEffect(() => {
-    applyFilters();
-  }, [filters, products]);
-
-  const loadInitialData = async () => {
-    try {
-      setLoading(true);
-      
-      // Load storefronts
-      const storefrontsResponse = await apiService.get('/api/storefronts');
-      setStorefronts(storefrontsResponse.data.storefronts || []);
-      
-      // Load products
-      const productsResponse = await apiService.get('/api/products?limit=100');
-      setProducts(productsResponse.data.products || []);
-      
-      // Load user's storefront if authenticated
-      if (user) {
-        try {
-          const userStorefronts = await storefrontService.getUserStorefronts(user.id);
-          if (userStorefronts && userStorefronts.length > 0) {
-            setUserStorefront(userStorefronts[0]);
-            
-            // Load inventory for user's storefront
-            const inventoryResponse = await storefrontService.getInventory(userStorefronts[0].id);
-            setInventory(inventoryResponse || []);
-            
-            // Load alerts
-            const alertsResponse = await storefrontService.getLowStockAlerts(userStorefronts[0].id);
-            setAlerts(alertsResponse.map((item: InventoryItem) => ({
-              id: item.productId,
-              productId: item.productId,
-              productName: item.productName,
-              currentStock: item.quantity,
-              threshold: item.reorderPoint,
-              status: item.quantity === 0 ? 'out' : item.quantity < item.reorderPoint ? 'low' : 'critical'
-            })));
-          }
-        } catch (err) {
-          console.info('User may not have a storefront yet');
-        }
-      }
-      
-      showToast('Welcome to Storefronts - Your Digital Marketplace', 'success');
-    } catch (error) {
-      console.error('Error loading Storefront data:', error);
-      showToast('Failed to load storefront data', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const applyFilters = () => {
+  // Apply filters
+  const applyFilters = useCallback(() => {
     let filtered = [...products];
     
     // Apply search query
     if (filters.query) {
+      const q = filters.query.toLowerCase();
       filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(filters.query.toLowerCase()) ||
-        p.description?.toLowerCase().includes(filters.query.toLowerCase())
+        p.name.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q)
       );
     }
     
@@ -183,25 +124,69 @@ const StorefrontPage: React.FC = () => {
     }
     
     setFilteredProducts(filtered);
-  };
+  }, [filters, products]);
+
+  // Load initial data
+  const loadInitialData = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      const [storefrontsResponse, productsResponse] = await Promise.all([
+        apiService.get('/api/storefronts').catch(() => ({ data: { storefronts: [] } })),
+        apiService.get('/api/products?limit=100').catch(() => ({ data: { products: [] } }))
+      ]);
+
+      setStorefronts(storefrontsResponse.data.storefronts || []);
+      setProducts(productsResponse.data.products || []);
+      
+      // Load user storefront if authenticated
+      if (user) {
+        try {
+          const userStorefronts = await storefrontService.getUserStorefronts(String(user.id));
+          if (userStorefronts && userStorefronts.length > 0) {
+            setUserStorefront(userStorefronts[0]);
+            
+            const [inventoryResponse, alertsResponse] = await Promise.all([
+              storefrontService.getInventory(userStorefronts[0].id),
+              storefrontService.getLowStockAlerts(userStorefronts[0].id)
+            ]);
+
+            setInventory(inventoryResponse || []);
+            setAlerts((alertsResponse || []).map((item: InventoryItem) => ({
+              id: item.productId,
+              productId: item.productId,
+              productName: item.productName,
+              currentStock: item.quantity,
+              threshold: item.reorderPoint,
+              status: item.quantity === 0 ? 'out' : item.quantity < item.reorderPoint ? 'low' : 'critical'
+            })));
+          }
+        } catch {
+          // User may not have a storefront set up yet
+        }
+      }
+    } catch (error) {
+      console.error('Error loading Storefront data:', error);
+      showToast('Failed to load storefront data', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [user, showToast]);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleSearch = (query: string) => {
     setFilters(prev => ({ ...prev, query }));
-    setSearchQuery(query);
-  };
-
-  const handleCategoryChange = (category: string) => {
-    setFilters(prev => ({ ...prev, category }));
-    setSelectedCategory(category);
-  };
-
-  const handleSortChange = (sort: string) => {
-    setFilters(prev => ({ ...prev, sortBy: sort as any }));
-    setSortBy(sort);
   };
 
   const addToCart = (product: Product) => {
-    setCart(prev => [...prev, { ...product, quantity: 1 }]);
+    setCart(prev => [...prev, product]);
     showToast(`${product.name} added to cart`, 'success');
   };
 
@@ -213,22 +198,32 @@ const StorefrontPage: React.FC = () => {
     
     try {
       const product = await storefrontService.createProduct(userStorefront.id, productData);
-      // Convert StorefrontProduct to Product for display
-      const productForDisplay: Product = {
+      
+      // Create products with only the properties that exist in both types
+      const productToAdd: Product = {
         id: product.id,
-        name: product.name,
-        description: product.description || '',
-        price: product.price,
-        category: product.category || 'other',
-        images: product.images,
-        stock: product.stock,
-        rating: 0,
-        reviews: [],
-        currency: 'USD',
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt
+        name: product.name || '',
+        description: product.description || '', // Provide default value
+        price: product.price || 0,
+        category: product.category || '', // Provide default value
+        // Remove properties that don't exist in StorefrontProduct
+        tags: (product as any).tags || [], // Use type assertion with default
+        brand: (product as any).brand || '',
+        sellerId: (product as any).sellerId || '',
+        condition: (product as any).condition || 'new',
+        quantity: (product as any).quantity || 0,
+        rating: (product as any).rating || 0,
+        reviewCount: (product as any).reviewCount || 0,
+        images: (product as any).images || [],
+        thumbnail: (product as any).thumbnail || '',
+        isFeatured: (product as any).isFeatured || false,
+        isAvailable: (product as any).isAvailable || true,
+        createdAt: (product as any).createdAt || new Date().toISOString(),
+        updatedAt: (product as any).updatedAt || new Date().toISOString(),
+        currency: (product as any).currency || 'USD',
       };
-      setProducts(prev => [productForDisplay, ...prev]);
+
+      setProducts(prev => [productToAdd, ...prev]);
       setShowProductForm(false);
       showToast('Product created successfully', 'success');
     } catch (error) {
@@ -247,7 +242,9 @@ const StorefrontPage: React.FC = () => {
       await storefrontService.restockProduct(productId, quantity);
       showToast('Inventory updated successfully', 'success');
       
-      // Reload inventory
+      // Update local product state
+      setProducts(prev => prev.map(p => p.id === productId ? { ...p, stock: (p.stock || 0) + quantity } : p));
+
       const inventoryResponse = await storefrontService.getInventory(userStorefront.id);
       setInventory(inventoryResponse || []);
     } catch (error) {
@@ -256,110 +253,126 @@ const StorefrontPage: React.FC = () => {
     }
   };
 
-  // Product Form Component
-  const ProductForm = () => (
-    <div className="bg-white rounded-lg p-6 shadow-md">
-      <h3 className="text-xl font-bold mb-4">Add New Product</h3>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        createProduct({
-          name: formData.get('name') as string,
-          description: formData.get('description') as string,
-          price: parseFloat(formData.get('price') as string),
-          category: formData.get('category') as string,
-          stock: parseInt(formData.get('stock') as string),
-          images: []
-        });
-      }}>
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-            <input id="productName" type="text" name="name" required className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="productDescription" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea id="productDescription" name="description" rows={3} className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
+  // Product Form Modal Component
+  const ProductFormModal = () => (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
+        <button 
+          onClick={() => setShowProductForm(false)} 
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <XMarkIcon className="w-6 h-6" />
+        </button>
+        <h3 className="text-xl font-bold mb-4 text-gray-900">Add New Product</h3>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          createProduct({
+            name: formData.get('name') as string,
+            description: formData.get('description') as string,
+            price: parseFloat(formData.get('price') as string),
+            category: formData.get('category') as string,
+            stock: parseInt(formData.get('stock') as string),
+            images: []
+          });
+        }}>
+          <div className="space-y-4">
             <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-              <input id="price" type="number" name="price" step="0.01" required className="w-full px-3 py-2 border rounded-lg" />
+              <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <input id="productName" type="text" name="name" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
             </div>
             <div>
-              <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
-              <input id="stock" type="number" name="stock" required className="w-full px-3 py-2 border rounded-lg" />
+              <label htmlFor="productDescription" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea id="productDescription" name="description" rows={3} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                <input id="price" type="number" name="price" step="0.01" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+              <div>
+                <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                <input id="stock" type="number" name="stock" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select id="category" name="category" className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="electronics">Electronics</option>
+                <option value="fashion">Fashion</option>
+                <option value="home">Home & Garden</option>
+                <option value="sports">Sports & Outdoors</option>
+                <option value="books">Books & Media</option>
+                <option value="other">Other</option>
+              </select>
             </div>
           </div>
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select id="category" name="category" className="w-full px-3 py-2 border rounded-lg">
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home & Garden</option>
-              <option value="sports">Sports & Outdoors</option>
-              <option value="books">Books & Media</option>
-              <option value="other">Other</option>
-            </select>
+          <div className="mt-6 flex gap-3">
+            <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">
+              Create Product
+            </button>
+            <button type="button" onClick={() => setShowProductForm(false)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition">
+              Cancel
+            </button>
           </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-            Create Product
-          </button>
-          <button type="button" onClick={() => setShowProductForm(false)} className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-            Cancel
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 
-  // Restock Form Component
-  const RestockForm = ({ product }: { product: Product }) => (
-    <div className="bg-white rounded-lg p-6 shadow-md">
-      <h3 className="text-xl font-bold mb-4">Restock: {product.name}</h3>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        restockProduct(
-          product.id,
-          parseInt(formData.get('quantity') as string)
-        );
-        setShowRestockForm(false);
-        setSelectedProduct(null);
-      }}>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Current Stock</label>
-            <p className="text-2xl font-bold">{product.stock}</p>
+  // Restock Form Modal Component
+  const RestockFormModal = ({ product }: { product: Product }) => (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
+        <button 
+          onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }} 
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <XMarkIcon className="w-6 h-6" />
+        </button>
+        <h3 className="text-xl font-bold mb-4 text-gray-900">Restock: {product.name}</h3>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          restockProduct(
+            String(product.id),
+            parseInt(formData.get('quantity') as string)
+          );
+          setShowRestockForm(false);
+          setSelectedProduct(null);
+        }}>
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Current Stock</label>
+              <p className="text-2xl font-bold text-gray-900">{product.stock || 0}</p>
+            </div>
+            <div>
+              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Add Quantity</label>
+              <input id="quantity" type="number" name="quantity" min="1" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
+            <div>
+              <label htmlFor="restockNotes" className="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+              <textarea id="restockNotes" name="notes" rows={2} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g., New shipment from supplier" />
+            </div>
           </div>
-          <div>
-            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Add Quantity</label>
-            <input id="quantity" type="number" name="quantity" min="1" required className="w-full px-3 py-2 border rounded-lg" />
+          <div className="mt-6 flex gap-3">
+            <button type="submit" className="flex-1 bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition">
+              Update Stock
+            </button>
+            <button type="button" onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition">
+              Cancel
+            </button>
           </div>
-          <div>
-            <label htmlFor="restockNotes" className="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
-            <textarea id="restockNotes" name="notes" rows={2} className="w-full px-3 py-2 border rounded-lg" placeholder="e.g., New shipment from supplier" />
-          </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-            Update Stock
-          </button>
-          <button type="button" onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }} className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-            Cancel
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 
   if (loading) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
         </div>
       </MainLayout>
     );
@@ -367,40 +380,47 @@ const StorefrontPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50/50">
+        {/* Modals */}
+        {showProductForm && <ProductFormModal />}
+        {showRestockForm && selectedProduct && <RestockFormModal product={selectedProduct} />}
+
         {/* Header */}
-        <header className="bg-white shadow-sm sticky top-0 z-40">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex items-center justify-between h-16 gap-4">
               <div className="flex items-center gap-3">
-                <StorefrontIcon className="w-8 h-8 text-blue-600" />
-                <h1 className="text-2xl font-bold text-gray-900">Storefronts</h1>
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Marketplace</span>
+                <StorefrontIcon className="w-7 h-7 text-blue-600" />
+                <h1 className="text-xl font-bold text-gray-900 hidden sm:block">Storefronts</h1>
+                <span className="text-xs bg-blue-50 text-blue-700 font-semibold px-2.5 py-1 rounded-full border border-blue-100">
+                  Marketplace
+                </span>
               </div>
               
-              <div className="flex items-center gap-4">
-                <div className="relative">
+              <div className="flex items-center gap-3 flex-1 sm:flex-initial justify-end">
+                <div className="relative flex-1 sm:w-64 max-w-xs">
                   <input
                     type="text"
                     placeholder="Search products..."
-                    value={searchQuery}
+                    value={filters.query}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                    className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   />
-                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 </div>
                 
                 <button
+                  type="button"
                   onClick={() => setShowFilters(!showFilters)}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
+                  className={`p-2 rounded-lg border transition ${showFilters ? 'bg-blue-50 border-blue-200 text-blue-600' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'}`}
                 >
-                  <FilterIcon className="w-6 h-6 text-gray-600" />
+                  <FilterIcon className="w-5 h-5" />
                 </button>
                 
-                <div className="relative">
-                  <CartIcon className="w-6 h-6 text-gray-600" />
+                <div className="relative p-2 text-gray-600 hover:text-gray-900 cursor-pointer">
+                  <CartIcon className="w-6 h-6" />
                   {cart.length > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                       {cart.length}
                     </span>
                   )}
@@ -411,9 +431,9 @@ const StorefrontPage: React.FC = () => {
         </header>
 
         {/* Navigation Tabs */}
-        <div className="bg-white border-b">
+        <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-8 overflow-x-auto scrollbar-none">
               {[
                 { id: 'browse', label: 'Browse', icon: StorefrontIcon },
                 { id: 'my-store', label: 'My Store', icon: CubeIcon },
@@ -422,8 +442,9 @@ const StorefrontPage: React.FC = () => {
               ].map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm ${
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as 'browse' | 'my-store' | 'inventory' | 'analytics')}
+                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                     activeTab === tab.id
                       ? 'border-blue-600 text-blue-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -437,21 +458,21 @@ const StorefrontPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Content */}
+        {/* Main Content Area */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Browse Tab */}
           {activeTab === 'browse' && (
             <div>
-              {/* Filters Bar */}
+              {/* Expandable Filter Box */}
               {showFilters && (
-                <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Category</label>
                       <select
-                        value={selectedCategory}
-                        onChange={(e) => handleCategoryChange(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        value={filters.category}
+                        onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
                       >
                         <option value="all">All Categories</option>
                         <option value="electronics">Electronics</option>
@@ -463,11 +484,11 @@ const StorefrontPage: React.FC = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Sort By</label>
                       <select
-                        value={sortBy}
-                        onChange={(e) => handleSortChange(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        value={filters.sortBy}
+                        onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as StorefrontFilters['sortBy'] }))}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
                       >
                         <option value="newest">Newest</option>
                         <option value="price_asc">Price: Low to High</option>
@@ -478,22 +499,22 @@ const StorefrontPage: React.FC = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Min Price ($)</label>
                       <input
                         type="number"
                         value={filters.minPrice}
                         onChange={(e) => setFilters(prev => ({ ...prev, minPrice: Number(e.target.value) }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Max Price ($)</label>
                       <input
                         type="number"
                         value={filters.maxPrice}
                         onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: Number(e.target.value) }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
                       />
                     </div>
                   </div>
@@ -512,8 +533,9 @@ const StorefrontPage: React.FC = () => {
               </div>
 
               {filteredProducts.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
+                <div className="text-center py-16 bg-white rounded-xl border border-dashed border-gray-200">
+                  <CubeIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500 font-medium">No products found matching your criteria.</p>
                 </div>
               )}
             </div>
@@ -522,51 +544,60 @@ const StorefrontPage: React.FC = () => {
           {/* My Store Tab */}
           {activeTab === 'my-store' && (
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">My Store Products</h2>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">My Store Products</h2>
+                  <p className="text-sm text-gray-500">Manage catalog inventory and stock levels</p>
+                </div>
                 <button
+                  type="button"
                   onClick={() => setShowProductForm(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
                 >
+                  <PlusIcon className="w-5 h-5" />
                   Add New Product
                 </button>
               </div>
               
-              {showProductForm && <ProductForm />}
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                {products.filter(p => (p.stock || 0) > 0).map(product => (
-                  <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div className="aspect-square bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-400">Product Image</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {products.map(product => (
+                  <div key={product.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+                    <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                      <CubeIcon className="w-10 h-10 text-gray-400" />
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg">{product.name}</h3>
-                      <p className="text-gray-600 text-sm mt-1 line-clamp-2">{product.description}</p>
-                      <div className="flex justify-between items-center mt-3">
-                        <span className="text-xl font-bold text-blue-600">${product.price.toFixed(2)}</span>
-                        <span className="text-sm text-gray-500">Stock: {product.stock}</span>
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-bold text-gray-900">{product.name}</h3>
+                        <p className="text-gray-500 text-sm mt-1 line-clamp-2">{product.description}</p>
                       </div>
-                      <button
-                        onClick={() => {
-                          setSelectedProduct(product);
-                          setShowRestockForm(true);
-                        }}
-                        className="mt-3 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 text-sm"
-                      >
-                        Restock
-                      </button>
+                      <div className="mt-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="text-lg font-bold text-blue-600">${product.price.toFixed(2)}</span>
+                          <span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded text-gray-600">Stock: {product.stock || 0}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedProduct(product);
+                            setShowRestockForm(true);
+                          }}
+                          className="w-full bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg font-medium hover:bg-green-100 transition text-sm"
+                        >
+                          Restock
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
               
               {products.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">You haven't added any products yet.</p>
+                <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+                  <p className="text-gray-500">You haven't added any products to your store yet.</p>
                   <button
+                    type="button"
                     onClick={() => setShowProductForm(true)}
-                    className="mt-4 text-blue-600 hover:underline"
+                    className="mt-4 text-blue-600 font-semibold hover:underline"
                   >
                     Add your first product
                   </button>
@@ -578,71 +609,62 @@ const StorefrontPage: React.FC = () => {
           {/* Inventory Tab */}
           {activeTab === 'inventory' && (
             <div>
-              <h2 className="text-2xl font-bold mb-6">Inventory Management</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Inventory Management</h2>
               
               {/* Inventory Alerts */}
               {alerts.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-3">Stock Alerts</h3>
-                  <div className="space-y-3">
-                    {alerts.map(alert => (
-                      <div key={alert.id} className={`p-4 rounded-lg border ${
-                        alert.status === 'critical' ? 'bg-red-50 border-red-200' :
-                        alert.status === 'out' ? 'bg-orange-50 border-orange-200' :
-                        'bg-yellow-50 border-yellow-200'
-                      }`}>
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-semibold">{alert.productName}</p>
-                            <p className="text-sm text-gray-600">
-                              Current Stock: {alert.currentStock} / Threshold: {alert.threshold}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => {
-                              const product = products.find(p => p.id === alert.productId);
-                              if (product) {
-                                setSelectedProduct(product);
-                                setShowRestockForm(true);
-                              }
-                            }}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
-                          >
-                            Restock Now
-                          </button>
-                        </div>
+                <div className="mb-6 space-y-3">
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500">Stock Alerts</h3>
+                  {alerts.map(alert => (
+                    <div key={alert.id} className={`p-4 rounded-xl border flex items-center justify-between ${
+                      alert.status === 'critical' ? 'bg-red-50/50 border-red-200' :
+                      alert.status === 'out' ? 'bg-orange-50/50 border-orange-200' :
+                      'bg-yellow-50/50 border-yellow-200'
+                    }`}>
+                      <div>
+                        <p className="font-semibold text-gray-900">{alert.productName}</p>
+                        <p className="text-xs text-gray-600 mt-0.5">
+                          Current Stock: <span className="font-bold">{alert.currentStock}</span> / Threshold: {alert.threshold}
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const product = products.find(p => p.id === alert.productId);
+                          if (product) {
+                            setSelectedProduct(product);
+                            setShowRestockForm(true);
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 text-xs transition"
+                      >
+                        Restock Now
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
               
               {/* Inventory Table */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Stock</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">SKU</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Current Stock</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 bg-white text-sm">
                     {inventory.map((item, index) => (
                       <tr key={index}>
+                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{item.productName}</td>
+                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">{item.sku || 'N/A'}</td>
+                        <td className="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">{item.quantity}</td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{item.productName}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{item.sku || 'N/A'}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{item.quantity}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                             item.quantity === 0 ? 'bg-red-100 text-red-800' :
                             item.quantity < item.reorderPoint ? 'bg-yellow-100 text-yellow-800' :
                             'bg-green-100 text-green-800'
@@ -652,8 +674,9 @@ const StorefrontPage: React.FC = () => {
                              'In Stock'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
                           <button
+                            type="button"
                             onClick={() => {
                               const prod = products.find(p => p.id === item.productId);
                               if (prod) {
@@ -661,7 +684,7 @@ const StorefrontPage: React.FC = () => {
                                 setShowRestockForm(true);
                               }
                             }}
-                            className="text-blue-600 hover:text-blue-900"
+                            className="text-blue-600 font-semibold hover:text-blue-800"
                           >
                             Restock
                           </button>
@@ -677,47 +700,47 @@ const StorefrontPage: React.FC = () => {
           {/* Analytics Tab */}
           {activeTab === 'analytics' && (
             <div>
-              <h2 className="text-2xl font-bold mb-6">Store Analytics</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Store Analytics</h2>
               
               {analytics ? (
                 <div className="space-y-6">
                   {/* Key Metrics */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600">Total Products</p>
-                          <p className="text-3xl font-bold text-gray-900">{analytics.totalProducts}</p>
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Products</p>
+                          <p className="text-2xl font-bold text-gray-900 mt-1">{analytics.totalProducts}</p>
                         </div>
                         <CubeIcon className="w-8 h-8 text-blue-600" />
                       </div>
                     </div>
                     
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600">Total Revenue</p>
-                          <p className="text-3xl font-bold text-green-600">${analytics.totalRevenue.toFixed(2)}</p>
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Revenue</p>
+                          <p className="text-2xl font-bold text-green-600 mt-1">${analytics.totalRevenue.toFixed(2)}</p>
                         </div>
                         <CurrencyDollarIcon className="w-8 h-8 text-green-600" />
                       </div>
                     </div>
                     
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600">Total Orders</p>
-                          <p className="text-3xl font-bold text-purple-600">{analytics.totalOrders}</p>
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Orders</p>
+                          <p className="text-2xl font-bold text-purple-600 mt-1">{analytics.totalOrders}</p>
                         </div>
                         <ChartBarIcon className="w-8 h-8 text-purple-600" />
                       </div>
                     </div>
                     
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600">Avg Rating</p>
-                          <p className="text-3xl font-bold text-yellow-600">{analytics.avgRating.toFixed(1)}</p>
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Avg Rating</p>
+                          <p className="text-2xl font-bold text-yellow-600 mt-1">{analytics.avgRating.toFixed(1)}</p>
                         </div>
                         <StarIcon className="w-8 h-8 text-yellow-600" />
                       </div>
@@ -725,20 +748,20 @@ const StorefrontPage: React.FC = () => {
                   </div>
                   
                   {/* Top Selling Products */}
-                  <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold mb-4">Top Selling Products</h3>
-                    <div className="space-y-4">
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Top Selling Products</h3>
+                    <div className="space-y-3">
                       {analytics.topSellingProducts.map((product, index) => (
-                        <div key={product.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-4">
-                            <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
+                        <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
                             <div>
-                              <p className="font-semibold">{product.name}</p>
-                              <p className="text-sm text-gray-600">${product.price.toFixed(2)}</p>
+                              <p className="font-semibold text-gray-900">{product.name}</p>
+                              <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-gray-600">Sold</p>
+                            <p className="text-xs text-gray-500">Units Sold</p>
                             <p className="font-bold text-blue-600">{product.reviews?.length || 0}</p>
                           </div>
                         </div>
@@ -747,8 +770,9 @@ const StorefrontPage: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-12 bg-white rounded-lg shadow-md">
-                  <p className="text-gray-500">Analytics data not available. Start selling to see insights!</p>
+                <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+                  <ChartBarIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">Analytics data is currently unavailable. Start selling to track metrics!</p>
                 </div>
               )}
             </div>
@@ -756,36 +780,35 @@ const StorefrontPage: React.FC = () => {
         </main>
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white mt-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <footer className="bg-gray-900 text-white mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div>
-                <h3 className="font-bold text-lg mb-4">Storefronts Marketplace</h3>
-                <p className="text-gray-400 text-sm">
-                  Your complete e-commerce solution. Manage products, track inventory, and grow your business.
+                <h3 className="font-bold text-base mb-3">Storefronts Marketplace</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Your complete e-commerce solution. Manage products, track inventory, and scale your business effortlessly.
                 </p>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-4">Features</h3>
+                <h3 className="font-bold text-base mb-3">Features</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li>✓ Product Management</li>
-                  <li>✓ Inventory Tracking</li>
-                  <li>✓ Real-time Analytics</li>
-                  <li>✓ Automated Alerts</li>
+                  <li>Product Catalog Management</li>
+                  <li>Real-time Stock Tracking</li>
+                  <li>Integrated Analytics</li>
+                  <li>Low Inventory Alerts</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-4">Support</h3>
+                <h3 className="font-bold text-base mb-3">Support</h3>
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li>Email: support@storefronts.com</li>
                   <li>Phone: 1-800-STOREFRONT</li>
-                  <li>Live Chat Available</li>
-                  <li>Mon-Fri: 9AM - 6PM EST</li>
+                  <li>Support Hours: Mon-Fri 9 AM - 6 PM EST</li>
                 </ul>
               </div>
             </div>
-            <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-              <p>© 2026 Storefronts Marketplace. All rights reserved. | Privacy Policy | Terms of Service</p>
+            <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
+              <p>© 2026 Storefronts Marketplace. All rights reserved.</p>
             </div>
           </div>
         </footer>

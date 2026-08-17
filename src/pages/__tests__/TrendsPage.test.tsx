@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -16,9 +16,7 @@ jest.mock("../../contexts/AppContext.tsx", () => ({
     ficBalance: 100,
     openModal: jest.fn(),
     showToast: jest.fn(),
-    handleAiAssist: jest.fn(),
-  }),
-}));
+    handleAiAssist: jest.fn()})}));
 
 // Mock the MainLayout component
 jest.mock("../../components/layout/MainLayout", () => {
@@ -26,8 +24,7 @@ jest.mock("../../components/layout/MainLayout", () => {
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="main-layout">{children}</div>
-    ),
-  };
+    )};
 });
 
 // Mock the PostCard component
@@ -38,16 +35,14 @@ jest.mock("../../components/PostCard", () => {
       <div data-testid="post-card">
         <h2>{post.content}</h2>
       </div>
-    ),
-  };
+    )};
 });
 
 // Mock the LoadingSpinner component
 jest.mock("../../components/LoadingSpinner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="loading-spinner">Loading...</div>,
-  };
+    default: () => <div data-testid="loading-spinner">Loading...</div>};
 });
 
 describe("TrendsPage", () => {
@@ -60,8 +55,7 @@ describe("TrendsPage", () => {
       updatedAt: "2023-01-01T00:00:00Z",
       likesCount: 0,
       comments: [],
-      isLiked: false,
-    },
+      isLiked: false},
     {
       id: "2",
       content: "Test trend post 2",
@@ -70,8 +64,7 @@ describe("TrendsPage", () => {
       updatedAt: "2023-01-02T00:00:00Z",
       likesCount: 0,
       comments: [],
-      isLiked: false,
-    },
+      isLiked: false},
   ] as any;
 
   beforeEach(() => {
@@ -83,8 +76,7 @@ describe("TrendsPage", () => {
       posts: [],
       loading: true,
       error: null,
-      refreshPosts: jest.fn(),
-    });
+      refreshPosts: jest.fn()});
 
     render(<TrendsPage />);
 
@@ -96,8 +88,7 @@ describe("TrendsPage", () => {
       posts: mockPosts,
       loading: false,
       error: null,
-      refreshPosts: jest.fn(),
-    });
+      refreshPosts: jest.fn()});
 
     render(<TrendsPage />);
 
@@ -114,8 +105,7 @@ describe("TrendsPage", () => {
       posts: [],
       loading: false,
       error: "Failed to fetch community posts.",
-      refreshPosts: jest.fn(),
-    });
+      refreshPosts: jest.fn()});
 
     render(<TrendsPage />);
 

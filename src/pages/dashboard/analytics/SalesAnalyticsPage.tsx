@@ -11,7 +11,10 @@ const SalesAnalyticsPage: React.FC = () => {
     return <div>Loading analytics data...</div>;
   }
 
-  const { metrics, monthlyRevenue, topProducts } = salesAnalytics;
+  const analytics = salesAnalytics as any;
+  const metrics = analytics.metrics || { totalRevenue: 0, totalOrders: 0, avgOrderValue: 0 };
+  const monthlyRevenue = analytics.monthlyRevenue || [];
+  const topProducts = analytics.topProducts || [];
 
   const BarChart: React.FC<{ data: { month: string; revenue: number }[] }> = ({
     data
@@ -62,15 +65,11 @@ const SalesAnalyticsPage: React.FC = () => {
         <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
           <h2 className="text-xl font-bold mb-4">Top Selling Products</h2>
           <div className="space-y-3">
-            {topProducts.map((product: Product) => (
-              <div
-                key={product.id}
-                className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
-              >
-                <span className="font-semibold">{product.name}</span>
-                <span className="font-bold text-green-600">
-                  {product.sales.toLocaleString()} sales
-                </span>
+            {topProducts.map((product) => (
+              <div key={product.id} className="bg-white p-4 rounded-lg shadow">
+                <h3 className="font-semibold">{product.name}</h3>
+                {/* Remove sales and unitsSold if they don't exist on Product type */}
+                <p>Price: ${product.price?.toFixed(2)}</p>
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
 import TrendsFeed from '../components/TrendsFeed';
@@ -24,15 +25,15 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
   showToast: propsShowToast = () => {}
 }) => {
   const { openModal, showToast: contextShowToast, ficBalance } = useAppContext();
-  const [posts, setLocalPosts] = React.useState<PostType[]>(propsPosts);
+  const [posts, setLocalPosts] = useState<PostType[]>(propsPosts);
 
-  const trendingSource = React.useMemo(
+  const trendingSource = useMemo(
     () => posts.filter((p) => p.contentImageUrl),
     [posts],
   );
-  const [trendPosts, setTrendPosts] = React.useState<PostType[]>(trendingSource);
+  const [trendPosts, setTrendPosts] = useState<PostType[]>(trendingSource);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTrendPosts(trendingSource);
   }, [trendingSource]);
 

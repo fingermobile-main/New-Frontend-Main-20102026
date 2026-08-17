@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import AnimatedAvatar from '../components/AnimatedAvatar';
 
@@ -189,7 +188,7 @@ const PrivateMessagesPage: React.FC = () => {
                   className={`p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
                     activeChat === conversation.id ? 'bg-blue-50' : ''
                   }`}
-                  onClick={() => setActiveChat(conversation.id)}
+                  onClick={() => setActiveChat(conversation.id)} role="button" tabIndex={0}
                 >
                   <div className="flex items-center">
                     <div className="relative">

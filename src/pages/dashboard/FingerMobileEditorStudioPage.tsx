@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import FingerMobileEditorStudio from '../../components/editor/FingerMobileEditorStudio';
 
 const FingerMobileEditorStudioPage: React.FC = () => {

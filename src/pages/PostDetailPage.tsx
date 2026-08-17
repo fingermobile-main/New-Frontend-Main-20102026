@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import PostCard from '../components/PostCard';
 import CommentSection, { type Comment } from '../components/CommentSection';
@@ -38,12 +38,13 @@ const PostDetailPage: React.FC = () => {
       author: member || {
         id: "mock-author",
         name: "Mock Author",
+        username: "mockuser",
+        role: "user",
+        permissions: [],
         handle: "mock",
         email: "mock@example.com",
         isSubscribed: false,
         isVerified: false,
-        role: "user",
-        permissions: [],
         loyaltyTier: "bronze"
       } as Member,
       timestamp: new Date().toISOString(),
@@ -61,10 +62,6 @@ const PostDetailPage: React.FC = () => {
       // Additional properties
       title: "Sample Post",
       authorId: "mock-author",
-      isPrivate: false,
-      isFollowersOnly: false,
-      isAiGenerated: false,
-      isSpoiler: false
     };
 
     setPost(mockPost);

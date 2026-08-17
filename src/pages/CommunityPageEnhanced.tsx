@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import type { Member, Post, Group } from '../types';
 import { useCommunityMembers } from '../hooks/useCommunityMembers';
@@ -30,7 +30,7 @@ const CommunityPageEnhanced: React.FC = () => {
     error: groupsError
   } = useCommunityGroups();
 
-  const [filters, setFilters] = React.useState<CommunityFilters>({
+  const [filters, setFilters] = useState<CommunityFilters>({
     query: "",
     sortBy: "popular",
     contentType: "all",

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import apiService, { ApiService } from '../services/apiService';
 
@@ -6,19 +7,19 @@ import apiService, { ApiService } from '../services/apiService';
 const MyStorefrontPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
-  const [activeTab, setActiveTab] = React.useState("overview");
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [isEditing, setIsEditing] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
   // New state for dynamic data
-  const [storefrontData, setStorefrontData] = React.useState<any>(null);
-  const [products, setProducts] = React.useState<any[]>([]);
-  const [analytics, setAnalytics] = React.useState<any>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [storefrontData, setStorefrontData] = useState<any>(null);
+  const [products, setProducts] = useState<any[]>([]);
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch dynamic data from API
-  const fetchStorefrontData = React.useCallback(async () => {
+  const fetchStorefrontData = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -39,7 +40,7 @@ const MyStorefrontPage: React.FC = () => {
     }
   }, [showToast]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchStorefrontData();
   }, [fetchStorefrontData]);
 

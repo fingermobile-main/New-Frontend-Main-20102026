@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { GiftIcon, PaylinkIcon, CurrencyNairaIcon, CreditCardIcon, BankIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
@@ -21,15 +21,15 @@ const WalletFundingPage: React.FC = () => {
     { id: "moniepoint", name: "Moniepoint", icon: "💳" }
   ];
 
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [paylinkDescription, setPaylinkDescription] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
-  const [amount, setAmount] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [selectedBank, setSelectedBank] = React.useState(banks[0].id);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedBank, setSelectedBank] = useState(banks[0].id);
 
   const onOpenGiftModal = () => {
     if (ficBalance <= 0) {

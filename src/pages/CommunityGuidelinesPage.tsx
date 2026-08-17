@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {} from 'react';
 import MainLayout from '../components/layout/MainLayout';  // Removed .tsx extension
-import { Link } from "react-router-dom";
+
 
 const CommunityGuidelinesPage: React.FC = () => {
   return (

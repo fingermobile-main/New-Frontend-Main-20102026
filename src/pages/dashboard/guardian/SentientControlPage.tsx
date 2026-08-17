@@ -32,7 +32,7 @@ interface Insight {
     | "system_optimization";
   confidence: number;
   timestamp: string;
-  description: string;
+  description?: string;
 }
 
 interface Conversation {
@@ -273,7 +273,7 @@ const SentientControlPage: React.FC = () => {
       }`}
       onClick={() =>
         setSelectedProcess(selectedProcess === process.id ? null : process.id)
-      }
+      } role="button" tabIndex={0}
     >
       <div className="flex justify-between items-start">
         <div>

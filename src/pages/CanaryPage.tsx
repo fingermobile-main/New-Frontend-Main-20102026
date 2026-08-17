@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import { useWeb3 } from '../contexts/Web3Context';
@@ -22,12 +22,11 @@ const mockCanaryPosts: Post[] = [
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
       isVerified: true
     },
-    timestamp: "2024-03-15T14:30:00Z",
-    createdAt: "2024-03-15T14:30:00Z",
+    timestamp: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     title: "Security Alert",
     content:
       "Important security update regarding recent platform changes. Please review and update your settings.",
-    severity: "high",
     category: "security",
     status: "active",
     likesCount: 245,
@@ -46,12 +45,11 @@ const mockCanaryPosts: Post[] = [
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
       isVerified: true
     },
-    timestamp: "2024-03-15T13:15:00Z",
-    createdAt: "2024-03-15T13:15:00Z",
+    timestamp: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     title: "System Maintenance",
     content:
       "Scheduled maintenance window for platform upgrades. Expected downtime: 2 hours.",
-    severity: "medium",
     category: "maintenance",
     status: "scheduled",
     likesCount: 178,
@@ -70,12 +68,11 @@ const mockCanaryPosts: Post[] = [
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
       isVerified: true
     },
-    timestamp: "2024-03-14T10:00:00Z",
-    createdAt: "2024-03-14T10:00:00Z",
+    timestamp: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     title: "New Feature Launch",
     content:
       "We are excited to announce the launch of our new video calling feature. Available now for all premium members.",
-    severity: "low",
     category: "features",
     status: "active",
     likesCount: 312,
@@ -88,10 +85,10 @@ const mockCanaryPosts: Post[] = [
 const CanaryPage: React.FC = () => {
   const { balance } = useWeb3();
   const { ficBalance, openModal, showToast } = useAppContext();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState("active");
-  const [canaryPosts, setCanaryPosts] = React.useState(mockCanaryPosts);
-  const [showSubmissionForm, setShowSubmissionForm] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("active");
+  const [canaryPosts, setCanaryPosts] = useState(mockCanaryPosts);
+  const [showSubmissionForm, setShowSubmissionForm] = useState(false);
 
   // Required functions
   const onLike = async (postId: string) => {
@@ -105,8 +102,8 @@ const CanaryPage: React.FC = () => {
                 ...post,
                 isLiked: !post.isLiked,
                 likesCount: post.isLiked
-                  ? post.likesCount - 1
-                  : post.likesCount + 1
+                  ? (post.likesCount || 0) - 1
+                  : (post.likesCount || 0) + 1
               }
             : post,
         ),

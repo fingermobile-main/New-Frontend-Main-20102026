@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import DatabaseIntegrationReport from '../components/DatabaseIntegrationReport';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";

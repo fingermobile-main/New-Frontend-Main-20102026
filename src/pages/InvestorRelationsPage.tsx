@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import InvestorRelationsDashboard from '../components/dashboard/InvestorRelationsDashboard';
 import { useAppContext } from "../contexts/AppContext";

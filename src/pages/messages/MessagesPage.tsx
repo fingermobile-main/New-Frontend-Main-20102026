@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+
 import { 
   ChatBubbleLeftIcon as FiMessageSquare,
   UsersIcon as FiUsers,
@@ -17,11 +17,13 @@ import {
   ClockIcon as FiClock,
   PhotoIcon as FiImage
 } from '@heroicons/react/24/solid';
-// Replaced react-icons with local icons for consistency
+
 import { SmileIcon as FaRegSmile, CoinIcon as FaCoins, CloseIcon as IoMdClose } from '../../components/icons';
 import EmojiPicker from 'emoji-picker-react';
 
-// Types for messaging system
+// ==========================================
+// Types & Interfaces
+// ==========================================
 interface User {
   id: string;
   name: string;
@@ -92,6 +94,93 @@ interface Conversation {
   securitySettings: ConversationSecuritySettings;
 }
 
+// ==========================================
+// Static API Mock Service (Outside Component)
+// ==========================================
+const apiService = {
+  getConversations: async (): Promise<Conversation[]> => {
+    return [
+      {
+        id: 'conv1',
+        participants: [
+          { id: 'user1', name: 'Alex Johnson', avatar: '/avatars/alex.jpg', status: 'online', isPremium: true },
+          { id: 'user2', name: 'Sam Wilson', avatar: '/avatars/sam.jpg', status: 'away', lastSeen: '2 hours ago', isPremium: false }
+        ],
+        lastMessage: {
+          id: 'msg1',
+          senderId: 'user2',
+          receiverId: 'user1',
+          content: 'Hey, are we still meeting tomorrow?',
+          timestamp: new Date(Date.now() - 3600000),
+          read: true,
+          delivered: true,
+          encrypted: false,
+          type: 'text',
+          status: 'read'
+        },
+        unreadCount: 0,
+        isGroup: false,
+        createdAt: new Date(Date.now() - 86400000),
+        isEncrypted: false,
+        isDisappearing: false,
+        disappearingDuration: 0,
+        isMuted: false,
+        securitySettings: {
+          isEncrypted: false,
+          encryptionAlgorithm: 'AES-GCM',
+          keyExchangeCompleted: false
+        }
+      }
+    ];
+  },
+  getMessages: async (_conversationId: string): Promise<Message[]> => {
+    return [
+      {
+        id: 'msg1',
+        senderId: 'user2',
+        receiverId: 'user1',
+        content: 'Hey, are we still meeting tomorrow?',
+        timestamp: new Date(Date.now() - 3600000),
+        read: true,
+        delivered: true,
+        encrypted: false,
+        type: 'text',
+        status: 'read'
+      }
+    ];
+  },
+  sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'status' | 'delivered'>): Promise<Message> => {
+    return {
+      ...message,
+      id: `msg${Date.now()}`,
+      timestamp: new Date(),
+      status: 'sent',
+      delivered: true
+    };
+  }
+};
+
+// ==========================================
+// Helper Utilities
+// ==========================================
+const bufToHex = (buffer: ArrayBuffer): string => {
+  return Array.from(new Uint8Array(buffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+};
+
+const hexToBuf = (hex: string): Uint8Array => {
+  const matches = hex.match(/.{1,2}/g);
+  if (!matches) return new Uint8Array(0);
+  
+  // Create a standard ArrayBuffer and populate it
+  const bytes = matches.map(byte => parseInt(byte, 16));
+  return new Uint8Array(bytes);
+};
+
+// ==========================================
+// Component Definition
+// ==========================================
 const MessagesPage: React.FC = () => {
   const _navigate = useNavigate();
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -125,19 +214,6 @@ const MessagesPage: React.FC = () => {
     activeConversationRef.current = activeConversation;
   }, [activeConversation]);
 
-  // Byte conversion helper for cryptographic operations
-  const bufToHex = (buffer: ArrayBuffer): string => {
-    return Array.from(new Uint8Array(buffer))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-  };
-
-  const hexToBuf = (hex: string): Uint8Array => {
-    const matches = hex.match(/.{1,2}/g);
-    if (!matches) return new Uint8Array(0);
-    return new Uint8Array(matches.map(byte => parseInt(byte, 16)));
-  };
-
   const initializeEncryption = async () => {
     try {
       const keyPair = await window.crypto.subtle.generateKey(
@@ -152,11 +228,11 @@ const MessagesPage: React.FC = () => {
       );
       _setEncryptionKeys(keyPair);
     } catch (error) {
-      // Silently handle encryption key generation errors in production
+      // Silently handle key generation errors in development/testing context
     }
   };
 
-  const encryptMessage = async (content: string): Promise<EncryptedMessageContent> => {
+  const encryptMessage = useCallback(async (content: string): Promise<EncryptedMessageContent> => {
     if (!activeConversationRef.current?.securitySettings.symmetricKey) {
       throw new Error("Symmetric key not available for encryption");
     }
@@ -165,7 +241,7 @@ const MessagesPage: React.FC = () => {
     const iv = window.crypto.getRandomValues(new Uint8Array(12));
     
     const encryptedData = await window.crypto.subtle.encrypt(
-      { name: "AES-GCM", iv: iv.buffer as ArrayBuffer },
+      { name: "AES-GCM", iv },
       activeConversationRef.current.securitySettings.symmetricKey,
       data
     );
@@ -174,24 +250,26 @@ const MessagesPage: React.FC = () => {
       encryptedData: bufToHex(encryptedData),
       iv: bufToHex(iv.buffer)
     };
-  };
+  }, []);
 
-  const decryptMessage = async (encryptedContent: EncryptedMessageContent): Promise<string> => {
-    if (!activeConversationRef.current?.securitySettings.symmetricKey) {
+  const decryptMessage = useCallback(async (encryptedContent: EncryptedMessageContent): Promise<string> => {
+    const activeConv = activeConversationRef.current;
+    if (!activeConv?.securitySettings.symmetricKey) {
       throw new Error("Symmetric key not available for decryption");
     }
     const decoder = new TextDecoder();
     const iv = hexToBuf(encryptedContent.iv);
     const encryptedData = hexToBuf(encryptedContent.encryptedData);
 
+    // Type assertion to ensure compatibility with Web Crypto API
     const decryptedData = await window.crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: iv.buffer as ArrayBuffer },
-      activeConversationRef.current.securitySettings.symmetricKey,
-      encryptedData.buffer as ArrayBuffer
+      { name: "AES-GCM", iv: iv as BufferSource },
+      activeConv.securitySettings.symmetricKey,
+      encryptedData as BufferSource
     );
 
     return decoder.decode(decryptedData);
-  };
+  }, []);
 
   const handleIncomingMessage = useCallback(async (messageData: Message & { conversationId: string }) => {
     let content = messageData.content;
@@ -199,7 +277,6 @@ const MessagesPage: React.FC = () => {
       try {
         content = await decryptMessage(messageData.content);
       } catch (error) {
-        // Handle decryption failure gracefully
         content = '[Encrypted message could not be decrypted]';
       }
     }
@@ -275,7 +352,6 @@ const MessagesPage: React.FC = () => {
           }
           break;
         default:
-          // Silently ignore unhandled WebSocket message types
           break;
       }
     };
@@ -283,69 +359,6 @@ const MessagesPage: React.FC = () => {
     ws.onclose = () => setIsWsConnected(false);
     ws.onerror = () => setIsWsConnected(false);
   }, [handleIncomingMessage, handleKeyExchange]);
-
-  const apiService = {
-    getConversations: async (): Promise<Conversation[]> => {
-      return [
-        {
-          id: 'conv1',
-          participants: [
-            { id: 'user1', name: 'Alex Johnson', avatar: '/avatars/alex.jpg', status: 'online', isPremium: true },
-            { id: 'user2', name: 'Sam Wilson', avatar: '/avatars/sam.jpg', status: 'away', lastSeen: '2 hours ago', isPremium: false }
-          ],
-          lastMessage: {
-            id: 'msg1',
-            senderId: 'user2',
-            receiverId: 'user1',
-            content: 'Hey, are we still meeting tomorrow?',
-            timestamp: new Date(Date.now() - 3600000),
-            read: true,
-            delivered: true,
-            encrypted: false,
-            type: 'text',
-            status: 'read'
-          },
-          unreadCount: 0,
-          isGroup: false,
-          createdAt: new Date(Date.now() - 86400000),
-          isEncrypted: false,
-          isDisappearing: false,
-          disappearingDuration: 0,
-          isMuted: false,
-          securitySettings: {
-            isEncrypted: false,
-            encryptionAlgorithm: 'AES-GCM',
-            keyExchangeCompleted: false
-          }
-        }
-      ];
-    },
-    getMessages: async (_conversationId: string): Promise<Message[]> => {
-      return [
-        {
-          id: 'msg1',
-          senderId: 'user2',
-          receiverId: 'user1',
-          content: 'Hey, are we still meeting tomorrow?',
-          timestamp: new Date(Date.now() - 3600000),
-          read: true,
-          delivered: true,
-          encrypted: false,
-          type: 'text',
-          status: 'read'
-        }
-      ];
-    },
-    sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'status' | 'delivered'>): Promise<Message> => {
-      return {
-        ...message,
-        id: `msg${Date.now()}`,
-        timestamp: new Date(),
-        status: 'sent',
-        delivered: true
-      };
-    }
-  };
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -366,7 +379,7 @@ const MessagesPage: React.FC = () => {
       if (wsRef.current) wsRef.current.close();
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     };
-  }, [initWebSocket, apiService]);
+  }, [initWebSocket]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -393,7 +406,6 @@ const MessagesPage: React.FC = () => {
       try {
         content = await encryptMessage(newMessage);
       } catch (error) {
-        // Handle encryption failure gracefully
         return;
       }
     }
@@ -433,7 +445,7 @@ const MessagesPage: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -443,7 +455,7 @@ const MessagesPage: React.FC = () => {
   const handleTyping = () => {
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
-      // Typing indicator timeout - no action needed
+      // Idle out typing indicator
     }, 2000);
   };
 
@@ -482,6 +494,15 @@ const MessagesPage: React.FC = () => {
     setGroupMembers([]);
   };
 
+  // Memoized filter lists to avoid processing arrays on unrelated state changes
+  const filteredConversations = useMemo(() => {
+    return conversations.filter(conv => 
+      conv.isGroup 
+        ? conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase()) 
+        : conv.participants.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }, [conversations, searchQuery]);
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar - Conversations List */}
@@ -514,51 +535,49 @@ const MessagesPage: React.FC = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {conversations
-            .filter(conv => conv.isGroup ? conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase()) : conv.participants.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())))
-            .map((conversation) => (
-              <div
-                key={conversation.id}
-                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition ${activeConversation?.id === conversation.id ? 'bg-blue-50' : ''}`}
-                onClick={() => {
+          {filteredConversations.map((conversation) => (
+            <div
+              key={conversation.id}
+              className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition ${activeConversation?.id === conversation.id ? 'bg-blue-50' : ''}`}
+              onClick={() => {
+                setActiveConversation(conversation);
+                setMessages([]);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
                   setActiveConversation(conversation);
                   setMessages([]);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setActiveConversation(conversation);
-                    setMessages([]);
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="flex items-center">
-                  {conversation.isGroup ? (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold">
-                      {conversation.groupName?.charAt(0)}
-                    </div>
-                  ) : (
-                    <img
-                      src={conversation.participants.find(p => p.id !== 'user1')?.avatar || '/avatars/default.jpg'}
-                      alt="Avatar"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                  )}
-                  <div className="ml-3 flex-1 min-w-0">
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-semibold text-gray-900 truncate">
-                        {conversation.isGroup ? conversation.groupName : conversation.participants.find(p => p.id !== 'user1')?.name}
-                      </h3>
-                    </div>
-                    <p className="text-sm text-gray-500 truncate mt-1">
-                      {typeof conversation.lastMessage?.content === 'string' ? conversation.lastMessage.content : '[Message]'}
-                    </p>
+                }
+              }}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="flex items-center">
+                {conversation.isGroup ? (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold">
+                    {conversation.groupName?.charAt(0)}
                   </div>
+                ) : (
+                  <img
+                    src={conversation.participants.find(p => p.id !== 'user1')?.avatar || '/avatars/default.jpg'}
+                    alt="Avatar"
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                )}
+                <div className="ml-3 flex-1 min-w-0">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-semibold text-gray-900 truncate">
+                      {conversation.isGroup ? conversation.groupName : conversation.participants.find(p => p.id !== 'user1')?.name}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-gray-500 truncate mt-1">
+                    {typeof conversation.lastMessage?.content === 'string' ? conversation.lastMessage.content : '[Message]'}
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -616,7 +635,7 @@ const MessagesPage: React.FC = () => {
                 <div className="mb-2 p-2 bg-blue-50 text-blue-800 rounded text-xs flex justify-between">
                   <span>End-to-End Encryption Armed</span>
                   <button onClick={() => setShowSecureOptions(false)} className="cursor-pointer">
-                    <FiX />
+                    <FiX className="w-3 h-3" />
                   </button>
                 </div>
               )}
@@ -625,7 +644,7 @@ const MessagesPage: React.FC = () => {
                 <div className="mb-2 p-2 bg-purple-50 text-purple-800 rounded text-xs flex justify-between">
                   <span>Disappearing Mode active ({_disappearingDuration}m)</span>
                   <button onClick={() => setShowDisappearingOptions(false)} className="cursor-pointer">
-                    <FiX />
+                    <FiX className="w-3 h-3" />
                   </button>
                 </div>
               )}
@@ -642,7 +661,7 @@ const MessagesPage: React.FC = () => {
                   placeholder="Type a message..."
                   value={newMessage}
                   onChange={(e) => { setNewMessage(e.target.value); handleTyping(); }}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyDown}
                   className="flex-1 p-2 bg-gray-100 rounded-lg focus:outline-none"
                 />
                 <button onClick={handleSendMessage} className="p-2 bg-blue-500 text-white rounded-full">
@@ -661,7 +680,6 @@ const MessagesPage: React.FC = () => {
                   <FiMic className="w-5 h-5 text-gray-600 cursor-pointer" />
                   <FaCoins className="w-[18px] h-[18px] text-yellow-500 cursor-pointer" />
                   <FiImage className="w-5 h-5 text-gray-600 cursor-pointer" />
-                  <FaCoins className="w-[18px] h-[18px] text-yellow-500 cursor-pointer" />
                   <FiGift className="w-5 h-5 text-pink-500 cursor-pointer" />
                 </div>
               )}
@@ -712,7 +730,7 @@ const MessagesPage: React.FC = () => {
                         aria-label={`Remove ${m.name} from group`}
                         type="button"
                       >
-                        <FiX />
+                        <FiX className="w-3 h-3" />
                       </button>
                     </span>
                   ))}

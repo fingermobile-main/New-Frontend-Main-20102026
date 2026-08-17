@@ -1,21 +1,24 @@
-import React from 'react';
+import { Link} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { logError } from '../utils/errorLogger';
 import MainLayout from '../components/layout/MainLayout';
-import { Link } from "react-router-dom";
+
 import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
 import { TrashIcon } from '../icons';
 
 const AccountDeletionPage: React.FC = () => {
   const { ficBalance } = useAppContext();
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
     reason: "",
     confirmDeletion: false
   });
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitSuccess, setSubmitSuccess] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

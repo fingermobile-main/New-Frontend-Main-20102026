@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import SystemOverview from '../components/admin/SystemOverview';
 import AdsManager from '../components/admin/AdsManager';
@@ -9,7 +9,7 @@ import { ShieldCheckIcon, ChartBarIcon, CogIcon, BellAlertIcon, UserCircleIcon }
 
 const AdminDashboardPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "overview" | "ads" | "analytics" | "security"
   >("overview");
 

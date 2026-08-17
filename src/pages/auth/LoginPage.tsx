@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Phone, Shield, Fingerprint } from 'lucide-react';
 import authService from '../../services/authService';

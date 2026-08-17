@@ -1,6 +1,8 @@
-import React from 'react';
+import { useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
-import { useParams, useNavigate } from "react-router-dom";
+
 // Use require for CommonJS compatibility with react-dnd
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { DndProvider } = require("react-dnd");
@@ -183,53 +185,53 @@ const EditorPage: React.FC = () => {
   const { pageId } = useParams();
   const navigate = useNavigate();
   const { showToast, ficBalance: _ficBalance } = useAppContext();
-  const editorContext = React.useContext(EditorContext) as any;
+  const editorContext = useContext(EditorContext) as any;
   const handleSavePage = editorContext?.saveProject || (async () => {});
-  const [components, setComponents] = React.useState<EditorComponent[]>([]);
-  const [pageName, setPageName] = React.useState("Untitled Page");
-  const [selectedComponentId, setSelectedComponentId] = React.useState<string | null>(
+  const [components, setComponents] = useState<EditorComponent[]>([]);
+  const [pageName, setPageName] = useState("Untitled Page");
+  const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
     null,
   );
-  const [isSaving, setIsSaving] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [aiPrompt, setAiPrompt] = React.useState<string>("");
-  const [isGeneratingAi, setIsGeneratingAi] = React.useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [aiPrompt, setAiPrompt] = useState<string>("");
+  const [isGeneratingAi, setIsGeneratingAi] = useState<boolean>(false);
 
   // Required functions
-  const onLike = React.useCallback(async (_postId: string) => {
+  const onLike = useCallback(async (_postId: string) => {
     showToast("Like action triggered", "info");
   }, [showToast]);
 
-  const onAddComment = React.useCallback(async (_postId: string, _comment: string) => {
+  const onAddComment = useCallback(async (_postId: string, _comment: string) => {
     showToast("Comment action triggered", "info");
   }, [showToast]);
 
-  const onOpenGiftModal = React.useCallback(async (_postId: string) => {
+  const onOpenGiftModal = useCallback(async (_postId: string) => {
     showToast("Gift modal opened", "info");
   }, [showToast]);
 
-  const onOpenPaylinkModal = React.useCallback(async (_postId: string) => {
+  const onOpenPaylinkModal = useCallback(async (_postId: string) => {
     showToast("Paylink modal opened", "info");
   }, [showToast]);
 
-  const onVote = React.useCallback(async (_postId: string, _voteType: unknown) => {
+  const onVote = useCallback(async (_postId: string, _voteType: unknown) => {
     showToast("Vote action triggered", "info");
   }, [showToast]);
 
-  const handleDeletePost = React.useCallback(async (_postId?: string) => {
+  const handleDeletePost = useCallback(async (_postId?: string) => {
     showToast("Delete post action triggered", "info");
   }, [showToast]);
 
-  const handleTokenizePost = React.useCallback(async (_postId?: string) => {
+  const handleTokenizePost = useCallback(async (_postId?: string) => {
     showToast("Tokenize post action triggered", "info");
   }, [showToast]);
 
-  const handleAiAssist = React.useCallback(async (..._args: unknown[]) => {
+  const handleAiAssist = useCallback(async (..._args: unknown[]) => {
     showToast("AI assist action triggered", "info");
     return { success: true, message: "AI assist completed" };
   }, [showToast]);
 
-  const handleGenerateWithAi = React.useCallback(async () => {
+  const handleGenerateWithAi = useCallback(async () => {
     if (!aiPrompt.trim()) {
       showToast("Please enter a prompt for AI generation.");
       return;
@@ -249,7 +251,7 @@ const EditorPage: React.FC = () => {
     }
   }, [aiPrompt, showToast]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let isMounted = true;
 
     const fetchPageData = async () => {
@@ -292,7 +294,7 @@ const EditorPage: React.FC = () => {
     };
   }, [pageId, navigate, showToast]);
 
-  const addComponent = React.useCallback((type: string) => {
+  const addComponent = useCallback((type: string) => {
     let defaultProps: any = {};
     let componentType: EditorComponent["type"] = "text";
 
@@ -339,7 +341,7 @@ const EditorPage: React.FC = () => {
     setComponents((prev) => [...prev, newComponent]);
   }, []);
 
-  const updateComponent = React.useCallback((
+  const updateComponent = useCallback((
   id: string,
   newProps: Partial<EditorComponent["props"]>,
   ) => {
@@ -350,14 +352,14 @@ const EditorPage: React.FC = () => {
     );
   }, []);
 
-  const deleteComponent = React.useCallback((id: string) => {
+  const deleteComponent = useCallback((id: string) => {
     setComponents((prev) => prev.filter((c) => c.id !== id));
     if (selectedComponentId === id) {
       setSelectedComponentId(null);
     }
   }, [selectedComponentId]);
 
-  const moveComponent = React.useCallback((dragIndex: number, hoverIndex: number) => {
+  const moveComponent = useCallback((dragIndex: number, hoverIndex: number) => {
     setComponents((prev) => {
       const newComponents = [...prev];
       const [draggedItem] = newComponents.splice(dragIndex, 1);
@@ -369,7 +371,7 @@ const EditorPage: React.FC = () => {
   const selectedComponent =
     components.find((c) => c.id === selectedComponentId) || null;
 
-  const generatePageHtml = React.useCallback((forExport = false) => {
+  const generatePageHtml = useCallback((forExport = false) => {
     const componentHtml = components
       .map((c) => {
         // 确保 props 存在
@@ -410,7 +412,7 @@ const EditorPage: React.FC = () => {
         `;
   }, [components, pageName]);
 
-  const handlePreview = React.useCallback(() => {
+  const handlePreview = useCallback(() => {
     const previewWindow = window.open("", "_blank");
     if (previewWindow) {
       const htmlContent = generatePageHtml(true);
@@ -419,7 +421,7 @@ const EditorPage: React.FC = () => {
     }
   }, [generatePageHtml]);
 
-  const handleExportHtml = React.useCallback(() => {
+  const handleExportHtml = useCallback(() => {
     const htmlContent = generatePageHtml(true);
     const blob = new Blob([htmlContent], { type: "text/html" });
     const url = URL.createObjectURL(blob);
@@ -433,7 +435,7 @@ const EditorPage: React.FC = () => {
     showToast("HTML file exported successfully!");
   }, [generatePageHtml, pageName, showToast]);
 
-  const handleSaveAndDeploy = React.useCallback(async () => {
+  const handleSaveAndDeploy = useCallback(async () => {
     if (!pageName.trim()) {
       showToast("Please enter a page name before saving.");
       return;

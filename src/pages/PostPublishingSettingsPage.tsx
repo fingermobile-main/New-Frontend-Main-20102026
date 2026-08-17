@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { usePostPublishing } from '../contexts/PostPublishingContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -13,7 +12,7 @@ const PostPublishingSettingsPage: React.FC = () => {
   const { settings, updateSettings, resetSettings, applyAIRecommendations, saveSettings } = usePostPublishing();
   const { showToast } = useAppContext();
   const { member } = useAuth();
-  const [isApplyingSuggestions, setIsApplyingSuggestions] = React.useState(false);
+  const [isApplyingSuggestions, setIsApplyingSuggestions] = useState(false);
 
   const handleApplyAiSuggestions = async () => {
     setIsApplyingSuggestions(true);

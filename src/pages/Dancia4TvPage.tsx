@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 /*
  * FingerMobile Protocol™ - Dancia4Tv Streaming Platform Page
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -43,41 +43,41 @@ const Dancia4TvPage: React.FC = () => {
   } = useDancia4TvData();
   const { showToast } = useAppContext();
 
-  const [showGenreSelection, setShowGenreSelection] = React.useState(true);
-  const [showArtistSelection, setShowArtistSelection] = React.useState(false);
-  const [showAgeVerification, setShowAgeVerification] = React.useState(false);
-  const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
-  const [selectedArtists, setSelectedArtists] = React.useState<string[]>([]);
-  const [activeTab, setActiveTab] = React.useState<
+  const [showGenreSelection, setShowGenreSelection] = useState(true);
+  const [showArtistSelection, setShowArtistSelection] = useState(false);
+  const [showAgeVerification, setShowAgeVerification] = useState(false);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<
     "home" | "browse" | "subscriptions" | "my-library"
   >("home");
 
   // State for database integration
-  const [danciaVideos, setDanciaVideos] = React.useState<Video[]>([]);
-  const [loadingVideos, setLoadingVideos] = React.useState<boolean>(true);
-  const [danciaSubscriptionPlans, setDanciaSubscriptionPlans] = React.useState<
+  const [danciaVideos, setDanciaVideos] = useState<Video[]>([]);
+  const [loadingVideos, setLoadingVideos] = useState<boolean>(true);
+  const [danciaSubscriptionPlans, setDanciaSubscriptionPlans] = useState<
     SubscriptionPlan[]
   >([]);
-  const [loadingPlans, setLoadingPlans] = React.useState<boolean>(true);
-  const [danciaGenres, setDanciaGenres] = React.useState<string[]>([]);
-  const [loadingGenres, setLoadingGenres] = React.useState<boolean>(true);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [loadingPlans, setLoadingPlans] = useState<boolean>(true);
+  const [danciaGenres, setDanciaGenres] = useState<string[]>([]);
+  const [loadingGenres, setLoadingGenres] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Enhanced state for member preferences and recommendations
-  const [recommendedVideos, setRecommendedVideos] = React.useState<Video[]>([]);
-  const [trendingVideos, setTrendingVideos] = React.useState<Video[]>([]);
-  const [memberPlayHistory, setMemberPlayHistory] = React.useState<Video[]>([]);
-  const [memberWatchlist, setMemberWatchlist] = React.useState<Video[]>([]);
-  const [displayMode, setDisplayMode] = React.useState<DisplayMode>("grid");
-  const [sortBy, setSortBy] = React.useState<SortCriteria>("name");
-  const [showFavoritesOnly, setShowFavoritesOnly] = React.useState<boolean>(false);
-  const [groupVideos, setGroupVideos] = React.useState<boolean>(false);
-  const [groupAudio, setGroupAudio] = React.useState<boolean>(false);
-  const [showSettingsModal, setShowSettingsModal] = React.useState<boolean>(false);
+  const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
+  const [trendingVideos, setTrendingVideos] = useState<Video[]>([]);
+  const [memberPlayHistory, setMemberPlayHistory] = useState<Video[]>([]);
+  const [memberWatchlist, setMemberWatchlist] = useState<Video[]>([]);
+  const [displayMode, setDisplayMode] = useState<DisplayMode>("grid");
+  const [sortBy, setSortBy] = useState<SortCriteria>("name");
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
+  const [groupVideos, setGroupVideos] = useState<boolean>(false);
+  const [groupAudio, setGroupAudio] = useState<boolean>(false);
+  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
 
   // Load data from database on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -139,7 +139,7 @@ const Dancia4TvPage: React.FC = () => {
   }, [currentMember]);
 
   // Check if member has completed onboarding
-  React.useEffect(() => {
+  useEffect(() => {
     if (currentMember) {
       // Check if member has completed onboarding (selected genres and artists)
       // This would typically come from member profile data
@@ -483,7 +483,7 @@ const Dancia4TvPage: React.FC = () => {
                   <div
                     key={index}
                     className="movie-type-card bg-gray-800 rounded-lg p-4 text-center hover:bg-gray-700 transition-colors cursor-pointer"
-                    onClick={() => filterByMovieType(type)}
+                    onClick={() => filterByMovieType(type)} role="button" tabIndex={0}
                   >
                     <h3 className="text-lg font-semibold text-white">{type}</h3>
                   </div>
@@ -663,8 +663,8 @@ const AgeVerificationModalLocal: React.FC<{
   onVerify: (year: number, month: number) => void;
 }> = ({ onVerify }) => {
   const { showToast } = useAppContext();
-  const [birthYear, setBirthYear] = React.useState("");
-  const [birthMonth, setBirthMonth] = React.useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

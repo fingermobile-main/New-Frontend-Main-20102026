@@ -1,4 +1,5 @@
-import React from 'react';
+import { useNavigate} from 'react-router-dom';
+import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -7,8 +8,7 @@ import CanaryAdsPage from '../CanaryAdsPage';
 // Mock the useAds hook
 const mockUseAds = jest.fn();
 jest.mock("../../hooks/useAds", () => ({
-  useAds: (...args: any[]) => mockUseAds(...args),
-}));
+  useAds: (...args: any[]) => mockUseAds(...args)}));
 
 // Mock the icons
 jest.mock("../../components/icons.tsx", () => ({
@@ -26,12 +26,9 @@ jest.mock("../../contexts/AppContext.tsx", () => ({
       avatarUrl: "https://example.com/avatar.jpg",
       role: "Member",
       ficBalance: 100,
-      isLoggedIn: true,
-    },
+      isLoggedIn: true},
     handleSubmitAdCampaign: jest.fn(),
-    showToast: jest.fn(),
-  }),
-}));
+    showToast: jest.fn()})}));
 
 // Mock the MainLayout component
 jest.mock("../../components/layout/MainLayout", () => {
@@ -39,16 +36,14 @@ jest.mock("../../components/layout/MainLayout", () => {
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="main-layout">{children}</div>
-    ),
-  };
+    )};
 });
 
 // Mock the LoadingSpinner component
 jest.mock("../../components/LoadingSpinner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="loading-spinner">Loading...</div>,
-  };
+    default: () => <div data-testid="loading-spinner">Loading...</div>};
 });
 
 // Mock react-router-dom
@@ -56,8 +51,7 @@ jest.mock("react-router-dom", () => ({
   NavLink: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  useNavigate: () => jest.fn(),
-}));
+  useNavigate: () => jest.fn()}));
 
 describe("CanaryAdsPage", () => {
   const mockAds = [
@@ -68,8 +62,7 @@ describe("CanaryAdsPage", () => {
       placement: "feed",
       impressions: 1000,
       clicks: 50,
-      cost: 100,
-    },
+      cost: 100},
     {
       id: "2",
       title: "Test Ad 2",
@@ -77,8 +70,7 @@ describe("CanaryAdsPage", () => {
       placement: "sidebar",
       impressions: 2000,
       clicks: 100,
-      cost: 200,
-    },
+      cost: 200},
   ];
 
   beforeEach(() => {
@@ -90,8 +82,7 @@ describe("CanaryAdsPage", () => {
       ads: [],
       loading: true,
       error: null,
-      refreshAds: jest.fn(),
-    });
+      refreshAds: jest.fn()});
 
     render(<CanaryAdsPage />);
 
@@ -103,8 +94,7 @@ describe("CanaryAdsPage", () => {
       ads: mockAds,
       loading: false,
       error: null,
-      refreshAds: jest.fn(),
-    });
+      refreshAds: jest.fn()});
 
     render(<CanaryAdsPage />);
 
@@ -119,8 +109,7 @@ describe("CanaryAdsPage", () => {
       ads: [],
       loading: false,
       error: "Failed to fetch ads.",
-      refreshAds: jest.fn(),
-    });
+      refreshAds: jest.fn()});
 
     render(<CanaryAdsPage />);
 

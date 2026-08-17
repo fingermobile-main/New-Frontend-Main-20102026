@@ -1,5 +1,8 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
+
 import { useAuth } from '../../../contexts/AuthContext';
 import { useHallmark } from '../../../contexts/HallmarkContext';
 import { useGem } from '../../../contexts/GemContext';
@@ -13,7 +16,7 @@ const CommunityManagementPage: React.FC = () => {
   const { hallmarks } = useHallmark();
   const { gems } = useGem();
   const { groups } = useGroup();
-  const [activeTab, setActiveTab] = React.useState<"hallmarks" | "gems" | "groups">(
+  const [activeTab, setActiveTab] = useState<"hallmarks" | "gems" | "groups">(
     "hallmarks",
   );
 

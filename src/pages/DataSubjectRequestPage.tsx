@@ -1,17 +1,18 @@
-import React from 'react';
-import MainLayout from '../components/layout/MainLayout';
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import MainLayout from '../components/layout/MainLayout';
+
 
 const DataSubjectRequestPage: React.FC = () => {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     requestType: 'access',
     message: ''
   });
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitSuccess, setSubmitSuccess] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

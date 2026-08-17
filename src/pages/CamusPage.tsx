@@ -1,4 +1,6 @@
-import React from 'react';
+import { useNavigate} from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+
 /*
  * FingerMobile Protocol™ - CAMUS Learning Management System Page
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -12,7 +14,7 @@ import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import { GiftIcon, UserCircleIcon } from '../icons';
 
-import { useNavigate } from "react-router-dom";
+
 import { useAuth } from '../contexts/AuthContext';
 import {
   CamusIcon,
@@ -53,7 +55,7 @@ interface CourseCardProps {
   students: number;
   price: number;
   imageUrl: string;
-  description: string;
+  description?: string;
   category: string;
 }
 
@@ -61,15 +63,15 @@ const CamusPage: React.FC = () => {
   const { member } = useAuth();
   const navigate = useNavigate();
   const { showToast, ficBalance } = useAppContext();
-  const [filters, setFilters] = React.useState<CourseFilters>({
+  const [filters, setFilters] = useState<CourseFilters>({
     query: "",
     category: "all",
     sortBy: "popular"
   });
 
-  const [filteredCourses, setFilteredCourses] = React.useState(CAMUS_COURSES);
+  const [filteredCourses, setFilteredCourses] = useState(CAMUS_COURSES);
 
-  const applyFilters = React.useCallback((newFilters: CourseFilters) => {
+  const applyFilters = useCallback((newFilters: CourseFilters) => {
     let result = [...CAMUS_COURSES];
 
     // Apply search filter
@@ -114,7 +116,7 @@ const CamusPage: React.FC = () => {
     setFilteredCourses(result);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     applyFilters(filters);
   }, [filters, applyFilters]);
 
@@ -160,6 +162,7 @@ const CamusPage: React.FC = () => {
       onClick={() =>
         handleFiltersChange({ ...filters, category: category.name })
       }
+      role="button" tabIndex={0}
     >
       <div className="text-3xl">{category.icon}</div>
       <div>

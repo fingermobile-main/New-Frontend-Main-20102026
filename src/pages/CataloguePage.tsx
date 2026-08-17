@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import PhotoCreditCard from '../components/PhotoCreditCard';
 import { CatalogueIcon } from '../icons';
@@ -12,13 +12,13 @@ const CataloguePage: React.FC = () => {
     handleDownloadPhotoCredit,
     showToast
   } = useAppContext();
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [filters, setFilters] = React.useState({
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
     category: "all",
     orientation: "all",
     color: "all"
   });
-  const [itemToDownload, setItemToDownload] = React.useState<PhotoCreditItem | null>(
+  const [itemToDownload, setItemToDownload] = useState<PhotoCreditItem | null>(
     null,
   );
 

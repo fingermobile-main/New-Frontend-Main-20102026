@@ -1,32 +1,49 @@
-import React from 'react';
+import { useParams, NavLink } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
-import { useParams, NavLink } from "react-router-dom";
+
 import { PostContext } from '../contexts/PostContext';
 import { useAuth } from '../contexts/AuthContext';
 import TabButton from '../components/TabButton';
 import CommentSection from '../components/CommentSection';
 import { useCourseDetail } from '../hooks/useCourseDetail';
-import type { Course } from '../types';
 
 const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { member } = useAuth();
   const { ficBalance, handleAiAssist } = useAppContext();
-  const postContext = React.useContext(PostContext);
+  const postContext = useContext(PostContext);
   const handleAddNewComment = postContext?.handleAddNewComment;
 
-  const {
-    course,
-    enrollment,
-    loading,
-    error,
-    enrollInCourse,
-    updateLessonProgress
-  } = useCourseDetail(courseId || "", member?.id);
+  const memberIdString = member?.id ? (typeof member.id === 'string' ? member.id : String(member.id)) : undefined;
+  
+  const { 
+    course, 
+    enrollments, 
+    loading, 
+    error 
+  } = useCourseDetail(courseId || '');
 
-  const [activeTab, setActiveTab] = React.useState("curriculum");
+  const [activeTab, setActiveTab] = useState("curriculum");
 
+  const currentUserId = localStorage.getItem('userId');
+  const enrollment = enrollments?.find((enrollment) => 
+    enrollment.memberId === currentUserId && 
+    enrollment.courseId === courseId
+  );
   const isEnrolled = !!enrollment;
+
+  const updateLessonProgress = (courseId: string, lessonId: string, completed: boolean) => {
+    // Placeholder action until course progress is wired into backend
+    console.log('Update lesson progress', { courseId, lessonId, completed });
+  };
+
+  const enrollInCourse = (courseId: string) => {
+    // Placeholder action until course enrollment is wired into backend
+    console.log('Enroll in course', courseId);
+  };
 
   if (loading) {
     return (
@@ -59,16 +76,17 @@ const CourseDetailPage: React.FC = () => {
     (acc: number, mod: unknown) => acc + (mod.lessons?.length || 0),
     0,
   ) || 0;
+  
   const completedLessonsCount = enrollment?.completedLessons?.length || 0;
-  const progress =
-    totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0;
+  const progress = totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0;
 
   const LessonItem: React.FC<{ lesson: any; isCompleted: boolean }> = ({
     lesson,
     isCompleted
   }) => {
-    const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateLessonProgress(course.id, lesson.id, e.target.checked);
+    const handleToggle = (lesson: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const lessonIdString = typeof lesson.id === 'string' ? lesson.id : String(lesson.id);
+      updateLessonProgress(course.id.toString(), lessonIdString, e.target.checked);
     };
 
     return (
@@ -77,7 +95,7 @@ const CourseDetailPage: React.FC = () => {
           <input
             type="checkbox"
             checked={isCompleted}
-            onChange={handleToggle}
+            onChange={handleToggle(lesson)}
             disabled={!isEnrolled}
             className="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue disabled:opacity-50"
           />
@@ -92,6 +110,11 @@ const CourseDetailPage: React.FC = () => {
         </span>
       </div>
     );
+  };
+
+  const handleEnroll = () => {
+    const courseIdString = typeof course.id === 'string' ? course.id : String(course.id);
+    enrollInCourse(courseIdString);
   };
 
   return (
@@ -166,7 +189,7 @@ const CourseDetailPage: React.FC = () => {
                       Price: ${course.price || 'Free'}
                     </p>
                     <button
-                      onClick={() => enrollInCourse(course.id)}
+                      onClick={handleEnroll}
                       className="w-full mt-4 py-2 bg-brand-blue text-white font-semibold rounded-lg"
                     >
                       Enroll Now

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import type { FeatureToggle } from '../../../types'; 
 import { PuzzlePieceIcon } from '../../../components/icons';
 
 const FeatureTogglesPage: React.FC = () => {
     const { featureToggles, setFeatureToggles, showToast } = useAppContext();
-    const [newSpecialDay, setNewSpecialDay] = React.useState('');
+    const [newSpecialDay, setNewSpecialDay] = useState('');
     
     const tropicalGiftsToggle = (featureToggles || []).find((t: FeatureToggle) => t.id === 'tropical_gifts');
 
@@ -18,12 +18,12 @@ const FeatureTogglesPage: React.FC = () => {
     const handleAddSpecialDay = (e: React.FormEvent) => {
         e.preventDefault();
         if (newSpecialDay && tropicalGiftsToggle && featureToggles) {
-            if (tropicalGiftsToggle.specialDays.includes(newSpecialDay)) {
+            if (tropicalGiftsToggle.specialDays?.includes(newSpecialDay)) {
                 showToast("This special day has already been added.");
                 return;
             }
 
-            const updatedDays = [...(tropicalGiftsToggle?.specialDays || []), newSpecialDay].sort();
+            const updatedDays = [...(tropicalGiftsToggle.specialDays || []), newSpecialDay].sort();
             const updated = featureToggles.map((t: FeatureToggle) => t.id === 'tropical_gifts' ? { ...t, specialDays: updatedDays } : t);
             setFeatureToggles?.(updated);
             setNewSpecialDay('');
@@ -103,7 +103,7 @@ const FeatureTogglesPage: React.FC = () => {
                                 <button type="submit" className="px-4 py-2 text-sm font-semibold bg-gray-200 rounded-md hover:bg-gray-300">Add Day</button>
                             </form>
                             <div className="flex flex-wrap gap-2">
-                                {tropicalGiftsToggle.specialDays.map((day: string) => (
+                                {(tropicalGiftsToggle.specialDays || []).map((day: string) => (
                                     <div key={day} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
                                         <span>{day}</span>
                                         <button onClick={() => handleRemoveSpecialDay(day)} className="text-red-500 font-bold text-xs leading-none hover:bg-red-100 rounded-full w-4 h-4 flex items-center justify-center">&times;</button>
@@ -119,4 +119,3 @@ const FeatureTogglesPage: React.FC = () => {
 };
 
 export default FeatureTogglesPage;
-

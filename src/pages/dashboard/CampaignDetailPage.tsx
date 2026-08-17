@@ -1,16 +1,18 @@
-import React from 'react';
+import { useParams, NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from '../../contexts/AppContext';
-import { useParams, NavLink } from "react-router-dom";
+
 
 import type { CampaignAnalytics } from '../../types';
 
 const CampaignDetailPage: React.FC = () => {
   const { campaignId } = useParams<{ campaignId: string }>();
   const { getCampaignDetails } = useAppContext();
-  const [analytics, setAnalytics] = React.useState<CampaignAnalytics | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [analytics, setAnalytics] = useState<CampaignAnalytics | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (campaignId && getCampaignDetails) {
       getCampaignDetails(campaignId).then((data: any) => {
         setAnalytics(data);

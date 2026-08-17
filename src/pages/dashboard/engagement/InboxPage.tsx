@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import { CHAT_CONTACTS } from '../../../constants';
 import type { ChatContact, ChatMessage, Contact, Message } from '../../../types';
@@ -6,18 +6,18 @@ import AnimatedAvatar from '../../../components/AnimatedAvatar';
 
 const InboxPage: React.FC = () => {
   const { messages, sendMessage, handleSendMessage, getMessages, createConversation, getConversations } = useAppContext();
-  const [selectedContact, setSelectedContact] = React.useState<ChatContact | null>(
+  const [selectedContact, setSelectedContact] = useState<ChatContact | null>(
     CHAT_CONTACTS[0] as ChatContact,
   );
-  const [newMessage, setNewMessage] = React.useState("");
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const activeMessages = React.useMemo(
+  const activeMessages = useMemo(
     () => (selectedContact ? messages[selectedContact.id] || [] : []),
     [selectedContact, messages],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeMessages]);
 

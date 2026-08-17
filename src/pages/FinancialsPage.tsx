@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useWeb3 } from '../contexts/Web3Context';
 import StatCard from '../components/StatCard';
 
 // --- Subcomponent: Decoupled Quick Actions Grid ---
 interface QuickAction {
   title: string;
-  description: string;
+  description?: string;
   icon: JSX.Element;
   color: string;
 }
@@ -90,7 +90,7 @@ TimeRangeSelector.displayName = "TimeRangeSelector";
 interface Transaction {
   id: string;
   date: string;
-  description: string;
+  description?: string;
   amount: string;
   type: 'credit' | 'debit';
 }
@@ -115,7 +115,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = React.memo(({ tran
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base text-gray-900">{transaction.date}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base font-medium text-gray-900">{transaction.description}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base font-medium text-gray-900">{transaction.description || 'No description'}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base text-gray-500">
                 <span className={transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}>
                   {transaction.amount}
@@ -143,7 +143,7 @@ TransactionHistory.displayName = "TransactionHistory";
 // --- Main Container Page Component ---
 const FinancialsPage: React.FC = () => {
   const { balance } = useWeb3();
-  const [timeRange, setTimeRange] = React.useState('30d');
+  const [timeRange, setTimeRange] = useState('30d');
 
   // Mock data for financial stats
   const convertFICtoUSD = (fic: number) => fic * 0.1; // Assuming 1 FIC = $0.10

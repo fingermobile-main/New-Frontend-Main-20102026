@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
 import { GiftIcon, LinkIcon, PlayIcon, UserCircleIcon, HeartIcon, ShareIcon, BookmarkIcon, DotsHorizontalIcon, SearchIcon, FilterIcon } from '../icons';
@@ -81,15 +83,15 @@ const VideosPage: React.FC = () => {
     }
   ];
 
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedVideo, setSelectedVideo] = React.useState<VideoType | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [paylinkDescription, setPaylinkDescription] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoType | null>(null);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Travel", "Food", "Technology", "Fitness", "Music", "Gaming"];
 

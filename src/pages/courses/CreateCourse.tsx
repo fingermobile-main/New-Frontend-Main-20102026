@@ -1,5 +1,8 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
+
 import { useCourseContext } from '../../contexts/CourseContext';
 import { useAppContext } from '../../contexts/AppContext';
 
@@ -8,7 +11,7 @@ const CreateCourse: React.FC = () => {
   const { createCourse, loading } = useCourseContext();
   const { ficBalance, showToast } = useAppContext();
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: 0,
@@ -30,7 +33,7 @@ const CreateCourse: React.FC = () => {
     ]
   });
 
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (
     e: React.ChangeEvent<

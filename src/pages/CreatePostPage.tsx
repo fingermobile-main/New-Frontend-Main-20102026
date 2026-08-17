@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import { useAI } from '../contexts/AIContext';
@@ -21,13 +21,13 @@ const CreatePostPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { generatePostContent, isLoading: aiLoading, error } = useAI();
   const { balance } = useWeb3();
-  const [prompt, setPrompt] = React.useState<string>("");
-  const [content, setContent] = React.useState<string>("");
-  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
-  const [showH2Composer, setShowH2Composer] = React.useState<boolean>(false);
-  const [postType, setPostType] = React.useState<"text" | "image" | "video">("text");
-  const [title, setTitle] = React.useState<string>("");
-  const [tags, setTags] = React.useState<string>("");
+  const [prompt, setPrompt] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [showH2Composer, setShowH2Composer] = useState<boolean>(false);
+  const [postType, setPostType] = useState<"text" | "image" | "video">("text");
+  const [title, setTitle] = useState<string>("");
+  const [tags, setTags] = useState<string>("");
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;

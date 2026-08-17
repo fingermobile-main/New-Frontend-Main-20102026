@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { GiftCard } from '../../types';
 
 const GiftCardsPage: React.FC = () => {
     const { giftCards, openModal } = useAppContext();
-    const [activeTab, setActiveTab] = React.useState<'your-cards' | 'buy' | 'redeem'>('your-cards');
+    const [activeTab, setActiveTab] = useState<'your-cards' | 'buy' | 'redeem'>('your-cards');
     
     // Mock gift card data
     const yourGiftCards = (giftCards || []).filter((card: GiftCard) => card.status === 'active' || card.status === 'used' || card.status === 'expired');

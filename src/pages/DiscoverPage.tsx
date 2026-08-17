@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { useAuth } from '../contexts/AuthContext';
 import { useWeb3 } from '../contexts/Web3Context';
@@ -137,48 +138,48 @@ const DiscoverPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { member } = useAuth();
   const { balance } = useWeb3();
-  const [activeTab, setActiveTab] = React.useState("discover");
-  const [posts, setPosts] = React.useState<Post[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedPostId, setSelectedPostId] = React.useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("discover");
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   // Required functions - matching expected types from PostCard
-  const onLike = React.useCallback(async (postId: string) => {
+  const onLike = useCallback(async (postId: string) => {
     showToast("Like action triggered", "info");
   }, [showToast]);
 
-  const onAddComment = React.useCallback(async (postId: string, comment: string) => {
+  const onAddComment = useCallback(async (postId: string, comment: string) => {
     showToast("Comment action triggered", "info");
   }, [showToast]);
 
-  const onOpenGiftModal = React.useCallback((postId: string) => {
+  const onOpenGiftModal = useCallback((postId: string) => {
     setSelectedPostId(postId);
     setShowGiftModal(true);
   }, []);
 
-  const onOpenPaylinkModal = React.useCallback((postId: string) => {
+  const onOpenPaylinkModal = useCallback((postId: string) => {
     setSelectedPostId(postId);
     setShowPaylinkModal(true);
   }, []);
 
-  const onVote = React.useCallback(async (postId: string, voteType: unknown) => {
+  const onVote = useCallback(async (postId: string, voteType: unknown) => {
     const voteStr = typeof voteType === 'string' ? voteType : 'up';
     showToast(`${voteStr} vote action triggered`, "info");
   }, [showToast]);
 
-  const handleDeletePost = React.useCallback(async (postId?: string) => {
+  const handleDeletePost = useCallback(async (postId?: string) => {
     if (!postId) return;
     showToast("Delete post action triggered", "info");
   }, [showToast]);
 
-  const handleTokenizePost = React.useCallback(async (postId?: string) => {
+  const handleTokenizePost = useCallback(async (postId?: string) => {
     if (!postId) return;
     showToast("Tokenize post action triggered", "info");
   }, [showToast]);
 
-  const handleAiAssist = React.useCallback(async (...args: unknown[]): Promise<AiAssistResponse> => {
+  const handleAiAssist = useCallback(async (...args: unknown[]): Promise<AiAssistResponse> => {
     const action = args[0] as string;
     const data = args[1] as AiAssistData;
     showToast("AI assist action triggered", "info");
@@ -186,45 +187,32 @@ const DiscoverPage: React.FC = () => {
   }, [showToast]);
 
   // Mock data initialization
-  React.useEffect(() => {
-    const mockPosts: Post[] = [
-      {
-        id: '1',
-        title: 'Amazing Tech Innovations in 2023',
-        content: 'Exploring the latest tech trends and innovations...',
-        author: { id: 'author1', name: 'Tech Enthusiast', avatar: '' },
-        timestamp: new Date().toISOString(),
-        likes: 24,
-        comments: 5,
-        shares: 2,
-        media: [{ type: 'image', url: '/placeholder-tech.jpg' }],
-        tags: ['tech', 'innovation'],
-        category: 'technology',
-        monetization: { enabled: true, price: 5 },
-        engagement: { likes: 24, comments: 5, shares: 2 },
-        visibility: 'public',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: '2',
-        title: 'Healthy Lifestyle Tips',
-        content: 'Simple ways to improve your daily routine...',
-        author: { id: 'author2', name: 'Health Guru', avatar: '' },
-        timestamp: new Date().toISOString(),
-        likes: 42,
-        comments: 12,
-        shares: 8,
-        media: [{ type: 'image', url: '/placeholder-health.jpg' }],
-        tags: ['health', 'wellness'],
-        category: 'lifestyle',
-        monetization: { enabled: false },
-        engagement: { likes: 42, comments: 12, shares: 8 },
-        visibility: 'public',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-    ];
+  useEffect(() => {
+    // Create mock posts without updatedAt if it doesn't exist in Post type
+    const mockPosts: Post[] = Array.from({ length: 10 }, (_, i) => ({
+      id: `post-${Date.now()}-${i}`,
+      authorId: `author-${i}`,
+      title: `Post ${i + 1}`,
+      content: `This is sample post content ${i + 1}.`,
+      body: `This is sample post content ${i + 1}.`,
+      excerpt: `This is sample post content ${i + 1}.`,
+      type: 'text',
+      media: [],
+      mediaUrl: '',
+      tags: ['sample', 'test'],
+      category: 'general',
+      status: 'published',
+      visibility: 'public',
+      isReported: false,
+      reportReasons: [],
+      reportedBy: [],
+      timestamp: new Date().toISOString(),
+      likes: Math.floor(Math.random() * 100),
+      comments: Math.floor(Math.random() * 50),
+      shares: Math.floor(Math.random() * 30),
+      createdAt: new Date().toISOString(),
+      // Remove updatedAt if it doesn't exist in Post type
+    }));
     
     setPosts(mockPosts);
     setLoading(false);
@@ -256,7 +244,7 @@ const DiscoverPage: React.FC = () => {
                   key={post.id}
                   post={post}
                   onLike={onLike}
-                  onAddComment={onAddComment}
+                  _onAddComment={onAddComment} // Change onAddComment to _onAddComment to match PostCardProps
                   onOpenGiftModal={onOpenGiftModal}
                   onOpenPaylinkModal={onOpenPaylinkModal}
                   onVote={onVote}

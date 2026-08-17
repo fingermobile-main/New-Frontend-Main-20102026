@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import { CommunityContext } from '../contexts/CommunityContext';
 
 const PhotosPage: React.FC = () => {
   const { member: currentMember } = useAuth();
-  const context = React.useContext(CommunityContext);
+  const context = useContext(CommunityContext);
   const photos = context ? context.posts.filter((p: any) => p.type === 'photo') : [];
 
   return (

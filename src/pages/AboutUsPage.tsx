@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import GiftModal from '../components/GiftModal';
@@ -8,12 +10,12 @@ import MainLayout from '../components/layout/MainLayout';
 
 const AboutUsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [paylinkDescription, setPaylinkDescription] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const onOpenGiftModal = () => {
     if (ficBalance <= 0) {

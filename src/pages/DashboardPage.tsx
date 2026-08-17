@@ -1,6 +1,7 @@
-import React from 'react';
-import { logError } from '../utils/errorLogger';
 import { Link } from 'react-router-dom';
+import React, {} from 'react';
+import { logError } from '../utils/errorLogger';
+
 import { useHaptic } from '../hooks/useHaptic';
 import { useToast } from '../components/Toast';
 import useDashboardData from '../hooks/useDashboardData';

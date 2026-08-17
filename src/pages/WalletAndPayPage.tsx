@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import MainLayout from '../components/layout/MainLayout';
 import {
   GiftIcon,
@@ -16,12 +18,12 @@ import { useAppContext } from "../contexts/AppContext";
 const WalletAndPayPage: React.FC = () => {
   const { ficBalance, openModal, showToast } = useAppContext();
 
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [paylinkDescription, setPaylinkDescription] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const onOpenGiftModal = () => {
     if (ficBalance <= 0) {

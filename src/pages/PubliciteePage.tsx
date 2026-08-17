@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { logError } from '../utils/errorLogger';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
@@ -35,12 +35,12 @@ interface PubliciteeVideo {
 
 const PubliciteePage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState("for-you");
-  const [isCreating, setIsCreating] = React.useState(false);
-  const [videoTitle, setVideoTitle] = React.useState("");
-  const [isPrivate, setIsPrivate] = React.useState(false);
-  const [isSpoiler, setIsSpoiler] = React.useState(false);
-  const [videoFile, setVideoFile] = React.useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState("for-you");
+  const [isCreating, setIsCreating] = useState(false);
+  const [videoTitle, setVideoTitle] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isSpoiler, setIsSpoiler] = useState(false);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   // Mock data for Publicitee videos
   const mockVideos: PubliciteeVideo[] = [

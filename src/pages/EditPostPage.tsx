@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAI } from '../hooks/useAI';
 import { useWeb3 } from '../contexts/Web3Context';
 import { useAppContext } from "../contexts/AppContext";
@@ -8,7 +8,7 @@ import { logError } from '../utils/errorLogger';
 
 // --- Subcomponent: AI Instruction Suggestions ---
 interface AISuggestionProps {
-  suggestions: Array<{ label: string; description: string; instruction: string }>;
+  suggestions: Array<{ label: string; description?: string; instruction: string }>;
   onSelect: (instruction: string) => void;
 }
 
@@ -81,12 +81,12 @@ const EditPostPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { loading: aiLoading, error } = useAI();
   const { balance } = useWeb3();
-  const [originalContent, setOriginalContent] = React.useState<string>('This is the original post content that would be edited with AI assistance. It could be anything from a short status update to a longer blog post.');
-  const [editedContent, setEditedContent] = React.useState<string>('');
-  const [instruction, setInstruction] = React.useState<string>('');
-  const [isEditing, setIsEditing] = React.useState<boolean>(false);
+  const [originalContent, setOriginalContent] = useState<string>('This is the original post content that would be edited with AI assistance. It could be anything from a short status update to a longer blog post.');
+  const [editedContent, setEditedContent] = useState<string>('');
+  const [instruction, setInstruction] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const handleEdit = React.useCallback(async () => {
+  const handleEdit = useCallback(async () => {
     if (!instruction.trim()) return;
     
     setIsEditing(true);
@@ -103,16 +103,16 @@ const EditPostPage: React.FC = () => {
     }
   }, [instruction, originalContent, showToast]);
 
-  const handleSave = React.useCallback(() => {
+  const handleSave = useCallback(() => {
     // In a real app, this would save the edited content
     showToast('Post saved successfully!', 'success');
   }, [showToast]);
 
-  const handleUseOriginal = React.useCallback(() => {
+  const handleUseOriginal = useCallback(() => {
     setEditedContent(originalContent);
   }, [originalContent]);
 
-  const handleSelectSuggestion = React.useCallback((suggestion: string) => {
+  const handleSelectSuggestion = useCallback((suggestion: string) => {
     setInstruction(suggestion);
   }, []);
 

@@ -1,19 +1,22 @@
-import React from 'react';
+import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from '../../contexts/AppContext';
 
-import { NavLink } from "react-router-dom";
+
 
 import { MOCK_CAMPAIGNS } from '../../constants';
 import type { Campaign } from '../../types';
 
 const CampaignsPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [campaigns] = React.useState<Campaign[]>(MOCK_CAMPAIGNS);
+  const [campaigns] = useState<Campaign[]>(MOCK_CAMPAIGNS);
 
   // Form state for creating a new campaign
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [couponValue, setCouponValue] = React.useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [couponValue, setCouponValue] = useState("");
 
   const handleCreateCampaign = (e: React.FormEvent) => {
     e.preventDefault();

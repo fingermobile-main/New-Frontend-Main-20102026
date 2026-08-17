@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import LegalLayout from '../../components/layout/LegalLayout';
 import { MembersIcon } from '../../components/icons';
 

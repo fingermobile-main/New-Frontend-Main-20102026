@@ -1,7 +1,8 @@
-import React from 'react';
+import { Outlet, useLocation} from 'react-router-dom';
+import React, {} from 'react';
 
 import { useAppContext } from '../../contexts/AppContext';
-import { Outlet, useLocation } from 'react-router-dom';
+
 import * as ReactRouterDOM from 'react-router-dom';
 import { FinancialsIcon, WalletIcon, CreditCardIcon, BanknotesIcon, GiftIcon, StarIcon, LockClosedIcon, VaultIcon, SubscriptionIcon, EarningsIcon, ReferralIcon, LoyaltyIcon, GiftCardIcon } from '../../icons';
 

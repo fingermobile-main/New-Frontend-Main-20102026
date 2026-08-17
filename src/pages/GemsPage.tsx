@@ -1,11 +1,12 @@
-import React from 'react';
-import { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { playAudio } from '../utils/audioPlayer';
 import apiService, { ApiService } from '../services/apiService';
 import { VoiceLine } from '../types';
 
-import { Link } from 'react-router-dom';
+
 import AdBanner from '../components/AdBanner';
 import FixedAdBanner from '../components/FixedAdBanner';
 import BurgerMenu from '../components/BurgerMenu';
@@ -47,26 +48,26 @@ interface Gem {
 }
 
 const GemsPage: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [showConvertModal, setShowConvertModal] = React.useState(false);
-  const [selectedGem, setSelectedGem] = React.useState<Gem | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState('');
-  const [paylinkAmount, setPaylinkAmount] = React.useState('');
-  const [convertAmount, setConvertAmount] = React.useState('');
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [showConvertModal, setShowConvertModal] = useState(false);
+  const [selectedGem, setSelectedGem] = useState<Gem | null>(null);
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
+  const [convertAmount, setConvertAmount] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
   const { ficBalance, showToast } = useAppContext();
   const { gems, loading, error, refreshGems } = useGems();
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [sortBy, setSortBy] = React.useState('recent');
-  const [filterBy, setFilterBy] = React.useState('all');
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
-  const [voiceLines, setVoiceLines] = React.useState<VoiceLine[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('recent');
+  const [filterBy, setFilterBy] = useState('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [voiceLines, setVoiceLines] = useState<VoiceLine[]>([]);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchVoiceLines = async () => {
       try {
         // Mock voice lines fetch - ApiService.voices not implemented

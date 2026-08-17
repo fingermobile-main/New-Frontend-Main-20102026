@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import UGCContentStudio from '../components/ugc/UGCContentStudio';
 import UGCPublishingTools from '../components/ugc/UGCPublishingTools';
@@ -18,7 +18,7 @@ import {
 } from '../icons';
 
 const UGCDashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "studio" | "analytics" | "monetization" | "scheduler"
   >("studio");
 

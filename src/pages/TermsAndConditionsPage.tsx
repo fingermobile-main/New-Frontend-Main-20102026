@@ -1,5 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import React, {} from 'react';
+
 
 const TermsAndConditionsPage: React.FC = () => {
   return (

@@ -1,0 +1,138 @@
+import React, {} from 'react';
+import { TrendingUp, Flame, Eye, Share2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+
+interface Trend {
+  id: string;
+  title: string;
+  category: string;
+  views: number;
+  shares: number;
+ 热度: number;
+  image?: string;
+}
+
+interface TrendsSlideProps {
+  trends?: Trend[];
+  onTrendClick?: (trendId: string) => void;
+}
+
+const TrendsSlide: React.FC<TrendsSlideProps> = ({
+  trends: propTrends,
+  onTrendClick
+}) => {
+  const defaultTrends: Trend[] = [
+    {
+      id: "1",
+      title: "AI Revolution in Content Creation",
+      category: "Technology",
+      views: 125000,
+      shares: 3400,
+      热度: 98
+    },
+    {
+      id: "2",
+      title: "Sustainable Fashion Trends 2026",
+      category: "Fashion",
+      views: 98000,
+      shares: 2800,
+      热度: 95
+    },
+    {
+      id: "3",
+      title: "Crypto Market Analysis",
+      category: "Finance",
+      views: 87000,
+      shares: 2100,
+      热度: 92
+    },
+    {
+      id: "4",
+      title: "Healthy Meal Prep Ideas",
+      category: "Health",
+      views: 76000,
+      shares: 1900,
+      热度: 89
+    },
+    {
+      id: "5",
+      title: "Travel Destinations for Summer",
+      category: "Travel",
+      views: 65000,
+      shares: 1600,
+      热度: 86
+    }
+  ];
+
+  const trends = propTrends || defaultTrends;
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    }
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
+  };
+
+  return (
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Flame className="h-6 w-6 text-orange-500" />
+          Trending Now
+        </h2>
+        <Badge variant="secondary">Top 5</Badge>
+      </div>
+
+      <div className="space-y-3">
+        {trends.map((trend, index) => (
+          <Card
+            key={trend.id}
+            className="hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => onTrendClick?.(trend.id)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-start gap-4">
+                <div className="text-3xl font-bold text-muted-foreground/30 min-w-[40px]">
+                  #{index + 1}
+                </div>
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-semibold text-lg line-clamp-2">
+                      {trend.title}
+                    </h3>
+                    <Badge variant="outline">{trend.category}</Badge>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Eye className="h-4 w-4" />
+                      {formatNumber(trend.views)}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Share2 className="h-4 w-4" />
+                      {formatNumber(trend.shares)}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <TrendingUp className="h-4 w-4" />
+                      {trend.热度}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Button variant="outline" className="w-full mt-4">
+        View All Trends
+      </Button>
+    </div>
+  );
+};
+
+export default TrendsSlide;

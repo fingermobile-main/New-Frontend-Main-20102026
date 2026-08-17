@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import DatabaseIntegrationReportCard from '../components/DatabaseIntegrationReportCard';
 import MainLayout from '../layouts/MainLayout';
@@ -7,7 +6,7 @@ import apiService, { ApiService } from '../services/apiService';
 
 
 const DatabaseIntegrationSummary: React.FC = () => {
-  const [integrationStatus, setIntegrationStatus] = React.useState([
+  const [integrationStatus, setIntegrationStatus] = useState([
     { id: 1, name: 'BeatwaveNG', status: 'connected' as const, endpoints: 12, lastSync: '2025-11-24 10:30:00' },
     { id: 2, name: 'Dancia-4Tv', status: 'connected' as const, endpoints: 8, lastSync: '2025-11-24 10:25:00' },
     { id: 3, name: 'FingerWars', status: 'connected' as const, endpoints: 15, lastSync: '2025-11-24 10:20:00' },

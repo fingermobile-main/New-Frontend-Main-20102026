@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 
 const GeneralSettingsPage = () => {
     const { settings, updateSettings, showToast } = useAppContext();
-    const [siteName, setSiteName] = React.useState('FingerMobile Protocol');
-    const [siteDescription, setSiteDescription] = React.useState('The official community platform.');
-    const [isSaving, setIsSaving] = React.useState(false);
+    const [siteName, setSiteName] = useState('FingerMobile Protocol');
+    const [siteDescription, setSiteDescription] = useState('The official community platform.');
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault();

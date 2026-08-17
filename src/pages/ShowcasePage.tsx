@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import PageHeader from '../components/PageHeader';
 import useShowcaseData from '../hooks/useShowcaseData';
 
@@ -6,7 +6,7 @@ interface ShowcaseItemProps {
   item: {
     title: string;
     imageUrl: string;
-    description: string;
+    description?: string;
     prompt: string;
   };
 }

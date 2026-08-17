@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -7,18 +7,18 @@ interface SecurityEvent {
   timestamp: string;
   eventType: string;
   source: string;
-  description: string;
+  description?: string;
   severity: string;
 }
 
 const AdminSecurityEventsPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [securityEvents, setSecurityEvents] = React.useState<SecurityEvent[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchSecurityEvents = async () => {
       try {
         const token = getToken();

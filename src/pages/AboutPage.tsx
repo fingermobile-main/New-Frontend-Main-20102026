@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 /*
  * FingerMobile Protocol™ - About Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -8,7 +9,6 @@ import React from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { useState } from 'react';
 import GiftModal from '../components/GiftModal';
 import CreatePaylinkModal from '../components/CreatePaylinkModal';
 import { useAppContext } from "../contexts/AppContext";
@@ -25,7 +25,7 @@ import apiService from '../services/api.service';
 
 interface Feature {
   title: string;
-  description: string;
+  description?: string;
   icon: React.ReactNode;
 }
 

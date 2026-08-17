@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
-import { useNavigate } from "react-router-dom";
-import { SeadsInitiative } from '../types/context';
+import { SeadsInitiative } from '../types/seads'; // Use the type from the types file
+
 import {
   MembersIcon,
   CalendarIcon,
@@ -15,69 +16,96 @@ import PageHeader from '../components/PageHeader';
 import EnhancedFilterBar, { FilterOptions } from '../components/shared/EnhancedFilterBar';
 
 interface FilterState {
-  query: string;
-  category: string;
-  sortBy: string;
+  category?: string;
+  status?: string;
+  dateRange?: [string, string];
+  location?: string;
+  searchQuery?: string;
+  sortBy?: string;
 }
 
 const SeadsPage: React.FC = () => {
-  const { seadsInitiatives = [], ficBalance } = useAppContext();
-  const [filteredInitiatives, setFilteredInitiatives] = React.useState<SeadsInitiative[]>([]);
-  const [filters, setFilters] = React.useState<FilterState>({
-    query: "",
-    category: "all",
-    sortBy: "newest"
-  });
+  const { seadsInitiatives, loading, error } = useAppContext();
+  const [filters, setFilters] = useState<FilterState>({});
+  const [filteredInitiatives, setFilteredInitiatives] = useState<SeadsInitiative[]>([]);
 
   // Initialize filtered initiatives when data is loaded
-  React.useEffect(() => {
-    if (seadsInitiatives.length > 0) {
-      applyFilters(filters, seadsInitiatives);
+  useEffect(() => {
+    if (seadsInitiatives?.length > 0) {
+      applyFilters(filters, seadsInitiatives as unknown as SeadsInitiative[]);
     }
   }, [seadsInitiatives]);
 
-  const applyFilters = React.useCallback((newFilters: FilterState, data: SeadsInitiative[] = seadsInitiatives) => {
+  const applyFilters = useCallback((newFilters: FilterState, data: SeadsInitiative[] = seadsInitiatives as unknown as SeadsInitiative[]) => {
     let result = [...data];
 
-    // Apply search query filter
-    if (newFilters.query) {
-      const searchQuery = newFilters.query.toLowerCase();
-      result = result.filter(
-        (init) =>
-          init.title.toLowerCase().includes(searchQuery) ||
-          init.description.toLowerCase().includes(searchQuery)
+    if (newFilters.category && newFilters.category !== "all") {
+      result = result.filter(init => 
+        init.category?.toLowerCase().includes(newFilters.category!.toLowerCase())
       );
     }
 
-    // Apply category filter
-    if (newFilters.category !== "all") {
-      result = result.filter(
-        (init) => init.category.toLowerCase() === newFilters.category.toLowerCase()
+    if (newFilters.status) {
+      result = result.filter(init => (init as any).status === newFilters.status);
+    }
+
+    if (newFilters.dateRange) {
+      const [startDate, endDate] = newFilters.dateRange;
+      result = result.filter(init => {
+        const initStartDate = init.startDate ? new Date(init.startDate) : new Date(0);
+        const initEndDate = init.endDate ? new Date(init.endDate) : new Date(8640000000000000); // Max date
+        const filterStartDate = startDate ? new Date(startDate) : new Date(0);
+        const filterEndDate = endDate ? new Date(endDate) : new Date(8640000000000000);
+        
+        return initStartDate <= filterEndDate && initEndDate >= filterStartDate;
+      });
+    }
+
+    if (newFilters.location) {
+      result = result.filter(init => 
+        init.location?.toLowerCase().includes(newFilters.location!.toLowerCase())
       );
     }
 
-    // Apply sorting
-    switch (newFilters.sortBy) {
-      case "newest":
-        result.sort(
-          (a, b) =>
-            new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-        );
-        break;
-      case "oldest":
-        result.sort(
-          (a, b) =>
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-        );
-        break;
-      case "progress":
-        result.sort((a, b) => b.progress - a.progress);
-        break;
-      case "popularity":
-        result.sort((a, b) => b.members - a.members);
-        break;
-      default:
-        break;
+    if (newFilters.searchQuery) {
+      const query = newFilters.searchQuery.toLowerCase();
+      result = result.filter(init => 
+        init.title.toLowerCase().includes(query) || 
+        init.description?.toLowerCase().includes(query) ||
+        init.category?.toLowerCase().includes(query)
+      );
+    }
+
+    // Sorting logic
+    if (newFilters.sortBy) {
+      switch (newFilters.sortBy) {
+        case 'newest':
+          result.sort(
+            (a, b) => {
+              const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
+              const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
+              return dateB - dateA;
+            }
+          );
+          break;
+        case 'oldest':
+          result.sort(
+            (a, b) => {
+              const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
+              const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
+              return dateA - dateB;
+            }
+          );
+          break;
+        case 'progress':
+          result.sort((a, b) => (b.progress || 0) - (a.progress || 0));
+          break;
+        case 'popularity':
+          result.sort((a, b) => ((b as any).members?.length || 0) - ((a as any).members?.length || 0));
+          break;
+        default:
+          break;
+      }
     }
 
     setFilteredInitiatives(result);
@@ -91,25 +119,24 @@ const SeadsPage: React.FC = () => {
   };
 
   // Calculate statistics
-  const totalMembers = React.useMemo(() => {
+  const totalMembers = useMemo(() => {
     return filteredInitiatives.reduce(
-      (sum: number, init: SeadsInitiative) => sum + init.members,
-      0
+      (sum: number, init: any) => sum + (init.members?.length || 0), 0
     );
   }, [filteredInitiatives]);
 
   const totalInitiatives = filteredInitiatives.length;
-  const avgProgress = React.useMemo(() => {
+  const avgProgress = useMemo(() => {
     return totalInitiatives > 0
       ? filteredInitiatives.reduce(
-          (sum: number, init: SeadsInitiative) => sum + init.progress,
+          (sum: number, init: SeadsInitiative) => sum + (init.progress || 0),
           0
         ) / totalInitiatives
       : 0;
-  }, [filteredInitiatives, totalInitiatives]);
+  }, [filteredInitiatives]);
 
   // Loading state
-  if (!seadsInitiatives) {
+  if (loading) {
     return (
       <MainLayout>
         <div className="flex justify-center items-center h-64">
@@ -166,27 +193,18 @@ const SeadsPage: React.FC = () => {
 
             <EnhancedFilterBar
               filterOptions={{
-                categories: [
-                  "all",
-                  "Environment",
-                  "Education",
-                  "Healthcare",
-                  "Community",
-                  "Economic"
-                ],
+                categories: filters.category ? [filters.category] : [], // Changed to use categories array
                 sortByOptions: [
-                  { value: "newest", label: "Newest" },
-                  { value: "oldest", label: "Oldest" },
-                  { value: "progress", label: "Progress" },
-                  { value: "popularity", label: "Popularity" }
+                  { value: 'name', label: 'Name' },
+                  { value: 'members', label: 'Members' },
+                  { value: 'date', label: 'Date' },
                 ],
                 searchPlaceholder: "Search initiatives..."
               }}
               onFiltersChange={handleFilterChange}
               initialFilters={{
-                query: filters.query,
                 category: filters.category,
-                sortBy: filters.sortBy
+                sortBy: filters.sortBy,
               }}
             />
 
@@ -218,7 +236,7 @@ const SeadsPage: React.FC = () => {
                           {initiative.title}
                         </h3>
                         <span className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                          {initiative.category}
+                          {initiative.category || 'General'}
                         </span>
                       </div>
                       <p className="text-gray-600 mb-4 line-clamp-2">
@@ -228,44 +246,44 @@ const SeadsPage: React.FC = () => {
                       <div className="space-y-2 mb-4">
                         <div className="flex items-center text-sm text-gray-500">
                           <MapPinIcon className="w-4 h-4 mr-2" />
-                          {initiative.location}
+                          {initiative.location || 'Online'}
                         </div>
                         <div className="flex items-center text-sm text-gray-500">
                           <CalendarIcon className="w-4 h-4 mr-2" />
-                          {new Date(initiative.startDate || Date.now()).toLocaleDateString()} -{" "}
-                          {new Date(initiative.endDate || Date.now()).toLocaleDateString()}
+                          {new Date(initiative.startDate).toLocaleDateString()} -{" "}
+                          {(initiative.endDate ? new Date(initiative.endDate).toLocaleDateString() : 'N/A')}
                         </div>
                         <div className="flex items-center text-sm text-gray-500">
                           <MembersIcon className="w-4 h-4 mr-2" />
-                          {initiative.members.toLocaleString()} members
+                          {((initiative as any).members?.length || 0).toLocaleString()} members
                         </div>
                       </div>
 
                       <div className="mb-4">
                         <div className="flex justify-between text-sm mb-1">
                           <span>Progress</span>
-                          <span>{initiative.progress}%</span>
+                          <span>{initiative.progress || 0}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2.5">
                           <div
                             className="bg-gradient-to-r from-green-500 to-emerald-600 h-2.5 rounded-full"
-                            style={{ width: `${initiative.progress}%` }}
+                            style={{ width: `${initiative.progress || 0}%` }}
                           ></div>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          Target: {initiative.target.toLocaleString()}
+                          Target: {initiative.target?.toLocaleString() || '0'}
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                         <div className="flex items-center">
                           <img
-                            src={initiative.organizer.avatarUrl}
-                            alt={initiative.organizer.name}
+                            src={initiative.organizer?.avatarUrl}
+                            alt={initiative.organizer?.name}
                             className="w-8 h-8 rounded-full mr-2"
                            />
                           <span className="text-sm font-medium">
-                            {initiative.organizer.name}
+                            {initiative.organizer?.name || 'Anonymous'}
                           </span>
                         </div>
                         <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
@@ -280,17 +298,11 @@ const SeadsPage: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <UserCircleIcon className="h-5 w-5 text-green-600 mr-2" />
-                Your FIC Balance
-              </h2>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-green-600 to-emerald-600 text-white px-3 py-1.5 rounded-lg hover:from-green-700 hover:to-emerald-700">
-                  Add Funds
-                </button>
-              </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">FIC Balance</h3>
+              <span className="text-2xl font-bold text-gray-900">
+                {useAppContext().ficBalance.toFixed(2)} FIC
+              </span>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">

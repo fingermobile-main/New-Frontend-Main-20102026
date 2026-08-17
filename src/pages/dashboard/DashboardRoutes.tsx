@@ -1,5 +1,6 @@
-import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
+import React, {} from 'react';
+
 import LegalCompliancePage from './LegalCompliancePage';
 
 const DashboardRoutes: React.FC = () => {

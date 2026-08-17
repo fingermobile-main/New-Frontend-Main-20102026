@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // PostPublishingDemoPage.tsx
 // Demo page showcasing the post publishing settings feature
 
@@ -12,10 +12,10 @@ import { PostPublishingProvider, usePostPublishing } from '../../contexts/PostPu
 // Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
 
 const DemoContent: React.FC = () => {
-  const [postContent, setPostContent] = React.useState('');
+  const [postContent, setPostContent] = useState('');
   const { applyAIRecommendations, saveSettings } = usePostPublishing();
   const { showToast, member } = useAppContext();
-  const [isSaving, setIsSaving] = React.useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);

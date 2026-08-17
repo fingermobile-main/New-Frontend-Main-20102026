@@ -1,5 +1,6 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useCallback, useMemo } from 'react';
+
+
 import { LIVE_STREAMS } from '../constants/dashboardConstants';
 import type { LiveStream } from '../types';
 import { 
@@ -38,7 +39,7 @@ const StreamerDashboard: React.FC<StreamerDashboardProps> = React.memo(({
   handleStopLive,
   handleStartConference
 }) => {
-  const handleOpenScheduleModal = React.useCallback(() => {
+  const handleOpenScheduleModal = useCallback(() => {
     document.getElementById("schedule-modal")?.classList.remove("hidden");
   }, []);
 
@@ -136,13 +137,13 @@ const StreamCard: React.FC<StreamCardProps> = React.memo(({
   onTokenize,
   onAiAssist
 }) => {
-  const handleLike = React.useCallback(() => onLike(stream.id), [stream.id, onLike]);
-  const handleVoteUp = React.useCallback(() => onVote(stream.id, 'up'), [stream.id, onVote]);
-  const handleVoteDown = React.useCallback(() => onVote(stream.id, 'down'), [stream.id, onVote]);
-  const handleTokenize = React.useCallback(() => onTokenize(stream.id), [stream.id, onTokenize]);
-  const handleAiAssist = React.useCallback(() => onAiAssist(stream.id), [stream.id, onAiAssist]);
+  const handleLike = useCallback(() => onLike(stream.id), [stream.id, onLike]);
+  const handleVoteUp = useCallback(() => onVote(stream.id, 'up'), [stream.id, onVote]);
+  const handleVoteDown = useCallback(() => onVote(stream.id, 'down'), [stream.id, onVote]);
+  const handleTokenize = useCallback(() => onTokenize(stream.id), [stream.id, onTokenize]);
+  const handleAiAssist = useCallback(() => onAiAssist(stream.id), [stream.id, onAiAssist]);
 
-  const handleGiftOrPaylink = React.useCallback(() => {
+  const handleGiftOrPaylink = useCallback(() => {
     if ((paidStreamIds || []).includes(stream.id)) {
       onOpenGiftModal(stream.id);
     } else {
@@ -217,15 +218,15 @@ const LiveStreamingPage: React.FC = () => {
     showToast
   } = useAppContext();
 
-  const featuredStreamData = React.useMemo(() => 
+  const featuredStreamData = useMemo(() => 
     LIVE_STREAMS.find((s: LiveStream) => s.isFeatured) || null
   , []);
 
-  const otherStreams = React.useMemo(() => 
+  const otherStreams = useMemo(() => 
     LIVE_STREAMS.filter((s: LiveStream) => !s.isFeatured)
   , []);
 
-  const onLike = React.useCallback(async (streamId: string) => {
+  const onLike = useCallback(async (streamId: string) => {
     try {
       showToast("Stream liked successfully");
     } catch {
@@ -233,15 +234,15 @@ const LiveStreamingPage: React.FC = () => {
     }
   }, [showToast]);
 
-  const onOpenGiftModal = React.useCallback((streamId: string) => {
+  const onOpenGiftModal = useCallback((streamId: string) => {
     // Implement gift modal logic here
   }, []);
 
-  const onOpenPaylinkModal = React.useCallback((streamId: string) => {
+  const onOpenPaylinkModal = useCallback((streamId: string) => {
     // Implement paylink modal logic here
   }, []);
 
-  const onVote = React.useCallback(async (streamId: string, voteType: "up" | "down") => {
+  const onVote = useCallback(async (streamId: string, voteType: "up" | "down") => {
     try {
       showToast("Vote recorded successfully");
     } catch {
@@ -249,7 +250,7 @@ const LiveStreamingPage: React.FC = () => {
     }
   }, [showToast]);
 
-  const handleTokenizeStream = React.useCallback(async (streamId: string) => {
+  const handleTokenizeStream = useCallback(async (streamId: string) => {
     try {
       showToast("Stream tokenized successfully");
     } catch {
@@ -257,7 +258,7 @@ const LiveStreamingPage: React.FC = () => {
     }
   }, [showToast]);
 
-  const handleAiAssist = React.useCallback(async (streamId: string) => {
+  const handleAiAssist = useCallback(async (streamId: string) => {
     try {
       showToast("AI assistance applied successfully");
     } catch {
@@ -296,7 +297,7 @@ const LiveStreamingPage: React.FC = () => {
             <h2 className="text-2xl font-bold mb-4">Featured Stream</h2>
             <StreamCard 
               stream={featuredStreamData} 
-              paidStreamIds={paidStreamIds || []}
+              paidStreamIds={paidStreamIds as string[] || []}
               onLike={onLike}
               onOpenGiftModal={onOpenGiftModal}
               onOpenPaylinkModal={onOpenPaylinkModal}
@@ -315,7 +316,7 @@ const LiveStreamingPage: React.FC = () => {
                 <StreamCard 
                   key={stream.id} 
                   stream={stream} 
-                  paidStreamIds={paidStreamIds || []}
+                  paidStreamIds={paidStreamIds as string[] || []}
                   onLike={onLike}
                   onOpenGiftModal={onOpenGiftModal}
                   onOpenPaylinkModal={onOpenPaylinkModal}

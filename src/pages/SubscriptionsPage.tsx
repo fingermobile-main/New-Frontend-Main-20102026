@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { useWeb3 } from '../contexts/Web3Context';
 import { useSubscriptions } from '../hooks/useSubscriptions';
@@ -6,9 +6,9 @@ import { useSubscriptions } from '../hooks/useSubscriptions';
 const SubscriptionsPage: React.FC = () => {
   const { balance } = useWeb3();
   const { ficBalance, showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState('active');
-  const [showCancelModal, setShowCancelModal] = React.useState(false);
-  const [selectedSubscription, setSelectedSubscription] = React.useState<any | null>(null);
+  const [activeTab, setActiveTab] = useState('active');
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedSubscription, setSelectedSubscription] = useState<any | null>(null);
 
   const { subscriptions, loading, error, refreshData } = useSubscriptions();
 

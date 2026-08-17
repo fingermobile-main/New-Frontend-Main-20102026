@@ -1,10 +1,11 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import React, {} from 'react';
 
 import { useAppContext } from '../../contexts/AppContext';
-import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
-const LegalLinkCard = React.memo(({ to, title, description }: { to: string; title: string; description: string }) => (
+const LegalLinkCard = React.memo(({ to, title, description }: { to: string; title: string; description?: string }) => (
     <Link to={to} className="block p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
         <p className="text-gray-600 dark:text-gray-400 mt-1">{description}</p>

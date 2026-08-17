@@ -1,7 +1,8 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import LegalLayout from '../../components/layout/LegalLayout';
-import { Link } from 'react-router-dom';
+
 import { PolicyIcon, DocumentIcon, MembersIcon } from '../../components/icons';
 
 const LegalIndexPage: React.FC = () => {

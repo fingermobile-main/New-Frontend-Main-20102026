@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import TierDisplayComponent from '../components/CreatorInfluence/TierDisplayComponent';
 import SubscriptionDashboard from '../components/CreatorInfluence/SubscriptionDashboard';
 import SubscriptionRecommendationForm from '../components/CreatorInfluence/SubscriptionRecommendationForm';

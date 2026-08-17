@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { AdCampaign } from '../../types';
 import PartnerHouseWidget from '../../components/dashboard/PartnerHouseWidget';
 
 const AdvertisingPage: React.FC = () => {
   const { adCampaigns, showToast } = useAppContext();
-  const [ficBalance, setFicBalance] = React.useState(0);
+  const [ficBalance, setFicBalance] = useState(0);
 
   // Required placeholder functions
   const onLike = async (postId: string) => {

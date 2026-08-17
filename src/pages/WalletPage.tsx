@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -173,7 +173,7 @@ const WalletPage: React.FC = () => {
                       <p className="font-medium">
                         {transaction.type === 'received' ? `From: ${transaction.from}` : `To: ${transaction.to}`}
                       </p>
-                      <p className="text-sm text-gray-500">{transaction.description}</p>
+                      <p className="text-sm text-gray-500">{transaction.description || 'No description'} • {transaction.date}</p>
                     </div>
                     <div className="text-right">
                       <p className={`font-medium ${transaction.type === 'received' ? 'text-green-600' : 'text-red-600'}`}>

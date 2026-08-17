@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Program } from '../types';
 
 const ProgramsPage: React.FC = () => {

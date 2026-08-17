@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import ConferenceRoom from '../components/ConferenceRoom';
 import PageHeader from '../components/PageHeader';
 

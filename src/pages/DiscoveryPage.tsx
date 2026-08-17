@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { 
   MemberGroupIcon,
@@ -19,7 +19,7 @@ import { useCommunityPosts } from '../hooks/useCommunityPosts';
 interface DiscoveryItem {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   type: "member" | "group" | "content" | "location";
   avatar: string;
   category: string;
@@ -35,9 +35,9 @@ interface DiscoveryItemCardProps {
 }
 
 const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, onAction }) => {
-  const handleAction = React.useCallback(() => onAction(item.id, item.type), [item.id, item.type, onAction]);
+  const handleAction = useCallback(() => onAction(item.id, item.type), [item.id, item.type, onAction]);
 
-  const renderIcon = React.useCallback((type: string) => {
+  const renderIcon = useCallback((type: string) => {
     switch (type) {
       case "member":
         return <MemberGroupIcon className="h-5 w-5 text-gray-500" />;
@@ -52,7 +52,7 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
     }
   }, []);
 
-  const getActionButton = React.useCallback(() => {
+  const getActionButton = useCallback(() => {
     switch (item.type) {
       case "member":
         return (
@@ -140,13 +140,13 @@ DiscoveryItemCard.displayName = "DiscoveryItemCard";
 const DiscoveryPage: React.FC = () => {
   const { ficBalance, openModal, showToast, handleAiAssist: _handleAiAssist } = useAppContext();
   const { posts: _posts, loading, error: _error, refreshPosts: _refreshPosts } = useCommunityPosts();
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [activeTab, setActiveTab] = React.useState("all");
-  const [discoveryItems, setDiscoveryItems] = React.useState<DiscoveryItem[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [discoveryItems, setDiscoveryItems] = useState<DiscoveryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Mock data for discovery items
-  React.useEffect(() => {
+  useEffect(() => {
     const mockItems: DiscoveryItem[] = [
       {
         id: "1",
@@ -215,11 +215,11 @@ const DiscoveryPage: React.FC = () => {
       item.category.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const handleSearch = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }, []);
 
-  const handleItemAction = React.useCallback((id: string, type: string) => {
+  const handleItemAction = useCallback((id: string, type: string) => {
     switch (type) {
       case "member":
         showToast(`Connection request sent!`);

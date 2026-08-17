@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 /*
  * FingerMobile Protocol™ - Creator Dashboard Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -14,7 +16,7 @@ import AudienceAnalytics from '../components/creator/AudienceAnalytics';
 import ContentStudioLink from '../components/creator/ContentStudioLink';
 
 const CreatorDashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "scheduler" | "earnings" | "analytics" | "studio"
   >("scheduler");
 

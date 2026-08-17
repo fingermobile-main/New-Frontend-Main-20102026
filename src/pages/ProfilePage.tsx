@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { usePostContext } from '../contexts/PostContext';
 import PostCard from '../components/PostCard';
@@ -127,11 +127,11 @@ const ProfilePage: React.FC = () => {
                   <p className="text-sm text-white text-opacity-80">Posts</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-xl font-bold">{member.followingCount || 128}</p>
-                  <p className="text-sm text-white text-opacity-80">Following</p>
+                  <p className="text-xl font-bold">{member.followerCount || 128}</p>
+                  <p className="text-sm text-white text-opacity-80">Followers</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-xl font-bold">{member.followerCount || 342}</p>
+                  <p className="text-xl font-bold">{member.followerCount || 128}</p>
                   <p className="text-sm text-white text-opacity-80">Followers</p>
                 </div>
               </div>
@@ -154,7 +154,9 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex items-center">
                 <LocationMarkerIcon className="h-4 w-4 mr-1" />
-                {member.location || "Location not set"}
+                {typeof member.location === 'string' ? member.location : 
+                 member.location ? `${member.location.country}, ${member.location.region}` : 
+                 "Location not set"}
               </div>
               <div className="flex items-center">
                 <CalendarIcon className="h-4 w-4 mr-1" />
@@ -224,9 +226,9 @@ const ProfilePage: React.FC = () => {
               <div className="space-y-6">
                 {userPosts.map(post => (
                   <PostCard 
-                    key={post.id} 
+                    key={String(post.id)} // Ensure ID is string
                     post={post} 
-                    onLike={() => handleLikeClick(post.id)} 
+                    onLike={() => handleLikeClick(String(post.id))} // Ensure ID is string
                   />
                 ))}
               </div>

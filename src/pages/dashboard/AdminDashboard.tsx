@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import AdminLayout from '../../components/admin/AdminLayout'; // Adjust path as needed
 
 const AdminDashboard: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState("overview");
+  const [activeTab, setActiveTab] = useState("overview");
 
   // Mock data for dashboard
   const stats = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { ForumCategory } from '../../types';
 
@@ -13,8 +13,8 @@ const ForumManagementPage: React.FC = () => {
     handleUpsertForumCategory,
     handleDeleteForumCategory
   } = useAppContext();
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [editingCategory, setEditingCategory] = React.useState<ForumCategory | null>(
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<ForumCategory | null>(
     null,
   );
 
@@ -29,11 +29,11 @@ const ForumManagementPage: React.FC = () => {
   };
 
   const CategoryEditorModal: React.FC = () => {
-    const [name, setName] = React.useState(editingCategory?.name || "");
-    const [description, setDescription] = React.useState(
+    const [name, setName] = useState(editingCategory?.name || "");
+    const [description, setDescription] = useState(
       editingCategory?.description || "",
     );
-    const [slug, setSlug] = React.useState(editingCategory?.slug || "");
+    const [slug, setSlug] = useState(editingCategory?.slug || "");
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -56,7 +56,7 @@ const ForumManagementPage: React.FC = () => {
     return (
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
-        onClick={() => setIsModalOpen(false)}
+        onClick={() => setIsModalOpen(false)} role="button" tabIndex={0}
       >
         <form
           onSubmit={handleSubmit}

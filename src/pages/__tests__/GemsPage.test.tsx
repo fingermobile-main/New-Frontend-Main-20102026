@@ -1,4 +1,5 @@
-import React from 'react';
+import { Link, useNavigate} from 'react-router-dom';
+import React, {} from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -13,30 +14,25 @@ const mockUseGems = useGemsModule as jest.Mocked<typeof useGemsModule>;
 // Mock the AppContext
 jest.mock("../../contexts/AppContext.tsx", () => ({
   AppContext: {
-    Consumer: (props: any) => props.children({ ficBalance: 100 }),
-  },
-}));
+    Consumer: (props: any) => props.children({ ficBalance: 100 })}}));
 
 // Mock components
 jest.mock("../../components/AdBanner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="ad-banner">Ad Banner</div>,
-  };
+    default: () => <div data-testid="ad-banner">Ad Banner</div>};
 });
 
 jest.mock("../../components/FixedAdBanner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="fixed-ad-banner">Fixed Ad Banner</div>,
-  };
+    default: () => <div data-testid="fixed-ad-banner">Fixed Ad Banner</div>};
 });
 
 jest.mock("../../components/BurgerMenu", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="burger-menu">Burger Menu</div>,
-  };
+    default: () => <div data-testid="burger-menu">Burger Menu</div>};
 });
 
 jest.mock("../../components/icons.tsx", () => ({
@@ -51,15 +47,13 @@ jest.mock("../../components/icons.tsx", () => ({
     <div data-testid="shopping-bag-icon">Shopping Bag Icon</div>
   ),
   GiftIcon: () => <div data-testid="gift-icon">Gift Icon</div>,
-  LinkIcon: () => <div data-testid="link-icon">Link Icon</div>,
-}));
+  LinkIcon: () => <div data-testid="link-icon">Link Icon</div>}));
 
 // Mock the LoadingSpinner component
 jest.mock("../../components/LoadingSpinner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="loading-spinner">Loading...</div>,
-  };
+    default: () => <div data-testid="loading-spinner">Loading...</div>};
 });
 
 // Mock the PostCard component
@@ -70,8 +64,7 @@ jest.mock("../../components/PostCard", () => {
       <div data-testid="post-card">
         <h2>{post.content}</h2>
       </div>
-    ),
-  };
+    )};
 });
 
 // Mock react-router-dom
@@ -79,8 +72,7 @@ jest.mock("react-router-dom", () => ({
   Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
     <a href={to}>{children}</a>
   ),
-  useNavigate: () => jest.fn(),
-}));
+  useNavigate: () => jest.fn()}));
 
 describe("GemsPage", () => {
   const mockGems = [
@@ -96,8 +88,7 @@ describe("GemsPage", () => {
       views: 0,
       category: "test",
       isLiked: false,
-      createdAt: "2023-01-01T00:00:00Z",
-    },
+      createdAt: "2023-01-01T00:00:00Z"},
     {
       id: 2,
       title: "Test Gem 2",
@@ -110,8 +101,7 @@ describe("GemsPage", () => {
       views: 0,
       category: "test",
       isLiked: false,
-      createdAt: "2023-01-02T00:00:00Z",
-    },
+      createdAt: "2023-01-02T00:00:00Z"},
   ] as any;
 
   beforeEach(() => {
@@ -126,8 +116,7 @@ describe("GemsPage", () => {
       refreshGems: jest.fn(),
       likeGem: jest.fn(),
       sendGift: jest.fn(),
-      createPaylink: jest.fn(),
-    });
+      createPaylink: jest.fn()});
 
     render(<GemsPage />);
 
@@ -142,8 +131,7 @@ describe("GemsPage", () => {
       refreshGems: jest.fn(),
       likeGem: jest.fn(),
       sendGift: jest.fn(),
-      createPaylink: jest.fn(),
-    });
+      createPaylink: jest.fn()});
 
     render(<GemsPage />);
 
@@ -163,8 +151,7 @@ describe("GemsPage", () => {
       refreshGems: jest.fn(),
       likeGem: jest.fn(),
       sendGift: jest.fn(),
-      createPaylink: jest.fn(),
-    });
+      createPaylink: jest.fn()});
 
     render(<GemsPage />);
 

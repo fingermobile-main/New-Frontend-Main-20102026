@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 
 import { useAppContext } from '../../../contexts/AppContext';
 import { useAuth } from 'contexts/AuthContext';
@@ -45,7 +45,7 @@ const BillingPage = () => {
                 <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
                     <h2 className="text-xl font-bold mb-4">Billing History</h2>
                     <div className="space-y-3">
-                        {(billingHistory || []).map(item => (
+                        {(billingHistory || []).map((item: any) => (
                             <div key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
                                 <div>
                                     <p className="font-semibold">{item.description}</p>

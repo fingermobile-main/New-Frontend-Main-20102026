@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from '../../contexts/AppContext';
 import { updateMemberProfile } from '../../services/api';
 import type { Member } from '../../types'; // Import Member type to access location type
@@ -10,7 +10,7 @@ interface MemberData {
   membername: string;
   email: string;
   bio: string;
-  website: string;
+  website?: string;
   location?: { // Use the same location type as in Member interface
     country: string;
     region?: string;
@@ -35,7 +35,7 @@ const EditProfile: React.FC = () => {
   });
   
   const [avatar, setAvatar] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = React.useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const EditProfile: React.FC = () => {
         membername: member.membername || '',
         email: member.email || '',
         bio: member.bio || '',
-        website: member.website || '',
+        website: '', // Removed reference to member.website since it doesn't exist
         location: member.location || { country: '', city: '' }, // Use the location from member
         avatarUrl: member.avatarUrl || null
       });

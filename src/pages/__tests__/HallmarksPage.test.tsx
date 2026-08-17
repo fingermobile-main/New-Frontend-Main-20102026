@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -16,8 +16,7 @@ jest.mock("../../components/layout/MainLayout", () => {
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="main-layout">{children}</div>
-    ),
-  };
+    )};
 });
 
 // Mock the PostCard component
@@ -28,31 +27,25 @@ jest.mock("../../components/PostCard", () => {
       <div data-testid="post-card">
         <h2>{post.content}</h2>
       </div>
-    ),
-  };
+    )};
 });
 
 // Mock the LoadingSpinner component
 jest.mock("../../components/LoadingSpinner", () => {
   return {
     __esModule: true,
-    default: () => <div data-testid="loading-spinner">Loading...</div>,
-  };
+    default: () => <div data-testid="loading-spinner">Loading...</div>};
 });
 
 // Mock contexts
 jest.mock("../../contexts/HapticFeedbackContext", () => ({
   useHaptic: () => ({
-    triggerHaptic: jest.fn(),
-  }),
-}));
+    triggerHaptic: jest.fn()})}));
 
 jest.mock("../../contexts/CommunityContext", () => ({
   useCommunity: () => ({
     displayOption: "card",
-    setDisplayOption: jest.fn(),
-  }),
-}));
+    setDisplayOption: jest.fn()})}));
 
 describe("HallmarksPage", () => {
   const mockHallmarks = [
@@ -60,14 +53,12 @@ describe("HallmarksPage", () => {
       id: "1",
       content: "Test hallmark 1",
       author: { name: "John Doe" },
-      timestamp: "2023-01-01T00:00:00Z",
-    },
+      timestamp: "2023-01-01T00:00:00Z"},
     {
       id: "2",
       content: "Test hallmark 2",
       author: { name: "Jane Smith" },
-      timestamp: "2023-01-02T00:00:00Z",
-    },
+      timestamp: "2023-01-02T00:00:00Z"},
   ];
 
   beforeEach(() => {
@@ -79,8 +70,7 @@ describe("HallmarksPage", () => {
       hallmarks: [],
       loading: true,
       error: null,
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
 
     render(<HallmarksPage />);
 
@@ -92,8 +82,7 @@ describe("HallmarksPage", () => {
       hallmarks: mockHallmarks,
       loading: false,
       error: null,
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
 
     render(<HallmarksPage />);
 
@@ -110,8 +99,7 @@ describe("HallmarksPage", () => {
       hallmarks: [],
       loading: false,
       error: "Failed to fetch hallmarks.",
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
 
     render(<HallmarksPage />);
 

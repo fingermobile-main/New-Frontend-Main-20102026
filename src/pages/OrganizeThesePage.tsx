@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {  useEffect  } from 'react';
 import { useOrganizeThese } from '../contexts/OrganizeTheseContext';
 import MainLayout from '../components/layout/MainLayout';
 import OrganizationVisualization from '../components/organize-these/OrganizationVisualization';
@@ -13,7 +13,7 @@ const OrganizeThesePage: React.FC = () => {
     exportData
   } = useOrganizeThese();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Automatically organize data when page loads
     if (!organizedData) {
       organizeMemberData();

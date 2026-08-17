@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import PageHeader from '../../components/PageHeader';
 import { MagicWandIcon } from '../../icons';
 
 const AiPlaylistPage = () => {
     const { handleGenerateAiPlaylist, isLoading } = useAppContext();
-    const [prompt, setPrompt] = React.useState('');
+    const [prompt, setPrompt] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

@@ -1,5 +1,8 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
+
 import { useEditor } from '../contexts/EditorContext';
 import { EyeIcon, PencilIcon, TrashIcon } from '../icons';
 import PageHeader from '../components/PageHeader';
@@ -9,12 +12,12 @@ const MyPages: React.FC = () => {
   const { publishedPages, handleDeletePage } = useEditor();
   const { ficBalance, showToast } = useAppContext();
   const navigate = useNavigate();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedPage, setSelectedPage] = React.useState<any>(null);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedPage, setSelectedPage] = useState<any>(null);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSendGift = async () => {
     if (!selectedPage) return;

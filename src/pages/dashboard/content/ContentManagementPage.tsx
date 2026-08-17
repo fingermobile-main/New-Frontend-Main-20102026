@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import PostCard from '../../../components/PostCard';
 import { PostContext } from '../../../contexts/PostContext';
@@ -14,7 +14,7 @@ const ContentManagementPage: React.FC = () => {
     handleAiAssist,
     triggerSpecialEffect
   } = useAppContext();
-  const postContext = React.useContext(PostContext);
+  const postContext = useContext(PostContext);
   const posts = postContext?.posts || [];
   const handleDeletePost = postContext?.handleDeletePost;
   const handleLikePost = postContext?.handleLikePost;

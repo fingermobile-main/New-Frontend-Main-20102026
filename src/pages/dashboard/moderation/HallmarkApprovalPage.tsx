@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useHallmark } from '../../../contexts/HallmarkContext';
 import type { HallmarkApplication } from '../../../types';
 import AnimatedAvatar from '../../../components/AnimatedAvatar';

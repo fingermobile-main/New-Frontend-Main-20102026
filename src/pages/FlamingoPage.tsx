@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { MarketplaceContext } from '../contexts/MarketplaceContext';
 import ProductCard from '../components/ProductCard';
@@ -310,24 +311,24 @@ const FlamingoPage: React.FC = () => {
   const { user } = useAuth();
   
   // Storage Matrices States
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = React.useState<Product[]>([]);
-  const [categories, setCategories] = React.useState<Category[]>([]);
-  const [, setVendors] = React.useState<Vendor[]>([]);
-  const [, setAnalytics] = React.useState<MarketplaceAnalytics | null>(null);
-  const [wishlist, setWishlist] = React.useState<WishListItem[]>([]);
-  const [, setRecentViews] = React.useState<RecentView[]>([]);
-  const [, setPaylinks] = React.useState<Paylink[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [, setVendors] = useState<Vendor[]>([]);
+  const [, setAnalytics] = useState<MarketplaceAnalytics | null>(null);
+  const [wishlist, setWishlist] = useState<WishListItem[]>([]);
+  const [, setRecentViews] = useState<RecentView[]>([]);
+  const [, setPaylinks] = useState<Paylink[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
-  const [sortBy, setSortBy] = React.useState<string>('newest');
-  const [showFilters, setShowFilters] = React.useState(false);
-  const [cart, setCart] = React.useState<any[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'shop' | 'outfits' | 'measurements' | 'recommendations' | 'wishlist'>('shop');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('newest');
+  const [showFilters, setShowFilters] = useState(false);
+  const [cart, setCart] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<'shop' | 'outfits' | 'measurements' | 'recommendations' | 'wishlist'>('shop');
   
-  const [filters, setFilters] = React.useState<MarketplaceFilters>({
+  const [filters, setFilters] = useState<MarketplaceFilters>({
     query: '',
     category: 'all',
     minPrice: 0,
@@ -338,22 +339,22 @@ const FlamingoPage: React.FC = () => {
   });
   
   // Specific Flamingo Custom Domains
-  const [, setFlamingoCategories] = React.useState<FlamingoCategory[]>([]);
-  const [outfits, setOutfits] = React.useState<FlamingoOutfit[]>([]);
-  const [measurements, setMeasurements] = React.useState<FlamingoMeasurements | null>(null);
-  const [recommendations, setRecommendations] = React.useState<FlamingoSizeRecommendation[]>([]);
-  const [, setBrandSizings] = React.useState<FlamingoBrandSizing[]>([]);
+  const [, setFlamingoCategories] = useState<FlamingoCategory[]>([]);
+  const [outfits, setOutfits] = useState<FlamingoOutfit[]>([]);
+  const [measurements, setMeasurements] = useState<FlamingoMeasurements | null>(null);
+  const [recommendations, setRecommendations] = useState<FlamingoSizeRecommendation[]>([]);
+  const [, setBrandSizings] = useState<FlamingoBrandSizing[]>([]);
   
-  const [ageVerification, setAgeVerification] = React.useState<AgeVerificationState>({
+  const [ageVerification, setAgeVerification] = useState<AgeVerificationState>({
     isVerified: false,
     showAgeGate: true,
     birthDate: null
   });
-  const [showMeasurementForm, setShowMeasurementForm] = React.useState(false);
-  const [showOutfitBuilder, setShowOutfitBuilder] = React.useState(false);
+  const [showMeasurementForm, setShowMeasurementForm] = useState(false);
+  const [showOutfitBuilder, setShowOutfitBuilder] = useState(false);
 
   // Hydrate Flamingo Domain Elements
-  const loadFlamingoData = React.useCallback(async (userId?: string) => {
+  const loadFlamingoData = useCallback(async (userId?: string) => {
     try {
       const cats = await flamingoService.getCategories();
       setFlamingoCategories(cats);
@@ -380,7 +381,7 @@ const FlamingoPage: React.FC = () => {
     }
   }, []);
 
-  const loadInitialData = React.useCallback(async () => {
+  const loadInitialData = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -418,7 +419,7 @@ const FlamingoPage: React.FC = () => {
   }, [user, loadFlamingoData, showToast]);
 
   // Compute Layout Filtration Blocks
-  React.useEffect(() => {
+  useEffect(() => {
     let result = [...products];
     
     if (filters.query) {
@@ -457,27 +458,27 @@ const FlamingoPage: React.FC = () => {
     setFilteredProducts(result);
   }, [filters, products]);
 
-  const handleSearch = React.useCallback((query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setFilters(prev => ({ ...prev, query }));
     setSearchQuery(query);
   }, []);
 
-  const handleCategoryChange = React.useCallback((category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     setFilters(prev => ({ ...prev, category }));
     setSelectedCategory(category);
   }, []);
 
-  const handleSortChange = React.useCallback((sort: string) => {
+  const handleSortChange = useCallback((sort: string) => {
     setFilters(prev => ({ ...prev, sortBy: sort as any }));
     setSortBy(sort);
   }, []);
 
-  const addToCart = React.useCallback((product: Product) => {
+  const addToCart = useCallback((product: Product) => {
     setCart(prev => [...prev, { ...product, quantity: 1 }]);
     showToast(`${product.name} added to shopping cart`, 'success');
   }, [showToast]);
 
-  const toggleWishlist = React.useCallback(async (productId: string) => {
+  const toggleWishlist = useCallback(async (productId: string) => {
     if (!user) {
       showToast('Please sign in to modify wishlist contexts.', 'warning');
       return;
@@ -501,7 +502,7 @@ const FlamingoPage: React.FC = () => {
     }
   }, [user, wishlist, showToast]);
 
-  const handleAgeVerification = React.useCallback((birthDate: string) => {
+  const handleAgeVerification = useCallback((birthDate: string) => {
     const birth = new Date(birthDate);
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();

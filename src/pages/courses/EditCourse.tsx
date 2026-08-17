@@ -1,5 +1,7 @@
-import React from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
+
 import { useCourseContext } from '../../contexts/CourseContext';
 import { useAppContext } from '../../contexts/AppContext';
 
@@ -9,7 +11,7 @@ const EditCourse: React.FC = () => {
   const { courses, updateCourse, loading } = useCourseContext();
   const { ficBalance, showToast } = useAppContext();
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: 0,
@@ -31,17 +33,17 @@ const EditCourse: React.FC = () => {
     ]
   });
 
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [initialLoad, setInitialLoad] = React.useState(true);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (courseId && courses.length > 0) {
       const course = courses.find((c) => c.id === courseId);
       if (course) {
         setFormData({
           title: course.title || '',
           description: course.description || '',
-          price: course.price,
+          price: course.price ?? 0,
           category: course.category || '',
           level: course.level || '',
           thumbnail: course.thumbnail || "",

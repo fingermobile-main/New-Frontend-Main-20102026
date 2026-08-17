@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 
 interface Service {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   price: number;
   category: string;
   rating: number;
@@ -20,11 +20,11 @@ interface EarningSummary {
 
 const MemberEarningPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [earningSummary, setEarningSummary] = React.useState<EarningSummary>({ totalEarnings: 0, pendingEarnings: 0, totalSales: 0, activeServices: 0 });
-  const [services, setServices] = React.useState<Service[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'dashboard' | 'services' | 'analytics' | 'wallet'>('dashboard');
+  const [earningSummary, setEarningSummary] = useState<EarningSummary>({ totalEarnings: 0, pendingEarnings: 0, totalSales: 0, activeServices: 0 });
+  const [services, setServices] = useState<Service[]>([]);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'analytics' | 'wallet'>('dashboard');
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Simulate API call to fetch earning data
     const mockSummary: EarningSummary = {
       totalEarnings: 1250.75,

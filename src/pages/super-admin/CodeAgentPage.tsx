@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { generateCodeWithAi } from '../../services/api';
 import { SparklesIcon } from '../../components/icons';
@@ -33,15 +33,15 @@ const ResponseDisplay: React.FC<AiGeneratedComponentProps> = ({ response }) => {
 };
 
 const CodeAgentPage: React.FC = () => {
-  const [prompt, setPrompt] = React.useState<string>('');
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [response, setResponse] = React.useState<AgenticAiResponse | null>(null);
-  const [history, setHistory] = React.useState<{ prompt: string; response: AgenticAiResponse }[]>([]);
-  const [consentGiven, setConsentGiven] = React.useState<boolean>(false);
-  const chatEndRef = React.useRef<HTMLDivElement>(null);
+  const [prompt, setPrompt] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [response, setResponse] = useState<AgenticAiResponse | null>(null);
+  const [history, setHistory] = useState<{ prompt: string; response: AgenticAiResponse }[]>([]);
+  const [consentGiven, setConsentGiven] = useState<boolean>(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
   const { enforceAiAction, showToast } = useAppContext();
 
-  React.useEffect(() => {
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history, response, isLoading]);
 

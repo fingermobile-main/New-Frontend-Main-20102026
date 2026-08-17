@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 
 const DomainsPage: React.FC = () => {
     const { domains, showToast } = useAppContext();
 
-    const primaryDomain = (domains || []).find(d => d.isPrimary);
-    const customDomains = (domains || []).filter(d => !d.isPrimary);
+    const primaryDomain = (domains || []).find((d: any) => d.isPrimary);
+    const customDomains = (domains || []).filter((d: any) => !d.isPrimary);
     
     const handleAddDomain = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,7 +37,7 @@ const DomainsPage: React.FC = () => {
             <div className="bg-white p-6 rounded-xl shadow-md">
                 <h2 className="text-xl font-bold mb-4">Custom Domains</h2>
                 <div className="space-y-3 mb-6">
-                    {customDomains.map(domain => (
+                    {(customDomains || []).map((domain: any) => (
                         <div key={domain.id} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
                             <p className="font-semibold">{domain.name}</p>
                              <span className={`text-sm font-semibold ${domain.status === 'Connected' ? 'text-green-600' : 'text-yellow-600'}`}>{domain.status}</span>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { useMonetization } from '../contexts/MonetizationContext';
 import MonetizationDashboard from '../components/dashboard/MonetizationDashboard';
@@ -10,7 +11,7 @@ interface ResourceLink {
   id: string;
   href: string;
   title: string;
-  description: string;
+  description?: string;
   bgClass: string;
   iconPath: string;
 }
@@ -70,7 +71,7 @@ const MonetizationDashboardPage: React.FC = () => {
   const loading = monetization?.loading ?? false;
   const refreshEligibility = monetization?.refreshEligibility;
 
-  const handleRefresh = React.useCallback(() => {
+  const handleRefresh = useCallback(() => {
     if (refreshEligibility) {
       refreshEligibility();
     }

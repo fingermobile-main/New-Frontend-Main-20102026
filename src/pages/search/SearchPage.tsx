@@ -1,13 +1,13 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { useAppContext } from '../../contexts/AppContext';
 
 interface TopicType {
   id: string;
   name: string;
   title?: string;
-  description: string;
+  description?: string;
   isTrending: boolean;
   coverImageUrl: string;
   [key: string]: any;

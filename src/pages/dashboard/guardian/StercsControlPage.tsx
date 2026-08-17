@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import {
   ShieldExclamationIcon,
@@ -9,21 +9,21 @@ import {
 const StercsControlPage: React.FC = () => {
   const { seadsInitiatives, showToast, handleStercsLogin, handleStercsAction } = useAppContext();
 
-  const [authStep, setAuthStep] = React.useState(0); // 0: Start, 1: PIN1, 2: PIN2, 3: Biometrics, 4: Authenticated
-  const [pin1, setPin1] = React.useState("");
-  const [pin2, setPin2] = React.useState("");
-  const [error, setError] = React.useState("");
-  const [systemMode, setSystemMode] = React.useState<"enterprise" | "threat">(
+  const [authStep, setAuthStep] = useState(0); // 0: Start, 1: PIN1, 2: PIN2, 3: Biometrics, 4: Authenticated
+  const [pin1, setPin1] = useState("");
+  const [pin2, setPin2] = useState("");
+  const [error, setError] = useState("");
+  const [systemMode, setSystemMode] = useState<"enterprise" | "threat">(
     "threat",
   );
 
   // Countdown state for wipe action
-  const [isWipeConfirm, setIsWipeConfirm] = React.useState(false);
-  const [countdown, setCountdown] = React.useState(25 * 60 * 60);
+  const [isWipeConfirm, setIsWipeConfirm] = useState(false);
+  const [countdown, setCountdown] = useState(25 * 60 * 60);
 
-  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleSystemWipe = React.useCallback(() => {
+  const handleSystemWipe = useCallback(() => {
     showToast(
       `STERCS™©®: System wipe initiated. All ${systemMode === "enterprise" ? "enterprise resources" : "threat data"} will be erased in 24 hours.`,
     );
@@ -31,7 +31,7 @@ const StercsControlPage: React.FC = () => {
     setCountdown(25 * 60 * 60);
   }, [showToast, systemMode]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (isWipeConfirm && countdown > 0) {
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -378,7 +378,7 @@ const StercsControlPage: React.FC = () => {
                   <>
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("resource_allocation")}
+                      onClick={() => handleStercsAction("resource_allocation")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <BuildingOfficeIcon className="w-6 h-6 text-blue-400" />
@@ -393,7 +393,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("strategic_planning")}
+                      onClick={() => handleStercsAction("strategic_planning")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -421,7 +421,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("enterprise_backup")}
+                      onClick={() => handleStercsAction("enterprise_backup")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -449,7 +449,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("performance_optimize")}
+                      onClick={() => handleStercsAction("performance_optimize")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -477,7 +477,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("resource_monitoring")}
+                      onClick={() => handleStercsAction("resource_monitoring")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -505,7 +505,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => setIsWipeConfirm(true)}
+                      onClick={() => setIsWipeConfirm(true)} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-700/30 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -535,7 +535,7 @@ const StercsControlPage: React.FC = () => {
                   <>
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("threat_scan")}
+                      onClick={() => handleStercsAction("threat_scan")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <ShieldExclamationIcon className="w-6 h-6 text-red-400" />
@@ -549,7 +549,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("ai_analysis")}
+                      onClick={() => handleStercsAction("ai_analysis")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -576,7 +576,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("security_lockdown")}
+                      onClick={() => handleStercsAction("security_lockdown")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -604,7 +604,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("system_backup")}
+                      onClick={() => handleStercsAction("system_backup")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -632,7 +632,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("performance_optimize")}
+                      onClick={() => handleStercsAction("performance_optimize")} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -660,7 +660,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-700 transition-colors cursor-pointer"
-                      onClick={() => setIsWipeConfirm(true)}
+                      onClick={() => setIsWipeConfirm(true)} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-700/30 rounded-lg flex items-center justify-center mb-4">
                         <svg

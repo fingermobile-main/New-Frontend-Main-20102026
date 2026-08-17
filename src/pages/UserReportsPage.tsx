@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
@@ -104,7 +103,7 @@ const UserReportsPage: React.FC = () => {
                               ? 'border-blue-500 bg-blue-50' 
                               : 'hover:bg-gray-50'
                           }`}
-                          onClick={() => setSelectedReport(report)}
+                          onClick={() => setSelectedReport(report)} role="button" tabIndex={0}
                         >
                           <div className="flex justify-between items-start">
                             <div>

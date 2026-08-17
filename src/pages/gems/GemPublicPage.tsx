@@ -1,5 +1,6 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
+
 import { useGem } from '../../contexts/GemContext';
 import { PostContext } from '../../contexts/PostContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -20,8 +21,8 @@ const GemPublicPage: React.FC = () => {
     const gem = gems.find((g: Gem) => g.slug === slug);
     
     // Get context with fallbacks for undefined
-    const postContext = React.useContext(PostContext);
-    const voiceContext = React.useContext(VoiceFeedContext);
+    const postContext = useContext(PostContext);
+    const voiceContext = useContext(VoiceFeedContext);
     
     const allPosts = postContext?.posts ?? [];
     const handleLikePostFn = postContext?.handleLikePost;
@@ -44,8 +45,8 @@ const GemPublicPage: React.FC = () => {
     let featuredPosts = allPosts.filter((p: Post) => gem.posts?.includes(p.id));
 
     // Apply content blocking from active sub-profile
-    if (activeSubProfile && activeSubProfile.blockedContentIds.length > 0) {
-        const blockedIds = new Set(activeSubProfile.blockedContentIds);
+    if (activeSubProfile && (activeSubProfile as any).blockedContentIds?.length > 0) {
+        const blockedIds = new Set((activeSubProfile as any).blockedContentIds);
         featuredPosts = featuredPosts.filter((post: Post) => !blockedIds.has(post.id));
     }
 

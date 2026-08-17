@@ -1,0 +1,544 @@
+src/pages/__tests__/ForumPage.test.tsx(93,39): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/__tests__/ForumPage.test.tsx(109,51): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/__tests__/ForumPage.test.tsx(119,51): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/__tests__/ForumPage.test.tsx(120,51): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/__tests__/ForumPage.test.tsx(140,7): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/__tests__/ForumPage.test.tsx(141,59): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Matchers<void, HTMLElement>'.
+src/pages/AdminControlDashboard.tsx(24,3): error TS2305: Module '"../components/icons"' has no exported member 'ClipboardList'.
+src/pages/AdvancedFingerWarPage.tsx(6,10): error TS2305: Module '"../components/icons"' has no exported member 'GamepadIcon'.
+src/pages/BlogsPage.tsx(11,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/BlogsPage.tsx(12,3): error TS2724: '"../components/icons"' has no exported member named 'FilterIcon'. Did you mean 'FireIcon'?
+src/pages/BlogsPage.tsx(13,3): error TS2305: Module '"../components/icons"' has no exported member 'ViewGridIcon'.
+src/pages/BlogsPage.tsx(14,3): error TS2305: Module '"../components/icons"' has no exported member 'ViewListIcon'.
+src/pages/CamusPage.tsx(18,3): error TS2305: Module '"../components/icons"' has no exported member 'CamusIcon'.
+src/pages/CamusPage.tsx(21,3): error TS2305: Module '"../components/icons"' has no exported member 'GraduationCapIcon'.
+src/pages/CanaryPage.tsx(8,10): error TS2724: '"../components/icons"' has no exported member named 'CanaryIcon'. Did you mean 'CalendarIcon'?
+src/pages/CanaryPage.tsx(8,32): error TS2305: Module '"../components/icons"' has no exported member 'ShieldIcon'.
+src/pages/CommunityPageEnhanced.tsx(187,62): error TS2339: Property 'username' does not exist on type 'Member | { id: string; name: string; avatar?: string | undefined; }'.
+  Property 'username' does not exist on type '{ id: string; name: string; avatar?: string | undefined; }'.
+src/pages/CouponsPage.tsx(3,10): error TS2305: Module '"../components/icons"' has no exported member 'CouponsIcon'.
+src/pages/courses/CreateCourse.tsx(215,11): error TS1345: An expression of type 'void' cannot be tested for truthiness.
+src/pages/courses/CreateCourse.tsx(217,37): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/courses/EditCourse.tsx(45,11): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/courses/EditCourse.tsx(46,11): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/courses/EditCourse.tsx(249,11): error TS1345: An expression of type 'void' cannot be tested for truthiness.
+src/pages/courses/EditCourse.tsx(251,37): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/CreateGroupPage.tsx(45,13): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/CreateGroupPage.tsx(45,13): error TS2554: Expected 2 arguments, but got 1.
+src/pages/CsvImportPage.tsx(29,29): error TS2322: Type '(data: any[]) => void' is not assignable to type '() => void'.
+src/pages/dashboard/AnalyticsPage.tsx(149,31): error TS7031: Binding element 'name' implicitly has an 'any' type.
+src/pages/dashboard/AnalyticsPage.tsx(149,37): error TS7031: Binding element 'percent' implicitly has an 'any' type.
+src/pages/dashboard/BusinessHubPage.tsx(3,10): error TS2305: Module '"../../components/icons"' has no exported member 'MagicWandIcon'.
+src/pages/dashboard/CampaignDetailPage.tsx(63,24): error TS2339: Property 'reach' does not exist on type 'CampaignAnalytics'.
+src/pages/dashboard/CampaignDetailPage.tsx(69,24): error TS2339: Property 'engagement' does not exist on type 'CampaignAnalytics'.
+src/pages/dashboard/CampaignDetailPage.tsx(75,24): error TS2339: Property 'spend' does not exist on type 'CampaignAnalytics'.
+src/pages/dashboard/CampaignDetailPage.tsx(83,37): error TS2339: Property 'reach' does not exist on type 'CampaignAnalytics'.
+src/pages/dashboard/CampaignDetailPage.tsx(87,37): error TS2339: Property 'engagement' does not exist on type 'CampaignAnalytics'.
+src/pages/dashboard/CampaignsPage.tsx(11,50): error TS2345: Argument of type '({ id: string; name: string; status: "active"; budget: number; spent: number; impressions: number; clicks: number; startDate: string; endDate: string; targetAudience: string; } | { id: string; name: string; ... 7 more ...; targetAudience: string; })[]' is not assignable to parameter of type 'Campaign[] | (() => Campaign[])'.
+  Type '({ id: string; name: string; status: "active"; budget: number; spent: number; impressions: number; clicks: number; startDate: string; endDate: string; targetAudience: string; } | { id: string; name: string; ... 7 more ...; targetAudience: string; })[]' is not assignable to type 'Campaign[]'.
+    Type '{ id: string; name: string; status: "active"; budget: number; spent: number; impressions: number; clicks: number; startDate: string; endDate: string; targetAudience: string; } | { id: string; name: string; ... 7 more ...; targetAudience: string; }' is not assignable to type 'Campaign'.
+      Type '{ id: string; name: string; status: "active"; budget: number; spent: number; impressions: number; clicks: number; startDate: string; endDate: string; targetAudience: string; }' is missing the following properties from type 'Campaign': title, description
+src/pages/dashboard/CampaignsPage.tsx(98,78): error TS2367: This comparison appears to be unintentional because the types '"active" | "completed" | "draft" | "paused"' and '"Active"' have no overlap.
+src/pages/dashboard/community/CommunityManagementPage.tsx(88,14): error TS18048: 'community.memberCount' is possibly 'undefined'.
+src/pages/dashboard/content/ContentManagementPage.tsx(37,7): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/dashboard/content/ContentManagementPage.tsx(59,17): error TS2322: Type '{ post: Post; onLike: ((postId: string) => void) | undefined; onAddComment: ((postId: string, commentText: string) => void) | undefined; onOpenGiftModal: () => any; onVote: ((postId: string, optionId: string) => void | Promise<...>) | undefined; ... 5 more ...; handleTokenizePost: ((postId: string) => void) | undefi...' is not assignable to type 'IntrinsicAttributes & PostCardProps'.
+  Property 'onAddComment' does not exist on type 'IntrinsicAttributes & PostCardProps'. Did you mean '_onComment'?
+src/pages/dashboard/DashboardHomePage.tsx(208,26): error TS7006: Parameter 'postId' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(209,32): error TS7006: Parameter 'postId' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(209,40): error TS7006: Parameter 'commentText' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(212,35): error TS7006: Parameter 'post' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(213,26): error TS7006: Parameter 'postId' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(213,34): error TS7006: Parameter 'optionId' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(216,42): error TS7006: Parameter 'effect' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(220,40): error TS7006: Parameter 'currentComment' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(225,36): error TS7006: Parameter 'postId' implicitly has an 'any' type.
+src/pages/dashboard/DashboardHomePage.tsx(228,38): error TS7006: Parameter 'postId' implicitly has an 'any' type.
+src/pages/dashboard/guardian/GuardianControlPage.tsx(6,3): error TS2724: '"../../../components/icons"' has no exported member named 'MemberIcon'. Did you mean 'MembersIcon'?
+src/pages/dashboard/guardian/StercsControlPage.tsx(10,11): error TS2339: Property 'seadsInitiatives' does not exist on type 'AppContextType'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(57,33): error TS2304: Cannot find name 'handleStercsLogin'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(383,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(398,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(426,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(454,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(482,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(540,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(554,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(581,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(609,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/guardian/StercsControlPage.tsx(637,38): error TS2304: Cannot find name 'handleStercsAction'.
+src/pages/dashboard/moderation/FlamingoApprovalPage.tsx(7,11): error TS2339: Property 'flamingoSubmissions' does not exist on type 'AppContextType'.
+src/pages/dashboard/moderation/FlamingoApprovalPage.tsx(9,60): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/pages/dashboard/moderation/FlamingoApprovalPage.tsx(21,36): error TS2304: Cannot find name 'handleApproveFlamingoContent'.
+src/pages/dashboard/moderation/FlamingoApprovalPage.tsx(41,46): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/pages/dashboard/moderation/GemApprovalPage.tsx(6,11): error TS2339: Property 'gemSubmissions' does not exist on type 'AppContextType'.
+src/pages/dashboard/moderation/GemApprovalPage.tsx(6,27): error TS2339: Property 'handleApproveGemContent' does not exist on type 'AppContextType'.
+src/pages/dashboard/ModerationPage.tsx(47,32): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(7,13): error TS2339: Property 'featureToggles' does not exist on type 'AppContextType'.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(7,29): error TS2339: Property 'setFeatureToggles' does not exist on type 'AppContextType'.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(13,27): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(25,31): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(25,48): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(32,72): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(33,31): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(33,48): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(43,40): error TS2339: Property 'specialDays' does not exist on type 'FeatureToggle'.
+src/pages/dashboard/operations/FeatureTogglesPage.tsx(102,70): error TS7006: Parameter 'day' implicitly has an 'any' type.
+src/pages/dashboard/PlatformStatusPage.tsx(10,58): error TS2339: Property 'module' does not exist on type 'ModuleStatus'.
+  Property 'module' does not exist on type '"active"'.
+src/pages/dashboard/PlatformStatusPage.tsx(11,56): error TS2339: Property 'engine' does not exist on type 'ModuleStatus'.
+  Property 'engine' does not exist on type '"active"'.
+src/pages/dashboard/PlatformStatusPage.tsx(12,77): error TS2339: Property 'status' does not exist on type 'ModuleStatus'.
+  Property 'status' does not exist on type '"active"'.
+src/pages/dashboard/PlatformStatusPage.tsx(19,83): error TS2339: Property 'status' does not exist on type 'ComplianceStatus'.
+src/pages/dashboard/PlatformStatusPage.tsx(20,23): error TS2339: Property 'status' does not exist on type 'ComplianceStatus'.
+src/pages/dashboard/PolicyPage.tsx(54,75): error TS2339: Property 'title' does not exist on type 'MemberPolicy'.
+src/pages/dashboard/PolicyPage.tsx(55,69): error TS2339: Property 'version' does not exist on type 'MemberPolicy'.
+src/pages/dashboard/PolicyPage.tsx(57,102): error TS2367: This comparison appears to be unintentional because the types '"active" | "expired" | "revoked"' and '"Active"' have no overlap.
+src/pages/dashboard/PolicyPage.tsx(61,69): error TS2339: Property 'lastUpdated' does not exist on type 'MemberPolicy'.
+src/pages/dashboard/PolicyPage.tsx(64,38): error TS2367: This comparison appears to be unintentional because the types '"active" | "expired" | "revoked"' and '"Draft"' have no overlap.
+src/pages/dashboard/ReportsPage.tsx(50,8): error TS2741: Property 'onMenuToggle' is missing in type '{}' but required in type 'HeaderProps'.
+src/pages/dashboard/ReportsPage.tsx(130,33): error TS7031: Binding element 'name' implicitly has an 'any' type.
+src/pages/dashboard/ReportsPage.tsx(130,39): error TS7031: Binding element 'percent' implicitly has an 'any' type.
+src/pages/dashboard/settings/BillingPage.tsx(8,13): error TS2339: Property 'billingHistory' does not exist on type 'AppContextType'.
+src/pages/dashboard/settings/BillingPage.tsx(23,59): error TS2339: Property 'subscriptionExpiryDate' does not exist on type 'User'.
+src/pages/dashboard/settings/BillingPage.tsx(48,45): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/pages/dashboard/settings/DomainsPage.tsx(5,13): error TS2339: Property 'domains' does not exist on type 'AppContextType'.
+src/pages/dashboard/settings/DomainsPage.tsx(7,40): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/pages/dashboard/settings/DomainsPage.tsx(8,42): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/pages/dashboard/settings/DomainsPage.tsx(40,40): error TS7006: Parameter 'domain' implicitly has an 'any' type.
+src/pages/dashboard/settings/GeneralSettingsPage.tsx(5,37): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/dashboard/settings/GeneralSettingsPage.tsx(6,51): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/dashboard/settings/GeneralSettingsPage.tsx(7,37): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/dashboard/settings/GeneralSettingsPage.tsx(12,26): error TS2345: Argument of type '{ siteName: string; siteDescription: string; }' is not assignable to parameter of type 'Partial<ProtocolSettings>'.
+  Object literal may only specify known properties, and 'siteName' does not exist in type 'Partial<ProtocolSettings>'.
+src/pages/dashboard/settings/GeneralSettingsPage.tsx(13,14): error TS2339: Property 'then' does not exist on type 'void'.
+src/pages/dashboard/SettingsPage.tsx(45,8): error TS2741: Property 'onMenuToggle' is missing in type '{}' but required in type 'HeaderProps'.
+src/pages/dashboard/SettingsPage.tsx(58,15): error TS2322: Type '{ children: Element[]; value: string; onValueChange: Dispatch<SetStateAction<string>>; className: string; }' is not assignable to type 'IntrinsicAttributes & TabsProps'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & TabsProps'.
+src/pages/dashboard/SettingsPage.tsx(248,24): error TS2739: Type '{ id: string; }' is missing the following properties from type 'SwitchProps': checked, onCheckedChange
+src/pages/dashboard/site-management/SiteMenusPage.tsx(23,13): error TS2339: Property 'navStructure' does not exist on type 'AppContextType'.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(23,27): error TS2339: Property 'handleUpdateNavStructure' does not exist on type 'AppContextType'.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(41,35): error TS18048: 'sourceSection.links' is possibly 'undefined'.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(44,13): error TS18048: 'targetSection.links' is possibly 'undefined'.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(97,21): error TS7006: Parameter 'monitor' implicitly has an 'any' type.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(110,23): error TS7006: Parameter 'monitor' implicitly has an 'any' type.
+src/pages/dashboard/site-management/SiteMenusPage.tsx(118,22): error TS18048: 'section.links' is possibly 'undefined'.
+src/pages/dashboard/SupportDashboardPage.tsx(14,49): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/dashboard/SupportDashboardPage.tsx(15,31): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/dashboard/SupportDashboardPage.tsx(17,69): error TS2367: This comparison appears to be unintentional because the types '"in-progress" | "open" | "resolved" | "closed"' and '"Open"' have no overlap.
+src/pages/dashboard/SupportDashboardPage.tsx(17,92): error TS2367: This comparison appears to be unintentional because the types '"in-progress" | "open" | "resolved" | "closed"' and '"In Progress"' have no overlap.
+src/pages/dashboard/SupportDashboardPage.tsx(18,71): error TS2367: This comparison appears to be unintentional because the types '"in-progress" | "open" | "resolved" | "closed"' and '"Resolved"' have no overlap.
+src/pages/dashboard/SupportDashboardPage.tsx(18,98): error TS2367: This comparison appears to be unintentional because the types '"in-progress" | "open" | "resolved" | "closed"' and '"Closed"' have no overlap.
+src/pages/dashboard/SupportDashboardPage.tsx(47,85): error TS2551: Property 'member' does not exist on type 'SupportTicket'. Did you mean 'memberId'?
+src/pages/dashboard/SupportDashboardPage.tsx(53,34): error TS2339: Property 'messages' does not exist on type 'SupportTicket'.
+src/pages/dashboard/SupportDashboardPage.tsx(53,47): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+src/pages/dashboard/SupportDashboardPage.tsx(60,87): error TS2345: Argument of type '"Resolved"' is not assignable to parameter of type '"in-progress" | "open" | "resolved" | "closed"'.
+src/pages/dashboard/SupportDashboardPage.tsx(61,87): error TS2345: Argument of type '"Closed"' is not assignable to parameter of type '"in-progress" | "open" | "resolved" | "closed"'.
+src/pages/dashboard/SupportDashboardPage.tsx(74,79): error TS2339: Property 'lastUpdated' does not exist on type 'SupportTicket'.
+src/pages/dashboard/SupportDashboardPage.tsx(76,64): error TS2551: Property 'member' does not exist on type 'SupportTicket'. Did you mean 'memberId'?
+src/pages/dashboard/system/SystemStatusPage.tsx(8,11): error TS2339: Property 'systemStatuses' does not exist on type 'AppContextType'.
+src/pages/dashboard/system/SystemStatusPage.tsx(8,27): error TS2339: Property 'getSystemHealth' does not exist on type 'AppContextType'.
+src/pages/dashboard/system/SystemStatusPage.tsx(8,44): error TS2339: Property 'getSystemMetrics' does not exist on type 'AppContextType'.
+src/pages/dashboard/system/SystemStatusPage.tsx(8,62): error TS2339: Property 'performSystemMaintenance' does not exist on type 'AppContextType'.
+src/pages/dashboard/system/SystemStatusPage.tsx(8,88): error TS2339: Property 'getAuditLogs' does not exist on type 'AppContextType'.
+src/pages/dashboard/system/SystemStatusPage.tsx(61,86): error TS2339: Property 'module' does not exist on type 'SystemStatus'.
+src/pages/DashboardPage.tsx(166,14): error TS18048: 'featuredSections' is possibly 'undefined'.
+src/pages/DashboardPage.tsx(180,14): error TS18048: 'communitySections' is possibly 'undefined'.
+src/pages/DatabaseIntegrationDashboard.tsx(5,22): error TS2305: Module '"../components/icons"' has no exported member 'DatabaseIcon'.
+src/pages/DiscoverPage.tsx(124,19): error TS2322: Type '{ post: any; onLike: (postId: string) => Promise<void>; onAddComment: (postId: string, comment: string) => Promise<void>; onOpenGiftModal: (postId: string) => Promise<void>; ... 4 more ...; handleAiAssist: (action: string, data: AiAssistData) => Promise<...>; }' is not assignable to type 'IntrinsicAttributes & PostCardProps'.
+  Property 'onAddComment' does not exist on type 'IntrinsicAttributes & PostCardProps'. Did you mean '_onComment'?
+src/pages/DiscoverPage.tsx(146,19): error TS2322: Type '{ post: any; onLike: (postId: string) => Promise<void>; onAddComment: (postId: string, comment: string) => Promise<void>; onOpenGiftModal: (postId: string) => Promise<void>; ... 4 more ...; handleAiAssist: (action: string, data: AiAssistData) => Promise<...>; }' is not assignable to type 'IntrinsicAttributes & PostCardProps'.
+  Property 'onAddComment' does not exist on type 'IntrinsicAttributes & PostCardProps'. Did you mean '_onComment'?
+src/pages/DiscoveryPage.tsx(15,3): error TS2724: '"../components/icons"' has no exported member named 'MemberGroupIcon'. Did you mean 'MembersIcon'?
+src/pages/EditorPage.tsx(31,54): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EditorPage.tsx(139,24): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EditorPage.tsx(176,25): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EditorPage.tsx(177,28): error TS2554: Expected 0 arguments, but got 1.
+src/pages/EditorPage.tsx(187,23): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EditorPage.tsx(433,15): error TS2322: Type '{ components: EditorComponent[]; onDrop: (type: string) => void; onSelect: Dispatch<SetStateAction<string | null>>; onDelete: (id: string) => void; onMove: (dragIndex: number, hoverIndex: number) => void; selectedComponentId: string | null; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'components' does not exist on type 'IntrinsicAttributes'.
+src/pages/EditorPage.tsx(445,17): error TS2322: Type '{ component: any; onUpdate: (id: string, newProps: EditorComponent) => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'component' does not exist on type 'IntrinsicAttributes'.
+src/pages/EditPostPage.tsx(9,25): error TS2304: Cannot find name 'useAppContext'.
+src/pages/EditPostPage.tsx(10,11): error TS2339: Property 'editContent' does not exist on type '{ loading: boolean; error: string | null; generateCourseOutline: (topic: string, audience: string, modulesCount?: number) => Promise<AIGeneratedContent>; ... 5 more ...; markAIContentAsUsed: (contentId: string) => void; }'.
+src/pages/EditPostPage.tsx(10,24): error TS2339: Property 'isLoading' does not exist on type '{ loading: boolean; error: string | null; generateCourseOutline: (topic: string, audience: string, modulesCount?: number) => Promise<AIGeneratedContent>; ... 5 more ...; markAIContentAsUsed: (contentId: string) => void; }'.
+src/pages/EditPostPage.tsx(26,21): error TS2345: Argument of type '"EditPostPage - Edit content"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/pages/ELearningPage.tsx(8,3): error TS2724: '"../components/icons"' has no exported member named 'MemberGroupIcon'. Did you mean 'MembersIcon'?
+src/pages/ELearningPage.tsx(12,3): error TS2724: '"../components/icons"' has no exported member named 'ClipboardCheckIcon'. Did you mean 'ClipboardIcon'?
+src/pages/ELearningPage.tsx(30,66): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ProductFilters | (() => ProductFilters)'.
+src/pages/ELearningPage.tsx(113,20): error TS2345: Argument of type 'CourseFilters' is not assignable to parameter of type 'SetStateAction<ProductFilters>'.
+  Type 'CourseFilters' is missing the following properties from type 'ProductFilters': search, minPrice, maxPrice
+src/pages/ELearningPage.tsx(359,25): error TS2322: Type '(newFilters: CourseFilters) => void' is not assignable to type '(filters: FilterOptions) => void'.
+  Types of parameters 'newFilters' and 'filters' are incompatible.
+    Type 'FilterOptions' is not assignable to type 'CourseFilters'.
+      Types of property 'category' are incompatible.
+        Type 'string | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+src/pages/ELearningPage.tsx(371,56): error TS2322: Type '{ key: string; course: Course; }' is not assignable to type 'IntrinsicAttributes & CourseCardProps'.
+  Property 'course' does not exist on type 'IntrinsicAttributes & CourseCardProps'.
+src/pages/ELearningPage.tsx(401,52): error TS2322: Type '{ key: any; course: any; }' is not assignable to type 'IntrinsicAttributes & CourseCardProps'.
+  Property 'course' does not exist on type 'IntrinsicAttributes & CourseCardProps'.
+src/pages/EnhancedEditorPage.tsx(18,11): error TS2339: Property 'handleSavePage' does not exist on type 'EditorContextType'.
+src/pages/EnhancedEditorPage.tsx(19,54): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EnhancedEditorPage.tsx(204,25): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EnhancedEditorPage.tsx(215,23): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EnhancedEditorPage.tsx(226,22): error TS2709: Cannot use namespace 'EditorComponent' as a type.
+src/pages/EventsPage.tsx(30,25): error TS2345: Argument of type 'Event' is not assignable to parameter of type '{ title: string; description?: string | undefined; start: Date; end?: Date | undefined; url?: string | undefined; location?: string | undefined; }'.
+  Property 'start' is missing in type 'Event' but required in type '{ title: string; description?: string | undefined; start: Date; end?: Date | undefined; url?: string | undefined; location?: string | undefined; }'.
+src/pages/EventsPage.tsx(35,26): error TS18048: 'event.ticketPrice' is possibly 'undefined'.
+src/pages/EventsPage.tsx(45,26): error TS18048: 'event.ticketPrice' is possibly 'undefined'.
+src/pages/EventsPage.tsx(79,82): error TS18048: 'event.date' is possibly 'undefined'.
+src/pages/financials/FinancialsPage.tsx(6,10): error TS2305: Module '"../../components/icons"' has no exported member 'FinancialsIcon'.
+src/pages/financials/FinancialsPage.tsx(6,56): error TS2305: Module '"../../components/icons"' has no exported member 'EarningsIcon'.
+src/pages/financials/FinancialsPage.tsx(6,70): error TS2305: Module '"../../components/icons"' has no exported member 'ReferralIcon'.
+src/pages/financials/FinancialsPage.tsx(6,84): error TS2305: Module '"../../components/icons"' has no exported member 'LoyaltyIcon'.
+src/pages/financials/FinancialsPage.tsx(6,97): error TS2724: '"../../components/icons"' has no exported member named 'GiftCardIcon'. Did you mean 'GiftIcon'?
+src/pages/financials/FinancialsPage.tsx(6,111): error TS2305: Module '"../../components/icons"' has no exported member 'VaultIcon'.
+src/pages/financials/GiftCardsPage.tsx(6,13): error TS2339: Property 'giftCards' does not exist on type 'AppContextType'.
+src/pages/financials/GiftCardsPage.tsx(10,64): error TS2367: This comparison appears to be unintentional because the types '"active" | "expired" | "used"' and '"available"' have no overlap.
+src/pages/financials/GiftCardsPage.tsx(78,49): error TS2367: This comparison appears to be unintentional because the types '"active" | "expired" | "used"' and '"claimed"' have no overlap.
+src/pages/financials/GiftCardsPage.tsx(96,42): error TS2367: This comparison appears to be unintentional because the types '"active" | "expired" | "used"' and '"claimed"' have no overlap.
+src/pages/financials/LoyaltyPage.tsx(25,11): error TS2339: Property 'loyaltyRewards' does not exist on type 'AppContextType'.
+src/pages/financials/LoyaltyPage.tsx(146,35): error TS7006: Parameter 'reward' implicitly has an 'any' type.
+src/pages/financials/LoyaltyRewardsPage.tsx(5,13): error TS2339: Property 'loyaltyRewards' does not exist on type 'AppContextType'.
+src/pages/financials/LoyaltyRewardsPage.tsx(120,53): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/pages/financials/LoyaltyRewardsPage.tsx(120,76): error TS7006: Parameter 'reward' implicitly has an 'any' type.
+src/pages/financials/LoyaltyRewardsPage.tsx(131,53): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/pages/FinancialsPage.tsx(11,89): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/FingerLuxPage.tsx(241,28): error TS2339: Property 'price' does not exist on type 'BookingCategory'.
+src/pages/FingerLuxPage.tsx(335,51): error TS2339: Property 'image' does not exist on type 'BookingCategory'.
+src/pages/FingerLuxPage.tsx(348,58): error TS2339: Property 'price' does not exist on type 'BookingCategory'.
+src/pages/FingerLuxPage.tsx(352,21): error TS2339: Property 'features' does not exist on type 'BookingCategory'.
+src/pages/FingerLuxPage.tsx(352,36): error TS7006: Parameter 'feature' implicitly has an 'any' type.
+src/pages/FingerLuxPage.tsx(352,45): error TS7006: Parameter 'idx' implicitly has an 'any' type.
+src/pages/FingerLuxPage.tsx(405,48): error TS2739: Type 'BookingCategory' is missing the following properties from type 'BookingCategory': createdAt, updatedAt
+src/pages/FingerWarsPage.tsx(9,10): error TS2305: Module '"../components/icons"' has no exported member 'GameIcon'.
+src/pages/FingerWarsPage.tsx(190,59): error TS2339: Property 'category' does not exist on type 'GamewarsChallenge'.
+src/pages/FingerWarsPage.tsx(196,41): error TS2339: Property 'progress' does not exist on type 'GamewarsChallenge'.
+src/pages/FingerWarsPage.tsx(196,54): error TS2339: Property 'progress' does not exist on type 'GamewarsChallenge'.
+src/pages/FingerWarsPage.tsx(199,42): error TS2339: Property 'reward' does not exist on type 'GamewarsChallenge'.
+src/pages/FingerWarsPage.tsx(199,60): error TS2339: Property 'reward' does not exist on type 'GamewarsChallenge'.
+src/pages/FingerWarsPage.tsx(207,31): error TS2345: Argument of type 'GamewarsChallenge[]' is not assignable to parameter of type 'SetStateAction<FingerWarChallenge[]>'.
+  Type 'GamewarsChallenge[]' is not assignable to type 'FingerWarChallenge[]'.
+    Type 'GamewarsChallenge' is missing the following properties from type 'FingerWarChallenge': challengeType, difficulty, startDate, endDate, reward
+src/pages/FlamingoPage.tsx(7,3): error TS2724: '"../components/icons"' has no exported member named 'FlamingoIcon'. Did you mean 'FlagIcon'?
+src/pages/FlamingoPage.tsx(10,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/FlamingoPage.tsx(11,3): error TS2724: '"../components/icons"' has no exported member named 'FilterIcon'. Did you mean 'FireIcon'?
+src/pages/FlamingoPage.tsx(12,3): error TS2305: Module '"../components/icons"' has no exported member 'SortIcon'.
+src/pages/FlamingoPage.tsx(13,3): error TS2724: '"../components/icons"' has no exported member named 'CartIcon'. Did you mean 'HeartIcon'?
+src/pages/ForumPage.tsx(7,10): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/GalleryPage.tsx(10,3): error TS2305: Module '"@/components/icons"' has no exported member 'CollectionIcon'.
+src/pages/GalleryPage.tsx(13,3): error TS2305: Module '"@/components/icons"' has no exported member 'DownloadIcon'.
+src/pages/GalleryPage.tsx(16,3): error TS2724: '"@/components/icons"' has no exported member named 'GridIcon'. Did you mean 'GifIcon'?
+src/pages/GalleryPage.tsx(17,3): error TS2305: Module '"@/components/icons"' has no exported member 'ListIcon'.
+src/pages/GameOnPage.tsx(10,3): error TS2305: Module '"../components/icons"' has no exported member 'GamepadIcon'.
+src/pages/GameOnPage.tsx(49,44): error TS2345: Argument of type '{ context: string; error: unknown; }' is not assignable to parameter of type 'ErrorType | undefined'.
+src/pages/GameOnPage.tsx(72,43): error TS2339: Property 'isTrending' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(74,43): error TS2339: Property 'isNew' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(76,43): error TS2339: Property 'price' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(217,29): error TS2339: Property 'price' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(217,61): error TS2339: Property 'price' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(223,29): error TS2339: Property 'isTrending' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(235,37): error TS2339: Property 'players' does not exist on type 'Game'.
+src/pages/GameOnPage.tsx(239,37): error TS2339: Property 'duration' does not exist on type 'Game'.
+src/pages/gems/GemPublicPage.tsx(9,10): error TS2614: Module '"../../contexts/VoiceFeedContext"' has no exported member 'VoiceFeedContext'. Did you mean to use 'import VoiceFeedContext from "../../contexts/VoiceFeedContext"' instead?
+src/pages/gems/GemPublicPage.tsx(10,10): error TS2305: Module '"../../components/icons"' has no exported member 'LiveIcon'.
+src/pages/gems/GemPublicPage.tsx(18,13): error TS2339: Property 'posts' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(18,30): error TS2339: Property 'handleLikePost' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(18,46): error TS2339: Property 'handleAddNewComment' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(18,67): error TS2339: Property 'handleVote' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(18,79): error TS2339: Property 'handleDeletePost' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(18,97): error TS2339: Property 'handleTokenizePost' does not exist on type 'PostContextType | undefined'.
+src/pages/gems/GemPublicPage.tsx(21,13): error TS2339: Property 'isSessionActive' does not exist on type 'unknown'.
+src/pages/gems/GemPublicPage.tsx(21,30): error TS2339: Property 'activeSession' does not exist on type 'unknown'.
+src/pages/gems/GemPublicPage.tsx(21,45): error TS2339: Property 'joinSession' does not exist on type 'unknown'.
+src/pages/gems/GemPublicPage.tsx(51,13): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/GemsPage.tsx(12,3): error TS2305: Module '"../components/icons"' has no exported member 'GemIcon'.
+src/pages/GemsPage.tsx(13,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/GemsPage.tsx(20,3): error TS2724: '"../components/icons"' has no exported member named 'FilterIcon'. Did you mean 'FireIcon'?
+src/pages/GemsPage.tsx(21,3): error TS2305: Module '"../components/icons"' has no exported member 'SortIcon'.
+src/pages/GroupDetailPage.tsx(25,46): error TS2322: Type '{ title: string; subtitle: string; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'subtitle' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/pages/groups/GroupDetailPage.tsx(5,10): error TS2305: Module '"../../components/icons"' has no exported member 'LiveIcon'.
+src/pages/groups/GroupDetailPage.tsx(5,20): error TS2305: Module '"../../components/icons"' has no exported member 'PhoneGroupIcon'.
+src/pages/groups/GroupDetailPage.tsx(88,22): error TS2339: Property 'type' does not exist on type 'never'.
+src/pages/groups/GroupDetailPage.tsx(88,59): error TS2339: Property 'groupId' does not exist on type 'never'.
+src/pages/groups/GroupDetailPage.tsx(135,33): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/groups/GroupDetailPage.tsx(198,59): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/groups/GroupDetailPage.tsx(219,37): error TS2339: Property 'participants' does not exist on type 'never'.
+src/pages/groups/GroupDetailPage.tsx(238,17): error TS2322: Type '{ key: string; post: Post; onLike: (postId: string) => Promise<void>; onAddComment: (postId: string, comment: string) => Promise<void>; onOpenGiftModal: (postId: string) => void; ... 7 more ...; handleTokenizePost: (postId: string) => void; }' is not assignable to type 'IntrinsicAttributes & PostCardProps'.
+  Property 'onAddComment' does not exist on type 'IntrinsicAttributes & PostCardProps'. Did you mean '_onComment'?
+src/pages/groups/ManageMyGroupPage.tsx(14,13): error TS2339: Property 'groups' does not exist on type 'GroupContextType | undefined'.
+src/pages/groups/ManageMyGroupPage.tsx(14,21): error TS2339: Property 'handleUpdateGroup' does not exist on type 'GroupContextType | undefined'.
+src/pages/GroupsPage.tsx(11,20): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/GroupsPage.tsx(11,73): error TS2305: Module '"../components/icons"' has no exported member 'ChatAlt2Icon'.
+src/pages/hallmark/HallmarkCreatePage.tsx(36,19): error TS2739: Type '{ requestedHallmark: { name: string; slug: string; logoUrl: string; rules: string; settings: { memberLimit: number; permissions: { canPost: boolean; canInvite: boolean; }; durationMonths: 1 | 2 | 3 | 5 | 4 | 6; joinFee: number; }; }; }' is missing the following properties from type 'Omit<HallmarkApplication, "id" | "status" | "timestamp" | "applicant">': hallmarkId, applicantId, applicationDate
+src/pages/hallmark/HallmarkPublicPage.tsx(25,22): error TS2304: Cannot find name 'useNavigate'.
+src/pages/hallmark/HallmarkPublicPage.tsx(26,42): error TS2304: Cannot find name 'useAuth'.
+src/pages/hallmark/HallmarkPublicPage.tsx(27,47): error TS2304: Cannot find name 'useHallmark'.
+src/pages/hallmark/HallmarkPublicPage.tsx(28,120): error TS2304: Cannot find name 'usePost'.
+src/pages/hallmark/HallmarkPublicPage.tsx(29,88): error TS2304: Cannot find name 'useAppContext'.
+src/pages/hallmark/HallmarkPublicPage.tsx(30,78): error TS2304: Cannot find name 'VoiceFeedContext'.
+src/pages/hallmark/HallmarkPublicPage.tsx(35,17): error TS2304: Cannot find name 'PageHeader'.
+src/pages/HallmarkPage.tsx(17,3): error TS2724: '"../components/icons"' has no exported member named 'AwardIcon'. Did you mean 'BackwardIcon'?
+src/pages/HallmarkPage.tsx(18,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/HallmarkPage.tsx(21,3): error TS2724: '"../components/icons"' has no exported member named 'MusicNoteIcon'. Did you mean 'MusicalNoteIcon'?
+src/pages/legal/CSAEPolicyPage.tsx(3,10): error TS2724: '"../../components/icons"' has no exported member named 'PolicyIcon'. Did you mean 'PlayIcon'?
+src/pages/legal/IndexPage.tsx(5,10): error TS2724: '"../../components/icons"' has no exported member named 'PolicyIcon'. Did you mean 'PlayIcon'?
+src/pages/legal/WhitePaperPage.tsx(3,10): error TS2724: '"../../components/icons"' has no exported member named 'PolicyIcon'. Did you mean 'PlayIcon'?
+src/pages/LendsqrPage.tsx(13,11): error TS2339: Property 'lendsqrProjects' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(26,5): error TS2339: Property 'isLive' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(27,5): error TS2339: Property 'handleGoLive' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(28,5): error TS2339: Property 'handleStopLive' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(30,5): error TS2339: Property 'handleStartConference' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(31,5): error TS2339: Property 'paidStreamIds' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(32,5): error TS2339: Property 'scheduledEvents' does not exist on type 'AppContextType'.
+src/pages/LiveStreamingPage.tsx(193,24): error TS18048: 'stream.creator' is possibly 'undefined'.
+src/pages/LiveStreamingPage.tsx(194,26): error TS18048: 'stream.creator' is possibly 'undefined'.
+src/pages/LiveStreamingPage.tsx(195,22): error TS18048: 'stream.creator' is possibly 'undefined'.
+src/pages/LiveStreamingPage.tsx(202,51): error TS18048: 'stream.creator' is possibly 'undefined'.
+src/pages/LmsPage.tsx(10,3): error TS2724: '"../components/icons"' has no exported member named 'MemberGroupIcon'. Did you mean 'MembersIcon'?
+src/pages/LoginPage.tsx(7,19): error TS2724: '"@/components/icons"' has no exported member named 'EyeOffIcon'. Did you mean 'EyeIcon'?
+src/pages/LoginPage.tsx(8,10): error TS2305: Module '"@/components/icons"' has no exported member 'GoogleIcon'.
+src/pages/LoginPage.tsx(8,22): error TS2305: Module '"@/components/icons"' has no exported member 'FacebookIcon'.
+src/pages/LoginPage.tsx(8,36): error TS2305: Module '"@/components/icons"' has no exported member 'YahooIcon'.
+src/pages/LoginPage.tsx(8,47): error TS2724: '"@/components/icons"' has no exported member named 'LinkedInIcon'. Did you mean 'LinkIcon'?
+src/pages/LoginPage.tsx(8,61): error TS2305: Module '"@/components/icons"' has no exported member 'InstagramIcon'.
+src/pages/LoginPage.tsx(8,76): error TS2724: '"@/components/icons"' has no exported member named 'TikTokIcon'. Did you mean 'TicketIcon'?
+src/pages/LushPressiesPage.tsx(3,3): error TS2724: '"../components/icons"' has no exported member named 'MemberIcon'. Did you mean 'MembersIcon'?
+src/pages/MarketplacePage.tsx(18,3): error TS2305: Module '"../components/icons"' has no exported member 'MarketplaceIcon'.
+src/pages/MarketplacePage.tsx(19,3): error TS2305: Module '"../components/icons"' has no exported member 'OwnitIcon'.
+src/pages/MarketplacePage.tsx(20,3): error TS2724: '"../components/icons"' has no exported member named 'FlamingoIcon'. Did you mean 'FlagIcon'?
+src/pages/MarketplacePage.tsx(21,3): error TS2305: Module '"../components/icons"' has no exported member 'StorefrontIcon'.
+src/pages/MarketplacePage.tsx(22,3): error TS2724: '"../components/icons"' has no exported member named 'OrdersIcon'. Did you mean 'FolderIcon'?
+src/pages/MarketplacePage.tsx(23,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/MarketplacePage.tsx(24,3): error TS2724: '"../components/icons"' has no exported member named 'CartIcon'. Did you mean 'HeartIcon'?
+src/pages/MarketplacePage.tsx(232,22): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+      Type 'undefined' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+      Type 'undefined' is not assignable to type 'string | number'.
+src/pages/MarketplacePage.tsx(232,56): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+src/pages/MarketplacePage.tsx(353,11): error TS2322: Type '{ title: string; subtitle: string; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'subtitle' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/pages/MarketplaceTrackingPage.tsx(191,7): error TS2552: Cannot find name 'Alert'. Did you mean 'alert'?
+src/pages/MemberEarningPage.tsx(22,47): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/MemberEarningPage.tsx(23,35): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/MemberEarningPage.tsx(24,37): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/MemberEarningPage.tsx(26,3): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/pages/MembersPage.tsx(27,13): error TS2339: Property 'followingIds' does not exist on type 'User'.
+src/pages/messages/MessagesPage.tsx(654,19): error TS2345: Argument of type '(prev: Message[]) => (Message | { status: "error"; delivered: false; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; })[]' is not assignable to parameter of type 'SetStateAction<Message[]>'.
+  Type '(prev: Message[]) => (Message | { status: "error"; delivered: false; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; })[]' is not assignable to type '(prevState: Message[]) => Message[]'.
+    Type '(Message | { status: "error"; delivered: false; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; ... 5 more ...; readReceipts?: MessageReceipt[] | undefined; })[]' is not assignable to type 'Message[]'.
+      Type 'Message | { status: "error"; delivered: false; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; ... 5 more ...; readReceipts?: MessageReceipt[] | undefined; }' is not assignable to type 'Message'.
+        Type '{ status: "error"; delivered: false; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }' is not assignable to type 'Message'.
+          Types of property 'status' are incompatible.
+            Type '"error"' is not assignable to type '"sent" | "delivered" | "read" | "sending"'.
+src/pages/messages/MessagesPage.tsx(829,19): error TS2345: Argument of type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to parameter of type 'SetStateAction<Message[]>'.
+  Type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type '(prevState: Message[]) => Message[]'.
+    Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type 'Message[]'.
+      Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }' is not assignable to type 'Message'.
+        Types of property 'status' are incompatible.
+          Type 'string' is not assignable to type '"sent" | "delivered" | "read" | "sending"'.
+src/pages/messages/MessagesPage.tsx(863,19): error TS2345: Argument of type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to parameter of type 'SetStateAction<Message[]>'.
+  Type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type '(prevState: Message[]) => Message[]'.
+    Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type 'Message[]'.
+      Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }' is not assignable to type 'Message'.
+        Types of property 'status' are incompatible.
+          Type 'string' is not assignable to type '"sent" | "delivered" | "read" | "sending"'.
+src/pages/messages/MessagesPage.tsx(897,19): error TS2345: Argument of type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to parameter of type 'SetStateAction<Message[]>'.
+  Type '(prev: Message[]) => { status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; ... 6 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type '(prevState: Message[]) => Message[]'.
+    Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }[]' is not assignable to type 'Message[]'.
+      Type '{ status: string; delivered: boolean; id: string; senderId: string; receiverId: string; content: string | EncryptedMessageContent; timestamp: Date; read: boolean; ... 4 more ...; readReceipts?: MessageReceipt[] | undefined; }' is not assignable to type 'Message'.
+        Types of property 'status' are incompatible.
+          Type 'string' is not assignable to type '"sent" | "delivered" | "read" | "sending"'.
+src/pages/messages/MessagesPage.tsx(1015,25): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1145,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1151,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1157,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1459,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1465,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1471,56): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1475,28): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+  Type 'EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/messages/MessagesPage.tsx(1721,43): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/messages/MessagesPage.tsx(1773,29): error TS2322: Type 'string | EncryptedMessageContent' is not assignable to type 'ReactNode'.
+src/pages/ModerationQueuePage.tsx(67,8): error TS2741: Property 'onMenuToggle' is missing in type '{}' but required in type 'HeaderProps'.
+src/pages/ModerationQueuePage.tsx(175,25): error TS2322: Type '"success"' is not assignable to type '"link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined'.
+src/pages/MonetizationDashboardPage.tsx(10,11): error TS2339: Property 'error' does not exist on type 'MonetizationContextType'.
+src/pages/MonetizationDashboardPage.tsx(10,18): error TS2339: Property 'loading' does not exist on type 'MonetizationContextType'.
+src/pages/MonetizationDashboardPage.tsx(10,27): error TS2339: Property 'refreshEligibility' does not exist on type 'MonetizationContextType'.
+src/pages/music/AiPlaylistPage.tsx(4,10): error TS2305: Module '"../../components/icons"' has no exported member 'MagicWandIcon'.
+src/pages/music/AiPlaylistPage.tsx(7,13): error TS2339: Property 'handleGenerateAiPlaylist' does not exist on type 'AppContextType'.
+src/pages/music/PlaylistDetailPage.tsx(7,20): error TS2305: Module '"../../components/icons"' has no exported member 'PinIcon'.
+src/pages/music/PlaylistDetailPage.tsx(7,29): error TS2305: Module '"../../components/icons"' has no exported member 'TokenIcon'.
+src/pages/music/PlaylistDetailPage.tsx(7,53): error TS2305: Module '"../../components/icons"' has no exported member 'HandshakeIcon'.
+src/pages/music/PlaylistDetailPage.tsx(7,79): error TS2305: Module '"../../components/icons"' has no exported member 'ShuffleIcon'.
+src/pages/music/PlaylistDetailPage.tsx(13,13): error TS2339: Property 'memberPlaylists' does not exist on type 'AppContextType'.
+src/pages/MyDownloadsPage.tsx(4,10): error TS2305: Module '"../components/icons"' has no exported member 'MyDownloadsIcon'.
+src/pages/MyDownloadsPage.tsx(8,13): error TS2339: Property 'myDownloads' does not exist on type 'AppContextType'.
+src/pages/MyDownloadsPage.tsx(8,26): error TS2339: Property 'handleRemoveDownload' does not exist on type 'AppContextType'.
+src/pages/MyDownloadsPage.tsx(8,48): error TS2339: Property 'handlePlayMedia' does not exist on type 'AppContextType'.
+src/pages/MyDownloadsPage.tsx(11,30): error TS2339: Property 'type' does not exist on type 'DownloadedItem'.
+src/pages/MyDownloadsPage.tsx(12,30): error TS2339: Property 'content' does not exist on type 'DownloadedItem'.
+src/pages/MyDownloadsPage.tsx(25,70): error TS2339: Property 'id' does not exist on type 'DownloadedItem'.
+src/pages/MyDownloadsPage.tsx(46,59): error TS2339: Property 'id' does not exist on type 'DownloadedItem'.
+src/pages/MyLearningPage.tsx(24,96): error TS2339: Property 'lessons' does not exist on type 'Module'.
+src/pages/MyLearningPage.tsx(40,92): error TS2339: Property 'lessons' does not exist on type 'Module'.
+src/pages/MyLearningPage.tsx(104,100): error TS2339: Property 'lessons' does not exist on type 'Module'.
+src/pages/MyPages.tsx(9,11): error TS2339: Property 'publishedPages' does not exist on type 'EditorContextType'.
+src/pages/MyPages.tsx(9,27): error TS2339: Property 'handleDeletePage' does not exist on type 'EditorContextType'.
+src/pages/MyPages.tsx(102,38): error TS7006: Parameter 'page' implicitly has an 'any' type.
+src/pages/MyWalletPage.tsx(137,13): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/notifications/NotificationPage.tsx(14,22): error TS2345: Argument of type '{ id: number; title: string; content: string; date: string; read: boolean; }[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type '{ id: number; title: string; content: string; date: string; read: boolean; }[]' is not assignable to type 'never[]'.
+    Type '{ id: number; title: string; content: string; date: string; read: boolean; }' is not assignable to type 'never'.
+src/pages/notifications/NotificationPage.tsx(18,22): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'any[]' is not assignable to type 'never[]'.
+    Type 'any' is not assignable to type 'never'.
+src/pages/notifications/NotificationPage.tsx(19,20): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(19,34): error TS2698: Spread types may only be created from object types.
+src/pages/notifications/NotificationPage.tsx(24,72): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(33,36): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(33,81): error TS2339: Property 'read' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(35,35): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(36,54): error TS2339: Property 'date' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(38,32): error TS2339: Property 'content' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(40,32): error TS2339: Property 'read' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(41,66): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/notifications/NotificationPage.tsx(43,72): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/NyscPage.tsx(9,3): error TS2305: Module '"../components/icons"' has no exported member 'LocationMarkerIcon'.
+src/pages/OwnitPage.tsx(14,10): error TS2724: '"../contexts/AppContext"' has no exported member named 'AppContext'. Did you mean 'useAppContext'?
+src/pages/OwnitPage.tsx(19,3): error TS2305: Module '"../components/icons"' has no exported member 'OwnitIcon'.
+src/pages/OwnitPage.tsx(20,3): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/OwnitPage.tsx(21,3): error TS2724: '"../components/icons"' has no exported member named 'FilterIcon'. Did you mean 'FireIcon'?
+src/pages/OwnitPage.tsx(22,3): error TS2305: Module '"../components/icons"' has no exported member 'SortIcon'.
+src/pages/OwnitPage.tsx(23,3): error TS2724: '"../components/icons"' has no exported member named 'CartIcon'. Did you mean 'HeartIcon'?
+src/pages/OwnitPage.tsx(106,11): error TS2339: Property 'handleAddToCart' does not exist on type 'MarketplaceContextType | undefined'.
+src/pages/OwnitPage.tsx(107,11): error TS2339: Property 'ficBalance' does not exist on type 'unknown'.
+src/pages/OwnitPage.tsx(107,23): error TS2339: Property 'showToast' does not exist on type 'unknown'.
+src/pages/OwnitPage.tsx(256,22): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+src/pages/OwnitPage.tsx(256,56): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+src/pages/OwnitPage.tsx(273,29): error TS18048: 'p.likesCount' is possibly 'undefined'.
+src/pages/OwnitPage.tsx(292,29): error TS18048: 'p.likesCount' is possibly 'undefined'.
+src/pages/PaylinksPage.tsx(3,41): error TS2724: '"../components/icons"' has no exported member named 'PaylinkIcon'. Did you mean 'LinkIcon'?
+src/pages/PaylinksPage.tsx(10,13): error TS2339: Property 'paylinks' does not exist on type 'AppContextType'.
+src/pages/PaylinksPage.tsx(10,51): error TS2339: Property 'handleDeletePaylink' does not exist on type 'AppContextType'.
+src/pages/PaylinksPage.tsx(52,17): error TS2322: Type '{ title: string; subtitle: string; actionText: string; onAction: () => void; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'subtitle' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/pages/PaylinksPage.tsx(58,32): error TS7006: Parameter 'paylink' implicitly has an 'any' type.
+src/pages/PhotoCreditDetailPage.tsx(10,29): error TS2339: Property 'fetchPhotoCredits' does not exist on type 'AppContextType'.
+src/pages/PhotoCreditDetailPage.tsx(165,13): error TS2322: Type '(prompt: string) => Promise<string>' is not assignable to type '(action: string, data: Record<string, unknown>) => Promise<{ success: boolean; }>'.
+src/pages/PostDetailPage.tsx(27,7): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/PostDetailPage.tsx(28,7): error TS2322: Type '"post"' is not assignable to type '"link" | "text" | "image" | "video" | "poll" | undefined'.
+src/pages/PostDetailPage.tsx(117,13): error TS2322: Type '(prompt: string) => Promise<string>' is not assignable to type '(action: string, data: Record<string, unknown>) => Promise<{ success: boolean; }>'.
+  Type 'Promise<string>' is not assignable to type 'Promise<{ success: boolean; }>'.
+    Type 'string' is not assignable to type '{ success: boolean; }'.
+src/pages/ProductDetailPage.tsx(38,43): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/ProductDetailPage.tsx(65,5): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+src/pages/profile/EditProfile.tsx(23,19): error TS2339: Property 'setMember' does not exist on type 'AppContextType'.
+src/pages/profile/EditProfile.tsx(61,19): error TS2345: Argument of type '(prev: MemberData) => { location: { country?: string | undefined; region?: string | undefined; city?: string | undefined; }; name: string; membername: string; email: string; bio: string; website: string; avatarUrl: string | null; }' is not assignable to parameter of type 'SetStateAction<MemberData>'.
+  Type '(prev: MemberData) => { location: { country?: string | undefined; region?: string | undefined; city?: string | undefined; }; name: string; membername: string; email: string; bio: string; website: string; avatarUrl: string | null; }' is not assignable to type '(prevState: MemberData) => MemberData'.
+    Call signature return types '{ location: { country?: string | undefined; region?: string | undefined; city?: string | undefined; }; name: string; membername: string; email: string; bio: string; website: string; avatarUrl: string | null; }' and 'MemberData' are incompatible.
+      The types of 'location.country' are incompatible between these types.
+        Type 'string | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+src/pages/profile/EditProfile.tsx(112,10): error TS18048: 'formData.location' is possibly 'undefined'.
+src/pages/profile/EditProfile.tsx(272,24): error TS18048: 'formData.location' is possibly 'undefined'.
+src/pages/profile/EditProfile.tsx(285,24): error TS18048: 'formData.location' is possibly 'undefined'.
+src/pages/ProfilePage.tsx(12,3): error TS2724: '"../components/icons"' has no exported member named 'MailIcon'. Did you mean 'MapIcon'?
+src/pages/ProfilePage.tsx(13,3): error TS2305: Module '"../components/icons"' has no exported member 'LocationMarkerIcon'.
+src/pages/ProfilePage.tsx(17,3): error TS2724: '"../components/icons"' has no exported member named 'ChatIcon'. Did you mean 'HeartIcon'?
+src/pages/PublishedPage.tsx(30,52): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/PublishingToolsPage.tsx(68,38): error TS2345: Argument of type '(post: Post) => JSX.Element' is not assignable to parameter of type '(value: Post, index: number, array: Post[]) => Element'.
+  Types of parameters 'post' and 'value' are incompatible.
+    Property 'timestamp' is missing in type 'import("/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main/src/types").Post' but required in type 'Post'.
+src/pages/RegisterPage.tsx(7,19): error TS2724: '"@/components/icons"' has no exported member named 'EyeOffIcon'. Did you mean 'EyeIcon'?
+src/pages/RegisterPage.tsx(8,10): error TS2305: Module '"@/components/icons"' has no exported member 'GoogleIcon'.
+src/pages/RegisterPage.tsx(8,22): error TS2305: Module '"@/components/icons"' has no exported member 'FacebookIcon'.
+src/pages/RegisterPage.tsx(8,36): error TS2305: Module '"@/components/icons"' has no exported member 'YahooIcon'.
+src/pages/RegisterPage.tsx(8,47): error TS2724: '"@/components/icons"' has no exported member named 'LinkedInIcon'. Did you mean 'LinkIcon'?
+src/pages/RegisterPage.tsx(8,61): error TS2305: Module '"@/components/icons"' has no exported member 'InstagramIcon'.
+src/pages/RegisterPage.tsx(8,76): error TS2724: '"@/components/icons"' has no exported member named 'TikTokIcon'. Did you mean 'TicketIcon'?
+src/pages/SeadsPage.tsx(24,11): error TS2339: Property 'seadsInitiatives' does not exist on type 'AppContextType'.
+src/pages/SeadsPage.tsx(236,37): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+src/pages/search/SearchResultsPage.tsx(54,47): error TS2554: Expected 1 arguments, but got 2.
+src/pages/SecuritySetupPage.tsx(3,60): error TS2724: '"../components/icons"' has no exported member named 'DeviceMobileIcon'. Did you mean 'DevicePhoneMobileIcon'?
+src/pages/settings/SettingsPage.tsx(14,25): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+src/pages/settings/SettingsPage.tsx(14,56): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+src/pages/settings/SettingsPage.tsx(14,72): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ notifications: boolean; privacy: string; theme: string; language: string; }'.
+src/pages/StorefrontsPage.tsx(6,10): error TS2724: '"../components/icons"' has no exported member named 'StoreIcon'. Did you mean 'StarIcon'?
+src/pages/super-admin/CodeAgentPage.tsx(15,66): error TS2339: Property 'plan' does not exist on type 'AgenticAiResponse'.
+src/pages/super-admin/CodeAgentPage.tsx(18,17): error TS2339: Property 'changes' does not exist on type 'AgenticAiResponse'.
+src/pages/super-admin/CodeAgentPage.tsx(18,30): error TS7006: Parameter 'change' implicitly has an 'any' type.
+src/pages/super-admin/CodeAgentPage.tsx(18,38): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/super-admin/CodeAgentPage.tsx(42,11): error TS2339: Property 'enforceAiAction' does not exist on type 'AppContextType'.
+src/pages/super-admin/CodeAgentPage.tsx(61,11): error TS2345: Argument of type '{ id: string; agentId: string; timestamp: string; query: string; rawResponse: string; plan: string[]; changes: never[]; }' is not assignable to parameter of type 'SetStateAction<AgenticAiResponse | null>'.
+  Object literal may only specify known properties, and 'id' does not exist in type 'AgenticAiResponse | ((prevState: AgenticAiResponse | null) => AgenticAiResponse | null)'.
+src/pages/super-admin/CodeAgentPage.tsx(77,9): error TS2322: Type '{ id: string; agentId: string; timestamp: string; query: string; rawResponse: string; plan: any; changes: any; }' is not assignable to type 'FunctionComponent<SVGProps<SVGSVGElement>>'.
+  Object literal may only specify known properties, and 'id' does not exist in type 'FunctionComponent<SVGProps<SVGSVGElement>>'.
+src/pages/super-admin/CodeAgentPage.tsx(92,9): error TS2322: Type '{ id: string; agentId: string; timestamp: string; query: string; rawResponse: string; plan: string[]; changes: never[]; }' is not assignable to type 'FunctionComponent<SVGProps<SVGSVGElement>>'.
+  Object literal may only specify known properties, and 'id' does not exist in type 'FunctionComponent<SVGProps<SVGSVGElement>>'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(4,10): error TS2305: Module '"../../components/icons"' has no exported member 'ShieldIcon'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(12,10): error TS2305: Module '"../../types"' has no exported member 'GuardianSystemStatus'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(102,47): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ low: string; medium: string; high: string; critical: string; }'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(102,68): error TS2339: Property 'severity' does not exist on type 'GuardianAlert'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(105,57): error TS2339: Property 'title' does not exist on type 'GuardianAlert'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(106,60): error TS2339: Property 'suggestion' does not exist on type 'GuardianAlert'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(108,54): error TS2339: Property 'timestamp' does not exist on type 'GuardianAlert'.
+src/pages/super-admin/SuperAdminOverviewPage.tsx(111,77): error TS2339: Property 'id' does not exist on type 'GuardianAlert'.
+src/pages/SupportPage.tsx(21,11): error TS2339: Property 'handleSubmitTicket' does not exist on type 'AppContextType'.
+src/pages/TrendsFeedPage.tsx(75,15): error TS2322: Type '{ posts: PostType[]; handleLikePost: (postId: string) => void; handleOpenGiftModal: (post: any) => void; showToast: (message: ReactNode, type?: "info" | "warning" | "error" | "success" | undefined) => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'posts' does not exist on type 'IntrinsicAttributes'.
+src/pages/TrendsFeedPage.tsx(77,37): error TS7006: Parameter 'post' implicitly has an 'any' type.
+src/pages/VerificationPage.tsx(4,38): error TS2724: '"../components/icons"' has no exported member named 'MailIcon'. Did you mean 'MapIcon'?
+src/pages/VideosPage.tsx(4,92): error TS2305: Module '"../components/icons"' has no exported member 'DotsHorizontalIcon'.
+src/pages/VideosPage.tsx(4,112): error TS2724: '"../components/icons"' has no exported member named 'SearchIcon'. Did you mean 'StarIcon'?
+src/pages/VideosPage.tsx(4,124): error TS2724: '"../components/icons"' has no exported member named 'FilterIcon'. Did you mean 'FireIcon'?
+src/pages/WalletAndPayPage.tsx(5,3): error TS2724: '"../components/icons"' has no exported member named 'PaylinkIcon'. Did you mean 'LinkIcon'?
+src/pages/WalletAndPayPage.tsx(6,3): error TS2724: '"../components/icons"' has no exported member named 'CurrencyNairaIcon'. Did you mean 'CurrencyYenIcon'?
+src/pages/WalletFundingPage.tsx(5,20): error TS2724: '"../components/icons"' has no exported member named 'PaylinkIcon'. Did you mean 'LinkIcon'?
+src/pages/WalletFundingPage.tsx(5,33): error TS2724: '"../components/icons"' has no exported member named 'CurrencyNairaIcon'. Did you mean 'CurrencyYenIcon'?
+src/pages/WalletFundingPage.tsx(5,68): error TS2305: Module '"../components/icons"' has no exported member 'BankIcon'.
+src/server.ts(37,68): error TS2345: Argument of type '"Redis Client"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/server.ts(39,72): error TS2345: Argument of type '"Redis Connection"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/server.ts(46,30): error TS2345: Argument of type '"Redis Client"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/server.ts(105,26): error TS2345: Argument of type '"API_ERROR"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/server.ts(161,26): error TS2345: Argument of type '"UNKNOWN_ERROR"' is not assignable to parameter of type 'ErrorType | undefined'.
+src/services/authService.ts(4,23): error TS2305: Module '"../types"' has no exported member 'LoginResponse'.
+src/services/PlaybackService.ts(27,14): error TS2395: Individual declarations in merged declaration 'PlaybackService' must be all exported or all local.
+src/services/PlaybackService.ts(231,7): error TS2395: Individual declarations in merged declaration 'PlaybackService' must be all exported or all local.
+src/services/PlaybackService.ts(231,29): error TS2304: Cannot find name 'PlaybackServiceClass'.
+src/services/sentientService.ts(139,7): error TS2322: Type '{ id: string; date: string; summary: string; findings: never[]; recommendations: never[]; }' is not assignable to type 'SecurityReport'.
+  Object literal may only specify known properties, and 'id' does not exist in type 'SecurityReport'.
+src/services/sentientService.ts(150,7): error TS2322: Type '{ id: string; date: string; summary: string; findings: never[]; recommendations: never[]; }' is not assignable to type 'SecurityReport'.
+  Object literal may only specify known properties, and 'id' does not exist in type 'SecurityReport'.
+src/services/SuperViAPIService.ts(10,39): error TS2694: Namespace '"*"' has no exported member 'Object3D'.
+src/test-icons.tsx(10,3): error TS2724: '"./components/icons"' has no exported member named 'RoseIcon'. Did you mean 'RssIcon'?
+src/test-icons.tsx(12,3): error TS2724: '"./components/icons"' has no exported member named 'MemberIcon'. Did you mean 'MembersIcon'?

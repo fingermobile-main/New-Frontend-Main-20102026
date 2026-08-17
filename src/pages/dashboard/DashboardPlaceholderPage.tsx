@@ -1,5 +1,6 @@
-import React from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import React, {} from 'react';
+
 import { ChartBarIcon } from '../../components/icons';
 
 const DashboardPlaceholderPage: React.FC = () => {

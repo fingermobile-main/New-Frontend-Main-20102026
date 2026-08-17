@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { getPublishedPage } from '../services/api';
 
 interface PageContentBlock {

@@ -1,5 +1,6 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import React, {} from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import { useAuth } from '../contexts/AuthContext';
 import { useGroup } from '../contexts/GroupContext';
@@ -32,8 +33,8 @@ const GroupDetailPage: React.FC = () => {
     let featuredPosts = allPosts.filter((p: Post) => (group.posts || []).includes(p?.id));
 
     // Apply content blocking from active sub-profile
-    if (activeSubProfile && activeSubProfile.blockedContentIds.length > 0) {
-        const blockedIds = new Set(activeSubProfile.blockedContentIds);
+    if (activeSubProfile && (activeSubProfile as any).blockedContentIds?.length > 0) {
+        const blockedIds = new Set((activeSubProfile as any).blockedContentIds);
         featuredPosts = featuredPosts.filter((post: Post) => !blockedIds.has(post.id));
     }
 

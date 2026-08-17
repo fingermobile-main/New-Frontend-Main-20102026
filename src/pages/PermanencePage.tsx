@@ -1,11 +1,13 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
 
 interface Challenge {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   category: string;
   mechanics: string[];
   creatorId: string;
@@ -35,20 +37,20 @@ interface Stream {
 const PermanencePage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "challenges" | "games" | "viral" | "streamed" | "creator"
   >("challenges");
-  const [challenges, setChallenges] = React.useState<Challenge[]>([]);
-  const [streams, setStreams] = React.useState<Stream[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [newChallenge, setNewChallenge] = React.useState({
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [streams, setStreams] = useState<Stream[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [newChallenge, setNewChallenge] = useState({
     title: "",
     description: "",
     category: "Physical & Dexterity",
     stakeAmount: 0
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Simulate loading data
     const fetchData = async () => {
       try {

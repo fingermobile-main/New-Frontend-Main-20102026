@@ -1,13 +1,12 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { MemberPolicy } from '../../types';
 import PolicyEditorModal from '../../components/PolicyEditorModal';
 
 const PolicyPage: React.FC = () => {
     const { policies, handleSavePolicy, handlePublishPolicy } = useAppContext();
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [editingPolicy, setEditingPolicy] = React.useState<any | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingPolicy, setEditingPolicy] = useState<any | null>(null);
 
     const openCreateModal = () => {
         setEditingPolicy(null);

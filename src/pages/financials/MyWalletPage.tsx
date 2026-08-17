@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import apiService, { ApiService } from '../../services/apiService';
 
@@ -42,9 +42,9 @@ const Wallet: React.FC<{
 
 const MyWalletPage: React.FC = () => {
     const { ficBalance, showToast } = useAppContext();
-    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchTransactions = async () => {
             try {
                 const response = await (ApiService as any).getTransactions?.();

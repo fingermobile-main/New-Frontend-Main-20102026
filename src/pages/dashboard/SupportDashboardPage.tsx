@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { SupportTicket } from '../../types';
 
@@ -12,8 +12,8 @@ interface TicketMessage {
 
 const SupportDashboardPage: React.FC = () => {
     const { supportTickets, handleReplyToTicket, handleUpdateTicketStatus, showToast } = useAppContext();
-    const [selectedTicket, setSelectedTicket] = React.useState<SupportTicket | null>(null);
-    const [reply, setReply] = React.useState('');
+    const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
+    const [reply, setReply] = useState('');
 
     const openTickets = (supportTickets || []).filter((t: SupportTicket) => t.status === 'open' || t.status === 'in-progress');
     const closedTickets = (supportTickets || []).filter((t: SupportTicket) => t.status === 'resolved' || t.status === 'closed');

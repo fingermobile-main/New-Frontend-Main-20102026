@@ -1,10 +1,9 @@
-import React from 'react';
-
+import React, { useEffect, useState, useCallback } from 'react';
 // --- Domain Interface Schema Definitions ---
 interface StatusUpdate {
   id: number;
   status: string;
-  description: string;
+  description?: string;
   alert_level: 'info' | 'warning' | 'success' | string;
   created_at: string;
 }
@@ -81,11 +80,11 @@ TrackingTimeline.displayName = 'TrackingTimeline';
 
 // --- Main Page Component Container ---
 const FlamingoTrackingPage: React.FC = () => {
-  const [shipments, setShipments] = React.useState<Shipment[]>([]);
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [selectedShipment, setSelectedShipment] = React.useState<Shipment | null>(null);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
-  const loadShipments = React.useCallback(async () => {
+  const loadShipments = useCallback(async () => {
     try {
       // Simulation of an API response payload configuration
       const mockShipments: Shipment[] = [
@@ -158,11 +157,11 @@ const FlamingoTrackingPage: React.FC = () => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadShipments();
   }, [loadShipments]);
 
-  const handleRefresh = React.useCallback(async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadShipments();
     setRefreshing(false);

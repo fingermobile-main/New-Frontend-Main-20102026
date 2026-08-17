@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { 
@@ -12,7 +11,7 @@ import {
 
 interface TicketFormData {
   subject: string;
-  description: string;
+  description?: string;
   priority: 'low' | 'medium' | 'high';
   category: string;
   ticketType: 'support' | 'bug' | 'feature' | 'complaint';

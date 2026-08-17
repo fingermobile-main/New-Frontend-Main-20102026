@@ -1,5 +1,6 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
 import PageHeader from '../components/PageHeader';
 import AnimatedAvatar from '../components/AnimatedAvatar';
@@ -69,8 +70,8 @@ const MOCK_STOREFRONT = {
 const StorefrontDetailPage: React.FC = () => {
     useParams<{ id: string }>();
     const { ficBalance, showToast } = useAppContext();
-    const [showGiftModal, setShowGiftModal] = React.useState(false);
-    const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+    const [showGiftModal, setShowGiftModal] = useState(false);
+    const [showPaylinkModal, setShowPaylinkModal] = useState(false);
 
     const onOpenGiftModal = () => {
         if (!ficBalance || ficBalance <= 0) {

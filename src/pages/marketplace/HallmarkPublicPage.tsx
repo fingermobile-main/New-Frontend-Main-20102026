@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAuth } from '../../contexts/AuthContext';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
 import { Product } from '../../types';

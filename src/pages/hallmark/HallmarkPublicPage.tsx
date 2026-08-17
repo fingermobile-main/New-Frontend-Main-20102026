@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAuth } from '../../contexts/AuthContext';
 import { useMarketplace } from '../../contexts/MarketplaceContext';
 import { Product } from '../../types';
@@ -62,8 +62,8 @@ const HallmarkPublicPage: React.FC = () => {
             className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
             onClick={() => handleProductClick(product.id)}
             onKeyDown={(e) => handleKeyDown(e, product.id)}
-            tabIndex={0}
             role="button"
+            tabIndex={0}
             aria-label={`View details for ${product.name}`}
           >
             {product.images && product.images.length > 0 && (

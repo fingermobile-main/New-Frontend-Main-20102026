@@ -1,6 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+;
+
 import { toast } from 'react-toastify';
 import { XIcon } from '../../components/icons';
 import { hallmarkService, HallmarkApplication } from '../../services/hallmarkService';
@@ -25,7 +26,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchHallmarks = async () => {
       try {
         const fetchedHallmarks = await hallmarkService.getAllHallmarks();
@@ -41,7 +42,7 @@ const ManageMyHallmarkPage: React.FC = () => {
     fetchHallmarks();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!member) {
       navigate('/hallmark');
     }

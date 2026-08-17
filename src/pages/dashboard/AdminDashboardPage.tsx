@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import {
   ChartBarIcon,
@@ -10,8 +10,8 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 
 const AdminDashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState("overview");
-  const [ficBalance, setFicBalance] = React.useState(0);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [ficBalance, setFicBalance] = useState(0);
 
   // Mock data for dashboard
   const stats = [

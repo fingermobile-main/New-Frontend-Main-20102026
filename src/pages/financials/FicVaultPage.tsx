@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from '../../contexts/AppContext';
 import { GiftIcon, LinkIcon } from '../../components/icons';
 
 const FicVaultPage: React.FC = () => {
   const { ficBalance = 0, showToast } = useAppContext() || {};
-  const [vaultBalance] = React.useState(5000.0);
-  const [interestRate] = React.useState(4.5); // Annual interest rate
-  const [estimatedEarnings] = React.useState(187.5); // Estimated earnings for the year
-  const [vaultActivity] = React.useState([
+  const [vaultBalance] = useState(5000.0);
+  const [interestRate] = useState(4.5); // Annual interest rate
+  const [estimatedEarnings] = useState(187.5); // Estimated earnings for the year
+  const [vaultActivity] = useState([
     {
       id: 1,
       date: "2023-06-15",
@@ -38,13 +40,13 @@ const FicVaultPage: React.FC = () => {
     }
   ]);
 
-  const [depositAmount, setDepositAmount] = React.useState("");
-  const [withdrawAmount, setWithdrawAmount] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
 
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 
 const ContentPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     "all" | "posts" | "photos" | "videos" | "music"
   >("all");
 

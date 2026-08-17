@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import RbacDashboard from '../components/dashboard/RbacDashboard';
 import useRbacData from '../hooks/useRbacData';
 import MainLayout from '../components/layout/MainLayout';
@@ -20,10 +20,10 @@ const RbacManagementPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { data, loading, error, refreshData } = useRbacData();
 
-  const [activeView, setActiveView] = React.useState('dashboard');
+  const [activeView, setActiveView] = useState('dashboard');
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['continent-1']));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       showToast(`Error: ${error}`, "error");
     }

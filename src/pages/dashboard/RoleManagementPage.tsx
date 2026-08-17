@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import apiService, { ApiService } from '../../services/apiService';
 import { MOCK_PLATFORM_ROLES } from '../../constants';
@@ -8,11 +7,11 @@ import { MOCK_PLATFORM_ROLES } from '../../constants';
 
 const RoleManagementPage: React.FC = () => {
     const { showToast } = useAppContext();
-    const [roles, setRoles] = React.useState<any[]>([]);
-    const [loading, setLoading] = React.useState<boolean>(true);
-    const [error, setError] = React.useState<string | null>(null);
+    const [roles, setRoles] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchRoles = async () => {
             try {
                 setLoading(true);

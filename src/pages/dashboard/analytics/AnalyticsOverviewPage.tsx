@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { ChartBarIcon, MembersIcon, EyeIcon } from '../../../components/icons';
 
 // Mock data for charts

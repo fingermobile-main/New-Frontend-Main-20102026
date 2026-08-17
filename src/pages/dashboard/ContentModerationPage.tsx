@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 /*
  * FingerMobile Protocol™ - Content Moderation Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -24,7 +24,7 @@ interface ModerationItem {
 }
 
 const ContentModerationPage: React.FC = () => {
-  const [moderationQueue, setModerationQueue] = React.useState<ModerationItem[]>([
+  const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([
     {
       id: '1',
       type: 'post',
@@ -59,8 +59,8 @@ const ContentModerationPage: React.FC = () => {
 
   const pendingItems = moderationQueue.filter(item => item.status === 'pending');
 
-  const [selectedItem, setSelectedItem] = React.useState<ModerationItem | null>(null);
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedItem, setSelectedItem] = useState<ModerationItem | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredItems = moderationQueue.filter(item => 
     item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -190,7 +190,7 @@ const ContentModerationPage: React.FC = () => {
                         ? 'bg-blue-50 border-l-4 border-blue-500' 
                         : 'hover:bg-gray-50'
                     }`}
-                    onClick={() => setSelectedItem(item)}
+                    onClick={() => setSelectedItem(item)} role="button" tabIndex={0}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">

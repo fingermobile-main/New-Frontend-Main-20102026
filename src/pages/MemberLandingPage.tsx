@@ -1,5 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, {} from 'react';
+
 import { useAuth } from '../contexts/AuthContext';
 import MainLayout from '../components/layout/MainLayout';
 import { useMemberLandingData } from '../hooks/useMemberLandingData';
@@ -86,7 +87,7 @@ const MemberLandingPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div 
             className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/create-post')}
+            onClick={() => navigate('/create-post')} role="button" tabIndex={0}
           >
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Create Post</h3>
             <p className="text-sm sm:text-base text-gray-600 mb-4">Share your thoughts with the community</p>
@@ -95,7 +96,7 @@ const MemberLandingPage: React.FC = () => {
           
           <div 
             className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/groups')}
+            onClick={() => navigate('/groups')} role="button" tabIndex={0}
           >
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Join Groups</h3>
             <p className="text-sm sm:text-base text-gray-600 mb-4">Connect with like-minded people</p>
@@ -104,7 +105,7 @@ const MemberLandingPage: React.FC = () => {
           
           <div 
             className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/marketplace')}
+            onClick={() => navigate('/marketplace')} role="button" tabIndex={0}
           >
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Marketplace</h3>
             <p className="text-sm sm:text-base text-gray-600 mb-4">Buy and sell with community members</p>
@@ -120,7 +121,7 @@ const MemberLandingPage: React.FC = () => {
               <div 
                 key={category.id}
                 className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => navigateToCategory(category.slug)}
+                onClick={() => navigateToCategory(category.slug)} role="button" tabIndex={0}
               >
                 <h3 className="font-semibold text-base sm:text-lg mb-1">{category.name}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 mb-2">{category.description}</p>

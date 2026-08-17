@@ -1,6 +1,9 @@
-import React from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
-import { NavLink, useNavigate } from "react-router-dom";
+
 import type { AdSubmissionData } from '../types';
 import {
   SparklesIcon,
@@ -83,18 +86,18 @@ const CanaryAdsPage: React.FC = () => {
   const navigate = useNavigate();
   const { ads, loading, error, refreshAds } = useAds();
 
-  const [ficBalance, setFicBalance] = React.useState<number>(0);
-  const [adType, setAdType] = React.useState<"image" | "video">("video");
-  const [useAiFormat, setUseAiFormat] = React.useState(false);
-  const [pages, setPages] = React.useState(1);
-  const [placements, setPlacements] = React.useState<string[]>([]);
-  const [duration, setDuration] = React.useState(259200); // 3 days in seconds
-  const [startDate, setStartDate] = React.useState(
+  const [ficBalance, setFicBalance] = useState<number>(0);
+  const [adType, setAdType] = useState<"image" | "video">("video");
+  const [useAiFormat, setUseAiFormat] = useState(false);
+  const [pages, setPages] = useState(1);
+  const [placements, setPlacements] = useState<string[]>([]);
+  const [duration, setDuration] = useState(259200); // 3 days in seconds
+  const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0],
   );
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [selectedAdFormat, setSelectedAdFormat] = React.useState<string | null>(null);
-  const [videoSpecs, setVideoSpecs] = React.useState({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedAdFormat, setSelectedAdFormat] = useState<string | null>(null);
+  const [videoSpecs, setVideoSpecs] = useState({
     resolution: "",
     aspectRatio: "",
     length: "",

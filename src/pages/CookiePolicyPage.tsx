@@ -1,7 +1,8 @@
-import React from 'react';
+import { Link} from 'react-router-dom';
+import React, {} from 'react';
 
 import MainLayout from '../components/layout/MainLayout';
-import { Link } from "react-router-dom";
+
 
 const CookiePolicyPage: React.FC = () => {
   return (

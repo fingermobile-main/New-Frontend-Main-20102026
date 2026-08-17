@@ -1,4 +1,5 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 /*
  * FingerMobile Protocol™ - Hallmark Achievements Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -8,7 +9,7 @@ import React from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { Link } from 'react-router-dom';
+
 import { useAppContext } from "../contexts/AppContext";
 import AdBanner from '../components/AdBanner';
 import FixedAdBanner from '../components/FixedAdBanner';
@@ -23,7 +24,7 @@ import {
 } from '../icons';
 
 const HallmarkPage: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { ficBalance } = useAppContext();
 
   const toggleMenu = () => {

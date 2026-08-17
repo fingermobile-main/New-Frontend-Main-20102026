@@ -1,6 +1,9 @@
-import React from 'react';
+import { useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
-import { useNavigate } from "react-router-dom";
+
 import { useMarketplace } from '../contexts/MarketplaceContext';
 import { useAuth } from '../contexts/AuthContext';
 import type { CartItem } from '../types';
@@ -10,10 +13,10 @@ const CheckoutPage: React.FC = () => {
   const { cart, placeOrder } = useMarketplace();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState<any>(null);
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const subtotal = cart.reduce(
     (acc: number, item: CartItem) => acc + item.price * item.quantity,

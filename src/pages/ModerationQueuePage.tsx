@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -94,7 +93,7 @@ const ModerationQueuePage: React.FC = () => {
                           ? 'border-blue-500 bg-blue-50' 
                           : 'hover:bg-gray-50'
                       }`}
-                      onClick={() => setSelectedItem(item)}
+                      onClick={() => setSelectedItem(item)} role="button" tabIndex={0}
                     >
                       <div className="flex justify-between items-start">
                         <div>

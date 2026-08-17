@@ -1,7 +1,9 @@
-import React from 'react';
+import { useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 
-import { useNavigate } from "react-router-dom";
+
 import { useAuth } from '../contexts/AuthContext';
 import {
   MembersIcon,
@@ -17,7 +19,7 @@ interface NyscEvent {
   title: string;
   date: string;
   location: string;
-  description: string;
+  description?: string;
   participants: number;
   organizer: string;
 }
@@ -37,7 +39,7 @@ const NyscPage: React.FC = () => {
   const navigate = useNavigate();
   const { nyscEvents, discussions, showToast } = useAppContext();
 
-  const [events, setEvents] = React.useState<NyscEvent[]>([
+  const [events, setEvents] = useState<NyscEvent[]>([
     {
       id: "1",
       title: "Orientation Camp",
@@ -67,7 +69,7 @@ const NyscPage: React.FC = () => {
     }
   ]);
 
-  const [discussionsList, setDiscussionsList] = React.useState<Discussion[]>([
+  const [discussionsList, setDiscussionsList] = useState<Discussion[]>([
     {
       id: "1",
       title: "Best practices for primary school teaching",
@@ -100,9 +102,9 @@ const NyscPage: React.FC = () => {
     }
   ]);
 
-  const [filter, setFilter] = React.useState("");
+  const [filter, setFilter] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Component logic
   }, []);
 

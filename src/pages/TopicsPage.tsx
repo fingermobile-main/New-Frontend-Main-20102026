@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import * as ReactRouterDOM from "react-router-dom";
 import PageHeader from '../components/PageHeader';
 import { useAppContext } from "../contexts/AppContext";
@@ -6,7 +6,7 @@ import { useAppContext } from "../contexts/AppContext";
 interface TopicType {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   isTrending: boolean;
   coverImageUrl: string;
   postsCount?: number;

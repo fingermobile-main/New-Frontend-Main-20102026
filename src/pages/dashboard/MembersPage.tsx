@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 
 const MembersPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Mock member data
   const members = [

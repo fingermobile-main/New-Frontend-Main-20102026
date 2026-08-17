@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -6,18 +6,18 @@ interface SecuritySetting {
   id: string;
   name: string;
   value: string;
-  description: string;
+  description?: string;
   type: "text" | "number" | "boolean";
 }
 
 const AdminSecuritySettingsPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [settings, setSettings] = React.useState<SecuritySetting[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [settings, setSettings] = useState<SecuritySetting[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchSecuritySettings = async () => {
       try {
         const token = getToken();

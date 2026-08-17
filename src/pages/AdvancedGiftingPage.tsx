@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import { GiftIcon } from '../icons';

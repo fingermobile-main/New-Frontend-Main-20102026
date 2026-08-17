@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { MagnifyingGlassIcon, UserGroupIcon, HashtagIcon, VideoCameraIcon, GiftIcon } from '../icons';
@@ -27,15 +27,15 @@ interface SearchResultCommunity {
   id: number;
   type: 'community';
   name: string;
-  description: string;
+  description?: string;
   memberCount: number;
   category: string;
 }
 
 const SearchPage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [results, setResults] = React.useState<(SearchResultMember | SearchResultPost | SearchResultCommunity)[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'all' | 'members' | 'posts' | 'communities' | 'hashtags'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [results, setResults] = useState<(SearchResultMember | SearchResultPost | SearchResultCommunity)[]>([]);
+  const [activeTab, setActiveTab] = useState<'all' | 'members' | 'posts' | 'communities' | 'hashtags'>('all');
   const { members, showToast } = useAppContext();
 
   const handleSearch = (query: string) => {

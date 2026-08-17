@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { BuildingOfficeIcon, SparklesIcon as MagicWandIcon } from '@heroicons/react/24/solid';
 import CrmWidget from '../../components/dashboard/crm/CrmWidget';
@@ -11,7 +11,7 @@ import MainLayout from '../../components/layout/MainLayout';
 
 const BusinessHubPage: React.FC = () => {
   const { openModal, ficBalance } = useAppContext();
-  const [selectedDepartment, setSelectedDepartment] = React.useState<string>("Finance");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("Finance");
 
   const onLike = async (id: string) => {
     // Placeholder for like functionality

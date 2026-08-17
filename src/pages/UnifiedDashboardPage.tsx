@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 /*
  * FingerMobile Protocol™ - Unified Dashboard Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.

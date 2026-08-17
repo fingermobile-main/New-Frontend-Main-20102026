@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 import PhotoCreditCard from '../components/PhotoCreditCard';
 import { Member, PhotoCredit } from '../types';
@@ -21,6 +21,9 @@ const PortfolioPage: React.FC = () => {
       setProfileMember({
         id: memberId || 'unknown',
         name: 'Portfolio Owner',
+        username: 'portfolio_owner',
+        role: 'member',
+        permissions: [],
         membername: 'portfolio_owner',
         avatarUrl: 'https://placehold.co/200x200',
         animatedAvatarUrl: undefined,
@@ -29,8 +32,6 @@ const PortfolioPage: React.FC = () => {
         handle: 'portfolio_owner',
         email: 'owner@example.com',
         isSubscribed: false,
-        role: 'member',
-        permissions: [],
         loyaltyTier: 'bronze'
       } as Member);
     }

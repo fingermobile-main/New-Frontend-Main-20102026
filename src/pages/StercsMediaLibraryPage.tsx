@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import StercsMediaLibrary from '../components/dashboard/StercsMediaLibrary';
 
 const StercsMediaLibraryPage: React.FC = () => {

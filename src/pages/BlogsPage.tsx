@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
 import PostCard from '../components/PostCard';
 import type { AiAssistData, AiAssistResponse } from '../components/PostCard';
@@ -26,10 +28,10 @@ const BlogsPage: React.FC = () => {
   const { triggerHaptic } = useHaptic();
   const { displayOption, setDisplayOption } = useCommunity();
   const { blogPosts, loading, error } = useBlogPosts();
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("recent");
-  const [categoryFilter, setCategoryFilter] = React.useState("all");
-  const [bookmarkedOnly, setBookmarkedOnly] = React.useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("recent");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
 
   // Ensure we're using the correct type for setDisplayOption
   const handleSetDisplayOption = (option: string) => {

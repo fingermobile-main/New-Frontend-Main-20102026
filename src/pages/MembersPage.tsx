@@ -1,5 +1,15 @@
-import React from 'react';
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useAppContext } from '../contexts/AppContext';
+import { Member } from '../types';
+import { Button } from '../components/ui/Button';
+import AnimatedAvatar from '../components/AnimatedAvatar';
+import { memberDiscoveryService } from '../services/memberDiscoveryService';
+import MemberDiscoverySettings from '../components/MemberDiscoverySettings';
+import DiscoveredMembers from '../components/DiscoveredMembers';
+import useMemberDiscovery from '../hooks/useMemberDiscovery';
+
 import MainLayout from '../components/layout/MainLayout';
 import {
   GiftIcon,
@@ -11,28 +21,24 @@ import {
   ArrowRightIcon
 } from '../icons';
 
-import { useAppContext } from "../contexts/AppContext";
-import { useAuth } from '../contexts/AuthContext';
-import AnimatedAvatar from '../components/AnimatedAvatar';
-import MemberDiscoverySettings from '../components/MemberDiscoverySettings';
-import DiscoveredMembers from '../components/DiscoveredMembers';
-import type { Member } from '../types';
-import useMemberDiscovery from '../hooks/useMemberDiscovery';
-
 const MembersPage: React.FC = () => {
   const { member } = useAuth();
   const { showToast, ficBalance } = useAppContext();
 
-  const [followed, setFollowed] = React.useState<string[]>(
+  const [members, setMembers] = useState<Member[]>([]);
+  const [followed, setFollowed] = useState<string[]>(
     Array.isArray(member?.following) ? member.following : [],
   );
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [paylinkDescription, setPaylinkDescription] = React.useState("");
-  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [giftAmount, setGiftAmount] = useState("");
+  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const navigate = useNavigate();
+  const { member: currentMember } = useAuth();
 
   // State for member discovery
   const {
@@ -66,17 +72,72 @@ const MembersPage: React.FC = () => {
     discoverMembers(discoveryPreferences);
   };
 
-  const handleFollow = (memberId: string) => {
+  const handleFollow = async (memberId: string) => {
     try {
-      setFollowed((prev) =>
-        prev.includes(memberId)
-          ? prev.filter((id) => id !== memberId)
-          : [...prev, memberId],
-      );
-      showToast("Follow status updated successfully");
+      const memberToToggle = members.find(m => m.id === memberId);
+      if (!memberToToggle) return;
+
+      if (currentMember?.id === memberId) {
+        // Can't follow yourself
+        return;
+      }
+
+      const isCurrentlyFollowing = memberToToggle.following?.includes(currentMember?.id || '') || false;
+      
+      if (isCurrentlyFollowing) {
+        await memberDiscoveryService.unfollowMember(memberId);
+        setMembers(prev => prev.map(m => 
+          m.id === memberId 
+            ? {...m, following: m.following?.filter(id => id !== currentMember?.id) || []} 
+            : m
+        ));
+        setFollowed(prev => prev.filter(id => id !== memberId));
+      } else {
+        await memberDiscoveryService.followMember(memberId);
+        setMembers(prev => prev.map(m => 
+          m.id === memberId 
+            ? {...m, following: [...(m.following || []), currentMember?.id || '']} 
+            : m
+        ));
+        setFollowed(prev => [...prev, memberId]);
+      }
     } catch (error) {
-      console.error("Error updating follow status:", error);
-      showToast("Failed to update follow status", "error");
+      console.error('Error toggling follow status:', error);
+    }
+  };
+
+  const handleFollowToggle = async (memberId: string) => {
+    try {
+      const memberToToggle = members.find(m => m.id === memberId);
+      if (!memberToToggle) return;
+
+      // Using useAuth hook to get current member
+      const { member: currentMember } = useAuth(); // Get current member from auth context
+      
+      if (currentMember?.id === memberId) {
+        // Can't follow yourself
+        return;
+      }
+
+      const isCurrentlyFollowing = memberToToggle.following?.includes(currentMember?.id || '') || false;
+      
+      if (isCurrentlyFollowing) {
+        await memberDiscoveryService.unfollowMember(memberId);
+        setMembers(prev => prev.map(m => 
+          m.id === memberId 
+            ? {...m, following: m.following?.filter(id => id !== currentMember?.id) || []} 
+            : m
+        ));
+      } else {
+        await memberDiscoveryService.followMember(memberId);
+        setMembers(prev => prev.map(m => 
+          m.id === memberId 
+            ? {...m, following: [...(m.following || []), currentMember?.id || '']} 
+            : m
+        ));
+      }
+    } catch (error) {
+      console.error('Error toggling follow status:', error);
     }
   };
 
@@ -190,16 +251,18 @@ const MembersPage: React.FC = () => {
   };
 
   const MemberCard: React.FC<{ member: Member }> = ({ member }) => {
-    const isFollowing = followed.includes(member.id);
-    const isSelf = member?.id === member.id;
+    const { member: currentMember } = useAuth(); // Get current member from auth context
+    const isFollowing = followed.includes(String(member.id)); // Ensure ID is string
+    const isSelf = member?.id === currentMember?.id; // Compare with current member
 
     return (
       <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden text-center p-6 flex flex-col items-center border border-gray-100">
-        <NavLink to={`/profile/${member.handlename}`}>
+        <NavLink to={`/profile/${member.handlename || member.handle || `user-${member.id}`}`}> {/* Handle potentially missing handlename */}
           <AnimatedAvatar
             staticUrl={member.avatarUrl}
-            altText={member.name}
-            className="w-24 h-24 rounded-full mb-4"
+            animatedUrl={member.animatedAvatarUrl}
+            altText={member.name || 'User'}
+            className="w-20 h-20 mx-auto"
           />
         </NavLink>
 
@@ -211,13 +274,13 @@ const MembersPage: React.FC = () => {
         </div>
 
         <p className="text-gray-600 text-sm mb-2 lg:text-base">
-          @{member.handlename}
+          @{member.handlename || member.handle || member.username || `user${member.id}`} {/* Handle potentially missing handlename */}
         </p>
         <p className="text-gray-500 text-sm mb-4 lg:text-base">{member.bio}</p>
 
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => onLike(member.id)}
+            onClick={() => onLike(String(member.id))} // Ensure ID is string
             className="p-2.5 bg-gray-100 rounded-full hover:bg-gray-200"
           >
             <HeartIcon className="w-5 h-5" />
@@ -240,25 +303,25 @@ const MembersPage: React.FC = () => {
 
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => onVote(member.id, "up")}
+            onClick={() => onVote(String(member.id), "up")} // Ensure ID is string
             className="p-2.5 bg-gray-100 rounded-full hover:bg-gray-200"
           >
             👍
           </button>
           <button
-            onClick={() => onVote(member.id, "down")}
+            onClick={() => onVote(String(member.id), "down")} // Ensure ID is string
             className="p-2.5 bg-gray-100 rounded-full hover:bg-gray-200"
           >
             👎
           </button>
           <button
-            onClick={() => handleTokenizeProfile(member.id)}
+            onClick={() => handleTokenizeProfile(String(member.id))} // Ensure ID is string
             className="p-2.5 bg-gray-100 rounded-full hover:bg-gray-200"
           >
             🪙
           </button>
           <button
-            onClick={() => handleAiAssist(member.id)}
+            onClick={() => handleAiAssist(String(member.id))} // Ensure ID is string
             className="p-2.5 bg-gray-100 rounded-full hover:bg-gray-200"
           >
             🤖
@@ -267,7 +330,7 @@ const MembersPage: React.FC = () => {
 
         {!isSelf && (
           <button
-            onClick={() => handleFollow(member.id)}
+            onClick={() => handleFollow(String(member.id))} // Ensure ID is string
             className={`w-full py-3 px-4 rounded-lg transition-colors ${
               isFollowing
                 ? "bg-white text-blue-600 border border-blue-600"

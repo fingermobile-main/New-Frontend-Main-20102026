@@ -1,4 +1,5 @@
-import React from 'react';
+import { Link} from 'react-router-dom';
+import React, {} from 'react';
 /*
  * FingerMobile Protocol™ - Community Pages Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -8,7 +9,7 @@ import React from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { Link } from "react-router-dom";
+
 
 const CommunityPages: React.FC = () => {
   return (

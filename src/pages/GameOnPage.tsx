@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { logError } from '../utils/errorLogger';
 import MainLayout from '../components/layout/MainLayout';
@@ -17,14 +17,14 @@ import {
 
 const GameOnPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
-  const [games, setGames] = React.useState<Game[]>([]);
-  const [loadingGames, setLoadingGames] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
-  const [voiceLines, setVoiceLines] = React.useState<VoiceLine[]>([]);
-  const [activeTab, setActiveTab] = React.useState<'all' | 'trending' | 'new' | 'free'>('all');
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [games, setGames] = useState<Game[]>([]);
+  const [loadingGames, setLoadingGames] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [voiceLines, setVoiceLines] = useState<VoiceLine[]>([]);
+  const [activeTab, setActiveTab] = useState<'all' | 'trending' | 'new' | 'free'>('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchVoiceLines = async () => {
       try {
         // Mock voice lines fetch - ApiService.voices not implemented
@@ -37,7 +37,7 @@ const GameOnPage: React.FC = () => {
     fetchVoiceLines();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchGames = async () => {
       try {
         setLoadingGames(true);
@@ -64,14 +64,14 @@ const GameOnPage: React.FC = () => {
   }
 
   // Filter games based on active tab and search term
-  const filteredGames = React.useMemo(() => {
+  const filteredGames = useMemo(() => {
     let result = [...games] as ExtendedGame[];
     
     // Apply search filter
     if (searchTerm) {
       result = result.filter(game => 
-        game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        game.description.toLowerCase().includes(searchTerm.toLowerCase())
+        (game.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (game.description || '').toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     
@@ -219,7 +219,7 @@ const GameOnPage: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredGames.map(game => (
-                <div key={game.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                <div key={String(game.id)} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"> {/* Ensure ID is string */}
                   <div className="h-48 bg-gradient-to-r from-indigo-500 to-purple-600 relative">
                     <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       {game.price === 0 ? 'FREE' : `$${game.price || 0}`}
@@ -227,7 +227,7 @@ const GameOnPage: React.FC = () => {
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-bold text-lg text-gray-900">{game.title}</h3>
+                      <h3 className="font-bold text-lg text-gray-900">{game.title || 'Untitled Game'}</h3> {/* Handle potentially missing title */}
                       {game.isTrending && (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                           <FireIcon className="h-3 w-3 mr-1" />
@@ -235,7 +235,7 @@ const GameOnPage: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <p className="mt-2 text-gray-600 text-sm">{game.description}</p>
+                    <p className="mt-2 text-gray-600 text-sm">{game.description || 'No description available'}</p> {/* Handle potentially missing description */}
                     
                     <div className="mt-4 flex items-center text-sm text-gray-500">
                       <div className="flex items-center mr-4">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { useCommunity } from '../contexts/CommunityContext';
@@ -8,10 +8,10 @@ import { CommunityPage } from '../types/communityPage';
 const InsightsPage: React.FC = () => {
   const { member: currentMember, showToast } = useAppContext();
   const { posts } = useCommunity();
-  const [communities, setCommunities] = React.useState<CommunityPage[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [communities, setCommunities] = useState<CommunityPage[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchStats = async () => {
       try {
         setLoading(true);

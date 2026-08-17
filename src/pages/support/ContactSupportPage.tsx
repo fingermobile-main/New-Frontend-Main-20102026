@@ -1,6 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
-
+import React, { useState } from 'react';
 const ContactSupportPage = () => {
   const [formData, setFormData] = useState({
     name: '',

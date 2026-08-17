@@ -1,5 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { HallmarkContext, useHallmark } from '../../contexts/HallmarkContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppContext } from '../../contexts/AppContext';
@@ -12,16 +13,16 @@ const HallmarkCreatePage: React.FC = () => {
     const { showToast } = useAppContext();
     const navigate = useNavigate();
 
-    const [name, setName] = React.useState('');
-    const [slug, setSlug] = React.useState('');
-    const [logoUrl, setLogoUrl] = React.useState('');
-    const [rules, setRules] = React.useState('');
-    const [memberLimit, setMemberLimit] = React.useState(100);
-    const [canPost, setCanPost] = React.useState(true);
-    const [canInvite, setCanInvite] = React.useState(true);
-    const [durationMonths, setDurationMonths] = React.useState<1 | 2 | 3 | 4 | 5 | 6>(1);
-    const [joinFee, setJoinFee] = React.useState(0);
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [name, setName] = useState('');
+    const [slug, setSlug] = useState('');
+    const [logoUrl, setLogoUrl] = useState('');
+    const [rules, setRules] = useState('');
+    const [memberLimit, setMemberLimit] = useState(100);
+    const [canPost, setCanPost] = useState(true);
+    const [canInvite, setCanInvite] = useState(true);
+    const [durationMonths, setDurationMonths] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
+    const [joinFee, setJoinFee] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const memberApplication = member ? hallmarkApplications.find(app => app.applicant.id === member.id) : null;
     

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 /*
  * FingerMobile Protocol™ - Marketplace Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -14,21 +14,18 @@ import { useToast } from '../components/Toast';
 import MainLayout from '../components/layout/MainLayout';
 import PageHeader from '../components/PageHeader';
 import ProductCard from '../components/ProductCard';
-import apiService from '../services/apiService';
-import { Product, Member } from '../types';
+import { Product } from '../types';
 import { 
   CartIcon as ShoppingBagIcon,
   StoreIcon as CubeIcon,
   CurrencyNairaIcon as CurrencyDollarIcon,
   FilterIcon as ChartBarIcon,
   MemberGroupIcon as UserGroupIcon,
-  PaylinkIcon as GiftIcon,
   BankIcon as CreditCardIcon,
   StoreIcon as StorefrontIcon,
   PolicyIcon as OrdersIcon,
   EmojiHappyIcon as StarIcon
 } from '../icons';
-
 
 // Types for enhanced marketplace features
 type MarketplaceFilters = {
@@ -70,10 +67,26 @@ type UnifiedTransaction = {
   status: "completed" | "pending" | "failed" | "refunded";
 };
 
+interface ApiProductResponse {
+  id: string;
+  name: string;
+  description?: string;
+  price: string;
+  image_url?: string;
+  category?: string;
+  platform_type?: string;
+  avg_rating?: string;
+  creator_id?: string | number;
+  seller_name?: string;
+  stock_quantity?: string | number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 const MarketplacePage: React.FC = () => {
   const { addToast } = useToast();
   const { member: user } = useAuth();
-  const [activeTab, setActiveTab] = React.useState<
+  const [activeTab, setActiveTab] = useState<
     | "marketplace"
     | "ownit"
     | "flamingo"
@@ -83,10 +96,10 @@ const MarketplacePage: React.FC = () => {
     | "transactions"
     | "create"
   >("marketplace");
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [loadingProducts, setLoadingProducts] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
-  const [filters, setFilters] = React.useState<MarketplaceFilters>({
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState<MarketplaceFilters>({
     query: "",
     category: "all",
     minPrice: 0,
@@ -94,24 +107,15 @@ const MarketplacePage: React.FC = () => {
     sortBy: "newest",
     platform: "all"
   });
-  const [filteredProducts, setFilteredProducts] = React.useState<Product[]>([]);
-  const [analytics, setAnalytics] = React.useState<MarketplaceAnalytics | null>(null);
-  const [loadingAnalytics, setLoadingAnalytics] = React.useState<boolean>(true);
-  const [orders, setOrders] = React.useState<UnifiedOrder[]>([]);
-  const [loadingOrders, setLoadingOrders] = React.useState<boolean>(true);
-  const [transactions, setTransactions] = React.useState<UnifiedTransaction[]>([]);
-  const [loadingTransactions, setLoadingTransactions] = React.useState<boolean>(true);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
-  const [showPurchaseModal, setShowPurchaseModal] = React.useState(false);
-  const [showCreateProductModal, setShowCreateProductModal] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
-  const [giftAmount, setGiftAmount] = React.useState("");
-  const [paylinkAmount, setPaylinkAmount] = React.useState("");
-  const [purchaseAmount, setPurchaseAmount] = React.useState("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [analytics, setAnalytics] = useState<MarketplaceAnalytics | null>(null);
+  const [orders, setOrders] = useState<UnifiedOrder[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState<boolean>(true);
+  const [transactions, setTransactions] = useState<UnifiedTransaction[]>([]);
+  const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
   
   // Product creation state
-  const [newProduct, setNewProduct] = React.useState({
+  const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
     price: 0,
@@ -121,24 +125,21 @@ const MarketplacePage: React.FC = () => {
   });
 
   // Fetch all unified marketplace data
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchMarketplaceData = async () => {
       try {
         setLoadingProducts(true);
-        setLoadingAnalytics(true);
         setLoadingOrders(true);
         setLoadingTransactions(true);
         setError(null);
 
         // Fetch unified products from all platforms
         try {
-          const productsResponse = await ApiService.request<any>(
+          const productsResponse = await ApiService.request<{ data?: ApiProductResponse[] }>(
             "/marketplace/unified-products",
           );
-          // API returns { success: true, data: [...], pagination: {...} }
-          // Transform API response to match frontend Product interface
           const apiProducts = productsResponse?.data || [];
-          const transformedProducts = apiProducts.map((product: any) => ({
+          const transformedProducts = apiProducts.map((product: ApiProductResponse) => ({
             id: product.id,
             name: product.name,
             description: product.description,
@@ -146,19 +147,20 @@ const MarketplacePage: React.FC = () => {
             currency: 'USD',
             images: product.image_url ? [product.image_url] : ['https://via.placeholder.com/300'],
             category: product.category || 'uncategorized',
-            platform: product.platform_type?.toLowerCase() || 'marketplace', // Map platform_type to platform
+            platform: product.platform_type?.toLowerCase() || 'marketplace',
             imageUrl: product.image_url || 'https://via.placeholder.com/300',
-            rating: parseFloat(product.avg_rating) || 0,
+            rating: parseFloat(product.avg_rating || '0') || 0,
             sellerId: product.creator_id?.toString() || 'unknown',
             sellerName: product.seller_name || 'Unknown Seller',
-            stockQuantity: parseInt(product.stock_quantity) || 0,
+            stock: typeof product.stock_quantity === 'number' ? product.stock_quantity : parseInt(product.stock_quantity || '0', 10),
+            salesCount: 0, // Default to 0 since not provided by API
             createdAt: product.created_at,
-            updatedAt: product.updated_at
+            updatedAt: product.updated_at,
+            stockQuantity: typeof product.stock_quantity === 'number' ? product.stock_quantity : parseInt(product.stock_quantity || '0', 10)
           }));
           setProducts(transformedProducts);
-        } catch (productError) {
-          console.warn('Failed to fetch products, using mock data:', productError);
-          // Use mock data for development
+        } catch {
+          // Fallback mock data
           setProducts([
             {
               id: '1',
@@ -168,10 +170,11 @@ const MarketplacePage: React.FC = () => {
               currency: 'USD',
               images: ['https://via.placeholder.com/300'],
               category: 'electronics',
-              platform: 'storefront',
               imageUrl: 'https://via.placeholder.com/300',
               rating: 4.5,
-              sellerId: 'seller1'
+              sellerId: 'seller1',
+              stock: 10,
+              platform: 'storefront',
             },
             {
               id: '2',
@@ -181,10 +184,11 @@ const MarketplacePage: React.FC = () => {
               currency: 'USD',
               images: ['https://via.placeholder.com/300'],
               category: 'clothing',
-              platform: 'ownit',
               imageUrl: 'https://via.placeholder.com/300',
               rating: 4.0,
-              sellerId: 'seller2'
+              sellerId: 'seller2',
+              stock: 5,
+              platform: 'ownit',
             },
             {
               id: '3',
@@ -194,10 +198,11 @@ const MarketplacePage: React.FC = () => {
               currency: 'USD',
               images: ['https://via.placeholder.com/300'],
               category: 'books',
-              platform: 'flamingo',
               imageUrl: 'https://via.placeholder.com/300',
               rating: 5.0,
-              sellerId: 'seller3'
+              sellerId: 'seller3',
+              stock: 20,
+              platform: 'flamingo',
             }
           ]);
         }
@@ -205,69 +210,54 @@ const MarketplacePage: React.FC = () => {
         // Fetch analytics
         try {
           const analyticsResponse =
-            await ApiService.request<any>(
+            await ApiService.request<{ data?: MarketplaceAnalytics }>(
               "/marketplace/analytics",
             );
-          // API returns { success: true, data: {...} }
           setAnalytics(analyticsResponse?.data || null);
-        } catch (analyticsError) {
-          console.warn('Failed to fetch analytics:', analyticsError);
+        } catch {
           setAnalytics(null);
         }
 
         // Fetch member-specific data if logged in
         if (user) {
-          // Fetch member's unified orders
           try {
-            const ordersResponse = await ApiService.request<any>(
+            const ordersResponse = await ApiService.request<{ data?: UnifiedOrder[] }>(
               "/marketplace/unified-orders",
             );
-            // API returns { success: true, data: [...], pagination: {...} }
             setOrders(ordersResponse?.data || []);
-          } catch (ordersError) {
-            console.warn('Failed to fetch orders:', ordersError);
+          } catch {
             setOrders([]);
           }
 
-          // Fetch member's transactions
           try {
-            const transactionsResponse = await ApiService.request<
-              any
-            >("/marketplace/transactions");
-            // API returns { success: true, data: [...], pagination: {...} }
+            const transactionsResponse = await ApiService.request<{ data?: UnifiedTransaction[] }>(
+              "/marketplace/transactions"
+            );
             setTransactions(transactionsResponse?.data || []);
-          } catch (transactionsError) {
-            console.warn('Failed to fetch transactions:', transactionsError);
+          } catch {
             setTransactions([]);
           }
         }
 
         setLoadingProducts(false);
-        setLoadingAnalytics(false);
         setLoadingOrders(false);
         setLoadingTransactions(false);
-      } catch (err) {
-        console.error('Marketplace data fetch error:', err);
+      } catch {
         setError('Failed to load marketplace data. Please try refreshing the page.');
-        // Set all loading states to false even on error
         setLoadingProducts(false);
-        setLoadingAnalytics(false);
         setLoadingOrders(false);
         setLoadingTransactions(false);
       }
     };
 
-    // Add user to dependencies to ensure re-fetching when user auth state changes
     fetchMarketplaceData();
   }, [user]);
 
   // Apply filters when they change
-  React.useEffect(() => {
-    // Ensure products is always an array
+  useEffect(() => {
     const productsArray = Array.isArray(products) ? products : [];
     let filtered = productsArray;
 
-    // Apply text search
     if (filters.query) {
       filtered = filtered.filter(
         (p) =>
@@ -276,22 +266,18 @@ const MarketplacePage: React.FC = () => {
       );
     }
 
-    // Apply category filter
     if (filters.category !== "all") {
       filtered = filtered.filter((p) => p.category === filters.category);
     }
 
-    // Apply price filters
     filtered = filtered.filter(
       (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice,
     );
 
-    // Apply platform filter
     if (filters.platform !== "all") {
-      filtered = filtered.filter((p) => p.platform === filters.platform);
+      filtered = filtered.filter((p) => (p.platform || 'marketplace') === filters.platform);
     }
 
-    // Apply sorting
     switch (filters.sortBy) {
       case "price_asc":
         filtered.sort((a, b) => a.price - b.price);
@@ -306,7 +292,6 @@ const MarketplacePage: React.FC = () => {
         filtered.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
         break;
       default:
-        // Newest by default
         filtered.sort(
           (a, b) =>
             new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime(),
@@ -326,86 +311,15 @@ const MarketplacePage: React.FC = () => {
     }));
   };
 
-  const handleOpenGiftModal = (amount: string) => {
-    setGiftAmount(amount);
-    setShowGiftModal(true);
-  };
-
-  const handleOpenPaylinkModal = (amount: string) => {
-    setPaylinkAmount(amount);
-    setShowPaylinkModal(true);
-  };
-
-  const handleOpenPurchaseModal = (product: Product) => {
-    setSelectedProduct(product);
-    setPurchaseAmount(product.price.toString());
-    setShowPurchaseModal(true);
-  };
-
-  const handleGiftSubmit = async () => {
-    try {
-      // Implement gift functionality
-      await ApiService.post("/transactions/gift", {
-        recipientId: selectedProduct?.sellerId,
-        amount: parseFloat(giftAmount),
-        currency: "USD"
-      });
-
-      addToast("Gift sent successfully!", "success");
-      setShowGiftModal(false);
-      setGiftAmount("");
-    } catch (error) {
-      addToast("Error sending gift", "error");
-    }
-  };
-
-  const handlePaylinkSubmit = async () => {
-    try {
-      // Implement paylink functionality
-      await ApiService.post("/payments/create-paylink", {
-        amount: parseFloat(paylinkAmount),
-        description: "Paylink payment"
-      });
-
-      addToast("Paylink created successfully!", "success");
-      setShowPaylinkModal(false);
-      setPaylinkAmount("");
-    } catch (error) {
-      addToast("Error creating paylink", "error");
-    }
-  };
-
-  const handlePurchaseSubmit = async () => {
-    try {
-      // Implement purchase functionality
-      if (!selectedProduct) return;
-
-      await ApiService.post("/marketplace/purchase", {
-        productId: selectedProduct.id,
-        quantity: 1,
-        total: parseFloat(purchaseAmount)
-      });
-
-      addToast("Purchase completed successfully!", "success");
-      setShowPurchaseModal(false);
-      setSelectedProduct(null);
-    } catch (error) {
-      addToast("Error processing purchase", "error");
-    }
-  };
-
   const handleCreateProductSubmit = async () => {
     try {
-      // Implement product creation functionality
       await ApiService.post("/marketplace/products", {
         ...newProduct,
         sellerId: user?.id
       });
 
       addToast("Product created successfully!", "success");
-      setShowCreateProductModal(false);
       
-      // Reset form
       setNewProduct({
         name: '',
         description: '',
@@ -415,12 +329,11 @@ const MarketplacePage: React.FC = () => {
         imageUrl: ''
       });
       
-      // Refetch products
       const productsResponse = await ApiService.request<Product[]>(
         "/marketplace/unified-products",
       );
       setProducts(productsResponse || []);
-    } catch (error) {
+    } catch {
       addToast("Error creating product", "error");
     }
   };
@@ -480,7 +393,7 @@ const MarketplacePage: React.FC = () => {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                   activeTab === tab.id
                     ? "border-blue-500 text-blue-600"
@@ -499,10 +412,11 @@ const MarketplacePage: React.FC = () => {
           <div className="bg-white rounded-lg shadow p-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="search-input" className="block text-sm font-medium text-gray-700 mb-1">
                   Search
                 </label>
                 <input
+                  id="search-input"
                   type="text"
                   value={filters.query}
                   onChange={(e) => handleFilterChange("query", e.target.value)}
@@ -512,10 +426,11 @@ const MarketplacePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-1">
                   Category
                 </label>
                 <select
+                  id="category-select"
                   value={filters.category}
                   onChange={(e) =>
                     handleFilterChange("category", e.target.value)
@@ -535,10 +450,11 @@ const MarketplacePage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="min-price-input" className="block text-sm font-medium text-gray-700 mb-1">
                     Min Price
                   </label>
                   <input
+                    id="min-price-input"
                     type="number"
                     value={filters.minPrice}
                     onChange={(e) =>
@@ -549,10 +465,11 @@ const MarketplacePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="max-price-input" className="block text-sm font-medium text-gray-700 mb-1">
                     Max Price
                   </label>
                   <input
+                    id="max-price-input"
                     type="number"
                     value={filters.maxPrice}
                     onChange={(e) =>
@@ -564,13 +481,14 @@ const MarketplacePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="sort-by-select" className="block text-sm font-medium text-gray-700 mb-1">
                   Sort By
                 </label>
                 <select
+                  id="sort-by-select"
                   value={filters.sortBy}
                   onChange={(e) =>
-                    handleFilterChange("sortBy", e.target.value as any)
+                    handleFilterChange("sortBy", e.target.value as MarketplaceFilters["sortBy"])
                   }
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
@@ -585,7 +503,7 @@ const MarketplacePage: React.FC = () => {
           </div>
         )}
 
-        {/* Content based on active tab */}
+        {/* Error State */}
         {error && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
             <div className="flex">
@@ -686,10 +604,11 @@ const MarketplacePage: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-name" className="block text-sm font-medium text-gray-700 mb-1">
                   Product Name
                 </label>
                 <input
+                  id="create-product-name"
                   type="text"
                   value={newProduct.name}
                   onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
@@ -699,10 +618,11 @@ const MarketplacePage: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-price" className="block text-sm font-medium text-gray-700 mb-1">
                   Price ($)
                 </label>
                 <input
+                  id="create-product-price"
                   type="number"
                   value={newProduct.price || ''}
                   onChange={(e) => setNewProduct({...newProduct, price: Number(e.target.value)})}
@@ -712,10 +632,11 @@ const MarketplacePage: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-category" className="block text-sm font-medium text-gray-700 mb-1">
                   Category
                 </label>
                 <select
+                  id="create-product-category"
                   value={newProduct.category}
                   onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -732,12 +653,13 @@ const MarketplacePage: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-platform" className="block text-sm font-medium text-gray-700 mb-1">
                   Platform
                 </label>
                 <select
+                  id="create-product-platform"
                   value={newProduct.platform}
-                  onChange={(e) => setNewProduct({...newProduct, platform: e.target.value as any})}
+                  onChange={(e) => setNewProduct({...newProduct, platform: e.target.value as typeof newProduct.platform})}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="storefront">Storefront</option>
@@ -747,10 +669,11 @@ const MarketplacePage: React.FC = () => {
               </div>
               
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-description" className="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
                 <textarea
+                  id="create-product-description"
                   value={newProduct.description}
                   onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
                   rows={4}
@@ -760,10 +683,11 @@ const MarketplacePage: React.FC = () => {
               </div>
               
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="create-product-image" className="block text-sm font-medium text-gray-700 mb-1">
                   Image URL
                 </label>
                 <input
+                  id="create-product-image"
                   type="text"
                   value={newProduct.imageUrl}
                   onChange={(e) => setNewProduct({...newProduct, imageUrl: e.target.value})}
@@ -818,18 +742,11 @@ const MarketplacePage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {(activeTab === "marketplace"
                   ? filteredProducts
-                  : filteredProducts.filter((p) => p.platform === activeTab)
+                  : filteredProducts.filter((p) => (p.platform || 'marketplace') === activeTab)
                 ).map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    onGiftClick={() =>
-                      handleOpenGiftModal(product.price.toString())
-                    }
-                    onPaylinkClick={() =>
-                      handleOpenPaylinkModal(product.price.toString())
-                    }
-                    onBuyClick={() => handleOpenPurchaseModal(product)}
                   />
                 ))}
               </div>

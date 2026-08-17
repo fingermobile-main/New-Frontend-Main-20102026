@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import {
@@ -137,15 +137,15 @@ const FingerShortsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { data, loading, error, refreshData } = useFingerShorts();
 
-  const [activeTab, setActiveTab] = React.useState("for-you");
-  const [isCreating, setIsCreating] = React.useState(false);
-  const [shortType, setShortType] = React.useState<"image" | "video" | "text">("image");
-  const [shortContent, setShortContent] = React.useState("");
-  const [isPrivate, setIsPrivate] = React.useState(false);
-  const [isSpoiler, setIsSpoiler] = React.useState(false);
-  const [mediaFile, setMediaFile] = React.useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState("for-you");
+  const [isCreating, setIsCreating] = useState(false);
+  const [shortType, setShortType] = useState<"image" | "video" | "text">("image");
+  const [shortContent, setShortContent] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isSpoiler, setIsSpoiler] = useState(false);
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
 
-  const handleFileChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.size > 20 * 1024 * 1024) {
@@ -156,7 +156,7 @@ const FingerShortsPage: React.FC = () => {
     }
   }, [showToast]);
 
-  const handleCreateFingerShort = React.useCallback(() => {
+  const handleCreateFingerShort = useCallback(() => {
     if (shortType !== "text" && !mediaFile) {
       showToast("Validation failed: Target media attachment missing", "error");
       return;
@@ -178,7 +178,7 @@ const FingerShortsPage: React.FC = () => {
     setMediaFile(null);
   }, [shortType, mediaFile, shortContent, isPrivate, isSpoiler, showToast]);
 
-  const handleCloseModal = React.useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     setIsCreating(false);
     setShortContent("");
     setIsPrivate(false);
@@ -186,7 +186,7 @@ const FingerShortsPage: React.FC = () => {
     setMediaFile(null);
   }, []);
 
-  const handleTypeChange = React.useCallback((type: "image" | "video" | "text") => {
+  const handleTypeChange = useCallback((type: "image" | "video" | "text") => {
     setShortType(type);
     setMediaFile(null);
   }, []);

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ShipmentStatus from '../components/TMS/ShipmentStatus';
 import TrackingMap from '../components/TMS/TrackingMap';
-import { useState } from 'react';
+
 import { useAppContext } from "../contexts/AppContext";
 
 // --- Domain Interface Schema Definitions ---
 interface StatusUpdate {
   id: number;
   status: string;
-  description: string;
+  description?: string;
   alert_level: 'info' | 'warning' | 'critical' | string;
   created_at: string;
 }
@@ -35,7 +35,7 @@ const StorefrontTrackingPage: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
-  const loadShipments = React.useCallback(async () => {
+  const loadShipments = useCallback(async () => {
     try {
       // In a real app, this would call the API to get member's orders
       // For now, we'll use mock data
@@ -147,11 +147,11 @@ const StorefrontTrackingPage: React.FC = () => {
     }
   }, [showToast]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadShipments();
   }, [loadShipments]);
 
-  const handleRefresh = React.useCallback(async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadShipments();
     setRefreshing(false);
@@ -185,7 +185,7 @@ const StorefrontTrackingPage: React.FC = () => {
                 {shipments.map((item) => (
                   <div
                     key={item.id.toString()}
-                    onClick={() => setSelectedShipment(item)}
+                    onClick={() => setSelectedShipment(item)} role="button" tabIndex={0}
                     style={{
                       backgroundColor: "#fff",
                       padding: 12,

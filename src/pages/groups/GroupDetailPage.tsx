@@ -1,5 +1,6 @@
-import React from 'react';
-import { useParams } from "react-router-dom";
+import { useParams} from 'react-router-dom';
+import React, {} from 'react';
+
 import PostCard from '../../components/PostCard';
 import PageHeader from '../../components/PageHeader';
 import { LiveIcon, PhoneGroupIcon } from '../../components/icons';
@@ -15,7 +16,7 @@ const GroupDetailPage = () => {
     id: string;
     slug: string;
     name: string;
-    description: string;
+    description?: string;
     logoUrl: string;
     members: string[];
     owner: { id: string; name: string };
@@ -90,7 +91,7 @@ const GroupDetailPage = () => {
   const isOwner = false;
 
   const featuredPosts: Post[] = allPosts.filter(
-    (p: Post) => group.posts && p?.id && group.posts.includes(p.id),
+    (p: Post) => group.posts && p?.id && group.posts.includes(String(p.id)), // Ensure ID is string
   );
 
   const onLike = async (postId: string) => {
@@ -235,7 +236,7 @@ const GroupDetailPage = () => {
                 key={post.id}
                 post={post}
                 onLike={onLike}
-                onAddComment={onAddComment}
+                _onAddComment={onAddComment} // Change onAddComment to _onAddComment to match PostCardProps
                 onOpenGiftModal={onOpenGiftModal}
                 onOpenPaylinkModal={onOpenPaylinkModal}
                 onVote={onVote}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useForumPosts } from '../hooks/useForumPosts';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PostCard from '../components/PostCard';
@@ -19,23 +19,23 @@ const broadcastContent: BroadcastItem[] = []; // Placeholder - can be populated 
 
 const ForumPage: React.FC = () => {
   const { forumPosts, loading, error, refreshData } = useForumPosts();
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("recent");
-  const [filterBy, setFilterBy] = React.useState("all");
-  const [showCreatePost, setShowCreatePost] = React.useState(false);
-  const [newPost, setNewPost] = React.useState({
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("recent");
+  const [filterBy, setFilterBy] = useState("all");
+  const [showCreatePost, setShowCreatePost] = useState(false);
+  const [newPost, setNewPost] = useState({
     title: "",
     content: "",
     category: "general"
   });
 
   // ⚠️ FIX #3: Fetch initial data on layout initialization (was empty useEffect)
-  React.useEffect(() => {
+  useEffect(() => {
     refreshData();
   }, []);
 
   // ⚠️ FIX #2: Memoize filtered/sorted posts to prevent infinite re-render loop and performance issues
-  const filteredAndSortedPosts = React.useMemo(() => {
+  const filteredAndSortedPosts = useMemo(() => {
     if (!forumPosts) return [];
 
     return forumPosts

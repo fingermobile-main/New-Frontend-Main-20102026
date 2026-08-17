@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
 /*
  * FingerMobile Protocol™ - Ownit Marketplace Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -9,7 +10,7 @@ import React from 'react';
  */
 
 import { ApiService } from '../services/apiService';
-import { useContext, useState } from 'react';
+
 import { MarketplaceContext } from '../contexts/MarketplaceContext';
 import { AppContext } from "../contexts/AppContext";
 import { Product, Member } from '../types';
@@ -147,7 +148,7 @@ const OwnitPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch all OwnIt data
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchOwnitData = async () => {
       try {
         setLoadingProducts(true);
@@ -205,7 +206,7 @@ const OwnitPage: React.FC = () => {
   }, [member, showToast]);
 
   // Apply filters to products
-  React.useEffect(() => {
+  useEffect(() => {
     let result = [...products];
 
     // Apply search filter

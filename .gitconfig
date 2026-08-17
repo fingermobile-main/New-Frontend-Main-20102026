@@ -1,0 +1,69 @@
+# Git Configuration for Frontend-Main Project
+# This configuration sets up proper branching strategy for dev/prod environments
+
+[core]
+    autocrlf = true
+    editor = code --wait
+
+[user]
+    name = FingerMobile Developer
+    email = developer@fingermobile-protocol.com
+
+[push]
+    default = simple
+
+[branch]
+    autosetupmerge = always
+
+[pull]
+    rebase = false
+
+# Define the main branches
+[remote "origin"]
+    url = https://github.com/your-org/frontend-main.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+
+[remote "dev-origin"]
+    url = https://github.com/your-org/frontend-main-dev.git
+    fetch = +refs/heads/*:refs/remotes/dev-origin/*
+
+[branch "main"]
+    remote = origin
+    merge = refs/heads/main
+
+[branch "development"]
+    remote = origin
+    merge = refs/heads/development
+
+[branch "production"]
+    remote = origin
+    merge = refs/heads/production
+
+# Diff and merge tools
+[diff]
+    tool = default
+
+[merge]
+    tool = default
+
+# Aliases for common operations
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    cm = commit -m
+    amend = commit --amend
+    ps = push
+    pl = pull
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    # For switching between dev and prod branches
+    dev = checkout development
+    prod = checkout production
+    main = checkout main
+    # For syncing branches
+    sync-dev = "!git checkout development && git pull origin development"
+    sync-prod = "!git checkout production && git pull origin production"
+    sync-main = "!git checkout main && git pull origin main"
+    # For promoting from dev to prod
+    promote = "!git checkout production && git merge development && git checkout main && git merge development"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { useAI } from '../contexts/AIContext';
 import PageHeader from '../components/PageHeader';
@@ -10,9 +10,9 @@ import MainLayout from '../components/layout/MainLayout';
 const AiPlaylistPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { generatePlaylist, isLoading, error } = useAI();
-  const [prompt, setPrompt] = React.useState<string>("");
-  const [playlist, setPlaylist] = React.useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>("");
+  const [playlist, setPlaylist] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;

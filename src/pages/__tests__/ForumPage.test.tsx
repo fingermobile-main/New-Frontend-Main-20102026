@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -20,8 +20,7 @@ jest.mock("../../components/layouts/PageTemplate", () => {
     __esModule: true,
     default: ({
       title,
-      children,
-    }: {
+      children}: {
       title: string;
       children: React.ReactNode;
     }) => (
@@ -29,8 +28,7 @@ jest.mock("../../components/layouts/PageTemplate", () => {
         <h1>{title}</h1>
         {children}
       </div>
-    ),
-  };
+    )};
 });
 
 // Mock the PostCard component
@@ -41,8 +39,7 @@ jest.mock("../../components/PostCard", () => {
       <div data-testid="post-card">
         <h2>{post.content}</h2>
       </div>
-    ),
-  };
+    )};
 });
 
 describe("ForumPage", () => {
@@ -58,8 +55,7 @@ describe("ForumPage", () => {
       likes: 0,
       commentCount: 0,
       isLiked: false,
-      viewCount: 0,
-    },
+      viewCount: 0},
     {
       id: "2",
       title: "Test Post 2",
@@ -71,8 +67,7 @@ describe("ForumPage", () => {
       likes: 0,
       commentCount: 0,
       isLiked: false,
-      viewCount: 0,
-    },
+      viewCount: 0},
   ] as any;
 
   beforeEach(() => {
@@ -84,8 +79,7 @@ describe("ForumPage", () => {
       fetchForumPosts: jest.fn(),
       likePost: jest.fn(),
       addComment: jest.fn(),
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
   });
   it("renders without crashing", async () => {
     render(<ForumPage />);
@@ -101,8 +95,7 @@ describe("ForumPage", () => {
       fetchForumPosts: jest.fn(),
       likePost: jest.fn(),
       addComment: jest.fn(),
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
     render(<ForumPage />);
 
     // Initially should show loading
@@ -128,8 +121,7 @@ describe("ForumPage", () => {
       fetchForumPosts: jest.fn(),
       likePost: jest.fn(),
       addComment: jest.fn(),
-      refreshData: jest.fn(),
-    });
+      refreshData: jest.fn()});
 
     render(<ForumPage />);
 

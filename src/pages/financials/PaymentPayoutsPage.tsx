@@ -1,4 +1,7 @@
-import React from 'react';
+import { Link} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
 import Wallet from '../../components/financials/Wallet';
 import { Transaction } from '../../types';
@@ -24,13 +27,13 @@ interface PayoutRequest {
 const PaymentPayoutsPage: React.FC = () => {
   const { ficBalance, payoutRequests, handleInitiatePayout, showToast } =
     useAppContext();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
 
   // State for the form
-  const [amount, setAmount] = React.useState("");
-  const [bankName, setBankName] = React.useState(NIGERIAN_BANKS[0].name);
-  const [accountNumber, setAccountNumber] = React.useState("");
+  const [amount, setAmount] = useState("");
+  const [bankName, setBankName] = useState(NIGERIAN_BANKS[0].name);
+  const [accountNumber, setAccountNumber] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { logError } from '../utils/errorLogger';
 import PostCard from '../components/PostCard';
 import { 
@@ -20,8 +20,6 @@ import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
 import { useCommunityPosts } from '../hooks/useCommunityPosts';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useState, useEffect } from "react";
-
 interface TrendingPost {
   id: string;
   title: string;

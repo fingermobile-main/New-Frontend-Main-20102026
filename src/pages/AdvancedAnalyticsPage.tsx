@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import AdvancedAnalyticsDashboard from '../components/dashboard/AdvancedAnalyticsDashboard';
 import { useAppContext } from "../contexts/AppContext";
 import { ChartBarIcon } from '../icons';

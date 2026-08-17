@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useWeb3 } from '../../contexts/Web3Context';
 
 const FinanceDashboardPage: React.FC = () => {
   useWeb3();
-  const [timeRange, setTimeRange] = React.useState("30d");
+  const [timeRange, setTimeRange] = useState("30d");
 
   // Mock data for financial stats
   const financialStats = [
@@ -313,7 +313,7 @@ const FinanceDashboardPage: React.FC = () => {
                       {transaction.member}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {transaction.description}
+                      {transaction.description || 'No description'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <span

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { ShieldCheckIcon, PhoneIcon, MailIcon, UserCircleIcon, ArrowRightIcon } from '../icons';

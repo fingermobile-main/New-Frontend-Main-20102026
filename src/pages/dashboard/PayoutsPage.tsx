@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { PayoutRequest, PayoutData } from '../../types';
 import { NIGERIAN_BANKS } from '../../constants';
@@ -9,10 +9,10 @@ const PayoutsPage: React.FC = () => {
     useAppContext();
 
   // State for the form
-  const [memberId, setmemberId] = React.useState("");
-  const [amount, setAmount] = React.useState("");
-  const [bankName, setBankName] = React.useState(NIGERIAN_BANKS[0].name);
-  const [accountNumber, setAccountNumber] = React.useState("");
+  const [memberId, setmemberId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [bankName, setBankName] = useState(NIGERIAN_BANKS[0].name);
+  const [accountNumber, setAccountNumber] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { CouponsIcon } from '../icons';
 import type { Coupon } from '../types';

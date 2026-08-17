@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 // AdminControlDashboard.tsx
 // Enhanced administrative control dashboard for FingerMobile platform
 
 import { logError, ErrorType } from '../utils/errorLogger';
-import { useNavigate } from "react-router-dom";
+
 import MainLayout from '../components/layout/MainLayout';
 import adminControlService, {
   AdminActionItem,
@@ -15,11 +16,7 @@ import { useAppContext } from "../contexts/AppContext";
 import {
   LockClosedIcon,
   UsersIcon as UserGroupIcon,
-  CogIcon,
   ChartBarIcon,
-  GiftIcon,
-  LinkIcon,
-  ShieldExclamationIcon,
   UserIcon as MemberIcon,
   ClipboardListIcon,
   PlusIcon,
@@ -27,33 +24,30 @@ import {
   TrashIcon,
   XCircleIcon,
   UserCircleIcon,
-  CheckCircleIcon,
-  ClockIcon,
   ShieldCheckIcon
 } from '../icons';
 
 const AdminControlDashboard: React.FC = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast, ficBalance } = useAppContext();
-  const [actions, setActions] = React.useState<AdminActionItem[]>([]);
-  const [members, setMembers] = React.useState<AdminMemberItem[]>([]);
-  const [auditLogs, setAuditLogItems] = React.useState<AuditLogItem[]>([]);
-  const [activeTab, setActiveTab] = React.useState<"actions" | "members" | "audit">(
+  const [actions, setActions] = useState<AdminActionItem[]>([]);
+  const [members, setMembers] = useState<AdminMemberItem[]>([]);
+  const [auditLogs, setAuditLogItems] = useState<AuditLogItem[]>([]);
+  const [activeTab, setActiveTab] = useState<"actions" | "members" | "audit">(
     "actions",
   );
-  const [pin, setPin] = React.useState("");
-  const [biometricVerified, setBiometricVerified] = React.useState(false);
-  const [otp, setOtp] = React.useState("");
-  const [selectedAction, setSelectedAction] = React.useState<AdminActionItem | null>(
+  const [pin, setPin] = useState("");
+  const [biometricVerified, setBiometricVerified] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [selectedAction, setSelectedAction] = useState<AdminActionItem | null>(
     null,
   );
-  const [isExecuting, setIsExecuting] = React.useState(false);
-  const [countdown, setCountdown] = React.useState<number | null>(null);
-  const [showAddMemberModal, setShowAddMemberModal] = React.useState(false);
-  const [showEditMemberModal, setShowEditMemberModal] = React.useState(false);
-  const [editingMember, setEditingMember] = React.useState<AdminMemberItem | null>(null);
-  const [newMember, setNewMember] = React.useState<Omit<AdminMemberItem, "id">>({
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  const [showEditMemberModal, setShowEditMemberModal] = useState(false);
+  const [editingMember, setEditingMember] = useState<AdminMemberItem | null>(null);
+  const [newMember, setNewMember] = useState<Omit<AdminMemberItem, "id">>({
     name: "",
     role: "ADMIN",
     permissions: [],
@@ -61,7 +55,7 @@ const AdminControlDashboard: React.FC = () => {
     isActive: true
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Load initial data
     setActions(adminControlService.getActions());
     setMembers(adminControlService.getMembers());
@@ -103,7 +97,7 @@ const AdminControlDashboard: React.FC = () => {
     try {
       const result = await adminControlService.executeAction(
         selectedAction.id,
-        user.id,
+        typeof user.id === 'string' ? user.id : String(user.id),
         pin,
         biometricVerified ? "verified" : undefined,
         otp || undefined,
@@ -140,7 +134,7 @@ const AdminControlDashboard: React.FC = () => {
   const handleAddMember = async () => {
     if (!user) return;
     try {
-      const result = await adminControlService.addMember(user.id, {
+      const result = await adminControlService.addMember(typeof user.id === 'string' ? user.id : String(user.id), {
         ...newMember
       });
 
@@ -168,8 +162,8 @@ const AdminControlDashboard: React.FC = () => {
     if (!editingMember || !user) return;
     try {
       const result = await adminControlService.updateMember(
-        user.id,
-        editingMember.id,
+        typeof user.id === 'string' ? user.id : String(user.id),
+        typeof editingMember.id === 'string' ? editingMember.id : String(editingMember.id),
         editingMember,
       );
 
@@ -193,7 +187,7 @@ const AdminControlDashboard: React.FC = () => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
     if (!user) return;
     try {
-      const result = await adminControlService.removeMember(user.id, id);
+      const result = await adminControlService.removeMember(typeof user.id === 'string' ? user.id : String(user.id), typeof id === 'string' ? id : String(id));
 
       if (result.success) {
         showToast("Member deleted successfully", "success");
@@ -216,7 +210,7 @@ const AdminControlDashboard: React.FC = () => {
         ...memberToToggle,
         isActive: !memberToToggle.isActive
       };
-      const result = await adminControlService.updateMember(user.id, id, updatedMember);
+      const result = await adminControlService.updateMember(typeof user.id === 'string' ? user.id : String(user.id), typeof id === 'string' ? id : String(id), updatedMember);
 
       if (result.success) {
         showToast(
@@ -264,24 +258,26 @@ const AdminControlDashboard: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="admin-pin" className="block text-sm font-medium text-gray-700 mb-1">
                     Admin PIN
                   </label>
                   <input
+                    id="admin-pin"
                     type="password"
                     value={pin}
                     onChange={(e) => setPin(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                     placeholder="Enter admin PIN"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="biometric-check" className="block text-sm font-medium text-gray-700 mb-1">
                     Biometric Verification
                   </label>
                   <div className="flex items-center">
                     <input
+                      id="biometric-check"
                       type="checkbox"
                       checked={biometricVerified}
                       onChange={(e) => setBiometricVerified(e.target.checked)}
@@ -294,14 +290,15 @@ const AdminControlDashboard: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="admin-otp" className="block text-sm font-medium text-gray-700 mb-1">
                     OTP (if required)
                   </label>
                   <input
+                    id="admin-otp"
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                     placeholder="Enter OTP"
                   />
                 </div>
@@ -330,7 +327,7 @@ const AdminControlDashboard: React.FC = () => {
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
+                    onClick={() => setActiveTab(tab.id as "actions" | "members" | "audit")}
                     className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                       activeTab === tab.id
                         ? "border-red-500 text-red-600"
@@ -375,11 +372,6 @@ const AdminControlDashboard: React.FC = () => {
                             {action.requiresBiometric && (
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                 Biometric
-                              </span>
-                            )}
-                            {action.requiresOTP && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                OTP Required
                               </span>
                             )}
                             {action.requiresConfirmation && (
@@ -560,7 +552,7 @@ const AdminControlDashboard: React.FC = () => {
                 Admin FIC Balance
               </h2>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+                <span className="text-2xl font-bold text-gray-900">{ficBalance?.toFixed(2) ?? '0.00'} FIC</span>
                 <button className="text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white px-3 py-1.5 rounded-lg hover:from-red-700 hover:to-orange-700">
                   Add Funds
                 </button>
@@ -624,30 +616,31 @@ const AdminControlDashboard: React.FC = () => {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="add-member-name" className="block text-sm font-medium text-gray-700">
                     Name
                   </label>
                   <input
+                    id="add-member-name"
                     type="text"
                     value={newMember.name}
-                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })
-                    }
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="add-member-role" className="block text-sm font-medium text-gray-700">
                     Role
                   </label>
                   <select
+                    id="add-member-role"
                     value={newMember.role}
                     onChange={(e) =>
                       setNewMember({
                         ...newMember,
-                        role: e.target.value as any
+                        role: e.target.value as AdminMemberItem["role"]
                       })
                     }
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                   >
                     <option value="ADMIN">Admin</option>
                     <option value="MODERATOR">Moderator</option>
@@ -692,10 +685,11 @@ const AdminControlDashboard: React.FC = () => {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-member-name" className="block text-sm font-medium text-gray-700">
                     Name
                   </label>
                   <input
+                    id="edit-member-name"
                     type="text"
                     value={editingMember.name}
                     onChange={(e) => setEditingMember({
@@ -703,22 +697,23 @@ const AdminControlDashboard: React.FC = () => {
                         name: e.target.value
                       })
                     }
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-member-role" className="block text-sm font-medium text-gray-700">
                     Role
                   </label>
                   <select
+                    id="edit-member-role"
                     value={editingMember.role}
                     onChange={(e) =>
                       setEditingMember({
                         ...editingMember,
-                        role: e.target.value as any
+                        role: e.target.value as AdminMemberItem["role"]
                       })
                     }
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
+                    className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                   >
                     <option value="ADMIN">Admin</option>
                     <option value="MODERATOR">Moderator</option>
@@ -726,12 +721,13 @@ const AdminControlDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-member-status" className="block text-sm font-medium text-gray-700">
                     Status
                   </label>
                   <div className="mt-1">
                     <label className="inline-flex items-center">
                       <input
+                        id="edit-member-status"
                         type="checkbox"
                         checked={editingMember.isActive}
                         onChange={(e) =>

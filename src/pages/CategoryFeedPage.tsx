@@ -1,6 +1,9 @@
-import React from 'react';
+import { useNavigate, useParams} from 'react-router-dom';
+import React, { useState } from 'react';
+
+
 import { useAppContext } from "../contexts/AppContext";
-import { useParams, useNavigate } from "react-router-dom";
+
 import PostCard from '../components/PostCard';
 import type { Post } from '../types';
 import { getForumCategoryBySlug } from '../utils/forum';
@@ -13,7 +16,7 @@ const CategoryFeedPage: React.FC = () => {
   // Get the category data
   const category = getForumCategoryBySlug(categorySlug || "");
 
-  const [ficBalance, setFicBalance] = React.useState<number>(0);
+  const [ficBalance, setFicBalance] = useState<number>(0);
 
   // Required placeholder functions
   const onLike = (postId: string) => {
@@ -80,10 +83,10 @@ const CategoryFeedPage: React.FC = () => {
       <div className="space-y-6">
         {category.posts?.map((post: Post) => (
           <PostCard
-            key={post.id}
+            key={typeof post.id === 'string' ? post.id : String(post.id)}
             post={post}
-            onLike={() => onLike(post.id)}
-            onAddComment={onAddComment}
+            onLike={() => onLike(typeof post.id === 'string' ? post.id : String(post.id))}
+            _onAddComment={onAddComment} // Changed from onAddComment to _onAddComment
             onOpenGiftModal={onOpenGiftModal}
             onOpenPaylinkModal={onOpenPaylinkModal}
             onVote={onVote}

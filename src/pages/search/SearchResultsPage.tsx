@@ -1,13 +1,13 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 import { search } from '../../services/api';
 import { useAppContext } from '../../contexts/AppContext';
 
 interface SearchResult {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   type: 'post' | 'member' | 'product' | 'program' | 'event';
   thumbnail?: string;
   url: string;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {} from 'react';
 import MainLayout from '../components/layout/MainLayout';
 
 const CommunitiesPage: React.FC = () => {

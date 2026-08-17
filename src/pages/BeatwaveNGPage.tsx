@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Play, Pause, SkipBack, SkipForward, Volume2, Search, Heart, 
   MoreVertical, Music, Disc, Mic2, Radio, Plus, Share2, 
@@ -13,14 +13,14 @@ import { MusicalNoteIcon } from '../icons';
 
 const BeatwaveNGPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
-  const [activeTab, setActiveTab] = React.useState('discover');
-  const [displayMode, setDisplayMode] = React.useState<DisplayMode>('grid');
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [showSettingsModal, setShowSettingsModal] = React.useState(false);
-  const [showFavoritesOnly, setShowFavoritesOnly] = React.useState(false);
-  const [groupVideos, setGroupVideos] = React.useState(false);
-  const [groupAudio, setGroupAudio] = React.useState(false);
-  const [sortBy, setSortBy] = React.useState<SortCriteria>('name');
+  const [activeTab, setActiveTab] = useState('discover');
+  const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [groupVideos, setGroupVideos] = useState(false);
+  const [groupAudio, setGroupAudio] = useState(false);
+  const [sortBy, setSortBy] = useState<SortCriteria>('name');
 
   const mockTracks = [
     { id: 1, title: 'Summer Vibes', artist: 'DJ Pulse', duration: '3:45', plays: '1.2M', cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500&q=80' },

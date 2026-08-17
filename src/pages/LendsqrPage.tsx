@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from "../contexts/AppContext";
 
@@ -11,8 +13,8 @@ import PageHeader from '../components/PageHeader';
 
 const LendsqrPage: React.FC = () => {
   const { lendsqrProjects = [], ficBalance = 0, showToast } = useAppContext();
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = React.useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
 
   const onLike = async (projectId: string) => {
     try {
