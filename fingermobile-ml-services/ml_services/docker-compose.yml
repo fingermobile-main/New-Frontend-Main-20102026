@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  ml-service:
+    build: .
+    ports:
+      - "${ML_PORT:-5001}:${ML_PORT:-5001}"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=${ML_PORT:-5001}
+      - DEBUG=${DEBUG:-False}
+      - DB_HOST=${DB_HOST:-postgres}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-fingermobile_platform_db}
+      - DB_member=${DB_member:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+    depends_on:
+      - postgres
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_member: ${DB_member:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-fingermobile_platform_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+networks:
+  fingermobile_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

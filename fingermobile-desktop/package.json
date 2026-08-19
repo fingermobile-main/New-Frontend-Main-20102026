@@ -1,0 +1,86 @@
+{
+  "name": "fingermobile-desktop",
+  "version": "1.0.0",
+  "description": "Desktop app for the FingerMobile platform",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "publish": "electron-builder --publish always"
+  },
+  "keywords": [
+    "fingermobile",
+    "desktop",
+    "electron",
+    "social-platform"
+  ],
+  "author": "FingerMobile Team",
+  "license": "MIT",
+  "dependencies": {
+    "electron-is-dev": "^2.0.0",
+    "electron-updater": "^6.1.4"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "config": {
+    "electron_mirror": "https://npmmirror.com/mirrors/electron/",
+    "electron_custom_dir": "{{version}}"
+  },
+  "build": {
+    "appId": "com.fingermobile.desktop",
+    "productName": "FingerMobile Desktop",
+    "copyright": "Copyright © 2025 FingerMobile",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../FingerMobile/dist",
+        "to": "dist",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "target": ["dmg", "zip"],
+      "icon": "assets/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "FingerMobile"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Network;Chat;VideoConference",
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "fingermobile",
+      "repo": "fingermobile-desktop",
+      "releaseType": "release"
+    }
+  }
+}

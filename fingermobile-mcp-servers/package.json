@@ -1,0 +1,14 @@
+{
+  "name": "fingermobile-mcp-servers",
+  "version": "1.0.0",
+  "description": "FingerMobile Protocol - fingermobile-mcp-servers application",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Starting fingermobile-mcp-servers...'",
+    "dev": "echo 'Development mode for fingermobile-mcp-servers...'",
+    "build": "echo 'Building fingermobile-mcp-servers...'",
+    "test": "echo 'Testing fingermobile-mcp-servers...'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

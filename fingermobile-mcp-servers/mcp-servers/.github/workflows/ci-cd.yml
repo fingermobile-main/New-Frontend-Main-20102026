@@ -1,0 +1,65 @@
+name: STERCS Editor CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./mcp-servers
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./mcp-servers
+
+      - name: Build project (if applicable)
+        run: npm run build
+        working-directory: ./mcp-servers
+        continue-on-error: true # Allow build to fail if not configured yet
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          membername: ${{ secrets.DOCKER_membername }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./mcp-servers
+          push: true
+          tags: your-dockerhub-membername/stercs-editor:latest
+
+      - name: Deploy to production (placeholder)
+        run: echo "Deploying to production server..."
+        # In a real scenario, this would involve SSHing into a server and pulling the latest Docker image,
+        # or using a deployment tool like Kubernetes, AWS ECS, etc.

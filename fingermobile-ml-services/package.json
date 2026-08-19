@@ -1,0 +1,14 @@
+{
+  "name": "fingermobile-ml-services",
+  "version": "1.0.0",
+  "description": "FingerMobile Protocol - fingermobile-ml-services application",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Starting fingermobile-ml-services...'",
+    "dev": "echo 'Development mode for fingermobile-ml-services...'",
+    "build": "echo 'Building fingermobile-ml-services...'",
+    "test": "echo 'Testing fingermobile-ml-services...'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

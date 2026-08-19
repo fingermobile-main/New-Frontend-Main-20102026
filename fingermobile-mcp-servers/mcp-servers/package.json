@@ -1,0 +1,55 @@
+{
+  "name": "fingermobile-mcp-servers",
+  "version": "1.0.0",
+  "description": "MCP Servers for FingerMobile Protocol",
+  "main": "backend-server.js",
+  "scripts": {
+    "start": "node backend-server.js",
+    "dev": "nodemon backend-server.js",
+    "test": "jest",
+    "new-mcp-server": "node src/servers/new-mcp-server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@json2csv/plainjs": "^7.0.6",
+    "aws-sdk": "^2.1692.0",
+    "axios": "^1.12.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "ethers": "^6.13.4",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.3",
+    "multer": "^1.4.5-lts.1",
+    "node-cache": "^5.1.2",
+    "pg": "^8.16.3",
+    "qrcode": "^1.5.3",
+    "redis": "^4.7.0",
+    "sequelize": "^6.37.7",
+    "sharp": "^0.33.5",
+    "socket.io": "^4.8.0",
+    "speakeasy": "^2.0.0",
+    "stripe": "^20.0.0",
+    "web3": "^4.15.0",
+    "ws": "^8.11.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.5.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "typescript-eslint": "^8.46.4"
+  },
+  "keywords": [
+    "fingermobile",
+    "mcp",
+    "protocol"
+  ],
+  "author": "FingerMobile Protocol Team",
+  "license": "MIT"
+}

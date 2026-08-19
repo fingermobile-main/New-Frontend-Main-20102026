@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  mcp-server:
+    build: .
+    ports:
+      - "${PORT:-3001}:${PORT:-3001}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-staging}
+      - PORT=${PORT:-3001}
+      - "DB_membername=${DB_membername:?Error: DB_membername is required}"
+      - "DB_PASSWORD=${DB_PASSWORD:?Error: DB_PASSWORD is required}"
+      - DB_NAME=${DB_NAME:-fingermobile_staging_db}
+      - DB_HOST=${DB_HOST:-postgres}
+      - DB_PORT=${DB_PORT:-5432}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - "JWT_SECRET=${JWT_SECRET:?Error: JWT_SECRET is required}"
+
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - "POSTGRES_member=${DB_membername:?Error: DB_membername is required}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD:?Error: DB_PASSWORD is required}"
+      - POSTGRES_DB=${DB_NAME:-fingermobile_staging_db}
+
+  redis:
+    image: redis:6.2-alpine
+    # SECURITY: Redis port NOT exposed to host network
+    # Access only through internal Docker network
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - mcp-server
+    restart: unless-stopped
+    networks:
+      - fingermobile_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  fingermobile_network:
+    driver: bridge
