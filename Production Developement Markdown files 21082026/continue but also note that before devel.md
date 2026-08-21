@@ -1,4 +1,6 @@
-continue but also note that before developing any new or missing files or pages or scripts or when in need, note that most of the missing files may be or are in the ARCHIVES folder
+continue but also note that before developing any new or missing files or pages or scripts or when in need, note that most of the missing files may be or are in the ARCHIVES folder. to continue, also note that before developing any new or missing files or pages or scripts or when in need, note that most of the missing files may be or are in the ARCHIVES folder
+
+if at all you nee
 
 /Users/user/Documents/FingerMobile Protocol Communication/config
 /Users/user/Documents/FingerMobile Protocol Communication/Communication
