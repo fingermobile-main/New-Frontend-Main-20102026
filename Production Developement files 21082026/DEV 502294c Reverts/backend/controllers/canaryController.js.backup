@@ -1,0 +1,369 @@
+/**
+ * CanaryController
+ * System health monitoring and alerting
+ */
+
+const pool = require('../database/connection');
+const logger = require('../utils/logger');
+
+class CanaryController {
+    /**
+     * GET /api/canary/alerts
+     * Get all alerts
+     */
+    async getAll(req, res) {
+        try {
+            const limit = parseInt(req.query.limit) || 50;
+            const offset = parseInt(req.query.offset) || 0;
+            const severity = req.query.severity;
+
+            let query = 'SELECT * FROM canary_alerts';
+            const params = [];
+
+            if (severity) {
+                query += ' WHERE severity = $1';
+                params.push(severity);
+            }
+
+            query += ' ORDER BY created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
+            params.push(limit, offset);
+
+            const result = await pool.query(query, params);
+
+            res.json({
+                success: true,
+                message: 'Alerts retrieved',
+                data: result.rows, count: result.rows.length
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.getAll:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to retrieve alerts',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/canary/alerts/:id
+     * Get alert by ID
+     */
+    async getById(req, res) {
+        try {
+            const { id } = req.params;
+
+            const query = 'SELECT * FROM canary_alerts WHERE id = $1';
+            const result = await pool.query(query, [id]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Alert not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Alert retrieved',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.getById:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to retrieve alert',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * POST /api/canary/alerts
+     * Create new alert
+     */
+    async create(req, res) {
+        try {
+            const { check_id, severity, message } = req.body;
+
+            if (!check_id || !severity || !message) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Check ID, severity, and message are required'
+                });
+            }
+
+            const query = `
+        INSERT INTO canary_alerts (check_id, severity, message, resolved, created_at), VALUES ($1, $2, $3, false, NOW()), RETURNING *
+      `;
+
+            const result = await pool.query(query, [check_id, severity, message]);
+
+            res.status(201).json({
+                success: true,
+                message: 'Alert created',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.create:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to create alert',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * PUT /api/canary/alerts/:id/resolve
+     * Resolve alert
+     */
+    async resolve(req, res) {
+        try {
+            const { id } = req.params;
+
+            const query = `
+        UPDATE canary_alerts
+        SET resolved = true, resolved_at = NOW(), WHERE id = $1
+        RETURNING *
+      `;
+
+            const result = await pool.query(query, [id]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Alert not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Alert resolved',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.resolve:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to resolve alert',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * DELETE /api/canary/alerts/:id
+     * Delete alert
+     */
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+
+            const query = 'DELETE FROM canary_alerts WHERE id = $1 RETURNING *';
+            const result = await pool.query(query, [id]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Alert not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Alert deleted'
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.delete:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to delete alert',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/canary/subscriptions
+     * Get alert subscriptions
+     */
+    async getSubscriptions(req, res) {
+        try {
+            const userId = req.user?.id || req.user?.userId;
+
+            const query = 'SELECT * FROM canary_subscriptions WHERE user_id = $1';
+            const result = await pool.query(query, [userId]);
+
+            res.json({
+                success: true,
+                message: 'Subscriptions retrieved',
+                data: result.rows
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.getSubscriptions:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to retrieve subscriptions',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * POST /api/canary/subscriptions
+     * Create subscription
+     */
+    async createSubscription(req, res) {
+        try {
+            const userId = req.user?.id || req.user?.userId;
+            const { check_id, notification_method } = req.body;
+
+            const query = `
+        INSERT INTO canary_subscriptions (user_id, check_id, notification_method, created_at), VALUES ($1, $2, $3, NOW()), RETURNING *
+      `;
+
+            const result = await pool.query(query, [userId, check_id, notification_method || 'email']);
+
+            res.status(201).json({
+                success: true,
+                message: 'Subscription created',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.createSubscription:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to create subscription',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * PUT /api/canary/subscriptions/:id
+     * Update subscription
+     */
+    async updateSubscription(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user?.id || req.user?.userId;
+            const updates = req.body;
+
+            const fields = [];
+            const values = [];
+            let paramIndex = 1;
+
+            for (const [key, value] of Object.entries(updates)) {
+                if (value !== undefined && key !== 'id') {
+                    fields.push(`${key} = $${paramIndex}`);
+                    values.push(value);
+                    paramIndex++;
+                
+            }
+
+            if (fields.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'No fields to update'
+                });
+            }
+
+            values.push(id, userId);
+            const query = `
+        UPDATE canary_subscriptions
+        SET ${fields.join(', ')
+        }
+        WHERE id = $${paramIndex} AND user_id = $${paramIndex + 1
+        },         RETURNING *
+      `;
+
+            const result = await pool.query(query, values);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Subscription not found or unauthorized'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Subscription updated',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.updateSubscription:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to update subscription',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * DELETE /api/canary/subscriptions/:id
+     * Delete subscription
+     */
+    async deleteSubscription(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user?.id || req.user?.userId;
+
+            const query = 'DELETE FROM canary_subscriptions WHERE id = $1 AND user_id = $2 RETURNING *';
+            const result = await pool.query(query, [id, userId]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'Subscription not found or unauthorized'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Subscription deleted'
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.deleteSubscription:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to delete subscription',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/canary/stats
+     * Get monitoring statistics
+     */
+    async getStats(req, res) {
+        try {
+            const stats = await pool.query(`
+        SELECT 
+          COUNT(*) as total_checks COUNT(CASE WHEN status = 'healthy' THEN 1 END), as healthy_checks COUNT(CASE WHEN status = 'degraded' THEN 1 END), as degraded_checks COUNT(CASE WHEN status = 'down' THEN 1 END), as down_checks
+          AVG(response_time), as avg_response_time,           AVG(uptime_percentage), as overall_uptime
+        FROM canary_checks
+      `);
+
+            res.json({
+                success: true,
+                message: 'Stats retrieved',
+                data: stats.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in CanaryController.getStats:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to retrieve stats',
+                details: error.message
+            });
+        }
+    }
+}
+
+}
+
+module.exports = new CanaryController();

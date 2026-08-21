@@ -1,0 +1,749 @@
+const express = require("express");
+const router = express.Router();
+const { contentDb } = require("../db");
+
+// ============================================
+// BLOGS (Containers)
+// ============================================
+
+// Get all blogs
+router.get("/blogs", async (req, res) => {
+  try {
+    const { owner_id, limit = 20, offset = 0 } = req.query;
+
+    let query = "SELECT * FROM blogs";
+    const params = [];
+    let paramIndex = 0;
+
+    if (owner_id) {
+      paramIndex++;
+      query += ` WHERE owner_id = $${paramIndex}`;
+      params.push(owner_id);
+    }
+
+    query += ` ORDER BY created_at DESC LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const { rows } = await contentDb.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create blog
+router.post("/blogs", async (req, res) => {
+  try {
+    const { name, slug, description, theme_colors, social_links } = req.body;
+    const owner_id = req.member?.id;
+
+    if (!owner_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (!name || !slug) {
+      return res.status(400).json({ error: "Name and slug are required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO blogs (owner_id, name, slug, description, theme_colors, social_links)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [owner_id, name, slug, description, theme_colors, social_links]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// CATEGORIES
+// ============================================
+
+// Get categories
+router.get("/categories", async (req, res) => {
+  try {
+    const { blog_id } = req.query;
+
+    let query = "SELECT * FROM blog_categories";
+    const params = [];
+    let paramIndex = 0;
+
+    if (blog_id) {
+      paramIndex++;
+      query += ` WHERE blog_id = $${paramIndex}`;
+      params.push(blog_id);
+    }
+
+    query += " ORDER BY display_order";
+
+    const { rows } = await contentDb.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// POSTS
+// ============================================
+
+// Get all blog posts with filtering and pagination
+router.get("/posts", async (req, res) => {
+  try {
+    const {
+      status = 'published',
+      author_id,
+      category_id,
+      tag,
+      blog_id,
+      is_featured,
+      limit = 20,
+      offset = 0,
+      sort = "created_at_desc",
+    } = req.query;
+
+    let query = `SELECT bp.*, m.username as author_name, m.profile_picture_url as author_avatar,
+                     bc.name as category_name
+                 FROM blog_posts bp
+                 LEFT JOIN members m ON bp.author_id::text = m.id::text
+                 LEFT JOIN blog_categories bc ON bp.category_id = bc.id`;
+    const params = [];
+    let paramIndex = 0;
+    const conditions = [];
+
+    if (status) {
+      paramIndex++;
+      conditions.push(`bp.status = $${paramIndex}`);
+      params.push(status);
+    }
+
+    if (author_id) {
+      paramIndex++;
+      conditions.push(`bp.author_id = $${paramIndex}`);
+      params.push(author_id);
+    }
+
+    if (category_id) {
+      paramIndex++;
+      conditions.push(`bp.category_id = $${paramIndex}`);
+      params.push(category_id);
+    }
+
+    if (blog_id) {
+      paramIndex++;
+      conditions.push(`bp.blog_id = $${paramIndex}`);
+      params.push(blog_id);
+    }
+
+    if (is_featured !== undefined) {
+      paramIndex++;
+      conditions.push(`bp.is_featured = $${paramIndex}`);
+      params.push(is_featured === 'true');
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
+    }
+
+    // Add sorting
+    let orderBy = "bp.created_at DESC";
+    switch (sort) {
+      case "created_at_asc":
+        orderBy = "bp.created_at ASC";
+        break;
+      case "updated_at_desc":
+        orderBy = "bp.updated_at DESC";
+        break;
+      case "popularity":
+        orderBy = "bp.views_count DESC, bp.likes_count DESC";
+        break;
+      default:
+        orderBy = "bp.created_at DESC";
+    }
+
+    query += ` ORDER BY ${orderBy} LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const { rows } = await contentDb.query(query, params);
+    
+    // Get total count
+    const countQuery = query.replace(/ORDER BY.*$/, '').replace(/SELECT.*?FROM/, 'SELECT COUNT(*) FROM');
+    const countResult = await contentDb.query(countQuery, params.slice(0, -2));
+
+    res.json({ posts: rows, total: parseInt(countResult.rows[0].count) });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get a specific blog post by ID
+router.get("/posts/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const { rows } = await contentDb.query(
+      `SELECT bp.*, m.username as author_name, m.profile_picture_url as author_avatar,
+              bc.name as category_name
+       FROM blog_posts bp
+       LEFT JOIN members m ON bp.author_id::text = m.id::text
+       LEFT JOIN blog_categories bc ON bp.category_id = bc.id
+       WHERE bp.id = $1`,
+      [postId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Blog post not found" });
+    }
+
+    // Increment view count
+    await contentDb.query(
+      "UPDATE blog_posts SET views_count = views_count + 1 WHERE id = $1",
+      [postId]
+    );
+
+    // Get tags
+    const tagsResult = await contentDb.query(
+      `SELECT bt.* FROM blog_tags bt
+       JOIN blog_post_tags bpt ON bt.id = bpt.tag_id
+       WHERE bpt.post_id = $1`,
+      [postId]
+    );
+
+    res.json({ ...rows[0], tags: tagsResult.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create a new blog post
+router.post("/posts", async (req, res) => {
+  try {
+    const {
+      blog_id, title, slug, excerpt, content, content_format, category_id,
+      featured_image_url, gallery_images, seo_title, seo_description,
+      meta_keywords, published_at, scheduled_for, allow_comments,
+      is_featured, is_pinned, tags
+    } = req.body;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (!title || !content || !blog_id) {
+      return res.status(400).json({ error: "Title, content, and blog_id are required" });
+    }
+
+    // Calculate reading time (rough estimate: 200 words per minute)
+    const wordCount = content.split(/\s+/).length;
+    const reading_time_minutes = Math.ceil(wordCount / 200);
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO blog_posts (
+        blog_id, author_id, category_id, title, slug, excerpt, content, content_format,
+        featured_image_url, gallery_images, seo_title, seo_description, meta_keywords,
+        published_at, scheduled_for, allow_comments, is_featured, is_pinned, reading_time_minutes
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+      RETURNING *`,
+      [
+        blog_id, author_id, category_id, title, slug, excerpt, content, content_format || 'markdown',
+        featured_image_url, gallery_images || [], seo_title, seo_description, meta_keywords || [],
+        published_at, scheduled_for, allow_comments !== false, is_featured || false,
+        is_pinned || false, reading_time_minutes
+      ]
+    );
+
+    // Add tags if provided
+    if (tags && tags.length > 0) {
+      for (const tagName of tags) {
+        // Find or create tag
+        let tagResult = await contentDb.query(
+          "SELECT id FROM blog_tags WHERE slug = LOWER(REPLACE($1, ' ', '-'))",
+          [tagName]
+        );
+
+        let tagId;
+        if (tagResult.rows.length === 0) {
+          const insertResult = await contentDb.query(
+            "INSERT INTO blog_tags (name, slug) VALUES ($1, LOWER(REPLACE($1, ' ', '-'))) RETURNING id",
+            [tagName]
+          );
+          tagId = insertResult.rows[0].id;
+        } else {
+          tagId = tagResult.rows[0].id;
+        }
+
+        // Link tag to post
+        await contentDb.query(
+          "INSERT INTO blog_post_tags (post_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+          [rows[0].id, tagId]
+        );
+      }
+    }
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update a blog post
+router.put("/posts/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const updateData = req.body;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Verify ownership
+    const checkResult = await contentDb.query(
+      "SELECT id FROM blog_posts WHERE id = $1 AND author_id = $2",
+      [postId, author_id]
+    );
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ error: "Post not found or unauthorized" });
+    }
+
+    const fields = Object.keys(updateData).map((key, idx) => `${key} = $${idx + 1}`).join(', ');
+    const values = Object.values(updateData);
+
+    const { rows } = await contentDb.query(
+      `UPDATE blog_posts SET ${fields}, updated_at = NOW() 
+       WHERE id = $${values.length + 1}
+       RETURNING *`,
+      [...values, postId]
+    );
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Delete a blog post
+router.delete("/posts/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { rows } = await contentDb.query(
+      "DELETE FROM blog_posts WHERE id = $1 AND author_id = $2 RETURNING *",
+      [postId, author_id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Post not found or unauthorized" });
+    }
+
+    res.json({ message: "Post deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Like a post
+router.post("/posts/:postId/like", async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    await contentDb.query(
+      "UPDATE blog_posts SET likes_count = likes_count + 1 WHERE id = $1",
+      [postId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Share a post
+router.post("/posts/:postId/share", async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    await contentDb.query(
+      "UPDATE blog_posts SET shares_count = shares_count + 1 WHERE id = $1",
+      [postId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// TAGS
+// ============================================
+
+// Get all tags
+router.get("/tags", async (req, res) => {
+  try {
+    const { rows } = await contentDb.query(
+      "SELECT * FROM blog_tags ORDER BY usage_count DESC, name ASC"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// COMMENTS (with threading support)
+// ============================================
+
+// Get comments for a post (threaded)
+router.get("/posts/:postId/comments", async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { status = 'approved' } = req.query;
+
+    // Get top-level comments first
+    const topLevelResult = await contentDb.query(
+      `SELECT bc.*, m.username as author_name, m.profile_picture_url as author_avatar
+       FROM blog_comments bc
+       LEFT JOIN members m ON bc.author_id::text = m.id::text
+       WHERE bc.post_id = $1 AND bc.parent_id IS NULL AND bc.status = $2
+       ORDER BY bc.created_at DESC`,
+      [postId, status]
+    );
+
+    // For each top-level comment, get replies
+    const comments = topLevelResult.rows;
+    for (const comment of comments) {
+      const repliesResult = await contentDb.query(
+        `SELECT bc.*, m.username as author_name, m.profile_picture_url as author_avatar
+         FROM blog_comments bc
+         LEFT JOIN members m ON bc.author_id::text = m.id::text
+         WHERE bc.parent_id = $1 AND bc.status = $2
+         ORDER BY bc.created_at ASC`,
+        [comment.id, status]
+      );
+      comment.replies = repliesResult.rows;
+    }
+
+    res.json(comments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create a comment
+router.post("/comments", async (req, res) => {
+  try {
+    const { post_id, parent_id, content } = req.body;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    if (!post_id || !content) {
+      return res.status(400).json({ error: "Post ID and content are required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO blog_comments (post_id, author_id, parent_id, content, ip_address, user_agent)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [post_id, author_id, parent_id || null, content, req.ip, req.get('User-Agent')]
+    );
+
+    // If this is a reply, increment parent's replies_count
+    if (parent_id) {
+      await contentDb.query(
+        "UPDATE blog_comments SET replies_count = replies_count + 1 WHERE id = $1",
+        [parent_id]
+      );
+    }
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update a comment
+router.put("/comments/:commentId", async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { content } = req.body;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `UPDATE blog_comments SET content = $1, is_edited = true, updated_at = NOW()
+       WHERE id = $2 AND author_id = $3
+       RETURNING *`,
+      [content, commentId, author_id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Comment not found or unauthorized" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Delete a comment
+router.delete("/comments/:commentId", async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const author_id = req.member?.id;
+
+    if (!author_id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { rows } = await contentDb.query(
+      "DELETE FROM blog_comments WHERE id = $1 AND author_id = $2 RETURNING *",
+      [commentId, author_id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Comment not found or unauthorized" });
+    }
+
+    res.json({ message: "Comment deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Moderate a comment (admin/moderator only)
+router.post("/comments/:commentId/moderate", async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { status } = req.body; // 'approved', 'rejected', 'spam', 'deleted'
+
+    if (!['approved', 'rejected', 'spam', 'deleted'].includes(status)) {
+      return res.status(400).json({ error: "Valid moderation status required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `UPDATE blog_comments SET status = $1, updated_at = NOW()
+       WHERE id = $2
+       RETURNING *`,
+      [status, commentId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ============================================
+// READING LISTS
+// ============================================
+
+// Get user's reading lists
+router.get("/users/:userId/reading-lists", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const { rows } = await contentDb.query(
+      "SELECT * FROM blog_reading_lists WHERE user_id = $1 ORDER BY created_at DESC",
+      [userId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create reading list
+router.post("/users/:userId/reading-lists", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { name, description, is_public, is_default } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: "List name is required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO blog_reading_lists (user_id, name, description, is_public, is_default)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [userId, name, description, is_public || false, is_default || false]
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update reading list
+router.put("/reading-lists/:listId", async (req, res) => {
+  try {
+    const { listId } = req.params;
+    const { name, description, is_public } = req.body;
+
+    const { rows } = await contentDb.query(
+      `UPDATE blog_reading_lists SET name = $1, description = $2, is_public = $3, updated_at = NOW()
+       WHERE id = $4
+       RETURNING *`,
+      [name, description, is_public, listId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Reading list not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Delete reading list
+router.delete("/reading-lists/:listId", async (req, res) => {
+  try {
+    const { listId } = req.params;
+
+    const { rows } = await contentDb.query(
+      "DELETE FROM blog_reading_lists WHERE id = $1 RETURNING *",
+      [listId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Reading list not found" });
+    }
+
+    res.json({ message: "Reading list deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Add post to reading list
+router.post("/reading-lists/:listId/items", async (req, res) => {
+  try {
+    const { listId } = req.params;
+    const { post_id, notes } = req.body;
+
+    if (!post_id) {
+      return res.status(400).json({ error: "Post ID is required" });
+    }
+
+    const { rows } = await contentDb.query(
+      `INSERT INTO blog_reading_list_items (reading_list_id, post_id, notes)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (reading_list_id, post_id) DO NOTHING
+       RETURNING *`,
+      [listId, post_id, notes]
+    );
+
+    res.status(201).json(rows[0] || { message: "Item already in list" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Remove item from reading list
+router.delete("/reading-list-items/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+
+    const { rows } = await contentDb.query(
+      "DELETE FROM blog_reading_list_items WHERE id = $1 RETURNING *",
+      [itemId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    res.json({ message: "Item removed successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update reading progress
+router.put("/reading-list-items/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { progress, notes } = req.body;
+
+    if (!progress || !['unread', 'reading', 'completed'].includes(progress)) {
+      return res.status(400).json({ error: "Valid progress status required" });
+    }
+
+    const updates = { progress };
+    if (progress === 'completed') {
+      updates.completed_at = new Date().toISOString();
+    }
+    if (notes !== undefined) {
+      updates.notes = notes;
+    }
+
+    const fields = Object.keys(updates).map((key, idx) => `${key} = $${idx + 1}`).join(', ');
+    const values = Object.values(updates);
+
+    const { rows } = await contentDb.query(
+      `UPDATE blog_reading_list_items SET ${fields}, updated_at = NOW()
+       WHERE id = $${values.length + 1}
+       RETURNING *`,
+      [...values, itemId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+module.exports = router;

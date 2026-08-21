@@ -1,0 +1,153 @@
+// backend/routes/likes.js
+// Likes system API endpoints
+
+const express = require('express');
+const { authenticate } = require('../middleware/authenticate'); // Correct file
+const router = express.Router();
+
+// Mock data store (in production, this would be a database)
+let likes = [];
+
+// GET /api/likes - Retrieve likes for a specific post or user
+router.get('/', authenticate, (req, res) => {
+  const { postId, userId, limit = 20, offset = 0 } = req.query;
+  
+  try {
+    let filteredLikes = likes;
+    
+    if (postId) {
+      filteredLikes = filteredLikes.filter(like => like.postId === postId);
+    }
+    
+    if (userId) {
+      filteredLikes = filteredLikes.filter(like => like.userId === userId);
+    }
+    
+    const paginatedLikes = filteredLikes.slice(parseInt(offset), parseInt(offset) + parseInt(limit));
+    
+    res.json({
+      success: true,
+      data: paginatedLikes,
+      pagination: {
+        total: filteredLikes.length,
+        limit: parseInt(limit),
+        offset: parseInt(offset)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving likes',
+      error: error.message
+    });
+  }
+});
+
+// POST /api/likes - Create a new like
+router.post('/', authenticate, (req, res) => {
+  const { postId, itemType = 'post' } = req.body;
+  const userId = req.user?.id || req.member?.id; // Use member from JWT token
+  
+  // Validate required fields
+  if (!postId) {
+    return res.status(400).json({
+      success: false,
+      message: 'Post ID is required'
+    });
+  }
+  
+  try {
+    // Check if user already liked this item
+    const existingLike = likes.find(l => l.postId === postId && l.userId === userId && l.itemType === itemType);
+    
+    if (existingLike) {
+      return res.status(409).json({
+        success: false,
+        message: 'User already liked this item'
+      });
+    }
+    
+    const newLike = {
+      id: Date.now().toString(), // In production, use UUID
+      postId,
+      userId,
+      itemType, // post, comment, etc.
+      createdAt: new Date().toISOString()
+    };
+    
+    likes.push(newLike);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Item liked successfully',
+      data: newLike
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error creating like',
+      error: error.message
+    });
+  }
+});
+
+// DELETE /api/likes - Remove a like
+router.delete('/', authenticate, (req, res) => {
+  const { postId, itemType = 'post' } = req.body;
+  const userId = req.user?.id || req.member?.id; // Use member from JWT token
+  
+  try {
+    const likeIndex = likes.findIndex(
+      l => l.postId === postId && 
+           l.userId === userId && 
+           l.itemType === itemType
+    );
+    
+    if (likeIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Like not found'
+      });
+    }
+    
+    likes.splice(likeIndex, 1);
+    
+    res.json({
+      success: true,
+      message: 'Like removed successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error removing like',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/likes/count - Get like count for a specific post
+router.get('/count', authenticate, (req, res) => {
+  const { postId, itemType = 'post' } = req.query;
+  
+  try {
+    const count = likes.filter(
+      l => l.postId === postId && l.itemType === itemType
+    ).length;
+    
+    res.json({
+      success: true,
+      data: {
+        postId,
+        count
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving like count',
+      error: error.message
+    });
+  }
+});
+
+module.exports = router;

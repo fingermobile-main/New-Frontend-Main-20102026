@@ -1,0 +1,14 @@
+const express = require('express');
+const achievements = require('../controllers/AchievementsController.js');
+const { identityDb } = require("../db");
+const router = express.Router();
+
+router.get("/", achievements.getAll);
+router.get("/:achievementId", achievements.getById);
+router.get("/user/:userId", achievements.getById);
+router.post("/", achievements.create);
+router.post("/award", achievements.create);
+router.put("/progress", achievements.update);
+router.get("/leaderboard", achievements.getAll);
+
+module.exports = router;

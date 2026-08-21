@@ -1,0 +1,367 @@
+/**
+ * Achievements Controller
+ * Complete implementation for gamification and achievement system
+ * Date: June 10, 2026 - Phase 1 Week 1 Priority #3
+ */
+
+const { Achievement, UserAchievement } = require('../models/achievement');
+const logger = require('../utils/logger');
+const User = require('../models/user');
+const { Op } = require('sequelize');
+const { validationResult } = require('express-validator');
+
+class AchievementsController {
+  /**
+   * GET /api/achievements
+   * Get all available achievements with pagination
+   */
+  async getAll(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+      const offset = (page - 1) * limit;
+      
+      // Build filters
+      const where = { isActive: true };
+      if (req.query.category) where.category = req.query.category;
+      if (req.query.tier) where.tier = req.query.tier;
+      
+      // Fetch data
+      const { count, rows: data } = await Achievement.findAndCountAll({
+        where,
+        limit,
+        offset,
+        order: [['tier', 'ASC'], ['createdAt', 'DESC']]
+      });
+      
+      const totalPages = Math.ceil(count / limit);
+      
+      res.json({
+        success: true,
+        data: data.map(achievement => ({
+          id: achievement.id,
+          name: achievement.name,
+          description: achievement.description,
+          category: achievement.category,
+          tier: achievement.tier,
+          icon: achievement.icon,
+          criteria: achievement.criteria,
+          reward: achievement.reward,
+          createdAt: achievement.createdAt
+        })),
+        pagination: {
+          page,
+          limit,
+          total: count,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1
+        }
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.getAll:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to retrieve achievements', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/achievements/:id
+   * Get achievement by ID
+   */
+  async getById(req, res) {
+    try {
+      const { id } = req.params;
+      
+      const achievement = await Achievement.findByPk(id);
+      
+      if (!achievement) {
+        return res.status(404).json({
+          success: false, message: 'Achievement not found'
+        });
+      }
+      
+      res.json({
+        success: true,
+        data: {
+          id: achievement.id,
+          name: achievement.name,
+          description: achievement.description,
+          category: achievement.category,
+          tier: achievement.tier,
+          icon: achievement.icon,
+          criteria: achievement.criteria,
+          reward: achievement.reward,
+          isActive: achievement.isActive,
+          createdAt: achievement.createdAt
+        }
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.getById:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to retrieve achievement', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/achievements/user/:userId
+   * Get user's unlocked achievements and progress
+   */
+  async getUserAchievements(req, res) {
+    try {
+      const { userId } = req.params;
+      
+      // Get all active achievements
+      const allAchievements = await Achievement.findAll({
+        where: { isActive: true },
+        order: [['tier', 'ASC']]
+      });
+      
+      // Get user's unlocked achievements
+      const userAchievements = await UserAchievement.findAll({
+        where: { userId }
+        include: [{
+          model: Achievement, as: 'achievement'
+        }]
+      });
+      
+      const unlockedIds = new Set(userAchievements.map(ua => ua.achievementId));
+      
+      // Combine data
+      const achievements = allAchievements.map(achievement => {
+        const userAchievement = userAchievements.find(
+          ua => ua.achievementId === achievement.id
+        );
+        
+        return {
+          id: achievement.id,
+          name: achievement.name,
+          description: achievement.description,
+          category: achievement.category,
+          tier: achievement.tier,
+          icon: achievement.icon,
+          criteria: achievement.criteria,
+          reward: achievement.reward,
+          isUnlocked: unlockedIds.has(achievement.id),
+          unlockedAt: userAchievement?.unlockedAt || null,
+          progress: userAchievement?.progress || {}
+        };
+      });
+      
+      // Calculate summary
+      const summary = {
+        total: allAchievements.length,
+        unlocked: userAchievements.length,
+        locked: allAchievements.length - userAchievements.length,
+        byTier: {}
+        byCategory: {}
+      };
+      
+      userAchievements.forEach(ua => {
+        const tier = ua.achievement.tier;
+        const category = ua.achievement.category;
+        
+        summary.byTier[tier] = (summary.byTier[tier] || 0) + 1;
+        summary.byCategory[category] = (summary.byCategory[category] || 0) + 1;
+      });
+      
+      res.json({
+        success: true,
+        data: {
+          achievements,
+          summary
+        }
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.getUserAchievements:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to retrieve user achievements', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/achievements/check/:userId
+   * Check and award achievements based on user activity
+   */
+  async checkAndAward(req, res) {
+    try {
+      const { userId } = req.params;
+      const { activityType, metadata } = req.body;
+      
+      // Get all active achievements
+      const achievements = await Achievement.findAll({
+        where: { isActive: true }
+      });
+      
+      const newlyUnlocked = [];
+      
+      for (const achievement of achievements) {
+        // Check if already unlocked
+        const existing = await UserAchievement.findOne({
+          where: { userId, achievementId: achievement.id }
+        });
+        
+        if (existing) continue;
+        
+        // Check criteria
+        const meetsCriteria = await this.checkCriteria(userId, achievement.criteria, activityType, metadata);
+        
+        if (meetsCriteria) {
+          // Award achievement
+          const userAchievement = await UserAchievement.create({
+            userId,
+            achievementId: achievement.id,
+            progress: metadata || {}
+          });
+          
+          newlyUnlocked.push({
+            achievement: achievement.name,
+            tier: achievement.tier,
+            reward: achievement.reward
+          });
+        }
+      }
+      
+      res.json({
+        success: true,
+        message: `Checked ${achievements.length} achievements`,
+        data: {
+          newlyUnlocked,
+          count: newlyUnlocked.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.checkAndAward:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to check achievements', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * Helper: Check if user meets achievement criteria
+   */
+  async checkCriteria(userId, criteria, activityType, metadata) {
+    try {
+      // Example criteria checking logic
+      // This would be customized based on your platform's activities
+      
+      switch (criteria.type) {
+        case 'post_count':
+          // Check if user has made X posts
+          const Post = require('../models/post');
+          const postCount = await Post.count({ where: { authorId: userId } });
+          return postCount >= criteria.threshold;
+          
+        case 'wallet_balance':
+          // Check if wallet balance exceeds threshold
+          const Wallet = require('../models/WalletModel');
+          const wallet = await Wallet.findOne({ where: { userId } });
+          return wallet && wallet.balance >= criteria.threshold;
+          
+        case 'days_active':
+          // Check consecutive days active
+          return (metadata?.daysActive || 0) >= criteria.threshold;
+          
+        case 'referrals':
+          // Check number of referrals
+          const referralCount = await User.count({
+            where: { referredBy: userId }
+          });
+          return referralCount >= criteria.threshold;
+          
+        default:
+          return false;
+      }
+    } catch (error) {
+      logger.error(`Error in ${funcName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * GET /api/achievements/leaderboard
+   * Get achievement leaderboard
+   */
+  async getLeaderboard(req, res) {
+    try {
+      const limit = Math.min(parseInt(req.query.limit) || 10, 100);
+      
+      // Get users with most achievements
+      const leaderboard = await UserAchievement.findAll({
+        attributes: [
+          'userId',
+          [sequelize.fn('COUNT', sequelize.col('id')), 'achievementCount']
+        ],
+        group: ['userId'],
+        order: [[sequelize.fn('COUNT', sequelize.col('id')), 'DESC']],
+        limit,
+        include: [{
+          model: User, as: 'user', attributes: ['id', 'username', 'email']
+        }]
+      });
+      
+      res.json({
+        success: true,
+        data: leaderboard.map((entry, index) => ({
+          rank: index + 1,
+          user: entry.user,
+          achievementCount: parseInt(entry.dataValues.achievementCount)
+        }))
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.getLeaderboard:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to retrieve leaderboard', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/achievements/stats
+   * Get achievement statistics
+   */
+  async getStats(req, res) {
+    try {
+      const totalAchievements = await Achievement.count({ where: { isActive: true } });
+      const totalUnlocks = await UserAchievement.count();
+      const uniqueUsers = await UserAchievement.count({ distinct: true, col: 'userId' });
+      
+      const byTier = await UserAchievement.findAll({
+        attributes: [
+          [sequelize.literal('"achievement"."tier"'), 'tier'],
+          [sequelize.fn('COUNT', sequelize.col('UserAchievement.id')), 'count']
+        ],
+        include: [{
+          model: Achievement, as: 'achievement',
+          attributes: []
+        }],
+        group: ['achievement.tier']
+      });
+      
+      res.json({
+        success: true,
+        data: {
+          totalAchievements,
+          totalUnlocks,
+          uniqueUsers,
+          averagePerUser: uniqueUsers > 0 ? Math.round(totalUnlocks / uniqueUsers) : 0,
+          byTier: byTier.reduce((acc, stat) => {
+            acc[stat.dataValues.tier] = parseInt(stat.dataValues.count);
+            return acc;
+          } {})
+        }
+      });
+    } catch (error) {
+      logger.error('Error in AchievementsController.getStats:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to retrieve statistics', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new AchievementsController();

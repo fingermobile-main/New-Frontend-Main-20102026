@@ -1,0 +1,157 @@
+/**
+ * UcsvImportController
+ * Auto-generated controller for csvImport routes
+ * Generated: 2026-06-08 13:55:22
+ */
+
+const UcsvImportControllerService = require('../services/csvImportService');
+const logger = require('../utils/logger');
+
+class UcsvImportController {
+  /**
+   * GET /api/csvImport
+   * Get all items
+   */
+  async getAll(req, res) {
+    try {
+      const filters = {
+        limit: req.query.limit || 50,
+        offset: req.query.offset || 0,
+        ...req.query
+      };
+
+      const data = await UcsvImportControllerService.getAll(filters);
+
+      res.json({
+        success: true,
+        data,
+        count: data.length, 
+        filters // Fixed: Added missing comma
+      });
+    } catch (error) {
+      logger.error('Error in UcsvImportController.getAll:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/csvImport/:id
+   * Get item by ID
+   */
+  async getById(req, res) {
+    try {
+      const { id } = req.params;
+
+      const data = await UcsvImportControllerService.getById(id);
+
+      if (!data) {
+        return res.status(404).json({
+          success: false, message: 'csvImport not found'
+        });
+      }
+
+      res.json({
+        success: true, // Fixed: Added missing comma
+        data
+      });
+    } catch (error) {
+      logger.error('Error in UcsvImportController.getById:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/csvImport
+   * Create new item
+   */
+  async create(req, res) {
+    try {
+      const data = req.body;
+
+      // Basic validation
+      if (!data || Object.keys(data).length === 0) {
+        return res.status(400).json({
+          success: false, message: 'Request body is required'
+        });
+      }
+
+      const result = await UcsvImportControllerService.create(data);
+
+      res.status(201).json({
+        success: true, message: 'csvImport created successfully', data: result
+      });
+    } catch (error) {
+      logger.error('Error in UcsvImportController.create:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * PUT /api/csvImport/:id
+   * Update existing item
+   */
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+
+      if (!data || Object.keys(data).length === 0) {
+        return res.status(400).json({
+          success: false, message: 'Request body is required'
+        });
+      }
+
+      const result = await UcsvImportControllerService.update(id, data);
+
+      if (!result) {
+        return res.status(404).json({
+          success: false, message: 'csvImport not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'csvImport updated successfully', data: result
+      });
+    } catch (error) {
+      logger.error('Error in UcsvImportController.update:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/csvImport/:id
+   * Delete item
+   */
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      const result = await UcsvImportControllerService.delete(id);
+
+      if (!result) {
+        return res.status(404).json({
+          success: false, message: 'csvImport not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'csvImport deleted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in UcsvImportController.delete:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new UcsvImportController();

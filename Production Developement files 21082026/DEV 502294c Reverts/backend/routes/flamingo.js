@@ -1,0 +1,31 @@
+const express = require('express');
+const flamingo = require('../controllers/flamingoController.js');
+const { contentDb } = require("../db");
+const router = express.Router();
+
+router.get("/categories", flamingo.getAll);
+router.get("/size-charts", flamingo.getAll);
+router.get("/size-charts/:id", flamingo.getById);
+router.post("/size-charts", flamingo.create);
+router.get("/brand-sizings", flamingo.getAll);
+router.get("/brand-sizings/:brandName", flamingo.getById);
+router.put("/brand-sizings/:brandName", flamingo.update);
+router.get("/measurements/:userId", flamingo.getById);
+router.post("/measurements/:userId", flamingo.create);
+router.put("/measurements/:userId", flamingo.update);
+router.get("/users/:userId/recommendations", flamingo.getById);
+router.get("/users/:userId/recommendations/:brandName/:categoryId", flamingo.getById);
+router.post("/recommendations/:recommendationId/feedback", flamingo.create);
+router.get("/users/:userId/outfits", flamingo.getById);
+router.get("/outfits/:outfitId", flamingo.getById);
+router.post("/outfits", flamingo.create);
+router.put("/outfits/:outfitId", flamingo.update);
+router.delete("/outfits/:outfitId", flamingo.delete);
+router.post("/outfits/:outfitId/items", flamingo.create);
+router.put("/outfit-items/:itemId", flamingo.update);
+router.delete("/outfit-items/:itemId", flamingo.delete);
+router.get("/public-outfits", flamingo.getAll);
+router.post("/outfits/:outfitId/like", flamingo.create);
+router.post("/outfits/:outfitId/save", flamingo.create);
+
+module.exports = router;

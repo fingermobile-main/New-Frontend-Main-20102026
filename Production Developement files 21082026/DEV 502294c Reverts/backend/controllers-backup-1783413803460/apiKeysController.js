@@ -1,0 +1,267 @@
+/**
+ * API Keys Controller
+ * Complete implementation for API key CRUD operations
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+const crypto = require('crypto');
+
+class ApiKeysController {
+  /**
+   * GET /api/apiKeys
+   * Get all API keys for current user
+   */
+  async getAll(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        `SELECT 
+          id,
+          name,
+          api_key_prefix,
+          permissions,
+          is_active,
+          expires_at,
+          created_at,
+          last_used_at
+         FROM api_keys
+         WHERE user_id = $1
+         ORDER BY created_at DESC`,
+        [userId]
+      );
+
+      res.json({
+        success: true,
+        data: result.rows.map(key => ({
+          ...key, permissions: typeof key.permissions === 'string' ? JSON.parse(key.permissions) : key.permissions
+        })), count: result.rows.length
+      });
+    } catch (error) {
+      logger.error('Error in ApiKeysController.getAll:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get API keys', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/apiKeys
+   * Create new API key
+   */
+  async create(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { name, permissions, expiryDays } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      // Generate API key
+      const apiKey = `fk_${crypto.randomBytes(32).toString('hex')}`;
+      const keyId = crypto.randomUUID();
+      const keyPrefix = apiKey.substring(0, 8);
+
+      // Calculate expiry
+      const expiresAt = expiryDays 
+        ? new Date(Date.now() + parseInt(expiryDays) * 24 * 60 * 60 * 1000)
+        : null;
+
+      await pool.query(
+        `INSERT INTO api_keys 
+         (id, user_id, name, api_key, api_key_prefix, permissions, expires_at, is_active, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW())`,
+        [
+          keyId,
+          userId name || 'API Key',
+          apiKey,
+          keyPrefix JSON.stringify(permissions || ['read']),
+          expiresAt
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'API key created successfully',
+        data: {
+          id: keyId, name: name || 'API Key',
+          apiKey: apiKey, // Only shown once
+          keyPrefix: keyPrefix, permissions: permissions || ['read'],
+          createdAt: new Date(),
+          expiresAt: expiresAt, warning: 'Store this API key securely. It will not be shown again.'
+        }
+      });
+    } catch (error) {
+      logger.error('Error in ApiKeysController.create:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to create API key', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * PUT /api/apiKeys/:id
+   * Update API key
+   */
+  async update(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id } = req.params;
+      const updates = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const setClauses = [];
+      const values = [];
+      let paramCount = 1;
+
+      Object.keys(updates).forEach(key => {
+        if (['name', 'permissions', 'is_active'].includes(key)) {
+          if (key === 'permissions') {
+            setClauses.push(`${key} = $${paramCount}`);
+            values.push(JSON.stringify(updates[key]));
+          } else {
+            setClauses.push(`${key} = $${paramCount}`);
+            values.push(updates[key]);
+          }
+          paramCount++;
+        }
+      });
+
+      if (setClauses.length === 0) {
+        return res.status(400).json({
+          success: false, message: 'No valid fields to update'
+        });
+      }
+
+      setClauses.push('updated_at = NOW()');
+      values.push(id, userId);
+
+      const result = await pool.query(
+        `UPDATE api_keys 
+         SET ${setClauses.join(', ')}
+         WHERE id = $${paramCount} AND user_id = $${paramCount + 1}
+         RETURNING *`,
+        values
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'API key not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'API key updated successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in ApiKeysController.update:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to update API key', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/apiKeys/:id
+   * Delete/Revoke API key
+   */
+  async delete(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        'DELETE FROM api_keys WHERE id = $1 AND user_id = $2 RETURNING id',
+        [id, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'API key not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'API key revoked successfully'
+      });
+    } catch (error) {
+      logger.error('Error in ApiKeysController.delete:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to revoke API key', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/apiKeys/:id/rotate
+   * Rotate API key (generate new key, keep same ID)
+   */
+  async rotateKey(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      // Generate new API key
+      const newApiKey = `fk_${crypto.randomBytes(32).toString('hex')}`;
+      const newKeyPrefix = newApiKey.substring(0, 8);
+
+      const result = await pool.query(
+        `UPDATE api_keys 
+         SET api_key = $1, api_key_prefix = $2, rotated_at = NOW(), updated_at = NOW()
+         WHERE id = $3 AND user_id = $4
+         RETURNING *`,
+        [newApiKey, newKeyPrefix, id, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'API key not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'API key rotated successfully',
+        data: {
+          id: result.rows[0].id,
+          apiKey: newApiKey, // Only shown once
+          keyPrefix: newKeyPrefix,
+          rotatedAt: new Date() warning: 'Update your applications with the new API key immediately'
+        }
+      });
+    } catch (error) {
+      logger.error('Error in ApiKeysController.rotateKey:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to rotate API key', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new ApiKeysController();

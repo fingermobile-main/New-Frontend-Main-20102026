@@ -1,0 +1,512 @@
+const express = require("express");
+const { identityDb, monetizationDb } = require("../db");
+const { authenticate } = require("../middleware/authenticate");
+const router = express.Router();
+
+// Get user's gem balance
+router.get("/balance", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Check if user has a gems record, create if not exists
+    const checkQuery = "SELECT id, balance FROM user_gems WHERE user_id = $1";
+    let gemsResult = await identityDb.query(checkQuery, [userId]);
+
+    let balance = 0;
+    if (gemsResult.rows.length === 0) {
+      // Create initial gems record for user
+      const insertQuery = `
+        INSERT INTO user_gems (user_id, balance)
+        VALUES ($1, $2)
+        RETURNING id, balance
+      `;
+      gemsResult = await identityDb.query(insertQuery, [userId, 0]);
+      balance = gemsResult.rows[0].balance;
+    } else {
+      balance = gemsResult.rows[0].balance;
+    }
+
+    res.json({
+      success: true,
+      message: "Gem balance retrieved successfully",
+      data: {
+        balance: parseFloat(balance),
+        userId: userId
+      }
+    });
+  } catch (error) {
+    console.error("Get Gem Balance Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error retrieving gem balance"
+    });
+  }
+});
+
+// Get gem transactions history
+router.get("/transactions", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { page = 1, limit = 10, type } = req.query;
+
+    // Calculate offset for pagination
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    // Build WHERE clause for filtering by type if specified
+    let whereClause = "WHERE user_id = $1";
+    const params = [userId];
+    let paramIndex = 2;
+
+    if (type) {
+      whereClause += ` AND transaction_type = $${paramIndex}`;
+      params.push(type);
+      paramIndex++;
+    }
+
+    // Get gem transactions with pagination
+    const transactionsQuery = `
+      SELECT id, amount, transaction_type, description, reference, created_at
+      FROM gem_transactions
+      ${whereClause}
+      ORDER BY created_at DESC
+      LIMIT $${paramIndex - 1} OFFSET $${paramIndex}
+    `;
+
+    params.push(parseInt(limit));
+    params.push(offset);
+
+    const transactionsResult = await identityDb.query(transactionsQuery, params);
+
+    // Get total count for pagination
+    const countQuery = `SELECT COUNT(*) as total FROM gem_transactions ${whereClause.replace('ORDER BY', '')}`;
+    const countParams = [userId];
+    if (type) countParams.push(type);
+    const countResult = await identityDb.query(countQuery, countParams);
+
+    res.json({
+      success: true,
+      message: "Gem transactions retrieved successfully",
+      data: {
+        transactions: transactionsResult.rows,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(parseInt(countResult.rows[0].total) / parseInt(limit)),
+          totalItems: parseInt(countResult.rows[0].total),
+          itemsPerPage: parseInt(limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Get Gem Transactions Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error retrieving gem transactions"
+    });
+  }
+});
+
+// Award gems to user (for activities like posting, commenting, etc.)
+router.post("/award", authenticate, async (req, res) => {
+  try {
+    const { userId: targetUserId, amount, reason, reference } = req.body;
+    const requestingUserId = req.user.id;
+
+    // Validation
+    if (!targetUserId || !amount || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Target user ID and positive amount are required"
+      });
+    }
+
+    if (isNaN(parseFloat(amount))) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be a valid number"
+      });
+    }
+
+    // Check if requesting user has permission to award gems
+    // For now, only allow users to award gems to themselves or if they're admins
+    // In a real implementation, you'd have more sophisticated permission checks
+    if (requestingUserId !== targetUserId) {
+      // Check if requesting user is admin (simplified check)
+      const userQuery = "SELECT username FROM users WHERE id = $1";
+      const userResult = await identityDb.query(userQuery, [requestingUserId]);
+      
+      if (userResult.rows.length === 0 || !userResult.rows[0].username.includes('admin')) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to award gems to other users"
+        });
+      }
+    }
+
+    // Begin transaction to ensure consistency
+    const client = await identityDb.connect();
+    try {
+      await client.query('BEGIN');
+
+      // Get current balance
+      const balanceQuery = "SELECT balance FROM user_gems WHERE user_id = $1 FOR UPDATE";
+      let balanceResult = await client.query(balanceQuery, [targetUserId]);
+
+      let newBalance = parseFloat(amount);
+      if (balanceResult.rows.length > 0) {
+        newBalance = parseFloat(balanceResult.rows[0].balance) + parseFloat(amount);
+      } else {
+        // Create gems record if it doesn't exist
+        const insertQuery = "INSERT INTO user_gems (user_id, balance) VALUES ($1, $2)";
+        await client.query(insertQuery, [targetUserId, newBalance]);
+      }
+
+      // Update balance
+      const updateQuery = "UPDATE user_gems SET balance = $1 WHERE user_id = $2";
+      await client.query(updateQuery, [newBalance, targetUserId]);
+
+      // Record transaction
+      const transactionQuery = `
+        INSERT INTO gem_transactions (user_id, amount, transaction_type, description, reference)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id
+      `;
+      await client.query(transactionQuery, [
+        targetUserId,
+        parseFloat(amount),
+        'credit',
+        reason || 'Awarded gems',
+        reference || `award_${Date.now()}`
+      ]);
+
+      await client.query('COMMIT');
+
+      res.json({
+        success: true,
+        message: "Gems awarded successfully",
+        data: {
+          userId: targetUserId,
+          amount: parseFloat(amount),
+          newBalance: newBalance,
+          transactionId: transactionQuery.rows[0]?.id
+        }
+      });
+    } catch (txError) {
+      await client.query('ROLLBACK');
+      throw txError;
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error("Award Gems Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error awarding gems"
+    });
+  }
+});
+
+// Deduct gems from user (for purchasing items, features, etc.)
+router.post("/deduct", authenticate, async (req, res) => {
+  try {
+    const { userId: targetUserId, amount, reason, reference } = req.body;
+    const requestingUserId = req.user.id;
+
+    // Validation
+    if (!targetUserId || !amount || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Target user ID and positive amount are required"
+      });
+    }
+
+    if (isNaN(parseFloat(amount))) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be a valid number"
+      });
+    }
+
+    // Check if requesting user has permission to deduct gems
+    if (requestingUserId !== targetUserId) {
+      // Check if requesting user is admin (simplified check)
+      const userQuery = "SELECT username FROM users WHERE id = $1";
+      const userResult = await identityDb.query(userQuery, [requestingUserId]);
+      
+      if (userResult.rows.length === 0 || !userResult.rows[0].username.includes('admin')) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to deduct gems from other users"
+        });
+      }
+    }
+
+    // Begin transaction to ensure consistency
+    const client = await identityDb.connect();
+    try {
+      await client.query('BEGIN');
+
+      // Get current balance
+      const balanceQuery = "SELECT balance FROM user_gems WHERE user_id = $1 FOR UPDATE";
+      const balanceResult = await client.query(balanceQuery, [targetUserId]);
+
+      if (balanceResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "User does not have a gems account"
+        });
+      }
+
+      const currentBalance = parseFloat(balanceResult.rows[0].balance);
+      const amountToDeduct = parseFloat(amount);
+
+      if (currentBalance < amountToDeduct) {
+        return res.status(400).json({
+          success: false,
+          message: "Insufficient gems balance"
+        });
+      }
+
+      const newBalance = currentBalance - amountToDeduct;
+
+      // Update balance
+      const updateQuery = "UPDATE user_gems SET balance = $1 WHERE user_id = $2";
+      await client.query(updateQuery, [newBalance, targetUserId]);
+
+      // Record transaction
+      const transactionQuery = `
+        INSERT INTO gem_transactions (user_id, amount, transaction_type, description, reference)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id
+      `;
+      await client.query(transactionQuery, [
+        targetUserId,
+        -amountToDeduct, // Negative amount for deduction
+        'debit',
+        reason || 'Deducted gems',
+        reference || `deduction_${Date.now()}`
+      ]);
+
+      await client.query('COMMIT');
+
+      res.json({
+        success: true,
+        message: "Gems deducted successfully",
+        data: {
+          userId: targetUserId,
+          amount: amountToDeduct,
+          newBalance: newBalance,
+          transactionId: transactionQuery.rows[0]?.id
+        }
+      });
+    } catch (txError) {
+      await client.query('ROLLBACK');
+      throw txError;
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error("Deduct Gems Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error deducting gems"
+    });
+  }
+});
+
+// Transfer gems between users
+router.post("/transfer", authenticate, async (req, res) => {
+  try {
+    const { toUserId, amount, message } = req.body;
+    const fromUserId = req.user.id;
+
+    // Validation
+    if (!toUserId || !amount || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Recipient user ID and positive amount are required"
+      });
+    }
+
+    if (fromUserId === toUserId) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot transfer gems to yourself"
+      });
+    }
+
+    if (isNaN(parseFloat(amount))) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be a valid number"
+      });
+    }
+
+    // Begin transaction to ensure consistency
+    const client = await identityDb.connect();
+    try {
+      await client.query('BEGIN');
+
+      // Check sender's balance
+      const senderBalanceQuery = "SELECT balance FROM user_gems WHERE user_id = $1 FOR UPDATE";
+      const senderBalanceResult = await client.query(senderBalanceQuery, [fromUserId]);
+
+      if (senderBalanceResult.rows.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "You do not have a gems account"
+        });
+      }
+
+      const senderBalance = parseFloat(senderBalanceResult.rows[0].balance);
+      const amountToTransfer = parseFloat(amount);
+
+      if (senderBalance < amountToTransfer) {
+        return res.status(400).json({
+          success: false,
+          message: "Insufficient gems balance"
+        });
+      }
+
+      // Check if recipient has gems account, create if not
+      let recipientHasAccount = true;
+      const recipientBalanceQuery = "SELECT balance FROM user_gems WHERE user_id = $1 FOR UPDATE";
+      let recipientBalanceResult = await client.query(recipientBalanceQuery, [toUserId]);
+
+      if (recipientBalanceResult.rows.length === 0) {
+        recipientHasAccount = false;
+        // Create gems account for recipient
+        const createRecipientQuery = "INSERT INTO user_gems (user_id, balance) VALUES ($1, $2)";
+        await client.query(createRecipientQuery, [toUserId, 0]);
+        recipientBalanceResult = await client.query(recipientBalanceQuery, [toUserId]);
+      }
+
+      const recipientBalance = parseFloat(recipientBalanceResult.rows[0].balance);
+      const newSenderBalance = senderBalance - amountToTransfer;
+      const newRecipientBalance = recipientBalance + amountToTransfer;
+
+      // Update sender's balance
+      const updateSenderQuery = "UPDATE user_gems SET balance = $1 WHERE user_id = $2";
+      await client.query(updateSenderQuery, [newSenderBalance, fromUserId]);
+
+      // Update recipient's balance
+      const updateRecipientQuery = "UPDATE user_gems SET balance = $1 WHERE user_id = $2";
+      await client.query(updateRecipientQuery, [newRecipientBalance, toUserId]);
+
+      // Record sender's transaction
+      const senderTxQuery = `
+        INSERT INTO gem_transactions (user_id, amount, transaction_type, description, reference)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id
+      `;
+      await client.query(senderTxQuery, [
+        fromUserId,
+        -amountToTransfer, // Negative for deduction
+        'transfer_out',
+        `Transferred to user ${toUserId}${message ? `: ${message}` : ''}`,
+        `transfer_to_${toUserId}_${Date.now()}`
+      ]);
+
+      // Record recipient's transaction
+      const recipientTxQuery = `
+        INSERT INTO gem_transactions (user_id, amount, transaction_type, description, reference)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id
+      `;
+      await client.query(recipientTxQuery, [
+        toUserId,
+        amountToTransfer, // Positive for credit
+        'transfer_in',
+        `Received from user ${fromUserId}${message ? `: ${message}` : ''}`,
+        `transfer_from_${fromUserId}_${Date.now()}`
+      ]);
+
+      await client.query('COMMIT');
+
+      res.json({
+        success: true,
+        message: "Gems transferred successfully",
+        data: {
+          fromUserId: fromUserId,
+          toUserId: toUserId,
+          amount: amountToTransfer,
+          message: message,
+          senderNewBalance: newSenderBalance,
+          recipientNewBalance: newRecipientBalance
+        }
+      });
+    } catch (txError) {
+      await client.query('ROLLBACK');
+      throw txError;
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error("Transfer Gems Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error transferring gems"
+    });
+  }
+});
+
+// Create gems table if it doesn't exist
+async function ensureGemsTableExists() {
+  try {
+    // Create user_gems table if it doesn't exist
+    await identityDb.query(`
+      CREATE TABLE IF NOT EXISTS user_gems (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        balance DECIMAL(10, 2) DEFAULT 0.00,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Create gem_transactions table if it doesn't exist
+    await identityDb.query(`
+      CREATE TABLE IF NOT EXISTS gem_transactions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        amount DECIMAL(10, 2) NOT NULL, -- Can be positive (credit) or negative (debit)
+        transaction_type VARCHAR(50) NOT NULL, -- credit, debit, transfer_in, transfer_out
+        description TEXT,
+        reference VARCHAR(255),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Create indexes for performance
+    await identityDb.query(`
+      CREATE INDEX IF NOT EXISTS idx_user_gems_user_id ON user_gems(user_id);
+      CREATE INDEX IF NOT EXISTS idx_gem_transactions_user_id ON gem_transactions(user_id);
+      CREATE INDEX IF NOT EXISTS idx_gem_transactions_type ON gem_transactions(transaction_type);
+      CREATE INDEX IF NOT EXISTS idx_gem_transactions_created_at ON gem_transactions(created_at);
+    `);
+
+    // Create trigger to update timestamps
+    await identityDb.query(`
+      CREATE OR REPLACE FUNCTION update_gems_timestamp()
+      RETURNS TRIGGER AS $$
+      BEGIN
+          NEW.updated_at = CURRENT_TIMESTAMP;
+          RETURN NEW;
+      END;
+      $$ language 'plpgsql';
+
+      DROP TRIGGER IF EXISTS update_user_gems_timestamp ON user_gems;
+      CREATE TRIGGER update_user_gems_timestamp 
+          BEFORE UPDATE ON user_gems 
+          FOR EACH ROW 
+          EXECUTE FUNCTION update_gems_timestamp();
+    `);
+  } catch (error) {
+    console.error("Error ensuring gems tables exist:", error);
+    throw error;
+  }
+}
+
+// Initialize gems tables when module loads
+ensureGemsTableExists().catch(console.error);
+
+module.exports = router;

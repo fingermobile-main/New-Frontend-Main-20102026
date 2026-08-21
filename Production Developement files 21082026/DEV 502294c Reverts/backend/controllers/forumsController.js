@@ -1,0 +1,355 @@
+/**
+ * ForumsController - Complete Implementation
+ * Extracted from routes/forums.js inline handlers
+ */
+
+const { socialDb } = require("../db");
+const logger = require('../utils/logger');
+const { contentDb } = require("../db/db"); // Added for posts table access
+
+class ForumsController {
+  /**
+   * GET /api/forums/categories
+   * Get all forum categories
+   */
+  async getCategories(req, res) {
+    try {
+      const { rows } = await socialDb.query(
+        "SELECT * FROM forum_categories ORDER BY name"
+      );
+      res.json(rows);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums
+   * Get all forums
+   */
+  async getAll(req, res) {
+    try {
+      const {
+        category,
+        search,
+        limit = 20,
+        offset = 0, sort_by = "created_at", order = "DESC"
+      } = req.query;
+
+      let query = `SELECT f.*, fc.name as category_name,
+                   COUNT(ft.id) as thread_count COUNT(fp.id) as post_count
+                   FROM forums f
+                   JOIN forum_categories fc ON f.category_id = fc.id
+                   LEFT JOIN forum_threads ft ON f.id = ft.forum_id
+                   LEFT JOIN forum_posts fp ON ft.id = fp.thread_id`;
+      const params = [];
+      let paramIndex = 0;
+
+      query += ` GROUP BY f.id, fc.name`;
+
+      if (category) {
+        paramIndex++;
+        query += ` HAVING f.category_id = $${paramIndex}`;
+        params.push(category);
+      }
+
+      if (search) {
+        paramIndex++;
+        query += paramIndex === 1 ? ` WHERE` : ` AND`;
+        query += ` (f.name ILIKE $${paramIndex} OR f.description ILIKE $${paramIndex})`;
+        params.push(`%${search}%`);
+      }
+
+      // Add sorting
+      query += ` ORDER BY f.${sort_by} ${order}`;
+
+      query += ` LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+      params.push(parseInt(limit), parseInt(offset));
+
+      const { rows } = await socialDb.query(query, params);
+      res.json(rows);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums/:forumId
+   * Get a specific forum by ID
+   */
+  async getById(req, res) {
+    try {
+      const { forumId } = req.params;
+
+      const { rows } = await socialDb.query(
+        `SELECT f.*, fc.name as category_name
+         FROM forums f
+         JOIN forum_categories fc ON f.category_id = fc.id
+         WHERE f.id = $1` [forumId]
+      );
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "Forum not found" });
+      }
+
+      res.json(rows[0]);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums/:forumId/threads
+   * Get threads in a forum
+   */
+  async getThreads(req, res) {
+    try {
+      const { forumId } = req.params;
+      const {
+        limit = 20,
+        offset = 0, sort_by = "last_post_date", order = "DESC",
+        sticky_first = true
+      } = req.query;
+
+      let query = `SELECT ft.*, m.membername as author_name, m.avatar_url as author_avatar,
+                   COUNT(fp.id) as reply_count MAX(fp.created_at) as last_post_date
+                   FROM forum_threads ft
+                   JOIN members m ON ft.author_id = m.id
+                   LEFT JOIN forum_posts fp ON ft.id = fp.thread_id`;
+      const params = [];
+      let paramIndex = 0;
+
+      query += ` WHERE ft.forum_id = $1`;
+      params.push(forumId);
+
+      query += ` GROUP BY ft.id, m.membername, m.avatar_url`;
+
+      // Add sorting
+      if (sticky_first) {
+        query += ` ORDER BY ft.is_sticky DESC, ft.${sort_by} ${order}`;
+      } else {
+        query += ` ORDER BY ft.${sort_by} ${order}`;
+      }
+
+      query += ` LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+      params.push(parseInt(limit), parseInt(offset));
+
+      const { rows } = await socialDb.query(query, params);
+      res.json(rows);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * POST /api/forums/:forumId/threads
+   * Create a new thread in a forum
+   */
+  async createThread(req, res) {
+    try {
+      if (!req.member) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const userId = req.member.id;
+      const { forumId } = req.params;
+      const { title, content, is_sticky } = req.body;
+
+      // Validation
+      if (!title || !content) {
+        return res.status(400).json({ error: "Title and content are required" });
+      }
+
+      // Check if forum exists
+      const forumResult = await socialDb.query(
+        "SELECT id FROM forums WHERE id = $1" [forumId]
+      );
+
+      if (forumResult.rows.length === 0) {
+        return res.status(404).json({ error: "Forum not found" });
+      }
+
+      // Create the thread
+      const threadResult = await socialDb.query(
+        `INSERT INTO forum_threads 
+         (forum_id, author_id, title, content, is_sticky)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING *` [forumId, userId, title, content, is_sticky || false]
+      );
+
+      res.status(201).json(threadResult.rows[0]);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums/threads/:threadId
+   * Get a specific thread
+   */
+  async getThreadById(req, res) {
+    try {
+      const { threadId } = req.params;
+
+      const { rows } = await socialDb.query(
+        `SELECT ft.*, f.name as forum_name, m.membername as author_name, m.avatar_url as author_avatar
+         FROM forum_threads ft
+         JOIN forums f ON ft.forum_id = f.id
+         JOIN members m ON ft.author_id = m.id
+         WHERE ft.id = $1` [threadId]
+      );
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "Thread not found" });
+      }
+
+      res.json(rows[0]);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums/threads/:threadId/posts
+   * Get posts in a thread
+   */
+  async getThreadPosts(req, res) {
+    try {
+      const { threadId } = req.params;
+      const {
+        limit = 20, offset = 0, sort_by = "created_at", order = "ASC"
+      } = req.query;
+
+      const { rows } = await socialDb.query('SELECT fp.*, m.membername as author_name, m.avatar_url as author_avatar FROM forum_posts fp JOIN members m ON fp.author_id = m.id WHERE fp.thread_id = $1 ORDER BY fp.$1 ${order} LIMIT $2 OFFSET $3', [threadId, parseInt(limit), parseInt(offset), sort_by]);
+
+      res.json(rows);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * POST /api/forums/threads/:threadId/reply
+   * Reply to a thread
+   */
+  async replyToThread(req, res) {
+    try {
+      if (!req.member) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const userId = req.member.id;
+      const { threadId } = req.params;
+      const { content } = req.body;
+
+      // Validation
+      if (!content) {
+        return res.status(400).json({ error: "Content is required" });
+      }
+
+      // Check if thread exists
+      const threadResult = await socialDb.query(
+        "SELECT id FROM forum_threads WHERE id = $1" [threadId]
+      );
+
+      if (threadResult.rows.length === 0) {
+        return res.status(404).json({ error: "Thread not found" });
+      }
+
+      // Create the post
+      const postResult = await socialDb.query(
+        `INSERT INTO forum_posts 
+         (thread_id, author_id, content)
+         VALUES ($1, $2, $3)
+         RETURNING *` [threadId, userId, content]
+      );
+
+      res.status(201).json(postResult.rows[0]);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * POST /api/forums
+   * Create a new forum
+   */
+  async create(req, res) {
+    try {
+      if (!req.member) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const userId = req.member.id;
+      const { name, description, category_id } = req.body;
+
+      // Validation
+      if (!name || !category_id) {
+        return res.status(400).json({ error: "Name and category ID are required" });
+      }
+
+      // Check if user has permission to create forums (e.g., is admin or moderator)
+      // For simplicity, we'll assume any authenticated user can create a forum
+      // In a real implementation, you'd check user roles
+
+      const { rows } = await socialDb.query(
+        `INSERT INTO forums 
+         (name, description, category_id, created_by)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *` [name, description, category_id, userId]
+      );
+
+      res.status(201).json(rows[0]);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  /**
+   * GET /api/forums/posts
+   * Get all forum posts (uses posts table as fallback)
+   */
+  async getAllPosts(req, res) {
+    try {
+      const { limit = 20, offset = 0 } = req.query;
+      
+      // Simplified query - posts table doesn't have category or title fields
+      const query = `SELECT p.id, p.content, p.author_id, p.likes_count, 
+                            p.comments_count, p.created_at, p.updated_at
+                     FROM posts p
+                     ORDER BY p.created_at DESC
+                     LIMIT $1 OFFSET $2`;
+      
+      const { rows } = await contentDb.query(query, [parseInt(limit), parseInt(offset)]);
+      
+      // Transform to match expected format
+      const transformedPosts = rows.map(post => ({
+        id: post.id.toString(), title: 'Forum Post', // Default title since posts table doesn't have title field
+        content: post.content,
+        author_id: post.author_id, author_membername: `User_${post.author_id}`, // Placeholder since we can't JOIN users table
+        author_avatar: '', category: 'general', // Default category
+        created_at: post.created_at,
+        updated_at: post.updated_at || post.created_at,
+        like_count: post.likes_count || 0,
+        comment_count: post.comments_count || 0,
+        is_liked: false, view_count: 0
+      }));
+
+      res.json(transformedPosts);
+    } catch (err) {
+      logger.error('Error fetching forum posts:', err);
+      res.status(500).json({ error: 'Server error fetching posts' });
+    }
+  }
+}
+
+module.exports = new ForumsController();

@@ -1,0 +1,211 @@
+/**
+ * Mii Controller
+ * Complete implementation for avatar/profile customization platform
+ * Date: June, 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class MiiController {
+    /**
+     * GET /api/mii/avatars
+     * Get user avatars
+     */
+    async getAvatars(req, res) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            const result = await pool.query(
+                `SELECT * FROM mii_avatars
+         WHERE user_id = $1
+         ORDER BY created_at DESC` [userId]
+            );
+
+            res.json({
+                success: true, data: result.rows.map(avatar => ({
+                    ...avatar, customization: typeof avatar.customization === 'string' ? JSON.parse(avatar.customization) : avatar.customization
+                })), count: result.rows.length
+            });
+        } catch (error) {
+            logger.error('Error in MiiController.getAvatars:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get avatars',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/mii/avatars
+     * Create new avatar
+     */
+    async createAvatar(req, res) {
+        try {
+            const userId = req.user?.id;
+            const { name, baseTemplate, customization } = req.body;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            if (!name || !baseTemplate) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Name and base template are required'
+                });
+            }
+
+            const result = await pool.query(
+                `INSERT INTO mii_avatars 
+         (user_id, name, base_template, customization, is_active, created_at)
+         VALUES ($1, $2, $3, $4, true, NOW()), RETURNING *` [userId, name, baseTemplate, JSON.stringify(customization || {})]
+            );
+
+            res.status(201).json({
+                success: true,
+                message: 'Avatar created successfully',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in MiiController.createAvatar:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to create avatar',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * PUT /api/mii/avatars/:id/customize
+     * Customize avatar appearance
+     */
+    async customizeAvatar(req, res) {
+        try {
+            const userId = req.user?.id;
+            const { id : avatarId } = req.params;
+            const { customization } = req.body;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            if (!customization) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Customization data is required'
+                });
+            }
+
+            const result = await pool.query(
+                `UPDATE mii_avatars 
+         SET customization = $1, updated_at = NOW()
+         WHERE id = $2 AND user_id = $3
+         RETURNING *` [JSON.stringify(customization), avatarId, userId]
+            );
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Avatar not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Avatar customized successfully',
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in MiiController.customizeAvatar:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to customize avatar',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/mii/templates
+     * Get avatar templates
+     */
+    async getTemplates(req, res) {
+        try {
+            const result = await pool.query(
+                `SELECT * FROM mii_templates
+         WHERE is_available = true
+         ORDER BY popularity DESC`
+            );
+
+            res.json({
+                success: true, data: result.rows, count: result.rows.length
+            });
+        } catch (error) {
+            logger.error('Error in MiiController.getTemplates:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get templates',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/mii/items
+     * Get avatar customization items/accessories
+     */
+    async getItems(req, res) {
+        try {
+            const { category } = req.query;
+
+            let whereClause = ['is_available = true'];
+            let queryParams = [];
+            let paramCount = 1;
+
+            if (category) {
+                whereClause.push(`category = $${paramCount}`);
+                queryParams.push(category);
+                paramCount++;
+            }
+
+            const whereSQL = whereClause.join(' AND ');
+
+            const result = await pool.query(
+                `SELECT * FROM mii_items
+         WHERE ${whereSQL
+         }
+         ORDER BY category, name ASC`,
+                queryParams
+            );
+
+            res.json({
+                success: true, data: result.rows, count: result.rows.length
+            });
+        } catch (error) {
+            logger.error('Error in MiiController.getItems:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get items',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+}
+
+module.exports = new MiiController();

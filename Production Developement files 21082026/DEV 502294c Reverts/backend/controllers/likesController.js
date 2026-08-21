@@ -1,0 +1,215 @@
+/**
+ * Likes Controller
+ * Complete implementation for likes/reactions system
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class LikesController {
+  /**
+   * POST /api/likes
+   * Like a target (post, comment, etc.)
+   */
+  async like(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { targetType, targetId } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!targetType || !targetId) {
+        return res.status(400).json({
+          success: false, message: 'Target type and ID are required'
+        });
+      }
+
+      // Check if already liked
+      const existing = await pool.query(
+        'SELECT id FROM likes WHERE user_id = $1 AND target_type = $2 AND target_id = $3',
+        [userId, targetType, targetId]
+      );
+
+      if (existing.rows.length > 0) {
+        return res.status(400).json({
+          success: false, message: 'Already liked'
+        });
+      }
+
+      await pool.query(
+        `INSERT INTO likes (user_id, target_type, target_id, created_at)
+         VALUES ($1, $2, $3, NOW())`,
+        [userId, targetType, targetId]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Liked successfully'
+      });
+    } catch (error) {
+      logger.error('Error in LikesController.like:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to like', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/likes
+   * Unlike a target
+   */
+  async unlike(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { targetType, targetId } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!targetType || !targetId) {
+        return res.status(400).json({
+          success: false, message: 'Target type and ID are required'
+        });
+      }
+
+      const result = await pool.query(
+        'DELETE FROM likes WHERE user_id = $1 AND target_type = $2 AND target_id = $3 RETURNING id',
+        [userId, targetType, targetId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Like not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'Unliked successfully'
+      });
+    } catch (error) {
+      logger.error('Error in LikesController.unlike:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to unlike', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/likes/:targetType/:targetId
+   * Get likes for a target
+   */
+  async getLikes(req, res) {
+    try {
+      const { targetType, targetId } = req.params;
+      const { limit = 50, offset = 0 } = req.query;
+
+      const result = await pool.query(
+        `SELECT 
+          l.*,
+          u.username,
+          u.avatar_url
+         FROM likes l
+         JOIN users u ON l.user_id = u.id
+         WHERE l.target_type = $1 AND l.target_id = $2
+         ORDER BY l.created_at DESC
+         LIMIT $3 OFFSET $4`,
+        [targetType, targetId, parseInt(limit), parseInt(offset)]
+      );
+
+      res.json({
+        success: true,
+        data: result.rows,
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in LikesController.getLikes:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get likes', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/likes/count/:targetType/:targetId
+   * Get like count for a target
+   */
+  async getLikeCount(req, res) {
+    try {
+      const { targetType, targetId } = req.params;
+
+      const result = await pool.query(
+        'SELECT COUNT(*) as count FROM likes WHERE target_type = $1 AND target_id = $2',
+        [targetType, targetId]
+      );
+
+      res.json({
+        success: true,
+        data: {
+          targetType,
+          targetId, count: parseInt(result.rows[0].count)
+        }
+      });
+    } catch (error) {
+      logger.error('Error in LikesController.getLikeCount:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get like count', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/likes/my-likes
+   * Get current user's likes
+   */
+  async getMyLikes(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const { limit = 50, offset = 0, targetType } = req.query;
+
+      let whereClause = ['user_id = $1'];
+      let queryParams = [userId];
+      let paramCount = 2;
+
+      if (targetType) {
+        whereClause.push(`target_type = $${paramCount}`);
+        queryParams.push(targetType);
+        paramCount++;
+      }
+
+      const result = await pool.query('SELECT * FROM likes WHERE $1 ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}', [...queryParams, parseInt(limit), parseInt(offset), whereClause.join(' AND ')]);
+
+      res.json({
+        success: true,
+        data: result.rows,
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in LikesController.getMyLikes:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get my likes', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new LikesController();

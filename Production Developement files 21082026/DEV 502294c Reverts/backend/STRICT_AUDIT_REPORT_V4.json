@@ -1,0 +1,118 @@
+{
+  "metrics": {
+    "totalRoutes": 133,
+    "totalControllers": 299,
+    "totalServices": 104,
+    "totalModels": 41,
+    "totalMiddleware": 27,
+    "totalSchemas": 52
+  },
+  "unregisteredRoutes": [
+    {
+      "file": "routes/voicefeed.js",
+      "name": "voicefeed",
+      "priority": "⚪ UNASSIGNED"
+    },
+    {
+      "file": "routes/voicelines.js",
+      "name": "voicelines",
+      "priority": "⚪ UNASSIGNED"
+    }
+  ],
+  "commentedOutRoutes": [],
+  "todoMarkers": [
+    {
+      "file": "routes/auth.js",
+      "line": 260,
+      "text": "// TODO: Verify TOTP code using speakeasy or otplib"
+    },
+    {
+      "file": "routes/auth.js",
+      "line": 405,
+      "text": "// TODO: Verify TOTP code"
+    },
+    {
+      "file": "controllers/ContentModerationController.ts",
+      "line": 201,
+      "text": "//     // TODO: Implement business logic"
+    },
+    {
+      "file": "controllers/CsvImportController.ts",
+      "line": 201,
+      "text": "//     // TODO: Implement business logic"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 25,
+      "text": "* TODO #1: Implement ML-based collaborative filtering"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 26,
+      "text": "* TODO #2: Add content-based filtering using video metadata"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 27,
+      "text": "* TODO #3: Implement real-time engagement scoring"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 181,
+      "text": "* TODO #4: Optimize following feed with engagement prediction"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 238,
+      "text": "* TODO #5: Implement trending algorithm with velocity tracking"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 718,
+      "text": "* TODO #6: Implement comprehensive view tracking with watch patterns"
+    },
+    {
+      "file": "controllers/FingershortsController.ts",
+      "line": 753,
+      "text": "* TODO #7: Track like patterns for preference learning"
+    },
+    {
+      "file": "controllers/UserController.ts",
+      "line": 25,
+      "text": "// TODO: Implement actual database query"
+    },
+    {
+      "file": "controllers/UserController.ts",
+      "line": 58,
+      "text": "// TODO: Implement actual database update"
+    },
+    {
+      "file": "controllers/UserController.ts",
+      "line": 91,
+      "text": "// TODO: Implement actual user deletion with cascade"
+    },
+    {
+      "file": "controllers/UserController.ts",
+      "line": 112,
+      "text": "// TODO: Implement pagination and filtering"
+    },
+    {
+      "file": "controllers/UserController.ts",
+      "line": 148,
+      "text": "// TODO: Implement settings retrieval"
+    }
+  ],
+  "unimplementedCrudControllers": [],
+  "missingDatabaseTables": [],
+  "syntaxAndImportErrors": [],
+  "brokenDependencies": [],
+  "missingMiddleware": [],
+  "emptyHandlers": [],
+  "environmentIssues": [
+    {
+      "file": "controllers/apiDocumentationController.js",
+      "type": "HARDCODED_SECRET",
+      "issue": "Potential hardcoded secret or API key detected"
+    }
+  ]
+}

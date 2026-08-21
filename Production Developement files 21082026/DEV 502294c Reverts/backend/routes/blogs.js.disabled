@@ -1,0 +1,30 @@
+const express = require('express');
+const blogs = require('../controllers/BlogsController.js');
+const { contentDb } = require("../db");
+const router = express.Router();
+
+router.get("/blogs", blogs.getAll);
+router.post("/blogs", blogs.create);
+router.get("/categories", blogs.getAll);
+router.get("/posts", blogs.getAll);
+router.get("/posts/:postId", blogs.getById);
+router.post("/posts", blogs.create);
+router.put("/posts/:postId", blogs.update);
+router.delete("/posts/:postId", blogs.delete);
+router.post("/posts/:postId/like", blogs.create);
+router.post("/posts/:postId/share", blogs.create);
+router.get("/tags", blogs.getAll);
+router.get("/posts/:postId/comments", blogs.getById);
+router.post("/comments", blogs.create);
+router.put("/comments/:commentId", blogs.update);
+router.delete("/comments/:commentId", blogs.delete);
+router.post("/comments/:commentId/moderate", blogs.create);
+router.get("/users/:userId/reading-lists", blogs.getById);
+router.post("/users/:userId/reading-lists", blogs.create);
+router.put("/reading-lists/:listId", blogs.update);
+router.delete("/reading-lists/:listId", blogs.delete);
+router.post("/reading-lists/:listId/items", blogs.create);
+router.delete("/reading-list-items/:itemId", blogs.delete);
+router.put("/reading-list-items/:itemId", blogs.update);
+
+module.exports = router;

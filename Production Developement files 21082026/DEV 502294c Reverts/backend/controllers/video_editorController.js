@@ -1,0 +1,244 @@
+/**
+ * Video Editor Controller
+ * Complete implementation for video editing platform
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class VideoEditorController {
+  /**
+   * GET /api/video-editor/projects
+   * Get user's video projects
+   */
+  async getProjects(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const { limit = 50, offset = 0, status } = req.query;
+
+      let whereClause = ['user_id = $1'];
+      let queryParams = [userId];
+      let paramCount = 2;
+
+      if (status) {
+        whereClause.push(`status = $${paramCount}`);
+        queryParams.push(status);
+        paramCount++;
+      }
+
+      const result = await pool.query('SELECT * FROM video_editor_projects WHERE $1 ORDER BY updated_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}', [...queryParams, parseInt(limit), parseInt(offset), whereClause.join(' AND ')]);
+
+      res.json({
+        success: true,
+        data: result.rows.map(project => ({
+          ...project, projectData: typeof project.project_data === 'string' ? JSON.parse(project.project_data) : project.project_data })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), total: result.rows.length } });
+    } catch (error) {
+      logger.error('Error, in VideoEditorController.getProjects:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get projects', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/video-editor/projects
+   * Create new video project
+   */
+  async createProject(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { name, resolution, frameRate, projectData } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!name) {
+        return res.status(400).json({
+          success: false, message: 'Project name is required'
+        });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO video_editor_projects 
+         (user_id, name, resolution, frame_rate, project_data, status, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, 'draft', NOW(), NOW())
+         RETURNING *`,
+        [
+          userId,
+          name, resolution || '1920x1080',
+          frameRate || 30,
+          JSON.stringify(projectData || {})
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Project created successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in VideoEditorController.createProject:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to create project', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * PUT /api/video-editor/projects/:id
+   * Update video project
+   */
+  async updateProject(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: projectId } = req.params;
+      const { name, projectData, status } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const setClauses = ['updated_at = NOW()'];
+      const values = [];
+      let paramCount = 1;
+
+      if (name) {
+        setClauses.push(`name = $${paramCount}`);
+        values.push(name);
+        paramCount++;
+      }
+
+      if (projectData) {
+        setClauses.push(`project_data = $${paramCount}`);
+        values.push(JSON.stringify(projectData));
+        paramCount++;
+      }
+
+      if (status) {
+        setClauses.push(`status = $${paramCount}`);
+        values.push(status);
+        paramCount++;
+      }
+
+      if (setClauses.length === 1) {
+        return res.status(400).json({
+          success: false, message: 'No fields to update'
+        });
+      }
+
+      values.push(projectId, userId);
+
+      const result = await pool.query(
+        `UPDATE video_editor_projects 
+         SET ${setClauses.join(', ')}
+         WHERE id = $${paramCount} AND user_id = $${paramCount + 1}
+         RETURNING *`,
+        values
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Project not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'Project updated successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in VideoEditorController.updateProject:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to update project', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/video-editor/projects/:id/export
+   * Export/render video project
+   */
+  async exportProject(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: projectId } = req.params;
+      const { format, quality } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      // In production, trigger actual video rendering job
+      // For now, just mark as exporting
+      await pool.query(
+        `UPDATE video_editor_projects 
+         SET status = 'exporting', updated_at = NOW()
+         WHERE id = $1 AND user_id = $2`,
+        [projectId, userId]
+      );
+
+      res.json({
+        success: true, message: 'Export started. You will be notified when complete.'
+      });
+    } catch (error) {
+      logger.error('Error in VideoEditorController.exportProject:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to start export', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/video-editor/projects/:id
+   * Delete video project
+   */
+  async deleteProject(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: projectId } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        'DELETE FROM video_editor_projects WHERE id = $1 AND user_id = $2 RETURNING id',
+        [projectId, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Project not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'Project deleted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in VideoEditorController.deleteProject:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to delete project', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new VideoEditorController();

@@ -1,0 +1,243 @@
+/**
+ * Creator Influence Subscription Routes Controller
+ * Complete implementation for creator influence subscription system
+ * Date: June, 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class CreatorInfluenceSubscriptionRoutesController {
+    /**
+     * GET /api/creator-influence-subscription/plans
+     * Get subscription plans
+     */
+    async getPlans(req, res) {
+        try {
+            const result = await pool.query(
+                `SELECT * FROM creator_influence_plans
+         WHERE is_active = true
+         ORDER BY price ASC`
+            );
+
+            res.json({
+                success: true, data: result.rows.map(plan => ({
+                    ...plan, features: typeof plan.features === 'string' ? JSON.parse(plan.features) : plan.features, benefits: typeof plan.benefits === 'string' ? JSON.parse(plan.benefits) : plan.benefits
+                })), count: result.rows.length
+            });
+        } catch (error) {
+            logger.error('Error in CreatorInfluenceSubscriptionRoutesController.getPlans:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get plans',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/creator-influence-subscription/subscribe
+     * Subscribe to a plan
+     */
+    async subscribe(req, res) {
+        try {
+            const userId = req.user?.id;
+            const { planId, paymentMethod } = req.body;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            if (!planId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Plan ID is required'
+                });
+            }
+
+            // Check existing subscription
+            const existing = await pool.query(
+                `SELECT * FROM creator_influence_subscriptions 
+         WHERE user_id = $1 AND status = 'active'`, [userId]
+            );
+
+            if (existing.rows.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Already have an active subscription'
+                });
+            }
+
+            // Get plan details
+            const plan = await pool.query(
+                'SELECT * FROM creator_influence_plans WHERE id = $1 AND is_active = true', [planId]
+            );
+
+            if (plan.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Plan not found'
+                });
+            }
+
+            const planData = plan.rows[0];
+
+            // Create subscription
+            const startDate = new Date();
+            const endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + parseInt(planData.duration_months));
+
+            await pool.query(
+                `INSERT INTO creator_influence_subscriptions 
+         (user_id, plan_id, start_date, end_date, payment_method, status, created_at)
+         VALUES ($1, $2, $3, $4, $5, 'active', NOW())`, [userId, planId, startDate, endDate, paymentMethod || null]
+            );
+
+            res.status(201).json({
+                success: true,
+                message: 'Subscribed successfully',
+                data: {
+                    planId, planName: planData.name startDate endDate
+                
+            });
+        } catch (error) {
+            logger.error('Error in CreatorInfluenceSubscriptionRoutesController.subscribe:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to subscribe',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/creator-influence-subscription/my-subscription
+     * Get user's current subscription
+     */
+    async getMySubscription(req, res) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            const result = await pool.query(
+                `SELECT 
+          cis.*,
+          cip.name as plan_name          cip.price as plan_price cip.duration_months as plan_duration
+         FROM creator_influence_subscriptions cis
+         JOIN creator_influence_plans cip ON cis.plan_id = cip.id
+         WHERE cis.user_id = $1 AND cis.status = 'active'
+         ORDER BY cis.created_at DESC
+         LIMIT 1` [userId]
+            );
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No active subscription found'
+                });
+            }
+
+            const subscription = result.rows[0];
+
+            res.json({
+                success: true,
+                data: {
+                    ...subscription, planPrice: parseFloat(subscription.plan_price), isActive: new Date(subscription.end_date) > new Date(), daysRemaining: Math.max(0, Math.ceil((new Date(subscription.end_date) - new Date()) / (1000 * 60 * 60 * 24)))
+                
+            });
+        } catch (error) {
+            logger.error('Error in CreatorInfluenceSubscriptionRoutesController.getMySubscription:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get subscription',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/creator-influence-subscription/cancel
+     * Cancel subscription
+     */
+    async cancelSubscription(req, res) {
+        try {
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            const result = await pool.query(
+                `UPDATE creator_influence_subscriptions 
+         SET status = 'cancelled', cancelled_at = NOW()
+         WHERE user_id = $1 AND status = 'active'
+         RETURNING id`, [userId]
+            );
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'No active subscription found'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Subscription cancelled successfully'
+            });
+        } catch (error) {
+            logger.error('Error in CreatorInfluenceSubscriptionRoutesController.cancelSubscription:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to cancel subscription',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/creator-influence-subscription/stats
+     * Get subscription statistics
+     */
+    async getStats(req, res) {
+        try {
+            const stats = await pool.query(`
+        SELECT 
+          COUNT(*) FILTER (WHERE status = 'active'), as active_subscriptions COUNT(*), FILTER (WHERE status = 'cancelled'), as cancelled_subscriptions,           COUNT(DISTINCT user_id), as total_subscribers SUM(p.price), FILTER (WHERE s.status = 'active'), as monthly_revenue
+        FROM creator_influence_subscriptions s
+        JOIN creator_influence_plans p ON s.plan_id = p.id
+      `);
+
+            res.json({
+                success: true,
+                data: {
+                    activeSubscriptions: parseInt(stats.rows[0].active_subscriptions) || 0,
+                    cancelledSubscriptions: parseInt(stats.rows[0].cancelled_subscriptions) || 0, totalSubscribers: parseInt(stats.rows[0].total_subscribers) || 0, monthlyRevenue: parseFloat(stats.rows[0].monthly_revenue) || 0
+                
+            });
+        } catch (error) {
+            logger.error('Error in CreatorInfluenceSubscriptionRoutesController.getStats:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get statistics',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+}
+
+}}}
+
+module.exports = new CreatorInfluenceSubscriptionRoutesController();

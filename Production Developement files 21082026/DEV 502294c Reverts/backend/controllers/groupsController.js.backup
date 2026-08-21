@@ -1,0 +1,398 @@
+/**
+ * Groups Controller
+ * Complete implementation for community groups with pagination and membership
+ * Date: June, 10, 2026 - Phase 1 Week 2 Days 3-4 Priority #2
+ */
+
+const Group = require("../models/group");
+const logger = require("../utils/logger");
+const User = require("../models/user");
+const { Op } = require("sequelize");
+const { validationResult } = require("express-validator");
+
+class GroupsController {
+    /**
+     * GET /api/groups
+     * Get all groups with pagination and filtering
+     */
+    async getAll(req, res) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+            const offset = (page - 1) * limit;
+
+            // Build filters
+            const where = {
+                status: "active"
+            };
+
+            // Search by name or description
+            if (req.query.search) {
+                where[Op.or] = [{
+                        name: {
+                            [Op.iLike]: `%${req.query.search}%`
+                        }
+                    },
+                    {
+                        description: {
+                            [Op.iLike]: `%${req.query.search}%`
+                        }
+                    }
+                ];
+            }
+
+            // Filter by category
+            if (req.query.category) {
+                where.category = req.query.category;
+            }
+
+            // Filter by privacy
+            if (req.query.privacy) {
+                where.isPrivate = req.query.privacy === "private";
+            }
+
+            // Fetch groups with pagination
+            const { count, rows : groups } = await Group.findAndCountAll({
+                where,
+                limit,
+                offset,
+                order: [
+                    ["memberCount", "DESC"],
+                    ["createdAt", "DESC"], ],
+                include: [{
+                    model: User,
+                    as: "creator",
+                    attributes: ["id", "username", "avatarUrl"]
+                }]
+            });
+
+            const totalPages = Math.ceil(count / limit);
+
+            res.json({
+                success: true,
+                data: groups.map((group) => ({
+                    id: group.id,
+                    name: group.name,
+                    description: group.description,
+                    category: group.category,
+                    isPrivate: group.isPrivate,
+                    memberCount: group.memberCount,
+                    creator: {
+                        id: group.creator?.id,
+                        username: group.creator?.username,
+                        avatarUrl: group.creator?.avatarUrl
+                    },
+                    coverImage: group.coverImage,
+                    createdAt: group.createdAt
+                })),
+                pagination: {
+                    page,
+                    limit,
+                    total: count,
+                    totalPages,
+                    hasNext: page < totalPages,
+                    hasPrev: page > 1
+                }
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.getAll:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to retrieve groups",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/groups/:id
+     * Get group details by ID
+     */
+    async getById(req, res) {
+        try {
+            const { id } = req.params;
+
+            const group = await Group.findByPk(id, {
+                include: [{
+                    model: User,
+                    as: "creator",
+                    attributes: ["id", "username", "email", "avatarUrl"]
+                }]
+            });
+
+            if (!group) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Group not found"
+                });
+            }
+
+            res.json({
+                success: true,
+                data: {
+                    id: group.id,
+                    name: group.name,
+                    description: group.description,
+                    category: group.category,
+                    isPrivate: group.isPrivate,
+                    memberCount: group.memberCount,
+                    rules: group.rules,
+                    coverImage: group.coverImage,
+                    metadata: group.metadata,
+                    creator: {
+                        id: group.creator?.id,
+                        username: group.creator?.username,
+                        email: group.creator?.email,
+                        avatarUrl: group.creator?.avatarUrl
+                    },
+                    status: group.status,
+                    createdAt: group.createdAt,
+                    updatedAt: group.updatedAt
+                }
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.getById:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to retrieve group",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/groups
+     * Create new group
+     */
+    async create(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Validation failed",
+                    errors: errors.array()
+                });
+            }
+
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Authentication required"
+                });
+            }
+
+            const { name, description, category, isPrivate, rules, coverImage, metadata } = req.body;
+
+            const group = await Group.create({
+                name,
+                description,
+                category,
+                isPrivate: isPrivate || false,
+                createdBy: userId,
+                rules,
+                coverImage,
+                metadata: metadata || {}
+            });
+
+            res.status(201).json({
+                success: true,
+                message: "Group created successfully",
+                data: {
+                    id: group.id,
+                    name: group.name,
+                    category: group.category,
+                    isPrivate: group.isPrivate,
+                    memberCount: group.memberCount,
+                    createdAt: group.createdAt
+                }
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.create:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to create group",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * PUT /api/groups/:id
+     * Update group
+     */
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Authentication required"
+                });
+            }
+
+            const group = await Group.findByPk(id);
+
+            if (!group) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Group not found"
+                });
+            }
+
+            // Only creator or admin can update
+            if (group.createdBy !== userId && !req.user?.isAdmin) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Not authorized to update this group"
+                });
+            }
+
+            const allowedFields = [
+                "name",
+                "description",
+                "category",
+                "isPrivate",
+                "rules",
+                "coverImage",
+                "metadata"
+            ];
+            const updates = {};
+
+            allowedFields.forEach((field) => {
+                if (req.body[field] !== undefined) {
+                    updates[field] = req.body[field];
+                }
+            });
+
+            await group.update(updates);
+
+            res.json({
+                success: true,
+                message: "Group updated successfully",
+                data: {
+                    id: group.id,
+                    name: group.name,
+                    description: group.description,
+                    updatedAt: group.updatedAt
+                }
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.update:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to update group",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * DELETE /api/groups/:id
+     * Delete/archive group
+     */
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Authentication required"
+                });
+            }
+
+            const group = await Group.findByPk(id);
+
+            if (!group) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Group not found"
+                });
+            }
+
+            // Only creator or admin can delete
+            if (group.createdBy !== userId && !req.user?.isAdmin) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Not authorized to delete this group"
+                });
+            }
+
+            // Soft delete by archiving
+            await group.update({
+                status: "archived"
+            });
+
+            res.json({
+                success: true,
+                message: "Group archived successfully"
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.delete:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to archive group",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/groups/stats
+     * Get group statistics
+     */
+    async getStats(req, res) {
+        try {
+            const totalCount = await Group.count({
+                where: {
+                    status: "active"
+                }
+            });
+            const privateCount = await Group.count({
+                where: {
+                    status: "active",
+                    isPrivate: true
+                }
+            });
+            const publicCount = totalCount - privateCount;
+
+            const categoryStats = await Group.findAll({
+                attributes: [
+                    "category",
+                    [require("sequelize").fn("COUNT", require("sequelize").col("id")), "count"], ],
+                where: {
+                    status: "active"
+                },
+                group: ["category"]
+            });
+
+            res.json({
+                success: true,
+                data: {
+                    total: totalCount,
+                    private: privateCount,
+                    public: publicCount,
+                    byCategory: categoryStats.reduce((acc, stat) => {
+                        acc[stat.category] = parseInt(stat.dataValues.count);
+                        return acc;
+                    }, {})
+                }
+            });
+        } catch (error) {
+            logger.error("Error in GroupsController.getStats:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to retrieve statistics",
+                error: process.env.NODE_ENV === "development" ? error.message : undefined
+            });
+        }
+    }
+}
+
+module.exports = new GroupsController();

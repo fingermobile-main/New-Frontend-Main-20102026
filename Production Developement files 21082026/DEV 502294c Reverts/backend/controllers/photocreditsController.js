@@ -1,0 +1,157 @@
+/**
+ * UphotocreditsController
+ * Auto-generated controller for photocredits routes
+ * Generated: 2026-06-08 13:55:23
+ */
+
+const UphotocreditsControllerService = require('../services/photocreditsService');
+const logger = require('../utils/logger');
+
+class UphotocreditsController {
+  /**
+   * GET /api/photocredits
+   * Get all items
+   */
+  async getAll(req, res) {
+    try {
+      const filters = {
+        limit: req.query.limit || 50,
+        offset: req.query.offset || 0,
+        ...req.query
+      };
+
+      const data = await UphotocreditsControllerService.getAll(filters);
+
+      res.json({
+        success: true,
+        data,
+        count: data.length, 
+        filters // Fixed: Added missing comma
+      });
+    } catch (error) {
+      logger.error('Error in UphotocreditsController.getAll:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/photocredits/:id
+   * Get item by ID
+   */
+  async getById(req, res) {
+    try {
+      const { id } = req.params;
+
+      const data = await UphotocreditsControllerService.getById(id);
+
+      if (!data) {
+        return res.status(404).json({
+          success: false, message: 'photocredits not found'
+        });
+      }
+
+      res.json({
+        success: true, 
+        data // Fixed: Added missing comma
+      });
+    } catch (error) {
+      logger.error('Error in UphotocreditsController.getById:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/photocredits
+   * Create new item
+   */
+  async create(req, res) {
+    try {
+      const data = req.body;
+
+      // Basic validation
+      if (!data || Object.keys(data).length === 0) {
+        return res.status(400).json({
+          success: false, message: 'Request body is required'
+        });
+      }
+
+      const result = await UphotocreditsControllerService.create(data);
+
+      res.status(201).json({
+        success: true, message: 'photocredits created successfully', data: result
+      });
+    } catch (error) {
+      logger.error('Error in UphotocreditsController.create:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * PUT /api/photocredits/:id
+   * Update existing item
+   */
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+
+      if (!data || Object.keys(data).length === 0) {
+        return res.status(400).json({
+          success: false, message: 'Request body is required'
+        });
+      }
+
+      const result = await UphotocreditsControllerService.update(id, data);
+
+      if (!result) {
+        return res.status(404).json({
+          success: false, message: 'photocredits not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'photocredits updated successfully', data: result
+      });
+    } catch (error) {
+      logger.error('Error in UphotocreditsController.update:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/photocredits/:id
+   * Delete item
+   */
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      const result = await UphotocreditsControllerService.delete(id);
+
+      if (!result) {
+        return res.status(404).json({
+          success: false, message: 'photocredits not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'photocredits deleted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in UphotocreditsController.delete:', error);
+      res.status(500).json({
+        success: false, message: 'Internal server error', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new UphotocreditsController();

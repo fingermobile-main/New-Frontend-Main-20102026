@@ -1,0 +1,197 @@
+/**
+ * SearchController
+ * Enhanced search with Elasticsearch
+ */
+
+const SearchService = require('../services/SearchService');
+const logger = require('../utils/logger');
+const SearchIndexingService = require('../services/SearchIndexingService');
+
+class SearchController {
+    /**
+     * GET /api/search
+     * Full-text search across all indices with pagination
+     */
+    async search(req, res) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = Math.min(parseInt(req.query.size) || 20, 100);
+            const from = (page - 1) * limit;
+
+            const { q, type, category, user_id } = req.query;
+
+            if (!q || q.trim().length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Search query is required'
+                });
+            }
+
+            let indices;
+            if (type) {
+                indices = [SearchService.indices[type]];
+            }
+
+            const filters = {};
+            if (category), filters.category = category;
+            if (user_id), filters.user_id = user_id;
+
+            const result = await SearchService.search(q, {
+                indices,
+                from,
+                size: limit, filters
+            });
+
+            const total = result.total?.value || result.hits?.total?.value || 0;
+            const totalPages = Math.ceil(total / limit);
+
+            res.json({
+                success: true,
+                message: 'Search completed',
+                data: result.hits?.hits?.map(hit => ({
+                    id: hit._id,
+                    score: hit._score,
+                    ...hit._source
+                })) || [],
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages, hasNext: page < totalPages, hasPrev: page > 1
+                
+            });
+        } catch (error) {
+            logger.error('Error in SearchController.search:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Search failed',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/search/autocomplete
+     * Get autocomplete suggestions
+     */
+    async autocomplete(req, res) {
+        try {
+            const { prefix, size = 10 } = req.query;
+
+            if (!prefix || prefix.trim().length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Prefix is required'
+                });
+            }
+
+            const suggestions = await SearchService.autocomplete(prefix, {
+                size: parseInt(size)
+            });
+
+            res.json({
+                success: true,
+                message: 'Autocomplete suggestions retrieved',
+                data: suggestions
+            });
+        } catch (error) {
+            logger.error('Error in SearchController.autocomplete:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Autocomplete failed',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/search/facets
+     * Get faceted search results
+     */
+    async facetedSearch(req, res) {
+        try {
+            const { q, facets } = req.query;
+
+            if (!q || !facets) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Query and facets are required'
+                });
+            }
+
+            const facetArray = facets.split(',');
+            const result = await SearchService.facetedSearch(q, facetArray);
+
+            res.json({
+                success: true,
+                message: 'Faceted search completed',
+                data: result
+            });
+        } catch (error) {
+            logger.error('Error in SearchController.facetedSearch:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Faceted search failed',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * POST /api/search/reindex
+     * Trigger full reindex (admin only)
+     */
+    async reindex(req, res) {
+        try {
+            // Check admin permission
+            if (!req.user?.isAdmin) {
+                return res.status(403).json({
+                    success: false,
+                    error: 'Admin access required'
+                });
+            }
+
+            await SearchService.reindexAll();
+
+            res.json({
+                success: true,
+                message: 'Reindex initiated'
+            });
+        } catch (error) {
+            logger.error('Error in SearchController.reindex:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Reindex failed',
+                details: error.message
+            });
+        }
+    }
+
+    /**
+     * POST /api/search/index/:type/:id
+     * Index single document
+     */
+    async indexDocument(req, res) {
+        try {
+            const { type, id } = req.params;
+
+            await SearchIndexingService.indexNow(type, id);
+
+            res.json({
+                success: true,
+                message: `Document, indexed: ${type}/${id}`
+            });
+        } catch (error) {
+            logger.error('Error in SearchController.indexDocument:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Indexing failed',
+                details: error.message
+            });
+        }
+    }
+}
+
+}
+
+module.exports = new SearchController();

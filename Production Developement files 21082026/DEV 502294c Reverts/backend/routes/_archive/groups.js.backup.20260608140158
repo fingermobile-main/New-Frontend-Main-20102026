@@ -1,0 +1,349 @@
+const express = require("express");
+const router = express.Router();
+const { socialDb } = require("../db");
+
+// Get all public groups
+router.get("/", async (req, res) => {
+  try {
+    const {
+      category,
+      privacy_level = "public",
+      min_members,
+      max_members,
+      search,
+      limit = 20,
+      offset = 0,
+      sort_by = "created_at",
+      order = "DESC"
+    } = req.query;
+
+    let query = `SELECT g.*, m.membername as creator_name,
+                 COUNT(gm.id) as member_count
+                 FROM groups g
+                 JOIN members m ON g.creator_id = m.id
+                 LEFT JOIN group_members gm ON g.id = gm.group_id
+                 WHERE g.privacy_level = $1`;
+    const params = [privacy_level];
+    let paramIndex = 1;
+
+    if (category) {
+      paramIndex++;
+      query += ` AND g.category_id = $${paramIndex}`;
+      params.push(category);
+    }
+
+    if (min_members !== undefined) {
+      query += ` HAVING COUNT(gm.id) >= $${paramIndex + 1}`;
+      params.push(parseInt(min_members));
+      paramIndex++;
+    }
+
+    if (max_members !== undefined) {
+      query += ` AND COUNT(gm.id) <= $${paramIndex + 1}`;
+      params.push(parseInt(max_members));
+      paramIndex++;
+    }
+
+    if (search) {
+      paramIndex++;
+      query += ` AND (g.name ILIKE $${paramIndex} OR g.description ILIKE $${paramIndex})`;
+      params.push(`%${search}%`);
+    }
+
+    query += ` GROUP BY g.id, m.membername`;
+
+    // Add sorting
+    query += ` ORDER BY g.${sort_by} ${order}`;
+
+    query += ` LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const { rows } = await socialDb.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get a specific group by ID
+router.get("/:groupId", async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.member ? req.member.id : null;
+
+    const { rows } = await socialDb.query(
+      `SELECT g.*, m.membername as creator_name,
+       COUNT(gm.id) as member_count
+       FROM groups g
+       JOIN members m ON g.creator_id = m.id
+       LEFT JOIN group_members gm ON g.id = gm.group_id
+       WHERE g.id = $1
+       GROUP BY g.id, m.membername`,
+      [groupId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    const group = rows[0];
+
+    // Check if user is a member if the group is private
+    if (group.privacy_level === 'private' && userId) {
+      const membershipCheck = await socialDb.query(
+        "SELECT id FROM group_members WHERE group_id = $1 AND member_id = $2",
+        [groupId, userId]
+      );
+
+      if (membershipCheck.rows.length === 0) {
+        return res.status(403).json({ error: "Access denied. You must be a member of this group." });
+      }
+    }
+
+    res.json(group);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create a new group
+router.post("/", async (req, res) => {
+  try {
+    if (!req.member) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const userId = req.member.id;
+    const { name, description, category_id, privacy_level, max_members } = req.body;
+
+    // Validation
+    if (!name) {
+      return res.status(400).json({ error: "Group name is required" });
+    }
+
+    // Create the group
+    const groupResult = await socialDb.query(
+      `INSERT INTO groups 
+       (creator_id, name, description, category_id, privacy_level, max_members)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [userId, name, description, category_id, privacy_level || 'public', max_members || null]
+    );
+
+    // Add creator as admin to the group
+    await socialDb.query(
+      `INSERT INTO group_members 
+       (group_id, member_id, role, joined_at)
+       VALUES ($1, $2, 'admin', NOW())`,
+      [groupResult.rows[0].id, userId]
+    );
+
+    res.status(201).json(groupResult.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Join a group
+router.post("/:groupId/join", async (req, res) => {
+  try {
+    if (!req.member) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const userId = req.member.id;
+    const { groupId } = req.params;
+
+    // Check if group exists and its privacy level
+    const groupResult = await socialDb.query(
+      "SELECT id, privacy_level, max_members FROM groups WHERE id = $1",
+      [groupId]
+    );
+
+    if (groupResult.rows.length === 0) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    const group = groupResult.rows[0];
+
+    // Check if group has reached max members
+    if (group.max_members) {
+      const memberCountResult = await socialDb.query(
+        "SELECT COUNT(*) as count FROM group_members WHERE group_id = $1",
+        [groupId]
+      );
+      const memberCount = parseInt(memberCountResult.rows[0].count);
+      
+      if (memberCount >= group.max_members) {
+        return res.status(400).json({ error: "Group has reached maximum member capacity" });
+      }
+    }
+
+    // Check if user is already a member
+    const existingMember = await socialDb.query(
+      "SELECT id FROM group_members WHERE group_id = $1 AND member_id = $2",
+      [groupId, userId]
+    );
+
+    if (existingMember.rows.length > 0) {
+      return res.status(400).json({ error: "You are already a member of this group" });
+    }
+
+    // For private groups, we might want to send a request instead of directly joining
+    if (group.privacy_level === 'private') {
+      // Check if there's already a pending request
+      const pendingRequest = await socialDb.query(
+        "SELECT id FROM group_join_requests WHERE group_id = $1 AND member_id = $2 AND status = 'pending'",
+        [groupId, userId]
+      );
+
+      if (pendingRequest.rows.length > 0) {
+        return res.status(400).json({ error: "You already have a pending request to join this group" });
+      }
+
+      // Create a join request
+      const requestResult = await socialDb.query(
+        `INSERT INTO group_join_requests 
+         (group_id, member_id, requested_at)
+         VALUES ($1, $2, NOW())
+         RETURNING *`,
+        [groupId, userId]
+      );
+
+      res.status(201).json({
+        message: "Join request sent successfully. Awaiting approval.",
+        request: requestResult.rows[0]
+      });
+    } else {
+      // For public groups, join directly
+      const memberResult = await socialDb.query(
+        `INSERT INTO group_members 
+         (group_id, member_id, role, joined_at)
+         VALUES ($1, $2, 'member', NOW())
+         RETURNING *`,
+        [groupId, userId]
+      );
+
+      res.status(201).json({
+        message: "Successfully joined the group",
+        membership: memberResult.rows[0]
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Leave a group
+router.post("/:groupId/leave", async (req, res) => {
+  try {
+    if (!req.member) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const userId = req.member.id;
+    const { groupId } = req.params;
+
+    // Check if user is a member of the group
+    const membership = await socialDb.query(
+      "SELECT id, role FROM group_members WHERE group_id = $1 AND member_id = $2",
+      [groupId, userId]
+    );
+
+    if (membership.rows.length === 0) {
+      return res.status(404).json({ error: "You are not a member of this group" });
+    }
+
+    const memberRole = membership.rows[0].role;
+
+    // Don't allow admin to leave if they are the only admin
+    if (memberRole === 'admin') {
+      const adminCountResult = await socialDb.query(
+        `SELECT COUNT(*) as count FROM group_members 
+         WHERE group_id = $1 AND role = 'admin'`,
+        [groupId]
+      );
+      const adminCount = parseInt(adminCountResult.rows[0].count);
+
+      if (adminCount <= 1) {
+        return res.status(400).json({ error: "Cannot leave group as the only admin. Transfer admin rights first." });
+      }
+    }
+
+    // Remove member from group
+    await socialDb.query(
+      "DELETE FROM group_members WHERE id = $1",
+      [membership.rows[0].id]
+    );
+
+    res.json({ message: "Successfully left the group" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get group members
+router.get("/:groupId/members", async (req, res) => {
+  try {
+    const { groupId } = req.params;
+
+    const { rows } = await socialDb.query(
+      `SELECT gm.*, m.membername, m.avatar_url
+       FROM group_members gm
+       JOIN members m ON gm.member_id = m.id
+       WHERE gm.group_id = $1
+       ORDER BY gm.role DESC, gm.joined_at ASC`,
+      [groupId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get user's groups
+router.get("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const { rows } = await socialDb.query(
+      `SELECT g.*, m.membername as creator_name,
+       COUNT(gm.id) as member_count
+       FROM groups g
+       JOIN group_members gmem ON g.id = gmem.group_id
+       JOIN members m ON g.creator_id = m.id
+       LEFT JOIN group_members gm ON g.id = gm.group_id
+       WHERE gmem.member_id = $1
+       GROUP BY g.id, m.membername
+       ORDER BY g.created_at DESC`,
+      [userId]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get group categories
+router.get("/categories", async (req, res) => {
+  try {
+    const { rows } = await socialDb.query(
+      "SELECT * FROM group_categories ORDER BY name"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+module.exports = router;

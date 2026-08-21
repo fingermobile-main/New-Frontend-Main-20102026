@@ -1,0 +1,661 @@
+/**
+ * WalletController - Extracted from wallet.js route handlers
+ * Date: June, 9, 2026
+ * Purpose: Separate business logic from route definitions
+ */
+
+const { identityDb, monetizationDb } = require("../db");
+const logger = require("../utils/logger");
+const crypto = require("crypto");
+
+// Helper function
+function generateWalletAddress() {
+    return "fm_" + crypto.randomBytes(16).toString("hex");
+}
+
+class WalletController {
+    /**
+     * GET /api/wallet
+     * Get user's wallet information
+     */
+    async getWallet(req, res) {
+        try {
+            const userId = req.user.id;
+
+            const walletQuery = `
+        SELECT id, user_id, wallet_address, balance, currency, is_active, created_at, updated_at
+        FROM fic_wallets
+        WHERE user_id = $1
+      `;
+            const walletResult = await monetizationDb.query(walletQuery, [userId]);
+
+            if (walletResult.rows.length === 0) {
+                return res.json({
+                    success: true,
+                    message: "User does not have a wallet yet",
+                    data: null
+                });
+            }
+
+            res.json({
+                success: true,
+                message: "Wallet retrieved successfully",
+                data: walletResult.rows[0]
+            });
+        } catch (error) {
+            logger.error("Get Wallet, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error retrieving wallet"
+            });
+        }
+    }
+
+    /**
+     * POST /api/wallet
+     * Create user's wallet
+     */
+    async createWallet(req, res) {
+        try {
+            const userId = req.user.id;
+            const { currency = "FIC" } = req.body;
+
+            // Check if user already has a wallet
+            const checkWalletQuery = "SELECT id FROM fic_wallets WHERE user_id = $1";
+            const checkWalletResult = await monetizationDb.query(checkWalletQuery, [userId]);
+
+            if (checkWalletResult.rows.length > 0) {
+                return res.status(409).json({
+                    success: false,
+                    message: "User already has a wallet"
+                });
+            }
+
+            // Generate unique wallet address
+            const walletAddress = generateWalletAddress();
+
+            // Create wallet
+            const createWalletQuery = `
+        INSERT INTO fic_wallets (user_id, wallet_address, balance, currency), VALUES ($1, $2, $3, $4), RETURNING id, user_id, wallet_address, balance, currency, is_active, created_at, updated_at
+      `;
+            const walletResult = await monetizationDb.query(createWalletQuery, [
+                userId,
+                walletAddress,
+                0.0,
+                currency
+            ]);
+
+            res.status(201).json({
+                success: true,
+                message: "Wallet created successfully",
+                data: walletResult.rows[0]
+            });
+        } catch (error) {
+            logger.error("Create Wallet, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error creating wallet"
+            });
+        }
+    }
+
+    /**
+     * GET /api/wallet/balance
+     * Get wallet balance
+     */
+    async getBalance(req, res) {
+        try {
+            const userId = req.user.id;
+
+            const balanceQuery =
+                "SELECT wallet_address, balance, currency FROM fic_wallets WHERE user_id = $1";
+            const balanceResult = await monetizationDb.query(balanceQuery, [userId]);
+
+            if (balanceResult.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Wallet not found"
+                });
+            }
+
+            res.json({
+                success: true,
+                message: "Balance retrieved successfully",
+                data: balanceResult.rows[0]
+            });
+        } catch (error) {
+            logger.error("Get Balance, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error retrieving balance"
+            });
+        }
+    }
+
+    /**
+     * GET /api/wallet/transactions
+     * Get wallet transactions with pagination
+     */
+    async getTransactions(req, res) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+            const offset = (page - 1) * limit;
+
+            const userId = req.user.id;
+            const { type, status, date_from, date_to } = req.query;
+
+            let whereClause = "WHERE w.user_id = $1";
+            const params = [userId];
+            let paramIndex = 2;
+
+            if (type) {
+                whereClause += ` AND ft.transaction_type = $${paramIndex}`;
+                params.push(type);
+                paramIndex++;
+            }
+
+            if (status) {
+                whereClause += ` AND ft.transaction_status = $${paramIndex}`;
+                params.push(status);
+                paramIndex++;
+            }
+
+            if (date_from) {
+                whereClause += ` AND ft.created_at >= $${paramIndex}`;
+                params.push(date_from);
+                paramIndex++;
+            }
+
+            if (date_to) {
+                whereClause += ` AND ft.created_at <= $${paramIndex}`;
+                params.push(date_to);
+                paramIndex++;
+            }
+
+            const transactionsQuery = `
+        SELECT ft.id, ft.amount, ft.transaction_type, ft.description, 
+               ft.from_account, ft.to_account, ft.transaction_status, 
+               ft.transaction_reference, ft.metadata, ft.created_at
+        FROM fic_transactions ft
+        JOIN fic_wallets w ON ft.wallet_id = w.id
+        ${whereClause}
+        ORDER BY ft.created_at DESC
+        LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+      `;
+            params.push(limit, offset);
+
+            const transactionsResult = await monetizationDb.query(transactionsQuery, params);
+
+            // Get total count for pagination
+            const countQuery = `
+        SELECT COUNT(*), as total
+        FROM fic_transactions ft
+        JOIN fic_wallets w ON ft.wallet_id = w.id
+        ${whereClause}
+      `;
+            const countResult = await monetizationDb.query(countQuery, params.slice(0, -2));
+
+            const total = parseInt(countResult.rows[0].total);
+            const totalPages = Math.ceil(total / limit);
+
+            res.json({
+                success: true,
+                data: transactionsResult.rows.map((tx) => ({
+                    id: tx.id,
+                    amount: parseFloat(tx.amount),
+                    type: tx.transaction_type,
+                    description: tx.description,
+                    fromAccount: tx.from_account,
+                    toAccount: tx.to_account,
+                    status: tx.transaction_status,
+                    reference: tx.transaction_reference,
+                    metadata: tx.metadata,
+                    createdAt: tx.created_at
+                })),
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages,
+                    hasNext: page < totalPages,
+                    hasPrev: page > 1
+                }
+            });
+        } catch (error) {
+            logger.error("Get Transactions, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error retrieving transactions"
+            });
+        }
+    }
+
+    /**
+     * POST /api/wallet/deposit
+     * Deposit funds to wallet
+     */
+    async deposit(req, res) {
+        try {
+            const userId = req.user.id;
+            const { amount, payment_method, reference } = req.body;
+
+            if (!amount || amount <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid deposit amount"
+                });
+            }
+
+            // Get user's wallet
+            const walletQuery = "SELECT id, balance FROM fic_wallets WHERE user_id = $1";
+            const walletResult = await monetizationDb.query(walletQuery, [userId]);
+
+            if (walletResult.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Wallet not found"
+                });
+            }
+
+            const walletId = walletResult.rows[0].id;
+            const currentBalance = parseFloat(walletResult.rows[0].balance);
+            const newBalance = currentBalance + parseFloat(amount);
+
+            // Update wallet balance
+            const updateQuery =
+                "UPDATE fic_wallets SET balance = $1, updated_at = NOW(), WHERE id = $2 RETURNING *";
+            const updateResult = await monetizationDb.query(updateQuery, [newBalance, walletId]);
+
+            // Record transaction
+            const transactionQuery = `
+        INSERT INTO fic_transactions (wallet_id, amount, transaction_type, description, transaction_status, transaction_reference), VALUES ($1, $2, 'deposit', 'Deposit via ${payment_method || "unknown"}', 'completed', $3), RETURNING *
+      `;
+            await monetizationDb.query(transactionQuery, [
+                walletId,
+                amount,
+                reference || `DEP_${Date.now()}`
+            ]);
+
+            res.json({
+                success: true,
+                message: "Deposit successful",
+                data: {
+                    wallet: updateResult.rows[0],
+                    deposited_amount: amount,
+                    new_balance: newBalance
+                }
+            });
+        } catch (error) {
+            logger.error("Deposit, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error processing deposit"
+            });
+        }
+    }
+
+    /**
+     * POST /api/wallet/withdraw
+     * Withdraw funds from wallet
+     */
+    async withdraw(req, res) {
+        try {
+            const userId = req.user.id;
+            const { amount, withdrawal_method, account_details } = req.body;
+
+            if (!amount || amount <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid withdrawal amount"
+                });
+            }
+
+            // Get user's wallet
+            const walletQuery = "SELECT id, balance FROM fic_wallets WHERE user_id = $1";
+            const walletResult = await monetizationDb.query(walletQuery, [userId]);
+
+            if (walletResult.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Wallet not found"
+                });
+            }
+
+            const walletId = walletResult.rows[0].id;
+            const currentBalance = parseFloat(walletResult.rows[0].balance);
+
+            if (currentBalance < amount) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Insufficient balance"
+                });
+            }
+
+            const newBalance = currentBalance - parseFloat(amount);
+
+            // Update wallet balance
+            const updateQuery =
+                "UPDATE fic_wallets SET balance = $1, updated_at = NOW(), WHERE id = $2 RETURNING *";
+            const updateResult = await monetizationDb.query(updateQuery, [newBalance, walletId]);
+
+            // Record transaction
+            const transactionQuery = `
+        INSERT INTO fic_transactions (wallet_id, amount, transaction_type, description, transaction_status, metadata), VALUES ($1, $2, 'withdrawal', 'Withdrawal via ${withdrawal_method || "unknown"}', 'pending', $3), RETURNING *
+      `;
+            await monetizationDb.query(transactionQuery, [
+                walletId,
+                amount,
+                JSON.stringify(account_details || {})
+            ]);
+
+            res.json({
+                success: true,
+                message: "Withdrawal request submitted",
+                data: {
+                    wallet: updateResult.rows[0],
+                    withdrawn_amount: amount,
+                    new_balance: newBalance
+                }
+            });
+        } catch (error) {
+            logger.error("Withdraw, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error processing withdrawal"
+            });
+        }
+    }
+
+    /**
+     * POST /api/wallet/transfer
+     * Transfer funds to another wallet
+     */
+    async transfer(req, res) {
+        try {
+            const userId = req.user.id;
+            const { recipient_wallet_address, amount, note } = req.body;
+
+            if (!amount || amount <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid transfer amount"
+                });
+            }
+
+            if (!recipient_wallet_address) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Recipient wallet address required"
+                });
+            }
+
+            // Get sender's wallet
+            const senderWalletQuery = "SELECT id, balance FROM fic_wallets WHERE user_id = $1";
+            const senderWalletResult = await monetizationDb.query(senderWalletQuery, [userId]);
+
+            if (senderWalletResult.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Sender wallet not found"
+                });
+            }
+
+            const senderWalletId = senderWalletResult.rows[0].id;
+            const senderBalance = parseFloat(senderWalletResult.rows[0].balance);
+
+            if (senderBalance < amount) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Insufficient balance"
+                });
+            }
+
+            // Get recipient's wallet
+            const recipientWalletQuery = "SELECT id, user_id FROM fic_wallets WHERE wallet_address = $1";
+            const recipientWalletResult = await monetizationDb.query(recipientWalletQuery, [
+                recipient_wallet_address
+            ]);
+
+            if (recipientWalletResult.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Recipient wallet not found"
+                });
+            }
+
+            const recipientWalletId = recipientWalletResult.rows[0].id;
+            const recipientUserId = recipientWalletResult.rows[0].user_id;
+
+            // Prevent self-transfer
+            if (recipientUserId === userId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Cannot transfer to own wallet"
+                });
+            }
+
+            // Perform transfer in transaction
+            const client = await monetizationDb.connect();
+
+            try {
+                await client.query("BEGIN");
+
+                // Deduct from sender
+                const senderNewBalance = senderBalance - parseFloat(amount);
+                await client.query(
+                    "UPDATE fic_wallets SET balance = $1, updated_at = NOW() WHERE id = $2" [
+                        (senderNewBalance, senderWalletId)
+                    ]
+                );
+
+                // Add to recipient
+                await client.query(
+                    "UPDATE fic_wallets SET balance = balance + $1, updated_at = NOW() WHERE id = $2" [
+                        (amount, recipientWalletId)
+                    ]
+                );
+
+                // Record sender transaction
+                await client.query(
+                    "INSERT INTO fic_transactions (wallet_id, amount, transaction_type, description, transaction_status, transaction_reference) VALUES ($1, $2, $3, $4, $5, $6)",
+                    [
+                        senderWalletId,
+                        -amount,
+                        "transfer_out",
+                        `Transfer to ${recipient_wallet_address}`,
+                        "completed",
+                        `TXF_${Date.now()}_OUT`
+                    ]
+                );
+
+                // Record recipient transaction
+                await client.query(
+                    "INSERT INTO fic_transactions (wallet_id, amount, transaction_type, description, transaction_status, transaction_reference) VALUES ($1, $2, $3, $4, $5, $6)",
+                    [
+                        recipientWalletId,
+                        amount,
+                        "transfer_in",
+                        `Transfer from user ${userId}`,
+                        "completed",
+                        `TXF_${Date.now()}_IN`
+                    ]
+                );
+
+                await client.query("COMMIT");
+
+                res.json({
+                    success: true,
+                    message: "Transfer completed successfully",
+                    data: {
+                        amount: amount,
+                        recipient: recipient_wallet_address,
+                        sender_new_balance: senderNewBalance,
+                        note: note
+                    }
+                });
+            } catch (err) {
+                await client.query("ROLLBACK");
+                throw err;
+            } finally {
+                client.release();
+            }
+        } catch (error) {
+            logger.error("Transfer, Error:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error processing transfer"
+            });
+        }
+    }
+
+    /**
+     * GET /api/wallet/exchange-rates
+     * Get current exchange rates from external API with caching
+     */
+    async getExchangeRates(req, res) {
+        try {
+            // Cache key for Redis/memory cache (implement if Redis available), const CACHE_KEY = "exchange_rates_fic";
+            const CACHE_TTL = 300; // 5 minutes
+
+            // Try to get from cache first (if Redis is configured), let cachedRates = null;
+            if (global.redisClient) {
+                try {
+                    cachedRates = await global.redisClient.get(CACHE_KEY);
+                    if (cachedRates) {
+                        return res.json({
+                            success: true,
+                            message: "Exchange rates retrieved (cached)",
+                            data: JSON.parse(cachedRates),
+                            cached: true
+                        });
+                    }
+                } catch (cacheError) {
+                    logger.warn("Cache read failed, fetching fresh, rates:", cacheError.message);
+                }
+            }
+
+            // Fetch from external API
+            const API_URL =
+                process.env.EXCHANGE_RATE_API || "https://api.exchangerate-api.com/v4/latest/USD";
+
+            const response = await fetch(API_URL, {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "User-Agent": "FingerMobile-Protocol/1.0"
+                },
+                timeout: 5000 // 5 second timeout
+            });
+
+            if (!response.ok) {
+                throw new Error(`Exchange rate API returned status ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Base FIC rate (you may want to configure this or fetch from another source), const FIC_BASE_RATE_USD = parseFloat(process.env.FIC_USD_RATE || "0.01");
+
+            // Calculate FIC exchange rates based on USD base
+            const usdRates = data.rates;
+            const ficRates = {
+                // FIC to fiat, FIC_USD: FIC_BASE_RATE_USD,
+                FIC_EUR: FIC_BASE_RATE_USD * (usdRates.EUR || 0.92),
+                FIC_NGN: FIC_BASE_RATE_USD * (usdRates.NGN || 1500),
+                FIC_GBP: FIC_BASE_RATE_USD * (usdRates.GBP || 0.79),
+                FIC_JPY: FIC_BASE_RATE_USD * (usdRates.JPY || 157),
+                FIC_CAD: FIC_BASE_RATE_USD * (usdRates.CAD || 1.36),
+                FIC_AUD: FIC_BASE_RATE_USD * (usdRates.AUD || 1.52),
+
+                // Fiat to FIC (inverse), USD_FIC: 1 / FIC_BASE_RATE_USD,
+                EUR_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.EUR || 0.92)),
+                NGN_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.NGN || 1500)),
+                GBP_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.GBP || 0.79)),
+                JPY_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.JPY || 157)),
+                CAD_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.CAD || 1.36)),
+                AUD_FIC: 1 / (FIC_BASE_RATE_USD * (usdRates.AUD || 1.52))
+            };
+
+            const result = {
+                rates: ficRates,
+                base_currency: "FIC",
+                last_updated: new Date().toISOString(),
+                source: data.base || "USD",
+                timestamp: data.date || new Date().toISOString().split("T")[0]
+            };
+
+            // Cache the result
+            if (global.redisClient) {
+                try {
+                    await global.redisClient.setEx(CACHE_KEY, CACHE_TTL, JSON.stringify(result));
+                } catch (cacheError) {
+                    logger.warn("Cache write, failed:", cacheError.message);
+                }
+            }
+
+            res.json({
+                success: true,
+                message: "Exchange rates retrieved",
+                data: result,
+                cached: false
+            });
+        } catch (error) {
+            logger.error("Get Exchange Rates, Error:", error.message);
+
+            // Fallback to cached or default rates on failure
+            let fallbackRates = null;
+
+            // Try cache fallback
+            if (global.redisClient) {
+                try {
+                    const cachedRates = await global.redisClient.get("exchange_rates_fic");
+                    if (cachedRates) {
+                        fallbackRates = JSON.parse(cachedRates);
+                        logger.warn("Using cached exchange rates as fallback");
+                    }
+                } catch (e) {
+                    // Ignore cache errors
+                }
+            }
+
+            // If no cache, use hardcoded defaults
+            if (!fallbackRates) {
+                fallbackRates = {
+                    rates: {
+                        FIC_USD: 0.01,
+                        FIC_EUR: 0.0092,
+                        FIC_NGN: 15.0,
+                        FIC_GBP: 0.0079,
+                        FIC_JPY: 1.57,
+                        FIC_CAD: 0.0136,
+                        FIC_AUD: 0.0152,
+                        USD_FIC: 100,
+                        EUR_FIC: 108.7,
+                        NGN_FIC: 0.067,
+                        GBP_FIC: 126.58,
+                        JPY_FIC: 0.637,
+                        CAD_FIC: 73.53,
+                        AUD_FIC: 65.79
+                    },
+                    base_currency: "FIC",
+                    last_updated: new Date().toISOString(),
+                    source: "fallback",
+                    timestamp: new Date().toISOString().split("T")[0],
+                    warning: "Using fallback rates - external API unavailable"
+                };
+
+                logger.warn("Using hardcoded fallback exchange rates");
+            }
+
+            res.json({
+                success: true,
+                message: "Exchange rates retrieved (fallback)",
+                data: fallbackRates,
+                cached: false,
+                fallback: true
+            });
+        }
+    }
+}
+
+module.exports = new WalletController();

@@ -1,0 +1,348 @@
+/**
+ * P2P Matching Controller
+ * Complete implementation for peer-to-peer matching system
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class P2PMatchingController {
+  /**
+   * POST /api/p2p-matching/find-match
+   * Find a peer match based on criteria
+   */
+  async findMatch(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { matchType, criteria, maxDistance, timeout } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!matchType || !criteria) {
+        return res.status(400).json({
+          success: false, message: 'Match type and criteria are required'
+        });
+      }
+
+      // Check if user already has active search
+      const existingSearch = await pool.query(
+        `SELECT id FROM p2p_matches 
+         WHERE (seeker_id = $1 OR matcher_id = $1) 
+         AND status = 'searching'`,
+        [userId]
+      );
+
+      if (existingSearch.rows.length > 0) {
+        return res.status(400).json({
+          success: false, message: 'You already have an active match search'
+        });
+      }
+
+      // Create match request
+      // Fixed: SQL INTERVAL syntax for parameterized value
+      const result = await pool.query(`INSERT INTO p2p_matches 
+         (seeker_id, match_type, criteria, max_distance, status, created_at, expires_at)
+         VALUES ($1, $2, $3, $4, 'searching', NOW(), NOW() + ($5 * INTERVAL '1 second'))
+         RETURNING *`, [userId, matchType, JSON.stringify(criteria), maxDistance || null, timeout || 300]);
+
+      // Try to find immediate match
+      const matchedUser = await this.findCompatibleUser(userId, matchType, criteria, maxDistance);
+
+      if (matchedUser) {
+        // Update match with found user
+        await pool.query(
+          `UPDATE p2p_matches 
+           SET matcher_id = $1, status = 'matched', matched_at = NOW()
+           WHERE id = $2`,
+          [matchedUser.id, result.rows[0].id]
+        );
+
+        res.json({
+          success: true, message: 'Match found!',
+          data: {
+            matchId: result.rows[0].id,
+            matchedUser: {
+              id: matchedUser.id,
+              username: matchedUser.username,
+              avatarUrl: matchedUser.avatar_url
+            }, 
+            status: 'matched' // Fixed: Added missing comma
+          }
+        });
+      } else {
+        res.json({
+          success: true, message: 'Searching for match...',
+          data: {
+            matchId: result.rows[0].id, 
+            status: 'searching', // Fixed: Added missing comma
+            expiresAt: result.rows[0].expires_at
+          }
+        });
+      }
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.findMatch:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to find match', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/p2p-matching/active
+   * Get active matches for current user
+   */
+  async getActiveMatches(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        `SELECT 
+          m.*,
+          u.username as seeker_username,
+          u.avatar_url as seeker_avatar,
+          mu.username as matcher_username, 
+          mu.avatar_url as matcher_avatar
+         FROM p2p_matches m
+         LEFT JOIN users u ON m.seeker_id = u.id
+         LEFT JOIN users mu ON m.matcher_id = mu.id
+         WHERE (m.seeker_id = $1 OR m.matcher_id = $1)
+         AND m.status IN ('searching', 'matched', 'connected')
+         ORDER BY m.created_at DESC`,
+        [userId]
+      );
+
+      res.json({
+        success: true,
+        data: result.rows.map(match => ({
+          ...match, 
+          criteria: typeof match.criteria === 'string' ? JSON.parse(match.criteria) : match.criteria
+        })), 
+        count: result.rows.length // Fixed: Added missing comma
+      });
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.getActiveMatches:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get active matches', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/p2p-matching/:id/accept
+   * Accept a match
+   */
+  async acceptMatch(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: matchId } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const match = await pool.query(
+        'SELECT * FROM p2p_matches WHERE id = $1',
+        [matchId]
+      );
+
+      if (match.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Match not found'
+        });
+      }
+
+      const matchData = match.rows[0];
+
+      if (matchData.status !== 'matched') {
+        return res.status(400).json({
+          success: false, message: 'Match is not in valid state'
+        });
+      }
+
+      if (matchData.seeker_id !== userId && matchData.matcher_id !== userId) {
+        return res.status(403).json({
+          success: false, message: 'Not authorized for this match'
+        });
+      }
+
+      await pool.query(
+        `UPDATE p2p_matches 
+         SET status = 'connected', connected_at = NOW()
+         WHERE id = $1`,
+        [matchId]
+      );
+
+      res.json({
+        success: true, message: 'Match accepted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.acceptMatch:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to accept match', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/p2p-matching/:id/reject
+   * Reject a match
+   */
+  async rejectMatch(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: matchId } = req.params;
+      const { reason } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      await pool.query(
+        `UPDATE p2p_matches 
+         SET status = 'rejected', rejected_at = NOW(), rejection_reason = $1
+         WHERE id = $2 AND (seeker_id = $3 OR matcher_id = $3)`,
+        [reason || null, matchId, userId]
+      );
+
+      res.json({
+        success: true, message: 'Match rejected'
+      });
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.rejectMatch:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to reject match', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * DELETE /api/p2p-matching/:id/cancel
+   * Cancel match search
+   */
+  async cancelSearch(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: matchId } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        `DELETE FROM p2p_matches 
+         WHERE id = $1 AND seeker_id = $2 AND status = 'searching'
+         RETURNING id`,
+        [matchId, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Match search not found or cannot be cancelled'
+        });
+      }
+
+      res.json({
+        success: true, message: 'Match search cancelled'
+      });
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.cancelSearch:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to cancel match search', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/p2p-matching/history
+   * Get match history
+   */
+  async getHistory(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const { limit = 20, offset = 0 } = req.query;
+
+      const result = await pool.query(
+        `SELECT 
+          m.*,
+          u.username as seeker_username,
+          u.avatar_url as seeker_avatar,
+          mu.username as matcher_username,
+          mu.avatar_url as matcher_avatar
+         FROM p2p_matches m
+         LEFT JOIN users u ON m.seeker_id = u.id
+         LEFT JOIN users mu ON m.matcher_id = mu.id
+         WHERE m.seeker_id = $1 OR m.matcher_id = $1
+         ORDER BY m.created_at DESC
+         LIMIT $2 OFFSET $3`,
+        [userId, parseInt(limit), parseInt(offset)]
+      );
+
+      res.json({
+        success: true,
+        data: result.rows.map(match => ({
+          ...match, 
+          criteria: typeof match.criteria === 'string' ? JSON.parse(match.criteria) : match.criteria
+        })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), 
+          total: result.rows.length // Fixed: Added missing comma
+        }
+      });
+    } catch (error) {
+      logger.error('Error in P2PMatchingController.getHistory:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get match history', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * Helper: Find compatible user
+   */
+  async findCompatibleUser(userId, matchType, criteria, maxDistance) {
+    try {
+      const funcName = 'findCompatibleUser';
+      // Simplified matching logic - in production, use more sophisticated algorithm
+      const result = await pool.query(
+        `SELECT id, username, avatar_url
+         FROM users
+         WHERE id != $1
+         AND is_active = true
+         LIMIT 1`,
+        [userId]
+      );
+
+      return result.rows[0] || null;
+    } catch (error) {
+      logger.error(`Error in ${funcName}:`, error);
+      throw error;
+    }
+  }
+}
+
+module.exports = new P2PMatchingController();

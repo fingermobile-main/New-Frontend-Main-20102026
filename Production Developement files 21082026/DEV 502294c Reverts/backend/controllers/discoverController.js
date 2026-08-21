@@ -1,0 +1,193 @@
+/**
+ * DiscoverController
+ * Content discovery and recommendation engine
+ */
+
+const pool = require('../database/connection');
+const logger = require('../utils/logger');
+
+class DiscoverController {
+  /**
+   * GET /api/discover/content
+   * Get discoverable content
+   */
+  async getAll(req, res) {
+    try {
+      const limit = parseInt(req.query.limit) || 50;
+      const offset = parseInt(req.query.offset) || 0;
+      const category = req.query.category;
+      
+      let query = 'SELECT * FROM content WHERE status = $1';
+      const params = ['published'];
+      
+      if (category) {
+        query += ' AND category = $' + (params.length + 1);
+        params.push(category);
+      }
+      
+      query += ' ORDER BY created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
+      params.push(limit, offset);
+      
+      const result = await pool.query(query, params);
+      
+      res.json({
+        success: true, message: 'Content retrieved',
+        data: result.rows, count: result.rows.length
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getAll:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve content', details: error.message
+      });
+    }
+  }
+  
+  /**
+   * GET /api/discover/featured
+   * Get featured content
+   */
+  async getFeatured(req, res) {
+    try {
+      const limit = parseInt(req.query.limit) || 20;
+      
+      const query = ` SELECT * FROM content
+        WHERE status = 'published' AND is_featured = true
+        ORDER BY featured_at DESC
+        LIMIT $1
+      `;
+      
+      const result = await pool.query(query, [limit]);
+      
+      res.json({
+        success: true, message: 'Featured content retrieved', data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getFeatured:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve featured content', details: error.message
+      });
+    }
+  }
+  
+  /**
+   * GET /api/discover/categories/:category
+   * Get content by category
+   */
+  async getByCategory(req, res) {
+    try {
+      const { category } = req.params;
+      const limit = parseInt(req.query.limit) || 50;
+      
+      const query = ` SELECT * FROM content
+        WHERE status = 'published' AND category = $1
+        ORDER BY created_at DESC
+        LIMIT $2
+      `;
+      
+      const result = await pool.query(query, [category, limit]);
+      
+      res.json({
+        success: true, message: `Content for category '${category}' retrieved`, data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getByCategory:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve category content',
+        details: error.message
+      });
+    }
+  }
+  
+  /**
+   * GET /api/discover/creators
+   * Get top creators
+   */
+  async getCreators(req, res) {
+    try {
+      const limit = parseInt(req.query.limit) || 20;
+      
+      const query = ` SELECT 
+          u.*,
+          COUNT(DISTINCT c.id) as content_count,
+          SUM(c.views) as total_views
+        FROM users u
+        LEFT JOIN content c ON u.id = c.author_id
+        WHERE u.is_creator = true
+        GROUP BY u.id
+        ORDER BY total_views DESC NULLS LAST
+        LIMIT $1
+      `;
+      
+      const result = await pool.query(query, [limit]);
+      
+      res.json({
+        success: true, message: 'Top creators retrieved', data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getCreators:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve creators', details: error.message
+      });
+    }
+  }
+  
+  /**
+   * GET /api/discover/suggested/:memberId
+   * Get suggested content for member
+   */
+  async getSuggestions(req, res) {
+    try {
+      const { memberId } = req.params;
+      const limit = parseInt(req.query.limit) || 20;
+      
+      // Algorithm: Based on user's viewing history and preferences
+      const query = ` SELECT DISTINCT c.*
+        FROM content c
+        WHERE c.status = 'published' AND c.id NOT IN (
+            SELECT content_id FROM user_interactions WHERE user_id = $1
+          )
+        ORDER BY c.views DESC, c.created_at DESC
+        LIMIT $2
+      `;
+      
+      const result = await pool.query(query, [memberId, limit]);
+      
+      res.json({
+        success: true, message: 'Suggestions retrieved', data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getSuggestions:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve suggestions', details: error.message
+      });
+    }
+  }
+  
+  /**
+   * GET /api/discover/broadcasts
+   * Get live broadcasts
+   */
+  async getBroadcasts(req, res) {
+    try {
+      const query = ` SELECT l.*, u.name as broadcaster_name, u.avatar_url
+        FROM live_streams l
+        JOIN users u ON l.broadcaster_id = u.id
+        WHERE l.status = 'live' ORDER BY l.viewer_count DESC
+      `;
+      
+      const result = await pool.query(query);
+      
+      res.json({
+        success: true, message: 'Live broadcasts retrieved', data: result.rows
+      });
+    } catch (error) {
+      logger.error('Error in DiscoverController.getBroadcasts:', error);
+      res.status(500).json({
+        success: false, error: 'Failed to retrieve broadcasts',
+        details: error.message
+      });
+    }
+  }
+}
+
+module.exports = new DiscoverController();

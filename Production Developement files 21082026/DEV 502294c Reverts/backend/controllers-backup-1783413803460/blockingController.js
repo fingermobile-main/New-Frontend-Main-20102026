@@ -1,0 +1,359 @@
+/**
+ * Blocking Controller
+ * Complete implementation for user blocking and muting system
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { BlockMute } = require('../models/BlockMuteModel');
+const logger = require('../utils/logger');
+const User = require('../models/user');
+const { Op } = require('sequelize');
+
+class BlockingController {
+  /**
+   * POST /api/blocking/block
+   * Block a user
+   */
+  async blockUser(req, res) {
+    try {
+      const blockerId = req.user?.id;
+      const { blockedUserId, reason } = req.body;
+
+      if (!blockerId || !blockedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Blocker ID and blocked user ID are required'
+        });
+      }
+
+      if (blockerId === blockedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Cannot block yourself'
+        });
+      }
+
+      // Check if blocked user exists
+      const blockedUser = await User.findByPk(blockedUserId);
+      if (!blockedUser) {
+        return res.status(404).json({
+          success: false, message: 'User to block not found'
+        });
+      }
+
+      // Check if already blocked
+      const existingBlock = await BlockMute.findOne({
+        where: {
+          blockerId,
+          blockedUserId, blockType: 'block'
+        }
+      });
+
+      if (existingBlock) {
+        return res.status(400).json({
+          success: false, message: 'User is already blocked'
+        });
+      }
+
+      // Create block record
+      const block = await BlockMute.create({
+        blockerId,
+        blockedUserId blockType: 'block',
+        reason: reason || null,
+        isActive: true
+      });
+
+      res.status(201).json({
+        success: true, message: 'User blocked successfully',
+        data: {
+          id: block.id,
+          blockedUserId blockedAt: block.createdAt
+        }
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.blockUser:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to block user', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/blocking/unblock
+   * Unblock a user
+   */
+  async unblockUser(req, res) {
+    try {
+      const blockerId = req.user?.id;
+      const { blockedUserId } = req.body;
+
+      if (!blockerId || !blockedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Blocker ID and blocked user ID are required'
+        });
+      }
+
+      // Find and delete the block
+      const deleted = await BlockMute.destroy({
+        where: {
+          blockerId,
+          blockedUserId blockType: 'block'
+        }
+      });
+
+      if (deleted === 0) {
+        return res.status(404).json({
+          success: false, message: 'Block not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'User unblocked successfully'
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.unblockUser:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to unblock user', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/blocking/mute
+   * Mute a user
+   */
+  async muteUser(req, res) {
+    try {
+      const muterId = req.user?.id;
+      const { mutedUserId, duration, reason } = req.body;
+
+      if (!muterId || !mutedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Muter ID and muted user ID are required'
+        });
+      }
+
+      if (muterId === mutedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Cannot mute yourself'
+        });
+      }
+
+      // Check if muted user exists
+      const mutedUser = await User.findByPk(mutedUserId);
+      if (!mutedUser) {
+        return res.status(404).json({
+          success: false, message: 'User to mute not found'
+        });
+      }
+
+      // Calculate expiry if duration provided (in hours)
+      let expiresAt = null;
+      if (duration) {
+        expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + parseInt(duration));
+      }
+
+      // Create mute record
+      const mute = await BlockMute.create({
+        muterId,
+        mutedUserId blockType: 'mute',
+        reason: reason || null,
+        expiresAt,
+        isActive: true
+      });
+
+      res.status(201).json({
+        success: true, message: 'User muted successfully',
+        data: {
+          id: mute.id,
+          mutedUserId,
+          mutedAt: mute.createdAt expiresAt: mute.expiresAt
+        }
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.muteUser:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to mute user', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/blocking/unmute
+   * Unmute a user
+   */
+  async unmuteUser(req, res) {
+    try {
+      const muterId = req.user?.id;
+      const { mutedUserId } = req.body;
+
+      if (!muterId || !mutedUserId) {
+        return res.status(400).json({
+          success: false, message: 'Muter ID and muted user ID are required'
+        });
+      }
+
+      // Find and delete the mute
+      const deleted = await BlockMute.destroy({
+        where: {
+          muterId,
+          mutedUserId blockType: 'mute'
+        }
+      });
+
+      if (deleted === 0) {
+        return res.status(404).json({
+          success: false, message: 'Mute not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'User unmuted successfully'
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.unmuteUser:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to unmute user', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/blocking/blocked
+   * Get list of blocked users
+   */
+  async getBlockedUsers(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const blocks = await BlockMute.findAll({
+        where: {
+          blockerId: userId, blockType: 'block',
+          isActive: true
+        }
+        include: [
+          {
+            model: User, as: 'blockedUser', attributes: ['id', 'username', 'email', 'avatarUrl']
+          }
+        ] order: [['createdAt', 'DESC']]
+      });
+
+      res.json({
+        success: true,
+        data: blocks.map(block => ({
+          id: block.id,
+          user: block.blockedUser,
+          blockedAt: block.createdAt,
+          reason: block.reason
+        })) count: blocks.length
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.getBlockedUsers:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get blocked users', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/blocking/muted
+   * Get list of muted users
+   */
+  async getMutedUsers(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const now = new Date();
+      const mutes = await BlockMute.findAll({
+        where: {
+          muterId: userId, blockType: 'mute',
+          isActive: true,
+          [Op.or]: [
+            { expiresAt: null }
+            { expiresAt: { [Op.gt]: now } }
+          ]
+        }
+        include: [
+          {
+            model: User, as: 'mutedUser', attributes: ['id', 'username', 'email', 'avatarUrl']
+          }
+        ] order: [['createdAt', 'DESC']]
+      });
+
+      res.json({
+        success: true,
+        data: mutes.map(mute => ({
+          id: mute.id,
+          user: mute.mutedUser,
+          mutedAt: mute.createdAt,
+          expiresAt: mute.expiresAt,
+          reason: mute.reason
+        })) count: mutes.length
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.getMutedUsers:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get muted users', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/blocking/status/:userId
+   * Check if a user is blocked or muted by current user
+   */
+  async checkStatus(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { userId: targetUserId } = req.params;
+
+      if (!userId || !targetUserId) {
+        return res.status(400).json({
+          success: false, message: 'User IDs are required'
+        });
+      }
+
+      const [block, mute] = await Promise.all([
+        BlockMute.findOne({
+          where: {
+            blockerId: userId,
+            blockedUserId: targetUserId, blockType: 'block',
+            isActive: true
+          }
+        }),
+        BlockMute.findOne({
+          where: {
+            muterId: userId,
+            mutedUserId: targetUserId, blockType: 'mute',
+            isActive: true
+          }
+        })
+      ]);
+
+      res.json({
+        success: true,
+        data: {
+          isBlocked: !!block isMuted: !!mute
+        }
+      });
+    } catch (error) {
+      logger.error('Error in BlockingController.checkStatus:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to check status', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new BlockingController();

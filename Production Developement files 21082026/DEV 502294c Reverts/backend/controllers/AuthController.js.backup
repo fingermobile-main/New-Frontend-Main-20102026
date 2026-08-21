@@ -1,0 +1,85 @@
+/**
+ * AuthController
+ * Auto-generated controller
+ */
+
+class AuthController {
+    async getAll(req, res) {
+        try {
+            res.json({
+                success: true,
+                data: [],
+                message: "auth endpoint"
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+
+    async getById(req, res) {
+        try {
+            const { id } = req.params;
+            res.json({
+                success: true,
+                data: {
+                    id
+                },
+                message: "auth item"
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+
+    async create(req, res) {
+        try {
+            res.status(201).json({
+                success: true,
+                message: "auth created",
+                data: req.body
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+
+    async update(req, res) {
+        try {
+            res.json({
+                success: true,
+                message: "auth updated",
+                data: req.body
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            res.json({
+                success: true,
+                message: "auth deleted"
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+}
+
+module.exports = new AuthController();

@@ -1,0 +1,375 @@
+const express = require("express");
+const router = express.Router();
+const { identityDb } = require("../db");
+
+// Get all leaderboards with filters
+router.get("/", async (req, res) => {
+  try {
+    const {
+      category,
+      type,
+      time_range, // daily, weekly, monthly, all_time
+      limit = 20,
+      offset = 0
+    } = req.query;
+
+    let query = `SELECT l.*, COUNT(lp.position) as participant_count
+                 FROM leaderboards l
+                 LEFT JOIN leaderboard_positions lp ON l.id = lp.leaderboard_id
+                 WHERE 1=1`;
+    const params = [];
+    let paramIndex = 0;
+
+    if (category) {
+      paramIndex++;
+      query += ` AND l.category = $${paramIndex}`;
+      params.push(category);
+    }
+
+    if (type) {
+      paramIndex++;
+      query += ` AND l.type = $${paramIndex}`;
+      params.push(type);
+    }
+
+    if (time_range) {
+      paramIndex++;
+      query += ` AND l.time_range = $${paramIndex}`;
+      params.push(time_range);
+    }
+
+    query += ` GROUP BY l.id ORDER BY l.created_at DESC LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const { rows } = await identityDb.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching leaderboards:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get a specific leaderboard by ID
+router.get("/:leaderboardId", async (req, res) => {
+  try {
+    const { leaderboardId } = req.params;
+
+    const { rows } = await identityDb.query(
+      `SELECT l.*
+       FROM leaderboards l
+       WHERE l.id = $1`,
+      [leaderboardId],
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Leaderboard not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("Error fetching leaderboard:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get positions for a specific leaderboard
+router.get("/:leaderboardId/positions", async (req, res) => {
+  try {
+    const { leaderboardId } = req.params;
+    const {
+      limit = 50,
+      offset = 0,
+      time_range // Override the leaderboard's default time range
+    } = req.query;
+
+    // Check if the leaderboard exists
+    const leaderboardCheck = await identityDb.query(
+      "SELECT * FROM leaderboards WHERE id = $1",
+      [leaderboardId]
+    );
+
+    if (leaderboardCheck.rows.length === 0) {
+      return res.status(404).json({ error: "Leaderboard not found" });
+    }
+
+    const lb = leaderboardCheck.rows[0];
+    
+    // Determine the date cutoff based on time range
+    let dateCondition = "";
+    let dateParam = null;
+    
+    if (time_range) {
+      dateCondition = `AND lp.recorded_at >= NOW() - INTERVAL '${time_range}'`;
+    } else if (lb.time_range) {
+      if (lb.time_range === 'daily') {
+        dateCondition = "AND lp.recorded_at >= CURRENT_DATE";
+      } else if (lb.time_range === 'weekly') {
+        dateCondition = "AND lp.recorded_at >= CURRENT_DATE - INTERVAL '7 days'";
+      } else if (lb.time_range === 'monthly') {
+        dateCondition = "AND lp.recorded_at >= DATE_TRUNC('month', CURRENT_DATE)";
+      }
+    }
+
+    // Query for the leaderboard positions
+    const query = `
+      SELECT 
+        lp.rank,
+        lp.score,
+        lp.member_id,
+        m.membername,
+        m.avatar_url,
+        lp.recorded_at,
+        lp.metadata
+      FROM leaderboard_positions lp
+      JOIN members m ON lp.member_id = m.id
+      WHERE lp.leaderboard_id = $1 ${dateCondition}
+      ORDER BY lp.rank ASC
+      LIMIT $2 OFFSET $3
+    `;
+
+    const { rows } = await identityDb.query(query, [
+      leaderboardId, 
+      parseInt(limit), 
+      parseInt(offset)
+    ]);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching leaderboard positions:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get user's position in a specific leaderboard
+router.get("/:leaderboardId/user/:userId", async (req, res) => {
+  try {
+    const { leaderboardId, userId } = req.params;
+    const requestingUserId = req.member.id;
+
+    // Only allow viewing own position or if admin
+    if (requestingUserId !== userId && !req.member.isAdmin) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+
+    const query = `
+      SELECT 
+        lp.rank,
+        lp.score,
+        lp.member_id,
+        m.membername,
+        m.avatar_url,
+        lp.recorded_at,
+        lp.metadata,
+        (SELECT COUNT(*) FROM leaderboard_positions WHERE leaderboard_id = $1) as total_participants
+      FROM leaderboard_positions lp
+      JOIN members m ON lp.member_id = m.id
+      WHERE lp.leaderboard_id = $1 AND lp.member_id = $2
+      ORDER BY lp.rank ASC
+      LIMIT 1
+    `;
+
+    const { rows } = await identityDb.query(query, [leaderboardId, userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found in this leaderboard" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("Error fetching user leaderboard position:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Create a new leaderboard (admin only)
+router.post("/", async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      category,
+      type,
+      time_range,
+      scoring_method, // highest, lowest, latest, cumulative
+      is_global,
+      metadata
+    } = req.body;
+
+    // Verify user has admin privileges
+    if (!req.member || !req.member.isAdmin) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+
+    const { rows } = await identityDb.query(
+      `INSERT INTO leaderboards 
+       (name, description, category, type, time_range, scoring_method, is_global, metadata, created_by)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING *`,
+      [name, description, category, type, time_range, scoring_method, is_global, metadata, req.member.id],
+    );
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error("Error creating leaderboard:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Update a user's score in a leaderboard
+router.post("/:leaderboardId/score", async (req, res) => {
+  try {
+    const { leaderboardId } = req.params;
+    const { score, metadata } = req.body;
+    const memberId = req.member.id;
+
+    // Validate input
+    if (typeof score !== 'number' || score < 0) {
+      return res.status(400).json({ error: "Score must be a non-negative number" });
+    }
+
+    // Check if leaderboard exists
+    const leaderboardCheck = await identityDb.query(
+      "SELECT * FROM leaderboards WHERE id = $1",
+      [leaderboardId]
+    );
+
+    if (leaderboardCheck.rows.length === 0) {
+      return res.status(404).json({ error: "Leaderboard not found" });
+    }
+
+    const leaderboard = leaderboardCheck.rows[0];
+
+    // Check if user already has a score in this leaderboard for this period
+    let existingPosition = null;
+    const existingQuery = `SELECT * FROM leaderboard_positions 
+                           WHERE leaderboard_id = $1 AND member_id = $2`;
+
+    // Add time constraint if needed
+    let existingParams = [leaderboardId, memberId];
+    let baseExistingQuery = existingQuery;
+
+    if (leaderboard.time_range === 'daily') {
+      baseExistingQuery += " AND recorded_at >= CURRENT_DATE";
+    } else if (leaderboard.time_range === 'weekly') {
+      baseExistingQuery += " AND recorded_at >= CURRENT_DATE - INTERVAL '7 days'";
+    } else if (leaderboard.time_range === 'monthly') {
+      baseExistingQuery += " AND recorded_at >= DATE_TRUNC('month', CURRENT_DATE)";
+    }
+
+    const existingResult = await identityDb.query(baseExistingQuery, existingParams);
+
+    let newPosition;
+    if (existingResult.rows.length > 0) {
+      existingPosition = existingResult.rows[0];
+      
+      // Depending on scoring method, update the score accordingly
+      let newScore = score;
+      if (leaderboard.scoring_method === 'highest' && score <= existingPosition.score) {
+        // Keep the higher score
+        newScore = existingPosition.score;
+      } else if (leaderboard.scoring_method === 'lowest' && score >= existingPosition.score) {
+        // Keep the lower score
+        newScore = existingPosition.score;
+      } else if (leaderboard.scoring_method === 'cumulative') {
+        // Add to existing score
+        newScore = existingPosition.score + score;
+      }
+      // For 'latest' method, we always use the new score
+      
+      // Update the existing position
+      const updateQuery = `
+        UPDATE leaderboard_positions 
+        SET score = $1, recorded_at = CURRENT_TIMESTAMP, metadata = $2
+        WHERE id = $3
+        RETURNING *
+      `;
+      const updateResult = await identityDb.query(updateQuery, [newScore, metadata, existingPosition.id]);
+      newPosition = updateResult.rows[0];
+    } else {
+      // Create a new position
+      const insertQuery = `
+        INSERT INTO leaderboard_positions 
+        (leaderboard_id, member_id, score, rank, recorded_at, metadata)
+        VALUES ($1, $2, $3, 999999, CURRENT_TIMESTAMP, $4)
+        RETURNING *
+      `;
+      const insertResult = await identityDb.query(insertQuery, [leaderboardId, memberId, score, metadata]);
+      newPosition = insertResult.rows[0];
+    }
+
+    // Recalculate rankings for this leaderboard
+    await recalculateLeaderboardRankings(leaderboardId);
+
+    res.json({
+      message: "Score updated successfully",
+      newPosition
+    });
+  } catch (err) {
+    console.error("Error updating leaderboard score:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Helper function to recalculate rankings
+async function recalculateLeaderboardRankings(leaderboardId) {
+  try {
+    // Get all positions for this leaderboard
+    const positions = await identityDb.query(
+      `SELECT lp.*, m.total_points
+       FROM leaderboard_positions lp
+       JOIN members m ON lp.member_id = m.id
+       WHERE lp.leaderboard_id = $1
+       ORDER BY lp.score DESC, lp.recorded_at ASC`, // Order by score descending, then by earliest submission
+      [leaderboardId]
+    );
+
+    // Update ranks based on sorted order
+    for (let i = 0; i < positions.rows.length; i++) {
+      const rank = i + 1;
+      await identityDb.query(
+        `UPDATE leaderboard_positions 
+         SET rank = $1 
+         WHERE id = $2`,
+        [rank, positions.rows[i].id]
+      );
+    }
+  } catch (err) {
+    console.error("Error recalculating leaderboard rankings:", err);
+  }
+}
+
+// Get top positions for a specific leaderboard (optimized for displaying top N)
+router.get("/:leaderboardId/top/:count", async (req, res) => {
+  try {
+    const { leaderboardId } = req.params;
+    const count = parseInt(req.params.count) || 10;
+
+    // Limit to reasonable number
+    const safeCount = Math.min(count, 100);
+
+    const query = `
+      SELECT 
+        lp.rank,
+        lp.score,
+        lp.member_id,
+        m.membername,
+        m.avatar_url,
+        lp.recorded_at,
+        lp.metadata
+      FROM leaderboard_positions lp
+      JOIN members m ON lp.member_id = m.id
+      WHERE lp.leaderboard_id = $1
+      ORDER BY lp.rank ASC
+      LIMIT $2
+    `;
+
+    const { rows } = await identityDb.query(query, [leaderboardId, safeCount]);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching top leaderboard positions:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+module.exports = router;

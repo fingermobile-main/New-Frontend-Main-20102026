@@ -1,0 +1,483 @@
+const logger = require("../utils/logger");
+const db = require("../database/connection");
+
+class ExportController {
+    /**
+     * POST /api/export - Create export job
+     */
+    async createExport(req, res) {
+        try {
+            const {
+                type,
+                format = "csv",
+                filters = {}
+            } = req.body;
+            const userId = req.user.id;
+
+            // Validate export type
+            const validTypes = ["users", "posts", "analytics", "audit_logs", "transactions"];
+            if (!validTypes.includes(type)) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Invalid export type. Must be one, of: ${validTypes.join(", ")}`
+                });
+            }
+
+            // Validate format
+            const validFormats = ["csv", "json", "xlsx"];
+            if (!validFormats.includes(format)) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Invalid format. Must be one, of: ${validFormats.join(", ")}`
+                });
+            }
+
+            // Create export job
+            const result = await db.query(
+                `INSERT INTO export_jobs 
+        (user_id, export_type, format, filters, status, created_at)
+        VALUES ($1, $2, $3, $4, 'pending', NOW()), RETURNING *`,
+                [userId, type, format, JSON.stringify(filters)]
+            );
+
+            // Process export asynchronously (in production, use job queue), this.processExport(result.rows[0].id, type, format, filters);
+
+            res.status(201).json({
+                success: true,
+                message: "Export job created",
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error("Error creating export, job:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to create export job",
+                error: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/export/jobs - List export jobs
+     */
+    async listExportJobs(req, res) {
+        try {
+            const userId = req.user.id;
+            const { limit = 20, page = 1, status } = req.query;
+
+            let query = "SELECT * FROM export_jobs WHERE user_id = $1";
+            const values = [userId];
+            let paramIndex = 2;
+
+            if (status) {
+                query += ` AND status = $${paramIndex}`;
+                values.push(status);
+                paramIndex++;
+            }
+
+            const offset = (page - 1) * limit;
+            query += ` ORDER BY created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+            values.push(parseInt(limit), offset);
+
+            const result = await db.query(query, values);
+
+            const countResult = await db.query("SELECT COUNT(*) FROM export_jobs WHERE user_id = $1", [
+                userId
+            ]);
+
+            const total = parseInt(countResult.rows[0].count);
+
+            res.json({
+                success: true,
+                data: result.rows,
+                pagination: {
+                    page: parseInt(page),
+                    limit: parseInt(limit),
+                    total: total,
+                    totalPages: Math.ceil(total / limit)
+                }
+            });
+        } catch (error) {
+            logger.error("Error listing export, jobs:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to list export jobs",
+                error: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/export/jobs/:id - Get export job status
+     */
+    async getExportJob(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user.id;
+
+            const result = await db.query("SELECT * FROM export_jobs WHERE id = $1 AND user_id = $2", [
+                id,
+                userId
+            ]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Export job not found"
+                });
+            }
+
+            res.json({
+                success: true,
+                data: result.rows[0]
+            });
+        } catch (error) {
+            logger.error("Error getting export, job:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to get export job",
+                error: error.message
+            });
+        }
+    }
+
+    /**
+     * GET /api/export/download/:id - Download export file
+     */
+    async downloadExport(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user.id;
+
+            const result = await db.query("SELECT * FROM export_jobs WHERE id = $1 AND user_id = $2", [
+                id,
+                userId
+            ]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Export job not found"
+                });
+            }
+
+            const job = result.rows[0];
+
+            if (job.status !== "completed") {
+                return res.status(400).json({
+                    success: false,
+                    message: `Export is not ready. Current, status: ${job.status}`
+                });
+            }
+
+            // In production, serve file from storage (S3, etc.)
+            // For now, return mock data
+            res.setHeader("Content-Type", this.getContentType(job.format));
+            res.setHeader("Content-Disposition", `attachment; filename="export-${id}.${job.format}"`);
+
+            // Mock export data
+            const mockData = this.generateMockExportData(job.export_type, job.format);
+            res.send(mockData);
+        } catch (error) {
+            logger.error("Error downloading, export:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to download export",
+                error: error.message
+            });
+        }
+    }
+
+    /**
+     * DELETE /api/export/jobs/:id - Delete export job
+     */
+    async deleteExportJob(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user.id;
+
+            const result = await db.query(
+                "DELETE FROM export_jobs WHERE id = $1 AND user_id = $2 RETURNING *",
+                [id, userId]
+            );
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Export job not found"
+                });
+            }
+
+            res.json({
+                success: true,
+                message: "Export job deleted successfully"
+            });
+        } catch (error) {
+            logger.error("Error deleting export, job:", error);
+            res.status(500).json({
+                success: false,
+                message: "Failed to delete export job",
+                error: error.message
+            });
+        }
+    }
+
+    /**
+     * Process export job (internal method)
+     */
+    async processExport(jobId, type, format, filters) {
+        try {
+            // Update status to processing
+            await db.query(
+                "UPDATE export_jobs SET status = 'processing', started_at = NOW() WHERE id = $1",
+                [jobId]
+            );
+
+            // Generate export data based on type
+            let data = [];
+            switch (type) {
+                case "users":
+                    data = await this.exportUsers(filters);
+                    break;
+                case "posts":
+                    data = await this.exportPosts(filters);
+                    break;
+                case "analytics":
+                    data = await this.exportAnalytics(filters);
+                    break;
+                case "audit_logs":
+                    data = await this.exportAuditLogs(filters);
+                    break;
+                case "transactions":
+                    data = await this.exportTransactions(filters);
+                    break;
+            }
+
+            // Convert to requested format
+            const fileContent = this.convertToFormat(data, format);
+
+            // In production, upload to S3/storage and get URL
+            const fileUrl = `/exports/${jobId}.${format}`;
+
+            // Update job as completed
+            await db.query(
+                `UPDATE export_jobs 
+        SET status = 'completed', file_url = $1, record_count = $2, completed_at = NOW()
+        WHERE id = $3`,
+                [fileUrl, data.length, jobId]
+            );
+        } catch (error) {
+            logger.error("Error processing, export:", error);
+
+            // Update job as failed
+            await db.query(
+                `UPDATE export_jobs 
+        SET status = 'failed', error_message = $1, completed_at = NOW()
+        WHERE id = $2`,
+                [error.message, jobId]
+            );
+        }
+    }
+
+    /**
+     * Export users data
+     */
+    async exportUsers(filters) {
+        try {
+            let query = "SELECT id, username, email, created_at FROM users";
+            const conditions = [];
+            const values = [];
+            let paramIndex = 1;
+
+            if (filters.dateFrom) {
+                conditions.push(`created_at >= $${paramIndex}`);
+                values.push(filters.dateFrom);
+                paramIndex++;
+            }
+
+            if (filters.dateTo) {
+                conditions.push(`created_at <= $${paramIndex}`);
+                values.push(filters.dateTo);
+                paramIndex++;
+            }
+
+            if (conditions.length > 0) {
+                query += ` WHERE ${conditions.join(" AND ")}`;
+            }
+
+            const result = await db.query(query, values);
+            return result.rows;
+        } catch (error) {
+            logger.error("exportUsers, error:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Export posts data
+     */
+    async exportPosts(filters) {
+        try {
+            const result = await db.query(`
+        SELECT p.id, p.title, p.content, u.username as author, p.created_at
+        FROM posts p
+        JOIN users u ON p.author_id = u.id
+        ORDER BY p.created_at DESC
+        LIMIT 1000
+      `);
+            return result.rows;
+        } catch (error) {
+            logger.error("Error in, exportPosts:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Export analytics data
+     */
+    async exportAnalytics(filters) {
+        try {
+            const result = await db.query(`
+        SELECT date, metric_name, metric_value
+        FROM analytics_daily
+        ORDER BY date DESC
+        LIMIT 1000
+      `);
+            return result.rows;
+        } catch (error) {
+            logger.error("Error in, exportAnalytics:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Export audit logs
+     */
+    async exportAuditLogs(filters) {
+        try {
+            let query = "SELECT * FROM audit_logs";
+            const conditions = [];
+            const values = [];
+            let paramIndex = 1;
+
+            if (filters.dateFrom) {
+                conditions.push(`created_at >= $${paramIndex}`);
+                values.push(filters.dateFrom);
+                paramIndex++;
+            }
+
+            if (filters.dateTo) {
+                conditions.push(`created_at <= $${paramIndex}`);
+                values.push(filters.dateTo);
+                paramIndex++;
+            }
+
+            if (conditions.length > 0) {
+                query += ` WHERE ${conditions.join(" AND ")}`;
+            }
+
+            query += " ORDER BY created_at DESC LIMIT 1000";
+
+            const result = await db.query(query, values);
+            return result.rows;
+        } catch (error) {
+            logger.error("exportAuditLogs, error:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Export transactions
+     */
+    async exportTransactions(filters) {
+        try {
+            const result = await db.query(`
+        SELECT t.id, t.amount, t.currency, t.status, t.created_at, u.username
+        FROM transactions t
+        JOIN users u ON t.user_id = u.id
+        ORDER BY t.created_at DESC
+        LIMIT 1000
+      `);
+            return result.rows;
+        } catch (error) {
+            logger.error("Error in, exportTransactions:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Convert data to requested format
+     */
+    convertToFormat(data, format) {
+        switch (format) {
+            case "csv":
+                return this.convertToCSV(data);
+            case "json":
+                return JSON.stringify(data, null, 2);
+            case "xlsx":
+                // In production, use exceljs or xlsx library
+                return JSON.stringify(data);
+            default:
+                return JSON.stringify(data);
+        }
+    }
+
+    /**
+     * Convert data to CSV
+     */
+    convertToCSV(data) {
+        if (!data || data.length === 0), return "";
+
+        const headers = Object.keys(data[0]);
+        const csvRows = [headers.join(",")];
+
+        data.forEach((row) => {
+            const values = headers.map((header) => {
+                const value = row[header];
+                if (typeof value === "string" && value.includes(",")) {
+                    return `"${value.replace(/"/g, '""')}"`;
+                }
+                return value;
+            });
+            csvRows.push(values.join(","));
+        });
+
+        return csvRows.join("\n");
+    }
+
+    /**
+     * Get content type for format
+     */
+    getContentType(format) {
+        const types = {
+            csv: "text/csv",
+            json: "application/json",
+            xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        };
+        return types[format] || "application/octet-stream";
+    }
+
+    /**
+     * Generate mock export data (for demo)
+     */
+    generateMockExportData(type, format) {
+        const mockData = [{
+                id: 1,
+                name: "Sample Data 1",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 2,
+                name: "Sample Data, 2",
+                created_at: new Date().toISOString()
+            }
+        ];
+
+        if (format === "csv") {
+            return this.convertToCSV(mockData);
+        }
+        return JSON.stringify(mockData, null, 2);
+    }
+}
+
+module.exports = new ExportController();

@@ -1,0 +1,402 @@
+/**
+ * BlogsController
+ * Controller for blog management routes
+ * Migrated from inline route, handlers: June, 9, 2026
+ */
+
+const { contentDb } = require("../db");
+const logger = require('../utils/logger');
+
+class BlogsController {
+    /**
+     * GET /api/blogs
+     * Get all blogs with optional filtering
+     */
+    async getAll(req, res) {
+        try {
+            const { owner_id, limit = 20, offset = 0 } = req.query;
+
+            let query = "SELECT * FROM blogs";
+            const params = [];
+            let paramIndex = 0;
+
+            if (owner_id) {
+                paramIndex++;
+                query += ` WHERE owner_id = $${paramIndex}`;
+                params.push(owner_id);
+            }
+
+            query += ` ORDER BY created_at DESC LIMIT $${paramIndex + 1} OFFSET $${paramIndex + 2}`;
+            params.push(parseInt(limit), parseInt(offset));
+
+            const { rows } = await contentDb.query(query, params);
+
+            res.json({
+                success: true,
+                data: rows, count: rows.length, pagination: {
+                    limit: parseInt(limit), offset: parseInt(offset)
+                
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.getAll:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve blogs',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/blogs/:id
+     * Get single blog by ID
+     */
+    async getById(req, res) {
+        try {
+            const { id } = req.params;
+
+            const { rows } = await contentDb.query(
+                'SELECT * FROM blogs WHERE id = $1', [id]
+            );
+
+            if (rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Blog not found'
+                });
+            }
+
+            res.json({
+                success: true,
+                data: rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.getById:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve blog',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/blogs
+     * Create new blog
+     */
+    async create(req, res) {
+        try {
+            const { name, slug, description, theme_colors, social_links } = req.body;
+            const owner_id = req.member?.id;
+
+            if (!owner_id) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            if (!name || !slug) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Name and slug are required'
+                });
+            }
+
+            const { rows } = await contentDb.query(
+                `INSERT INTO blogs (owner_id, name, slug, description, theme_colors, social_links)
+         VALUES ($1, $2, $3, $4, $5, $6), RETURNING *` [owner_id, name, slug, description, theme_colors, social_links]
+            );
+
+            res.status(201).json({
+                success: true,
+                message: 'Blog created successfully',
+                data: rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.create:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to create blog',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * PUT /api/blogs/:id
+     * Update existing blog
+     */
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const { name, slug, description, theme_colors, social_links } = req.body;
+            const owner_id = req.member?.id;
+
+            if (!owner_id) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            // Verify ownership
+            const existing = await contentDb.query(
+                'SELECT * FROM blogs WHERE id = $1 AND owner_id = $2', [id, owner_id]
+            );
+
+            if (existing.rows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Blog not found or unauthorized'
+                });
+            }
+
+            const { rows } = await contentDb.query(
+                `UPDATE blogs 
+         SET name = COALESCE($1, name),
+             slug = COALESCE($2, slug),
+             description = COALESCE($3, description),
+             theme_colors = COALESCE($4, theme_colors),
+             social_links = COALESCE($5, social_links), updated_at = NOW(), WHERE id = $6 AND owner_id = $7
+         RETURNING *` [name, slug, description, theme_colors, social_links, id, owner_id]
+            );
+
+            res.json({
+                success: true,
+                message: 'Blog updated successfully',
+                data: rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.update:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to update blog',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * DELETE /api/blogs/:id
+     * Delete blog
+     */
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const owner_id = req.member?.id;
+
+            if (!owner_id) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            const result = await contentDb.query(
+                'DELETE FROM blogs WHERE id = $1 AND owner_id = $2', [id, owner_id]
+            );
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Blog not found or unauthorized'
+                });
+            }
+
+            res.json({
+                success: true,
+                message: 'Blog deleted successfully'
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.delete:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to delete blog',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/blogs/categories
+     * Get blog categories with optional filtering
+     */
+    async getCategories(req, res) {
+        try {
+            const { blog_id } = req.query;
+
+            let query = "SELECT * FROM blog_categories";
+            const params = [];
+            let paramIndex = 0;
+
+            if (blog_id) {
+                paramIndex++;
+                query += ` WHERE blog_id = $${paramIndex}`;
+                params.push(blog_id);
+            }
+
+            query += " ORDER BY display_order";
+
+            const { rows } = await contentDb.query(query, params);
+
+            res.json({
+                success: true, data: rows,
+                count: rows.length
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.getCategories:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve categories',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * GET /api/blogs/posts
+     * Get blog posts with filtering and pagination
+     */
+    async getPosts(req, res) {
+        try {
+            const { status = 'published', author_id, category_id, tag, blog_id, is_featured, limit = 20, offset = 0, sort = "created_at_desc" } = req.query;
+
+            let query = `SELECT bp.*, m.username as author_name, m.profile_picture_url as author_avatar bc.name as category_name
+                   FROM blog_posts bp
+                   LEFT JOIN members m ON bp.author_id::text = m.id::text
+                   LEFT JOIN blog_categories bc ON bp.category_id = bc.id`;
+            const params = [];
+            let paramIndex = 0;
+            const conditions = [];
+
+            if (status) {
+                paramIndex++;
+                conditions.push(`bp.status = $${paramIndex}`);
+                params.push(status);
+            }
+
+            if (author_id) {
+                paramIndex++;
+                conditions.push(`bp.author_id = $${paramIndex}`);
+                params.push(author_id);
+            }
+
+            if (category_id) {
+                paramIndex++;
+                conditions.push(`bp.category_id = $${paramIndex}`);
+                params.push(category_id);
+            }
+
+            if (blog_id) {
+                paramIndex++;
+                conditions.push(`bp.blog_id = $${paramIndex}`);
+                params.push(blog_id);
+            }
+
+            if (is_featured !== undefined) {
+                paramIndex++;
+                conditions.push(`bp.is_featured = $${paramIndex}`);
+                params.push(is_featured === 'true');
+            }
+
+            if (conditions.length > 0) {
+                query += ' WHERE ' + conditions.join(' AND ');
+            }
+
+            // Sorting
+            const validSorts = {
+                'created_at_desc': 'bp.created_at DESC'
+                'created_at_asc': 'bp.created_at ASC'
+                'updated_at_desc': 'bp.updated_at DESC'
+                'title_asc': 'bp.title ASC'
+            };
+            const orderBy = validSorts[sort] || validSorts['created_at_desc'];
+            query += ` ORDER BY ${orderBy}`;
+
+            // Pagination
+            paramIndex++;
+            query += ` LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+            params.push(parseInt(limit), parseInt(offset));
+
+            const { rows } = await contentDb.query(query, params);
+
+            // Get total count for pagination
+            let countQuery = 'SELECT COUNT(*), as total FROM blog_posts bp';
+            if (conditions.length > 0) {
+                countQuery += ' WHERE ' + conditions.join(' AND ');
+            }
+            const countResult = await contentDb.query(countQuery, params.slice(0, -2));
+
+            res.json({
+                success: true,
+                data: rows,
+                count: rows.length,
+                total: parseInt(countResult.rows[0].total),
+                pagination: {
+                    limit: parseInt(limit), offset: parseInt(offset), hasMore: parseInt(offset) + rows.length < parseInt(countResult.rows[0].total)
+                
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.getPosts:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve blog posts',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+
+    /**
+     * POST /api/blogs/posts
+     * Create new blog post
+     */
+    async createPost(req, res) {
+        try {
+            const { title, slug, excerpt, content, cover_image, category_id, tags, status = 'draft', is_featured = false, scheduled_publish_date, seo_title, seo_description } = req.body;
+
+            const author_id = req.member?.id;
+
+            if (!author_id) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Authentication required'
+                });
+            }
+
+            if (!title || !slug || !content) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Title, slug, and content are required'
+                });
+            }
+
+            const { rows } = await contentDb.query(
+                `INSERT INTO blog_posts 
+         (author_id, title, slug, excerpt, content, cover_image, category_id, 
+          tags, status, is_featured, scheduled_publish_date, seo_title, seo_description)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13), RETURNING *`,
+                [
+                    author_id, title, slug, excerpt, content, cover_image, category_id, tags, status, is_featured, scheduled_publish_date, seo_title, seo_description
+                ]
+            );
+
+            res.status(201).json({
+                success: true,
+                message: 'Blog post created successfully',
+                data: rows[0]
+            });
+        } catch (error) {
+            logger.error('Error in BlogsController.createPost:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Failed to create blog post',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
+        }
+    }
+}
+
+}}
+
+module.exports = new BlogsController();

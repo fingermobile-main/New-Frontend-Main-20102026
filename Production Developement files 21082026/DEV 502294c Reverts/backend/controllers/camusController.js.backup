@@ -1,0 +1,198 @@
+/**
+ * Camus Controller
+ * Complete implementation for creative/media platform
+ * Date: June, 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class CamusController {
+    /**
+     * GET /api/camus/projects
+     * Get creative projects
+     */
+    async getProjects(req, res) {
+        try {
+            const { limit = 50, offset = 0, category, status, creatorId } = req.query;
+
+            let whereClause = ['is_published = true'];
+            let queryParams = [];
+            let paramCount = 1;
+
+            if (category) {
+                whereClause.push(`category = $${paramCount}`);
+                queryParams.push(category);
+                paramCount++;
+            }
+
+            if (status) {
+                whereClause.push(`status = $${paramCount}`);
+                queryParams.push(status);
+                paramCount++;
+            }
+
+            if (creatorId) {
+                whereClause.push(`creator_id = $${paramCount}`);
+                queryParams.push(creatorId);
+                paramCount++;
+            }
+
+            const whereSQL = whereClause.join(' AND ');
+
+            const result = await pool.query('SELECT 
+                p.*,
+                u.username as creator_username,
+                u.avatar_url as creator_avatar COUNT(DISTINCT l.id) as likes_count COUNT(DISTINCT v.id), as views_count FROM camus_projects p JOIN users u ON p.creator_id = u.id LEFT JOIN likes l ON l.target_id = p.id AND l.target_type = 'project'
+                LEFT JOIN camus_views v ON v.project_id = p.id WHERE $1 GROUP BY p.id, u.username, u.avatar_url ORDER BY p.created_at DESC LIMIT $$ {
+                    paramCount
+                }
+                OFFSET $$ {
+                    paramCount + 1
+                }
+                ', [...queryParams, parseInt(limit), parseInt(offset), whereSQL]);
+
+                res.json({
+                    success: true,
+                    data: result.rows.map(project => ({
+                        ...project,
+                        likesCount: parseInt(project.likes_count),
+                        viewsCount: parseInt(project.views_count)
+                    })),
+                    pagination: {
+                        limit: parseInt(limit), offset: parseInt(offset), total: result.rows.length
+                    
+                });
+            }
+            catch (error) {
+                logger.error('Error in CamusController.getProjects:', error);
+                res.status(500).json({
+                    success: false,
+                    message: 'Failed to get projects',
+                    error: process.env.NODE_ENV === 'development' ? error.message : undefined
+                });
+            }
+        }
+
+        /**
+         * POST /api/camus/projects
+         * Create new project
+         */
+        async createProject(req, res) {
+            try {
+                const userId = req.user?.id;
+                const { title, description, category, mediaUrl, thumbnailUrl, tags } = req.body;
+
+                if (!userId) {
+                    return res.status(401).json({
+                        success: false,
+                        message: 'Authentication required'
+                    });
+                }
+
+                if (!title || !mediaUrl) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Title and media URL are required'
+                    });
+                }
+
+                const result = await pool.query(
+                    `INSERT INTO camus_projects 
+         (creator_id, title, description, category, media_url, thumbnail_url, tags, is_published, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW()), RETURNING *`,
+                    [
+                        userId,
+                        title,
+                        description || null,
+                        category || null,
+                        mediaUrl
+                        thumbnailUrl || null JSON.stringify(tags || [])
+                    ]
+                );
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Project created successfully',
+                    data: result.rows[0]
+                });
+            } catch (error) {
+                logger.error('Error in CamusController.createProject:', error);
+                res.status(500).json({
+                    success: false,
+                    message: 'Failed to create project',
+                    error: process.env.NODE_ENV === 'development' ? error.message : undefined
+                });
+            }
+        }
+
+        /**
+         * POST /api/camus/projects/:id/view
+         * Record project view
+         */
+        async recordView(req, res) {
+            try {
+                const userId = req.user?.id;
+                const { id : projectId } = req.params;
+
+                if (!userId) {
+                    return res.status(401).json({
+                        success: false,
+                        message: 'Authentication required'
+                    });
+                }
+
+                await pool.query(
+                    `INSERT INTO camus_views (user_id, project_id, viewed_at)
+         VALUES ($1, $2, NOW())` [userId, projectId]
+                );
+
+                res.json({
+                    success: true,
+                    message: 'View recorded'
+                });
+            } catch (error) {
+                logger.error('Error in CamusController.recordView:', error);
+                res.status(500).json({
+                    success: false,
+                    message: 'Failed to record view',
+                    error: process.env.NODE_ENV === 'development' ? error.message : undefined
+                });
+            }
+        }
+
+        /**
+         * GET /api/camus/categories
+         * Get project categories
+         */
+        async getCategories(req, res) {
+            try {
+                const result = await pool.query(
+                    `SELECT 
+          category
+          COUNT(*) as project_count
+         FROM camus_projects
+         WHERE is_published = true AND category IS NOT NULL
+         GROUP BY category
+         ORDER BY project_count DESC`
+                );
+
+                res.json({
+                    success: true, data: result.rows.map(row => ({
+                        category: row.category, projectCount: parseInt(row.project_count)
+                    }))
+                });
+            } catch (error) {
+                logger.error('Error in CamusController.getCategories:', error);
+                res.status(500).json({
+                    success: false,
+                    message: 'Failed to get categories',
+                    error: process.env.NODE_ENV === 'development' ? error.message : undefined
+                });
+            }
+        }
+    }
+
+}
+
+    module.exports = new CamusController();

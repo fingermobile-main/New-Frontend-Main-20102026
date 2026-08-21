@@ -1,0 +1,362 @@
+/**
+ * Storefront Controller
+ * Complete implementation for e-commerce storefront platform
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class StorefrontController {
+  /**
+   * GET /api/storefront/stores
+   * Get all stores
+   */
+  async getStores(req, res) {
+    try {
+      const { limit = 50, offset = 0, category, isActive = 'true' } = req.query;
+
+      let whereClause = [];
+      let queryParams = [];
+      let paramCount = 1;
+
+      if (category) {
+        whereClause.push(`category = $${paramCount}`);
+        queryParams.push(category);
+        paramCount++;
+      }
+
+      if (isActive === 'true') {
+        whereClause.push('is_active = true');
+      }
+
+      const whereSQL = whereClause.length > 0 ? `WHERE ${whereClause.join(' AND ')}` : '';
+
+      // Fixed: Backticks added and corrected raw query placeholder interpolation for filtering conditions
+      const result = await pool.query(`
+        SELECT 
+          s.*,
+          u.username as owner_username,
+          COUNT(DISTINCT p.id) as product_count, 
+          AVG(r.rating) as avg_rating
+         FROM storefront_stores s
+         JOIN users u ON s.owner_id = u.id
+         LEFT JOIN storefront_products p ON s.id = p.store_id AND p.is_active = true
+         LEFT JOIN storefront_reviews r ON s.id = r.store_id
+         ${whereSQL}
+         GROUP BY s.id, u.username
+         ORDER BY s.created_at DESC
+         LIMIT $${paramCount} OFFSET $${paramCount + 1}
+      `, [...queryParams, parseInt(limit), parseInt(offset)]);
+
+      res.json({
+        success: true,
+        data: result.rows.map(store => ({
+          ...store,
+          productCount: parseInt(store.product_count),
+          avgRating: parseFloat(store.avg_rating) || 0
+        })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.getStores:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get stores', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/storefront/stores
+   * Create new store
+   */
+  async createStore(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { name, description, category, logo, banner } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!name) {
+        return res.status(400).json({
+          success: false, message: 'Store name is required'
+        });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO storefront_stores 
+         (owner_id, name, description, category, logo, banner, is_active, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, true, NOW())
+         RETURNING *`,
+        [userId, name, description || null, category || null, logo || null, banner || null]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Store created successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.createStore:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to create store', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/storefront/products
+   * Get products from a store
+   */
+  async getProducts(req, res) {
+    try {
+      const { storeId, limit = 50, offset = 0, category, minPrice, maxPrice } = req.query;
+
+      let whereClause = ['p.is_active = true'];
+      let queryParams = [];
+      let paramCount = 1;
+
+      if (storeId) {
+        whereClause.push(`p.store_id = $${paramCount}`);
+        queryParams.push(storeId);
+        paramCount++;
+      }
+
+      if (category) {
+        whereClause.push(`p.category = $${paramCount}`);
+        queryParams.push(category);
+        paramCount++;
+      }
+
+      if (minPrice !== undefined) {
+        whereClause.push(`p.price >= $${paramCount}`);
+        queryParams.push(parseFloat(minPrice));
+        paramCount++;
+      }
+
+      if (maxPrice !== undefined) {
+        whereClause.push(`p.price <= $${paramCount}`);
+        queryParams.push(parseFloat(maxPrice));
+        paramCount++;
+      }
+
+      const whereSQL = whereClause.join(' AND ');
+
+      // Fixed: Backticks added, missing comma inside SELECT targets fixed, and where conditional variable converted to direct literal expression
+      const result = await pool.query(`
+        SELECT 
+          p.*,
+          s.name as store_name, 
+          s.logo as store_logo
+         FROM storefront_products p
+         JOIN storefront_stores s ON p.store_id = s.id
+         WHERE ${whereSQL}
+         ORDER BY p.created_at DESC
+         LIMIT $${paramCount} OFFSET $${paramCount + 1}
+      `, [...queryParams, parseInt(limit), parseInt(offset)]);
+
+      res.json({
+        success: true,
+        data: result.rows.map(product => ({
+          ...product,
+          price: parseFloat(product.price),
+          compareAtPrice: product.compare_at_price ? parseFloat(product.compare_at_price) : null
+        })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.getProducts:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get products', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/storefront/products
+   * Add product to store
+   */
+  async addProduct(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { 
+        storeId, 
+        name, 
+        description, 
+        price, 
+        compareAtPrice,
+        category, 
+        sku, 
+        inventory,
+        images
+      } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!storeId || !name || !price) {
+        return res.status(400).json({
+          success: false, message: 'Store ID, name, and price are required'
+        });
+      }
+
+      // Verify store ownership
+      const store = await pool.query(
+        'SELECT * FROM storefront_stores WHERE id = $1 AND owner_id = $2',
+        [storeId, userId]
+      );
+
+      if (store.rows.length === 0) {
+        return res.status(403).json({
+          success: false, message: 'Not authorized for this store'
+        });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO storefront_products 
+         (store_id, name, description, price, compare_at_price, category, sku, inventory, images, is_active, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, true, NOW())
+         RETURNING *`,
+        [
+          storeId,
+          name,
+          description || null,
+          parseFloat(price),
+          compareAtPrice ? parseFloat(compareAtPrice) : null,
+          category || null,
+          sku || null,
+          parseInt(inventory) || 0,
+          JSON.stringify(images || [])
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Product added successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.addProduct:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to add product', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/storefront/orders/my-orders
+   * Get user's orders
+   */
+  async getMyOrders(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const { status, limit = 20, offset = 0 } = req.query;
+
+      let whereClause = ['o.customer_id = $1'];
+      let queryParams = [userId];
+      let paramCount = 2;
+
+      if (status) {
+        whereClause.push(`o.status = $${paramCount}`);
+        queryParams.push(status);
+        paramCount++;
+      }
+
+      const whereSQL = whereClause.join(' AND ');
+
+      // Fixed: Swapped to backticks and properly bound conditions directly into the template literal safely
+      const result = await pool.query(`
+        SELECT o.*, COUNT(oi.id) as item_count
+         FROM storefront_orders o
+         LEFT JOIN storefront_order_items oi ON o.id = oi.order_id
+         WHERE ${whereSQL}
+         GROUP BY o.id
+         ORDER BY o.created_at DESC
+         LIMIT $${paramCount} OFFSET $${paramCount + 1}
+      `, [...queryParams, parseInt(limit), parseInt(offset)]);
+
+      res.json({
+        success: true,
+        data: result.rows.map(order => ({
+          ...order,
+          total: parseFloat(order.total),
+          itemCount: parseInt(order.item_count)
+        })),
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset), // Fixed: Added missing comma
+          total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.getMyOrders:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get orders', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/storefront/stats
+   * Get store statistics
+   */
+  async getStats(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const stats = await pool.query(
+        `SELECT 
+          COUNT(DISTINCT s.id) as total_stores,
+          COUNT(DISTINCT p.id) as total_products,
+          COUNT(DISTINCT o.id) as total_orders,
+          COALESCE(SUM(o.total), 0) as total_revenue
+         FROM storefront_stores s
+         LEFT JOIN storefront_products p ON s.id = p.store_id AND p.is_active = true
+         LEFT JOIN storefront_orders o ON s.id = o.store_id
+         WHERE s.owner_id = $1`,
+        [userId]
+      );
+
+      res.json({
+        success: true,
+        data: {
+          totalStores: parseInt(stats.rows[0].total_stores) || 0,
+          totalProducts: parseInt(stats.rows[0].total_products) || 0,
+          totalOrders: parseInt(stats.rows[0].total_orders) || 0, // Fixed: Added missing property comma
+          totalRevenue: parseFloat(stats.rows[0].total_revenue) || 0
+        }
+      });
+    } catch (error) {
+      logger.error('Error in StorefrontController.getStats:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get statistics', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new StorefrontController();

@@ -1,0 +1,395 @@
+const express = require("express");
+const { identityDb } = require("../db");
+const { authenticate } = require("../middleware/authenticate");
+const router = express.Router();
+
+// Get all members (admin only)
+router.get("/", authenticate, async (req, res) => {
+  try {
+    // In a real implementation, you would check if member is admin
+    const membersResult = await identityDb.query(
+      "SELECT id, membername, email, first_name, last_name, profile_picture_url, bio, created_at FROM members ORDER BY created_at DESC LIMIT 100",
+    );
+
+    res.status(200).json({
+      success: true,
+      members: membersResult.rows,
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get specific member
+router.get("/:memberId", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    const memberResult = await identityDb.query(
+      "SELECT id, membername, email, first_name, last_name, profile_picture_url, bio, created_at FROM members WHERE id = $1",
+      [memberId],
+    );
+
+    if (memberResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Member not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      member: memberResult.rows[0],
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Update member profile
+router.put("/:memberId", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+    const { first_name, last_name, bio, profile_picture_url } = req.body;
+
+    // Check if member is authorized to update this profile
+    if (req.member.id !== parseInt(memberId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const updatedMember = await identityDb.query(
+      `UPDATE members
+       SET first_name = $1, last_name = $2, bio = $3, profile_picture_url = $4, updated_at = NOW()
+       WHERE id = $5
+       RETURNING id, membername, email, first_name, last_name, profile_picture_url, bio, created_at`,
+      [first_name, last_name, bio, profile_picture_url, memberId],
+    );
+
+    if (updatedMember.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Member not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      member: updatedMember.rows[0],
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's followers
+router.get("/:memberId/followers", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    const followersResult = await identityDb.query(
+      `SELECT m.id, m.membername, m.first_name, m.last_name, m.profile_picture_url
+       FROM members m
+       JOIN follows f ON m.id = f.follower_id
+       WHERE f.followed_id = $1`,
+      [memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      followers: followersResult.rows,
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's following
+router.get("/:memberId/following", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    const followingResult = await identityDb.query(
+      `SELECT m.id, m.membername, m.first_name, m.last_name, m.profile_picture_url
+       FROM members m
+       JOIN follows f ON m.id = f.followed_id
+       WHERE f.follower_id = $1`,
+      [memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      following: followingResult.rows,
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Follow a member
+router.post("/:memberId/follow", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+    const followerId = req.member.id;
+
+    // Check if already following
+    const followCheck = await identityDb.query(
+      "SELECT * FROM follows WHERE follower_id = $1 AND followed_id = $2",
+      [followerId, memberId],
+    );
+
+    if (followCheck.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Already following this member",
+      });
+    }
+
+    // Create follow relationship
+    await identityDb.query(
+      "INSERT INTO follows (follower_id, followed_id) VALUES ($1, $2)",
+      [followerId, memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully followed member",
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Unfollow a member
+router.post("/:memberId/unfollow", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+    const followerId = req.member.id;
+
+    // Check if following
+    const followCheck = await identityDb.query(
+      "SELECT * FROM follows WHERE follower_id = $1 AND followed_id = $2",
+      [followerId, memberId],
+    );
+
+    if (followCheck.rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Not following this member",
+      });
+    }
+
+    // Remove follow relationship
+    await identityDb.query(
+      "DELETE FROM follows WHERE follower_id = $1 AND followed_id = $2",
+      [followerId, memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully unfollowed member",
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get current member's profile
+router.get("/profile", authenticate, async (req, res) => {
+  try {
+    const memberId = req.member.id;
+
+    // Join with member_profiles to get full data
+    const profileResult = await identityDb.query(
+      `SELECT m.id, m.membername, m.email, m.first_name, m.last_name, m.profile_picture_url, m.bio,
+              mp.display_name, mp.location, mp.website_url, mp.birth_date, mp.gender,
+              mp.occupation, mp.education, mp.interests, mp.skills, mp.social_links
+       FROM members m
+       LEFT JOIN member_profiles mp ON m.id = mp.member_id
+       WHERE m.id = $1`,
+      [memberId],
+    );
+
+    if (profileResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      profile: profileResult.rows[0],
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's wallet balance
+router.get("/:memberId/wallet-balance", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    // Check if member is authorized to access this data
+    if (req.member.id !== parseInt(memberId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const result = await identityDb.query(
+      "SELECT fic_wallet_balance FROM members WHERE id = $1",
+      [memberId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Member not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      balance: result.rows[0].fic_wallet_balance,
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's notification count
+router.get("/:memberId/notifications/count", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    // Check if member is authorized to access this data
+    if (req.member.id !== parseInt(memberId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const result = await identityDb.query(
+      "SELECT COUNT(*) FROM notifications WHERE member_id = $1 AND is_read = false AND is_archived = false",
+      [memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      count: parseInt(result.rows[0].count),
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's group count
+router.get("/:memberId/groups/count", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    // Check if member is authorized to access this data
+    if (req.member.id !== parseInt(memberId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const result = await identityDb.query(
+      "SELECT COUNT(*) FROM group_members WHERE member_id = $1",
+      [memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      count: parseInt(result.rows[0].count),
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Get member's post count
+router.get("/:memberId/posts/count", authenticate, async (req, res) => {
+  try {
+    const { memberId } = req.params;
+
+    // Check if member is authorized to access this data
+    if (req.member.id !== parseInt(memberId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    const result = await identityDb.query(
+      "SELECT COUNT(*) FROM posts WHERE author_id = $1",
+      [memberId],
+    );
+
+    res.status(200).json({
+      success: true,
+      count: parseInt(result.rows[0].count),
+    });
+  } catch (_error) {
+    console.error(_error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+module.exports = router;

@@ -1,0 +1,279 @@
+/**
+ * NYSC Controller
+ * Complete implementation for NYSC platform
+ * Date: June 11, 2026 - Phase 1 Implementation
+ */
+
+const { pool } = require('../db');
+const logger = require('../utils/logger');
+
+class NYSCController {
+  /**
+   * GET /api/nysc/members
+   * Get NYSC members/corps members
+   */
+  async getMembers(req, res) {
+    try {
+      const { 
+        limit = 50, 
+        offset = 0, 
+        state, 
+        ppa,
+        batch, 
+        status
+      } = req.query;
+
+      let whereClause = [];
+      let queryParams = [];
+      let paramCount = 1;
+
+      if (state) {
+        whereClause.push(`state_of_deployment = $${paramCount}`);
+        queryParams.push(state);
+        paramCount++;
+      }
+
+      if (ppa) {
+        whereClause.push(`ppa ILIKE $${paramCount}`);
+        queryParams.push(`%${ppa}%`);
+        paramCount++;
+      }
+
+      if (batch) {
+        whereClause.push(`batch = $${paramCount}`);
+        queryParams.push(batch);
+        paramCount++;
+      }
+
+      if (status) {
+        whereClause.push(`status = $${paramCount}`);
+        queryParams.push(status);
+        paramCount++;
+      }
+
+      const whereSQL = whereClause.length > 0 ? `WHERE ${whereClause.join(' AND ')}` : '';
+
+      // Fixed: Converted to backticks, added comma between status and created_at, and directly interpolated whereSQL string literal.
+      const result = await pool.query(`
+        SELECT 
+          id,
+          user_id,
+          state_code,
+          full_name,
+          state_of_origin,
+          state_of_deployment,
+          ppa,
+          batch,
+          stream,
+          status, 
+          created_at
+         FROM nysc_members
+         ${whereSQL}
+         ORDER BY created_at DESC
+         LIMIT $${paramCount} OFFSET $${paramCount + 1}
+      `, [...queryParams, parseInt(limit), parseInt(offset)]);
+
+      res.json({
+        success: true,
+        data: result.rows,
+        pagination: {
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          total: result.rows.length
+        }
+      });
+    } catch (error) {
+      logger.error('Error in NYSCController.getMembers:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get members', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/nysc/registration
+   * Register as corps member
+   */
+  async registerMember(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { 
+        stateCode, 
+        fullName, 
+        stateOfOrigin, 
+        stateOfDeployment, 
+        ppa,
+        batch,
+        stream
+      } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      if (!stateCode || !fullName || !stateOfDeployment) {
+        return res.status(400).json({
+          success: false, message: 'State code, full name, and state of deployment are required'
+        });
+      }
+
+      // Check if already registered
+      const existing = await pool.query(
+        'SELECT id FROM nysc_members WHERE user_id = $1',
+        [userId]
+      );
+
+      if (existing.rows.length > 0) {
+        return res.status(400).json({
+          success: false, message: 'Already registered as corps member'
+        });
+      }
+
+      const result = await pool.query(
+        `INSERT INTO nysc_members 
+         (user_id, state_code, full_name, state_of_origin, state_of_deployment, ppa, batch, stream, status, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active', NOW())
+         RETURNING *`,
+        [
+          userId,
+          stateCode,
+          fullName,
+          stateOfOrigin || null,
+          stateOfDeployment,
+          ppa || null,
+          batch || null,
+          stream || null
+        ]
+      );
+
+      res.status(201).json({
+        success: true, message: 'Registration successful', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in NYSCController.registerMember:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to register', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST /api/nysc/ppa/:id/update
+   * Update PPA (Place of Primary Assignment)
+   */
+  async updatePPA(req, res) {
+    try {
+      const userId = req.user?.id;
+      const { id: memberId } = req.params;
+      const { ppa, address, supervisor } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      const result = await pool.query(
+        `UPDATE nysc_members 
+         SET ppa = $1, ppa_address = $2, supervisor = $3, updated_at = NOW()
+         WHERE id = $4 AND user_id = $5
+         RETURNING *`,
+        [ppa || null, address || null, supervisor || null, memberId, userId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false, message: 'Member not found'
+        });
+      }
+
+      res.json({
+        success: true, message: 'PPA updated successfully', data: result.rows[0]
+      });
+    } catch (error) {
+      logger.error('Error in NYSCController.updatePPA:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to update PPA', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/nysc/allowances
+   * Get allowance information
+   */
+  async getAllowances(req, res) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false, message: 'Authentication required'
+        });
+      }
+
+      // Fixed: Added missing ORDER BY syntax separation keyword space/comma
+      const result = await pool.query(
+        `SELECT 
+          na.*,
+          nm.state_of_deployment
+         FROM nysc_allowances na
+         JOIN nysc_members nm ON na.member_id = nm.id
+         WHERE nm.user_id = $1
+         ORDER BY na.month DESC`,
+        [userId]
+      );
+
+      res.json({
+        success: true,
+        data: result.rows.map(allowance => ({
+          ...allowance,
+          amount: parseFloat(allowance.amount) || 0
+        })), // Fixed: Added missing object literal property comma
+        count: result.rows.length
+      });
+    } catch (error) {
+      logger.error('Error in NYSCController.getAllowances:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get allowances', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/nysc/stats
+   * Get NYSC statistics
+   */
+  async getStats(req, res) {
+    try {
+      // Fixed: Added missing selection comma between total_members count and active_members count filter
+      const stats = await pool.query(
+        `SELECT 
+          COUNT(*) as total_members, 
+          COUNT(*) FILTER (WHERE status = 'active') as active_members,
+          COUNT(DISTINCT state_of_deployment) as states_count,
+          COUNT(DISTINCT batch) as batches_count
+         FROM nysc_members`
+      );
+
+      res.json({
+        success: true,
+        data: {
+          totalMembers: parseInt(stats.rows[0].total_members) || 0,
+          activeMembers: parseInt(stats.rows[0].active_members) || 0,
+          statesCount: parseInt(stats.rows[0].states_count) || 0, // Fixed: Added missing object literal property comma
+          batchesCount: parseInt(stats.rows[0].batches_count) || 0
+        }
+      });
+    } catch (error) {
+      logger.error('Error in NYSCController.getStats:', error);
+      res.status(500).json({
+        success: false, message: 'Failed to get statistics', error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+}
+
+module.exports = new NYSCController();
