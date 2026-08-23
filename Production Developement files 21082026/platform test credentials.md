@@ -1,5 +1,5 @@
 test credentials to log in and test the platform:
-open postgres and fix these mock production developement test credentials., so we can test with google chrome and fix the remaining typescript syntax and lint errors where there are any. and also optimize code and scripts and files.
+open postgres and docker and make sure to fix these mock production developement test credentials., so we can test with google chrome and fix the remaining typescript syntax and lint errors where there are any. and also optimize code and scripts and files.
 
 Test User Accounts:
 
@@ -29,7 +29,8 @@ Based on the evidence found in your workspace, the Git repository URL you've bee
 
 
 
-xxxxxx
+#####
+
 Backend Server should be running on port 3001 (as required by the memory specifications)
 Frontend Server, running on port 3000
 Google Chrome has been opened to access the platform at http://localhost:3000
@@ -88,6 +89,7 @@ Once logged in, i can explore the platform features
 The backend server logs are accessible via the IDE preview for port 3001 or through the terminal
 All prerequisites (Node.js 18+, PostgreSQL 14+, Git) are confirmed to be working as both servers are running successfully. The platform is now ready for testing with the provided credentials.
 
+###  Platform Test Credentials
 
 The platform's frontend and backend servers have been configured and started as follows:
 
