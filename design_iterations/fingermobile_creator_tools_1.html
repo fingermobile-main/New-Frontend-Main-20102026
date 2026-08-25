@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Creator Tools</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#11121a;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#2a2d3a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa0ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#333646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa0ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1400px}.dv-tablet{width:820px}.dv-mobile{width:400px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.pos{color:var(--primary)}.neg{color:#f0876a}
+</style>
+</head>
+<body>
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="pen-tool" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">CREATOR TOOLS</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="postpublishing">PostPublishing</button>
+      <button class="switch" data-screen="publishingtools">PublishingTools</button>
+      <button class="switch" data-screen="editorstudio">EditorStudio</button>
+      <button class="switch" data-screen="enhancededitor">EnhancedEditor</button>
+      <button class="switch" data-screen="medialibrary">MediaLibrary</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- POST PUBLISHING SETTINGS -->
+<section data-role="postpublishing" class="screen active">
+<div class="max-w-2xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Post Publishing Settings</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">permissions · boost · earnings · schedule</p>
+<div class="space-y-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5"><h3 class="font-semibold text-[13px] mb-2">Permissions</h3><div class="flex items-center justify-between"><span class="text-[12px]">Allow Comments</span><span class="relative inline-block w-10 h-5"><input type="checkbox" class="sr-only" checked><div class="block w-10 h-5 bg-[var(--primary)] rounded-full"></div><div class="absolute left-1 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform translate-x-5"></div></span></div><div class="flex items-center justify-between mt-2"><span class="text-[12px]">Shareable</span><span class="relative inline-block w-10 h-5"><input type="checkbox" class="sr-only" checked><div class="block w-10 h-5 bg-[var(--primary)] rounded-full"></div><div class="absolute left-1 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform translate-x-5"></div></span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5"><h3 class="font-semibold text-[13px] mb-2">Boost & Earnings</h3><div class="flex items-center justify-between"><span class="text-[12px]">Enable Boost</span><span class="relative inline-block w-10 h-5"><input type="checkbox" class="sr-only"><div class="block w-10 h-5 bg-[var(--muted)] rounded-full"></div><div class="absolute left-1 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform translate-x-0"></div></span></div><div class="mt-2"><label class="mono text-[9px] text-[var(--muted-foreground)]">Daily Budget (NGN)</label><input placeholder="200" class="w-full mt-1 px-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-[12px]"/></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5"><h3 class="font-semibold text-[13px] mb-2">Schedule</h3><div class="space-y-2"><label class="mono text-[9px] text-[var(--muted-foreground)]">Publish Date</label><input type="date" class="w-full px-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-[12px]"/><label class="mono text-[9px] text-[var(--muted-foreground)] mt-2 block">Time (Local)</label><input type="time" class="w-full px-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-[12px]"/></div></div>
+<button class="w-full py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] text-[13px] font-bold mt-4">Save Settings</button>
+</div>
+</div>
+</section>
+
+<!-- PUBLISHING TOOLS -->
+<section data-role="publishingtools" class="screen">
+<div class="max-w-3xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Publishing Tools</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">cross-post rail · drafts · queue</p>
+<div class="space-y-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
+<h3 class="font-semibold text-[13px] mb-3">Cross-Post to Platforms</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--muted)] border border-[var(--border)]"><i data-lucide="facebook" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[12px]">Facebook</span><span class="relative inline-block w-8 h-4 ml-auto"><input type="checkbox" class="sr-only"><div class="block w-8 h-4 bg-[var(--muted)] rounded-full"></div><div class="absolute left-0.5 top-0.5 bg-[var(--muted-foreground)] w-3 h-3 rounded-full"></div></span></div>
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--muted)] border border-[var(--border)]"><i data-lucide="twitter" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[12px]">Twitter/X</span><span class="relative inline-block w-8 h-4 ml-auto"><input type="checkbox" class="sr-only" checked><div class="block w-8 h-4 bg-[var(--primary)] rounded-full"></div><div class="absolute left-0.5 top-0.5 bg-white w-3 h-3 rounded-full transform translate-x-4"></div></span></div>
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--muted)] border border-[var(--border)]"><i data-lucide="instagram" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[12px]">Instagram</span><span class="relative inline-block w-8 h-4 ml-auto"><input type="checkbox" class="sr-only"><div class="block w-8 h-4 bg-[var(--muted)] rounded-full"></div><div class="absolute left-0.5 top-0.5 bg-[var(--muted-foreground)] w-3 h-3 rounded-full"></div></span></div>
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--muted)] border border-[var(--border)]"><i data-lucide="youtube" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[12px]">YouTube</span><span class="relative inline-block w-8 h-4 ml-auto"><input type="checkbox" class="sr-only"><div class="block w-8 h-4 bg-[var(--muted)] rounded-full"></div><div class="absolute left-0.5 top-0.5 bg-[var(--muted-foreground)] w-3 h-3 rounded-full"></div></span></div>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5">
+<h3 class="font-semibold text-[13px] mb-3">Drafts & Queue</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-3 bg-[var(--muted)] border border-[var(--border)] rounded-xl p-3">
+<span class="grid w-9 h-9 place-items-center rounded-lg bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="file-text" class="h-4 w-4"/></span>
+<div class="flex-1">
+<p class="text-[13px]">New Product Launch</p>
+<p class="mono text-[9px] text-[var(--muted-foreground)]">Draft saved 2h ago</p>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-[var(--secondary)] text-[10px]">Edit</button>
+</div>
+<div class="flex items-center gap-3 bg-[var(--muted)] border border-[var(--border)] rounded-xl p-3">
+<span class="grid w-9 h-9 place-items-center rounded-lg bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="calendar" class="h-4 w-4"/></span>
+<div class="flex-1">
+<p class="text-[13px]">Weekend Recap</p>
+<p class="mono text-[9px] text-[var(--muted-foreground)]">Scheduled for Aug 12</p>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-[var(--secondary)] text-[10px]">View</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- EDITOR STUDIO -->
+<section data-role="editorstudio" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]">
+<a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Studio</a>
+<div class="space-y-1 text-[12.5px]">
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="film" class="h-4 w-4"/>Timeline</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="layers" class="h-4 w-4"/>Layers</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="scissors" class="h-4 w-4"/>Clip Tray</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="eye" class="h-4 w-4"/>Preview</div>
+</div>
+</aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[760px] mx-auto px-4 md:px-6 py-6">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 aspect-video flex items-center justify-center mb-4">
+<div class="text-center">
+<i data-lucide="video" class="h-12 w-12 text-[var(--muted-foreground)] mx-auto"/>
+<p class="text-[14px] mt-2">Preview Area</p>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="text-[13px] font-bold mb-3">Timeline</h3>
+<div class="h-12 bg-[var(--muted)] border border-[var(--border)] rounded-lg relative">
+<div class="absolute top-0 left-0 w-1/3 h-full bg-[var(--primary)]/50 rounded-l-lg"></div>
+<div class="absolute top-0 left-1/3 w-1/4 h-full bg-[var(--gold)]/50"></div>
+<div class="absolute top-0 right-0 w-1/4 h-full bg-[var(--muted-foreground)]/30 rounded-r-lg"></div>
+<div class="absolute top-0 left-1/3 w-1 h-full bg-[var(--primary)]"></div>
+</div>
+<div class="flex gap-2 mt-3">
+<button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[11px] flex items-center gap-1"><i data-lucide="play" class="h-3.5 w-3.5"/>Play</button>
+<button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[11px] flex items-center gap-1"><i data-lucide="pause" class="h-3.5 w-3.5"/>Pause</button>
+<button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[11px] flex items-center gap-1"><i data-lucide="upload" class="h-3.5 w-3.5"/>Export</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- ENHANCED EDITOR -->
+<section data-role="enhancededitor" class="screen">
+<div class="max-w-4xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Enhanced Editor</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">layers · filters · audio · caption AI</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="md:col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 aspect-video flex items-center justify-center">
+<i data-lucide="image" class="h-12 w-12 text-[var(--muted-foreground)]"/>
+</div>
+<div class="space-y-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="font-semibold text-[13px] mb-2">Layers</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-2"><span class="grid w-6 h-6 place-items-center rounded bg-[var(--primary)]/20 text-[var(--primary)] text-[8px]">1</span><span class="text-[12px]">Base Image</span><span class="ml-auto"><i data-lucide="eye" class="h-4 w-4 text-[var(--primary)]"/></span></div>
+<div class="flex items-center gap-2"><span class="grid w-6 h-6 place-items-center rounded bg-[var(--muted)] text-[8px]">2</span><span class="text-[12px]">Text Overlay</span><span class="ml-auto"><i data-lucide="eye" class="h-4 w-4 text-[var(--muted-foreground)]"/></span></div>
+<div class="flex items-center gap-2"><span class="grid w-6 h-6 place-items-center rounded bg-[var(--muted)] text-[8px]">3</span><span class="text-[12px]">Effect</span><span class="ml-auto"><i data-lucide="eye-off" class="h-4 w-4 text-[var(--muted-foreground)]"/></span></div>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="font-semibold text-[13px] mb-2">Filters</h3>
+<div class="grid grid-cols-3 gap-2">
+<button class="p-2 rounded-lg bg-[var(--primary)]/10 text-[10px]">Clarendon</button>
+<button class="p-2 rounded-lg bg-[var(--muted)] text-[10px]">Juno</button>
+<button class="p-2 rounded-lg bg-[var(--muted)] text-[10px]">Lark</button>
+<button class="p-2 rounded-lg bg-[var(--muted)] text-[10px]">Moon</button>
+<button class="p-2 rounded-lg bg-[var(--muted)] text-[10px]">Slumber</button>
+<button class="p-2 rounded-lg bg-[var(--muted)] text-[10px]">Valencia</button>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="font-semibold text-[13px] mb-2">Audio</h3>
+<div class="space-y-2">
+<label class="mono text-[9px] text-[var(--muted-foreground)]">Volume</label>
+<input type="range" min="0" max="100" value="80" class="w-full accent-[var(--primary)]"/>
+<div class="flex justify-between text-[10px]"><span>Mute</span><span>100%</span></div>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="font-semibold text-[13px] mb-2">Caption AI</h3>
+<textarea placeholder="Paste image or describe content..." class="w-full p-3 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-[12px] h-20"></textarea>
+<button class="w-full mt-2 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Generate</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- MEDIA LIBRARY -->
+<section data-role="medialibrary" class="screen">
+<div class="max-w-4xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Media Library</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">grid uploads · albums · source URL</p>
+<div class="flex gap-3 mb-4">
+<button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Upload</button>
+<button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[11px]">Albums</button>
+<button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[11px]">By Source</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+<div class="aspect-square bg-[var(--muted)] border border-[var(--border)] rounded-xl flex items-center justify-center"><i data-lucide="image" class="h-6 w-6 text-[var(--muted-foreground)]"/></div>
+</div>
+<div class="mt-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4">
+<h3 class="font-semibold text-[13px] mb-2">Add from URL</h3>
+<div class="flex gap-2">
+<input placeholder="https://example.com/image.jpg" class="flex-1 px-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-[12px]"/>
+<button class="px-3 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Add</button>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]'));b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>
