@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Commerce &amp; Storefront</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#11121a;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#2a2d3a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa0ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#333646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa0ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1400px}.dv-tablet{width:820px}.dv-mobile{width:400px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.sale{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="fingerprint" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">COMMERCE / STOREFRONT</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="marketplace">Marketplace</button>
+      <button class="switch" data-screen="storefront">Storefront</button>
+      <button class="switch" data-screen="products">Products</button>
+      <button class="switch" data-screen="productdetail">Product</button>
+      <button class="switch" data-screen="checkout">Checkout</button>
+      <button class="switch" data-screen="coupons">Coupons</button>
+      <button class="switch" data-screen="subscriptions">Subscriptions</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- MARKETPLACE -->
+<section data-role="marketplace" class="screen active">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="font-display font-bold text-[15px]"><span class="text-[var(--gold)]">Finger</span>Market</span><div class="relative flex-1 max-w-md ml-4"><i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]"/><input placeholder="Search products &amp; sellers" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--card)] border border-[var(--border)] text-[13px] outline-none focus:border-[var(--ring)]"/></div><div class="flex-1"></div><button class="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--border)] text-[12px] font-semibold"><i data-lucide="shopping-cart" class="h-4 w-4"/>Cart <span class="mono text-[9px] text-[var(--gold)]">(2)</span></button></header>
+<div class="max-w-6xl mx-auto px-4 py-6">
+<div class="flex gap-2 flex-wrap mb-6"><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-semibold">All</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Fashion</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Electronics</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Beauty</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Art</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Gems</button></div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=400&q=60" class="w-full h-full object-cover"/></div><div class="p-3"><p class="text-[12px] font-semibold">Luxe Desk Chair</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@fingerlux</p><p class="sale text-[13px] font-bold mt-1">₦128,000</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Add to cart</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=60" class="w-full h-full object-cover"/><span class="absolute mono text-[9px] px-1.5 py-0.5 rounded bg-[var(--gold)] text-[var(--accent-foreground)] mt-2 ml-2">-20%</span></div><div class="p-3"><p class="text-[12px] font-semibold">Pro Gamer Kit</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@gamerhub</p><p class="sale text-[13px] font-bold mt-1">₦89,900 <span class="mono text-[9px] line-through text-[var(--muted-foreground)]">₦112k</span></p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Add to cart</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=60" class="w-full h-full object-cover"/></div><div class="p-3"><p class="text-[12px] font-semibold">Studio Headphones</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@beatwave</p><p class="sale text-[13px] font-bold mt-1">₦54,000</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Add to cart</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=60" class="w-full h-full object-cover"/></div><div class="p-3"><p class="text-[12px] font-semibold">Silk Collection</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@fingerlux</p><p class="sale text-[13px] font-bold mt-1">₦76,500</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Add to cart</button></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- STOREFRONT -->
+<section data-role="storefront" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<div class="relative h-40 md:h-48"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=60" class="w-full h-full object-cover"/><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-4 left-5 flex items-center gap-4"><img src="https://i.pravatar.cc/100?img=33" class="w-16 h-16 rounded-2xl ring-4 ring-[var(--background)]"/><div><p class="text-[20px] font-bold">FingerLux</p><p class="mono text-[10px] text-[var(--muted-foreground)]">@fingerlux · MERCHANT · 45.2k followers</p></div></div></div>
+<div class="max-w-5xl mx-auto px-4 py-5 flex gap-3 flex-wrap"><button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Follow</button><button class="px-4 py-2 rounded-lg border border-[var(--border)] text-[12px] font-semibold"><i data-lucide="external-link" class="inline h-4 w-4"/> Visit site</button><div class="flex-1"></div><span class="mono text-[10px] text-[var(--gold)]">★ 4.8 · 1.2k reviews</span></div>
+<div class="max-w-5xl mx-auto px-4 pb-10">
+<div class="flex gap-4 border-b border-[var(--border)] text-[12px] font-semibold mb-4"><span class="pb-2 border-b-2 border-[var(--primary)] text-[var(--primary)]">Products</span><span class="pb-2 text-[var(--muted-foreground)]">About</span><span class="pb-2 text-[var(--muted-foreground)]">Reviews</span></div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=300&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Ring #03</p><p class="sale text-[12px] font-bold">₦38k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Belt #02</p><p class="sale text-[12px] font-bold">₦22k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Tote #11</p><p class="sale text-[12px] font-bold">₦46k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Cuff #07</p><p class="sale text-[12px] font-bold">₦31k</p></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section data-role="products" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--gold)]">Finger</span>Market</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="package" class="h-4 w-4"/>Products</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="shopping-cart" class="h-4 w-4"/>Orders</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="truck" class="h-4 w-4"/>Shipping</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=33" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">FingerLux</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[860px] mx-auto px-4 md:px-6 py-6">
+<div class="flex items-center justify-between mb-5"><h1 class="text-[20px] font-bold">Products</h1><button class="px-3 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold flex items-center gap-1"><i data-lucide="plus" class="h-4 w-4"/>Add product</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden">
+<table class="w-full text-left text-[12px]">
+<thead class="mono text-[9px] text-[var(--muted-foreground)]"><tr class="border-b border-[var(--border)]"><th class="px-4 py-2.5 font-medium">PRODUCT</th><th class="px-4 py-2.5 font-medium">PRICE</th><th class="px-4 py-2.5 font-medium">STOCK</th><th class="px-4 py-2.5 font-medium">STATUS</th><th class="px-4 py-2.5"></th></tr></thead>
+<tbody>
+<tr class="border-b border-[var(--border)]"><td class="px-4 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=80&q=50" class="w-10 h-10 rounded-lg object-cover"/><p class="font-semibold">Ring #03</p></div></td><td class="px-4 py-3">₦38,000</td><td class="px-4 py-3">14</td><td class="px-4 py-3 text-[var(--primary)]">Active</td><td class="px-4 py-3 text-[var(--muted-foreground)]">⋯</td></tr>
+<tr class="border-b border-[var(--border)]"><td class="px-4 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=50" class="w-10 h-10 rounded-lg object-cover"/><p class="font-semibold">Belt #02</p></div></td><td class="px-4 py-3">₦22,000</td><td class="px-4 py-3">3</td><td class="px-4 py-3 text-[var(--gold)]">Low</td><td class="px-4 py-3 text-[var(--muted-foreground)]">⋯</td></tr>
+<tr><td class="px-4 py-3"><div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=80&q=50" class="w-10 h-10 rounded-lg object-cover"/><p class="font-semibold">Tote #11</p></div></td><td class="px-4 py-3">₦46,000</td><td class="px-4 py-3">0</td><td class="px-4 py-3 text-[var(--destructive)]">Out</td><td class="px-4 py-3 text-[var(--muted-foreground)]">⋯</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- PRODUCT DETAIL -->
+<section data-role="productdetail" class="screen">
+<div class="max-w-5xl mx-auto px-4 py-8">
+<div class="grid md:grid-cols-2 gap-8">
+<div><div class="aspect-square rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=700&q=60" class="w-full h-full object-cover"/></div></div>
+<div><span class="mono text-[9px] text-[var(--gold)]">FINGERLUX · LUXURY</span><h1 class="text-[24px] font-bold mt-1">Luxe Desk Chair</h1>
+<div class="flex items-center gap-2 mt-1"><span class="text-[var(--gold)]">★★★★★</span><span class="mono text-[10px] text-[var(--muted-foreground)]">4.8 · 214 reviews</span></div>
+<p class="sale text-[26px] font-bold font-display mt-3">₦128,000</p>
+<p class="text-[13.5px] text-[var(--muted-foreground)] mt-3 leading-relaxed">Ergonomic, hand-finished. Ships within 48h across Nigeria via the FingerMobile checkout rail.</p>
+<div class="mt-5 space-y-3">
+<label class="mono text-[9px] text-[var(--muted-foreground)]">COLOUR</label>
+<div class="flex gap-2"><button class="w-8 h-8 rounded-full bg-[var(--muted)] border-2 border-[var(--primary)]"></button><button class="w-8 h-8 rounded-full bg-[var(--gold)]"></button><button class="w-8 h-8 rounded-full bg-[#333]"></button></div>
+<label class="mono text-[9px] text-[var(--muted-foreground)]">QTY</label>
+<div class="flex gap-2 items-center"><button class="grid w-8 h-8 place-items-center rounded-lg border border-[var(--border)]">-</button><span class="mono text-[13px]">1</span><button class="grid w-8 h-8 place-items-center rounded-lg border border-[var(--border)]">+</button></div>
+</div>
+<div class="flex gap-2 mt-6"><button class="flex-1 py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] text-[13px] font-bold">Add to cart</button><button class="px-5 py-3 rounded-xl border border-[var(--border)] text-[13px] font-semibold"><i data-lucide="heart" class="h-4 w-4"/></button></div>
+<div class="mt-4 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5 mono text-[9px] text-[var(--muted-foreground)]">ORDER SVC · POST /checkout<br/>escrow ● settled via Wallet ✓</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CHECKOUT -->
+<section data-role="checkout" class="screen">
+<div class="max-w-3xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-6">Checkout</h1>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="md:col-span-2 space-y-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-3">Delivery address</h3><p class="text-[13px]">12 Adetokunbo Str, Lekki, Lagos</p><p class="text-[12px] text-[var(--muted-foreground)]">Kemi Afolabi · +234 810 000 0000</p><button class="mt-2 text-[12px] text-[var(--primary)] font-semibold">Edit</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-3">Payment</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--primary)] bg-[var(--primary)]/5"><input type="radio" checked class="accent-[var(--primary)]"/><span class="text-[13px]">Wallet balance</span><span class="mono text-[9px] text-[var(--muted-foreground)] ml-auto">₦3.9M</span></label>
+<label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)]"><input type="radio" class="accent-[var(--primary)]"/><span class="text-[13px]">Card</span><span class="mono text-[9px] text-[var(--muted-foreground)] ml-auto">•••• 4821</span></label>
+</div></div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 h-fit"><h3 class="text-[13px] font-bold mb-3">Order summary</h3>
+<div class="space-y-2 text-[13px]"><div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Luxe Chair ×1</span><span>₦128,000</span></div><div class="flex justify-between"><span class="text-[var(--muted-foreground)]">Pro Kit ×1</span><span>₦89,900</span></div><div class="flex justify-between border-t border-[var(--border)] pt-2 font-bold"><span>Total</span><span class="sale">₦217,900</span></div></div>
+<button class="mt-4 w-full py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-[13px]">Pay now</button>
+<p class="mono text-[8px] text-[var(--muted-foreground)] text-center mt-2">SECURE · 3-DS · escrow</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- COUPONS -->
+<section data-role="coupons" class="screen">
+<div class="max-w-2xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-5">Coupons &amp; offers</h1>
+<div class="space-y-3">
+<div class="bg-gradient-to-r from-[var(--gold)]/20 to-[var(--card)] border border-[var(--gold)]/40 rounded-2xl p-4 flex items-center gap-4"><div class="grid place-items-center w-14 h-14 rounded-xl bg-[var(--gold)] text-[var(--gold)-fg]"><i data-lucide="ticket" class="h-7 w-7 text-[var(--accent-foreground)]"/></div><div class="flex-1"><p class="text-[14px] font-bold">20% off Fashion</p><p class="text-[12px] text-[var(--muted-foreground)]">Min spend ₦50k · expires in 3d</p><p class="mono text-[12px] mt-1 text-[var(--foreground)] border border-dashed border-[var(--gold)] rounded px-2 py-0.5 inline-block">FMLUX20</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-4"><div class="grid place-items-center w-14 h-14 rounded-xl bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="gift" class="h-7 w-7"/></div><div class="flex-1"><p class="text-[14px] font-bold">Free shipping</p><p class="text-[12px] text-[var(--muted-foreground)]">On orders above ₦100k</p></div><span class="mono text-[9px] px-2 py-1 rounded bg-[var(--muted)]">AUTO</span></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-4"><div class="grid place-items-center w-14 h-14 rounded-xl bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="zap" class="h-7 w-7"/></div><div class="flex-1"><p class="text-[14px] font-bold">New user 10%</p><p class="text-[12px] text-[var(--muted-foreground)]">First purchase bonus</p></div><span class="mono text-[9px] px-2 py-1 rounded bg-[var(--muted)]">NEW10</span></div>
+</div>
+</div>
+</section>
+
+<!-- SUBSCRIPTIONS -->
+<section data-role="subscriptions" class="screen">
+<div class="max-w-3xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-2">Subscriptions</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">manage plans · billing cycle</p>
+<div class="space-y-3">
+<div class="bg-[var(--card)] border-2 border-[var(--primary)] rounded-2xl p-5"><div class="flex items-center justify-between"><div><p class="text-[14px] font-bold">Creator Pro</p><p class="mono text-[9px] text-[var(--primary)]">ACTIVE</p></div><p class="text-[20px] font-bold font-display">₦4,500<span class="text-[11px] text-[var(--muted-foreground)]">/mo</span></p></div>
+<div class="grid grid-cols-3 gap-3 mt-4 text-center">
+<div class="bg-[var(--muted)] rounded-xl p-3"><p class="text-[18px] font-bold">₦2.4M</p><p class="mono text-[8px] text-[var(--muted-foreground)]">earned</p></div>
+<div class="bg-[var(--muted)] rounded-xl p-3"><p class="text-[18px] font-bold">∞</p><p class="mono text-[8px] text-[var(--muted-foreground)]">media</p></div>
+<div class="bg-[var(--muted)] rounded-xl p-3"><p class="text-[18px] font-bold">0%</p><p class="mono text-[8px] text-[var(--muted-foreground)]">fee</p></div>
+</div>
+<button class="mt-4 w-full py-2.5 rounded-lg border border-[var(--border)] text-[12px] font-bold">Manage plan</button></div>
+<div class="flex gap-3 flex-wrap justify-center">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex-1 max-w-xs"><p class="text-[13px] font-bold">Free</p><p class="text-[18px] font-bold mt-1">₦0</p><ul class="text-[12px] text-[var(--muted-foreground)] mt-2 space-y-1"><li>• Basic feed</li><li>• 5GB media</li></ul><button class="mt-4 w-full py-2 rounded-lg border border-[var(--border)] text-[12px]">Current</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 flex-1 max-w-xs"><p class="text-[13px] font-bold text-[var(--gold)]">Pro</p><p class="text-[18px] font-bold mt-1">₦4,500<span class="text-[11px] text-[var(--muted-foreground)]">/mo</span></p><ul class="text-[12px] text-[var(--muted-foreground)] mt-2 space-y-1"><li>• Unlimited media</li><li>• Monetization</li></ul><button class="mt-4 w-full py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Upgrade</button></div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]'));b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});
+document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>

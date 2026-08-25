@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Discovery &amp; Community</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#11121a;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#2a2d3a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa0ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#333646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa0ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1320px}.dv-tablet{width:780px}.dv-mobile{width:390px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}.cardfix{width:300px}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.fm-pulse{animation:pl 2s ease-in-out infinite}@keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="fingerprint" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">DISCOVER / COMMUNITY</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="discover">Discover</button>
+      <button class="switch" data-screen="trends">TrendsFeed</button>
+      <button class="switch" data-screen="category">CategoryFeed</button>
+      <button class="switch" data-screen="searchresults">SearchResults</button>
+      <button class="switch" data-screen="members">Members</button>
+      <button class="switch" data-screen="community">Community</button>
+      <button class="switch" data-screen="groups">Groups</button>
+      <button class="switch" data-screen="forum">Forum</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- DISCOVER -->
+<section data-role="discover" class="screen active">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]">
+<a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a>
+<div class="space-y-1 text-[12.5px]">
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="compass" class="h-4 w-4"/>Discover</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="search" class="h-4 w-4"/>Search</div>
+</div>
+<div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><div class="flex-1 min-w-0"><p class="text-[11px] font-semibold truncate">Kemi Demo</p></div></div>
+</aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[720px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[22px] font-bold">Discover</h1>
+<p class="mono text-[10px] text-[var(--muted-foreground)] mb-5">curated · trending creators · 500ms</p>
+<div class="grid grid-cols-2 gap-3 mb-6">
+<a class="relative rounded-2xl overflow-hidden h-28 group"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=60" class="w-full h-full object-cover group-hover:scale-105 transition"/><span class="absolute inset-0 bg-black/40"></span><span class="absolute bottom-2 left-3 text-[13px] font-bold">Gaming</span></a>
+<a class="relative rounded-2xl overflow-hidden h-28 group"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=60" class="w-full h-full object-cover group-hover:scale-105 transition"/><span class="absolute inset-0 bg-black/40"></span><span class="absolute bottom-2 left-3 text-[13px] font-bold">Music</span></a>
+<a class="relative rounded-2xl overflow-hidden h-28 group"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=60" class="w-full h-full object-cover group-hover:scale-105 transition"/><span class="absolute inset-0 bg-black/40"></span><span class="absolute bottom-2 left-3 text-[13px] font-bold">Commerce</span></a>
+<a class="relative rounded-2xl overflow-hidden h-28 group"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=60" class="w-full h-full object-cover group-hover:scale-105 transition"/><span class="absolute inset-0 bg-black/40"></span><span class="absolute bottom-2 left-3 text-[13px] font-bold">Style</span></a>
+</div>
+<div class="flex items-center justify-between mb-3"><h2 class="text-[16px] font-bold">Trending creators</h2><a class="text-[12px] text-[var(--primary)] font-semibold">See all</a></div>
+<div class="flex gap-3 overflow-x-auto pb-3">
+<div class="shrink-0 w-40 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 text-center"><img src="https://i.pravatar.cc/80?img=15" class="w-14 h-14 rounded-full mx-auto"/><p class="text-[12px] font-bold mt-2">Tunde</p><p class="mono text-[8px] text-[var(--gold)]">★ GOLD</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[10px] font-bold">Follow</button></div>
+<div class="shrink-0 w-40 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 text-center"><img src="https://i.pravatar.cc/80?img=32" class="w-14 h-14 rounded-full mx-auto"/><p class="text-[12px] font-bold mt-2">Amara</p><p class="mono text-[8px] text-[var(--primary)]">✓ VERIFIED</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[10px] font-bold">Follow</button></div>
+<div class="shrink-0 w-40 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 text-center"><img src="https://i.pravatar.cc/80?img=5" class="w-14 h-14 rounded-full mx-auto"/><p class="text-[12px] font-bold mt-2">Chijioke</p><p class="mono text-[8px] text-[var(--muted-foreground)]">CREATOR</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[10px] font-bold">Follow</button></div>
+<div class="shrink-0 w-40 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 text-center"><img src="https://i.pravatar.cc/80?img=47" class="w-14 h-14 rounded-full mx-auto"/><p class="text-[12px] font-bold mt-2">Bella</p><p class="mono text-[8px] text-[var(--muted-foreground)]">MUSIC</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[10px] font-bold">Follow</button></div>
+</div>
+<h2 class="text-[16px] font-bold mb-3 mt-2">Trending now</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><p class="mono text-[9px] text-[var(--gold)]">GAMES</p><p class="text-[14px] font-semibold">#FingerWars</p><div class="flex gap-4 mt-1 text-[11px] text-[var(--muted-foreground)]"><span>1.2M posts</span><span>▲ 8%</span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><p class="mono text-[9px] text-[var(--gold)]">LUXURY</p><p class="text-[14px] font-semibold">#FingerLux</p><div class="flex gap-4 mt-1 text-[11px] text-[var(--muted-foreground)]"><span>820k posts</span><span>▲ 12%</span></div></div>
+</div>
+</div>
+</main>
+<aside class="col-right hidden lg:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-4 py-6 gap-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><h3 class="text-[13px] font-bold mb-2">Suggested</h3><div class="space-y-3">${[7,20,25].map(n=>`<div class="flex items-center gap-2"><img src="https://i.pravatar.cc/50?img=${n}" class="w-8 h-8 rounded-full"/><div class="flex-1"><p class="text-[11px] font-semibold">Creator ${n}</p><p class="mono text-[8px] text-[var(--muted-foreground)]">@c${n}</p></div><button class="text-[10px] text-[var(--primary)] font-bold">Follow</button></div>`).join('')}</div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><h3 class="text-[13px] font-bold mb-2">Live now</h3><div class="rounded-lg overflow-hidden h-20 relative"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=50" class="w-full h-full object-cover"/><span class="absolute top-1 left-1 mono text-[8px] px-1 py-0.5 rounded bg-black/60 text-[var(--primary)]">● LIVE</span></div></div>
+</aside>
+</div>
+</section>
+
+<!-- TRENDS FEED -->
+<section data-role="trends" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="trending-up" class="h-4 w-4"/>Trends</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[680px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[22px] font-bold">Trends feed</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-5">real-time · ranking · GET /trends</p>
+<div class="space-y-2.5">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><span class="font-display text-[22px] font-bold text-[var(--muted-foreground)]">01</span><div class="flex-1"><p class="text-[14px] font-semibold">#FingerWars</p><p class="mono text-[9px] text-[var(--muted-foreground)]">1.2M posts · ▲ 12%</p></div><span class="fm-pulse mono text-[9px] text-[var(--primary)]">● LIVE</span></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><span class="font-display text-[22px] font-bold text-[var(--muted-foreground)]">02</span><div class="flex-1"><p class="text-[14px] font-semibold">#GemsDrop</p><p class="mono text-[9px] text-[var(--muted-foreground)]">880k posts · ▲ 18%</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><span class="font-display text-[22px] font-bold text-[var(--muted-foreground)]">03</span><div class="flex-1"><p class="text-[14px] font-semibold">#Hallmark</p><p class="mono text-[9px] text-[var(--muted-foreground)]">640k posts · ▲ 9%</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><span class="font-display text-[22px] font-bold text-[var(--muted-foreground)]">04</span><div class="flex-1"><p class="text-[14px] font-semibold">#FingerLux</p><p class="mono text-[9px] text-[var(--muted-foreground)]">520k posts · ▲ 6%</p></div></div>
+</div>
+</div>
+</main>
+<aside class="col-right hidden lg:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-4 py-6"><div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><h3 class="text-[13px] font-bold mb-1">Regions</h3><p class="mono text-[9px] text-[var(--muted-foreground)]">Nigeria · Global</p></div></aside>
+</div>
+</section>
+
+<!-- CATEGORY FEED -->
+<section data-role="category" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="layout-grid" class="h-4 w-4"/>Categories</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[680px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[22px] font-bold">Category feed</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-4">browse by interest</p>
+<div class="flex gap-2 flex-wrap mb-5"><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-semibold">For you</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Gaming</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Music</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Style</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Food</button><button class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Tech</button></div>
+<div class="space-y-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex gap-3"><img src="https://i.pravatar.cc/60?img=15" class="w-10 h-10 rounded-full"/><div><p class="text-[13px] font-bold">Tunde</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@tundewho · Gaming · 2h</p></div></div><p class="text-[13px] mt-2 leading-relaxed">Grand finals tonight 🏆 #FingerWars ranked</p><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=60" class="mt-2 h-40 w-full object-cover rounded-lg"/><div class="flex gap-5 mt-2 text-[var(--muted-foreground)] text-[11px]"><span>♥ 22k</span><span>💬 3k</span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex gap-3"><img src="https://i.pravatar.cc/60?img=5" class="w-10 h-10 rounded-full"/><div><p class="text-[13px] font-bold">Chijioke</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@cnw · Tech · 4h</p></div></div><p class="text-[13px] mt-2 leading-relaxed">Unboxing the newest dev stack → latency tuned under 500ms 🚀</p><div class="flex gap-5 mt-2 text-[var(--muted-foreground)] text-[11px]"><span>♥ 8k</span><span>💬 1.2k</span></div></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- SEARCH RESULTS -->
+<section data-role="searchresults" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<nav class="flex items-center gap-4 px-6 py-4 border-b border-[var(--border)] sticky top-0 bg-[var(--background)]"><span class="font-display font-bold text-[15px]"><span class="text-[var(--primary)]">Finger</span>Mobile</span><div class="relative flex-1 max-w-xl"><i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]"/><input value="fingerwars" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--card)] border border-[var(--border)] text-[13px] outline-none focus:border-[var(--ring)]"/></div><button class="text-[12px] text-[var(--primary)] font-semibold">Cancel</button></nav>
+<div class="max-w-3xl mx-auto px-4 py-6">
+<div class="flex gap-2 flex-wrap mb-5"><span class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-semibold">Top</span><span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">People</span><span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Posts</span><span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--muted-foreground)] text-[11px]">Shorts</span></div>
+<div class="space-y-3">
+<div class="flex items-center gap-3 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><img src="https://i.pravatar.cc/72?img=15" class="w-12 h-12 rounded-full"/><div class="flex-1"><p class="text-[14px] font-bold">Tunde</p><p class="mono text-[10px] text-[var(--muted-foreground)]">@TundeWho · 1.2M followers</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Follow</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex items-center justify-between"><span class="mono text-[9px] text-[var(--gold)]">TOP POST</span><span class="mono text-[9px] text-[var(--muted-foreground)]">2h</span></div><p class="text-[13px] mt-1.5 leading-relaxed">Ranked season LIVE in <b>#FingerWars</b> 🎮 Climb for <b>Gems</b>.</p><div class="flex gap-5 mt-2 text-[var(--muted-foreground)] text-[11px]"><span>♥ 2.1M</span><span>💬 88k</span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex items-center justify-between"><span class="mono text-[9px] text-[var(--gold)]">GROUP</span></div><p class="text-[13px] mt-1 font-semibold">FingerWars Community <span class="text-[var(--muted-foreground)] font-normal">· 482k members</span></p><button class="mt-2 px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-bold">Join</button></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- MEMBERS -->
+<section data-role="members" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="users" class="h-4 w-4"/>Members</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[680px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[22px] font-bold">Members</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-5">people you may know</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><img src="https://i.pravatar.cc/80?img=20" class="w-12 h-12 rounded-full"/><div class="flex-1"><p class="text-[13px] font-bold">David O.</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@davo · 2 mutual</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-bold">Follow</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><img src="https://i.pravatar.cc/80?img=25" class="w-12 h-12 rounded-full"/><div class="flex-1"><p class="text-[13px] font-bold">Sara L.</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@saral · 5 mutual</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-bold">Follow</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><img src="https://i.pravatar.cc/80?img=44" class="w-12 h-12 rounded-full"/><div class="flex-1"><p class="text-[13px] font-bold">Peter M.</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@pete · 1 mutual</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] text-[11px] font-bold">Follow</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center gap-3"><img src="https://i.pravatar.cc/80?img=52" class="w-12 h-12 rounded-full"/><div class="flex-1"><p class="text-[13px] font-bold">Grace A.</p><p class="mono text-[9px] text-[var(--muted-foreground)]">@grace · 8 mutual</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Following</button></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- COMMUNITY -->
+<section data-role="community" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="users" class="h-4 w-4"/>Community</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[680px] mx-auto px-4 md:px-6 py-6">
+<div class="relative h-36 rounded-2xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=900&q=60" class="w-full h-full object-cover"/><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4"><div><p class="text-[18px] font-bold">FingerMobile Creators</p><p class="mono text-[10px] text-[var(--muted-foreground)]">2.3k members · public</p></div></div></div>
+<div class="flex gap-2 mb-5"><button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Join</button><button class="px-4 py-2 rounded-lg border border-[var(--border)] text-[12px] font-semibold">Share</button></div>
+<h2 class="text-[14px] font-bold mb-3">Recent posts</h2>
+<div class="space-y-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex gap-3"><img src="https://i.pravatar.cc/60?img=12" class="w-9 h-9 rounded-full"/><div class="flex-1"><p class="text-[12px] font-bold">Kemi</p><p class="text-[12.5px] mt-0.5">Share your best creator tip ⬇️</p><div class="flex gap-4 mt-2 text-[var(--muted-foreground)] text-[11px]"><span>♥ 214</span><span>💬 48</span></div></div></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5"><div class="flex gap-3"><img src="https://i.pravatar.cc/60?img=33" class="w-9 h-9 rounded-full"/><div class="flex-1"><p class="text-[12px] font-bold">Sam</p><p class="text-[12.5px] mt-0.5">New payout update is smooth 💸</p><div class="flex gap-4 mt-2 text-[var(--muted-foreground)] text-[11px]"><span>♥ 96</span><span>💬 12</span></div></div></div></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- GROUPS -->
+<section data-role="groups" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="users-round" class="h-4 w-4"/>Groups</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[680px] mx-auto px-4 md:px-6 py-6">
+<div class="flex items-center justify-between mb-5"><h1 class="text-[22px] font-bold">Groups</h1><button class="px-3 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold flex items-center gap-1"><i data-lucide="plus" class="h-4 w-4"/>Create</button></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=60" class="h-20 w-full object-cover"/><div class="p-3.5"><p class="text-[13px] font-bold">FingerWars Squad</p><p class="mono text-[9px] text-[var(--muted-foreground)]">12k members</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=60" class="h-20 w-full object-cover"/><div class="p-3.5"><p class="text-[13px] font-bold">Beatwave Listeners</p><p class="mono text-[9px] text-[var(--muted-foreground)]">48k members</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=400&q=60" class="h-20 w-full object-cover"/><div class="p-3.5"><p class="text-[13px] font-bold">FingerLux Society</p><p class="mono text-[9px] text-[var(--muted-foreground)]">20k members</p></div></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- FORUM -->
+<section data-role="forum" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="message-square" class="h-4 w-4"/>Forum</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[720px] mx-auto px-4 md:px-6 py-6">
+<div class="flex items-center justify-between mb-5"><h1 class="text-[22px] font-bold">Forum</h1><button class="px-3 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">New topic</button></div>
+<div class="space-y-2">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><div class="flex items-center gap-2 mb-1"><span class="mono text-[8px] px-1.5 py-0.5 rounded bg-[var(--muted)] text-[var(--gold)]">PINNED</span><span class="mono text-[9px] text-[var(--muted-foreground)]">by mod</span></div><p class="text-[13px] font-semibold">Welcome to the FingerMobile forum 👋</p><div class="flex gap-4 mt-2 text-[11px] text-[var(--muted-foreground)]"><span>💬 12k replies</span><span>by Official</span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="text-[13px] font-semibold">Best way to grow your storefront?</p><p class="text-[12px] text-[var(--muted-foreground)] mt-1">Share strategies...</p><div class="flex gap-4 mt-2 text-[11px] text-[var(--muted-foreground)]"><span>💬 214</span><span>by Sara</span></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="text-[13px] font-semibold">Q: 500ms feed — what's your setup?</p><p class="text-[12px] text-[var(--muted-foreground)] mt-1">Latency tuning tips...</p><div class="flex gap-4 mt-2 text-[11px] text-[var(--muted-foreground)]"><span>💬 98</span><span>by Dev</span></div></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>{x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]');});b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});
+document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>
