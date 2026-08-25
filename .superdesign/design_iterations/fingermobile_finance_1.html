@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Finance &amp; Monetization</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#11121a;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#2a2d3a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa0ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#333646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa0ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1400px}.dv-tablet{width:820px}.dv-mobile{width:400px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.pos{color:var(--primary)}.neg{color:#f0876a}
+</style>
+</head>
+<body>
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="fingerprint" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">FINANCE / MONETIZATION</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="wallet">Wallet</button>
+      <button class="switch" data-screen="funding">Funding</button>
+      <button class="switch" data-screen="payouts">Payouts</button>
+      <button class="switch" data-screen="financials">Financials</button>
+      <button class="switch" data-screen="monetization">Monetization</button>
+      <button class="switch" data-screen="referrals">Referrals</button>
+      <button class="switch" data-screen="loyalty">Loyalty</button>
+      <button class="switch" data-screen="giftcards">GiftCards</button>
+      <button class="switch" data-screen="ficvault">FICVault</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- WALLET -->
+<section data-role="wallet" class="screen active">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Mobile</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="wallet" class="h-4 w-4"/>Wallet</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><img src="https://i.pravatar.cc/40?img=12" class="w-8 h-8 rounded-full"/><p class="text-[11px] font-semibold">Kemi Demo</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[720px] mx-auto px-4 md:px-6 py-6">
+<div class="bg-gradient-to-tr from-[var(--card)] via-[var(--gold)]/10 to-[var(--primary)]/20 border border-[var(--border)] rounded-2xl p-6">
+<p class="mono text-[9px] text-[var(--muted-foreground)]">TOTAL BALANCE</p>
+<p class="text-[36px] font-bold font-display mt-1">₦6,320,450 <span class="text-[14px] text-[var(--muted-foreground)] font-sans">¥ · $</span></p>
+<div class="flex gap-2 mt-4"><button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold flex items-center gap-1"><i data-lucide="plus" class="h-4 w-4"/>Fund</button><button class="px-4 py-2 rounded-lg bg-[var(--secondary)] text-[var(--foreground)] text-[12px] font-semibold">Send</button><button class="px-4 py-2 rounded-lg bg-[var(--secondary)] text-[var(--foreground)] text-[12px] font-semibold">Withdraw</button></div>
+</div>
+<div class="grid grid-cols-3 gap-3 my-5 text-center">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3"><p class="text-[16px] font-bold">₦3.9M</p><p class="mono text-[8px] text-[var(--muted-foreground)]">available</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3"><p class="text-[16px] font-bold">₦1.4M</p><p class="mono text-[8px] text-[var(--muted-foreground)]">pending</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3"><p class="text-[16px] font-bold text-[var(--gold)]">₦880k</p><p class="mono text-[8px] text-[var(--muted-foreground)]">gems value</p></div>
+</div>
+<h2 class="text-[14px] font-bold mb-3">Transactions</h2>
+<div class="space-y-2">
+<div class="flex items-center gap-3 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><span class="grid w-9 h-9 place-items-center rounded-lg bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="shopping-cart" class="h-4 w-4"/></span><div class="flex-1"><p class="text-[13px]">Storefront sale</p><p class="mono text-[9px] text-[var(--muted-foreground)]">today</p></div><p class="pos text-[13px] font-bold">+₦128,000</p></div>
+<div class="flex items-center gap-3 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><span class="grid w-9 h-9 place-items-center rounded-lg bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="gem" class="h-4 w-4"/></span><div class="flex-1"><p class="text-[13px]">Gems redeemed</p><p class="mono text-[9px] text-[var(--muted-foreground)]">yesterday</p></div><p class="pos text-[13px] font-bold">+₦12,000</p></div>
+<div class="flex items-center gap-3 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><span class="grid w-9 h-9 place-items-center rounded-lg bg-[var(--muted)] text-[var(--muted-foreground)]"><i data-lucide="arrow-down-left" class="h-4 w-4"/></span><div class="flex-1"><p class="text-[13px]">Subscription</p><p class="mono text-[9px] text-[var(--muted-foreground)]">2d ago</p></div><p class="neg text-[13px] font-bold">-₦4,500</p></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- FUNDING -->
+<section data-role="funding" class="screen">
+<div class="max-w-md mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Fund wallet</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">add funds · secure · 3-DS</p>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 mb-4"><label class="mono text-[9px] text-[var(--muted-foreground)]">AMOUNT (NGN)</label><div class="flex items-center gap-2 mt-1"><span class="text-[20px] font-bold">₦</span><input placeholder="50,000" class="flex-1 bg-transparent text-[28px] font-bold font-display outline-none"/></div><div class="flex gap-2 mt-2"><button class="px-3 py-1 rounded-lg bg-[var(--muted)] text-[11px]">₦5k</button><button class="px-3 py-1 rounded-lg bg-[var(--muted)] text-[11px]">₦10k</button><button class="px-3 py-1 rounded-lg bg-[var(--muted)] text-[11px]">₦50k</button></div></div>
+<div class="space-y-2 mb-4">
+<label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--primary)] bg-[var(--primary)]/5"><input type="radio" checked class="accent-[var(--primary)]"/><i data-lucide="credit-card" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[13px]">Debit card</span></label>
+<label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)]"><input type="radio" class="accent-[var(--primary)]"/><i data-lucide="landmark" class="h-5 w-5 text-[var(--muted-foreground)]"/><span class="text-[13px]">Bank transfer</span></label>
+</div>
+<button class="w-full py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] text-[13px] font-bold">Continue</button>
+<div class="mono text-[8px] text-[var(--muted-foreground)] text-center mt-3">WalletFundingPage</div>
+</div>
+</section>
+
+<!-- PAYOUTS -->
+<section data-role="payouts" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--gold)]">Finger</span>CEO</a><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="banknote" class="h-4 w-4"/>Payouts</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="home" class="h-4 w-4"/>Home</div></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[760px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[20px] font-bold mb-1">Payouts</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-5">creator earnings · settle</p>
+<div class="grid grid-cols-3 gap-3 mb-5"><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">TOTAL</p><p class="text-[18px] font-bold">₦8.4M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">THIS MONTH</p><p class="text-[18px] font-bold">₦2.4M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">NEXT PAYOUT</p><p class="text-[18px] font-bold text-[var(--primary)]">₦310k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden">
+<table class="w-full text-left text-[12px]"><thead class="mono text-[9px] text-[var(--muted-foreground)]"><tr class="border-b border-[var(--border)]"><th class="px-4 py-2.5 font-medium">DATE</th><th class="px-4 py-2.5 font-medium">AMOUNT</th><th class="px-4 py-2.5 font-medium">STATUS</th></tr></thead><tbody>
+<tr class="border-b border-[var(--border)]"><td class="px-4 py-3">Aug 01</td><td class="px-4 py-3">₦2,400,000</td><td class="px-4 py-3 text-[var(--primary)]">Settled</td></tr>
+<tr class="border-b border-[var(--border)]"><td class="px-4 py-3">Jul 15</td><td class="px-4 py-3">₦1,920,000</td><td class="px-4 py-3 text-[var(--primary)]">Settled</td></tr>
+<tr><td class="px-4 py-3">Jul 01</td><td class="px-4 py-3">₦1,150,000</td><td class="px-4 py-3 text-[var(--gold)]">Pending</td></tr>
+</tbody></table></div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- FINANCIALS -->
+<section data-role="financials" class="screen">
+<div class="max-w-4xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-5">Financials</h1>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">REVENUE</p><p class="text-[18px] font-bold">₦12M</p><p class="pos mono text-[9px]">▲ 12%</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">EXPENSES</p><p class="text-[18px] font-bold">₦3.1M</p><p class="neg mono text-[9px]">▼ 4%</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">PROFIT</p><p class="text-[18px] font-bold text-[var(--gold)]">₦8.9M</p><p class="pos mono text-[9px]">+18%</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5"><p class="mono text-[9px] text-[var(--muted-foreground)]">WALLET</p><p class="text-[18px] font-bold">₦6.3M</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-3">Monthly revenue</h3><div class="flex items-end gap-1.5 h-28"><div class="flex-1 bg-[var(--primary)]/40 rounded-t" style="height:40%"></div><div class="flex-1 bg-[var(--primary)]/50 rounded-t" style="height:55%"></div><div class="flex-1 bg-[var(--primary)] rounded-t" style="height:48%"></div><div class="flex-1 bg-[var(--primary)] rounded-t" style="height:70%"></div><div class="flex-1 bg-[var(--gold)] rounded-t" style="height:88%"></div><div class="flex-1 bg-[var(--gold)] rounded-t" style="height:100%"></div></div><div class="flex justify-between mono text-[8px] text-[var(--muted-foreground)] mt-1"><span>Feb</span><span>Apr</span><span>Jun</span><span>Jul</span></div></div>
+</div>
+</section>
+
+<!-- MONETIZATION -->
+<section data-role="monetization" class="screen">
+<div class="max-w-3xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-1">Monetization</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-6">turn on a stream of income</p>
+<div class="space-y-3">
+<div class="flex items-center gap-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><span class="grid w-11 h-11 place-items-center rounded-xl bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="gem" class="h-5 w-5"/></span><div class="flex-1"><p class="text-[13px] font-bold">Gems &amp; tips</p><p class="text-[11px] text-[var(--muted-foreground)]">Receive tips on posts</p></div><span class="mono text-[9px] text-[var(--primary)]">ON</span></div>
+<div class="flex items-center gap-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><span class="grid w-11 h-11 place-items-center rounded-xl bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="store" class="h-5 w-5"/></span><div class="flex-1"><p class="text-[13px] font-bold">Storefront</p><p class="text-[11px] text-[var(--muted-foreground)]">Sell physical &amp; digital</p></div><div class="flex gap-1"><span class="mono text-[8px] px-1.5 py-0.5 rounded bg-[var(--muted)] text-[var(--muted-foreground)]">₦1.4M</span><span class="mono text-[9px] text-[var(--primary)]">ON</span></div></div>
+<div class="flex items-center gap-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><span class="grid w-11 h-11 place-items-center rounded-xl bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="megaphone" class="h-5 w-5"/></span><div class="flex-1"><p class="text-[13px] font-bold">Brand deals</p><p class="text-[11px] text-[var(--muted-foreground)]">Sponsorships &amp; ads</p></div><button class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-[11px]">Setup</button></div>
+<div class="flex items-center gap-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><span class="grid w-11 h-11 place-items-center rounded-xl bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="graduation-cap" class="h-5 w-5"/></span><div class="flex-1"><p class="text-[13px] font-bold">Paid courses</p><p class="text-[11px] text-[var(--muted-foreground)]">Sell your expertise</p></div><button class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-[11px]">Setup</button></div>
+</div>
+</div>
+</section>
+
+<!-- REFERRALS -->
+<section data-role="referrals" class="screen">
+<div class="max-w-2xl mx-auto px-4 py-8 text-center">
+<span class="mx-auto grid w-14 h-14 place-items-center rounded-2xl bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="users" class="h-7 w-7"/></span>
+<h1 class="text-[22px] font-bold mt-4">Refer &amp; earn</h1><p class="text-[13px] text-[var(--muted-foreground)] mb-2">Give ₦2,000 in wallet credit per friend</p>
+<div class="inline-flex items-center gap-2 bg-[var(--card)] border border-dashed border-[var(--primary)] rounded-xl px-4 py-2.5 my-4"><span class="mono text-[13px]" id="code">FM-KEMI20</span><button class="text-[var(--primary)] text-[12px] font-bold">Copy</button></div>
+<div class="grid grid-cols-3 gap-3 mt-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4"><p class="text-[22px] font-bold">24</p><p class="mono text-[8px] text-[var(--muted-foreground)]">invited</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4"><p class="text-[22px] font-bold text-[var(--primary)]">19</p><p class="mono text-[8px] text-[var(--muted-foreground)]">joined</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4"><p class="text-[22px] font-bold text-[var(--gold)]">₦38k</p><p class="mono text-[8px] text-[var(--muted-foreground)]">earned</p></div>
+</div>
+</div>
+</section>
+
+<!-- LOYALTY -->
+<section data-role="loyalty" class="screen">
+<div class="max-w-2xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-5">Loyalty rewards</h1>
+<div class="bg-gradient-to-tr from-[var(--card)] to-[var(--gold)]/15 border border-[var(--gold)]/40 rounded-2xl p-6 text-center mb-6"><p class="text-[40px] font-bold font-display">7,450 <span class="text-[14px] text-[var(--gold)]">pts</span></p><p class="text-[12px] text-[var(--muted-foreground)]">Tier · Gold member · 820 pts to next</p><div class="w-full h-2 bg-[var(--muted)] rounded-full mt-3"><div class="h-full w-[85%] rounded-full bg-[var(--gold)]"></div></div></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex justify-between items-center"><div><p class="text-[13px] font-bold">₦500 off storefront</p><p class="mono text-[9px] text-[var(--muted-foreground)]">2,000 pts</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Redeem</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex justify-between items-center"><div><p class="text-[13px] font-bold">Free 1mo Pro</p><p class="mono text-[9px] text-[var(--muted-foreground)]">5,500 pts</p></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Redeem</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex justify-between items-center"><div><p class="text-[13px] font-bold">₦2,000 gem top-up</p><p class="mono text-[9px] text-[var(--muted-foreground)]">8,000 pts</p></div><button class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-[11px]">Locked</button></div>
+</div>
+</div>
+</section>
+
+<!-- GIFT CARDS -->
+<section data-role="giftcards" class="screen">
+<div class="max-w-2xl mx-auto px-4 py-8">
+<h1 class="text-[22px] font-bold mb-5">Gift cards</h1>
+<div class="grid grid-cols-2 gap-3 mb-5">
+<div class="bg-gradient-to-tr from-[var(--gold)]/30 to-[var(--card)] border border-[var(--gold)]/40 rounded-2xl p-5"><p class="mono text-[9px] text-[var(--muted-foreground)]">FINGER GIFT</p><p class="text-[26px] font-bold font-display mt-6">₦25,000</p><p class="text-[11px] text-[var(--muted-foreground)]">Gift card · expiry none</p></div>
+<div class="bg-gradient-to-tr from-[var(--primary)]/20 to-[var(--card)] border border-[var(--primary)]/30 rounded-2xl p-5 flex flex-col"><p class="mono text-[9px] text-[var(--muted-foreground)]">GEM CARD</p><p class="text-[26px] font-bold font-display mt-6">5,000 💎</p><p class="text-[11px] text-[var(--muted-foreground)]">In-app gems</p></div>
+</div>
+<button class="w-full py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] text-[13px] font-bold">Buy a gift card</button>
+<div class="mono text-[8px] text-[var(--muted-foreground)] text-center mt-3">GiftCardsPage</div>
+</div>
+</section>
+
+<!-- FIC VAULT -->
+<section data-role="ficvault" class="screen">
+<div class="max-w-2xl mx-auto px-4 py-8">
+<div class="flex items-center gap-3 mb-5"><span class="grid w-10 h-10 place-items-center rounded-xl bg-[var(--gold)]/20 text-[var(--gold)]"><i data-lucide="vault" class="h-5 w-5"/></span><div><h1 class="text-[20px] font-bold">FIC Vault</h1><p class="mono text-[9px] text-[var(--muted-foreground)]">savings &amp; escrow · secure</p></div></div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">SAVINGS</p><p class="text-[24px] font-bold">₦2.2M</p><p class="pos mono text-[9px]">+1.8% / yr</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">ESCROW HOLD</p><p class="text-[24px] font-bold">₦418k</p><p class="mono text-[9px] text-[var(--muted-foreground)]">3 active</p></div>
+<div class="col-span-2 bg-gradient-to-tr from-[var(--card)] to-[var(--primary)]/10 border border-[var(--border)] rounded-2xl p-5"><p class="text-[14px] font-bold mb-2">Auto-save</p><p class="text-[12px] text-[var(--muted-foreground)] mb-3">Round up purchases into your vault daily.</p><button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Enable</button></div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]'));b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});
+document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>
