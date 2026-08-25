@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Topics & Groups</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#11121a;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#2a2d3a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa0ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#333646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa0ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1400px}.dv-tablet{width:820px}.dv-mobile{width:400px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.pos{color:var(--primary)}.neg{color:#f0876a}
+</style>
+</head>
+<body>
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="hash" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">TOPICS / GROUPS</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="topics">Topics Feed</button>
+      <button class="switch" data-screen="groupdetail">Group Detail</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- TOPICS FEED -->
+<section data-role="topics" class="screen active">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]">
+<h2 class="font-display font-bold text-[14px] px-3 mb-3">Trending Topics</h2>
+<div class="space-y-1 text-[12.5px]">
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="trending-up" class="h-4 w-4"/>#TechNews</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="trending-up" class="h-4 w-4"/>#Nigeria</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="trending-up" class="h-4 w-4"/>#Music</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="trending-up" class="h-4 w-4"/>#Startups</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="trending-up" class="h-4 w-4"/>#Fintech</div>
+</div>
+<h2 class="font-display font-bold text-[14px] px-3 mb-3 mt-5">Your Interests</h2>
+<div class="space-y-1 text-[12.5px]">
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="heart" class="h-4 w-4"/>#Photography</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="heart" class="h-4 w-4"/>#Travel</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="heart" class="h-4 w-4"/>#Foodie</div>
+</div>
+</aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[760px] mx-auto px-4 md:px-6 py-6">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-4">
+<div class="flex items-start gap-3">
+<div class="flex-1">
+<h3 class="font-bold text-[13px] mb-1">#TechNews</h3>
+<p class="text-[12px] text-[var(--muted-foreground)]">24.5k posts · Trending</p>
+</div>
+<button class="px-3 py-1 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold">Follow</button>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-4">
+<div class="flex items-start gap-3">
+<div class="flex-1">
+<h3 class="font-bold text-[13px] mb-1">#Nigeria</h3>
+<p class="text-[12px] text-[var(--muted-foreground)]">18.2k posts · Hot</p>
+</div>
+<button class="px-3 py-1 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold">Follow</button>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-4">
+<div class="flex items-start gap-3">
+<div class="flex-1">
+<h3 class="font-bold text-[13px] mb-1">#Music</h3>
+<p class="text-[12px] text-[var(--muted-foreground)]">42.1k posts · Trending</p>
+</div>
+<button class="px-3 py-1 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold">Following</button>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-4">
+<div class="flex items-start gap-3">
+<div class="flex-1">
+<h3 class="font-bold text-[13px] mb-1">#Startups</h3>
+<p class="text-[12px] text-[var(--muted-foreground)]">8.7k posts · Rising</p>
+</div>
+<button class="px-3 py-1 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold">Follow</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- GROUP DETAIL -->
+<section data-role="groupdetail" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]">
+<a class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Finger</span>Dev</a>
+<div class="space-y-1 text-[12.5px]">
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="users" class="h-4 w-4"/>Members</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="hash" class="h-4 w-4"/>Topics</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="file-text" class="h-4 w-4"/>Files</div>
+<div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="settings" class="h-4 w-4"/>Settings</div>
+</div>
+</aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[760px] mx-auto px-4 md:px-6 py-6">
+<div class="bg-gradient-to-tr from-[var(--card)] via-[var(--primary)]/10 to-[var(--primary)]/20 border border-[var(--border)] rounded-2xl p-6 mb-4">
+<div class="flex items-start gap-4">
+<div class="grid w-14 h-14 place-items-center rounded-xl bg-[var(--primary)]/20 text-[var(--primary)] text-[20px] font-bold">FD</div>
+<div class="flex-1">
+<h1 class="text-[20px] font-bold">Finger Developers</h1>
+<p class="text-[12px] text-[var(--muted-foreground)]">A community for FingerMobile app developers</p>
+<div class="flex items-center gap-4 mt-2">
+<span class="text-[11px] mono">1,240 Members</span>
+<span class="text-[11px] mono">Public Group</span>
+</div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold flex items-center gap-1"><i data-lucide="message-circle" class="h-4 w-4"/>Join Chat</button>
+<button class="px-4 py-2 rounded-lg bg-[var(--secondary)] text-[var(--foreground)] text-[12px] font-semibold">Share</button>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-4">
+<h2 class="font-bold text-[13px] mb-2">Recent Activity</h2>
+<div class="space-y-3">
+<div class="flex gap-3">
+<div class="grid w-10 h-10 place-items-center rounded-lg bg-[var(--muted)] text-[var(--muted-foreground)] text-[12px]">JD</div>
+<div class="flex-1">
+<p class="text-[12px]"><span class="font-semibold">John Dev</span> posted a new tutorial</p>
+<p class="text-[11px] text-[var(--muted-foreground)]">2 hours ago</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="grid w-10 h-10 place-items-center rounded-lg bg-[var(--muted)] text-[var(--muted-foreground)] text-[12px]">SL</div>
+<div class="flex-1">
+<p class="text-[12px]"><span class="font-semibold">Sarah Lee</span> shared a resource</p>
+<p class="text-[11px] text-[var(--muted-foreground)]">Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]'));b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>
