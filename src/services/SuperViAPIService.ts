@@ -12,11 +12,11 @@ let OrbitControlsClass: any;
 // Initialize loaders asynchronously
 async function initializeLoaders() {
   if (!GLTFLoaderClass) {
-    const gltfModule = await import('three/addons/loaders/GLTFLoader.js');
+    const gltfModule = await import('three/examples/jsm/loaders/GLTFLoader');
     GLTFLoaderClass = gltfModule.GLTFLoader;
   }
   if (!OrbitControlsClass) {
-    const orbitModule = await import('three/addons/controls/OrbitControls.js');
+    const orbitModule = await import('three/examples/jsm/controls/OrbitControls');
     OrbitControlsClass = orbitModule.OrbitControls;
   }
 }

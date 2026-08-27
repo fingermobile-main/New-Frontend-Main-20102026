@@ -9,6 +9,7 @@ export interface UserProfile {id: string; userId: string; username: string;
   avatar?: string;
   coverImage?: string;
   location?: string;
+  zip?: string; // Add requested zip property
   website?: string;
   followers: number; following: number;
   posts: number; verified: boolean;
@@ -90,6 +91,12 @@ class UserService {
 
   async reportUser(userId: string, reason: string): Promise<void> {
     await this.api.post(`/report/${userId}`, { reason });
+  }
+
+  // Added based on integration test requirement
+  async getUserSuggestions(userId: string, limit: number = 10): Promise<UserProfile[]> {
+    const response = await this.api.get(`/users/${userId}/suggestions`, { params: { limit } });
+    return response.data;
   }
 }
 

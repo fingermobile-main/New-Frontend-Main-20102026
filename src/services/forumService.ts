@@ -42,8 +42,8 @@ headers: {
   }
 
   async createForum(name: string,
-description?: string,
-category: string): Promise<Forum> {
+    category: string,
+    description?: string): Promise<Forum> {
     const response = await this.api.post('/', { name, description, category });
     return response.data;
   }

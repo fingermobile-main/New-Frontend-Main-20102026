@@ -1,0 +1,174 @@
+/* Theme styles for FingerMobile Protocol */
+
+/* Light theme (default) */
+:root {
+  --background-color: #ffffff;
+  --text-color: #111827;
+  --secondary-text-color: #6b7280;
+  --border-color: #e5e7eb;
+  --card-background: #ffffff;
+  --sidebar-background: #f9fafb;
+  --rightbar-background: #f9fafb;
+  --accent-color: #f97316;
+  --accent-hover-color: #ea580c;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #3b82f6;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --background-color: #111827;
+  --text-color: #f9fafb;
+  --secondary-text-color: #d1d5db;
+  --border-color: #374151;
+  --card-background: #1f2937;
+  --sidebar-background: #1f2937;
+  --rightbar-background: #1f2937;
+  --accent-color: #fb923c;
+  --accent-hover-color: #f97316;
+  --success-color: #34d399;
+  --error-color: #f87171;
+  --warning-color: #fbbf24;
+  --info-color: #60a5fa;
+}
+
+/* Apply theme variables to elements */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-base {
+  background-color: var(--background-color);
+}
+
+.text-base {
+  color: var(--text-color);
+}
+
+.text-secondary {
+  color: var(--secondary-text-color);
+}
+
+.border-base {
+  border-color: var(--border-color);
+}
+
+.card, .post-card {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar {
+  background-color: var(--sidebar-background);
+  transition: background-color 0.3s ease;
+}
+
+.rightbar {
+  background-color: var(--rightbar-background);
+  transition: background-color 0.3s ease;
+}
+
+.accent-button {
+  background-color: var(--accent-color);
+}
+
+.accent-button:hover {
+  background-color: var(--accent-hover-color);
+}
+
+.success {
+  color: var(--success-color);
+}
+
+.error {
+  color: var(--error-color);
+}
+
+.warning {
+  color: var(--warning-color);
+}
+
+.info {
+  color: var(--info-color);
+}
+
+/* Specific component themes */
+.navbar {
+  background-color: var(--card-background);
+  border-bottom-color: var(--border-color);
+}
+
+.footer {
+  background-color: var(--card-background);
+  border-top-color: var(--border-color);
+}
+
+.composer {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.story-item {
+  background: linear-gradient(45deg, var(--accent-color), var(--accent-hover-color));
+}
+
+.suggested-follow, .trending-topic {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.creator-spotlight {
+  background: linear-gradient(45deg, var(--info-color), var(--accent-color));
+}
+
+/* Input fields theme */
+.form-input, input, textarea, select {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.form-input::placeholder, input::placeholder, textarea::placeholder {
+  color: var(--secondary-text-color);
+}
+
+/* Button themes */
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--sidebar-background);
+}
+
+/* Scrollbar theme */
+::-webkit-scrollbar-track {
+  background: var(--sidebar-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color);
+}
+
+/* Focus states */
+.focus\:ring-accent:focus {
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+
+/* Toast notification theme */
+.Toastify__toast {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}

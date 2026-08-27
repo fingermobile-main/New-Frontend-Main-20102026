@@ -13,6 +13,7 @@ import {
   CheckIcon,
   SparklesIcon
 } from '../icons';
+import { formatDistanceToNow } from 'date-fns';
 
 type NotificationTab = 'all' | 'unread' | 'like' | 'comment' | 'follow' | 'purchase' | 'mention' | 'gift';
 
@@ -248,7 +249,9 @@ const NotificationsPage: React.FC = () => {
                           <span className="text-gray-600">{notification.action}</span>
                         </p>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs text-gray-400">{notification.timestamp}</span>
+                          <span className="text-xs text-gray-400">
+                            {notification.timestamp ? formatDistanceToNow(new Date(notification.timestamp), { addSuffix: true }) : 'Just now'}
+                          </span>
                           {!isRead && (
                             <span className="inline-flex items-center justify-center h-2 w-2 rounded-full bg-blue-600"></span>
                           )}

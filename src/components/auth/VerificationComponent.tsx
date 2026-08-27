@@ -82,13 +82,28 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
 
   // Countdown timer for resend button
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
+    // Cleanup any existing timer first
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    
     if (resendDisabled && countdown > 0) {
-      timer = timerRef.current = setTimeout(() => setCountdown(countdown - 1), 1000);
+      const timerRefTemp = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      
+      // Store the timeout ID in the ref
+      timerRef.current = timerRefTemp;
     } else if (countdown === 0) {
       setResendDisabled(false);
     }
-    return () => clearTimeout(timerRef.current);
+    
+    // Cleanup function
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, [resendDisabled, countdown]);
 
   // Send initial verification code

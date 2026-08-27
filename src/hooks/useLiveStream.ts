@@ -136,11 +136,11 @@ affiliatePartnerType: 'standard'
   // Start streaming to an affiliate partner
   const startAffiliateStreaming = async (
   title: string,
-description?: string,
 category: string,
 tags: string[],
-affiliatePartnerType: string,
-maxDuration: number,
+affiliatePartnerType: string, // Moved before optional parameter
+maxDuration: number,           // Moved before optional parameter
+description?: string,
     scheduledStartTime?: string
   ) => {
     setLoading(true);

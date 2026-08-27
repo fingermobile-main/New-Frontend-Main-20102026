@@ -1,0 +1,146 @@
+/* Responsive styles for FingerMobile Protocol */
+
+/* Mobile styles (up to 640px) */
+@media (max-width: 639px) {
+  .desktop-only {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: block;
+  }
+  
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    z-index: 50;
+  }
+  
+  .mobile-nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+  }
+  
+  .mobile-nav li {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .main-content-mobile {
+    padding-bottom: 4rem; /* Space for mobile nav */
+  }
+  
+  .sidebar-mobile {
+    display: none;
+  }
+  
+  .feed-mobile {
+    width: 100%;
+  }
+}
+
+/* Tablet styles (640px to 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .tablet-sidebar {
+    width: 25%;
+  }
+  
+  .tablet-feed {
+    width: 75%;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+  
+  .tablet-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .tablet-nav li {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Desktop styles (1024px and above) */
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .tablet-only {
+    display: none;
+  }
+  
+  .desktop-layout {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    gap: 1rem;
+  }
+  
+  .desktop-sidebar {
+    width: 100%;
+  }
+  
+  .desktop-feed {
+    width: 100%;
+  }
+  
+  .desktop-right-bar {
+    width: 100%;
+  }
+}
+
+/* Large desktop styles (1280px and above) */
+@media (min-width: 1280px) {
+  .desktop-layout-wide {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* High-resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Optimize for high DPI displays */
+  .logo {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+}
+
+/* Orientation changes */
+@media (orientation: landscape) {
+  .portrait-only {
+    display: none;
+  }
+}
+
+@media (orientation: portrait) {
+  .landscape-only {
+    display: none;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .card, .modal-content {
+    border: 2px solid;
+  }
+}

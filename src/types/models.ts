@@ -212,10 +212,14 @@ export interface Warranty {
 
 export interface ProductVariant {
   id: string;
-  name: string;
-  options: Record<string, string>;
+  name: string; // e.g., "Red, Large"
+  sku?: string; // Stock Keeping Unit
+  ean?: string; // European Article Number
+  options: Record<string, string>; // e.g., { "color": "red", "size": "large" }
   price: number;
   stock: number;
+  images?: MediaAsset[]; // Variant-specific images
+  isActive?: boolean;
 }
 
 export interface BundleItem {
@@ -681,6 +685,8 @@ export interface Comment {
   content: string;
   timestamp: Date;
   likes: number;
+  depth?: number;
+  edited?: boolean;
   replies?: Comment[];
   author?: User;
 }

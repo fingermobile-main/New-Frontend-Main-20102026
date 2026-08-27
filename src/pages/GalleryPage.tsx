@@ -1,379 +1,288 @@
-import React, { useState } from 'react';
-
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import { 
-  CameraIcon, 
-  VideoCameraIcon, 
-  CollectionIcon, 
-  HeartIcon, 
-  ShareIcon, 
-  DownloadIcon,
-  EyeIcon,
-  PlusIcon,
-  GridIcon,
-  ListIcon
-} from '@/icons';
-import { useToast } from '@/hooks/use-toast';
+import React from 'react';
 
 const GalleryPage: React.FC = () => {
-  const { toast } = useToast();
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  
-  const photos = [
+  // Mock data for gallery categories
+  const galleryItems = [
     {
       id: 1,
-      title: 'Mountain Landscape',
-      category: 'nature',
-      likes: 124,
-      views: 542,
-      date: '2023-08-15',
-      url: '/placeholder-image-1.jpg'
+      title: "My Uploads",
+      count: "128 items",
+      icon: "image",
+      color: "from-orange-500/40 to-yellow-500/30"
     },
     {
       id: 2,
-      title: 'City Skyline',
-      category: 'urban',
-      likes: 89,
-      views: 321,
-      date: '2023-08-12',
-      url: '/placeholder-image-2.jpg'
+      title: "Videos",
+      count: "42 items",
+      icon: "clapperboard",
+      color: "from-orange-500/20 to-orange-500/20"
     },
     {
       id: 3,
-      title: 'Beach Sunset',
-      category: 'nature',
-      likes: 210,
-      views: 876,
-      date: '2023-08-10',
-      url: '/placeholder-image-3.jpg'
+      title: "Starred",
+      count: "25 items",
+      icon: "star",
+      color: "from-yellow-500/20 to-yellow-500/20"
     },
     {
       id: 4,
-      title: 'Abstract Art',
-      category: 'art',
-      likes: 56,
-      views: 210,
-      date: '2023-08-08',
-      url: '/placeholder-image-4.jpg'
+      title: "Archive",
+      count: "83 items",
+      icon: "folder",
+      color: "from-gray-600/20 to-gray-600/20"
     },
     {
       id: 5,
-      title: 'Street Photography',
-      category: 'urban',
-      likes: 78,
-      views: 432,
-      date: '2023-08-05',
-      url: '/placeholder-image-5.jpg'
+      title: "Favorites",
+      count: "56 items",
+      icon: "heart",
+      color: "from-red-500/20 to-red-500/20"
     },
     {
       id: 6,
-      title: 'Portrait Session',
-      category: 'people',
-      likes: 142,
-      views: 654,
-      date: '2023-08-03',
-      url: '/placeholder-image-6.jpg'
-    }
-  ];
-
-  const videos = [
-    {
-      id: 1,
-      title: 'Travel Vlog: Paris',
-      category: 'travel',
-      duration: '5:24',
-      views: 1240,
-      date: '2023-08-14',
-      thumbnail: '/placeholder-video-1.jpg'
+      title: "Screenshots",
+      count: "91 items",
+      icon: "monitor",
+      color: "from-blue-500/20 to-blue-500/20"
     },
     {
-      id: 2,
-      title: 'Cooking Tutorial',
-      category: 'food',
-      duration: '8:42',
-      views: 890,
-      date: '2023-08-11',
-      thumbnail: '/placeholder-video-2.jpg'
+      id: 7,
+      title: "Documents",
+      count: "34 items",
+      icon: "file-text",
+      color: "from-purple-500/20 to-purple-500/20"
+    },
+    {
+      id: 8,
+      title: "GIFs",
+      count: "18 items",
+      icon: "gif",
+      color: "from-green-500/20 to-green-500/20"
     }
   ];
 
-  const categories = ['all', 'nature', 'urban', 'art', 'people', 'travel', 'food'];
-
-  const filteredPhotos = selectedCategory === 'all' 
-    ? photos 
-    : photos.filter(photo => photo.category === selectedCategory);
-
-  const handleLike = (id: number) => {
-    toast({
-      title: "Liked!",
-      description: "You liked this media."
-    });
-  };
-
-  const handleDownload = (id: number) => {
-    toast({
-      title: "Download Started",
-      description: "Your download will begin shortly."
-    });
+  // Function to get Lucide icon based on name
+  const getLucideIcon = (iconName: string) => {
+    switch(iconName) {
+      case 'image':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <path d="M21 15l-5-5L5 21"></path>
+          </svg>
+        );
+      case 'clapperboard':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <path d="M4 3h16a2 2 0 0 1 2 2v3H2V5a2 2 0 0 1 2-2"></path>
+            <path d="M2 12h20"></path>
+            <path d="M7 12v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-5"></path>
+            <path d="M12 12v5"></path>
+          </svg>
+        );
+      case 'star':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        );
+      case 'folder':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+          </svg>
+        );
+      case 'heart':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path>
+          </svg>
+        );
+      case 'monitor':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+            <path d="M8 21h8"></path>
+            <path d="M12 17v4"></path>
+          </svg>
+        );
+      case 'file-text':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="M16 13H8"></path>
+            <path d="M16 17H8"></path>
+            <path d="M10 9H8"></path>
+          </svg>
+        );
+      case 'gif':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <path d="M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M16 14h.01"></path>
+            <path d="M8 14h.01"></path>
+          </svg>
+        );
+      default:
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-gray-400">
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <path d="M21 15l-5-5L5 21"></path>
+          </svg>
+        );
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Gallery</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore photos, videos, and creative content from our community
-          </p>
+    <div className="flex w-full">
+      {/* Left Sidebar - Gallery Navigation */}
+      <aside className="col-left hidden md:flex flex-col w-1/5 p-4 space-y-6">
+        <div className="bg-gray-800 rounded-xl p-4">
+          <h2 className="font-bold text-lg mb-3">Gallery</h2>
+          <nav className="space-y-1">
+            <button className="flex items-center w-full p-2 rounded-lg text-left hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <path d="M21 15l-5-5L5 21"></path>
+              </svg>
+              All Photos
+            </button>
+            <button className="flex items-center w-full p-2 rounded-lg text-left hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+              </svg>
+              Albums
+            </button>
+            <button className="flex items-center w-full p-2 rounded-lg text-left hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
+                <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5"></path>
+                <path d="M21 12H9l-6 6h18Z"></path>
+                <path d="M15 22v-4"></path>
+              </svg>
+              Shared
+            </button>
+          </nav>
         </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <Tabs defaultValue="photos" className="w-full md:w-auto">
-            <TabsList>
-              <TabsTrigger value="photos">Photos</TabsTrigger>
-              <TabsTrigger value="videos">Videos</TabsTrigger>
-              <TabsTrigger value="collections">Collections</TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          <div className="flex flex-wrap gap-3 w-full md:w-auto">
-            <div className="flex border rounded-md overflow-hidden">
-              <button 
-                className={`p-2 ${viewMode === 'grid' ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
-                onClick={() => setViewMode('grid')}
-              >
-                <GridIcon className="w-5 h-5" />
-              </button>
-              <button 
-                className={`p-2 ${viewMode === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
-                onClick={() => setViewMode('list')}
-              >
-                <ListIcon className="w-5 h-5" />
-              </button>
-            </div>
-
-            <select 
-              className="border rounded-md p-2 bg-white"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              {categories.map(category => (
-                <option key={category} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </option>
-              ))}
-            </select>
-
-            <Button>
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Upload
-            </Button>
+        
+        <div className="bg-gray-800 rounded-xl p-4">
+          <h3 className="font-bold mb-2">Smart Albums</h3>
+          <div className="space-y-2">
+            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Favorites</button>
+            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Screenshots</button>
+            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Selfies</button>
+            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Documents</button>
+            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">GIFs</button>
           </div>
         </div>
+      </aside>
 
-        <Tabs defaultValue="photos" className="w-full">
-          <TabsContent value="photos">
-            {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {filteredPhotos.map((photo) => (
-                  <Card key={photo.id} className="overflow-hidden group">
-                    <div className="relative">
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <div className="flex space-x-2">
-                          <Button 
-                            size="sm" 
-                            variant="secondary" 
-                            className="rounded-full"
-                            onClick={() => handleLike(photo.id)}
-                          >
-                            <HeartIcon className="w-4 h-4" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="secondary" 
-                            className="rounded-full"
-                            onClick={() => handleDownload(photo.id)}
-                          >
-                            <DownloadIcon className="w-4 h-4" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="secondary" 
-                            className="rounded-full"
-                          >
-                            <ShareIcon className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-semibold line-clamp-1">{photo.title}</h3>
-                          <p className="text-sm text-gray-500">{photo.date}</p>
-                        </div>
-                        <Badge variant="secondary">{photo.category}</Badge>
-                      </div>
-                      <div className="flex justify-between mt-3 text-sm text-gray-600">
-                        <div className="flex items-center">
-                          <HeartIcon className="w-4 h-4 mr-1" />
-                          {photo.likes}
-                        </div>
-                        <div className="flex items-center">
-                          <EyeIcon className="w-4 h-4 mr-1" />
-                          {photo.views}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+      {/* Main Content - Gallery Grid */}
+      <main className="col-center w-3/5 p-4">
+        <div className="bg-gray-800 rounded-xl p-4 mb-4">
+          <h1 className="text-xl font-bold">Gallery</h1>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {galleryItems.map(item => (
+            <div key={item.id} className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
+              <div className={`h-28 bg-gradient-to-tr ${item.color} grid place-items-center`}>
+                {getLucideIcon(item.icon)}
               </div>
-            ) : (
-              <div className="space-y-4">
-                {filteredPhotos.map((photo) => (
-                  <Card key={photo.id} className="flex overflow-hidden">
-                    <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex-shrink-0" />
-                    <div className="p-4 flex-1">
-                      <div className="flex justify-between">
-                        <h3 className="font-semibold">{photo.title}</h3>
-                        <Badge variant="secondary">{photo.category}</Badge>
-                      </div>
-                      <p className="text-sm text-gray-500 mb-2">{photo.date}</p>
-                      <p className="text-gray-600 line-clamp-2 mb-3">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      </p>
-                      <div className="flex justify-between text-sm text-gray-600">
-                        <div className="flex space-x-4">
-                          <div className="flex items-center">
-                            <HeartIcon className="w-4 h-4 mr-1 text-red-500" />
-                            {photo.likes} likes
-                          </div>
-                          <div className="flex items-center">
-                            <EyeIcon className="w-4 h-4 mr-1" />
-                            {photo.views} views
-                          </div>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <HeartIcon className="w-4 h-4 mr-1" />
-                            Like
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <DownloadIcon className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+              <div className="p-3">
+                <p className="text-[12px] font-semibold">{item.title}</p>
+                <p className="text-[9px] text-gray-400">{item.count}</p>
               </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="videos">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos.map((video) => (
-                <Card key={video.id} className="overflow-hidden group">
-                  <div className="relative">
-                    <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-black bg-opacity-50 rounded-full p-3">
-                        <VideoCameraIcon className="w-8 h-8 text-white" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-                      {video.duration}
-                    </div>
-                  </div>
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold">{video.title}</h3>
-                        <p className="text-sm text-gray-500">{video.date}</p>
-                      </div>
-                      <Badge variant="secondary">{video.category}</Badge>
-                    </div>
-                    <div className="flex justify-between mt-3 text-sm text-gray-600">
-                      <div className="flex items-center">
-                        <EyeIcon className="w-4 h-4 mr-1" />
-                        {video.views} views
-                      </div>
-                      <Button size="sm" variant="outline">
-                        <DownloadIcon className="w-4 h-4 mr-1" />
-                        Download
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
-          </TabsContent>
+          ))}
+        </div>
+      </main>
 
-          <TabsContent value="collections">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((id) => (
-                <Card key={id} className="overflow-hidden">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-t-xl w-full h-40" />
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold">Collection {id}</h3>
-                    <p className="text-sm text-gray-500 mb-2">12 items • Created 2 days ago</p>
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <div className="flex items-center">
-                        <HeartIcon className="w-4 h-4 mr-1" />
-                        42
-                      </div>
-                      <Button size="sm" variant="outline">
-                        View
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+      {/* Right Sidebar - Gallery Info */}
+      <aside className="col-right hidden lg:flex flex-col w-1/5 p-4 space-y-4">
+        <div className="bg-gray-800 rounded-xl p-4">
+          <h3 className="font-bold mb-3">Storage</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>Used</span>
+              <span>2.4 GB</span>
             </div>
-          </TabsContent>
-        </Tabs>
-
-        <div className="mt-12 text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Featured Galleries</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-500 to-indigo-600 h-32 flex items-center justify-center">
-                <CollectionIcon className="w-12 h-12 text-white" />
-              </div>
-              <CardContent className="p-4 text-center">
-                <h3 className="font-semibold">Nature Wonders</h3>
-                <p className="text-sm text-gray-500">124 photos</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-500 to-teal-600 h-32 flex items-center justify-center">
-                <CameraIcon className="w-12 h-12 text-white" />
-              </div>
-              <CardContent className="p-4 text-center">
-                <h3 className="font-semibold">Urban Landscapes</h3>
-                <p className="text-sm text-gray-500">89 photos</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-amber-500 to-orange-600 h-32 flex items-center justify-center">
-                <VideoCameraIcon className="w-12 h-12 text-white" />
-              </div>
-              <CardContent className="p-4 text-center">
-                <h3 className="font-semibold">Video Highlights</h3>
-                <p className="text-sm text-gray-500">32 videos</p>
-              </CardContent>
-            </Card>
+            <div className="w-full bg-gray-700 rounded-full h-2">
+              <div className="bg-orange-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+            </div>
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>65% of 4 GB</span>
+              <span>1.6 GB free</span>
+            </div>
           </div>
         </div>
-      </div>
+        
+        <div className="bg-gray-800 rounded-xl p-4">
+          <h3 className="font-bold mb-3">Gallery Settings</h3>
+          <div className="space-y-2 text-sm">
+            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 1.7l-1.4 7a2 2 0 0 0 2 2.3h5.6a2 2 0 0 0 2-2.3l-1.4-7a2 2 0 0 0-2-1.7z"></path>
+                <path d="M8 21a5 5 0 1 0 8 0"></path>
+              </svg>
+              Backup
+            </button>
+            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
+                <path d="M12 22s7-4 7-10V5l-7-3-7 3v7c0 6 7 10 7 10z"></path>
+              </svg>
+              Sync
+            </button>
+            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 1.7l-1.4 7a2 2 0 0 0 2 2.3h5.6a2 2 0 0 0 2-2.3l-1.4-7a2 2 0 0 0-2-1.7z"></path>
+                <path d="M8 21a5 5 0 1 0 8 0"></path>
+              </svg>
+              Import
+            </button>
+          </div>
+        </div>
+        
+        <div className="bg-gray-800 rounded-xl p-4">
+          <h3 className="font-bold mb-3">Recently Added</h3>
+          <div className="grid grid-cols-3 gap-2">
+            <img 
+              src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=150&q=60" 
+              alt="Recent item 1" 
+              className="w-full h-16 object-cover rounded"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=150&q=60" 
+              alt="Recent item 2" 
+              className="w-full h-16 object-cover rounded"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=60" 
+              alt="Recent item 3" 
+              className="w-full h-16 object-cover rounded"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=150&q=60" 
+              alt="Recent item 4" 
+              className="w-full h-16 object-cover rounded"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&q=60" 
+              alt="Recent item 5" 
+              className="w-full h-16 object-cover rounded"
+            />
+            <img 
+              src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=150&q=60" 
+              alt="Recent item 6" 
+              className="w-full h-16 object-cover rounded"
+            />
+          </div>
+        </div>
+      </aside>
     </div>
   );
 };

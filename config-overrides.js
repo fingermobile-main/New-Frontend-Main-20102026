@@ -29,7 +29,7 @@ module.exports = override(
     "@/config": path.resolve(__dirname, "src/config"),
     
     // Specific file aliases for frequently imported modules
-    "@/components/icons": path.resolve(__dirname, "src/components/icons.tsx"),
+    "@/components/icons": path.resolve(__dirname, "src/icons/index.ts"),
     "@/hooks/use-toast": path.resolve(__dirname, "src/hooks/use-toast.ts")
   }),
   

@@ -17,10 +17,8 @@ import { GiftIcon, UserCircleIcon } from '../icons';
 
 import { useAuth } from '../contexts/AuthContext';
 import {
-  CamusIcon,
-  MembersIcon as MembersGroupIcon,
+  MemberGroupIcon, // Fixed typo from MembersGroupIcon
   VideoCameraIcon,
-  GraduationCapIcon,
   BookOpenIcon,
   AcademicCapIcon,
   UserGroupIcon
@@ -81,7 +79,7 @@ const CamusPage: React.FC = () => {
         (course) =>
           course.title.toLowerCase().includes(query) ||
           course.instructor.name.toLowerCase().includes(query) ||
-          course.description.toLowerCase().includes(query),
+          course.description?.toLowerCase().includes(query), // Added optional chaining
       );
     }
 
@@ -240,7 +238,7 @@ const CamusPage: React.FC = () => {
         <div className="mb-10">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
-              <CamusIcon className="h-8 w-8 text-white" />
+              <BookOpenIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
               <h1 className="text-3xl font-bold text-gray-900">
@@ -256,7 +254,7 @@ const CamusPage: React.FC = () => {
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-8 mb-10">
               <div className="text-center">
-                <CamusIcon className="w-16 h-16 mx-auto text-white" />
+                <BookOpenIcon className="w-16 h-16 mx-auto text-white" />
                 <h1 className="mt-4 text-3xl font-extrabold sm:text-4xl md:text-5xl">
                   <span className="block">Advanced Education Platform</span>
                   <span className="block text-blue-200 mt-2">

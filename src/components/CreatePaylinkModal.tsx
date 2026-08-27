@@ -9,8 +9,8 @@ interface CreatePaylinkModalProps {
   onCreatePaylink: () => Promise<void>;
   paylinkAmount: string;
   setPaylinkAmount: (amount: string) => void;
-  paylinkdescription?: string;
-  setPaylinkDescription: (description?: string) => void;
+  paylinkDescription?: string;
+  setPaylinkDescription: React.Dispatch<React.SetStateAction<string>>;
   ficBalance: number;
   isProcessing: boolean;
 }

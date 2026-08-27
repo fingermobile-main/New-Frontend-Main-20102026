@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-
 import { useAppContext } from "../contexts/AppContext";
 import { MarketplaceContext } from '../contexts/MarketplaceContext';
 import ProductCard from '../components/ProductCard';
 import SubscriptionGate from '../components/shared/SubscriptionGate';
 import {
-  FlamingoIcon,
   GiftIcon,
   LinkIcon,
   SearchIcon,
@@ -112,7 +110,7 @@ const AgeGate: React.FC<AgeGateProps> = React.memo(({ onVerify }) => {
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
         <div className="text-center mb-6">
-          <FlamingoIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
+          <GiftIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
           <h2 className="text-2xl font-black text-gray-900 tracking-tight mb-2">Age Verification Required</h2>
           <p className="text-gray-500 text-sm leading-relaxed">
             This store contains adult content. You must be 19 years or older to enter.
@@ -320,7 +318,11 @@ const FlamingoPage: React.FC = () => {
   const [, setRecentViews] = useState<RecentView[]>([]);
   const [, setPaylinks] = useState<Paylink[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
+  // Added missing states for feed
+  const [isLoadingFeed, setIsLoadingFeed] = useState<boolean>(true);
+  const [personalizedFeed, setPersonalizedFeed] = useState<Product[]>([]);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('newest');
@@ -444,16 +446,33 @@ const FlamingoPage: React.FC = () => {
         result.sort((a, b) => b.price - a.price);
         break;
       case 'rating_desc':
-        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case 'popular':
-        result.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
-        break;
-      case 'newest':
-      default:
-        result.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-        break;
-    }
+        result.sort((a, b) => {
+             // Calculate average rating for sorting, handling the union type
+             let aRating = 0;
+             if (typeof a.rating === 'object' && a.rating !== null) {
+                 aRating = a.rating.average;
+             } else if (typeof a.rating === 'number') {
+                 aRating = a.rating;
+             }
+
+             let bRating = 0;
+             if (typeof b.rating === 'object' && b.rating !== null) {
+                 bRating = b.rating.average;
+             } else if (typeof b.rating === 'number') {
+                 bRating = b.rating;
+             }
+
+             return bRating - aRating; // Descending order
+          });
+          break;
+        case 'popular':
+          result.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
+          break;
+        case 'newest':
+        default:
+          result.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
+          break;
+      }
     
     setFilteredProducts(result);
   }, [filters, products]);
@@ -564,7 +583,7 @@ const FlamingoPage: React.FC = () => {
     <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
         <div className="text-center mb-6">
-          <FlamingoIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
+          <GiftIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Age Verification Required</h2>
           <p className="text-gray-600">
             This store contains adult content. You must be 19 years or older to enter.
@@ -753,13 +772,13 @@ const FlamingoPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b pb-12">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <FlamingoIcon className="w-8 h-8 text-pink-600" />
+              <GiftIcon className="w-8 h-8 text-pink-600" />
               <h1 className="text-2xl font-bold text-gray-900">Flamingo</h1>
               <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">Wellness Store</span>
             </div>
@@ -825,10 +844,32 @@ const FlamingoPage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Shop Tab */}
         {activeTab === 'shop' && (
-          <div>
+          <div className="mt-8">
+            {/* Category Buttons */}
+            <div className="flex flex-wrap gap-4 mb-4">
+              <button
+                onClick={() => handleCategoryChange('all')}
+                className={`py-2 px-4 rounded-lg ${
+                  selectedCategory === 'all' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                All Categories
+              </button>
+              {categories.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryChange(cat.slug)}
+                  className={`py-2 px-4 rounded-lg ${
+                    selectedCategory === cat.slug ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
             {/* Filters Bar */}
             {showFilters && (
               <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
@@ -884,6 +925,26 @@ const FlamingoPage: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Section for personalized feed */}
+            <div className="mt-6">
+              <h2 className="text-xl font-bold mb-4">Recommended For You</h2>
+              {isLoadingFeed ? (
+                <p>Loading personalized recommendations...</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {personalizedFeed.map((product) => (
+                    <ProductCard
+                      key={`personalized-${product.id}`} // Unique key for items in this feed
+                      product={product}
+                      onAddToCart={(pid) => addToCart({...product, id: pid})}
+                      onToggleWishlist={(pid) => toggleWishlist(pid)}
+                      isInWishlist={wishlist.some(w => w.productId === product.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

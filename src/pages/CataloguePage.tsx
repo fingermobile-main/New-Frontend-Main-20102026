@@ -37,7 +37,7 @@ const CataloguePage: React.FC = () => {
   const filteredItems = photoCreditItems.filter((item: PhotoCreditItem) => {
     const matchesSearch =
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.tags?.some((tag: string) =>
         tag.toLowerCase().includes(searchTerm.toLowerCase()),
       );

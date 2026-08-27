@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import { pool } from '../config/database';
 
 // Get all courses
-export const getCourses = async (,
-req: Request,
-res: Response) => {
+export const getCourses = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const result = await pool.query(`
       SELECT c.*, u.name as creator_name, u.membername as creator_membername
@@ -15,22 +16,24 @@ res: Response) => {
       ORDER BY c.created_at DESC
     `);
 
-    res.status(200).json({success: true,
-  data: result.rows
+    res.status(200).json({
+      success: true,
+      data: result.rows
     });
   } catch (error) {
-    console.error("Get courses,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to fetch courses"
+    console.error("Get courses, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch courses"
     });
   }
 };
 
 // Get course by ID
-export const getCourseById = async (,
-req: Request,
-res: Response) => {
+export const getCourseById = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { id } = req.params;
 
@@ -45,8 +48,9 @@ res: Response) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Course not found"
+      return res.status(404).json({
+        success: false,
+        message: "Course not found"
       });
     }
 
@@ -62,7 +66,7 @@ res: Response) => {
       [id],
     );
 
-    const modules = [];
+    const modules: any[] = []; // Explicitly typed to avoid 'never[]' inference
     for (const module of modulesResult.rows) {
       // Get lessons for each module
       const lessonsResult = await pool.query(
@@ -76,29 +80,31 @@ res: Response) => {
 
       modules.push({
         ...module,
-lessons: lessonsResult.rows
+        lessons: lessonsResult.rows
       });
     }
 
-    res.status(200).json({success: true,
-  data: {
+    res.status(200).json({
+      success: true,
+      data: {
         ...course,
-  modules
+        modules
       }
     });
   } catch (error) {
-    console.error("Get course by ID,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to fetch course"
+    console.error("Get course by ID, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch course"
     });
   }
 };
 
 // Create a new course
-export const createCourse = async (,
-req: Request,
-res: Response) => {
+export const createCourse = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
     const { title, description, price, category, level, thumbnail, modules } =
@@ -106,8 +112,9 @@ res: Response) => {
 
     // Validate required fields
     if (!title) {
-      return res.status(400).json({success: false,
-  message: "Course title is required"
+      return res.status(400).json({
+        success: false,
+        message: "Course title is required"
       });
     }
 
@@ -179,9 +186,10 @@ res: Response) => {
 
       await client.query("COMMIT");
 
-      res.status(201).json({success: true,
-  data: course,
-  message: "Course created successfully"
+      res.status(201).json({
+        success: true,
+        data: course,
+        message: "Course created successfully"
       });
     } catch (error) {
       await client.query("ROLLBACK");
@@ -190,18 +198,19 @@ res: Response) => {
       client.release();
     }
   } catch (error) {
-    console.error("Create course,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to create course"
+    console.error("Create course, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create course"
     });
   }
 };
 
 // Update course
-export const updateCourse = async (,
-req: Request,
-res: Response) => {
+export const updateCourse = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
     const { id } = req.params;
@@ -224,8 +233,9 @@ res: Response) => {
     );
 
     if (courseResult.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Course not found or you do not have permission to edit it"
+      return res.status(404).json({
+        success: false,
+        message: "Course not found or you do not have permission to edit it"
       });
     }
 
@@ -238,26 +248,28 @@ res: Response) => {
       WHERE id = $8
       RETURNING *
     `,
-      [title, description, price, category, level, thumbnail, is_published, id],;
+      [title, description, price, category, level, thumbnail, is_published, id]
     );
 
-    res.status(200).json({success: true,
-  data: result.rows[0],
-  message: "Course updated successfully"
+    res.status(200).json({
+      success: true,
+      data: result.rows[0],
+      message: "Course updated successfully"
     });
   } catch (error) {
-    console.error("Update course,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to update course"
+    console.error("Update course, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update course"
     });
   }
 };
 
 // Delete course
-export const deleteCourse = async (,
-req: Request,
-res: Response) => {
+export const deleteCourse = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
     const { id } = req.params;
@@ -271,30 +283,33 @@ res: Response) => {
     );
 
     if (courseResult.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Course not found or you do not have permission to delete it"
+      return res.status(404).json({
+        success: false,
+        message: "Course not found or you do not have permission to delete it"
       });
     }
 
     // Delete course (will cascade delete modules and lessons)
     await pool.query("DELETE FROM courses WHERE id = $1", [id]);
 
-    res.status(200).json({success: true,
-  message: "Course deleted successfully"
+    res.status(200).json({
+      success: true,
+      message: "Course deleted successfully"
     });
   } catch (error) {
-    console.error("Delete course,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to delete course"
+    console.error("Delete course, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete course"
     });
   }
 };
 
 // Get member enrollments
-export const getEnrollments = async (,
-req: Request,
-res: Response) => {
+export const getEnrollments = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
 
@@ -309,22 +324,24 @@ res: Response) => {
       [memberId],
     );
 
-    res.status(200).json({success: true,
-  data: result.rows
+    res.status(200).json({
+      success: true,
+      data: result.rows
     });
   } catch (error) {
-    console.error("Get enrollments,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to fetch enrollments"
+    console.error("Get enrollments, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch enrollments"
     });
   }
 };
 
 // Enroll in course
-export const enrollInCourse = async (,
-req: Request,
-res: Response) => {
+export const enrollInCourse = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
     const { courseId } = req.body;
@@ -338,8 +355,9 @@ res: Response) => {
     );
 
     if (courseResult.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Course not found or not published"
+      return res.status(404).json({
+        success: false,
+        message: "Course not found or not published"
       });
     }
 
@@ -352,8 +370,9 @@ res: Response) => {
     );
 
     if (enrollmentResult.rows.length > 0) {
-      return res.status(400).json({success: false,
-  message: "You are already enrolled in this course"
+      return res.status(400).json({
+        success: false,
+        message: "You are already enrolled in this course"
       });
     }
 
@@ -367,23 +386,25 @@ res: Response) => {
       [memberId, courseId],
     );
 
-    res.status(201).json({success: true,
-  data: result.rows[0],
-  message: "Successfully enrolled in course"
+    res.status(201).json({
+      success: true,
+      data: result.rows[0],
+      message: "Successfully enrolled in course"
     });
   } catch (error) {
-    console.error("Enroll in course,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to enroll in course"
+    console.error("Enroll in course, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to enroll in course"
     });
   }
 };
 
 // Update lesson progress
-export const updateLessonProgress = async (,
-req: Request,
-res: Response) => {
+export const updateLessonProgress = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const memberId = (req as any).member.memberId;
     const { enrollmentId, lessonId, completed } = req.body;
@@ -400,8 +421,9 @@ res: Response) => {
     );
 
     if (enrollmentResult.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Enrollment not found"
+      return res.status(404).json({
+        success: false,
+        message: "Enrollment not found"
       });
     }
 
@@ -419,8 +441,9 @@ res: Response) => {
     );
 
     if (lessonResult.rows.length === 0) {
-      return res.status(404).json({success: false,
-  message: "Lesson not found in this course"
+      return res.status(404).json({
+        success: false,
+        message: "Lesson not found in this course"
       });
     }
 
@@ -434,8 +457,7 @@ res: Response) => {
     } else {
       // Remove lesson from completed lessons
       completedLessons = completedLessons.filter(
-        (,
-id: number) => id !== lessonId,;
+        (id: number) => id !== lessonId,
       );
     }
 
@@ -452,8 +474,7 @@ id: number) => id !== lessonId,;
 
     const totalLessons = parseInt(totalLessonsResult.rows[0].total);
     const progressPercentage =
-      totalLessons > 0 ? (completedLessons.length / totalLessons) *,
-100 : 0;
+      totalLessons > 0 ? (completedLessons.length / totalLessons) * 100 : 0;
 
     // Update enrollment
     const result = await pool.query(
@@ -464,18 +485,19 @@ id: number) => id !== lessonId,;
       WHERE id = $3
       RETURNING *
     `,
-      [completedLessons, progressPercentage, enrollmentId],;
+      [completedLessons, progressPercentage, enrollmentId]
     );
 
-    res.status(200).json({success: true,
-  data: result.rows[0],
-  message: "Lesson progress updated successfully"
+    res.status(200).json({
+      success: true,
+      data: result.rows[0],
+      message: "Lesson progress updated successfully"
     });
   } catch (error) {
-    console.error("Update lesson progress,
-error:", error);
-    res.status(500).json({success: false,
-  message: "Failed to update lesson progress"
+    console.error("Update lesson progress, error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update lesson progress"
     });
   }
 };

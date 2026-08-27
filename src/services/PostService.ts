@@ -9,13 +9,16 @@ export interface Post {id: string;
   userAvatar?: string;
   content: string;
   media?: string[];
+  mediaUrls?: string[];
   type: "text" | "image" | "video" | "audio" | "link";
   likes: number;
   comments: number;
   shares: number;
   views: number;
+  engagement?: number;
   isLiked?: boolean;
   isBookmarked?: boolean;
+  isFollowing?: boolean;
   createdAt: string;
   updatedAt: string;
 }

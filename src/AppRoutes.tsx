@@ -274,6 +274,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/photo-credits" element={<PhotoCreditsPage />} />
       <Route path="/portfolio" element={<PortfolioPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/privacy" element={<PrivacyPolicyPage />} /> {/* Alias for footer link */}
       <Route path="/product-detail/:id" element={<ProductDetailPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/programs" element={<ProgramsPage />} />
@@ -284,6 +285,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/support" element={<SupportPage />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
       <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+      <Route path="/terms" element={<TermsOfServicePage />} /> {/* Alias for footer link */}
       <Route path="/topics" element={<TopicsPage />} />
       <Route path="/trends-feed" element={<TrendsFeedPage />} />
       <Route path="/user-reports" element={<UserReportsPage />} />
@@ -302,11 +304,13 @@ const AppRoutes: React.FC = () => {
       <Route path="/categories" element={<CategoryFeedPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/community-guidelines" element={<CommunityGuidelinesPage />} />
+      <Route path="/community" element={<CommunityGuidelinesPage />} /> {/* Alias for footer link */}
       <Route path="/community-management" element={<CommunityManagementPage />} />
       <Route path="/communities" element={<CommunityPages />} />
       <Route path="/conference" element={<ConferencePage />} />
       <Route path="/contact-us" element={<ContactUsPage />} />
       <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+      <Route path="/cookies" element={<CookiePolicyPage />} /> {/* Alias for footer link */}
       <Route path="/coupons" element={<CouponsPage />} />
       <Route path="/course-detail" element={<CourseDetailPage />} />
       <Route path="/create-group" element={<CreateGroupPage />} />

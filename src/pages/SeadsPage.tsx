@@ -25,7 +25,7 @@ interface FilterState {
 }
 
 const SeadsPage: React.FC = () => {
-  const { seadsInitiatives, loading, error } = useAppContext();
+  const { seadsInitiatives, loading, error, ficBalance } = useAppContext(); // Added ficBalance
   const [filters, setFilters] = useState<FilterState>({});
   const [filteredInitiatives, setFilteredInitiatives] = useState<SeadsInitiative[]>([]);
 
@@ -301,7 +301,7 @@ const SeadsPage: React.FC = () => {
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">FIC Balance</h3>
               <span className="text-2xl font-bold text-gray-900">
-                {useAppContext().ficBalance.toFixed(2)} FIC
+                {ficBalance?.toFixed(2)} FIC
               </span>
             </div>
 

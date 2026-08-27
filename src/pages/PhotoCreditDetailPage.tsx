@@ -1,14 +1,9 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-
 import { useAppContext } from "../contexts/AppContext";
 import CommentSection from '../components/CommentSection';
 import { PhotoCredit, Member } from '../types';
 import type { Comment } from '../components/CommentSection';
-
-
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
 
 const PhotoCreditDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +19,7 @@ const PhotoCreditDetailPage: React.FC = () => {
       await fetchPhotoCredits?.();
       const item = photoCreditItems.find(item => item.id === id);
       if (item) {
-        setPhotoCredit(item as any as PhotoCredit); // Casting to PhotoCredit
+        setPhotoCredit(item as PhotoCredit);
       }
       setLoading(false);
     };
@@ -68,11 +63,19 @@ const PhotoCreditDetailPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   if (!photoCredit) {
-    return <div className="min-h-screen flex items-center justify-center">Photo credit not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Photo credit not found
+      </div>
+    );
   }
 
   // Use uploader property (not photographer)
@@ -95,7 +98,7 @@ const PhotoCreditDetailPage: React.FC = () => {
               src={photoCredit.imageUrl}
               alt={photoCredit.title}
               className="absolute inset-0 w-full h-full object-cover"
-             />
+            />
           ) : (
             <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
               <span className="text-gray-500">No image available</span>
@@ -111,7 +114,7 @@ const PhotoCreditDetailPage: React.FC = () => {
               src={uploader.avatarUrl}
               alt={uploader.name}
               className="w-10 h-10 rounded-full object-cover mr-3"
-             />
+            />
             <div>
               <h3 className="font-semibold">{uploader.name}</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">by {uploader.name}</p>
@@ -146,7 +149,10 @@ const PhotoCreditDetailPage: React.FC = () => {
           <div className="mb-6">
             <div className="flex flex-wrap gap-2">
               {photoCredit.tags?.map(tag => (
-                <span key={tag} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                <span 
+                  key={tag} 
+                  className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                >
                   #{tag}
                 </span>
               ))}

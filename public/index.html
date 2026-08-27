@@ -4,8 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FingerMobile Frontend</title>
+    <style>
+      /* Splash Screen Styles */
+      #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* Or any preferred background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* High z-index to appear on top */
+        /* Transition for fade-out effect */
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+      }
+
+      #splash-screen img {
+        max-width: 30%; /* Adjust size as needed */
+        max-height: 30%;
+        object-fit: contain;
+      }
+
+      /* Hide the main app content initially */
+      #root {
+        display: none;
+      }
+
+      /* Class to fade out the splash screen */
+      .fade-out {
+        opacity: 0;
+      }
+    </style>
   </head>
   <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+      <img src="/assets/logos/fingermobile_logo.webp" alt="FingerMobile Logo" />
+    </div>
+
+    <!-- Main App Container -->
     <div id="root"></div>
+
+    <script>
+      // JavaScript to handle the splash screen timeout
+      window.addEventListener('load', function() {
+        // Set timeout for 3.5 seconds (3500 milliseconds)
+        setTimeout(function() {
+          const splashScreen = document.getElementById('splash-screen');
+          const mainApp = document.getElementById('root');
+
+          // Add the fade-out class to start the transition
+          splashScreen.classList.add('fade-out');
+
+          // After the transition completes (0.5s), hide the splash screen and show the main app
+          setTimeout(function() {
+            splashScreen.style.display = 'none';
+            mainApp.style.display = 'block'; // Show the main app content
+          }, 500); // Match the transition duration in CSS
+
+        }, 3500); // Duration of the splash screen in milliseconds
+      });
+    </script>
   </body>
 </html>

@@ -1,0 +1,1277 @@
+Compiled with problems:
+×
+ERROR in ./src/pages/CanaryAdsPage.tsx 20:8-16
+export 'FilmIcon' (imported as 'FilmIcon') was not found in '../icons' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowDownIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowTrendingUpIcon, ArrowUpIcon, ArrowUpTrayIcon, ArrowsExpandIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, AtSymbolIcon, AwardIcon, BankIcon, BanknotesIcon, BarcodeIcon, Bars3Icon, BarsArrowUpIcon, Battery100Icon, BellAlertIcon, BellIcon, BoltIcon, BookOpenIcon, BookmarkIcon, BoxIcon, BriefcaseIcon, BuildingLibraryIcon, BuildingOfficeIcon, BuildingStorefrontIcon, CalendarDateIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, CameraRotateIcon, CamusIcon, CanaryIcon, CartIcon, CatalogueIcon, ChartBarIcon, ChartPieIcon, ChatAlt2Icon, ChatBubbleIcon, ChatBubbleLeftRightIcon, ChatIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, ClipboardCheckIcon, ClipboardListIcon, ClockIcon, CodeBracketIcon, Cog6ToothIcon, CogIcon, CollectionIcon, CommandLineIcon, ComputerDesktopIcon, CopyIcon, CouponsIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyDollarIcon, CurrencyNairaIcon, DashboardIcon, DatabaseIcon, DeviceComputerIcon, DeviceMobileIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DocumentCheckIcon, DocumentDuplicateIcon, DocumentIcon, DocumentTextIcon, DotsHorizontalIcon, DownloadIcon, EarningsIcon, EditIcon, EmojiAlienIcon, EmojiAlienMonsterIcon, EmojiAngryFaceIcon, EmojiAngryFaceWithHornsIcon, EmojiAngryIcon, EmojiAntIcon, EmojiAnxiousFaceSweatingIcon, EmojiAstonishedIcon, EmojiBabyChickIcon, EmojiBatIcon, EmojiBearFaceIcon, EmojiBirdIcon, EmojiBoarIcon, EmojiBugIcon, EmojiButterflyIcon, EmojiCatFaceIcon, EmojiChickenIcon, EmojiConfoundedFaceIcon, EmojiCoolIcon, EmojiCowFaceIcon, EmojiCowboyHatFaceIcon, EmojiCryingFaceIcon, EmojiDisappointedIcon, EmojiDizzyIcon, EmojiDogFaceIcon, EmojiDuckIcon, EmojiEagleIcon, EmojiExpressionlessIcon, EmojiFaceBlowingAKissIcon, EmojiFaceWithFingerCoveringClosedEyesIcon, EmojiFaceWithHandOverMouthIcon, EmojiFaceWithMonocleIcon, EmojiFaceWithOpenEyesAndHandOverMouthIcon, EmojiFaceWithPeekingEyeIcon, EmojiFaceWithRaisedEyebrowIcon, EmojiFaceWithSteamFromNoseIcon, EmojiFaceWithSymbolsOverMouthIcon, EmojiFaceWithTearsOfJoyIcon, EmojiFaceWithTongueIcon, EmojiFlushedIcon, EmojiFoxFaceIcon, EmojiFrogFaceIcon, EmojiFrontFacingBabyChickIcon, EmojiGrinningFaceWithBigEyesIcon, EmojiGrinningFaceWithOneLargeEyeIcon, EmojiGrinningFaceWithSmilingEyesIcon, EmojiGrinningFaceWithStarEyesIcon, EmojiGrinningFaceWithSweatIcon, EmojiGrinningIcon, EmojiGrinningSquintingFaceIcon, EmojiHamsterFaceIcon, EmojiHappyIcon, EmojiHatchingChickIcon, EmojiHearNoEvilMonkeyIcon, EmojiHoneybeeIcon, EmojiHorseFaceIcon, EmojiHuggingFaceIcon, EmojiKoalaFaceIcon, EmojiLadyBeetleIcon, EmojiLionFaceIcon, EmojiLoudlyCryingFaceIcon, EmojiLyingFaceIcon, EmojiMoneyFaceIcon, EmojiMoneyMouthFaceIcon, EmojiMoneyMouthIcon, EmojiMonkeyFaceIcon, EmojiMonkeyIcon, EmojiMouseFaceIcon, EmojiNauseatedFaceIcon, EmojiNerdFaceIcon, EmojiNeutralFaceIcon, EmojiNeutralIcon, EmojiOwlIcon, EmojiPandaFaceIcon, EmojiPartyingFaceIcon, EmojiPenguinIcon, EmojiPerseveringFaceIcon, EmojiPigFaceIcon, EmojiPileOfPooIcon, EmojiPleadingFaceIcon, EmojiPoutingFaceIcon, EmojiRabbitFaceIcon, EmojiRobotIcon, EmojiRollingEyesIcon, EmojiRollingOnTheFloorLaughingIcon, EmojiSadButRelievedFaceIcon, EmojiSadIcon, EmojiSeeNoEvilMonkeyIcon, EmojiShellIcon, EmojiShushingFaceIcon, EmojiSkullAndCrossbonesIcon, EmojiSkullIcon, EmojiSleepingIcon, EmojiSleepyFaceIcon, EmojiSmilingFaceWithHaloIcon, EmojiSmilingFaceWithHeartsIcon, EmojiSmilingFaceWithHornsIcon, EmojiSmilingFaceWithSmilingEyesIcon, EmojiSmilingFaceWithSunglassesIcon, EmojiSmirkingFaceIcon, EmojiSnailIcon, EmojiSneezingFaceIcon, EmojiSpeakNoEvilMonkeyIcon, EmojiSquintingFaceWithTongueIcon, EmojiThermometerFaceIcon, EmojiTigerFaceIcon, EmojiTiredFaceIcon, EmojiTongueIcon, EmojiUnamusedIcon, EmojiUnicornFaceIcon, EmojiWinkIcon, EmojiWolfFaceIcon, EmojiWorriedIcon, EmojiYawningFaceIcon, EmojiZanyIcon, EmojiZipperMouthFaceIcon, EnvelopeIcon, ExclamationCircleIcon, ExclamationTriangleIcon, ExportIcon, EyeIcon, EyeOffIcon, FacebookIcon, FilterIcon, FinancialsIcon, FingerLuxIcon, FingerPrintIcon, FireIcon, FlagIcon, FlamingoIcon, FolderIcon, FolderOpenIcon, FunnelIcon, GameIcon, GamepadIcon, GemIcon, GiftCardIcon, GiftIcon, GlobeAltIcon, GoogleIcon, GraduationCapIcon, GridIcon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HandshakeIcon, HashtagIcon, HeartIcon, HomeIcon, I, ImportIcon, InformationCircleIcon, InstagramIcon, KeyIcon, LendsqrIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkedInIcon, ListIcon, LiveIcon, LocationMarkerIcon, LockClosedIcon, LockIcon, LockOpenIcon, LogoIcon, LoyaltyIcon, LucideRoseIcon, MagicWandIcon, MagnifyingGlassIcon, MailIcon, MapPinIcon, MarketplaceIcon, MegaphoneIcon, MemberGroupIcon, MemberIcon, MembersIcon, MenuIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MobilePhoneIcon, MoonIcon, MusicNoteIcon, MusicalNoteIcon, MyDownloadsIcon, NewspaperIcon, OrdersIcon, OwnitIcon, PauseIcon, PaylinkIcon, PencilIcon, PhoneGroupIcon, PhoneIcon, PhotoIcon, PinIcon, PlayCircleIcon, PlayIcon, PlusCircleIcon, PlusIcon, PolicyIcon, PowerIcon, PresentationChartBarIcon, ProfileCircleIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RectangleStackIcon, ReferralIcon, RoseIcon, ScissorsIcon, SearchIcon, ServerIcon, SettingsIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShieldIcon, ShoppingBagIcon, ShoppingCartIcon, ShuffleIcon, SignalIcon, SignalSlashIcon, SortIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Squares2X2Icon, StarIcon, StopIcon, StoreIcon, StorefrontIcon, SubscriptionIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TikTokIcon, TimeIcon, TokenIcon, TrashIcon, TrendingUpIcon, TrophyIcon, TruckIcon, TvIcon, UploadIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserPlusIcon, UserProfileIcon, UsersIcon, VaultIcon, VerificationBadgeIcon, VideoCameraIcon, ViewGridIcon, ViewListIcon, VolumeIcon, WalletIcon, WifiIcon, WrenchScrewdriverIcon, XCircleIcon, XIcon, XMarkIcon, YahooIcon, emojiIcons)
+ERROR in ./src/pages/DiscoveryPage.tsx 413:18-26
+export 'FilmIcon' (imported as 'FilmIcon') was not found in '../icons' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowDownIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowTrendingUpIcon, ArrowUpIcon, ArrowUpTrayIcon, ArrowsExpandIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, AtSymbolIcon, AwardIcon, BankIcon, BanknotesIcon, BarcodeIcon, Bars3Icon, BarsArrowUpIcon, Battery100Icon, BellAlertIcon, BellIcon, BoltIcon, BookOpenIcon, BookmarkIcon, BoxIcon, BriefcaseIcon, BuildingLibraryIcon, BuildingOfficeIcon, BuildingStorefrontIcon, CalendarDateIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, CameraRotateIcon, CamusIcon, CanaryIcon, CartIcon, CatalogueIcon, ChartBarIcon, ChartPieIcon, ChatAlt2Icon, ChatBubbleIcon, ChatBubbleLeftRightIcon, ChatIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, ClipboardCheckIcon, ClipboardListIcon, ClockIcon, CodeBracketIcon, Cog6ToothIcon, CogIcon, CollectionIcon, CommandLineIcon, ComputerDesktopIcon, CopyIcon, CouponsIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyDollarIcon, CurrencyNairaIcon, DashboardIcon, DatabaseIcon, DeviceComputerIcon, DeviceMobileIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DocumentCheckIcon, DocumentDuplicateIcon, DocumentIcon, DocumentTextIcon, DotsHorizontalIcon, DownloadIcon, EarningsIcon, EditIcon, EmojiAlienIcon, EmojiAlienMonsterIcon, EmojiAngryFaceIcon, EmojiAngryFaceWithHornsIcon, EmojiAngryIcon, EmojiAntIcon, EmojiAnxiousFaceSweatingIcon, EmojiAstonishedIcon, EmojiBabyChickIcon, EmojiBatIcon, EmojiBearFaceIcon, EmojiBirdIcon, EmojiBoarIcon, EmojiBugIcon, EmojiButterflyIcon, EmojiCatFaceIcon, EmojiChickenIcon, EmojiConfoundedFaceIcon, EmojiCoolIcon, EmojiCowFaceIcon, EmojiCowboyHatFaceIcon, EmojiCryingFaceIcon, EmojiDisappointedIcon, EmojiDizzyIcon, EmojiDogFaceIcon, EmojiDuckIcon, EmojiEagleIcon, EmojiExpressionlessIcon, EmojiFaceBlowingAKissIcon, EmojiFaceWithFingerCoveringClosedEyesIcon, EmojiFaceWithHandOverMouthIcon, EmojiFaceWithMonocleIcon, EmojiFaceWithOpenEyesAndHandOverMouthIcon, EmojiFaceWithPeekingEyeIcon, EmojiFaceWithRaisedEyebrowIcon, EmojiFaceWithSteamFromNoseIcon, EmojiFaceWithSymbolsOverMouthIcon, EmojiFaceWithTearsOfJoyIcon, EmojiFaceWithTongueIcon, EmojiFlushedIcon, EmojiFoxFaceIcon, EmojiFrogFaceIcon, EmojiFrontFacingBabyChickIcon, EmojiGrinningFaceWithBigEyesIcon, EmojiGrinningFaceWithOneLargeEyeIcon, EmojiGrinningFaceWithSmilingEyesIcon, EmojiGrinningFaceWithStarEyesIcon, EmojiGrinningFaceWithSweatIcon, EmojiGrinningIcon, EmojiGrinningSquintingFaceIcon, EmojiHamsterFaceIcon, EmojiHappyIcon, EmojiHatchingChickIcon, EmojiHearNoEvilMonkeyIcon, EmojiHoneybeeIcon, EmojiHorseFaceIcon, EmojiHuggingFaceIcon, EmojiKoalaFaceIcon, EmojiLadyBeetleIcon, EmojiLionFaceIcon, EmojiLoudlyCryingFaceIcon, EmojiLyingFaceIcon, EmojiMoneyFaceIcon, EmojiMoneyMouthFaceIcon, EmojiMoneyMouthIcon, EmojiMonkeyFaceIcon, EmojiMonkeyIcon, EmojiMouseFaceIcon, EmojiNauseatedFaceIcon, EmojiNerdFaceIcon, EmojiNeutralFaceIcon, EmojiNeutralIcon, EmojiOwlIcon, EmojiPandaFaceIcon, EmojiPartyingFaceIcon, EmojiPenguinIcon, EmojiPerseveringFaceIcon, EmojiPigFaceIcon, EmojiPileOfPooIcon, EmojiPleadingFaceIcon, EmojiPoutingFaceIcon, EmojiRabbitFaceIcon, EmojiRobotIcon, EmojiRollingEyesIcon, EmojiRollingOnTheFloorLaughingIcon, EmojiSadButRelievedFaceIcon, EmojiSadIcon, EmojiSeeNoEvilMonkeyIcon, EmojiShellIcon, EmojiShushingFaceIcon, EmojiSkullAndCrossbonesIcon, EmojiSkullIcon, EmojiSleepingIcon, EmojiSleepyFaceIcon, EmojiSmilingFaceWithHaloIcon, EmojiSmilingFaceWithHeartsIcon, EmojiSmilingFaceWithHornsIcon, EmojiSmilingFaceWithSmilingEyesIcon, EmojiSmilingFaceWithSunglassesIcon, EmojiSmirkingFaceIcon, EmojiSnailIcon, EmojiSneezingFaceIcon, EmojiSpeakNoEvilMonkeyIcon, EmojiSquintingFaceWithTongueIcon, EmojiThermometerFaceIcon, EmojiTigerFaceIcon, EmojiTiredFaceIcon, EmojiTongueIcon, EmojiUnamusedIcon, EmojiUnicornFaceIcon, EmojiWinkIcon, EmojiWolfFaceIcon, EmojiWorriedIcon, EmojiYawningFaceIcon, EmojiZanyIcon, EmojiZipperMouthFaceIcon, EnvelopeIcon, ExclamationCircleIcon, ExclamationTriangleIcon, ExportIcon, EyeIcon, EyeOffIcon, FacebookIcon, FilterIcon, FinancialsIcon, FingerLuxIcon, FingerPrintIcon, FireIcon, FlagIcon, FlamingoIcon, FolderIcon, FolderOpenIcon, FunnelIcon, GameIcon, GamepadIcon, GemIcon, GiftCardIcon, GiftIcon, GlobeAltIcon, GoogleIcon, GraduationCapIcon, GridIcon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HandshakeIcon, HashtagIcon, HeartIcon, HomeIcon, I, ImportIcon, InformationCircleIcon, InstagramIcon, KeyIcon, LendsqrIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkedInIcon, ListIcon, LiveIcon, LocationMarkerIcon, LockClosedIcon, LockIcon, LockOpenIcon, LogoIcon, LoyaltyIcon, LucideRoseIcon, MagicWandIcon, MagnifyingGlassIcon, MailIcon, MapPinIcon, MarketplaceIcon, MegaphoneIcon, MemberGroupIcon, MemberIcon, MembersIcon, MenuIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MobilePhoneIcon, MoonIcon, MusicNoteIcon, MusicalNoteIcon, MyDownloadsIcon, NewspaperIcon, OrdersIcon, OwnitIcon, PauseIcon, PaylinkIcon, PencilIcon, PhoneGroupIcon, PhoneIcon, PhotoIcon, PinIcon, PlayCircleIcon, PlayIcon, PlusCircleIcon, PlusIcon, PolicyIcon, PowerIcon, PresentationChartBarIcon, ProfileCircleIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RectangleStackIcon, ReferralIcon, RoseIcon, ScissorsIcon, SearchIcon, ServerIcon, SettingsIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShieldIcon, ShoppingBagIcon, ShoppingCartIcon, ShuffleIcon, SignalIcon, SignalSlashIcon, SortIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Squares2X2Icon, StarIcon, StopIcon, StoreIcon, StorefrontIcon, SubscriptionIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TikTokIcon, TimeIcon, TokenIcon, TrashIcon, TrendingUpIcon, TrophyIcon, TruckIcon, TvIcon, UploadIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserPlusIcon, UserProfileIcon, UsersIcon, VaultIcon, VerificationBadgeIcon, VideoCameraIcon, ViewGridIcon, ViewListIcon, VolumeIcon, WalletIcon, WifiIcon, WrenchScrewdriverIcon, XCircleIcon, XIcon, XMarkIcon, YahooIcon, emojiIcons)
+ERROR in ./src/pages/FingerShortsPage.tsx 123:40-52
+export 'EyeSlashIcon' (imported as 'EyeSlashIcon') was not found in '../icons' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowDownIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowTrendingUpIcon, ArrowUpIcon, ArrowUpTrayIcon, ArrowsExpandIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, AtSymbolIcon, AwardIcon, BankIcon, BanknotesIcon, BarcodeIcon, Bars3Icon, BarsArrowUpIcon, Battery100Icon, BellAlertIcon, BellIcon, BoltIcon, BookOpenIcon, BookmarkIcon, BoxIcon, BriefcaseIcon, BuildingLibraryIcon, BuildingOfficeIcon, BuildingStorefrontIcon, CalendarDateIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, CameraRotateIcon, CamusIcon, CanaryIcon, CartIcon, CatalogueIcon, ChartBarIcon, ChartPieIcon, ChatAlt2Icon, ChatBubbleIcon, ChatBubbleLeftRightIcon, ChatIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, ClipboardCheckIcon, ClipboardListIcon, ClockIcon, CodeBracketIcon, Cog6ToothIcon, CogIcon, CollectionIcon, CommandLineIcon, ComputerDesktopIcon, CopyIcon, CouponsIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyDollarIcon, CurrencyNairaIcon, DashboardIcon, DatabaseIcon, DeviceComputerIcon, DeviceMobileIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DocumentCheckIcon, DocumentDuplicateIcon, DocumentIcon, DocumentTextIcon, DotsHorizontalIcon, DownloadIcon, EarningsIcon, EditIcon, EmojiAlienIcon, EmojiAlienMonsterIcon, EmojiAngryFaceIcon, EmojiAngryFaceWithHornsIcon, EmojiAngryIcon, EmojiAntIcon, EmojiAnxiousFaceSweatingIcon, EmojiAstonishedIcon, EmojiBabyChickIcon, EmojiBatIcon, EmojiBearFaceIcon, EmojiBirdIcon, EmojiBoarIcon, EmojiBugIcon, EmojiButterflyIcon, EmojiCatFaceIcon, EmojiChickenIcon, EmojiConfoundedFaceIcon, EmojiCoolIcon, EmojiCowFaceIcon, EmojiCowboyHatFaceIcon, EmojiCryingFaceIcon, EmojiDisappointedIcon, EmojiDizzyIcon, EmojiDogFaceIcon, EmojiDuckIcon, EmojiEagleIcon, EmojiExpressionlessIcon, EmojiFaceBlowingAKissIcon, EmojiFaceWithFingerCoveringClosedEyesIcon, EmojiFaceWithHandOverMouthIcon, EmojiFaceWithMonocleIcon, EmojiFaceWithOpenEyesAndHandOverMouthIcon, EmojiFaceWithPeekingEyeIcon, EmojiFaceWithRaisedEyebrowIcon, EmojiFaceWithSteamFromNoseIcon, EmojiFaceWithSymbolsOverMouthIcon, EmojiFaceWithTearsOfJoyIcon, EmojiFaceWithTongueIcon, EmojiFlushedIcon, EmojiFoxFaceIcon, EmojiFrogFaceIcon, EmojiFrontFacingBabyChickIcon, EmojiGrinningFaceWithBigEyesIcon, EmojiGrinningFaceWithOneLargeEyeIcon, EmojiGrinningFaceWithSmilingEyesIcon, EmojiGrinningFaceWithStarEyesIcon, EmojiGrinningFaceWithSweatIcon, EmojiGrinningIcon, EmojiGrinningSquintingFaceIcon, EmojiHamsterFaceIcon, EmojiHappyIcon, EmojiHatchingChickIcon, EmojiHearNoEvilMonkeyIcon, EmojiHoneybeeIcon, EmojiHorseFaceIcon, EmojiHuggingFaceIcon, EmojiKoalaFaceIcon, EmojiLadyBeetleIcon, EmojiLionFaceIcon, EmojiLoudlyCryingFaceIcon, EmojiLyingFaceIcon, EmojiMoneyFaceIcon, EmojiMoneyMouthFaceIcon, EmojiMoneyMouthIcon, EmojiMonkeyFaceIcon, EmojiMonkeyIcon, EmojiMouseFaceIcon, EmojiNauseatedFaceIcon, EmojiNerdFaceIcon, EmojiNeutralFaceIcon, EmojiNeutralIcon, EmojiOwlIcon, EmojiPandaFaceIcon, EmojiPartyingFaceIcon, EmojiPenguinIcon, EmojiPerseveringFaceIcon, EmojiPigFaceIcon, EmojiPileOfPooIcon, EmojiPleadingFaceIcon, EmojiPoutingFaceIcon, EmojiRabbitFaceIcon, EmojiRobotIcon, EmojiRollingEyesIcon, EmojiRollingOnTheFloorLaughingIcon, EmojiSadButRelievedFaceIcon, EmojiSadIcon, EmojiSeeNoEvilMonkeyIcon, EmojiShellIcon, EmojiShushingFaceIcon, EmojiSkullAndCrossbonesIcon, EmojiSkullIcon, EmojiSleepingIcon, EmojiSleepyFaceIcon, EmojiSmilingFaceWithHaloIcon, EmojiSmilingFaceWithHeartsIcon, EmojiSmilingFaceWithHornsIcon, EmojiSmilingFaceWithSmilingEyesIcon, EmojiSmilingFaceWithSunglassesIcon, EmojiSmirkingFaceIcon, EmojiSnailIcon, EmojiSneezingFaceIcon, EmojiSpeakNoEvilMonkeyIcon, EmojiSquintingFaceWithTongueIcon, EmojiThermometerFaceIcon, EmojiTigerFaceIcon, EmojiTiredFaceIcon, EmojiTongueIcon, EmojiUnamusedIcon, EmojiUnicornFaceIcon, EmojiWinkIcon, EmojiWolfFaceIcon, EmojiWorriedIcon, EmojiYawningFaceIcon, EmojiZanyIcon, EmojiZipperMouthFaceIcon, EnvelopeIcon, ExclamationCircleIcon, ExclamationTriangleIcon, ExportIcon, EyeIcon, EyeOffIcon, FacebookIcon, FilterIcon, FinancialsIcon, FingerLuxIcon, FingerPrintIcon, FireIcon, FlagIcon, FlamingoIcon, FolderIcon, FolderOpenIcon, FunnelIcon, GameIcon, GamepadIcon, GemIcon, GiftCardIcon, GiftIcon, GlobeAltIcon, GoogleIcon, GraduationCapIcon, GridIcon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HandshakeIcon, HashtagIcon, HeartIcon, HomeIcon, I, ImportIcon, InformationCircleIcon, InstagramIcon, KeyIcon, LendsqrIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkedInIcon, ListIcon, LiveIcon, LocationMarkerIcon, LockClosedIcon, LockIcon, LockOpenIcon, LogoIcon, LoyaltyIcon, LucideRoseIcon, MagicWandIcon, MagnifyingGlassIcon, MailIcon, MapPinIcon, MarketplaceIcon, MegaphoneIcon, MemberGroupIcon, MemberIcon, MembersIcon, MenuIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MobilePhoneIcon, MoonIcon, MusicNoteIcon, MusicalNoteIcon, MyDownloadsIcon, NewspaperIcon, OrdersIcon, OwnitIcon, PauseIcon, PaylinkIcon, PencilIcon, PhoneGroupIcon, PhoneIcon, PhotoIcon, PinIcon, PlayCircleIcon, PlayIcon, PlusCircleIcon, PlusIcon, PolicyIcon, PowerIcon, PresentationChartBarIcon, ProfileCircleIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RectangleStackIcon, ReferralIcon, RoseIcon, ScissorsIcon, SearchIcon, ServerIcon, SettingsIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShieldIcon, ShoppingBagIcon, ShoppingCartIcon, ShuffleIcon, SignalIcon, SignalSlashIcon, SortIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Squares2X2Icon, StarIcon, StopIcon, StoreIcon, StorefrontIcon, SubscriptionIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TikTokIcon, TimeIcon, TokenIcon, TrashIcon, TrendingUpIcon, TrophyIcon, TruckIcon, TvIcon, UploadIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserPlusIcon, UserProfileIcon, UsersIcon, VaultIcon, VerificationBadgeIcon, VideoCameraIcon, ViewGridIcon, ViewListIcon, VolumeIcon, WalletIcon, WifiIcon, WrenchScrewdriverIcon, XCircleIcon, XIcon, XMarkIcon, YahooIcon, emojiIcons)
+ERROR in ./src/pages/PubliciteePage.tsx 229:46-58
+export 'EyeSlashIcon' (imported as 'EyeSlashIcon') was not found in '../icons' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowDownIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowTrendingUpIcon, ArrowUpIcon, ArrowUpTrayIcon, ArrowsExpandIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, AtSymbolIcon, AwardIcon, BankIcon, BanknotesIcon, BarcodeIcon, Bars3Icon, BarsArrowUpIcon, Battery100Icon, BellAlertIcon, BellIcon, BoltIcon, BookOpenIcon, BookmarkIcon, BoxIcon, BriefcaseIcon, BuildingLibraryIcon, BuildingOfficeIcon, BuildingStorefrontIcon, CalendarDateIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, CameraRotateIcon, CamusIcon, CanaryIcon, CartIcon, CatalogueIcon, ChartBarIcon, ChartPieIcon, ChatAlt2Icon, ChatBubbleIcon, ChatBubbleLeftRightIcon, ChatIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, ClipboardCheckIcon, ClipboardListIcon, ClockIcon, CodeBracketIcon, Cog6ToothIcon, CogIcon, CollectionIcon, CommandLineIcon, ComputerDesktopIcon, CopyIcon, CouponsIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyDollarIcon, CurrencyNairaIcon, DashboardIcon, DatabaseIcon, DeviceComputerIcon, DeviceMobileIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DocumentCheckIcon, DocumentDuplicateIcon, DocumentIcon, DocumentTextIcon, DotsHorizontalIcon, DownloadIcon, EarningsIcon, EditIcon, EmojiAlienIcon, EmojiAlienMonsterIcon, EmojiAngryFaceIcon, EmojiAngryFaceWithHornsIcon, EmojiAngryIcon, EmojiAntIcon, EmojiAnxiousFaceSweatingIcon, EmojiAstonishedIcon, EmojiBabyChickIcon, EmojiBatIcon, EmojiBearFaceIcon, EmojiBirdIcon, EmojiBoarIcon, EmojiBugIcon, EmojiButterflyIcon, EmojiCatFaceIcon, EmojiChickenIcon, EmojiConfoundedFaceIcon, EmojiCoolIcon, EmojiCowFaceIcon, EmojiCowboyHatFaceIcon, EmojiCryingFaceIcon, EmojiDisappointedIcon, EmojiDizzyIcon, EmojiDogFaceIcon, EmojiDuckIcon, EmojiEagleIcon, EmojiExpressionlessIcon, EmojiFaceBlowingAKissIcon, EmojiFaceWithFingerCoveringClosedEyesIcon, EmojiFaceWithHandOverMouthIcon, EmojiFaceWithMonocleIcon, EmojiFaceWithOpenEyesAndHandOverMouthIcon, EmojiFaceWithPeekingEyeIcon, EmojiFaceWithRaisedEyebrowIcon, EmojiFaceWithSteamFromNoseIcon, EmojiFaceWithSymbolsOverMouthIcon, EmojiFaceWithTearsOfJoyIcon, EmojiFaceWithTongueIcon, EmojiFlushedIcon, EmojiFoxFaceIcon, EmojiFrogFaceIcon, EmojiFrontFacingBabyChickIcon, EmojiGrinningFaceWithBigEyesIcon, EmojiGrinningFaceWithOneLargeEyeIcon, EmojiGrinningFaceWithSmilingEyesIcon, EmojiGrinningFaceWithStarEyesIcon, EmojiGrinningFaceWithSweatIcon, EmojiGrinningIcon, EmojiGrinningSquintingFaceIcon, EmojiHamsterFaceIcon, EmojiHappyIcon, EmojiHatchingChickIcon, EmojiHearNoEvilMonkeyIcon, EmojiHoneybeeIcon, EmojiHorseFaceIcon, EmojiHuggingFaceIcon, EmojiKoalaFaceIcon, EmojiLadyBeetleIcon, EmojiLionFaceIcon, EmojiLoudlyCryingFaceIcon, EmojiLyingFaceIcon, EmojiMoneyFaceIcon, EmojiMoneyMouthFaceIcon, EmojiMoneyMouthIcon, EmojiMonkeyFaceIcon, EmojiMonkeyIcon, EmojiMouseFaceIcon, EmojiNauseatedFaceIcon, EmojiNerdFaceIcon, EmojiNeutralFaceIcon, EmojiNeutralIcon, EmojiOwlIcon, EmojiPandaFaceIcon, EmojiPartyingFaceIcon, EmojiPenguinIcon, EmojiPerseveringFaceIcon, EmojiPigFaceIcon, EmojiPileOfPooIcon, EmojiPleadingFaceIcon, EmojiPoutingFaceIcon, EmojiRabbitFaceIcon, EmojiRobotIcon, EmojiRollingEyesIcon, EmojiRollingOnTheFloorLaughingIcon, EmojiSadButRelievedFaceIcon, EmojiSadIcon, EmojiSeeNoEvilMonkeyIcon, EmojiShellIcon, EmojiShushingFaceIcon, EmojiSkullAndCrossbonesIcon, EmojiSkullIcon, EmojiSleepingIcon, EmojiSleepyFaceIcon, EmojiSmilingFaceWithHaloIcon, EmojiSmilingFaceWithHeartsIcon, EmojiSmilingFaceWithHornsIcon, EmojiSmilingFaceWithSmilingEyesIcon, EmojiSmilingFaceWithSunglassesIcon, EmojiSmirkingFaceIcon, EmojiSnailIcon, EmojiSneezingFaceIcon, EmojiSpeakNoEvilMonkeyIcon, EmojiSquintingFaceWithTongueIcon, EmojiThermometerFaceIcon, EmojiTigerFaceIcon, EmojiTiredFaceIcon, EmojiTongueIcon, EmojiUnamusedIcon, EmojiUnicornFaceIcon, EmojiWinkIcon, EmojiWolfFaceIcon, EmojiWorriedIcon, EmojiYawningFaceIcon, EmojiZanyIcon, EmojiZipperMouthFaceIcon, EnvelopeIcon, ExclamationCircleIcon, ExclamationTriangleIcon, ExportIcon, EyeIcon, EyeOffIcon, FacebookIcon, FilterIcon, FinancialsIcon, FingerLuxIcon, FingerPrintIcon, FireIcon, FlagIcon, FlamingoIcon, FolderIcon, FolderOpenIcon, FunnelIcon, GameIcon, GamepadIcon, GemIcon, GiftCardIcon, GiftIcon, GlobeAltIcon, GoogleIcon, GraduationCapIcon, GridIcon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HandshakeIcon, HashtagIcon, HeartIcon, HomeIcon, I, ImportIcon, InformationCircleIcon, InstagramIcon, KeyIcon, LendsqrIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkedInIcon, ListIcon, LiveIcon, LocationMarkerIcon, LockClosedIcon, LockIcon, LockOpenIcon, LogoIcon, LoyaltyIcon, LucideRoseIcon, MagicWandIcon, MagnifyingGlassIcon, MailIcon, MapPinIcon, MarketplaceIcon, MegaphoneIcon, MemberGroupIcon, MemberIcon, MembersIcon, MenuIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MobilePhoneIcon, MoonIcon, MusicNoteIcon, MusicalNoteIcon, MyDownloadsIcon, NewspaperIcon, OrdersIcon, OwnitIcon, PauseIcon, PaylinkIcon, PencilIcon, PhoneGroupIcon, PhoneIcon, PhotoIcon, PinIcon, PlayCircleIcon, PlayIcon, PlusCircleIcon, PlusIcon, PolicyIcon, PowerIcon, PresentationChartBarIcon, ProfileCircleIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RectangleStackIcon, ReferralIcon, RoseIcon, ScissorsIcon, SearchIcon, ServerIcon, SettingsIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShieldIcon, ShoppingBagIcon, ShoppingCartIcon, ShuffleIcon, SignalIcon, SignalSlashIcon, SortIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Squares2X2Icon, StarIcon, StopIcon, StoreIcon, StorefrontIcon, SubscriptionIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TikTokIcon, TimeIcon, TokenIcon, TrashIcon, TrendingUpIcon, TrophyIcon, TruckIcon, TvIcon, UploadIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserPlusIcon, UserProfileIcon, UsersIcon, VaultIcon, VerificationBadgeIcon, VideoCameraIcon, ViewGridIcon, ViewListIcon, VolumeIcon, WalletIcon, WifiIcon, WrenchScrewdriverIcon, XCircleIcon, XIcon, XMarkIcon, YahooIcon, emojiIcons)
+ERROR in ./src/pages/TrendsPage.tsx 54:10-18
+export 'FilmIcon' (imported as 'FilmIcon') was not found in '../icons' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowDownIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowTrendingUpIcon, ArrowUpIcon, ArrowUpTrayIcon, ArrowsExpandIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, AtSymbolIcon, AwardIcon, BankIcon, BanknotesIcon, BarcodeIcon, Bars3Icon, BarsArrowUpIcon, Battery100Icon, BellAlertIcon, BellIcon, BoltIcon, BookOpenIcon, BookmarkIcon, BoxIcon, BriefcaseIcon, BuildingLibraryIcon, BuildingOfficeIcon, BuildingStorefrontIcon, CalendarDateIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, CameraRotateIcon, CamusIcon, CanaryIcon, CartIcon, CatalogueIcon, ChartBarIcon, ChartPieIcon, ChatAlt2Icon, ChatBubbleIcon, ChatBubbleLeftRightIcon, ChatIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, ClipboardCheckIcon, ClipboardListIcon, ClockIcon, CodeBracketIcon, Cog6ToothIcon, CogIcon, CollectionIcon, CommandLineIcon, ComputerDesktopIcon, CopyIcon, CouponsIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyDollarIcon, CurrencyNairaIcon, DashboardIcon, DatabaseIcon, DeviceComputerIcon, DeviceMobileIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DocumentCheckIcon, DocumentDuplicateIcon, DocumentIcon, DocumentTextIcon, DotsHorizontalIcon, DownloadIcon, EarningsIcon, EditIcon, EmojiAlienIcon, EmojiAlienMonsterIcon, EmojiAngryFaceIcon, EmojiAngryFaceWithHornsIcon, EmojiAngryIcon, EmojiAntIcon, EmojiAnxiousFaceSweatingIcon, EmojiAstonishedIcon, EmojiBabyChickIcon, EmojiBatIcon, EmojiBearFaceIcon, EmojiBirdIcon, EmojiBoarIcon, EmojiBugIcon, EmojiButterflyIcon, EmojiCatFaceIcon, EmojiChickenIcon, EmojiConfoundedFaceIcon, EmojiCoolIcon, EmojiCowFaceIcon, EmojiCowboyHatFaceIcon, EmojiCryingFaceIcon, EmojiDisappointedIcon, EmojiDizzyIcon, EmojiDogFaceIcon, EmojiDuckIcon, EmojiEagleIcon, EmojiExpressionlessIcon, EmojiFaceBlowingAKissIcon, EmojiFaceWithFingerCoveringClosedEyesIcon, EmojiFaceWithHandOverMouthIcon, EmojiFaceWithMonocleIcon, EmojiFaceWithOpenEyesAndHandOverMouthIcon, EmojiFaceWithPeekingEyeIcon, EmojiFaceWithRaisedEyebrowIcon, EmojiFaceWithSteamFromNoseIcon, EmojiFaceWithSymbolsOverMouthIcon, EmojiFaceWithTearsOfJoyIcon, EmojiFaceWithTongueIcon, EmojiFlushedIcon, EmojiFoxFaceIcon, EmojiFrogFaceIcon, EmojiFrontFacingBabyChickIcon, EmojiGrinningFaceWithBigEyesIcon, EmojiGrinningFaceWithOneLargeEyeIcon, EmojiGrinningFaceWithSmilingEyesIcon, EmojiGrinningFaceWithStarEyesIcon, EmojiGrinningFaceWithSweatIcon, EmojiGrinningIcon, EmojiGrinningSquintingFaceIcon, EmojiHamsterFaceIcon, EmojiHappyIcon, EmojiHatchingChickIcon, EmojiHearNoEvilMonkeyIcon, EmojiHoneybeeIcon, EmojiHorseFaceIcon, EmojiHuggingFaceIcon, EmojiKoalaFaceIcon, EmojiLadyBeetleIcon, EmojiLionFaceIcon, EmojiLoudlyCryingFaceIcon, EmojiLyingFaceIcon, EmojiMoneyFaceIcon, EmojiMoneyMouthFaceIcon, EmojiMoneyMouthIcon, EmojiMonkeyFaceIcon, EmojiMonkeyIcon, EmojiMouseFaceIcon, EmojiNauseatedFaceIcon, EmojiNerdFaceIcon, EmojiNeutralFaceIcon, EmojiNeutralIcon, EmojiOwlIcon, EmojiPandaFaceIcon, EmojiPartyingFaceIcon, EmojiPenguinIcon, EmojiPerseveringFaceIcon, EmojiPigFaceIcon, EmojiPileOfPooIcon, EmojiPleadingFaceIcon, EmojiPoutingFaceIcon, EmojiRabbitFaceIcon, EmojiRobotIcon, EmojiRollingEyesIcon, EmojiRollingOnTheFloorLaughingIcon, EmojiSadButRelievedFaceIcon, EmojiSadIcon, EmojiSeeNoEvilMonkeyIcon, EmojiShellIcon, EmojiShushingFaceIcon, EmojiSkullAndCrossbonesIcon, EmojiSkullIcon, EmojiSleepingIcon, EmojiSleepyFaceIcon, EmojiSmilingFaceWithHaloIcon, EmojiSmilingFaceWithHeartsIcon, EmojiSmilingFaceWithHornsIcon, EmojiSmilingFaceWithSmilingEyesIcon, EmojiSmilingFaceWithSunglassesIcon, EmojiSmirkingFaceIcon, EmojiSnailIcon, EmojiSneezingFaceIcon, EmojiSpeakNoEvilMonkeyIcon, EmojiSquintingFaceWithTongueIcon, EmojiThermometerFaceIcon, EmojiTigerFaceIcon, EmojiTiredFaceIcon, EmojiTongueIcon, EmojiUnamusedIcon, EmojiUnicornFaceIcon, EmojiWinkIcon, EmojiWolfFaceIcon, EmojiWorriedIcon, EmojiYawningFaceIcon, EmojiZanyIcon, EmojiZipperMouthFaceIcon, EnvelopeIcon, ExclamationCircleIcon, ExclamationTriangleIcon, ExportIcon, EyeIcon, EyeOffIcon, FacebookIcon, FilterIcon, FinancialsIcon, FingerLuxIcon, FingerPrintIcon, FireIcon, FlagIcon, FlamingoIcon, FolderIcon, FolderOpenIcon, FunnelIcon, GameIcon, GamepadIcon, GemIcon, GiftCardIcon, GiftIcon, GlobeAltIcon, GoogleIcon, GraduationCapIcon, GridIcon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HandshakeIcon, HashtagIcon, HeartIcon, HomeIcon, I, ImportIcon, InformationCircleIcon, InstagramIcon, KeyIcon, LendsqrIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkedInIcon, ListIcon, LiveIcon, LocationMarkerIcon, LockClosedIcon, LockIcon, LockOpenIcon, LogoIcon, LoyaltyIcon, LucideRoseIcon, MagicWandIcon, MagnifyingGlassIcon, MailIcon, MapPinIcon, MarketplaceIcon, MegaphoneIcon, MemberGroupIcon, MemberIcon, MembersIcon, MenuIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MobilePhoneIcon, MoonIcon, MusicNoteIcon, MusicalNoteIcon, MyDownloadsIcon, NewspaperIcon, OrdersIcon, OwnitIcon, PauseIcon, PaylinkIcon, PencilIcon, PhoneGroupIcon, PhoneIcon, PhotoIcon, PinIcon, PlayCircleIcon, PlayIcon, PlusCircleIcon, PlusIcon, PolicyIcon, PowerIcon, PresentationChartBarIcon, ProfileCircleIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RectangleStackIcon, ReferralIcon, RoseIcon, ScissorsIcon, SearchIcon, ServerIcon, SettingsIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShieldIcon, ShoppingBagIcon, ShoppingCartIcon, ShuffleIcon, SignalIcon, SignalSlashIcon, SortIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Squares2X2Icon, StarIcon, StopIcon, StoreIcon, StorefrontIcon, SubscriptionIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TikTokIcon, TimeIcon, TokenIcon, TrashIcon, TrendingUpIcon, TrophyIcon, TruckIcon, TvIcon, UploadIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserPlusIcon, UserProfileIcon, UsersIcon, VaultIcon, VerificationBadgeIcon, VideoCameraIcon, ViewGridIcon, ViewListIcon, VolumeIcon, WalletIcon, WifiIcon, WrenchScrewdriverIcon, XCircleIcon, XIcon, XMarkIcon, YahooIcon, emojiIcons)
+ERROR
+[eslint] 
+src/pages/MembersPage.tsx
+  Line 115:41:  React Hook "useAuth" is called in function "handleFollowToggle" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+
+src/pages/SeadsPage.tsx
+  Line 304:18:  React Hook "useAppContext" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+
+Search for the keywords to learn more about each error.
+ERROR in src/algolia.ts:1:27
+TS2307: Cannot find module 'algoliasearch/lite' or its corresponding type declarations.
+  > 1 | import algoliasearch from "algoliasearch/lite";
+      |                           ^^^^^^^^^^^^^^^^^^^^
+    2 |
+    3 | const searchClient = algoliasearch(
+    4 |   process.env.REACT_APP_ALGOLIA_APP_ID || "AH8QFD8X1H", // Application ID
+ERROR in src/components/CommentSection.test.tsx:3:30
+TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+    1 | import React, {} from 'react';
+    2 | import { render, screen } from '@testing-library/react';
+  > 3 | import { describe, it } from 'vitest';
+      |                              ^^^^^^^^
+    4 | import CommentSection from './CommentSection';
+    5 |
+    6 | describe('CommentSection', () => {
+ERROR in src/components/CreatePaylinkModal.tsx:24:3
+TS2339: Property 'paylinkDescription' does not exist on type 'CreatePaylinkModalProps'.
+    22 |   paylinkAmount,
+    23 |   setPaylinkAmount,
+  > 24 |   paylinkDescription,
+       |   ^^^^^^^^^^^^^^^^^^
+    25 |   setPaylinkDescription,
+    26 |   ficBalance,
+    27 |   isProcessing
+ERROR in src/components/editor/EnhancedEditorStudio.test.tsx:3:30
+TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+    1 | import React, {} from 'react';
+    2 | import { render, screen } from "@testing-library/react";
+  > 3 | import { describe, it } from "vitest";
+      |                              ^^^^^^^^
+    4 | import EnhancedEditorStudio from './EnhancedEditorStudio';
+    5 |
+    6 | describe("EnhancedEditorStudio", () => {
+ERROR in src/components/MinimalPostCard.test.tsx:3:38
+TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+    1 | import React from 'react';
+    2 | import { render, screen } from "@testing-library/react";
+  > 3 | import { describe, it, expect } from "vitest";
+      |                                      ^^^^^^^^
+    4 | import MinimalPostCard from './MinimalPostCard';
+    5 |
+    6 | describe("MinimalPostCard", () => {
+ERROR in src/components/MinimalPostCard.test.tsx:4:29
+TS2307: Cannot find module './MinimalPostCard' or its corresponding type declarations.
+    2 | import { render, screen } from "@testing-library/react";
+    3 | import { describe, it, expect } from "vitest";
+  > 4 | import MinimalPostCard from './MinimalPostCard';
+      |                             ^^^^^^^^^^^^^^^^^^^
+    5 |
+    6 | describe("MinimalPostCard", () => {
+    7 |   it("renders without crashing", () => {
+ERROR in src/components/PostCard.test.tsx:3:38
+TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+    1 | import React, {} from 'react';
+    2 | import { render, screen } from "@testing-library/react";
+  > 3 | import { describe, it, expect } from "vitest";
+      |                                      ^^^^^^^^
+    4 | import PostCard from './PostCard';
+    5 |
+    6 | describe("PostCard", () => {
+ERROR in src/components/posts/PostPublishingSettings.test.tsx:3:30
+TS2307: Cannot find module 'vitest' or its corresponding type declarations.
+    1 | import React, {} from 'react';
+    2 | import { render, screen } from "@testing-library/react";
+  > 3 | import { describe, it } from "vitest";
+      |                              ^^^^^^^^
+    4 | import PostPublishingSettings from './PostPublishingSettings';
+    5 |
+    6 | describe("PostPublishingSettings", () => {
+ERROR in src/constants/index.ts:31:3
+TS2305: Module '"../icons"' has no exported member 'FilmIcon'.
+    29 |   Squares2X2Icon,
+    30 |   NewspaperIcon,
+  > 31 |   FilmIcon,
+       |   ^^^^^^^^
+    32 |   MusicalNoteIcon,
+    33 |   VideoCameraIcon,
+    34 |   ShoppingCartIcon,
+ERROR in src/controllers/authController.ts:8:10
+TS2305: Module '"../services/emailService"' has no exported member 'sendEmail'.
+     6 | import { pool } from '../config/database';
+     7 | import security from '../utils/security';
+  >  8 | import { sendEmail } from '../services/emailService';
+       |          ^^^^^^^^^
+     9 |
+    10 | // Register a new member
+    11 | export const register = async (
+ERROR in src/controllers/authController.ts:184:9
+TS2322: Type 'Date' is not assignable to type 'null'.
+    182 |       // Lock account after 5 failed attempts
+    183 |       if (failedAttempts >= 5) {
+  > 184 |         lockedUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+        |         ^^^^^^^^^^^
+    185 |       }
+    186 |
+    187 |       await pool.query(
+ERROR in src/controllers/authController.ts:212:23
+TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+    210 |
+    211 |     // Generate JWT token
+  > 212 |     const token = jwt.sign(
+        |                       ^^^^
+    213 |       {memberId: member.id,
+    214 |   email: member.email },
+    215 |       process.env.JWT_SECRET || "fallback_secret_key",
+ERROR in src/controllers/coursesController.ts:81:20
+TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+    79 |       );
+    80 |
+  > 81 |       modules.push({
+       |                    ^
+  > 82 |         ...module,
+       | ^^^^^^^^^^^^^^^^^^
+  > 83 |         lessons: lessonsResult.rows
+       | ^^^^^^^^^^^^^^^^^^
+  > 84 |       });
+       | ^^^^^^^^
+    85 |     }
+    86 |
+    87 |     res.status(200).json({
+ERROR in src/hooks/useAI.ts:40:97
+TS2552: Cannot find name 'moduleDescription'. Did you mean 'moduledescription'?
+    38 |     ) => {
+    39 |       try {
+  > 40 |         const prompt = `Create detailed content for module "${moduleTitle}" with description "${moduleDescription}". Include key learning objectives, main topics, practical exercises, and real-world examples.`;
+       |                                                                                                 ^^^^^^^^^^^^^^^^^
+    41 |
+    42 |         const content = await generateAIContent("module", prompt);
+    43 |         return content;
+ERROR in src/hooks/useDancia4Tv.ts:54:11
+TS18048: 'video.description' is possibly 'undefined'.
+    52 |         (video) =>
+    53 |           video.title.toLowerCase().includes(query) ||
+  > 54 |           video.description.toLowerCase().includes(query) ||
+       |           ^^^^^^^^^^^^^^^^^
+    55 |           video.genre.toLowerCase().includes(query) ||
+    56 |           video.contentTags.some((tag) => tag.toLowerCase().includes(query)),
+    57 |       );
+ERROR in src/hooks/useLiveStream.ts:140:1
+TS1016: A required parameter cannot follow an optional parameter.
+    138 |   title: string,
+    139 | description?: string,
+  > 140 | category: string,
+        | ^^^^^^^^
+    141 | tags: string[],
+    142 | affiliatePartnerType: string,
+    143 | maxDuration: number,
+ERROR in src/layouts/DashboardLayout.tsx:15:3
+TS2305: Module '"../icons"' has no exported member 'FilmIcon'.
+    13 |   SignalIcon,
+    14 |   MusicalNoteIcon,
+  > 15 |   FilmIcon,
+       |   ^^^^^^^^
+    16 |   UserGroupIcon,
+    17 |   HeartIcon,
+    18 |   GiftIcon,
+ERROR in src/layouts/ForumHeader.tsx:20:3
+TS2305: Module '"../icons"' has no exported member 'EyeSlashIcon'.
+    18 |   WalletIcon,
+    19 |   EyeIcon,
+  > 20 |   EyeSlashIcon
+       |   ^^^^^^^^^^^^
+    21 | } from '../icons';
+    22 |
+    23 | interface ForumHeaderProps {
+ERROR in src/models/SuperViModels.ts:3:23
+TS2307: Cannot find module '../database/connection' or its corresponding type declarations.
+    1 | import React from 'react';
+    2 | import { Model, DataTypes } from "sequelize";
+  > 3 | import sequelize from '../database/connection'; // Assuming Sequelize connection
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^
+    4 |
+    5 | // Define the Optional utility type locally
+    6 | type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+ERROR in src/models/SuperViModels.ts:26:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    24 |
+    25 | class SuperViGameSession
+  > 26 |   extends Model<
+       |           ^^^^^
+    27 |     SuperViGameSessionAttributes,
+    28 |     SuperViGameSessionCreationAttributes
+    29 |   >
+ERROR in src/models/SuperViModels.ts:51:20
+TS2339: Property 'init' does not exist on type 'typeof SuperViGameSession'.
+    49 | }
+    50 |
+  > 51 | SuperViGameSession.init(
+       |                    ^^^^
+    52 |   {id: {
+    53 |   type: DataTypes.UUID,
+    54 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:53:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    51 | SuperViGameSession.init(
+    52 |   {id: {
+  > 53 |   type: DataTypes.UUID,
+       |         ^^^^^^^^^
+    54 |   defaultValue: DataTypes.UUIDV4,
+    55 |   primaryKey: true
+    56 |     },
+ERROR in src/models/SuperViModels.ts:54:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    52 |   {id: {
+    53 |   type: DataTypes.UUID,
+  > 54 |   defaultValue: DataTypes.UUIDV4,
+       |                 ^^^^^^^^^
+    55 |   primaryKey: true
+    56 |     },
+    57 | memberId: {type: DataTypes.UUID,
+ERROR in src/models/SuperViModels.ts:57:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    55 |   primaryKey: true
+    56 |     },
+  > 57 | memberId: {type: DataTypes.UUID,
+       |                  ^^^^^^^^^
+    58 |   allowNull: false,
+    59 |   field: "member_id"
+    60 |     },
+ERROR in src/models/SuperViModels.ts:61:15
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    59 |   field: "member_id"
+    60 |     },
+  > 61 | score: {type: DataTypes.INTEGER,
+       |               ^^^^^^^^^
+    62 |   defaultValue: 0
+    63 |     },
+    64 | level: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:64:15
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    62 |   defaultValue: 0
+    63 |     },
+  > 64 | level: {type: DataTypes.INTEGER,
+       |               ^^^^^^^^^
+    65 |   defaultValue: 1
+    66 |     },
+    67 | timePlayed: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:67:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    65 |   defaultValue: 1
+    66 |     },
+  > 67 | timePlayed: {type: DataTypes.INTEGER,
+       |                    ^^^^^^^^^
+    68 |   defaultValue: 0,
+    69 |   field: "time_played"
+    70 |     },
+ERROR in src/models/SuperViModels.ts:71:19
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    69 |   field: "time_played"
+    70 |     },
+  > 71 | startTime: {type: DataTypes.DATE,
+       |                   ^^^^^^^^^
+    72 |   defaultValue: DataTypes.NOW,
+    73 |   field: "start_time"
+    74 |     },
+ERROR in src/models/SuperViModels.ts:72:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    70 |     },
+    71 | startTime: {type: DataTypes.DATE,
+  > 72 |   defaultValue: DataTypes.NOW,
+       |                 ^^^^^^^^^
+    73 |   field: "start_time"
+    74 |     },
+    75 | endTime: {type: DataTypes.DATE,
+ERROR in src/models/SuperViModels.ts:75:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    73 |   field: "start_time"
+    74 |     },
+  > 75 | endTime: {type: DataTypes.DATE,
+       |                 ^^^^^^^^^
+    76 |   field: "end_time"
+    77 |     },
+    78 | isActive: {type: DataTypes.BOOLEAN,
+ERROR in src/models/SuperViModels.ts:78:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    76 |   field: "end_time"
+    77 |     },
+  > 78 | isActive: {type: DataTypes.BOOLEAN,
+       |                  ^^^^^^^^^
+    79 |   defaultValue: true,
+    80 |   field: "is_active"
+    81 |     }
+ERROR in src/models/SuperViModels.ts:114:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    112 |
+    113 | class SuperViHighScore
+  > 114 |   extends Model<SuperViHighScoreAttributes, SuperViHighScoreCreationAttributes>
+        |           ^^^^^
+    115 |   implements SuperViHighScoreAttributes
+    116 | {
+    117 |   public id!: string;
+ERROR in src/models/SuperViModels.ts:130:18
+TS2339: Property 'init' does not exist on type 'typeof SuperViHighScore'.
+    128 | }
+    129 |
+  > 130 | SuperViHighScore.init(
+        |                  ^^^^
+    131 |   {id: {
+    132 |   type: DataTypes.UUID,
+    133 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:132:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    130 | SuperViHighScore.init(
+    131 |   {id: {
+  > 132 |   type: DataTypes.UUID,
+        |         ^^^^^^^^^
+    133 |   defaultValue: DataTypes.UUIDV4,
+    134 |   primaryKey: true
+    135 |     },
+ERROR in src/models/SuperViModels.ts:133:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    131 |   {id: {
+    132 |   type: DataTypes.UUID,
+  > 133 |   defaultValue: DataTypes.UUIDV4,
+        |                 ^^^^^^^^^
+    134 |   primaryKey: true
+    135 |     },
+    136 | memberId: {type: DataTypes.UUID,
+ERROR in src/models/SuperViModels.ts:136:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    134 |   primaryKey: true
+    135 |     },
+  > 136 | memberId: {type: DataTypes.UUID,
+        |                  ^^^^^^^^^
+    137 |   allowNull: false,
+    138 |   field: "member_id"
+    139 |     },
+ERROR in src/models/SuperViModels.ts:140:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    138 |   field: "member_id"
+    139 |     },
+  > 140 | membername: {type: DataTypes.STRING,
+        |                    ^^^^^^^^^
+    141 |   allowNull: false
+    142 |     },
+    143 | score: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:143:15
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    141 |   allowNull: false
+    142 |     },
+  > 143 | score: {type: DataTypes.INTEGER,
+        |               ^^^^^^^^^
+    144 |   allowNull: false
+    145 |     },
+    146 | level: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:146:15
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    144 |   allowNull: false
+    145 |     },
+  > 146 | level: {type: DataTypes.INTEGER,
+        |               ^^^^^^^^^
+    147 |   allowNull: false
+    148 |     },
+    149 | sessionId: {type: DataTypes.UUID,
+ERROR in src/models/SuperViModels.ts:149:19
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    147 |   allowNull: false
+    148 |     },
+  > 149 | sessionId: {type: DataTypes.UUID,
+        |                   ^^^^^^^^^
+    150 |   allowNull: false,
+    151 |   field: "session_id",
+    152 |   references: {
+ERROR in src/models/SuperViModels.ts:191:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    189 |
+    190 | class SuperViAchievement
+  > 191 |   extends Model<
+        |           ^^^^^
+    192 |     SuperViAchievementAttributes,
+    193 |     SuperViAchievementCreationAttributes
+    194 |   >
+ERROR in src/models/SuperViModels.ts:211:20
+TS2339: Property 'init' does not exist on type 'typeof SuperViAchievement'.
+    209 | }
+    210 |
+  > 211 | SuperViAchievement.init(
+        |                    ^^^^
+    212 |   {id: {
+    213 |   type: DataTypes.UUID,
+    214 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:213:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    211 | SuperViAchievement.init(
+    212 |   {id: {
+  > 213 |   type: DataTypes.UUID,
+        |         ^^^^^^^^^
+    214 |   defaultValue: DataTypes.UUIDV4,
+    215 |   primaryKey: true
+    216 |     },
+ERROR in src/models/SuperViModels.ts:214:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    212 |   {id: {
+    213 |   type: DataTypes.UUID,
+  > 214 |   defaultValue: DataTypes.UUIDV4,
+        |                 ^^^^^^^^^
+    215 |   primaryKey: true
+    216 |     },
+    217 | name: {type: DataTypes.STRING,
+ERROR in src/models/SuperViModels.ts:217:14
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    215 |   primaryKey: true
+    216 |     },
+  > 217 | name: {type: DataTypes.STRING,
+        |              ^^^^^^^^^
+    218 |   allowNull: false
+    219 |     },
+    220 | description: {type: DataTypes.TEXT
+ERROR in src/models/SuperViModels.ts:220:21
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    218 |   allowNull: false
+    219 |     },
+  > 220 | description: {type: DataTypes.TEXT
+        |                     ^^^^^^^^^
+    221 |     },
+    222 | icon: {type: DataTypes.STRING
+    223 |     },
+ERROR in src/models/SuperViModels.ts:222:14
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    220 | description: {type: DataTypes.TEXT
+    221 |     },
+  > 222 | icon: {type: DataTypes.STRING
+        |              ^^^^^^^^^
+    223 |     },
+    224 | achievementType: {type: DataTypes.STRING,
+    225 |   allowNull: false,
+ERROR in src/models/SuperViModels.ts:224:25
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    222 | icon: {type: DataTypes.STRING
+    223 |     },
+  > 224 | achievementType: {type: DataTypes.STRING,
+        |                         ^^^^^^^^^
+    225 |   allowNull: false,
+    226 |   field: "achievement_type"
+    227 |     },
+ERROR in src/models/SuperViModels.ts:228:21
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    226 |   field: "achievement_type"
+    227 |     },
+  > 228 | targetValue: {type: DataTypes.INTEGER,
+        |                     ^^^^^^^^^
+    229 |   field: "target_value"
+    230 |     },
+    231 | rarity: {type: DataTypes.STRING,
+ERROR in src/models/SuperViModels.ts:231:16
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    229 |   field: "target_value"
+    230 |     },
+  > 231 | rarity: {type: DataTypes.STRING,
+        |                ^^^^^^^^^
+    232 |   defaultValue: "common"
+    233 |     }
+    234 |   },
+ERROR in src/models/SuperViModels.ts:258:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    256 |
+    257 | class SuperViMemberAchievement
+  > 258 |   extends Model<
+        |           ^^^^^
+    259 |     SuperViMemberAchievementAttributes,
+    260 |     SuperViMemberAchievementCreationAttributes
+    261 |   >
+ERROR in src/models/SuperViModels.ts:276:26
+TS2339: Property 'init' does not exist on type 'typeof SuperViMemberAchievement'.
+    274 | }
+    275 |
+  > 276 | SuperViMemberAchievement.init(
+        |                          ^^^^
+    277 |   {id: {
+    278 |   type: DataTypes.UUID,
+    279 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:278:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    276 | SuperViMemberAchievement.init(
+    277 |   {id: {
+  > 278 |   type: DataTypes.UUID,
+        |         ^^^^^^^^^
+    279 |   defaultValue: DataTypes.UUIDV4,
+    280 |   primaryKey: true
+    281 |     },
+ERROR in src/models/SuperViModels.ts:279:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    277 |   {id: {
+    278 |   type: DataTypes.UUID,
+  > 279 |   defaultValue: DataTypes.UUIDV4,
+        |                 ^^^^^^^^^
+    280 |   primaryKey: true
+    281 |     },
+    282 | memberId: {type: DataTypes.UUID,
+ERROR in src/models/SuperViModels.ts:282:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    280 |   primaryKey: true
+    281 |     },
+  > 282 | memberId: {type: DataTypes.UUID,
+        |                  ^^^^^^^^^
+    283 |   allowNull: false,
+    284 |   field: "member_id"
+    285 |     },
+ERROR in src/models/SuperViModels.ts:286:23
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    284 |   field: "member_id"
+    285 |     },
+  > 286 | achievementId: {type: DataTypes.UUID,
+        |                       ^^^^^^^^^
+    287 |   allowNull: false,
+    288 |   field: "achievement_id",
+    289 |   references: {
+ERROR in src/models/SuperViModels.ts:294:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    292 |       }
+    293 |     },
+  > 294 | unlockedAt: {type: DataTypes.DATE,
+        |                    ^^^^^^^^^
+    295 |   defaultValue: DataTypes.NOW,
+    296 |   field: "unlocked_at"
+    297 |     },
+ERROR in src/models/SuperViModels.ts:295:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    293 |     },
+    294 | unlockedAt: {type: DataTypes.DATE,
+  > 295 |   defaultValue: DataTypes.NOW,
+        |                 ^^^^^^^^^
+    296 |   field: "unlocked_at"
+    297 |     },
+    298 | progress: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:298:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    296 |   field: "unlocked_at"
+    297 |     },
+  > 298 | progress: {type: DataTypes.INTEGER,
+        |                  ^^^^^^^^^
+    299 |   defaultValue: 0
+    300 |     },
+    301 | isUnlocked: {type: DataTypes.BOOLEAN,
+ERROR in src/models/SuperViModels.ts:301:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    299 |   defaultValue: 0
+    300 |     },
+  > 301 | isUnlocked: {type: DataTypes.BOOLEAN,
+        |                    ^^^^^^^^^
+    302 |   defaultValue: false,
+    303 |   field: "is_unlocked"
+    304 |     }
+ERROR in src/models/SuperViModels.ts:340:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    338 |
+    339 | class SuperViGameItem
+  > 340 |   extends Model<SuperViGameItemAttributes, SuperViGameItemCreationAttributes>
+        |           ^^^^^
+    341 |   implements SuperViGameItemAttributes
+    342 | {
+    343 |   public id!: string;
+ERROR in src/models/SuperViModels.ts:359:17
+TS2339: Property 'init' does not exist on type 'typeof SuperViGameItem'.
+    357 | }
+    358 |
+  > 359 | SuperViGameItem.init(
+        |                 ^^^^
+    360 |   {id: {
+    361 |   type: DataTypes.UUID,
+    362 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:361:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    359 | SuperViGameItem.init(
+    360 |   {id: {
+  > 361 |   type: DataTypes.UUID,
+        |         ^^^^^^^^^
+    362 |   defaultValue: DataTypes.UUIDV4,
+    363 |   primaryKey: true
+    364 |     },
+ERROR in src/models/SuperViModels.ts:362:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    360 |   {id: {
+    361 |   type: DataTypes.UUID,
+  > 362 |   defaultValue: DataTypes.UUIDV4,
+        |                 ^^^^^^^^^
+    363 |   primaryKey: true
+    364 |     },
+    365 | name: {type: DataTypes.STRING,
+ERROR in src/models/SuperViModels.ts:365:14
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    363 |   primaryKey: true
+    364 |     },
+  > 365 | name: {type: DataTypes.STRING,
+        |              ^^^^^^^^^
+    366 |   allowNull: false
+    367 |     },
+    368 | description: {type: DataTypes.TEXT
+ERROR in src/models/SuperViModels.ts:368:21
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    366 |   allowNull: false
+    367 |     },
+  > 368 | description: {type: DataTypes.TEXT
+        |                     ^^^^^^^^^
+    369 |     },
+    370 | itemType: {type: DataTypes.STRING,
+    371 |   allowNull: false,
+ERROR in src/models/SuperViModels.ts:370:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    368 | description: {type: DataTypes.TEXT
+    369 |     },
+  > 370 | itemType: {type: DataTypes.STRING,
+        |                  ^^^^^^^^^
+    371 |   allowNull: false,
+    372 |   field: "item_type"
+    373 |     },
+ERROR in src/models/SuperViModels.ts:374:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    372 |   field: "item_type"
+    373 |     },
+  > 374 | effectType: {type: DataTypes.STRING,
+        |                    ^^^^^^^^^
+    375 |   field: "effect_type"
+    376 |     },
+    377 | effectValue: {type: DataTypes.DECIMAL(10, 2),
+ERROR in src/models/SuperViModels.ts:377:21
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    375 |   field: "effect_type"
+    376 |     },
+  > 377 | effectValue: {type: DataTypes.DECIMAL(10, 2),
+        |                     ^^^^^^^^^
+    378 |   field: "effect_value"
+    379 |     },
+    380 | cost: {type: DataTypes.INTEGER,
+ERROR in src/models/SuperViModels.ts:380:14
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    378 |   field: "effect_value"
+    379 |     },
+  > 380 | cost: {type: DataTypes.INTEGER,
+        |              ^^^^^^^^^
+    381 |   defaultValue: 0
+    382 |     },
+    383 | rarity: {type: DataTypes.STRING,
+ERROR in src/models/SuperViModels.ts:383:16
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    381 |   defaultValue: 0
+    382 |     },
+  > 383 | rarity: {type: DataTypes.STRING,
+        |                ^^^^^^^^^
+    384 |   defaultValue: "common"
+    385 |     },
+    386 | isActive: {type: DataTypes.BOOLEAN,
+ERROR in src/models/SuperViModels.ts:386:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    384 |   defaultValue: "common"
+    385 |     },
+  > 386 | isActive: {type: DataTypes.BOOLEAN,
+        |                  ^^^^^^^^^
+    387 |   defaultValue: true,
+    388 |   field: "is_active"
+    389 |     }
+ERROR in src/models/SuperViModels.ts:415:11
+TS2507: Type 'Model<any, any, any>' is not a constructor function type.
+    413 |
+    414 | class SuperViMemberItem
+  > 415 |   extends Model<
+        |           ^^^^^
+    416 |     SuperViMemberItemAttributes,
+    417 |     SuperViMemberItemCreationAttributes
+    418 |   >
+ERROR in src/models/SuperViModels.ts:434:19
+TS2339: Property 'init' does not exist on type 'typeof SuperViMemberItem'.
+    432 | }
+    433 |
+  > 434 | SuperViMemberItem.init(
+        |                   ^^^^
+    435 |   {id: {
+    436 |   type: DataTypes.UUID,
+    437 |   defaultValue: DataTypes.UUIDV4,
+ERROR in src/models/SuperViModels.ts:436:9
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    434 | SuperViMemberItem.init(
+    435 |   {id: {
+  > 436 |   type: DataTypes.UUID,
+        |         ^^^^^^^^^
+    437 |   defaultValue: DataTypes.UUIDV4,
+    438 |   primaryKey: true
+    439 |     },
+ERROR in src/models/SuperViModels.ts:437:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    435 |   {id: {
+    436 |   type: DataTypes.UUID,
+  > 437 |   defaultValue: DataTypes.UUIDV4,
+        |                 ^^^^^^^^^
+    438 |   primaryKey: true
+    439 |     },
+    440 | memberId: {type: DataTypes.UUID,
+ERROR in src/models/SuperViModels.ts:440:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    438 |   primaryKey: true
+    439 |     },
+  > 440 | memberId: {type: DataTypes.UUID,
+        |                  ^^^^^^^^^
+    441 |   allowNull: false,
+    442 |   field: "member_id"
+    443 |     },
+ERROR in src/models/SuperViModels.ts:444:16
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    442 |   field: "member_id"
+    443 |     },
+  > 444 | itemId: {type: DataTypes.UUID,
+        |                ^^^^^^^^^
+    445 |   allowNull: false,
+    446 |   field: "item_id",
+    447 |   references: {
+ERROR in src/models/SuperViModels.ts:452:18
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    450 |       }
+    451 |     },
+  > 452 | quantity: {type: DataTypes.INTEGER,
+        |                  ^^^^^^^^^
+    453 |   defaultValue: 1
+    454 |     },
+    455 | acquiredAt: {type: DataTypes.DATE,
+ERROR in src/models/SuperViModels.ts:455:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    453 |   defaultValue: 1
+    454 |     },
+  > 455 | acquiredAt: {type: DataTypes.DATE,
+        |                    ^^^^^^^^^
+    456 |   defaultValue: DataTypes.NOW,
+    457 |   field: "acquired_at"
+    458 |     },
+ERROR in src/models/SuperViModels.ts:456:17
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    454 |     },
+    455 | acquiredAt: {type: DataTypes.DATE,
+  > 456 |   defaultValue: DataTypes.NOW,
+        |                 ^^^^^^^^^
+    457 |   field: "acquired_at"
+    458 |     },
+    459 | isEquipped: {type: DataTypes.BOOLEAN,
+ERROR in src/models/SuperViModels.ts:459:20
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    457 |   field: "acquired_at"
+    458 |     },
+  > 459 | isEquipped: {type: DataTypes.BOOLEAN,
+        |                    ^^^^^^^^^
+    460 |   defaultValue: false,
+    461 |   field: "is_equipped"
+    462 |     },
+ERROR in src/models/SuperViModels.ts:463:19
+TS2693: 'DataTypes' only refers to a type, but is being used as a value here.
+    461 |   field: "is_equipped"
+    462 |     },
+  > 463 | expiresAt: {type: DataTypes.DATE,
+        |                   ^^^^^^^^^
+    464 |   field: "expires_at"
+    465 |     }
+    466 |   },
+ERROR in src/models/SuperViModels.ts:495:29
+TS2339: Property 'hasMany' does not exist on type 'typeof SuperViGameSession'.
+    493 |   // Model associations can be defined here if needed
+    494 |   //,
+  > 495 | Example: SuperViGameSession.hasMany(SuperViHighScore, {foreignKey: 'session_id' });
+        |                             ^^^^^^^
+    496 |
+    497 |   // Sync the models with the database
+    498 |   await SuperViGameSession.sync();
+ERROR in src/models/SuperViModels.ts:498:28
+TS2339: Property 'sync' does not exist on type 'typeof SuperViGameSession'.
+    496 |
+    497 |   // Sync the models with the database
+  > 498 |   await SuperViGameSession.sync();
+        |                            ^^^^
+    499 |   await SuperViHighScore.sync();
+    500 |   await SuperViAchievement.sync();
+    501 |   await SuperViMemberAchievement.sync();
+ERROR in src/models/SuperViModels.ts:499:26
+TS2339: Property 'sync' does not exist on type 'typeof SuperViHighScore'.
+    497 |   // Sync the models with the database
+    498 |   await SuperViGameSession.sync();
+  > 499 |   await SuperViHighScore.sync();
+        |                          ^^^^
+    500 |   await SuperViAchievement.sync();
+    501 |   await SuperViMemberAchievement.sync();
+    502 |   await SuperViGameItem.sync();
+ERROR in src/models/SuperViModels.ts:500:28
+TS2339: Property 'sync' does not exist on type 'typeof SuperViAchievement'.
+    498 |   await SuperViGameSession.sync();
+    499 |   await SuperViHighScore.sync();
+  > 500 |   await SuperViAchievement.sync();
+        |                            ^^^^
+    501 |   await SuperViMemberAchievement.sync();
+    502 |   await SuperViGameItem.sync();
+    503 |   await SuperViMemberItem.sync();
+ERROR in src/models/SuperViModels.ts:501:34
+TS2339: Property 'sync' does not exist on type 'typeof SuperViMemberAchievement'.
+    499 |   await SuperViHighScore.sync();
+    500 |   await SuperViAchievement.sync();
+  > 501 |   await SuperViMemberAchievement.sync();
+        |                                  ^^^^
+    502 |   await SuperViGameItem.sync();
+    503 |   await SuperViMemberItem.sync();
+    504 |
+ERROR in src/models/SuperViModels.ts:502:25
+TS2339: Property 'sync' does not exist on type 'typeof SuperViGameItem'.
+    500 |   await SuperViAchievement.sync();
+    501 |   await SuperViMemberAchievement.sync();
+  > 502 |   await SuperViGameItem.sync();
+        |                         ^^^^
+    503 |   await SuperViMemberItem.sync();
+    504 |
+    505 |   console.info("SuperVi models initialized successfully");
+ERROR in src/models/SuperViModels.ts:503:27
+TS2339: Property 'sync' does not exist on type 'typeof SuperViMemberItem'.
+    501 |   await SuperViMemberAchievement.sync();
+    502 |   await SuperViGameItem.sync();
+  > 503 |   await SuperViMemberItem.sync();
+        |                           ^^^^
+    504 |
+    505 |   console.info("SuperVi models initialized successfully");
+    506 | };
+ERROR in src/pages/about/AboutPage.tsx:380:9
+TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(description?: string | undefined) => void'.
+  Types of parameters 'value' and 'description' are incompatible.
+    Type 'string | undefined' is not assignable to type 'SetStateAction<string>'.
+      Type 'undefined' is not assignable to type 'SetStateAction<string>'.
+    378 |         setPaylinkAmount={setPaylinkAmount}
+    379 |         paylinkDescription={paylinkDescription}
+  > 380 |         setPaylinkDescription={setPaylinkDescription}
+        |         ^^^^^^^^^^^^^^^^^^^^^
+    381 |         ficBalance={ficBalance}
+    382 |         isProcessing={isProcessing}
+    383 |       />
+ERROR in src/pages/AboutPage.tsx:380:9
+TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(description?: string | undefined) => void'.
+  Types of parameters 'value' and 'description' are incompatible.
+    Type 'string | undefined' is not assignable to type 'SetStateAction<string>'.
+      Type 'undefined' is not assignable to type 'SetStateAction<string>'.
+    378 |         setPaylinkAmount={setPaylinkAmount}
+    379 |         paylinkDescription={paylinkDescription}
+  > 380 |         setPaylinkDescription={setPaylinkDescription}
+        |         ^^^^^^^^^^^^^^^^^^^^^
+    381 |         ficBalance={ficBalance}
+    382 |         isProcessing={isProcessing}
+    383 |       />
+ERROR in src/pages/AboutUsPage.tsx:258:9
+TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(description?: string | undefined) => void'.
+  Types of parameters 'value' and 'description' are incompatible.
+    Type 'string | undefined' is not assignable to type 'SetStateAction<string>'.
+      Type 'undefined' is not assignable to type 'SetStateAction<string>'.
+    256 |         setPaylinkAmount={setPaylinkAmount}
+    257 |         paylinkDescription={paylinkDescription}
+  > 258 |         setPaylinkDescription={setPaylinkDescription}
+        |         ^^^^^^^^^^^^^^^^^^^^^
+    259 |         ficBalance={ficBalance}
+    260 |         isProcessing={isProcessing}
+    261 |       />
+ERROR in src/pages/CamusPage.tsx:84:11
+TS18048: 'course.description' is possibly 'undefined'.
+    82 |           course.title.toLowerCase().includes(query) ||
+    83 |           course.instructor.name.toLowerCase().includes(query) ||
+  > 84 |           course.description.toLowerCase().includes(query),
+       |           ^^^^^^^^^^^^^^^^^^
+    85 |       );
+    86 |     }
+    87 |
+ERROR in src/pages/CanaryAdsPage.tsx:10:3
+TS2305: Module '"../icons"' has no exported member 'FilmIcon'.
+     8 | import {
+     9 |   SparklesIcon,
+  > 10 |   FilmIcon,
+       |   ^^^^^^^^
+    11 |   PhotoIcon,
+    12 |   DocumentTextIcon,
+    13 |   ArrowsPointingOutIcon,
+ERROR in src/pages/CataloguePage.tsx:40:7
+TS18048: 'item.description' is possibly 'undefined'.
+    38 |     const matchesSearch =
+    39 |       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  > 40 |       item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       |       ^^^^^^^^^^^^^^^^
+    41 |       item.tags?.some((tag: string) =>
+    42 |         tag.toLowerCase().includes(searchTerm.toLowerCase()),
+    43 |       );
+ERROR in src/pages/DiscoveryPage.tsx:10:3
+TS2305: Module '"../icons"' has no exported member 'FilmIcon'.
+     8 |   UserPlusIcon,
+     9 |   MusicalNoteIcon,
+  > 10 |   FilmIcon,
+       |   ^^^^^^^^
+    11 |   AcademicCapIcon,
+    12 |   ShareIcon
+    13 | } from '../icons';
+ERROR in src/pages/DiscoveryPage.tsx:214:7
+TS18048: 'item.description' is possibly 'undefined'.
+    212 |     (item) =>
+    213 |       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  > 214 |       item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        |       ^^^^^^^^^^^^^^^^
+    215 |       item.category.toLowerCase().includes(searchQuery.toLowerCase()),
+    216 |   );
+    217 |
+ERROR in src/pages/ELearningPage.tsx:164:11
+TS18048: 'course.description' is possibly 'undefined'.
+    162 |           course.title.toLowerCase().includes(query) || 
+    163 |           instructorName.toLowerCase().includes(query) ||
+  > 164 |           course.description.toLowerCase().includes(query)
+        |           ^^^^^^^^^^^^^^^^^^
+    165 |         );
+    166 |       });
+    167 |     }
+ERROR in src/pages/FingerShortsPage.tsx:7:3
+TS2305: Module '"../icons"' has no exported member 'EyeSlashIcon'.
+     5 |   VideoCameraIcon,
+     6 |   PhotoIcon,
+  >  7 |   EyeSlashIcon
+       |   ^^^^^^^^^^^^
+     8 | } from '../icons';
+     9 | import { useFingerShorts } from '../hooks/useFingerShorts';
+    10 |
+ERROR in src/pages/GroupsPage.tsx:143:5
+TS18048: 'group.description' is possibly 'undefined'.
+    141 |   const filteredDiscoverGroups = discoverGroups.filter(group =>
+    142 |     group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  > 143 |     group.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        |     ^^^^^^^^^^^^^^^^^
+    144 |     group.category.toLowerCase().includes(searchTerm.toLowerCase())
+    145 |   );
+    146 |
+ERROR in src/pages/LoginPage.tsx:23:29
+TS2339: Property 'mustChangePassword' does not exist on type 'AuthContextType'.
+    21 |   const navigate = useNavigate();
+    22 |   const { toast } = useToast();
+  > 23 |   const { login: authLogin, mustChangePassword } = useAuth(); // Added mustChangePassword from AuthContext
+       |                             ^^^^^^^^^^^^^^^^^^
+    24 |
+    25 |   const validateForm = () => {
+    26 |     let valid = true;
+ERROR in src/pages/MarketplacePage.tsx:265:11
+TS18048: 'p.description' is possibly 'undefined'.
+    263 |         (p) =>
+    264 |           p.name.toLowerCase().includes(filters.query.toLowerCase()) ||
+  > 265 |           p.description.toLowerCase().includes(filters.query.toLowerCase()),
+        |           ^^^^^^^^^^^^^
+    266 |       );
+    267 |     }
+    268 |
+ERROR in src/pages/ProductsPage.tsx:28:9
+TS18048: 'product.description' is possibly 'undefined'.
+    26 |       result = result.filter(product => 
+    27 |         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  > 28 |         product.description.toLowerCase().includes(searchTerm.toLowerCase())
+       |         ^^^^^^^^^^^^^^^^^^^
+    29 |       );
+    30 |     }
+    31 |     
+ERROR in src/pages/PubliciteePage.tsx:10:3
+TS2305: Module '"../icons"' has no exported member 'EyeSlashIcon'.
+     8 |   MusicalNoteIcon,
+     9 |   SparklesIcon,
+  > 10 |   EyeSlashIcon,
+       |   ^^^^^^^^^^^^
+    11 |   TrashIcon,
+    12 |   PencilIcon,
+    13 |   HeartIcon,
+ERROR in src/pages/TrendsPage.tsx:10:3
+TS2305: Module '"../icons"' has no exported member 'FilmIcon'.
+     8 |   VideoCameraIcon,
+     9 |   MusicalNoteIcon,
+  > 10 |   FilmIcon,
+       |   ^^^^^^^^
+    11 |   UserGroupIcon,
+    12 |   CurrencyDollarIcon,
+    13 |   GiftIcon,
+ERROR in src/server.ts:24:20
+TS2349: This expression is not callable.
+  Type 'typeof import("/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main/node_modules/connect-redis/dist/connect-redis")' has no call signatures.
+    22 | // Redis client for session store
+    23 | let redisClient: ReturnType<typeof createClient> | null = null;
+  > 24 | const RedisStore = connectRedis(session);
+       |                    ^^^^^^^^^^^^
+    25 | let redisStore: InstanceType<typeof RedisStore> | null = null;
+    26 |
+    27 | if (process.env.REDIS_HOST) {
+ERROR in src/server.ts:33:9
+TS2353: Object literal may only specify known properties, and 'password' does not exist in type 'RedisSocketOptions'.
+    31 |         host: process.env.REDIS_HOST,
+    32 |         port: parseInt(process.env.REDIS_PORT || "6379"),
+  > 33 |         password: process.env.REDIS_PASSWORD || undefined,
+       |         ^^^^^^^^
+    34 |       }
+    35 |     });
+    36 |
+ERROR in src/server.ts:37:68
+TS2345: Argument of type '"Redis Client"' is not assignable to parameter of type 'ErrorType | { [key: string]: unknown; context: string; error?: any; postId?: string | undefined; userId?: string | undefined; } | undefined'.
+    35 |     });
+    36 |
+  > 37 |     redisClient.on("error", (err: Error) => logError(err as Error, "Redis Client"));
+       |                                                                    ^^^^^^^^^^^^^^
+    38 |
+    39 |     redisClient.connect().catch((err: Error) => logError(err as Error, "Redis Connection"));
+    40 |
+ERROR in src/server.ts:39:72
+TS2345: Argument of type '"Redis Connection"' is not assignable to parameter of type 'ErrorType | { [key: string]: unknown; context: string; error?: any; postId?: string | undefined; userId?: string | undefined; } | undefined'.
+    37 |     redisClient.on("error", (err: Error) => logError(err as Error, "Redis Client"));
+    38 |
+  > 39 |     redisClient.connect().catch((err: Error) => logError(err as Error, "Redis Connection"));
+       |                                                                        ^^^^^^^^^^^^^^^^^^
+    40 |
+    41 |     redisStore = new RedisStore({
+    42 |       client: redisClient,
+ERROR in src/server.ts:46:30
+TS2345: Argument of type '"Redis Client"' is not assignable to parameter of type 'ErrorType | { [key: string]: unknown; context: string; error?: any; postId?: string | undefined; userId?: string | undefined; } | undefined'.
+    44 |     });
+    45 |   } catch (error) {
+  > 46 |     logError(error as Error, "Redis Client");
+       |                              ^^^^^^^^^^^^^^
+    47 |     throw error;
+    48 |   }
+    49 | }
+ERROR in src/server.ts:102:26
+TS2345: Argument of type '"API_ERROR"' is not assignable to parameter of type 'ErrorType | { [key: string]: unknown; context: string; error?: any; postId?: string | undefined; userId?: string | undefined; } | undefined'.
+    100 |   } catch (error) {
+    101 |     const typedError = error as Error;
+  > 102 |     logError(typedError, "API_ERROR", {context: "Server - Health check" });
+        |                          ^^^^^^^^^^^
+    103 |     res.status(500).json({status: "ERROR",
+    104 |   timestamp: new Date().toISOString(),
+    105 |   error: typedError.message || "Health check failed",
+ERROR in src/server.ts:157:26
+TS2345: Argument of type '"UNKNOWN_ERROR"' is not assignable to parameter of type 'ErrorType | { [key: string]: unknown; context: string; error?: any; postId?: string | undefined; userId?: string | undefined; } | undefined'.
+    155 |   } catch (error) {
+    156 |     const typedError = error as Error;
+  > 157 |     logError(typedError, "UNKNOWN_ERROR", {context: "Graceful Shutdown" });
+        |                          ^^^^^^^^^^^^^^^
+    158 |     console.error(`Shutdown,
+    159 | error: ${typedError.message}`);
+    160 |     process.exit(1);
+ERROR in src/server/middleware/auth.ts:4:26
+TS2307: Cannot find module '../../src/utils/errorLogger' or its corresponding type declarations.
+    2 | import jwt from "jsonwebtoken";
+    3 | import { Pool } from "pg";
+  > 4 | import { logError } from '../../src/utils/errorLogger';
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    5 |
+    6 | // Database connection
+    7 | const pool = new Pool({user: process.env.DB_USER || "postgres",
+ERROR in src/server/middleware/auth.ts:35:5
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    33 |
+    34 |   if (!token) {
+  > 35 |     return res.status(401).json({error: "Access token required" });
+       |     ^^^^^^
+    36 |   }
+    37 |
+    38 |   try {
+ERROR in src/server/middleware/auth.ts:50:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    48 |     ]);
+    49 |     if (result.rows.length === 0) {
+  > 50 |       return res.status(401).json({error: "Member no longer exists" });
+       |       ^^^^^^
+    51 |     }
+    52 |
+    53 |     next();
+ERROR in src/server/middleware/auth.ts:56:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    54 |   } catch (error) {
+    55 |     if (error instanceof jwt.TokenExpiredError) {
+  > 56 |       return res.status(401).json({error: "Token expired" });
+       |       ^^^^^^
+    57 |     }
+    58 |
+    59 |     if (error instanceof jwt.JsonWebTokenError) {
+ERROR in src/server/middleware/auth.ts:60:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    58 |
+    59 |     if (error instanceof jwt.JsonWebTokenError) {
+  > 60 |       return res.status(403).json({error: "Invalid token" });
+       |       ^^^^^^
+    61 |     }
+    62 |
+    63 |     return res.status(500).json({error: "Authentication error" });
+ERROR in src/server/middleware/auth.ts:63:5
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    61 |     }
+    62 |
+  > 63 |     return res.status(500).json({error: "Authentication error" });
+       |     ^^^^^^
+    64 |   }
+    65 | };
+    66 |
+ERROR in src/server/middleware/auth.ts:74:5
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    72 | ): Promise<void> => {
+    73 |   if (!req.member) {
+  > 74 |     return res.status(401).json({error: "Authentication required" });
+       |     ^^^^^^
+    75 |   }
+    76 |
+    77 |   try {
+ERROR in src/server/middleware/auth.ts:83:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    81 |
+    82 |     if (result.rows.length === 0) {
+  > 83 |       return res.status(404).json({error: "Member not found" });
+       |       ^^^^^^
+    84 |     }
+    85 |
+    86 |     const memberRole = result.rows[0].role;
+ERROR in src/server/middleware/auth.ts:88:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    86 |     const memberRole = result.rows[0].role;
+    87 |     if (memberRole !== "admin" && memberRole !== "superadmin") {
+  > 88 |       return res.status(403).json({error: "Admin access required" });
+       |       ^^^^^^
+    89 |     }
+    90 |
+    91 |     next();
+ERROR in src/server/middleware/auth.ts:96:5
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    94 |   error
+    95 |     });
+  > 96 |     return res.status(500).json({error: "Authorization error" });
+       |     ^^^^^^
+    97 |   }
+    98 | };
+    99 |
+ERROR in src/server/middleware/auth.ts:108:7
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    106 |   ): Promise<void> => {
+    107 |     if (!req.member) {
+  > 108 |       return res.status(401).json({error: "Authentication required" });
+        |       ^^^^^^
+    109 |     }
+    110 |
+    111 |     const resourceUserId = parseInt(
+ERROR in src/server/middleware/auth.ts:124:11
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    122 |
+    123 |         if (result.rows.length === 0) {
+  > 124 |           return res.status(404).json({error: "Member not found" });
+        |           ^^^^^^
+    125 |         }
+    126 |
+    127 |         const memberRole = result.rows[0].role;
+ERROR in src/server/middleware/auth.ts:129:11
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    127 |         const memberRole = result.rows[0].role;
+    128 |         if (memberRole !== "admin" && memberRole !== "superadmin") {
+  > 129 |           return res.status(403).json({error: "Access denied" });
+        |           ^^^^^^
+    130 |         }
+    131 |       } catch (error) {
+    132 |         logError("Authorization, error:", {context: "auth.ts - checkPermissions", error });
+ERROR in src/server/middleware/auth.ts:133:9
+TS2322: Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+    131 |       } catch (error) {
+    132 |         logError("Authorization, error:", {context: "auth.ts - checkPermissions", error });
+  > 133 |         return res.status(500).json({error: "Authorization error" });
+        |         ^^^^^^
+    134 |       }
+    135 |     }
+    136 |
+ERROR in src/server/middleware/security.ts:10:3
+TS2322: Type '{ error: string; }' is not assignable to type 'string | Buffer<ArrayBufferLike> | Message | undefined'.
+  Type '{ error: string; }' is missing the following properties from type 'Message': status, message
+     8 |   windowMs: 15 * 60 * 1000, // 15 minutes
+     9 |   max: 100, // limit each IP to 100 requests per windowMs
+  > 10 |   message: {
+       |   ^^^^^^^
+    11 |   error: "Too many requests from this IP, please try again later."
+    12 |   }
+    13 | });
+ERROR in src/server/middleware/security.ts:19:3
+TS2322: Type '{ error: string; }' is not assignable to type 'string | Buffer<ArrayBufferLike> | Message | undefined'.
+  Type '{ error: string; }' is missing the following properties from type 'Message': status, message
+    17 |   windowMs: 15 * 60 * 1000, // 15 minutes
+    18 |   max: 5, // limit each IP to 5 requests per windowMs
+  > 19 |   message: {
+       |   ^^^^^^^
+    20 |   error: "Too many authentication attempts, please try again later."
+    21 |   }
+    22 | });
+ERROR in src/server/server.ts:59:7
+TS2322: Type 'unknown' is not assignable to type '{ id: string; email: string; } | undefined'.
+    57 |     (err: any, member: unknown) => {
+    58 |       if (err) return res.sendStatus(403);
+  > 59 |       req.member = member;
+       |       ^^^^^^^^^^
+    60 |       next();
+    61 |     },
+    62 |   );
+ERROR in src/services/dataImportService.ts:195:14
+TS1162: An object member cannot be declared optional.
+    193 |   categoryPageUrl: String(row["Category Page URL"] || ""),
+    194 |   posts: String(row["Posts"] || ""),
+  > 195 |   description?: string(row["Description"] || ""),
+        |              ^
+    196 |   id: String(row["ID"] || ""),
+    197 |   label: String(row["Label"] || ""),
+    198 |   translationId: String(row["Translation ID"] || ""),
+ERROR in src/services/dataImportService.ts:195:17
+TS2693: 'string' only refers to a type, but is being used as a value here.
+    193 |   categoryPageUrl: String(row["Category Page URL"] || ""),
+    194 |   posts: String(row["Posts"] || ""),
+  > 195 |   description?: string(row["Description"] || ""),
+        |                 ^^^^^^
+    196 |   id: String(row["ID"] || ""),
+    197 |   label: String(row["Label"] || ""),
+    198 |   translationId: String(row["Translation ID"] || ""),
+ERROR in src/services/dataImportService.ts:216:12
+TS1162: An object member cannot be declared optional.
+    214 |     },
+    215 |   name: String(row["Name"] || ""),
+  > 216 | description?: string(row["Description"] || ""),
+        |            ^
+    217 | headerType: String(row["Header Type"] || ""),
+    218 | id: String(row["ID"] || ""),
+    219 | pageUrl: String(row["Page URL"] || ""),
+ERROR in src/services/dataImportService.ts:216:15
+TS2693: 'string' only refers to a type, but is being used as a value here.
+    214 |     },
+    215 |   name: String(row["Name"] || ""),
+  > 216 | description?: string(row["Description"] || ""),
+        |               ^^^^^^
+    217 | headerType: String(row["Header Type"] || ""),
+    218 | id: String(row["ID"] || ""),
+    219 | pageUrl: String(row["Page URL"] || ""),
+ERROR in src/services/forumService.ts:46:1
+TS1016: A required parameter cannot follow an optional parameter.
+    44 |   async createForum(name: string,
+    45 | description?: string,
+  > 46 | category: string): Promise<Forum> {
+       | ^^^^^^^^
+    47 |     const response = await this.api.post('/', { name, description, category });
+    48 |     return response.data;
+    49 |   }
+ERROR in src/services/videoAssetService.ts:68:1
+TS1016: A required parameter cannot follow an optional parameter.
+    66 |   title: string,
+    67 | description?: string,
+  > 68 | projectData: unknown,
+       | ^^^^^^^^^^^
+    69 | ): Promise<VideoProject> => {
+    70 |   const response = await axios.post("/video-editor/projects", {
+    71 |     title,
+ERROR in src/utils/security.ts:412:42
+TS2345: Argument of type 'object' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{}'.
+    410 |     } else if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    411 |       // Recursively mask nested objects
+  > 412 |       maskedObj[key] = maskSensitiveData(value, fieldsToMask);
+        |                                          ^^^^^
+    413 |     }
+    414 |   }
+    415 |

@@ -1,136 +1,110 @@
-import React, { useEffect, useState } from 'react';
-import { useMarketplace } from '../contexts/MarketplaceContext';
-import ProductCard from '../components/ProductCard';
-import { Product } from '../types';
+import React from 'react';
+import { Package, ShoppingBag, Truck } from 'lucide-react';
 
 const ProductsPage: React.FC = () => {
-  const {
-    products,
-    loading,
-    error,
-    getProductById,
-    handleAddToCart
-  } = useMarketplace();
-  
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('name');
-
-  useEffect(() => {
-    // Apply filters and sorting
-    let result = [...products];
-    
-    // Apply search filter
-    if (searchTerm) {
-      result = result.filter(product => 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const products = [
+    {
+      id: 1,
+      name: 'Ring #03',
+      price: '₦38,000',
+      stock: 14,
+      status: 'Active',
+      image: 'https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=80&q=50'
+    },
+    {
+      id: 2,
+      name: 'Belt #02',
+      price: '₦22,000',
+      stock: 3,
+      status: 'Low',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=50'
+    },
+    {
+      id: 3,
+      name: 'Tote #11',
+      price: '₦46,000',
+      stock: 0,
+      status: 'Out',
+      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=80&q=50'
     }
-    
-    // Apply category filter
-    if (selectedCategory !== 'all') {
-      result = result.filter(product => 
-        product.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-    
-    // Apply sorting
-    switch (sortBy) {
-      case 'price-low':
-        result.sort((a, b) => (a.price || 0) - (b.price || 0));
-        break;
-      case 'price-high':
-        result.sort((a, b) => (b.price || 0) - (a.price || 0));
-        break;
-      case 'rating':
-        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case 'name':
-      default:
-        result.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-    }
-    
-    setFilteredProducts(result);
-  }, [products, searchTerm, selectedCategory, sortBy]);
-
-  // Get unique categories for filter
-  const categories = ['all', ...new Set(products.map(p => p.category))];
-
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading products...</div>;
-  }
-
-  if (error) {
-    return <div className="min-h-screen flex items-center justify-center text-red-500">Error: {error}</div>;
-  }
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Our Products</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Discover our wide range of products tailored just for you
-        </p>
-      </div>
-      
-      {/* Filters and Search */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div className="w-full md:w-auto">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-80 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+    <div className="flex w-full min-h-screen">
+      {/* Sidebar for merchant navigation */}
+      <aside className="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-gray-700 bg-gray-900">
+        <a className="font-bold text-lg mb-5">FingerMarket</a>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-orange-500/15 text-orange-500 font-semibold">
+            <Package className="h-4 w-4" /> Products
+          </div>
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-400">
+            <ShoppingBag className="h-4 w-4" /> Orders
+          </div>
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-400">
+            <Truck className="h-4 w-4" /> Shipping
+          </div>
+        </div>
+        <div className="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-800 border border-gray-700">
+          <img 
+            src="https://i.pravatar.cc/40?img=33" 
+            className="w-8 h-8 rounded-full" 
+            alt="User avatar" 
           />
+          <p className="text-xs font-semibold">FingerLux</p>
         </div>
-        
-        <div className="flex flex-wrap gap-4 w-full md:w-auto">
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-          >
-            {categories.map(category => (
-              <option key={category} value={category}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </option>
-            ))}
-          </select>
+      </aside>
+
+      {/* Main content */}
+      <main className="col-center min-h-screen border-r border-gray-700">
+        <div className="max-w-[860px] mx-auto px-4 md:px-6 py-6">
+          <div className="flex items-center justify-between mb-5">
+            <h1 className="text-xl font-bold">Products</h1>
+            <button className="px-3 py-2 rounded-lg bg-orange-500 text-gray-900 text-sm font-bold flex items-center gap-1">
+              <span className="text-lg">+</span> Add product
+            </button>
+          </div>
           
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-          >
-            <option value="name">Sort by Name</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
-          </select>
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
+            <table className="w-full text-left text-sm">
+              <thead className="text-xs text-gray-400 uppercase border-b border-gray-700">
+                <tr>
+                  <th className="px-4 py-2.5 font-medium">PRODUCT</th>
+                  <th className="px-4 py-2.5 font-medium">PRICE</th>
+                  <th className="px-4 py-2.5 font-medium">STOCK</th>
+                  <th className="px-4 py-2.5 font-medium">STATUS</th>
+                  <th className="px-4 py-2.5"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id} className="border-b border-gray-700">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <img 
+                          src={product.image} 
+                          className="w-10 h-10 rounded-lg object-cover" 
+                          alt={product.name} 
+                        />
+                        <p className="font-semibold">{product.name}</p>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">{product.price}</td>
+                    <td className="px-4 py-3">{product.stock}</td>
+                    <td className={`px-4 py-3 ${
+                      product.status === 'Active' ? 'text-orange-500' :
+                      product.status === 'Low' ? 'text-orange-400' : 'text-red-500'
+                    }`}>
+                      {product.status}
+                    </td>
+                    <td className="px-4 py-3 text-gray-400">⋯</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      
-      {/* Products Grid */}
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={() => handleAddToCart(product, 1)}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">No products found matching your criteria</p>
-        </div>
-      )}
+      </main>
     </div>
   );
 };

@@ -161,7 +161,7 @@ const ELearningPage: React.FC = () => {
         return (
           course.title.toLowerCase().includes(query) || 
           instructorName.toLowerCase().includes(query) ||
-          course.description.toLowerCase().includes(query)
+          course.description?.toLowerCase().includes(query)
         );
       });
     }

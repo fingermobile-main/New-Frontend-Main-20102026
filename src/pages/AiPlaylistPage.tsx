@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+/*
+ * FingerMobile Protocol™ - Ai Playlist Page Component
+ * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
+ * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
+ * which are the sole and exclusive intellectual property of Mbah Israel Obinna.
+ *
+ * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
+ */
+
+import React from 'react';
 import { useAppContext } from "../contexts/AppContext";
 import { useAI } from '../contexts/AIContext';
 import PageHeader from '../components/PageHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { logError } from '../utils/errorLogger';
-import { MusicalNoteIcon } from '../icons';
+import { MusicalNoteIcon } from '../components/icons';
 import MainLayout from '../components/layout/MainLayout';
 
 const AiPlaylistPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { generatePlaylist, isLoading, error } = useAI();
-  const [prompt, setPrompt] = useState<string>("");
-  const [playlist, setPlaylist] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [prompt, setPrompt] = React.useState<string>("");
+  const [playlist, setPlaylist] = React.useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;

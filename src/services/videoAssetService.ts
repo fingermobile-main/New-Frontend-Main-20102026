@@ -64,15 +64,15 @@ title: string,
 // Create a new video project
 export const createVideoProject = async (
   title: string,
-description?: string,
-projectData: unknown,
+  projectData: unknown,
+  description?: string,
 ): Promise<VideoProject> => {
   const response = await axios.post("/video-editor/projects", {
     title,
     description,
-    projectData
+    projectData,
   });
-  return response.data.project;
+  return response.data;
 };
 
 // Get a video project by ID

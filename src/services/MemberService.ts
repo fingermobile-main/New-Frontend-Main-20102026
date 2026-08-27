@@ -88,6 +88,12 @@ offset: number = 0): Promise<Member[]> {
     const response = await this.api.get(`/${memberId}/activity`, {params: { period } });
     return response.data;
   }
+
+  // Added based on integration test requirement
+  async getTrendingMembers(limit: number = 10): Promise<Member[]> {
+    const response = await this.api.get('/trending', { params: { limit } });
+    return response.data;
+  }
 }
 
 export const memberService = new MemberService();

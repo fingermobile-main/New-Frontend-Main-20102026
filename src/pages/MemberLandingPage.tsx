@@ -1,140 +1,89 @@
-import { useNavigate } from 'react-router-dom';
-import React, {} from 'react';
-
-import { useAuth } from '../contexts/AuthContext';
-import MainLayout from '../components/layout/MainLayout';
-import { useMemberLandingData } from '../hooks/useMemberLandingData';
+import React from 'react';
+import { HomeIcon, ShoppingBagIcon, WalletIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 
 const MemberLandingPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { member: currentMember } = useAuth();
-  const { data, loading, error, refreshData } = useMemberLandingData(currentMember?.id);
-
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="p-4 sm:p-6 lg:p-8 text-center text-gray-500">
-          Loading member dashboard...
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="p-4 sm:p-6 lg:p-8 text-center text-red-500">
-          Error loading member dashboard: {error} <button onClick={refreshData} className="ml-2 px-3 py-1 bg-red-500 text-white rounded">Retry</button>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (!data) {
-    return (
-      <MainLayout>
-        <div className="p-4 sm:p-6 lg:p-8 text-center text-gray-500">
-          No member dashboard data available.
-        </div>
-      </MainLayout>
-    );
-  }
-
-  const { walletBalance, notificationsCount, groupsCount, postsCount, forumCategories } = data;
-
-  // Navigate to category feed
-  const navigateToCategory = (slug: string) => {
-    navigate(`/forum/${slug}`);
-  };
+  // Mock data for the landing page
+  const quickActions = [
+    {
+      id: 1,
+      title: 'View feed',
+      subtitle: 'catch up',
+      icon: <HomeIcon className="h-4 w-4" />,
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-500/15',
+      borderColor: 'hover:border-orange-500/50'
+    },
+    {
+      id: 2,
+      title: 'Marketplace',
+      subtitle: 'shop / sell',
+      icon: <ShoppingBagIcon className="h-4 w-4" />,
+      color: 'text-yellow-500',
+      bgColor: 'bg-yellow-500/15',
+      borderColor: 'hover:border-yellow-500/50'
+    },
+    {
+      id: 3,
+      title: 'Wallet',
+      subtitle: '₦3.9M',
+      icon: <WalletIcon className="h-4 w-4" />,
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-500/15',
+      borderColor: 'hover:border-orange-500/50'
+    },
+    {
+      id: 4,
+      title: 'Learning',
+      subtitle: 'continue course',
+      icon: <AcademicCapIcon className="h-4 w-4" />,
+      color: 'text-yellow-500',
+      bgColor: 'bg-yellow-500/15',
+      borderColor: 'hover:border-yellow-500/50'
+    }
+  ];
 
   return (
-    <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
-            Welcome back, {currentMember?.name || 'Member'}!
-          </h1>
-          <p className="text-sm sm:text-base text-blue-100 md:text-lg">
-            Ready to connect, create, and explore today?
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      {/* Navigation Bar */}
+      <nav className="flex items-center gap-6 px-6 py-4 border-b border-gray-700">
+        <span className="font-bold text-[15px]">
+          Finger<span className="text-orange-500">Mobile</span>
+        </span>
+        <div className="flex-1"></div>
+        <a className="text-[13px] text-gray-400 hover:text-gray-100">Discover</a>
+        <a className="text-[13px] text-gray-400 hover:text-gray-100">About</a>
+        <button className="px-4 py-2 rounded-xl bg-orange-500 text-gray-900 text-[12px] font-bold">
+          Open app
+        </button>
+      </nav>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-blue-600">{walletBalance.toFixed(2)}</div>
-            <div className="text-sm sm:text-base text-gray-600">Wallet Balance</div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-green-600">{notificationsCount}</div>
-            <div className="text-sm sm:text-base text-gray-600">Notifications</div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-purple-600">{groupsCount}</div>
-            <div className="text-sm sm:text-base text-gray-600">Groups</div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-orange-600">{postsCount}</div>
-            <div className="text-sm sm:text-base text-gray-600">Your Posts</div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div 
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/create-post')} role="button" tabIndex={0}
-          >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Create Post</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Share your thoughts with the community</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Create Now</button>
-          </div>
-          
-          <div 
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/groups')} role="button" tabIndex={0}
-          >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Join Groups</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Connect with like-minded people</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Explore Groups</button>
-          </div>
-          
-          <div 
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/marketplace')} role="button" tabIndex={0}
-          >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Marketplace</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">Buy and sell with community members</p>
-            <button className="text-blue-500 font-medium text-sm sm:text-base">Visit Marketplace</button>
-          </div>
-        </div>
-
-        {/* Forum Categories */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Forum Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {forumCategories.map((category) => (
-              <div 
-                key={category.id}
-                className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => navigateToCategory(category.slug)} role="button" tabIndex={0}
-              >
-                <h3 className="font-semibold text-base sm:text-lg mb-1">{category.name}</h3>
-                <p className="text-xs sm:text-sm text-gray-600 mb-2">{category.description}</p>
-                <div className="flex justify-between text-xs sm:text-sm text-gray-500">
-                  <span>{category.postCount} posts</span>
-                  <span>Rank: {category.rank}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+        <span className="text-[10px] text-gray-400">PROTOCOL LANDING · MEMBER</span>
+        <h1 className="text-[34px] mt-3 font-bold leading-tight">
+          Welcome to your <span className="text-orange-500">unified</span> FingerMobile
+        </h1>
+        <p className="text-[14px] text-gray-400 mt-3 max-w-xl mx-auto">
+          Feed, commerce, finance and learning — all under one fingerprint. What would you like to do first?
+        </p>
+        
+        {/* Quick Action Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10 text-left">
+          {quickActions.map(action => (
+            <a 
+              key={action.id} 
+              className={`bg-gray-800 border border-gray-700 rounded-2xl p-4 cursor-pointer ${action.borderColor}`}
+            >
+              <span className={`grid w-9 h-9 place-items-center rounded-xl ${action.bgColor} ${action.color}`}>
+                {action.icon}
+              </span>
+              <p className="text-[13px] font-bold mt-3">{action.title}</p>
+              <p className="text-[11px] text-gray-400">{action.subtitle}</p>
+            </a>
+          ))}
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 

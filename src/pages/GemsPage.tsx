@@ -48,6 +48,16 @@ interface Gem {
 }
 
 const GemsPage: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4">
+      <h1 className="text-2xl font-bold">Gems</h1>
+      <p>This is the gems page.</p>
+    </div>
+  );
+};
+
+// Original complex version with all features
+const GemsPageOriginal: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);

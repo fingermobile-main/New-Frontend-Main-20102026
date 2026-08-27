@@ -5,30 +5,33 @@ import {
   LifebuoyIcon, 
   ChatBubbleLeftRightIcon, 
   QuestionMarkCircleIcon, 
-  UserCircleIcon,
   ArrowRightIcon
 } from '../icons';
 
 interface TicketFormData {
   subject: string;
-  description?: string;
+  description: string;
   priority: 'low' | 'medium' | 'high';
   category: string;
   ticketType: 'support' | 'bug' | 'feature' | 'complaint';
 }
 
+const INITIAL_FORM_STATE: TicketFormData = {
+  subject: '',
+  description: '',
+  priority: 'medium',
+  category: 'general',
+  ticketType: 'support'
+};
+
 const SupportPage: React.FC = () => {
-  const { handleSubmitTicket, showToast, ficBalance } = useAppContext();
-  const [formData, setFormData] = useState<TicketFormData>({
-    subject: '',
-    description: '',
-    priority: 'medium',
-    category: 'general',
-    ticketType: 'support'
-  });
+  const { handleSubmitTicket, showToast, ficBalance = 0 } = useAppContext();
+  const [formData, setFormData] = useState<TicketFormData>(INITIAL_FORM_STATE);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -38,21 +41,20 @@ const SupportPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     
+    if (!formData.subject.trim() || !formData.description.trim()) {
+      showToast('Please fill out all required fields.', 'error');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      // In a real app, this would call the API
       if (handleSubmitTicket) {
         await handleSubmitTicket(formData);
       }
       showToast('Ticket submitted successfully!', 'success');
-      setFormData({
-        subject: '',
-        description: '',
-        priority: 'medium',
-        category: 'general',
-        ticketType: 'support'
-      });
+      setFormData(INITIAL_FORM_STATE);
     } catch (error) {
       console.error('Error submitting ticket:', error);
       showToast('Failed to submit ticket. Please try again.', 'error');
@@ -96,7 +98,8 @@ const SupportPage: React.FC = () => {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                        placeholder="Briefly describe your issue" />
+                        placeholder="Briefly describe your issue" 
+                      />
                     </div>
                     
                     <div>
@@ -168,13 +171,14 @@ const SupportPage: React.FC = () => {
                       rows={6}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                       placeholder="Please provide detailed information about your issue..."
-                    ></textarea>
+                    />
                   </div>
                   
                   <div className="flex justify-end">
                     <button
                       type="submit"
                       disabled={loading}
+                      aria-busy={loading}
                       className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors disabled:opacity-50"
                     >
                       {loading ? 'Submitting...' : 'Submit Ticket'}
@@ -193,25 +197,25 @@ const SupportPage: React.FC = () => {
               </h2>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="flex items-center text-blue-600 hover:text-blue-800">
+                  <a href="/help" className="flex items-center text-blue-600 hover:text-blue-800">
                     <QuestionMarkCircleIcon className="h-4 w-4 mr-2" />
                     Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center text-blue-600 hover:text-blue-800">
+                  <a href="/recovery" className="flex items-center text-blue-600 hover:text-blue-800">
                     <QuestionMarkCircleIcon className="h-4 w-4 mr-2" />
                     Account Recovery
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center text-blue-600 hover:text-blue-800">
+                  <a href="/billing-issues" className="flex items-center text-blue-600 hover:text-blue-800">
                     <QuestionMarkCircleIcon className="h-4 w-4 mr-2" />
                     Payment Issues
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center text-blue-600 hover:text-blue-800">
+                  <a href="/privacy" className="flex items-center text-blue-600 hover:text-blue-800">
                     <QuestionMarkCircleIcon className="h-4 w-4 mr-2" />
                     Privacy & Security
                   </a>
@@ -253,7 +257,7 @@ const SupportPage: React.FC = () => {
               <p className="text-gray-600 mt-2">Yes, you can update your ticket by replying to the confirmation email or contacting support directly.</p>
             </div>
             
-            <div className="pb-4">
+            <div className="border-b border-gray-200 pb-4">
               <h3 className="font-medium text-gray-900">Where can I find my ticket status?</h3>
               <p className="text-gray-600 mt-2">You can check your ticket status in your account dashboard under the 'My Tickets' section.</p>
             </div>
@@ -268,7 +272,7 @@ const SupportPage: React.FC = () => {
         <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center">
             <div className="bg-yellow-100 p-2 rounded-lg mr-3">
-              <UserCircleIcon className="h-5 w-5 text-yellow-600" />
+              <LifebuoyIcon className="h-5 w-5 text-yellow-600" />
             </div>
             <div>
               <p className="text-gray-600 text-sm">Your current FIC balance</p>

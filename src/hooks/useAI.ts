@@ -37,7 +37,7 @@ export const useAI = () => {
   moduledescription?: string,
     ) => {
       try {
-        const prompt = `Create detailed content for module "${moduleTitle}" with description "${moduleDescription}". Include key learning objectives, main topics, practical exercises, and real-world examples.`;
+        const prompt = `Create detailed content for module "${moduleTitle}" with description "${moduledescription}". Include key learning objectives, main topics, practical exercises, and real-world examples.`;
 
         const content = await generateAIContent("module", prompt);
         return content;

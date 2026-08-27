@@ -51,7 +51,7 @@ export const useDancia4TvData = () => {
       const filtered = videos.filter(
         (video) =>
           video.title.toLowerCase().includes(query) ||
-          video.description.toLowerCase().includes(query) ||
+          video.description?.toLowerCase().includes(query) ||
           video.genre.toLowerCase().includes(query) ||
           video.contentTags.some((tag) => tag.toLowerCase().includes(query)),
       );

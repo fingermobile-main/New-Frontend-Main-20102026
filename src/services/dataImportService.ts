@@ -65,7 +65,7 @@ export interface Comment {downvoteCount: string;
 export interface BlogCategory {postCount: string;
   categoryPageUrl: string;
   posts: string;
-  description?: string;
+  description: string;
   id: string;
   label: string;
   translationId: string;
@@ -192,7 +192,7 @@ export const transformBlogCategories = (
   return data.map((row) => ({postCount: String(row["Post Count"] || ""),
   categoryPageUrl: String(row["Category Page URL"] || ""),
   posts: String(row["Posts"] || ""),
-  description?: string(row["Description"] || ""),
+  description: String(row["Description"] || ""),
   id: String(row["ID"] || ""),
   label: String(row["Label"] || ""),
   translationId: String(row["Translation ID"] || ""),
@@ -213,12 +213,12 @@ export const transformForumCategories = (
   opacity: 1
     },
   name: String(row["Name"] || ""),
-description?: string(row["Description"] || ""),
-headerType: String(row["Header Type"] || ""),
-id: String(row["ID"] || ""),
-pageUrl: String(row["Page URL"] || ""),
-rank: Number(row["Rank"] || 0),
-headerBackgroundColor: {color: String(row["Header Background Color"] || ""),
+  description: String(row["Description"] || ""),
+  headerType: String(row["Header Type"] || ""),
+  id: String(row["ID"] || ""),
+  pageUrl: String(row["Page URL"] || ""),
+  rank: Number(row["Rank"] || 0),
+  headerBackgroundColor: {color: String(row["Header Background Color"] || ""),
   opacity: 1
     },
   slug: String(row["Slug"] || ""),

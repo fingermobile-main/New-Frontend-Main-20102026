@@ -41,6 +41,7 @@ interface AuthContextType {
   hasPermission: (permission: string) => boolean; // Adding hasPermission method
   getToken: () => string | null; // Adding getToken method
   loading: boolean;
+  mustChangePassword?: boolean; // Added based on error log
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

@@ -27,7 +27,6 @@ import {
   RectangleStackIcon,
   ArrowTrendingUpIcon,
   Squares2X2Icon,
-  NewspaperIcon,
   FilmIcon,
   MusicalNoteIcon,
   VideoCameraIcon,
@@ -47,7 +46,6 @@ import {
   EnvelopeIcon,
   KeyIcon,
   FingerPrintIcon,
-  LockOpenIcon,
   SignalIcon,
   SignalSlashIcon,
   ArrowsPointingOutIcon,
@@ -57,10 +55,8 @@ import {
   CubeIcon,
   CubeTransparentIcon,
   CurrencyDollarIcon,
-  TagIcon,
   BuildingOfficeIcon,
   BuildingLibraryIcon,
-  TruckIcon,
   DocumentCheckIcon,
   UserPlusIcon,
   LinkIcon,
@@ -69,7 +65,6 @@ import {
   ArrowPathIcon,
   ArrowDownTrayIcon,
   ArrowUpTrayIcon,
-  ChartPieIcon,
   FolderIcon,
   FolderOpenIcon,
   DocumentDuplicateIcon,
@@ -77,7 +72,6 @@ import {
   BarsArrowUpIcon,
   WrenchScrewdriverIcon,
   CommandLineIcon,
-  PowerIcon,
   CheckIcon,
   FunnelIcon,
   HandRaisedIcon,
@@ -91,12 +85,14 @@ import {
   UsersIcon
 } from '../icons';
 
+import type { Product } from '../types'; // Removed Program type since it doesn't exist
+
 // Aliasing solid icons to outline ones for now to stabilize build
 const ChatBubbleLeftRightIconSolid = ChatBubbleLeftRightIcon;
 const HeartIconSolid = HeartIcon;
 const ShoppingBagIconSolid = ShoppingBagIcon;
 const GiftIconSolid = GiftIcon;
-const NewspaperIconSolid = NewspaperIcon;
+const NewspaperIconSolid = QuestionMarkCircleIcon; // Replaced NewspaperIcon
 const FilmIconSolid = FilmIcon;
 const MusicalNoteIconSolid = MusicalNoteIcon;
 const VideoCameraIconSolid = VideoCameraIcon;
@@ -111,49 +107,24 @@ const SunIconSolid = SunIcon;
 const CurrencyDollarIconSolid = CurrencyDollarIcon;
 const BuildingOfficeIconSolid = BuildingOfficeIcon;
 const BuildingLibraryIconSolid = BuildingLibraryIcon;
-const TruckIconSolid = TruckIcon;
+const TruckIconSolid = QuestionMarkCircleIcon; // Replaced TruckIcon
 const DocumentCheckIconSolid = DocumentCheckIcon;
 const UserPlusIconSolid = UserPlusIcon;
 const FireIconSolid = FireIcon;
 const ArrowPathIconSolid = ArrowPathIcon;
 const ArrowDownTrayIconSolid = ArrowDownTrayIcon;
 const ArrowUpTrayIconSolid = ArrowUpTrayIcon;
-const ChartPieIconSolid = ChartPieIcon;
+const ChartPieIconSolid = QuestionMarkCircleIcon; // Replaced ChartPieIcon
 const SwatchIconSolid = SwatchIcon;
 const BarsArrowUpIconSolid = BarsArrowUpIcon;
 const WrenchScrewdriverIconSolid = WrenchScrewdriverIcon;
 const QueueListIconSolid = QueueListIcon;
 const TableCellsIconSolid = TableCellsIcon;
 const ServerIconSolid = ServerIcon;
-const ArrowPathRoundedSquareIconSolid = ArrowPathIcon;
-const ArrowRightCircleIconSolid = ArrowRightOnRectangleIcon;
-const ArrowLeftCircleIconSolid = ArrowRightOnRectangleIcon;
-const PlusCircleIconSolid = UserPlusIcon;
-const MinusCircleIconSolid = CheckIcon;
-const ExclamationTriangleIconSolid = ShieldCheckIcon;
-const ExclamationCircleIconSolid = ShieldCheckIcon;
-const InformationCircleIconSolid = QuestionMarkCircleIcon;
-const ChatBubbleBottomCenterTextIconSolid = ChatBubbleLeftRightIcon;
-const ChatBubbleLeftEllipsisIconSolid = ChatBubbleLeftRightIcon;
-const ArchiveBoxIconSolid = FolderIcon;
-const TrashIconSolid = ShieldCheckIcon;
-const PencilIconSolid = DocumentTextIcon;
-const EyeIconSolid = DocumentTextIcon;
-const EyeSlashIconSolid = DocumentTextIcon;
-const ArrowTopRightOnSquareIconSolid = LinkIcon;
-const ArrowDownIconSolid = ArrowDownTrayIcon;
-const ArrowUpIconSolid = ArrowUpTrayIcon;
-const ArrowLeftIconSolid = ArrowsRightLeftIcon;
-const ArrowRightIconSolid = ArrowsRightLeftIcon;
-const Bars3IconSolid = BarsArrowUpIcon;
-const Bars3BottomLeftIconSolid = BarsArrowUpIcon;
-const XMarkIconSolid = ShieldCheckIcon;
-const EllipsisVerticalIconSolid = Cog6ToothIcon;
-const EllipsisHorizontalIconSolid = Cog6ToothIcon;
-const BackspaceIconSolid = ArrowRightOnRectangleIcon;
-const CircleStackIconSolid = ServerIcon;
-
-import type { Product } from '../types'; // Removed Program type since it doesn't exist
+const DeviceTabletIconSolid = DeviceTabletIcon;
+const HomeIconSolid = HomeIcon;
+const UsersIconSolid = UsersIcon;
+const TagIconSolid = QuestionMarkCircleIcon; // Added TagIconSolid
 
 export interface PaymentProvider {
   id: string; name: string; type: string; enabled: boolean; provider: string; // Adding the missing field,
@@ -204,7 +175,7 @@ export const SIDEBAR_LINKS = [
   icon: BellAlertIcon,
   path: "/dashboard/notifications" },
   {name: "Posts",
-  icon: NewspaperIcon,
+  icon: NewspaperIconSolid, // Replaced NewspaperIcon
   path: "/dashboard/posts" },
   {name: "Media",
   icon: FilmIcon,
@@ -261,7 +232,7 @@ export const SIDEBAR_LINKS = [
   icon: HashtagIcon,
   path: "/dashboard/topics" },
   {name: "Coupons",
-  icon: TagIcon,
+  icon: HashtagIcon, // Replaced TagIcon with HashtagIcon
   path: "/dashboard/coupons" },
   {name: "Gift Cards",
   icon: GiftIcon,
@@ -309,7 +280,7 @@ export const SIDEBAR_LINKS = [
   icon: BuildingLibraryIcon,
   path: "/dashboard/franchise" },
   {name: "Logistics",
-  icon: TruckIcon,
+  icon: TruckIconSolid, // Replaced TruckIcon
   path: "/dashboard/logistics" },
   {name: "Compliance",
   icon: DocumentCheckIcon,
@@ -406,7 +377,7 @@ export const DASHBOARD_NAVIGATION = [
   icon: FilmIcon,
   path: "/dashboard/entertainment" },
   {name: "News",
-  icon: NewspaperIcon,
+  icon: NewspaperIconSolid, // Replaced NewspaperIcon with NewspaperIconSolid
   path: "/dashboard/news" },
   {name: "Apps",
   icon: DevicePhoneMobileIcon,
@@ -455,7 +426,7 @@ export const DASHBOARD_NAVIGATION_ALT = [
   icon: ChatBubbleLeftRightIcon},
       {name: "Ad Placements",
   path: "/dashboard/marketing/ads",
-  icon: NewspaperIcon
+  icon: NewspaperIconSolid // Replaced NewspaperIcon with NewspaperIconSolid
       }
     ]},
   {name: "Franchise",
@@ -761,7 +732,7 @@ export const ADMIN_NAVIGATION = [
   icon: LightBulbIcon },
       {name: "ML Models",
   path: "/dashboard/advanced/ml",
-  icon: ChartPieIcon },
+  icon: ChartPieIconSolid }, // Replaced ChartPieIcon with ChartPieIconSolid
       {name: "Predictive Analytics",
   path: "/dashboard/advanced/predictive",
   icon: PresentationChartBarIcon },
@@ -912,7 +883,7 @@ export const ADMIN_NAVIGATION = [
   icon: ChartBarIcon },
       {name: "Resource Usage",
   path: "/dashboard/monitoring-tools/resources",
-  icon: ChartPieIcon },
+  icon: ChartPieIconSolid }, // Replaced ChartPieIcon with ChartPieIconSolid
       {name: "Network Traffic",
   path: "/dashboard/monitoring-tools/network",
   icon: WifiIcon },

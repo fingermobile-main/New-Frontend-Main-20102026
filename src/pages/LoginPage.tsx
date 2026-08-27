@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login: authLogin } = useAuth();
+  const { login: authLogin, mustChangePassword } = useAuth(); // Added mustChangePassword from AuthContext
 
   const validateForm = () => {
     let valid = true;
@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
     try {
       // Call the actual backend login API
       const response = await api.post('/auth/login', {
-        email: phone, // Backend expects email field
+        email: phone, // Backend expects email field (using phone as identifier)
         password: password
       });
       
@@ -71,10 +71,11 @@ const LoginPage: React.FC = () => {
         
         // Update AuthContext with user data
         if (response.data.user) {
+          // Using the authLogin function from AuthContext instead of directly setting state
           await authLogin(response.data.user.email || phone, password);
           
-          // Check if user must change password
-          if (response.data.user.mustChangePassword) {
+          // Check if user must change password using the AuthContext function
+          if (mustChangePassword) {  // Using the boolean value from AuthContext, not calling it as a function
             toast({
               title: "Password Change Required",
               description: "Please change your password to continue using the platform.",

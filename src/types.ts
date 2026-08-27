@@ -258,7 +258,7 @@ export interface Product {
   price: number;
   currency: string;
   imageUrl?: string;
-  images?: string[];
+  images?: string[]; // Or potentially Image[] if an Image type exists
   category: string;
   stock?: number;
   sellerId?: string;
@@ -269,7 +269,7 @@ export interface Product {
   thumbnail?: string;
   isFeatured?: boolean;
   isAvailable?: boolean;
-  rating?: number;
+  rating?: number | { average: number; count: number }; // Updated to handle both number and object
   reviewCount?: number;
   reviews?: any[];
   tags?: any;
@@ -288,6 +288,16 @@ export interface Product {
   };
   isLiked?: boolean;
   likesCount?: number;
+  variants?: ProductVariant[]; // Added variants property
+}
+
+export interface ProductVariant {
+  id: string;
+  name: string;
+  options: Record<string, string>; // e.g., { color: 'red', size: 'large' }
+  price: number;
+  stock?: number;
+  images?: string[]; // Or Image[] if an Image type exists
 }
 
 export interface CartItem {
@@ -300,6 +310,7 @@ export interface CartItem {
   name?: string;
   image?: string;
   addedAt?: string;
+  variantId?: string; // Added variantId property
 }
 
 export interface Order {
@@ -530,3 +541,32 @@ export type LendsqrProject = any;
 export type DownloadedItem = any;
 export type VideoContent = any;
 export type HallmarkApplicationType = any;
+// ==========================================
+// Published Page Types
+// ==========================================
+export interface PageContentBlock {
+  id: string;
+  type: "text" | "image" | "video" | "link";
+  content: string;
+  position: number;
+  metadata?: Record<string, any>;
+}
+
+export interface PublishedPageType {
+  id: string;
+  title: string;
+  slug: string;
+  contentBlocks: PageContentBlock[];
+  authorId: string;
+  publishedAt: string;
+  updatedAt: string;
+  isPublic: boolean;
+  views: number;
+  likes: number;
+  shares: number;
+  seoMeta?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+}

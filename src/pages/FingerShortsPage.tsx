@@ -1,409 +1,148 @@
-import React, { useState, useCallback } from 'react';
-import { useAppContext } from "../contexts/AppContext";
-import MainLayout from '../components/layout/MainLayout';
-import {
-  VideoCameraIcon,
-  PhotoIcon,
-  EyeSlashIcon
-} from '../icons';
-import { useFingerShorts } from '../hooks/useFingerShorts';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { HeartIcon, ChatBubbleIcon, ShareIcon, HomeIcon, UserIcon } from '../icons';
+import { SearchIcon } from '../icons';
 
-// --- Domain Interface Schema Definitions ---
-interface FingerShort {
-  id: string;
-  type: "image" | "video" | "text";
-  content: string;
-  duration?: string;
-  views: number;
-  timestamp: string;
-  isPrivate: boolean;
-  isSpoiler: boolean;
-  author: {
-    name: string;
-    avatar: string;
-    isVerified: boolean;
-  };
-}
-
-// --- Hardcoded Static Dataset Matrix Fallbacks ---
-const MOCK_SHORTS: FingerShort[] = [
-  {
-    id: "1",
-    type: "video",
-    content: "https://placehold.co/300x400/4ECDC4/FFFFFF?text=Video",
-    duration: "0:15",
-    views: 1250,
-    timestamp: "1 hour ago",
-    isPrivate: false,
-    isSpoiler: false,
-    author: { name: "CoffeeLover", avatar: "https://placehold.co/40x40/FF6B6B/FFFFFF?text=CL", isVerified: true }
-  },
-  {
-    id: "2",
-    type: "image",
-    content: "https://placehold.co/300x400/4ECDC4/FFFFFF?text=Image",
-    views: 2450,
-    timestamp: "3 hours ago",
-    isPrivate: false,
-    isSpoiler: false,
-    author: { name: "NaturePhotographer", avatar: "https://placehold.co/40x40/4ECDC4/FFFFFF?text=NP", isVerified: true }
-  },
-  {
-    id: "3",
-    type: "text",
-    content: "Just finished reading an amazing book! Highly recommend it to everyone.",
-    views: 890,
-    timestamp: "5 hours ago",
-    isPrivate: true,
-    isSpoiler: true,
-    author: { name: "BookWorm", avatar: "https://placehold.co/40x40/6C5CE7/FFFFFF?text=BW", isVerified: false }
-  },
-  {
-    id: "4",
-    type: "video",
-    content: "https://placehold.co/300x400/F9CA24/FFFFFF?text=Video",
-    duration: "0:30",
-    views: 3200,
-    timestamp: "1 day ago",
-    isPrivate: false,
-    isSpoiler: false,
-    author: { name: "FitnessGuru", avatar: "https://placehold.co/40x40/F9CA24/FFFFFF?text=FG", isVerified: true }
-  }
-];
-
-// --- Subcomponent: Decoupled Short Card Representation ---
-const ShortCard: React.FC<{ short: FingerShort }> = React.memo(({ short }) => {
-  return (
-    <div className="relative group">
-      <div className="relative aspect-[9/16] rounded-xl overflow-hidden bg-gray-100 border border-gray-200/60 shadow-sm">
-        {short.type === "image" && (
-          <img
-            src={short.content.startsWith("http") ? short.content : "https://placehold.co/300x400/4ECDC4/FFFFFF?text=Image"}
-            alt="FingerShort Render"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
-            loading="lazy"
-          />
-        )}
-
-        {short.type === "video" && (
-          <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-            <VideoCameraIcon className="h-10 w-10 text-white opacity-90" />
-          </div>
-        )}
-
-        {short.type === "text" && (
-          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center p-4">
-            <p className="text-white text-center text-xs sm:text-sm font-medium leading-snug line-clamp-6">
-              {short.content}
-            </p>
-          </div>
-        )}
-
-        {short.duration && (
-          <div className="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-            {short.duration}
-          </div>
-        )}
-
-        {short.isSpoiler && (
-          <div className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md flex items-center shadow-sm">
-            <EyeSlashIcon className="h-3 w-3 mr-1" />
-            Spoiler
-          </div>
-        )}
-
-        {short.isPrivate && (
-          <div className="absolute top-2 right-2 bg-gray-900/80 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md shadow-sm">
-            Private
-          </div>
-        )}
-      </div>
-
-      <div className="mt-2 px-0.5">
-        <div className="flex items-center text-[11px] font-medium text-gray-500">
-          <span>{short.views.toLocaleString()} views</span>
-          <span className="mx-1.5">•</span>
-          <span>{short.timestamp}</span>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-ShortCard.displayName = 'ShortCard';
-
-// --- Main Container Page Component ---
 const FingerShortsPage: React.FC = () => {
-  const { showToast } = useAppContext();
-  const { data, loading, error, refreshData } = useFingerShorts();
+  const navigate = useNavigate();
+  const [likedPosts, setLikedPosts] = useState<number[]>([]);
+  const [bookmarkedPosts, setBookmarkedPosts] = useState<number[]>([]);
 
-  const [activeTab, setActiveTab] = useState("for-you");
-  const [isCreating, setIsCreating] = useState(false);
-  const [shortType, setShortType] = useState<"image" | "video" | "text">("image");
-  const [shortContent, setShortContent] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [isSpoiler, setIsSpoiler] = useState(false);
-  const [mediaFile, setMediaFile] = useState<File | null>(null);
+  // Mock data for shorts
+  const shorts = [
+    { id: 1, username: "@user1", caption: "Amazing short video #fyp", likes: 1200, comments: 45, shares: 23, bookmarked: false },
+    { id: 2, username: "@creator2", caption: "Check out this dance move 🕺💃", likes: 3400, comments: 89, shares: 120, bookmarked: true },
+    { id: 3, username: "@trendsetter", caption: "New trend alert! Try this at home", likes: 5600, comments: 210, shares: 340, bookmarked: false },
+  ];
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file.size > 20 * 1024 * 1024) {
-        showToast("File allocation ceiling exceeded. Structural limit: 20MB", "error");
-        return;
-      }
-      setMediaFile(file);
+  const toggleLike = (id: number) => {
+    if (likedPosts.includes(id)) {
+      setLikedPosts(likedPosts.filter(postId => postId !== id));
+    } else {
+      setLikedPosts([...likedPosts, id]);
     }
-  }, [showToast]);
+  };
 
-  const handleCreateFingerShort = useCallback(() => {
-    if (shortType !== "text" && !mediaFile) {
-      showToast("Validation failed: Target media attachment missing", "error");
-      return;
+  const toggleBookmark = (id: number) => {
+    if (bookmarkedPosts.includes(id)) {
+      setBookmarkedPosts(bookmarkedPosts.filter(postId => postId !== id));
+    } else {
+      setBookmarkedPosts([...bookmarkedPosts, id]);
     }
-
-    console.info("Dispatched generation metadata profile:", {
-      shortType,
-      shortContent,
-      isPrivate,
-      isSpoiler,
-      mediaFile
-    });
-    
-    showToast("FingerShort generated successfully!", "success");
-    setIsCreating(false);
-    setShortContent("");
-    setIsPrivate(false);
-    setIsSpoiler(false);
-    setMediaFile(null);
-  }, [shortType, mediaFile, shortContent, isPrivate, isSpoiler, showToast]);
-
-  const handleCloseModal = useCallback(() => {
-    setIsCreating(false);
-    setShortContent("");
-    setIsPrivate(false);
-    setIsSpoiler(false);
-    setMediaFile(null);
-  }, []);
-
-  const handleTypeChange = useCallback((type: "image" | "video" | "text") => {
-    setShortType(type);
-    setMediaFile(null);
-  }, []);
-
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="flex justify-center items-center h-screen bg-gray-50">
-          <p className="text-gray-500 font-semibold tracking-wide text-sm animate-pulse">Synchronizing stream telemetry...</p>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="flex flex-col justify-center items-center h-screen bg-gray-50 px-4 text-center">
-          <div className="bg-white border border-gray-200 p-6 rounded-2xl max-w-sm w-full shadow-sm">
-            <p className="text-red-600 font-bold text-base mb-1">Pipeline Interrupted</p>
-            <p className="text-gray-500 text-sm mb-4">{error}</p>
-            <button
-              onClick={refreshData}
-              className="w-full py-2 bg-brand-blue text-white text-sm font-semibold rounded-xl hover:bg-blue-600 transition"
-            >
-              Retry Sync
-            </button>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  const dynamicDataMap = data 
-    ? data[activeTab === "for-you" ? "forYou" : activeTab === "following" ? "following" : "trending"]
-    : null;
-    
-  const shortsToDisplay: FingerShort[] = dynamicDataMap ?? MOCK_SHORTS;
+  };
 
   return (
-    <MainLayout>
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="flex justify-between items-center gap-4 mb-6">
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">FingerShorts</h1>
-          <button
-            onClick={() => setIsCreating(true)}
-            className="bg-brand-blue hover:bg-blue-600 text-white text-sm font-bold px-4 py-2.5 rounded-xl flex items-center shadow-sm transition"
-          >
-            <VideoCameraIcon className="h-4 w-4 mr-1.5" />
-            Create Short
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-10 bg-black bg-opacity-80 backdrop-blur-sm p-4 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <HomeIcon className="h-6 w-6" />
+          <h1 className="text-xl font-bold">FingerShorts</h1>
+        </div>
+        <div className="flex items-center space-x-4">
+          <SearchIcon className="h-5 w-5 hover:text-orange-500 cursor-pointer" />
+          <button onClick={() => navigate('/create-post')}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
           </button>
+          <UserIcon className="h-6 w-6 hover:text-orange-500 cursor-pointer" />
         </div>
+      </div>
 
-        <div className="flex border-b border-gray-200/80 mb-6 gap-2">
-          {["for-you", "following", "trending"].map((tab) => (
-            <button
-              key={tab}
-              className={`py-2 px-4 font-bold text-sm capitalize transition duration-150 border-b-2 -mb-px ${
-                activeTab === tab 
-                  ? "border-brand-blue text-brand-blue font-extrabold" 
-                  : "border-transparent text-gray-500 hover:text-gray-800"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab.replace("-", " ")}
-            </button>
-          ))}
-        </div>
+      {/* Shorts Feed */}
+      <div className="pt-16 pb-20">
+        {shorts.map((short) => (
+          <div key={short.id} className="relative h-[calc(100vh-4rem)] w-full">
+            {/* Video placeholder */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black flex items-center justify-center">
+              <div className="bg-gray-800 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
+                <span className="text-white text-lg">Video Content {short.id}</span>
+              </div>
+            </div>
 
-        {shortsToDisplay.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
-            <p className="text-gray-400 text-sm">No streaming structures found inside this index cluster.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {shortsToDisplay.map((short) => (
-              <ShortCard key={short.id} short={short} />
-            ))}
-          </div>
-        )}
+            {/* Bottom Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+              <div className="flex justify-between items-end">
+                {/* User Info and Caption */}
+                <div className="pb-16">
+                  <p className="font-bold text-lg">{short.username}</p>
+                  <p className="text-sm">{short.caption}</p>
+                </div>
 
-        {isCreating && (
-          <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-gray-100 max-h-[90vh] overflow-y-auto">
-              <h2 className="text-xl font-extrabold text-gray-900 tracking-tight mb-4">Create FingerShort</h2>
-
-              <div className="mb-4">
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
-                  Composition Layout Type
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {(["image", "video", "text"] as const).map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => handleTypeChange(type)}
-                      className={`py-2 px-3 rounded-xl text-xs font-bold flex flex-col items-center gap-1 border transition ${
-                        shortType === type
-                          ? "bg-brand-blue border-brand-blue text-white shadow-sm"
-                          : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100"
-                      }`}
+                {/* Action Buttons */}
+                <div className="flex flex-col items-center space-y-6 pb-16">
+                  <div className="flex flex-col items-center">
+                    <button 
+                      onClick={() => toggleLike(short.id)}
+                      className={`${likedPosts.includes(short.id) ? 'text-red-500' : 'text-white'} hover:scale-110 transition-transform`}
                     >
-                      {type === "image" && <PhotoIcon className="h-4 w-4" />}
-                      {type === "video" && <VideoCameraIcon className="h-4 w-4" />}
-                      {type === "text" && (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                      )}
-                      <span className="capitalize">{type}</span>
+                      <HeartIcon className={`h-8 w-8 ${likedPosts.includes(short.id) ? 'fill-current' : ''}`} />
                     </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
-                  {shortType === "text" ? "Text Body" : "Caption Meta Header"}
-                </label>
-                {shortType === "text" ? (
-                  <textarea
-                    value={shortContent}
-                    onChange={(e) => setShortContent(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none"
-                    placeholder="Enter short text story element..."
-                    rows={4}
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={shortContent}
-                    onChange={(e) => setShortContent(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none"
-                    placeholder="Provide contextual tag description..."
-                  />
-                )}
-              </div>
-
-              {shortType !== "text" && (
-                <div className="mb-4">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
-                    Binary Payload Upload Matrix
-                  </label>
-                  <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 hover:border-gray-300 rounded-xl cursor-pointer bg-gray-50/50 hover:bg-gray-50 transition">
-                      <div className="flex flex-col items-center justify-center pt-4 pb-4 px-2 text-center">
-                        {shortType === "image" ? <PhotoIcon className="h-6 w-6 text-gray-400" /> : <VideoCameraIcon className="h-6 w-6 text-gray-400" />}
-                        <p className="text-xs font-bold text-gray-700 mt-2">Click to select asset bundle</p>
-                        <p className="text-[10px] text-gray-400 mt-0.5">
-                          {shortType === "image" ? "JPG, PNG, GIF" : "MP4, MOV (max 1m)"} up to 20MB
-                        </p>
-                      </div>
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept={shortType === "image" ? "image/*" : "video/*"}
-                        onChange={handleFileChange}
-                      />
-                    </label>
+                    <span className="text-xs">{short.likes.toLocaleString()}</span>
                   </div>
-                  {mediaFile && (
-                    <p className="text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-md mt-2 truncate">
-                      Hooked: {mediaFile.name}
-                    </p>
-                  )}
-                </div>
-              )}
 
-              <div className="space-y-2.5 bg-gray-50 p-3 rounded-xl border border-gray-200/60 mb-6">
-                <div className="flex items-center">
-                  <input
-                    id="private"
-                    type="checkbox"
-                    checked={isPrivate}
-                    onChange={(e) => setIsPrivate(e.target.checked)}
-                    className="h-4 w-4 text-brand-blue focus:ring-brand-blue border-gray-300 rounded-md"
-                  />
-                  <label htmlFor="private" className="ml-2.5 block text-xs font-bold text-gray-700 select-none">
-                    Restrict visibility (Private compilation block)
-                  </label>
-                </div>
+                  <div className="flex flex-col items-center">
+                    <ChatBubbleIcon className="h-8 w-8 text-white hover:scale-110 transition-transform" />
+                    <span className="text-xs">{short.comments}</span>
+                  </div>
 
-                <div className="flex items-center">
-                  <input
-                    id="spoiler"
-                    type="checkbox"
-                    checked={isSpoiler}
-                    onChange={(e) => setIsSpoiler(e.target.checked)}
-                    className="h-4 w-4 text-brand-blue focus:ring-brand-blue border-gray-300 rounded-md"
-                  />
-                  <label htmlFor="spoiler" className="ml-2.5 block text-xs font-bold text-gray-700 select-none">
-                    Apply spoiler shroud masking blur filter
-                  </label>
-                </div>
-              </div>
+                  <div className="flex flex-col items-center">
+                    <ShareIcon className="h-8 w-8 text-white hover:scale-110 transition-transform" />
+                    <span className="text-xs">{short.shares}</span>
+                  </div>
 
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={handleCloseModal}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-xs font-bold text-gray-700 transition"
-                >
-                  Discard
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCreateFingerShort}
-                  className="px-4 py-2 bg-brand-blue hover:bg-blue-600 text-white text-xs font-bold rounded-xl shadow-sm transition"
-                >
-                  Commit Stream
-                </button>
+                  <div className="flex flex-col items-center">
+                    <button 
+                      onClick={() => toggleBookmark(short.id)}
+                      className={`${bookmarkedPosts.includes(short.id) ? 'text-yellow-400' : 'text-white'} hover:scale-110 transition-transform`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill={bookmarkedPosts.includes(short.id) ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        )}
+        ))}
       </div>
-    </MainLayout>
+
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 p-3 flex justify-around">
+        <button className="flex flex-col items-center text-orange-500">
+          <HomeIcon className="h-6 w-6" />
+          <span className="text-xs mt-1">Home</span>
+        </button>
+        <button 
+          className="flex flex-col items-center text-gray-400"
+          onClick={() => navigate('/search')}
+        >
+          <SearchIcon className="h-6 w-6" />
+          <span className="text-xs mt-1">Search</span>
+        </button>
+        <button 
+          className="flex flex-col items-center text-gray-400"
+          onClick={() => navigate('/create-post')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 -mt-3">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </button>
+        <button className="flex flex-col items-center text-gray-400">
+          <HeartIcon className="h-6 w-6" />
+          <span className="text-xs mt-1">Likes</span>
+        </button>
+        <button 
+          className="flex flex-col items-center text-gray-400"
+          onClick={() => navigate('/profile')}
+        >
+          <UserIcon className="h-6 w-6" />
+          <span className="text-xs mt-1">Profile</span>
+        </button>
+      </div>
+    </div>
   );
 };
 

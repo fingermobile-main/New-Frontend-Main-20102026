@@ -3,7 +3,7 @@ import { useAppContext } from "../contexts/AppContext";
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/apiService';
-import { Product } from '../types';
+import { Product, CartItem } from '../types';
 import ProductCard from '../components/ProductCard';
 import {
   StorefrontIcon,
@@ -18,35 +18,40 @@ import {
   XMarkIcon
 } from '../icons';
 import { storefrontService, Storefront, StorefrontProduct, InventoryItem } from '../services/storefrontService';
+import { ExternalLink } from 'lucide-react';
 
-// Types for Storefront features
-type StorefrontFilters = {
-  query: string;
-  category: string;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: "newest" | "price_asc" | "price_desc" | "rating_desc" | "popular";
-  inStock: boolean;
-};
+// Define missing types locally or import from appropriate files
+// Assuming these are defined somewhere in the project
+interface StorefrontFilters {
+  query?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: 'price-low' | 'price-high' | 'rating' | 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
+  inStock?: boolean;
+  priceRange?: [number, number];
+  searchQuery?: string;
+}
 
-type StorefrontAnalytics = {
-  totalProducts: number;
-  totalRevenue: number;
-  totalOrders: number;
-  avgRating: number;
-  lowStockItems: number;
-  topSellingProducts: Product[];
-  revenueChart: { date: string; revenue: number }[];
-};
+interface StorefrontAnalytics {
+  totalSales: number;
+  uniqueVisitors: number;
+  conversionRate: number;
+  topSellingProducts: StorefrontProduct[];
+  totalProducts?: number;
+  totalRevenue?: number;
+  totalOrders?: number;
+  avgRating?: number | null; // Ensured null safety
+}
 
-type InventoryAlert = {
-  id: string;
+interface InventoryAlert {
+  id: string; // Added missing id property
   productId: string;
   productName: string;
   currentStock: number;
   threshold: number;
-  status: 'low' | 'out' | 'critical';
-};
+  status: 'low' | 'out' | 'critical'; // Added missing status property
+}
 
 const StorefrontPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -70,11 +75,12 @@ const StorefrontPage: React.FC = () => {
   const [alerts, setAlerts] = useState<InventoryAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [activeTab, setActiveTab] = useState<'browse' | 'my-store' | 'inventory' | 'analytics'>('browse');
   const [showProductForm, setShowProductForm] = useState(false);
   const [showRestockForm, setShowRestockForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedVariantMap, setSelectedVariantMap] = useState<Record<string, string>>({});
   const [userStorefront, setUserStorefront] = useState<Storefront | null>(null);
 
   // Apply filters
@@ -96,7 +102,11 @@ const StorefrontPage: React.FC = () => {
     }
     
     // Apply price range
-    filtered = filtered.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
+    filtered = filtered.filter(p => {
+      const minPrice = filters.minPrice ?? 0; // Use 0 as default if undefined
+      const maxPrice = filters.maxPrice ?? Number.MAX_VALUE; // Use max value as default if undefined
+      return p.price >= minPrice && p.price <= maxPrice;
+    });
     
     // Apply stock filter
     if (filters.inStock) {
@@ -112,7 +122,24 @@ const StorefrontPage: React.FC = () => {
         filtered.sort((a, b) => b.price - a.price);
         break;
       case 'rating_desc':
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        filtered.sort((a, b) => {
+           // Calculate average rating for sorting, handling the union type
+           let aRating = 0;
+           if (typeof a.rating === 'object' && a.rating !== null) {
+               aRating = a.rating.average;
+           } else if (typeof a.rating === 'number') {
+               aRating = a.rating;
+           }
+
+           let bRating = 0;
+           if (typeof b.rating === 'object' && b.rating !== null) {
+               bRating = b.rating.average;
+           } else if (typeof b.rating === 'number') {
+               bRating = b.rating;
+           }
+
+           return bRating - aRating; // Descending order
+        });
         break;
       case 'popular':
         filtered.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
@@ -185,9 +212,29 @@ const StorefrontPage: React.FC = () => {
     setFilters(prev => ({ ...prev, query }));
   };
 
+  const handleVariantSelect = (productId: string, variantId: string) => {
+    setSelectedVariantMap(prev => ({
+      ...prev,
+      [productId]: variantId
+    }));
+  };
+
   const addToCart = (product: Product) => {
-    setCart(prev => [...prev, product]);
-    showToast(`${product.name} added to cart`, 'success');
+    const variantId = selectedVariantMap[product.id];
+    const itemToAdd: CartItem = { // Explicitly type the object being added
+      id: `${product.id}-${variantId || 'default'}`,
+      productId: product.id,
+      variantId: variantId || undefined, // This is now valid due to type update
+      name: product.name,
+      price: variantId 
+        ? (product.variants?.find(v => v.id === variantId)?.price || product.price) 
+        : product.price,
+      quantity: 1, // Default quantity is 1
+      image: product.images?.[0] || product.imageUrl || '', // Fixed image access
+      currency: product.currency || 'USD' // Use product's currency or default
+    };
+    setCart(prev => [...prev, itemToAdd]);
+    showToast(`${product.name} added to cart!`, 'success');
   };
 
   const createProduct = async (productData: Partial<StorefrontProduct>) => {
@@ -528,6 +575,8 @@ const StorefrontPage: React.FC = () => {
                     key={product.id}
                     product={product}
                     onAddToCart={() => addToCart(product)}
+                    onVariantChange={(vid) => handleVariantSelect(product.id, vid)}
+                    selectedVariantId={selectedVariantMap[product.id]}
                   />
                 ))}
               </div>
@@ -622,24 +671,16 @@ const StorefrontPage: React.FC = () => {
                       'bg-yellow-50/50 border-yellow-200'
                     }`}>
                       <div>
-                        <p className="font-semibold text-gray-900">{alert.productName}</p>
-                        <p className="text-xs text-gray-600 mt-0.5">
-                          Current Stock: <span className="font-bold">{alert.currentStock}</span> / Threshold: {alert.threshold}
-                        </p>
+                        <p className="font-medium text-gray-900">{alert.productName}</p>
+                        <p className="text-sm text-gray-500">Current Stock: {alert.currentStock}</p>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const product = products.find(p => p.id === alert.productId);
-                          if (product) {
-                            setSelectedProduct(product);
-                            setShowRestockForm(true);
-                          }
-                        }}
-                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 text-xs transition"
-                      >
-                        Restock Now
-                      </button>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        alert.status === 'critical' ? 'bg-red-100 text-red-800' :
+                        alert.status === 'out' ? 'bg-orange-100 text-orange-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {alert.status.charAt(0).toUpperCase() + alert.status.slice(1)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -704,13 +745,14 @@ const StorefrontPage: React.FC = () => {
               
               {analytics ? (
                 <div className="space-y-6">
+                  {/* Ensure analytics data exists before rendering dependent sections */}
                   {/* Key Metrics */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase">Total Products</p>
-                          <p className="text-2xl font-bold text-gray-900 mt-1">{analytics.totalProducts}</p>
+                          <p className="text-2xl font-bold text-gray-900 mt-1">{analytics.totalProducts || 0}</p>
                         </div>
                         <CubeIcon className="w-8 h-8 text-blue-600" />
                       </div>
@@ -720,7 +762,7 @@ const StorefrontPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase">Total Revenue</p>
-                          <p className="text-2xl font-bold text-green-600 mt-1">${analytics.totalRevenue.toFixed(2)}</p>
+                          <p className="text-2xl font-bold text-green-600 mt-1">${(analytics.totalRevenue || 0).toFixed(2)}</p>
                         </div>
                         <CurrencyDollarIcon className="w-8 h-8 text-green-600" />
                       </div>
@@ -730,7 +772,7 @@ const StorefrontPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase">Total Orders</p>
-                          <p className="text-2xl font-bold text-purple-600 mt-1">{analytics.totalOrders}</p>
+                          <p className="text-2xl font-bold text-purple-600 mt-1">{analytics.totalOrders || 0}</p>
                         </div>
                         <ChartBarIcon className="w-8 h-8 text-purple-600" />
                       </div>
@@ -740,7 +782,9 @@ const StorefrontPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase">Avg Rating</p>
-                          <p className="text-2xl font-bold text-yellow-600 mt-1">{analytics.avgRating.toFixed(1)}</p>
+                          <p className="text-2xl font-bold text-yellow-600 mt-1">
+                            {analytics.avgRating != null ? analytics.avgRating.toFixed(1) : 'N/A'}
+                          </p>
                         </div>
                         <StarIcon className="w-8 h-8 text-yellow-600" />
                       </div>
@@ -751,21 +795,27 @@ const StorefrontPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Top Selling Products</h3>
                     <div className="space-y-3">
-                      {analytics.topSellingProducts.map((product, index) => (
-                        <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
-                            <div>
-                              <p className="font-semibold text-gray-900">{product.name}</p>
-                              <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
+                      {analytics.topSellingProducts?.length > 0 ? (
+                        analytics.topSellingProducts.map((product, index) => (
+                          <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
+                              <div>
+                                <p className="font-semibold text-gray-900">{product.name ?? 'Unnamed Product'}</p>
+                                <p className="text-xs text-gray-500">
+                                  ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-xs text-gray-500">Units Sold</p>
+                              <p className="font-bold text-blue-600">{(product as any)?.unitsSold || (product as any)?.soldCount || 'N/A'}</p>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-xs text-gray-500">Units Sold</p>
-                            <p className="font-bold text-blue-600">{product.reviews?.length || 0}</p>
-                          </div>
-                        </div>
-                      ))}
+                        ))
+                      ) : (
+                        <div className="text-center py-4 text-gray-500">No products sold yet</div>
+                      )}
                     </div>
                   </div>
                 </div>
