@@ -1,4 +1,3 @@
-import React, {} from 'react';
 // SuperViAPIService - A service for 3D visualization and character rendering
 // This service handles 3D character models animations, and rendering using Three.js
 
@@ -6,18 +5,19 @@ import React, {} from 'react';
 import * as THREE from 'three';
 
 // We need to dynamically import these ESM modules
-let GLTFLoaderClass: any;
-let OrbitControlsClass: any;
+// Define specific types for the constructors to avoid 'any' and satisfy TS compiler
+let GLTFLoaderClass: typeof import('three/examples/jsm/loaders/GLTFLoader').GLTFLoader | undefined;
+let OrbitControlsClass: typeof import('three/examples/jsm/controls/OrbitControls').OrbitControls | undefined;
 
 // Initialize loaders asynchronously
 async function initializeLoaders() {
   if (!GLTFLoaderClass) {
     const gltfModule = await import('three/examples/jsm/loaders/GLTFLoader');
-    GLTFLoaderClass = gltfModule.GLTFLoader;
+    GLTFLoaderClass = gltfModule.GLTFLoader; // Assignment is now type-safe
   }
   if (!OrbitControlsClass) {
     const orbitModule = await import('three/examples/jsm/controls/OrbitControls');
-    OrbitControlsClass = orbitModule.OrbitControls;
+    OrbitControlsClass = orbitModule.OrbitControls; // Assignment is now type-safe
   }
 }
 
@@ -81,6 +81,15 @@ class SuperViApiService {
   ): Promise<void> {
     await initializeLoaders();
     
+    // Ensure GLTFLoaderClass is defined after initialization
+    if (!GLTFLoaderClass) {
+      throw new Error("GLTFLoaderClass failed to initialize.");
+    }
+    // Ensure OrbitControlsClass is defined after initialization (for completeness)
+    if (!OrbitControlsClass) {
+      throw new Error("OrbitControlsClass failed to initialize.");
+    }
+    
     this.options = {width: window.innerWidth,
   height: window.innerHeight,
   enableControls: false, enableShadows: true,
@@ -88,7 +97,7 @@ class SuperViApiService {
   ...options
     };
     this.clock = new THREE.Clock();
-    this.loader = new GLTFLoaderClass();
+    this.loader = new GLTFLoaderClass(); // Safe to instantiate now
     this.init3DRenderer();
   }
 
@@ -191,7 +200,12 @@ class SuperViApiService {
     }
 
     return new Promise((resolve, reject) => {
-      this.loader!.load(
+      // Check loader exists before using it to satisfy linter
+      if (!this.loader) {
+        reject(new Error("Loader not available in callback"));
+        return;
+      }
+      this.loader.load(
         character.modelUrl,
         (
   gltf: any) => {
@@ -482,7 +496,7 @@ levelReached: number,
     ];
   }
 
-  async getLeaderboard(gameMode = 'classic', _region = 'global'): Promise<unknown[]> {
+  async getLeaderboard(_gameMode = 'classic', _region = 'global'): Promise<unknown[]> {
     // Simulate API call to get leaderboard data
     // Removed console.log to comply with no-console rule
     return [
@@ -505,7 +519,7 @@ levelReached: number,
   }
 
   async getmemberInventory(
-  memberId: string): Promise<unknown[]> {
+  _memberId: string): Promise<unknown[]> {
     // Simulate API call to get member's inventory
     return [
       {itemId: 'pow_1',
