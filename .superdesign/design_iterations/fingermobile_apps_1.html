@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FingerMobile — Apps Rail</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{cols:{ink:'var(--foreground)',card:'var(--card)',brand:'var(--primary)',gold:'var(--accent)'},fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+:root{--background:#111211;--foreground:#f4f6ee;--card:#191b25;--card-foreground:#f4f6ee;--popover:#191b25;--popover-foreground:#f4f6ee;--primary:#a8f25b;--primary-foreground:#0e1206;--secondary:#222a2a;--secondary-foreground:#f4f6ee;--muted:#272a36;--muted-foreground:#9aa3ae;--accent:#e8cf8f;--accent-foreground:#1b1606;--border:#533646;--ring:#a8f25b;--sidebar:#15171f;--sidebar-foreground:#9aa3ae;--sidebar-accent:#23252f;--radius:.85rem;--font-sans:"Plus Jakarta Sans",system-ui,sans-serif;--font-serif:"Space Grotesk",sans-serif;--font-mono:"JetBrains Mono",monospace;}
+*{box-sizing:border-box}body{background:var(--background)!important;color:var(--foreground)!important;font-family:var(--font-sans)!important}h1,h2,h3,h4{font-family:var(--font-serif)!important}.mono{font-family:var(--font-mono)!important}
+.screen{display:none}.screen.active{display:block;animation:si .35s cubic-bezier(.16,1,.3,1)}@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#deviceFrame{transition:width .35s cubic-bezier(.16,1,.3,1);margin:0 auto}.dv-desktop{width:100%;max-width:1400px}.dv-tablet{width:820px}.dv-mobile{width:400px}
+.col-left{width:20%}.col-center{width:60%}.col-right{width:20%}
+@media(max-width:1023px){.col-left{width:25%}.col-center{width:75%}.col-right{display:none!important}}
+@media(max-width:767px){.col-left{display:none!important}.col-center{width:100%}}
+.fm-pulse{animation:pl 2s ease-in-out infinite}@keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+.app-glow{animation:glow 2.5s ease-in-out infinite}@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(168,242,69,.25)}50%{box-shadow:0 0 0 12px rgba(168,242,69,0)}}
+</style>
+</head>
+<body>
+<!-- DECK BAR -->
+<div class="fixed top-0 inset-x-0 z-50 border-b border-[var(--border)] bg-[#0c0d13]/95 backdrop-blur">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+    <span class="font-display font-bold text-[14px] flex items-center gap-2"><span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="fingerprint" class="h-4 w-4"></i></span>Finger<span class="text-[var(--primary)]">Mobile</span> <span class="mono text-[9px] text-[var(--muted-foreground)]">APPS RAIL</span></span>
+    <div class="flex-1"></div>
+    <div class="flex flex-wrap gap-1" id="switcher">
+      <button class="switch" data-screen="fingerwars">FingerWars</button>
+      <button class="switch" data-screen="gems">Gems</button>
+      <button class="switch" data-screen="hallmark">Hallmark</button>
+      <button class="switch" data-screen="lux">FingerLux</button>
+      <button class="switch" data-screen="beatwave">Beatwave</button>
+      <button class="switch" data-screen="canary">Canary</button>
+      <button class="switch" data-screen="flamingo">Flamingo</button>
+      <button class="switch" data-screen="seads">Seads</button>
+      <button class="switch" data-screen="lendsqr">Lendsqr</button>
+      <button class="switch" data-screen="nysc">Nysc</button>
+      <button class="switch" data-screen="gameon">GameOn</button>
+    </div>
+    <div class="flex items-center gap-1 bg-[var(--secondary)] rounded-lg p-1">
+      <button class="device" data-device="desktop">🖥 Desktop</button>
+      <button class="device" data-device="tablet">📱 Tablet</button>
+      <button class="device" data-device="mobile">📟 Mobile</button>
+    </div>
+  </div>
+</div>
+
+<div style="padding-top:64px">
+<div id="deviceFrame" class="dv-desktop bg-[var(--background)]">
+
+<!-- Helper: app shell pattern -->
+<!-- FINGERWARS -->
+<section data-role="fingerwars" class="screen active">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]">
+<span class="grid w-9 h-9 place-items-center rounded-xl bg-gradient-to-tr from-[var(--primary)] to-[var(--gold)] text-[var(--primary-foreground)]"><i data-lucide="swords" class="h-5 w-5"/></span>
+<span class="font-display font-bold text-[16px]">FingerWars</span>
+<div class="flex-1"></div>
+<div class="flex items-center gap-2"><span class="mono text-[10px] text-[var(--gold)]">💎 12,400</span><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Play</button></div>
+</header>
+<div class="max-w-5xl mx-auto px-4 py-6">
+<div class="relative rounded-2xl overflow-hidden h-56 mb-6"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&q=60" class="w-full-obj-h-full cover opacity-60"/><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-4 left-5"><p class="mono text-[9px ] text-[var(--gold)]">WEB3 COMPETITIVE</p><p class="text-[24px] font-bold">Ranked season LIVE</p><div class="flex gap-2 mt-2"><button class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-[13px]]">Queue now</button><button class="px-4 py-2 rounded-lg border border-[var(--border)] text-[13px]]">Season Pass</button></div></div></div>
+<div class="grid md:grid-cols-3 gap-3 mb-6">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">RANK</p><p class="text-[24px] font-bold text-[var(--gold)]">Diamond II</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">WIN RATE</p><p class="text-[24px] font-bold">62%</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">GEMS</p><p class="text-[24px] font-bold text-[var(--primary)]">12.4k</p></div>
+</div>
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-3">Battle pass</h3><div class="space-y-2"><div class="skeleton h-2 rounded bg-[var(--muted)]" style="width:60%"></div><div class="text-[11px] text-[var(--muted-foreground)]">Level 24 · 48h remaining</div></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-2">Live events</h3><p class="text-[12px] text-[var(--muted-foreground)]">Grand finals · Sat 8pm</p><div class="flex gap-2 mt-2"><span class="mono text-[9px] px-2 py-0.5 rounded bg-[var(--primary)]/15 text-[var(--primary)]">REG</span></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- GEMS -->
+<section data-role="gems" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--gold)]/25 text-[var(--gold)]"><i data-lucide="gem" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">Gems</span><div class="flex-1"></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Buy gems</button></header>
+<div class="max-w-4xl mx-auto px-4 py-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+<div class="bg-gradient-to-tr from-[var(--card)] to-[var(--gold)]/15 border border-[var(--gold)]/40 rounded-2xl p-4 text-center"><p class="text-[22px] font-bold text-[var(--gold)]">100 💎</p><p class="mono text-[9px] text-[var(--muted-foreground)]">₦500</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Buy</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[22px] font-bold text-[var(--gold)]">500 💎</p><p class="mono text-[9px] text-[var(--muted-foreground)]">₦2,250 <span class="line-through opacity-60">₦2,500</span></p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Buy</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[22px] font-bold text-[var(--gold)]">1,200 💎</p><p class="mono text-[9px] text-[var(--muted-foreground)]">₦5,000</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Buy</button></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[22px] font-bold text-[var(--gold)]">3,000 💎</p><p class="mono text-[9px] text-[var(--muted-foreground)]">₦12,000 <span class="text-[var(--gold)]">-20%</span></p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--gold)] text-[var(--accent-foreground)] text-[11px] font-bold">Best</button></div>
+</div>
+<div class="grid md:grid-cols-3 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">BALANCE</p><p class="text-[20px] font-bold text-[var(--gold)]">12,400 💎</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">EARNED</p><p class="text-[20px] font-bold">+2,100 this week</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">EARN GEMS</p><p class="text-[13px] mt-1 text-[var(--muted-foreground)]">Post · stream · refer</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- HALLMARK -->
+<section data-role="hallmark" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--primary)]/20 text-[var(--primary)]"><i data-lucide="badge-check" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">Hallmark</span><div class="flex-1"></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Create hallmark</button></header>
+<div class="max-w-4xl mx-auto px-4 py-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+<div class="bg[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-24 bg-gradient-to-tr from-[var(--primary)]/40 to-[var(--gold)]/30 grid place-items-center"><i data-lucide="star" class="h-8 w-8 text-[var(--foreground)]"/></div><div class="p-3 text-center"><p class="text-[12px] font-bold">Birthday</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-24 bg-gradient-to-tr from-[var(--gold)]/40 to-[var(--primary)]/20 grid place-items-center"><i data-lucide="heart" class="h-8 w-8 text-[var(--foreground)]"/></div><div class="p-3 text-center"><p class="text-[12px] font-bold">Anniversary</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-24 bg-gradient-to-tr from-[var(--primary)]/30 to-[var(--muted)] grid place-items-center"><i data-lucide="trophy" class="h-8 w-8 text-[var(--foreground)]"/></div><div class="p-3 text-center"><p class="text-[12px] font-bold">Milestone</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-24 bg-gradient-to-tr from-[var(--gold)]/30 to-[var-(--muted)] grid place-items-center"><i data-lucide="sparkles" class="h-8 w-8 text-[var(--foreground)]"/></div><div class="p-3 text-center"><p class="text-[12px] font-bold">Congrats</p></div></div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-2">Recent hallmark</h3><p class="text-[12.5px] text-[var(--muted-foreground)]">You celebrated 3 members this week 🎉</p><div class="flex gap-2 mt-3"><span class="mono text-[9px] px-2 py-0.5 rounded bg-[var(--primary)]/15 text-[var(--primary)]">Send one</span><span class="mon-o text-[9px] px-2 py-0.5 rounded bg-[var(--muted)] text-[var(--muted-foreground)]">View gallery</span></div></div>
+</div>
+</div>
+</section>
+
+<!-- FINGERLUX -->
+<section data-role="fux" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--gold)]/25 text-[var(--gold)]"><i data-lucide="diamond" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">FingerLux</span><div class="flex-1"></div><button class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-[12px] font-semibold">Bag</button></header>
+<div class="max-w-5xl mx-auto px-4 py-6">
+<div class="relative h-48 rounded-2xl overflow-hidden mb-6"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=800&q=60" class="w-full h-full object-cover opacity-70"/><div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><div class="absolute bottom-4 left-5"><p class="mono text-[9px] text-[var(--gold)]">LUXURY HOUSE</p><p class="text-[22px] font-bold">The Gold Edit</p><button class="mt-2 px-4 py-2 rounded-lg bg-[var(--gold)] text-[var(--accent-foreground)] text-[12px] font-bold">Shop now</button></div></div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=300&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Gold Ring</p><p class="text-[12px] font-bold text-[var(--gold)]">₦480k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1511556820780-d912e42b4980?w=200&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Lux Watch</p><p class="text-[12px] font-bold text-[var(--gold)]">₦2.2M</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Silk Coat</p><p class="text-[12px] font-bold text-[var(--gold)]">₦850k</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden"><div class="aspect-square bg-[var(--muted)]"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=60" class="w-full h-full object-cover"/></div><div class="p-2.5"><p class="text-[11px] font-semibold">Leather Tote</p><p class="text-[12px] font-bold text-[var(--gold)]">₦1.1M</p></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- BEATWAVE -->
+<section data-role="beatwave" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<div class="relative h-64"><img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?w=900&q=60" class="w-full h-full object-cover opacity-60"/><div class="absolute inset-0 bg-gradient-to-t from-[var(--background)] to-transparent"></div><div class="absolute bottom-4 left-5 right-5 flex justify-between items-end"><div><p class="mono text-[9px] text-[var(--primary)]">NOW PLAYING</p><p class="text-[22px] font-bold">Midnight Protocol</p><p class="text-[13px] text-[var(--muted-foreground)]">BTWAVE 💎 · 3:24</p></div><button class="w-16 h-16 grid place-items-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)]"><i data-lucide="play" class="h-7 w-7 ml-1"/></button></div></div>
+<div class="max-w-3xl mx-auto px-4 py-6">
+<div class="space-y-2 mb-6">
+<div class="h-1 rounded-full bg-[var(--muted)]"><div class="h-full w-[46%] rounded-full bg-[var(--primary)]"></div></div><div class="flex justify-between mono text-[9px] text-[var(--muted-foreground)]"><span>1:32</span><span>3:24</span></div>
+</div>
+<div class="grid grid-cols-3 gap-3 mb-6">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[18px] font-bold">1.2M</p><p class="mono text-[8px] text-[var(--muted-foreground)]">monthly</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[18px] font-bold">88</p><p class="mono text-[8px] text-[var(--muted-foreground)]">playlists</p></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 text-center"><p class="text-[18px] font-bold text-[var(--gold)]">₦1.4M</p><p class="mono text-[8px] text-[var(--muted-foreground)]">earned</p></div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-2">AI playlist</h3><p class="text-[12px] text-[var(--muted-foreground)]">Generated "focus" mix for your feed engagement session.</p><div class="flex gap-2 mt-2"><span class="mono text-[9px] px-2 py-0.5 rounded bg-[var(--primary)]/15 text-[var(--primary)]">12 tracks</span><span class="mono text-[9px] px-2 py-0.5 rounded bg-[var(--muted)] text-[var(--muted-foreground)]">24 min</span></div></div>
+</div>
+</div>
+</section>
+
+<!-- CANARY -->
+<section data-role="canary" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--gold)]/25 text-[var(--gold)]"><i data-lucide="egg" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">Canary</span><div class="flex-1"></div><span class="mono text-[9px] px-2 py-1 rounded bg-[var(--primary)]/15 text-[var(--primary)]">BETA</span></header>
+<div class="max-w-3xl mx-auto px-4 py-8 text-center">
+<span class="mx-auto grid w-16 h-16 place-items-center rounded-2xl bg-[var(--gold)]/20 text-[var(--gold)]"><i data-lucide="egg" class="h-8 w-8"/></span>
+<h1 class="text-[24px] font-bold mt-4">Canary is coming</h1>
+<p class="text-[13px] text-[var(--muted-foreground)] mt-2 max-w-sm mx-auto">FingerMobile's early-access radar — discover the next policy &amp; data subject tooling before anyone else.</p>
+<button class="mt-6 px-6 py-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] text-[13px] font-bold">Join waitlist</button>
+<div class="mt-6 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 max-w-xs mx-auto"><p class="mono text-[9px] text-[var(--muted-foreground)]">EARLY ACCESS · 1,204 in line</p></div>
+</div>
+</div>
+</section>
+
+<!-- FLAMINGO -->
+<section data-role="flamingo" class="screen">
+<div class="flex w-full min-h-screen">
+<aside class="col-left hidden md:flex sticky top-16 self-start h-[calc(100vh-64px)] flex-col px-3 py-4 border-r border-[var(--border)] bg-[var(--sidebar)]"><span class="font-display font-bold text-[14px] px-3 mb-5"><span class="text-[var(--primary)]">Flamingo</span></span><div class="space-y-1 text-[12.5px]"><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[var(--primary)]/15 text-[var(--primary)] font-semibold"><i data-lucide="shield" class="h-4 w-4"/>Approvals</div><div class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[var(--muted-foreground)]"><i data-lucide="flag" class="h-4 w-4"/>Queue</div></div><div class="mt-auto flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)]"><p class="text-[11px] font-semibold">Moderator</p></div></aside>
+<main class="col-center min-h-screen border-r border-[var(--border)]">
+<div class="max-w-[720px] mx-auto px-4 md:px-6 py-6">
+<h1 class="text-[22px] font-bold">Flamingo approvals</h1><p class="mono text-[10px] text-[var(--muted-foreground)] mb-5">queued · moderation · SLA 5m</p>
+<div class="space-y-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><div class="flex items-center gap-3"><img src="https://i.pravatar.cc/60?img=20" class="w-9 h-9 rounded-full"/><div><p class="text-[13px] font-semibold">GEM submit · @creator</p><p class="mono text-[9px] text-[var(--muted-foreground)]">2m ago</p></div></div><div class="flex gap-2 mt-3"><button class="flex-1 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Approve</button><button class="flex-1 py-2.5 rounded-lg border border-[var(--border)] text-[12px]">Reject</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><div class="flex items-center gap-3"><img src="https://i.pravatar.cc/60?img=25" class="w-9 h-9 rounded-full"/><div><p class="text-[13px] font-semibold">Hallmark review</p><p class="mono text-[9px] text-[var(--muted-foreground)]">8m ago</p></div></div><div class="flex gap-2 mt-3"><button class="flex-1 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Approve</button><button class="flex-1 py-2.5 rounded-lg border border-[var(--border)] text-[12px]">Reject</button></div></div>
+</div>
+</div>
+</main>
+</div>
+</section>
+
+<!-- SEADS -->
+<section data-role="seads" class="screen">
+<div class="max-w-4xl mx-auto px-4 py-8">
+<div class="flex items-center gap-3 mb-5"><span class="grid w-10 h-10 place-items-center rounded-xl bg-[var(--gold)]/20 text-[var(--gold)]"><i data-lucide="megaphone" class="h-5 w-5"/></span><div><h1 class="text-[20px] font-bold">Seads Ads</h1><p class="mono text-[9px] text-[var(--muted-foreground)]">campaigns · CPM · verify</p></div></div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"><div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">SPEND</p><p class="text-[18px] font-bold">₦2.1M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">IMPRESSIONS</p><p class="text-[18px] font-bold">48.2M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">CLICKS</p><p class="text-[18px] font-bold">2.1M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><p class="mono text-[9px] text-[var(--muted-foreground)]">CPM</p><p class="text-[18px] font-bold text-[var(--gold)]">₦44</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="px-4 py-3 border-b border-[var(--border)]"><h3 class="text-[13px] font-bold">Active campaigns</h3></div>
+<div class="divide-y divide-[var(--border)]"><div class="flex items-center gap-3 px-4 py-3"><div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-[var(--primary)]/30 to-[var(--muted)] grid place-items-center">A</div><div class="flex-1"><p class="text-[12.5px] font-semibold">Marketplace drop ads</p><p class="mono text-[9px] text-[var(--muted-foreground)]">STATUS LIVE · CPM ‑44</p></div><button class="px3 py-1.5 rounded-lg bg-[var(--primary)]/[15] text-[var(--primary)] text-[11px] font-bold">Pause</button></div></div></div>
+</div>
+</section>
+
+<!-- LENDSQR -->
+<section data-role="endsqr" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--primary)]/20 text-[var(--primary)]"><i data-lucide="building-2" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">LendsQR</span><div class="flex-1"></div><button class="px3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Get loan</button></header>
+<div class="max-w-3x mx-auto px-4 py-6">
+<div class="grid grid-cols-3 gap-3 mb-6"><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">CREDIT SCORE</p><p class="text-[20px] font-bold text-[var(--gold)]">720</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">LIMIT</p><p class="text-[20px] font-bold">₦2.0M</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">DUE</p><p class="text-[20px] font-bold text-[var(--primary)]">₦148k</p></div></header>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-2">Pay schedule</h3><div class="space-y-1 text-[12.5px] text-[var(--muted-foreground)]"><div cnas="-00-tw 12">Oct 1 · ₦148k · <span class="text-[var(--primary)]">paid</div><div c:At="sent=1">Nov 1 · ₦148k · upcomig</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- NYSC -->
+<section data-role="nysc" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-[var(--gold)]/20 text-[var(--gold)]"><i data-lucide="landmark" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">NYSC</span><div class="flex-1"></div><span class="mono text-[9px] px-2 py-1 rounded-full bg-[var(--gold)]/15 text-[var(--gold)]">PV</span></header>
+<div class="max-w-3xl mx-auto px-4 py-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">CODE</p><p class="text-[18px] font-bold">AB/24/0311</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">STATE</p><p class="text-[18px] font-bold text-[var(--gold)]">LAGOS</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">PPA</p><p class="text-[18px] font-bold">Govt.</p></div><div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 text-center"><p class="mono text-[9px] text-[var(--muted-foreground)]">STATUS</p><p class="text-[18px] font-bold text-[var(--primary)]">▲ Active</p></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4"><h3 class="text-[13px] font-bold mb-3">My dashboard</h3><div class="space-y-2"><div class="flex gap-3"><span class="grid w-8 h-8 place-items-center rounded-lg bg-[var(--primary)]/15 text-[var(--primary)]"><i data-lucide="file-text" class="h-4 w-4"/></span><div class="flex-1"><p class="text-[12px]">Community dev service</p><p class="mono text-[9px] text-[var(--muted-foreground)]">week 32 · completed</p></div></div><div class="flex gap-3"><span class="grid w-8 h-8 place-items-center rounded-lg bg-[var(--gold)]/15 text-[var(--gold)]"><i data-lucide="wallet" class="h-4 w-4"/></span><div class="flex-1"><p class="text-[12px]">Allowance</p><p class="mono text-[9px] text-[var(--muted-foreground)]">₦33,000 · pending</p></div></div></div></div>
+</div>
+</div>
+</section>
+
+<!-- GAME ON -->
+<section data-role="gameon" class="screen">
+<div class="min-h-[calc(100vh-64px)]">
+<header class="flex items-center gap-3 px-5 py-4 border-b border-[var(--border)]"><span class="grid w-9 h-9 place-items-center rounded-xl bg-gradient-to-tr from-[var(--primary)] to-[var(--gold)] text-[var(--primary-foreground)]"><i data-lucide="gamepad-2" class="h-5 w-5"/></span><span class="font-display font-bold text-[16px]">GameOn</span><div class="flex-1"></div><button class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[12px] font-bold">Host</button></header>
+<div class="max-w-5xl mx-auto px-4 py-6">
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-32 relative"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=60" class="w-full h-full object-cover"/><span class="mono text-[8px] absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/60 text-white">108 ONLINE</span></div><div class="p-3"><p class="text-[13px] font-bold">Weekend Cup</p><p class="mono text-[9px] text-[var(--muted-foreground)]">Sat 6pm · ₦2,000 entry</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Join</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-32 relative"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=60" class="w-full h-full object-cover"/><span class="mono text-[8px] absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/60 text-white">64 ONLINE</span></div><div class="p-3"><p class="text-[13px] font-bold">Rocket League 1v1</p><p class="mono text-[9px] text-[var(--muted-foreground)]">Sun 14pm · ₦1,000</p><button class="mt-2 w-full py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[11px] font-bold">Join</button></div></div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden"><div class="h-32 grid place-items-center bg-[var(--primary)]/10"><i data-lucide="plus" class="h-10 w-10 text-[var(--primary)]"/></div><div class="p-3"><p class="text-[13px] font-bold">Host a tournament</p><p class="mono text-[9px] text-[var(--muted-foreground)]">create &amp; invite</p></div></div>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.switch').forEach(b=>{b.className='switch px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--secondary)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]';b.addEventListener('click',()=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelector('.screen[data-role="'+b.dataset.screen+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});});});
+let cd='desktop';
+document.querySelectorAll('.device').forEach(b=>{b.className='device px-2.5 py-1 rounded-md text-[11px] font-semibold text-[var(--muted-foreground)]';b.addEventListener('click',()=>{cd=b.dataset.device;document.getElementById('deviceFrame').className='dv-'+cd+' bg-[var(--background)]';document.querySelectorAll('.device').forEach(x=>x.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]'));b.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');});});
+document.querySelector('.device[data-device="desktop"]').classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+</script>
+</body>
+</html>
