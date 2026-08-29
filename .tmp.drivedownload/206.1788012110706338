@@ -1,0 +1,99 @@
+#!/usr/bin/env node
+
+/**
+ * Clean Build Artifacts Script
+ * Removes stale build files causing syntax errors across all apps
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const WORKSPACE_ROOT = '/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps';
+
+// Patterns to clean
+const PATTERNS_TO_CLEAN = [
+  'index-*.js',           // Vite build artifacts
+  'dist/',                // Build output directories
+  'build/',               // Alternative build directory
+  '.vite/',               // Vite cache
+  'node_modules/.vite/',  // Vite module cache
+];
+
+let totalCleaned = 0;
+let totalErrors = 0;
+
+console.log('🧹 Starting build artifact cleanup...\n');
+
+// Get all app directories
+const apps = fs.readdirSync(WORKSPACE_ROOT).filter(item => {
+  const itemPath = path.join(WORKSPACE_ROOT, item);
+  return fs.statSync(itemPath).isDirectory();
+});
+
+console.log(`Found ${apps.length} apps to process\n`);
+
+apps.forEach(appName => {
+  const appPath = path.join(WORKSPACE_ROOT, appName);
+  
+  console.log(`Processing: ${appName}`);
+  
+  // Clean index-*.js files in root and dist directories
+  const dirsToCheck = [
+    appPath,
+    path.join(appPath, 'dist'),
+    path.join(appPath, 'build'),
+    path.join(appPath, 'frontend', 'dist'),
+    path.join(appPath, 'backend', 'dist')
+  ];
+  
+  dirsToCheck.forEach(dir => {
+    if (!fs.existsSync(dir)) return;
+    
+    try {
+      const files = fs.readdirSync(dir);
+      files.forEach(file => {
+        if (file.match(/^index-.*\.js$/)) {
+          const filePath = path.join(dir, file);
+          fs.unlinkSync(filePath);
+          console.log(`  ✓ Removed: ${path.relative(appPath, filePath)}`);
+          totalCleaned++;
+        }
+      });
+    } catch (err) {
+      console.error(`  ✗ Error cleaning ${dir}:`, err.message);
+      totalErrors++;
+    }
+  });
+  
+  // Remove dist/build directories
+  ['dist', 'build'].forEach(dirName => {
+    const dirPath = path.join(appPath, dirName);
+    if (fs.existsSync(dirPath)) {
+      try {
+        fs.rmSync(dirPath, { recursive: true, force: true });
+        console.log(`  ✓ Removed directory: ${dirName}/`);
+        totalCleaned++;
+      } catch (err) {
+        console.error(`  ✗ Error removing ${dirName}/:`, err.message);
+        totalErrors++;
+      }
+    }
+  });
+  
+  console.log('');
+});
+
+console.log('==========================================');
+console.log(`✅ Cleanup Complete`);
+console.log(`   Files/Directories removed: ${totalCleaned}`);
+console.log(`   Errors encountered: ${totalErrors}`);
+console.log('==========================================\n');
+
+if (totalErrors === 0) {
+  console.log('💡 Next steps:');
+  console.log('   1. Rebuild apps to generate fresh build artifacts');
+  console.log('   2. Run npm install in apps with missing dependencies');
+  console.log('   3. Verify syntax errors are resolved');
+} else {
+  console.log('⚠️  Some errors occurred. Review the output above.');
+}
