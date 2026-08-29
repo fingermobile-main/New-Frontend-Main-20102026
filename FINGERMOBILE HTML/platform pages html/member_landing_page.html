@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Mobile menu styling -->
+    <style>
+        .mobile-menu {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu.active {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header with burger menu -->
+        <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 flex items-center">
+                            <h1 class="text-xl font-bold">FingerMobile</h1>
+                        </div>
+                        <nav class="hidden md:ml-10 md:flex md:space-x-8">
+                            <a href="#" class="bg-white bg-opacity-20 text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                            <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Community</a>
+                            <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Marketplace</a>
+                            <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Wallet</a>
+                            <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Portfolio</a>
+                        </nav>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+                                Get Started
+                            </button>
+                        </div>
+                        <div class="ml-4 relative">
+                            <div>
+                                <button class="flex text-sm rounded-full focus:outline-none">
+                                    <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex items-center md:hidden">
+                        <!-- Mobile menu button -->
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-blue-200 hover:text-white hover:bg-blue-500 focus:outline-none">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" class="bg-white bg-opacity-20 text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                    <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Community</a>
+                    <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Marketplace</a>
+                    <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Wallet</a>
+                    <a href="#" class="text-blue-100 hover:bg-blue-500 hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Portfolio</a>
+                </div>
+                <div class="pt-4 pb-3 border-t border-blue-500 border-opacity-20">
+                    <div class="flex items-center px-5">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
+                        </div>
+                        <div class="ml-3">
+                            <div class="text-base font-medium text-white">John Doe</div>
+                            <div class="text-sm font-medium text-blue-200">johndoe@example.com</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-2 space-y-1">
+                        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 hover:bg-opacity-20">Your Profile</a>
+                        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 hover:bg-opacity-20">Settings</a>
+                        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 hover:bg-opacity-20">Sign out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-8">
+                        <div class="text-center lg:text-left">
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
+                                <span class="block">Welcome to FingerMobile</span>
+                                <span class="block text-blue-200 mt-2">Protocol Platform</span>
+                            </h1>
+                            <p class="mt-6 max-w-2xl mx-auto lg:mx-0 text-xl text-blue-100">
+                                Connect, create, and collaborate in the next-generation mobile web experience
+                            </p>
+                            <div class="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                                <button class="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 md:py-4 md:text-lg md:px-10">
+                                    Get Started
+                                </button>
+                                <button class="px-8 py-3 border border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
+                                    Learn More
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-10 lg:mt-0 flex justify-center">
+                            <div class="relative">
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl shadow-xl transform rotate-3"></div>
+                                <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden w-80 h-80">
+                                    <div class="p-6">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="text-lg font-bold text-gray-900">Your Dashboard</div>
+                                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                        </div>
+                                        <div class="space-y-4">
+                                            <div class="flex items-center">
+                                                <div class="bg-blue-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Community</div>
+                                                    <div class="text-xs text-gray-500">1,248 members</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="bg-green-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Wallet</div>
+                                                    <div class="text-xs text-gray-500">12.45 FIC</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="bg-purple-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Portfolio</div>
+                                                    <div class="text-xs text-gray-500">8 assets</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-6 pt-4 border-t border-gray-200">
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-500">Recent Activity</span>
+                                                <span class="font-medium text-blue-600">View All</span>
+                                            </div>
+                                            <div class="mt-2 text-xs text-gray-500">
+                                                <div class="flex items-center py-1">
+                                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                                    <span>New follower: @alexj</span>
+                                                </div>
+                                                <div class="flex items-center py-1">
+                                                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                                                    <span>Asset purchased</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="py-12 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-extrabold text-gray-900">Powerful Features</h2>
+                        <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                            Everything you need to succeed in one integrated platform
+                        </p>
+                    </div>
+
+                    <div class="mt-10">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Community</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Connect with like-minded individuals and build meaningful relationships in our vibrant community.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Wallet</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Securely store, send, and receive digital assets with our integrated wallet solution.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Portfolio</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Track and manage your digital assets with real-time analytics and performance insights.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Marketplace</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Buy, sell, and trade digital assets in our secure and decentralized marketplace.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Media</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Create, share, and monetize your digital content with our media tools and distribution network.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                                <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="mt-4 text-xl font-medium text-gray-900 text-center">Security</h3>
+                                <p class="mt-2 text-gray-500 text-center">
+                                    Enterprise-grade security to protect your data and privacy with advanced encryption.
+                                </p>
+                                <div class="mt-4 text-center">
+                                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Learn more →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600">
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <h2 class="text-3xl font-extrabold text-white">Trusted by a Growing Community</h2>
+                        <p class="mt-3 text-xl text-blue-100">Join thousands of users who are already part of our ecosystem</p>
+                    </div>
+                    <dl class="mt-10 text-center sm:max-w-3xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-8">
+                        <div class="flex flex-col">
+                            <dt class="order-2 mt-2 text-lg leading-6 font-medium text-blue-200">Members</dt>
+                            <dd class="order-1 text-5xl font-extrabold text-white">12,458</dd>
+                        </div>
+                        <div class="flex flex-col mt-10 sm:mt-0">
+                            <dt class="order-2 mt-2 text-lg leading-6 font-medium text-blue-200">Assets</dt>
+                            <dd class="order-1 text-5xl font-extrabold text-white">1.2M</dd>
+                        </div>
+                        <div class="flex flex-col mt-10 sm:mt-0">
+                            <dt class="order-2 mt-2 text-lg leading-6 font-medium text-blue-200">Transactions</dt>
+                            <dd class="order-1 text-5xl font-extrabold text-white">24.8M</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="bg-gray-50 py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-extrabold text-gray-900">What Our Members Say</h2>
+                        <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                            Hear from our community members about their experience
+                        </p>
+                    </div>
+                    <div class="mt-10">
+                        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <div class="flex items-center">
+                                    <img class="w-12 h-12 rounded-full" src="https://randomuser.me/api/portraits/women/1.jpg" alt="User">
+                                    <div class="ml-4">
+                                        <h4 class="text-lg font-bold">Sarah Johnson</h4>
+                                        <p class="text-gray-500">Creative Director</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-gray-600">
+                                    "This platform has completely transformed how I connect with my audience and collaborate with other creatives. The community features are outstanding!"
+                                </p>
+                                <div class="mt-4 flex items-center">
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <div class="flex items-center">
+                                    <img class="w-12 h-12 rounded-full" src="https://randomuser.me/api/portraits/men/2.jpg" alt="User">
+                                    <div class="ml-4">
+                                        <h4 class="text-lg font-bold">Michael Chen</h4>
+                                        <p class="text-gray-500">Digital Artist</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-gray-600">
+                                    "The marketplace features have allowed me to monetize my digital art in ways I never thought possible. The wallet integration makes transactions seamless."
+                                </p>
+                                <div class="mt-4 flex items-center">
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <div class="flex items-center">
+                                    <img class="w-12 h-12 rounded-full" src="https://randomuser.me/api/portraits/women/3.jpg" alt="User">
+                                    <div class="ml-4">
+                                        <h4 class="text-lg font-bold">Emma Wilson</h4>
+                                        <p class="text-gray-500">Investor</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-gray-600">
+                                    "The portfolio tracking features have helped me make better investment decisions. The real-time analytics are incredibly valuable for monitoring my assets."
+                                </p>
+                                <div class="mt-4 flex items-center">
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-700">
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="px-6 py-12 bg-white bg-opacity-10 rounded-lg text-center">
+                        <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                            <span class="block">Ready to get started?</span>
+                            <span class="block text-blue-200 mt-2">Join our community today.</span>
+                        </h2>
+                        <div class="mt-8 flex justify-center">
+                            <div class="inline-flex rounded-md shadow">
+                                <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50">
+                                    Sign up for free
+                                </a>
+                            </div>
+                            <div class="ml-3 inline-flex">
+                                <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 bg-opacity-20 hover:bg-opacity-30">
+                                    Live demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white">
+            <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold">FingerMobile</h3>
+                        <p class="mt-4 text-gray-400">
+                            The next-generation mobile web experience for creators, investors, and communities.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Product</h3>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Wallet</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Portfolio</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Company</h3>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">About</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Legal</h3>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Privacy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Terms</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Security</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-8 text-center">
+                    <p class="text-gray-400">
+                        &copy; 2023 FingerMobile. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Mobile menu toggle script -->
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dancia 4Tv</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-gradient-to-r from-red-600 to-orange-500 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">Dancia 4Tv</h1>
+                            <p class="mt-1 text-sm text-red-200">Interactive television and streaming platform</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Live TV
+                            </button>
+                            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                On Demand
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dancia 4Tv Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                    <!-- Live Channels -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Live Channels</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">142</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- On Demand Titles -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-orange-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">On Demand Titles</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">8,452</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Viewers -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Active Viewers</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">24.5K</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Watch Hours -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Watch Hours</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">1.2M</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live TV and Recommendations -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Currently Live -->
+                    <div class="lg:col-span-2 bg-gray-800 rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <h2 class="text-lg font-medium text-white">Currently Live</h2>
+                                <button type="button" class="mt-3 md:mt-0 inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    View All Channels
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="border border-gray-700 rounded-lg overflow-hidden">
+                                    <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-lg font-medium text-white">Sports Central</h3>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                                LIVE
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-400">Championship Finals - Game 7</p>
+                                        <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-red-600 h-2 rounded-full" style="width: 65%"></div>
+                                        </div>
+                                        <div class="mt-2 flex justify-between text-xs text-gray-400">
+                                            <span>1:25:42</span>
+                                            <span>2:45:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-700 rounded-lg overflow-hidden">
+                                    <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-lg font-medium text-white">News Network</h3>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                                LIVE
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-400">Evening News - Breaking Stories</p>
+                                        <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-red-600 h-2 rounded-full" style="width: 30%"></div>
+                                        </div>
+                                        <div class="mt-2 flex justify-between text-xs text-gray-400">
+                                            <span>0:18:33</span>
+                                            <span>1:00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-700 rounded-lg overflow-hidden">
+                                    <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-lg font-medium text-white">Movie Channel</h3>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                                LIVE
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-400">Action Thriller: Shadow Protocol</p>
+                                        <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-red-600 h-2 rounded-full" style="width: 45%"></div>
+                                        </div>
+                                        <div class="mt-2 flex justify-between text-xs text-gray-400">
+                                            <span>1:45:12</span>
+                                            <span>2:15:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-700 rounded-lg overflow-hidden">
+                                    <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-lg font-medium text-white">Cooking Show</h3>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                                LIVE
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-400">MasterChef Special - Celebrity Edition</p>
+                                        <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-red-600 h-2 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                        <div class="mt-2 flex justify-between text-xs text-gray-400">
+                                            <span>0:42:18</span>
+                                            <span>1:00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="bg-gray-800 rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                            <h2 class="text-lg font-medium text-white">Recommended For You</h2>
+                        </div>
+                        <div class="p-6">
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-white">Breaking Bad</h4>
+                                        <p class="text-xs text-gray-400">Drama Series</p>
+                                        <div class="mt-1 flex items-center">
+                                            <svg class="h-4 w-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1 text-xs text-gray-400">4.8 (12.4K)</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-white">Planet Earth II</h4>
+                                        <p class="text-xs text-gray-400">Documentary Series</p>
+                                        <div class="mt-1 flex items-center">
+                                            <svg class="h-4 w-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1 text-xs text-gray-400">4.9 (8.7K)</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-white">The Office</h4>
+                                        <p class="text-xs text-gray-400">Comedy Series</p>
+                                        <div class="mt-1 flex items-center">
+                                            <svg class="h-4 w-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1 text-xs text-gray-400">4.7 (15.2K)</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-white">Game of Thrones</h4>
+                                        <p class="text-xs text-gray-400">Fantasy Series</p>
+                                        <div class="mt-1 flex items-center">
+                                            <svg class="h-4 w-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="ml-1 text-xs text-gray-400">4.6 (22.1K)</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-6">
+                                <button class="w-full flex justify-center items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    View All Recommendations
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- On Demand Content -->
+                <div class="bg-gray-800 rounded-lg shadow mb-8">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <h2 class="text-lg font-medium text-white">On Demand Content</h2>
+                            <div class="mt-4 md:mt-0">
+                                <div class="flex gap-2">
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>All Categories</option>
+                                        <option>Movies</option>
+                                        <option>TV Shows</option>
+                                        <option>Documentaries</option>
+                                        <option>Sports</option>
+                                    </select>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>New Releases</option>
+                                        <option>Most Popular</option>
+                                        <option>Top Rated</option>
+                                        <option>A-Z</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Action Hero</h3>
+                                    <p class="text-xs text-gray-400">2023 • Action</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Comedy Nights</h3>
+                                    <p class="text-xs text-gray-400">2022 • Comedy</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Drama Queen</h3>
+                                    <p class="text-xs text-gray-400">2023 • Drama</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Sci-Fi Adventures</h3>
+                                    <p class="text-xs text-gray-400">2022 • Sci-Fi</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Romantic Getaway</h3>
+                                    <p class="text-xs text-gray-400">2023 • Romance</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group">
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-40" />
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+                                        <button class="opacity-0 group-hover:opacity-100 transition duration-300 text-white">
+                                            <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3 class="text-sm font-medium text-white truncate">Horror Nights</h3>
+                                    <p class="text-xs text-gray-400">2022 • Horror</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Continue Watching -->
+                <div class="bg-gray-800 rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <h2 class="text-lg font-medium text-white">Continue Watching</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div>
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-48" />
+                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                        <h3 class="text-sm font-medium text-white">Breaking Bad</h3>
+                                        <p class="text-xs text-gray-300">Season 5, Episode 8</p>
+                                    </div>
+                                    <div class="absolute top-2 right-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                            TV-MA
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-xs text-gray-400">
+                                    <span>42:15</span>
+                                    <span>56:42</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-48" />
+                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                        <h3 class="text-sm font-medium text-white">Action Hero</h3>
+                                        <p class="text-xs text-gray-300">Movie</p>
+                                    </div>
+                                    <div class="absolute top-2 right-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                            PG-13
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-xs text-gray-400">
+                                    <span>35:22</span>
+                                    <span>1:58:45</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-48" />
+                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                        <h3 class="text-sm font-medium text-white">Planet Earth II</h3>
+                                        <p class="text-xs text-gray-300">Episode 3: Jungles</p>
+                                    </div>
+                                    <div class="absolute top-2 right-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                            TV-G
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-xs text-gray-400">
+                                    <span>48:12</span>
+                                    <span>53:20</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="relative">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-lg w-full h-48" />
+                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                        <h3 class="text-sm font-medium text-white">The Office</h3>
+                                        <p class="text-xs text-gray-300">Season 8, Episode 15</p>
+                                    </div>
+                                    <div class="absolute top-2 right-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-900 text-red-300">
+                                            TV-14
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 15%"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-xs text-gray-400">
+                                    <span>05:33</span>
+                                    <span>35:18</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>

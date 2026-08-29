@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatwave NG</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-700 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">Beatwave NG</h1>
+                            <p class="mt-1 text-sm text-purple-200">Next-generation music streaming and discovery</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-purple-300 rounded-md shadow-sm text-sm font-medium text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Upload Track
+                            </button>
+                            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-purple-700 bg-white hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Create Playlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beatwave NG Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                    <!-- Total Streams -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Total Streams</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">24.5M</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Artists -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Artists</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">12,458</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tracks -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-fuchsia-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Tracks</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">2.4M</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Playlists -->
+                    <div class="bg-gray-800 overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-violet-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-400 truncate">Playlists</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-white">842K</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Now Playing and Recommendations -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Now Playing -->
+                    <div class="lg:col-span-2 bg-gray-800 rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <h2 class="text-lg font-medium text-white">Now Playing</h2>
+                                <button type="button" class="mt-3 md:mt-0 inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                    View Queue
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32" />
+                                </div>
+                                <div class="ml-6">
+                                    <h3 class="text-xl font-bold text-white">Midnight Dreams</h3>
+                                    <p class="mt-1 text-lg text-gray-300">Luna Eclipse</p>
+                                    <p class="mt-2 text-sm text-gray-400">Album: Nocturnal Vibes</p>
+                                    <div class="mt-4 w-64 bg-gray-700 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                    <div class="mt-2 flex justify-between text-xs text-gray-400">
+                                        <span>1:25</span>
+                                        <span>3:45</span>
+                                    </div>
+                                    <div class="mt-4 flex space-x-4">
+                                        <button class="text-gray-400 hover:text-white">
+                                            <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                                            </svg>
+                                        </button>
+                                        <button class="text-gray-400 hover:text-white">
+                                            <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <button class="text-gray-400 hover:text-white">
+                                            <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Charts -->
+                    <div class="bg-gray-800 rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                            <h2 class="text-lg font-medium text-white">Top Charts</h2>
+                        </div>
+                        <div class="p-6">
+                            <ul class="space-y-4">
+                                <li class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                        <div class="ml-3">
+                                            <h4 class="text-sm font-medium text-white">Electric Pulse</h4>
+                                            <p class="text-xs text-gray-400">Synth Masters</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-400">2.4M</div>
+                                        <div class="text-xs text-green-500">+12%</div>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                        <div class="ml-3">
+                                            <h4 class="text-sm font-medium text-white">Ocean Waves</h4>
+                                            <p class="text-xs text-gray-400">Nature Sounds</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-400">1.9M</div>
+                                        <div class="text-xs text-green-500">+8%</div>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                        <div class="ml-3">
+                                            <h4 class="text-sm font-medium text-white">Urban Jungle</h4>
+                                            <p class="text-xs text-gray-400">City Beats</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-400">1.7M</div>
+                                        <div class="text-xs text-red-500">-2%</div>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                        <div class="ml-3">
+                                            <h4 class="text-sm font-medium text-white">Cosmic Journey</h4>
+                                            <p class="text-xs text-gray-400">Space Echo</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-400">1.5M</div>
+                                        <div class="text-xs text-green-500">+15%</div>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                        <div class="ml-3">
+                                            <h4 class="text-sm font-medium text-white">Desert Wind</h4>
+                                            <p class="text-xs text-gray-400">Sandy Dunes</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-400">1.3M</div>
+                                        <div class="text-xs text-green-500">+5%</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Playlists -->
+                <div class="bg-gray-800 rounded-lg shadow mb-8">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <h2 class="text-lg font-medium text-white">Recommended For You</h2>
+                            <div class="mt-4 md:mt-0">
+                                <div class="flex gap-2">
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>Mood</option>
+                                        <option>Workout</option>
+                                        <option>Focus</option>
+                                        <option>Relax</option>
+                                    </select>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md bg-gray-700 text-white">
+                                        <option>Genre</option>
+                                        <option>Electronic</option>
+                                        <option>Hip Hop</option>
+                                        <option>Rock</option>
+                                        <option>Pop</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                <div class="p-4">
+                                    <h3 class="text-lg font-medium text-white">Chill Vibes</h3>
+                                    <p class="mt-1 text-sm text-gray-400">Perfect for relaxing</p>
+                                    <div class="mt-3 flex items-center justify-between">
+                                        <span class="text-xs text-gray-400">24 tracks</span>
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                <div class="p-4">
+                                    <h3 class="text-lg font-medium text-white">Workout Energy</h3>
+                                    <p class="mt-1 text-sm text-gray-400">Pump up your workout</p>
+                                    <div class="mt-3 flex items-center justify-between">
+                                        <span class="text-xs text-gray-400">18 tracks</span>
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                <div class="p-4">
+                                    <h3 class="text-lg font-medium text-white">Focus Flow</h3>
+                                    <p class="mt-1 text-sm text-gray-400">Enhance concentration</p>
+                                    <div class="mt-3 flex items-center justify-between">
+                                        <span class="text-xs text-gray-400">32 tracks</span>
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                                <div class="bg-gray-200 border-2 border-dashed w-full h-40" />
+                                <div class="p-4">
+                                    <h3 class="text-lg font-medium text-white">Party Mix</h3>
+                                    <p class="mt-1 text-sm text-gray-400">Get the party started</p>
+                                    <div class="mt-3 flex items-center justify-between">
+                                        <span class="text-xs text-gray-400">28 tracks</span>
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Played -->
+                <div class="bg-gray-800 rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <h2 class="text-lg font-medium text-white">Recently Played</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-750">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">#</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Title</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Artist</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Album</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Duration</th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                        <span class="sr-only">Play</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                                <tr class="hover:bg-gray-750">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">1</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-white">Digital Dreams</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Neon Waves</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Synthwave Collection</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">4:22</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-750">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">2</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-white">Midnight Drive</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Retro Future</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Night City</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">3:45</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-750">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">3</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-white">Neon Lights</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Cyber Pulse</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Electric Dreams</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">5:12</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-750">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">4</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-white">Sunset Boulevard</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Golden Hour</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">California Dreams</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">3:58</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-750">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">5</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gray-200 border-2 border-dashed rounded-xl"></div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-white">Starlight Serenade</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Cosmic Journey</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">Galaxy Sounds</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">6:33</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-purple-400 hover:text-purple-300">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-gray-800 px-4 py-3 border-t border-gray-700 sm:px-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1 flex items-center justify-between sm:justify-end">
+                                <div>
+                                    <p class="text-sm text-gray-400">
+                                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">5</span> of <span class="font-medium text-white">124</span> tracks
+                                    </p>
+                                </div>
+                                <div class="flex space-x-2 ml-4">
+                                    <button class="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600">
+                                        Previous
+                                    </button>
+                                    <button class="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600">
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>

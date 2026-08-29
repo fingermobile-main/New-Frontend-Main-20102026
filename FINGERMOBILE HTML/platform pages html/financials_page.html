@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financials</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header would go here -->
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Page Header -->
+            <div class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="md:flex md:items-center md:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Financials</h1>
+                            <p class="mt-1 text-sm text-gray-500">Manage your finances and track transactions</p>
+                        </div>
+                        <div class="mt-4 flex md:mt-0 md:ml-4">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Export Report
+                            </button>
+                            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Add Transaction
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financials Content -->
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                    <!-- Total Balance -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Total Balance</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">$12,450.75</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Income (This Month) -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Income (This Month)</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">$3,240.50</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expenses (This Month) -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Expenses (This Month)</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">$1,876.25</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Net Worth -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Net Worth</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">$45,620.00</div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Income vs Expenses -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h2 class="text-lg font-medium text-gray-900">Income vs Expenses</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="h-64 flex items-end space-x-2">
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 80%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">Jan</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 90%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">Feb</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 70%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">Mar</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 85%"></div>
+                                        <div class="bg-red-500 w-full" style="height: 40%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">Apr</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 75%"></div>
+                                        <div class="bg-red-500 w-full" style="height: 50%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">May</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <div class="w-full bg-gray-200 rounded-t-lg overflow-hidden">
+                                        <div class="bg-green-500 w-full" style="height: 95%"></div>
+                                        <div class="bg-red-500 w-full" style="height: 60%"></div>
+                                    </div>
+                                    <div class="mt-2 text-xs text-gray-500">Jun</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-center space-x-4">
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-green-500 rounded-full"></div>
+                                    <span class="ml-1 text-sm text-gray-600">Income</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-red-500 rounded-full"></div>
+                                    <span class="ml-1 text-sm text-gray-600">Expenses</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expense Categories -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h2 class="text-lg font-medium text-gray-900">Expense Categories</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="h-64 flex items-center justify-center">
+                                <div class="relative w-48 h-48 rounded-full bg-gradient-to-r from-blue-400 to-indigo-600 flex items-center justify-center">
+                                    <div class="absolute w-40 h-40 rounded-full bg-white flex items-center justify-center">
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-gray-900">$1,876</div>
+                                            <div class="text-sm text-gray-500">Total Expenses</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-indigo-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Housing (35%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-blue-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Food (25%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-green-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Transport (20%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-yellow-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Entertainment (10%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-red-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Utilities (7%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-3 w-3 bg-purple-500 rounded-full"></div>
+                                    <span class="ml-2 text-sm text-gray-600">Other (3%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <h2 class="text-lg font-medium text-gray-900">Recent Transactions</h2>
+                            <div class="mt-4 md:mt-0">
+                                <div class="flex gap-2">
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option>All Accounts</option>
+                                        <option>Checking Account</option>
+                                        <option>Savings Account</option>
+                                        <option>Credit Card</option>
+                                    </select>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option>Last 30 Days</option>
+                                        <option>Last 7 Days</option>
+                                        <option>Last 3 Months</option>
+                                        <option>Last Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md bg-green-100 flex items-center justify-center">
+                                                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Salary Deposit</div>
+                                                <div class="text-sm text-gray-500">ABC Company</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jun 15, 2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Income
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Checking Account
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                                        +$2,400.00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md bg-red-100 flex items-center justify-center">
+                                                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Grocery Store</div>
+                                                <div class="text-sm text-gray-500">Fresh Market</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jun 14, 2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Food
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Credit Card
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
+                                        -$86.42
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md bg-red-100 flex items-center justify-center">
+                                                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Electric Bill</div>
+                                                <div class="text-sm text-gray-500">Utility Company</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jun 12, 2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                            Utilities
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Checking Account
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
+                                        -$124.50
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md bg-red-100 flex items-center justify-center">
+                                                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Restaurant</div>
+                                                <div class="text-sm text-gray-500">Italian Bistro</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jun 10, 2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Food
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Credit Card
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
+                                        -$68.30
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md bg-green-100 flex items-center justify-center">
+                                                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Freelance Payment</div>
+                                                <div class="text-sm text-gray-500">Design Project</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jun 8, 2023</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Income
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Savings Account
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                                        +$840.50
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1 flex items-center justify-between sm:justify-end">
+                                <div>
+                                    <p class="text-sm text-gray-700">
+                                        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">42</span> results
+                                    </p>
+                                </div>
+                                <div class="flex space-x-2 ml-4">
+                                    <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        Previous
+                                    </button>
+                                    <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer would go here -->
+    </div>
+</body>
+</html>
