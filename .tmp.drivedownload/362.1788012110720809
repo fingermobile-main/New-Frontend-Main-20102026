@@ -1,0 +1,60 @@
+# Platform Monetization Service - Environment Variables
+
+# Server Configuration
+NODE_ENV=development
+PORT=3000
+HOST=localhost
+
+# Database Configuration
+DATABASE_URL=./data/fingermobile.db
+
+# JWT Authentication
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_EXPIRES_IN=24h
+JWT_REFRESH_EXPIRES_IN=7d
+
+# CORS Configuration
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Stripe Payment Integration
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_signing_secret
+STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
+
+# Email Configuration (SMTP)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+
+# Redis Cache (Optional)
+REDIS_URL=redis://localhost:6379
+REDIS_ENABLED=false
+
+# Webhook Configuration
+WEBHOOK_SECRET=your-webhook-hmac-secret-key
+
+# Logging
+LOG_LEVEL=info
+LOG_DIR=./logs
+
+# Monitoring
+SENTRY_DSN=your-sentry-dsn-url
+
+# Feature Flags
+ENABLE_EMAIL_NOTIFICATIONS=true
+ENABLE_CACHE=true
+ENABLE_RATE_LIMITING=true
+
+# Payout Configuration
+MINIMUM_PAYOUT_THRESHOLD=100
+PAYOUT_CURRENCY=USD
+
+# Affiliate Configuration
+AFFILIATE_COMMISSION_RATE=0.05
+AFFILIATE_COOKIE_DAYS=30

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FingerMobile - Forum Page | Investor Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#3B82F6',
+                        'brand-purple': '#8B5CF6',
+                        'brand-green': '#10B981',
+                        'brand-yellow': '#F59E0B',
+                        'brand-red': '#EF4444',
+                        'dark-bg': '#0F172A',
+                        'dark-card': '#1E293B',
+                        'dark-border': '#334155'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+        
+        .pulsate {
+            animation: pulsate 2s infinite;
+        }
+        
+        @keyframes pulsate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .sidebar-link:hover {
+            background-color: #334155;
+        }
+        
+        .post-card {
+            transition: all 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Mobile menu styles */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        /* Business context section */
+        .business-context {
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Business Context Section -->
+    <div class="business-context bg-dark-card py-4 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-lg font-bold text-brand-blue">Forum Page Business Context</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2 text-sm">
+                <div>
+                    <h3 class="font-semibold text-white">Core Functionality</h3>
+                    <p class="text-gray-400 mt-1">Central hub for community interaction, content sharing, and social engagement. Features real-time feeds, commenting, and content discovery.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white">Business Value</h3>
+                    <p class="text-gray-400 mt-1">Drives user retention and engagement through social features. Enables content monetization via FIC token rewards and premium subscriptions.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white">Technical Implementation</h3>
+                    <p class="text-gray-400 mt-1">Built with React and WebSocket for real-time updates. Uses PostgreSQL for content storage and Redis for caching popular posts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- H1 Section - Header -->
+    <header class="bg-dark-bg border-b border-dark-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Logo and platform name -->
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-br from-brand-blue to-brand-purple w-10 h-10 rounded-lg flex items-center justify-center">
+                        <span class="font-bold text-white">FM</span>
+                    </div>
+                    <span class="ml-3 text-xl font-bold">FingerMobile</span>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-6">
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-500"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            placeholder="Search posts, people, topics..." 
+                            class="w-full pl-10 pr-4 py-2 bg-dark-card rounded-lg border border-dark-border focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                        >
+                    </div>
+                </div>
+                
+                <!-- FIC and Wallet Balance -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex flex-col items-end">
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-400 mr-2">FIC:</span>
+                            <span id="fic-balance" class="font-bold text-yellow-400 pulsate">1,250</span>
+                            <button id="toggle-fic" class="ml-1 text-gray-400 hover:text-white">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-400 mr-2">Wallet:</span>
+                            <span id="wallet-balance" class="font-bold text-green-400">$250.75</span>
+                        </div>
+                    </div>
+                    
+                    <button class="p-2 rounded-full bg-dark-card text-gray-400 hover:text-white">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    
+                    <!-- User profile -->
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center text-white font-bold">
+                                JD
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-0 z-40 hidden bg-black bg-opacity-75">
+        <div class="relative flex-1 flex flex-col max-w-xs w-full bg-dark-bg border-r border-dark-border">
+            <div class="absolute top-0 right-0 -mr-12 pt-2">
+                <button id="close-mobile-menu" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+                <nav class="mt-5 px-2 space-y-1">
+                    <a href="#" class="sidebar-link text-white block px-4 py-3 rounded-md">
+                        <i class="fas fa-home mr-3"></i> Dashboard
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-users mr-3"></i> Community
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-store mr-3"></i> Marketplace
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-video mr-3"></i> Media
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-wallet mr-3"></i> Finance
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content - H2 Section with Three Columns -->
+    <div class="flex-1 flex">
+        <!-- Left Sidebar -->
+        <aside class="hidden lg:block w-64 bg-dark-bg border-r border-dark-border flex-shrink-0">
+            <div class="h-full overflow-y-auto py-4">
+                <nav class="px-2 space-y-1">
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Navigation
+                    </div>
+                    <a href="#" class="sidebar-link text-white block px-4 py-3 rounded-md">
+                        <i class="fas fa-home mr-3"></i> Dashboard
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-users mr-3"></i> Community
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-store mr-3"></i> Marketplace
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-video mr-3"></i> Media
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-wallet mr-3"></i> Finance
+                    </a>
+                    
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-6">
+                        Member Pages
+                    </div>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-user-circle mr-3"></i> Profile
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-cog mr-3"></i> Settings
+                    </a>
+                    <a href="#" class="sidebar-link text-gray-300 block px-4 py-3 rounded-md">
+                        <i class="fas fa-history mr-3"></i> Activity
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <!-- Page Title -->
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-white">Community Forum</h1>
+                    <p class="text-gray-400 mt-1">Connect with other members, share ideas, and participate in discussions</p>
+                </div>
+                
+                <!-- Three Column Layout -->
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Left Column - Additional Navigation -->
+                    <div class="lg:w-1/4">
+                        <div class="bg-dark-card rounded-lg p-4 mb-6">
+                            <h2 class="text-lg font-semibold text-white mb-4">Quick Links</h2>
+                            <ul class="space-y-2">
+                                <li>
+                                    <a href="#" class="text-brand-blue hover:text-blue-400 flex items-center">
+                                        <i class="fas fa-fire mr-2"></i> Trending Posts
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-star mr-2"></i> Featured Content
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-calendar mr-2"></i> Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-medal mr-2"></i> Leaderboard
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-dark-card rounded-lg p-4">
+                            <h2 class="text-lg font-semibold text-white mb-4">Your Engagement</h2>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Community Participation</span>
+                                        <span class="text-white">78%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-brand-blue h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">Content Created</span>
+                                        <span class="text-white">42</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-brand-green h-2 rounded-full" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">FIC Earned</span>
+                                        <span class="text-white">1,250</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-brand-yellow h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Center Column - Main Content Feed -->
+                    <div class="lg:w-1/2">
+                        <div class="bg-dark-card rounded-lg p-6 mb-6">
+                            <div class="flex items-start">
+                                <div class="bg-gradient-to-br from-brand-blue to-brand-purple w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                                    <span class="font-bold text-white">JD</span>
+                                </div>
+                                <div class="flex-1">
+                                    <textarea 
+                                        placeholder="Share your thoughts with the community..." 
+                                        class="w-full bg-dark-bg text-white rounded-lg p-4 border border-dark-border focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none"
+                                        rows="3"
+                                    ></textarea>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <div class="flex space-x-3">
+                                            <button class="text-gray-400 hover:text-white">
+                                                <i class="fas fa-image"></i>
+                                            </button>
+                                            <button class="text-gray-400 hover:text-white">
+                                                <i class="fas fa-video"></i>
+                                            </button>
+                                            <button class="text-gray-400 hover:text-white">
+                                                <i class="fas fa-poll"></i>
+                                            </button>
+                                        </div>
+                                        <button class="bg-brand-blue hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium">
+                                            Post
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Posts Feed -->
+                        <div class="space-y-6">
+                            <!-- Post 1 -->
+                            <div class="post-card bg-dark-card rounded-lg p-6">
+                                <div class="flex items-start mb-4">
+                                    <div class="bg-gradient-to-br from-purple-500 to-pink-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <span class="font-bold text-white text-sm">TC</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white">TrendingCreator</h3>
+                                        <div class="flex items-center">
+                                            <span class="text-xs text-gray-400">Posted 2 hours ago</span>
+                                            <span class="mx-2 text-gray-600">•</span>
+                                            <span class="text-xs text-brand-blue">FingerLux Creator</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-4">
+                                    Just launched my new music collection on BeatwaveNG! The platform's new audio mastering tools are incredible. 
+                                    Check out my latest track and let me know what you think. 
+                                    <span class="text-brand-blue">#NewMusic</span> <span class="text-purple-400">#BeatwaveNG</span>
+                                </p>
+                                <div class="rounded-lg overflow-hidden mb-4">
+                                    <img src="https://placehold.co/600x300/1e293b/94a3b8?text=Music+Collection+Preview" alt="Music Collection" class="w-full h-auto">
+                                </div>
+                                <div class="flex space-x-4 text-sm mb-4">
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-heart mr-1"></i>
+                                        242 Likes
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-comment mr-1"></i>
+                                        38 Comments
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-share mr-1"></i>
+                                        Share
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-gift mr-1"></i>
+                                        Gift
+                                    </button>
+                                </div>
+                                <div class="flex items-center pt-4 border-t border-dark-border">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Write a comment..." 
+                                        class="flex-1 bg-dark-bg text-white rounded-full px-4 py-2 text-sm border border-dark-border focus:outline-none focus:ring-1 focus:ring-brand-blue"
+                                    >
+                                    <button class="ml-2 text-gray-400 hover:text-white">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Post 2 -->
+                            <div class="post-card bg-dark-card rounded-lg p-6">
+                                <div class="flex items-start mb-4">
+                                    <div class="bg-gradient-to-br from-green-500 to-teal-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <span class="font-bold text-white text-sm">JD</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white">JohnDoe</h3>
+                                        <div class="flex items-center">
+                                            <span class="text-xs text-gray-400">Posted yesterday</span>
+                                            <span class="mx-2 text-gray-600">•</span>
+                                            <span class="text-xs text-brand-green">Verified User</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-4">
+                                    Has anyone tried the new FingerWars gaming platform? I'm curious about the 
+                                    features and whether it's worth the subscription. The integration with 
+                                    the community leaderboard looks promising! Just played the new battle royale mode and it's amazing.
+                                </p>
+                                <div class="flex space-x-4 text-sm mb-4">
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-heart mr-1"></i>
+                                        115 Likes
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-comment mr-1"></i>
+                                        42 Comments
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-share mr-1"></i>
+                                        Share
+                                    </button>
+                                </div>
+                                <div class="flex items-center pt-4 border-t border-dark-border">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Write a comment..." 
+                                        class="flex-1 bg-dark-bg text-white rounded-full px-4 py-2 text-sm border border-dark-border focus:outline-none focus:ring-1 focus:ring-brand-blue"
+                                    >
+                                    <button class="ml-2 text-gray-400 hover:text-white">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Post 3 -->
+                            <div class="post-card bg-dark-card rounded-lg p-6">
+                                <div class="flex items-start mb-4">
+                                    <div class="bg-gradient-to-br from-amber-500 to-orange-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                        <span class="font-bold text-white text-sm">ED</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white">EventDirector</h3>
+                                        <div class="flex items-center">
+                                            <span class="text-xs text-gray-400">Posted 2 days ago</span>
+                                            <span class="mx-2 text-gray-600">•</span>
+                                            <span class="text-xs text-brand-yellow">Community Manager</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-4">
+                                    🎉 Community Event Announcement! 🎉 Join us this Saturday for our Virtual Creator Meetup. 
+                                    We'll have special guests from the FingerLux team discussing monetization strategies. 
+                                    RSVP now to secure your spot!
+                                </p>
+                                <div class="bg-gradient-to-r from-blue-900 to-purple-900 rounded-lg p-4 mb-4">
+                                    <h4 class="font-bold text-white">Virtual Creator Meetup</h4>
+                                    <p class="text-sm text-gray-300 mt-1">Saturday, 3:00 PM UTC • Online Event</p>
+                                    <button class="mt-3 bg-white text-blue-600 py-1 px-3 rounded text-sm font-medium hover:bg-gray-100">
+                                        RSVP Now
+                                    </button>
+                                </div>
+                                <div class="flex space-x-4 text-sm mb-4">
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-heart mr-1"></i>
+                                        87 Likes
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="far fa-comment mr-1"></i>
+                                        23 Comments
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white flex items-center">
+                                        <i class="fas fa-share mr-1"></i>
+                                        Share
+                                    </button>
+                                </div>
+                                <div class="flex items-center pt-4 border-t border-dark-border">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Write a comment..." 
+                                        class="flex-1 bg-dark-bg text-white rounded-full px-4 py-2 text-sm border border-dark-border focus:outline-none focus:ring-1 focus:ring-brand-blue"
+                                    >
+                                    <button class="ml-2 text-gray-400 hover:text-white">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column - Ads and Trends -->
+                    <div class="lg:w-1/4">
+                        <!-- Trending Topics -->
+                        <div class="bg-dark-card rounded-lg p-4 mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-semibold text-white">Trending Topics</h2>
+                                <button class="text-gray-400 hover:text-white">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-800 p-2 rounded">
+                                        <div class="flex items-center">
+                                            <span class="text-brand-blue mr-2">#</span>
+                                            <span class="text-blue-400 hover:text-blue-300">BeatwaveNG</span>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-1">12.4K posts • Trending</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-800 p-2 rounded">
+                                        <div class="flex items-center">
+                                            <span class="text-brand-blue mr-2">#</span>
+                                            <span class="text-purple-400 hover:text-purple-300">FingerWars</span>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-1">9.8K posts • Gaming</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-800 p-2 rounded">
+                                        <div class="flex items-center">
+                                            <span class="text-brand-blue mr-2">#</span>
+                                            <span class="text-green-400 hover:text-green-300">FingerLux</span>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-1">7.2K posts • Creator Economy</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block hover:bg-gray-800 p-2 rounded">
+                                        <div class="flex items-center">
+                                            <span class="text-brand-blue mr-2">#</span>
+                                            <span class="text-amber-400 hover:text-amber-300">CommunityEvent</span>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-1">5.7K posts • This Weekend</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Community Highlights -->
+                        <div class="bg-dark-card rounded-lg p-4 mb-6">
+                            <h2 class="text-lg font-semibold text-white mb-4">Community Highlights</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="bg-gradient-to-br from-yellow-500 to-red-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                        <span class="text-white text-xs font-bold">TC</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-white">Top Creator of the Week</p>
+                                        <p class="text-xs text-gray-400">TrendingCreator • 2.4K FIC earned</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="bg-gradient-to-br from-green-500 to-blue-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                        <span class="text-white text-xs font-bold">ED</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-white">Upcoming Event</p>
+                                        <p class="text-xs text-gray-400">Virtual Meetup • Saturday 3PM UTC</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                        <span class="text-white text-xs font-bold">NA</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-white">New Achievement</p>
+                                        <p class="text-xs text-gray-400">100 Posts Milestone • Unlocked</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- HD Media Auto Feed -->
+                        <div class="bg-gradient-to-br from-blue-600 to-purple-700 rounded-lg p-4 mb-6">
+                            <h2 class="text-lg font-semibold text-white mb-2">Premium Content</h2>
+                            <p class="text-blue-100 text-sm mb-3">Unlock exclusive HD media and creator content with FingerLux Premium</p>
+                            <div class="bg-black bg-opacity-30 rounded-lg overflow-hidden mb-3">
+                                <img src="https://placehold.co/300x150/1e3a8a/93c5fd?text=Premium+Content+Preview" alt="Premium Content" class="w-full h-auto">
+                            </div>
+                            <button class="w-full bg-white text-blue-600 py-2 rounded-lg font-medium hover:bg-gray-100">
+                                Upgrade to Premium - $4.99/month
+                            </button>
+                        </div>
+                        
+                        <!-- Google AdSense Placeholder -->
+                        <div class="bg-gradient-to-br from-green-600 to-teal-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="bg-white bg-opacity-20 rounded-lg p-2 mr-3">
+                                    <i class="fas fa-ad text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-semibold text-white mb-2">Advertisement</h2>
+                                    <p class="text-green-100 text-sm">Reach millions of engaged users on our platform</p>
+                                </div>
+                            </div>
+                            <button class="mt-3 w-full bg-white bg-opacity-20 text-white py-2 rounded-lg font-medium hover:bg-opacity-30">
+                                Learn more about advertising
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+        
+        // Toggle balance visibility
+        document.getElementById('toggle-fic').addEventListener('click', function() {
+            const ficElement = document.getElementById('fic-balance');
+            const walletElement = document.getElementById('wallet-balance');
+            const icon = this.querySelector('i');
+            
+            if (ficElement.textContent === '1,250') {
+                ficElement.textContent = '****';
+                walletElement.textContent = '****';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                ficElement.textContent = '1,250';
+                walletElement.textContent = '$250.75';
+                icon.className = 'fas fa-eye';
+            }
+        });
+        
+        // Like functionality
+        document.querySelectorAll('.fa-heart').forEach(heart => {
+            heart.addEventListener('click', function() {
+                const isSolid = this.classList.contains('fas');
+                const countElement = this.parentElement.querySelector('span');
+                let count = parseInt(countElement.textContent);
+                
+                if (isSolid) {
+                    this.classList.remove('fas', 'text-red-500');
+                    this.classList.add('far');
+                    count--;
+                } else {
+                    this.classList.remove('far');
+                    this.classList.add('fas', 'text-red-500');
+                    count++;
+                }
+                
+                countElement.textContent = count;
+            });
+        });
+    </script>
+</body>
+</html>
