@@ -43,7 +43,7 @@ Type: ${_type || "general"}.`;
     }
 
     res.json({content: generatedContent,
-  metadata: {,
+  metadata: {
   type: _type || "general",
   style: _style || "default",
   length: _length || "medium",

@@ -178,7 +178,7 @@ router.post("/media/:mediaId/view", authenticate, async (req, res) => {
     const newViewCount = await MiiFingerOrbitService.updateViewCount(mediaId);
 
     res.status(200).json({success: true,
-  data: {,
+  data: {
   viewCount: newViewCount }
     });
   } catch (error) {
@@ -199,7 +199,7 @@ router.post("/media/:mediaId/download", authenticate, async (req, res) => {
       await MiiFingerOrbitService.updateDownloadCount(mediaId);
 
     res.status(200).json({success: true,
-  data: {,
+  data: {
   downloadCount: newDownloadCount }
     });
   } catch (error) {

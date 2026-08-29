@@ -119,7 +119,7 @@ exports.getFlaggedContent = async (req, res) => {
   try {
     // Find content with flags
     const content = await Content.findAll({where: {,
-  metadata: {,
+  metadata: {
   flags: {
             [require("sequelize").Op.ne]: null
           }

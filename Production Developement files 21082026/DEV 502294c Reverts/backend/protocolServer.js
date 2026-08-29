@@ -85,7 +85,7 @@ lastHeartbeat: this.clients.get(id).lastHeartbeat
           // Send heartbeat to client
           client.ws.send(
             JSON.stringify({event: "heartbeat",
-  data: {,
+  data: {
   timestamp: Date.now() },
 timestamp: Date.now()
             }),
@@ -144,7 +144,7 @@ timestamp: Date.now()
 message:", error);
         ws.send(
           JSON.stringify({event: "error",
-  data: {,
+  data: {
   message: "Invalid message format" },
 timestamp: Date.now()
           }),
@@ -189,7 +189,7 @@ reason: ${reason || "none"}`,
     // Send welcome message
     ws.send(
       JSON.stringify({event: "welcome",
-  data: {,
+  data: {
   message: "Connected to FingerMobile Protocol Server",
   clientId: clientId,
   serverTime: new Date().toISOString(),
@@ -260,7 +260,7 @@ default:
 type: ${event}`);
         client.ws.send(
           JSON.stringify({event: "error",
-  data: {,
+  data: {
   message: `Unknown event,
   type: ${event}` },
 timestamp: Date.now()
@@ -295,7 +295,7 @@ timestamp: Date.now()
         // Send success response
         client.ws.send(
           JSON.stringify({event: "reconnect_response",
-  data: {,
+  data: {
   success: true,
   message: "Reconnection successful",
   newClientId: clientId
@@ -307,7 +307,7 @@ timestamp: Date.now()
         // Too many reconnection attempts
         client.ws.send(
           JSON.stringify({event: "reconnect_response",
-  data: {,
+  data: {
   success: false,
   message: "Too many reconnection attempts",
   maxAttempts: this.maxReconnectAttempts
@@ -320,7 +320,7 @@ timestamp: Date.now()
       // Not a valid reconnection request
       client.ws.send(
         JSON.stringify({event: "reconnect_response",
-  data: {,
+  data: {
   success: false,
   message: "Invalid reconnection request"
           },
@@ -338,7 +338,7 @@ timestamp: Date.now()
     if (!supportedVersions.includes(protocolVersion)) {
       client.ws.send(
         JSON.stringify({event: "handshake_response",
-  data: {,
+  data: {
   accepted: false,
   errorCode: "UNSUPPORTED_VERSION",
   message: `Unsupported protocol,
@@ -410,7 +410,7 @@ would:
     // For now, we'll just acknowledge receipt
     client.ws.send(
       JSON.stringify({event: "message_ack",
-  data: {,
+  data: {
   originalMessageType: messageType,
   receivedAt: Date.now(),
   status: "processed"

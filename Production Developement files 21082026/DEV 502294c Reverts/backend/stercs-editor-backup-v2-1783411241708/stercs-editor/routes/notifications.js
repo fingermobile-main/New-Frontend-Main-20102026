@@ -108,7 +108,7 @@ router.put("/read-all", async (req, res) => {
 
     res.status(200).json({success: true,
   message: result.message,
-  data: {,
+  data: {
   count: result.count }
     });
   } catch (error) {
