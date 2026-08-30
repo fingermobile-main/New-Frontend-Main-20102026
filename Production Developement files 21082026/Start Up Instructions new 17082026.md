@@ -1,6 +1,9 @@
 Start Up Instruction:- /Users/user/Documents/FingerMobile Protocol Communication/Production Developement files 21082026/README copy.md
 Now see /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps
+
 check that file for general instructions.,read the below instructions properly. open all the paths and study them to have a better understanding of the FingerMobile Social Media Platform.
+
+first initiate and execte /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/auto_commit_watcher.js
 
 App/Website: do not start docker compose up,. unless specifically asked to start docker compose up.
 only start the production development servers: open the FingerMobile Website/App., on google chrome browser and IDE Preview so we can start testing the develeopment live, tessting, and debugging pages, pages, and features, compilation and runtime errors, and bugs etc.
