@@ -1,9 +1,6 @@
 Start Up Instruction:- /Users/user/Documents/FingerMobile Protocol Communication/Production Developement files 21082026/README copy.md
 Now see /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps
-
 check that file for general instructions.,read the below instructions properly. open all the paths and study them to have a better understanding of the FingerMobile Social Media Platform.
-
-first initiate and execte /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/auto_commit_watcher.js
 
 App/Website: do not start docker compose up,. unless specifically asked to start docker compose up.
 only start the production development servers: open the FingerMobile Website/App., on google chrome browser and IDE Preview so we can start testing the develeopment live, tessting, and debugging pages, pages, and features, compilation and runtime errors, and bugs etc.
@@ -97,3 +94,15 @@ No obvious errors requiring fixes were found in the main docker-compose.yml file
 If and when the Development is over and Production is next phase., the command to start the main platform should be:
 docker-compose -f /Users/user/Documents/FingerMobile\ Protocol\ Communication/FingerMobile\ Protocol/docker-compose.yml up
 
+FingerMobile platform:
+
+Main Platform Location: The core application (Website/App) is located at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps. The FingerMobile Business and Monetization Suite is a separate, independent microservice and should not be confused with the main platform.
+Core Services: Within the main platform (apps directory), the key components appear to be:
+Backend API: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend/
+Main Frontend: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main/
+Mobile Apps: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/fingermobile-mobile-apps/
+Admin Dashboard: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/admin-dashboard/
+Desktop App: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/fingermobile-desktop/
+Development Start Command: According to the README, the suggested way to start the development backend server is cd /Users/user/Documents/FingerMobile\ Protocol\ Communication/FingerMobile\ Protocol/apps/backend && npm run dev.
+Docker Compose: While a docker-compose.yml exists for the main platform, the instruction is not to start it yet unless explicitly asked. The focus is on starting the development servers directly.
+Auto-Commit Script: The auto_commit_watcher.js script in /Users/user/Documents/FingerMobile Protocol Communication/Optimized FingerMobile should be run using node auto_commit_watcher.js to automatically commit changes periodically. It monitors .tsx and .ts files in the ./src/pages directory (though its actual monitoring scope might need verification based on its code).
