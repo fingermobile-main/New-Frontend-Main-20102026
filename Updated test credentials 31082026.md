@@ -125,3 +125,7 @@ Test navigation to the Forum page (/forum).
 Test navigation to the Member Profile page (/profile).
 Check the browser console for errors.
 Interact with various UI elements to ensure they function.
+
+Log in using the credentials:
+Email: admin@fingermobile.com
+Password: Admin@123
