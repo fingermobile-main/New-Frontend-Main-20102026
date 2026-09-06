@@ -1,0 +1,4 @@
+Top Header (ForumHeader.tsx): Fixed 16px high (h-16) header split into three zones: Logo, Main Search/Nav, and Utilities/Earnings.
+Left Sidebar (ForumLeftSidebar.tsx - 20% Width): Fixed on desktop, hidden on mobile. Contains primary navigation, dropdowns (Communities, AI Studio), user shortcuts, and footer links (Privacy, Terms, etc.).
+Center Feed (55% Width): The main scrolling area where dynamic content ({children}) is injected.
+Right Sidebar (ForumRightSidebar.tsx - 25% Width): A dense utility column containing widgets for AI Assistant, Notifications, Earnings, Events, Ads Manager, Sponsored content, and Online Friends.
