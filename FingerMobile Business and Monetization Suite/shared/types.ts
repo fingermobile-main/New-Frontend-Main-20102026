@@ -189,7 +189,7 @@ export interface BusinessSuiteOverview {
   alerts: Alert[];
   estimate: EstimateResponse | null;
   admin: AdminData;
-  affiliate: any | null;
-  seshat: any | null;
-  programs: any[];
+  affiliate: unknown | null;
+  seshat: unknown | null;
+  programs: unknown[];
 }

@@ -20,7 +20,8 @@ export const DEFAULT_PLATFORM_CONFIG: PlatformConfig = {
   featureFlags: {
     enableRevenueSharing: true,
     enableCommissionTracking: true,
-    enableAdvancedAnalytics: false
+    enablePerformanceMetrics: false,
+    enablePartnerDashboards: false
   }
 };
 
