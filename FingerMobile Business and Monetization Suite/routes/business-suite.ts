@@ -1,78 +1,67 @@
-import { Router } from 'express'
-import { businessSuiteController } from '../business-suite-controller.js'
+import express, { Router, Request, Response, NextFunction } from 'express';
+import { businessSuiteController } from '../business-suite-controller';
+// Remove the verification-service import as it's now handled in the controller
+// import { VerificationService } from '../services/verification-service';
+// import { ComplianceService } from '../services/compliance-service';
+// import { AuditLogService } from '../services/audit-log-service';
 
-const router = Router()
+const router: Router = express.Router();
 
-// Health check
-router.get('/health', businessSuiteController.health)
+// Overview Routes
+router.get('/api/overview', businessSuiteController.getOverview);
 
-// Overview
-router.get('/overview', businessSuiteController.getOverview)
+// Seshat Routes
+router.get('/api/seshat', businessSuiteController.getSeshat);
+router.post('/api/seshat', businessSuiteController.createSeshat);
 
-// Seshat
-router.get('/seshat', businessSuiteController.getSeshat)
-router.post('/seshat', businessSuiteController.createSeshat)
-router.put('/seshat/:id', businessSuiteController.updateSeshat)
+// Application Routes
+router.get('/api/applications', businessSuiteController.getApplications);
+router.post('/api/applications', businessSuiteController.createApplication);
+router.get('/api/applications/:id', businessSuiteController.getApplicationById);
+router.put('/api/applications/:id', businessSuiteController.updateApplication);
+router.delete('/api/applications/:id', businessSuiteController.deleteApplication);
 
-// Programs & Eligibility
-router.get('/programs', businessSuiteController.getPrograms)
-router.get('/eligibility', businessSuiteController.getEligibility)
+// Business Verification Routes
+router.get('/api/verifications', businessSuiteController.getBusinessVerifications);
+router.post('/api/verifications', businessSuiteController.createBusinessVerification);
+router.get('/api/verifications/:id', businessSuiteController.getBusinessVerificationById);
+router.put('/api/verifications/:id', businessSuiteController.updateBusinessVerification);
+router.delete('/api/verifications/:id', businessSuiteController.deleteBusinessVerification);
 
-// Applications
-router.post('/applications', businessSuiteController.submitApplication)
+// Config Routes
+router.get('/api/config', businessSuiteController.getConfig);
+router.put('/api/config', businessSuiteController.updateConfig);
 
-// Revenue Estimation
-router.post('/estimate', businessSuiteController.estimate)
+// Estimate Routes
+router.get('/api/estimates', businessSuiteController.getEstimates);
+router.post('/api/estimates', businessSuiteController.createEstimate);
+router.get('/api/estimates/:id', businessSuiteController.getEstimateById);
+router.put('/api/estimates/:id', businessSuiteController.updateEstimate);
+router.delete('/api/estimates/:id', businessSuiteController.deleteEstimate);
 
-// Verification
-router.get('/verification', businessSuiteController.getVerificationStatus)
-router.put('/verification', businessSuiteController.updateBusinessVerification)
+// Payout Routes
+router.get('/api/payouts', businessSuiteController.getPayouts);
+router.post('/api/payouts', businessSuiteController.createPayout);
+router.get('/api/payouts/:id', businessSuiteController.getPayoutById);
+router.put('/api/payouts/:id', businessSuiteController.updatePayout);
+router.delete('/api/payouts/:id', businessSuiteController.deletePayout);
 
-// Payout
-router.put('/payout', businessSuiteController.updatePayoutAccount)
+// Product Routes
+router.get('/api/products', businessSuiteController.getProducts);
+router.post('/api/products', businessSuiteController.createProduct);
+router.get('/api/products/:id', businessSuiteController.getProductById);
+router.put('/api/products/:id', businessSuiteController.updateProduct);
+router.delete('/api/products/:id', businessSuiteController.deleteProduct);
 
-// Revenue & Affiliate
-router.get('/revenue', businessSuiteController.getRevenue)
-router.get('/affiliate', businessSuiteController.getAffiliate)
+// Verification Status Routes
+router.get('/api/verification/:userId', businessSuiteController.getVerificationStatus);
+router.put('/api/verification/:userId', businessSuiteController.updateVerificationStatus);
 
-// Policy & Admin
-router.get('/policy', businessSuiteController.getPolicy)
-router.get('/admin', businessSuiteController.getAdmin)
-router.put('/config', businessSuiteController.updateConfig)
+// Compliance Report Routes
+router.get('/api/compliance/report', businessSuiteController.getComplianceReport);
 
-// Webhooks
-router.post('/webhook', businessSuiteController.trackWebhook)
+// Audit Log Routes
+router.get('/api/auditlogs', businessSuiteController.getAuditLogs);
 
-// ============================================================
-// NEW ROUTES - Week 1 Implementation
-// ============================================================
-
-// Guardian AI Services
-router.post('/guardian/access-key', businessSuiteController.generateAccessKey)
-router.post('/guardian/coupon', businessSuiteController.generateCoupon)
-router.post('/guardian/validate-name', businessSuiteController.validateName)
-router.post('/guardian/biometric-hash', businessSuiteController.generateBiometricHash)
-
-// KYC/KYB Verification
-router.post('/kyc/submit', businessSuiteController.submitKYC)
-router.get('/kyc/status/:userId', businessSuiteController.getKYCStatus)
-router.post('/kyb/submit', businessSuiteController.submitKYB)
-router.get('/kyb/status/:userId', businessSuiteController.getKYBStatus)
-
-// Admin KYC/KYB Management
-router.post('/admin/kyc/approve', businessSuiteController.approveKYC)
-router.post('/admin/kyc/reject', businessSuiteController.rejectKYC)
-router.post('/admin/kyb/approve', businessSuiteController.approveKYB)
-router.post('/admin/kyb/reject', businessSuiteController.rejectKYB)
-
-// Access Key Management
-router.get('/access-keys/:seshatPageId', businessSuiteController.getAccessKeys)
-router.post('/access-keys', businessSuiteController.createAccessKey)
-router.delete('/access-keys/:id', businessSuiteController.revokeAccessKey)
-
-// Coupon Management
-router.get('/coupons/:seshatPageId', businessSuiteController.getCoupons)
-router.post('/coupons', businessSuiteController.createCoupon)
-router.post('/coupons/:code/redeem', businessSuiteController.redeemCoupon)
-
-export default router
+// Export the router
+export default router;
