@@ -11,21 +11,11 @@ app.use(cors());
 app.use(express.json());
 
 // Mount the business suite routes under /api
-app.use('/api', businessSuiteRouter);
-
-// Basic health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Catch-all handler for undefined routes
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
+app.use('/api', apiRoutes);
 
 // Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
+app.use((err: any, req: Request, res: Response, _next: Response) => {
+  logger.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
