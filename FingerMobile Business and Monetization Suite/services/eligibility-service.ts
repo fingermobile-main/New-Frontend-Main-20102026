@@ -61,7 +61,7 @@ export const getEligibility = async (userId: string): Promise<Eligibility> => {
  * @param userId - The ID of the user to fetch metrics for
  * @returns A promise that resolves to the user's metrics
  */
-const fetchUserMetrics = async (userId: string): Promise<MonetizationMetrics> => {
+const fetchUserMetrics = async (_userId: string): Promise<MonetizationMetrics> => {
   // In a real implementation, this would fetch data from a database or API
   // For demo purposes, using mock data
   return {

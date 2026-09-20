@@ -1,19 +1,17 @@
 import { create } from 'zustand';
 import { 
-  BusinessSuiteOverview, 
+  BusinessSuiteOverview as BusinessSuiteOverviewType,
   Eligibility, 
   EstimateRequest, 
   EstimateResponse,
   AffiliateMetrics,
-  Revenue,
+  Revenue as RevenueType,
   User,
   SeshatPage,
   MonetizationMetrics,
   PlatformConfig,
   AdminData,
-  ApplicationRequest,
-  BusinessSuiteOverview as BusinessSuiteOverviewType,
-  Revenue as RevenueType
+  ApplicationRequest
 } from '../../shared/types'; // Updated import path
 
 interface BusinessSuiteState {
@@ -106,7 +104,25 @@ const useBusinessSuiteStore = create<BusinessSuiteState>((set, _get) => ({ // Us
           giftsCashValue: 0.1,
           supportedCountries: ['US', 'CA', 'GB'],
           policyVersion: '1.0',
-          affiliateBonusPercentage: 5
+          affiliateBonusPercentage: 5,
+          basicEligibility: {
+            minFollowers: 100,
+            minWatchMinutes30d: 500,
+            minAccountAgeDays: 30
+          },
+          premiumEligibility: {
+            minFollowers: 1000,
+            minWatchMinutes30d: 5000,
+            minAccountAgeDays: 90,
+            minEngagementRate: 3
+          },
+          enterpriseEligibility: {
+            minFollowers: 10000,
+            minWatchMinutes30d: 50000,
+            minAccountAgeDays: 180,
+            minEngagementRate: 5,
+            minContentScore: 80
+          }
         },
         eligibility: {
           universalStatus: 'eligible',
@@ -126,7 +142,25 @@ const useBusinessSuiteStore = create<BusinessSuiteState>((set, _get) => ({ // Us
             giftsCashValue: 0.1,
             supportedCountries: ['US', 'CA', 'GB'],
             policyVersion: '1.0',
-            affiliateBonusPercentage: 5
+            affiliateBonusPercentage: 5,
+            basicEligibility: {
+              minFollowers: 100,
+              minWatchMinutes30d: 500,
+              minAccountAgeDays: 30
+            },
+            premiumEligibility: {
+              minFollowers: 1000,
+              minWatchMinutes30d: 5000,
+              minAccountAgeDays: 90,
+              minEngagementRate: 3
+            },
+            enterpriseEligibility: {
+              minFollowers: 10000,
+              minWatchMinutes30d: 50000,
+              minAccountAgeDays: 180,
+              minEngagementRate: 5,
+              minContentScore: 80
+            }
           },
           auditLogs: [],
           webhooks: [],
@@ -152,7 +186,7 @@ const useBusinessSuiteStore = create<BusinessSuiteState>((set, _get) => ({ // Us
     }
   },
 
-  fetchEligibility: async (userId: string) => { // Removed underscore since now using the parameter
+  fetchEligibility: async (userId: string) => { // Now using the parameter
     set({ loading: true, error: null });
     try {
       // Simulate API call
@@ -216,7 +250,7 @@ const useBusinessSuiteStore = create<BusinessSuiteState>((set, _get) => ({ // Us
     }
   },
 
-  fetchAffiliate: async (userId: string) => { // Removed underscore since now using the parameter
+  fetchAffiliate: async (userId: string) => { // Now using the parameter
     set({ loading: true, error: null });
     try {
       // Simulate API call
@@ -237,7 +271,7 @@ const useBusinessSuiteStore = create<BusinessSuiteState>((set, _get) => ({ // Us
     }
   },
 
-  fetchRevenue: async (userId: string) => { // Removed underscore since now using the parameter
+  fetchRevenue: async (userId: string) => { // Now using the parameter
     set({ loading: true, error: null });
     try {
       // Simulate API call - using the correct shared interface
