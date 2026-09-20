@@ -13,6 +13,23 @@ export type Product = {
   features: string[];
 };
 
+// New interfaces for request types
+interface ApplicationPayload {
+  productKey: string;
+}
+
+interface EstimatePayload {
+  productKey: string;
+  region: string;
+  projectedVolume: number;
+}
+
+interface SeshatPayload {
+  name: string;
+  description?: string;
+  visibility: 'public' | 'private' | 'unlisted';
+}
+
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
     headers: {
@@ -84,22 +101,40 @@ const asNumber = (value: unknown, fallback = 0): number => {
   return Number.isFinite(parsed) ? parsed : fallback
 }
 
-export function parseSeshatPayload(body: unknown) {
-  const payload = body as Record<string, unknown>
-
-  return {
-    name: asString(payload?.name, 'Untitled Seshat Page'),
-    description: asString(payload?.description, 'Creator page'),
-    visibility: (asString(payload?.visibility, 'private') ||
-      'private') as SeshatPage['visibility'],
-    billingPlan: (asString(payload?.billingPlan, 'free_trial') ||
-      'free_trial') as SeshatPage['billingPlan'],
+export function parseSeshatPayload(body: unknown): SeshatPayload {
+  if (!body || typeof body !== 'object') {
+    throw new Error('Invalid seshat payload');
   }
+
+  const { name, description, visibility } = body as Record<string, unknown>;
+  
+  if (!name || typeof name !== 'string') {
+    throw new Error('Missing or invalid name');
+  }
+
+  if (visibility && !['public', 'private', 'unlisted'].includes(visibility as string)) {
+    throw new Error('Invalid visibility value');
+  }
+
+  return { 
+    name, 
+    description: typeof description === 'string' ? description : undefined,
+    visibility: (visibility as 'public' | 'private' | 'unlisted') || 'public'
+  };
 }
 
-export function parseApplicationPayload(body: unknown): string {
-  const payload = body as Record<string, unknown>
-  return asString(payload?.productKey, 'in_stream_ads')
+export function parseApplicationPayload(body: unknown): ApplicationPayload {
+  if (!body || typeof body !== 'object') {
+    throw new Error('Invalid application payload');
+  }
+
+  const { productKey } = body as Record<string, unknown>;
+  
+  if (!productKey || typeof productKey !== 'string') {
+    throw new Error('Missing or invalid productKey');
+  }
+
+  return { productKey };
 }
 
 export function parseBusinessVerificationPayload(body: unknown) {
@@ -122,27 +157,26 @@ export function parsePayoutPayload(body: unknown) {
   }
 }
 
-export function parseEstimatePayload(body: unknown): EstimateRequest {
-  const payload = body as Record<string, unknown>
-
-  return {
-    qualifyingViews: asNumber(payload?.qualifyingViews, 500000),
-    rpm: asNumber(payload?.rpm, 2.5),
-    impressions: asNumber(payload?.impressions, 120000),
-    cpm: asNumber(payload?.cpm, 8),
-    grossAdRevenue: asNumber(payload?.grossAdRevenue, 2200),
-    revenueSharePercentage: asNumber(payload?.revenueSharePercentage, 0.55),
-    totalClicks: asNumber(payload?.totalClicks, 6000),
-    cpc: asNumber(payload?.cpc, 0.75),
-    totalRevenueGenerated: asNumber(payload?.totalRevenueGenerated, 12000),
-    totalOrders: asNumber(payload?.totalOrders, 180),
-    totalProductionCosts: asNumber(payload?.totalProductionCosts, 2400),
-    productLinkClicks: asNumber(payload?.productLinkClicks, 3400),
-    contentPurchases: asNumber(payload?.contentPurchases, 260),
-    totalViews: asNumber(payload?.totalViews, 540000),
-    totalWatchTimeMinutes: asNumber(payload?.totalWatchTimeMinutes, 890000),
-    totalVideoLengthMinutes: asNumber(payload?.totalVideoLengthMinutes, 8),
+export function parseEstimatePayload(body: unknown): EstimatePayload {
+  if (!body || typeof body !== 'object') {
+    throw new Error('Invalid estimate payload');
   }
+
+  const { productKey, region, projectedVolume } = body as Record<string, unknown>;
+  
+  if (!productKey || typeof productKey !== 'string') {
+    throw new Error('Missing or invalid productKey');
+  }
+
+  if (!region || typeof region !== 'string') {
+    throw new Error('Missing or invalid region');
+  }
+
+  if (typeof projectedVolume !== 'number' || projectedVolume < 0) {
+    throw new Error('Missing or invalid projectedVolume');
+  }
+
+  return { productKey, region, projectedVolume };
 }
 
 export function parseConfigPayload(body: unknown): Partial<PlatformConfig> {

@@ -1,13 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import React from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { AppProvider } from './providers/AppProvider'; // Assuming there's a global provider
+import { router } from './app/AppRoutes'; // Import the configured router
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/other" element={<div className="text-center text-xl">Other Page - Coming Soon</div>} />
-      </Routes>
-    </Router>
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   );
 }

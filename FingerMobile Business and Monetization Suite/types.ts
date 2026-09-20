@@ -4,6 +4,9 @@ import type {
   SeshatPage as SeshatPageType,
   MonetizationMetrics as MetricsType,
   PlatformConfig as ConfigType,
+  OverviewResponse as SharedOverviewResponse,
+  AdminData as SharedAdminData,
+  AffiliateMetrics as SharedAffiliateMetrics
 } from './shared/types.js'
 
 // Re-export shared types so they can be imported from this file
@@ -16,13 +19,15 @@ export type {
 // User type is defined directly in this file rather than imported from shared
 export interface User {
   id: string;
-  fullName: string;
   email: string;
-  role: 'admin' | 'user' | 'moderator' | 'finance_admin' | 'business_admin' | 'super_admin';
-  age: number;
-  countryCode: string;
-  accountAgeDays: number;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  age?: number;
+  accountAgeDays?: number;
+  countryCode?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 // SeshatPage type is defined directly in this file rather than imported from shared
@@ -61,12 +66,7 @@ export type UserRole =
   | 'business_admin'
   | 'super_admin'
 
-export type ProductKey =
-  | 'in_stream_ads'
-  | 'gifts'
-  | 'subscriptions'
-  | 'reels_ads'
-  | 'affiliate'
+export type ProductKey = string
 
 export type EligibilityStatus = 'eligible' | 'warning' | 'blocked' | 'pending'
 
@@ -84,7 +84,7 @@ export interface PayoutAccount {
   bankName: string
   accountLast4: string
   currency: string
-  verified: boolean
+  verified: number
   createdAt: string
 }
 
@@ -95,45 +95,19 @@ export interface ProgramDefinition {
   requirements: string[]
 }
 
-export interface OverviewResponse {
-  user: UserType
-  seshatPage: SeshatPageType
-  metrics: MetricsType
-  config: ConfigType
-  eligibility: {
-    universalStatus: EligibilityStatus
-    products: EligibilityResult[]
-  }
-  revenue: {
-    availableBalance: number
-    pendingPayouts: number
-    monthRevenue: number
-    thresholdRemaining: number
-    thisWeekEarnings?: number
-    thisMonthEarnings?: number
-    allTimeEarnings?: number
-    adsRevenue?: number
-    giftsRevenue?: number
-    subscriptionRevenue?: number
-    payoutAccount?: PayoutAccount
-  }
-  alerts: string[]
-  programs?: ProgramDefinition[]
-  verification?: {
-    legalName: string
-    registrationNumber: string
-    countryCode: string
-  }
+// Extend the shared OverviewResponse to include our custom properties
+export interface OverviewResponse extends Omit<SharedOverviewResponse, 'user' | 'seshatPage' | 'metrics' | 'config'> {
+  user: UserType;
+  seshatPage: SeshatPageType;
+  metrics: MetricsType;
+  config: ConfigType;
 }
-
-// Legacy Types (from original implementation)
-export type ApplicationStatus = 'submitted' | 'approved' | 'rejected' | 'pending_review'
 
 export interface MonetizationApplication {
   id: string
   seshatPageId: string
-  productKey: ProductKey
-  status: ApplicationStatus
+  productKey: string
+  status: 'submitted' | 'pending' | 'approved' | 'rejected'
   submittedAt: string
   decisionNotes?: string
 }
@@ -434,19 +408,20 @@ export interface WebhookEvent {
   id: string
   eventType: string
   payloadJson: string
-  status: 'pending' | 'processed' | 'failed'
+  status: 'pending' | 'delivered' | 'failed'
   receivedAt: string
+  deliveredAt?: string
+  failureReason?: string
 }
 
 // Affiliate Event Interface
 export interface AffiliateEvent {
   id: string
-  seshatPageId: string
-  partnerName: string
+  partnerId: string
+  eventType: 'click' | 'conversion' | 'sale'
   clicks: number
   conversions: number
   commissionAmount: number
-  attributionWindowDays: number
   recordedAt: string
 }
 
@@ -476,26 +451,23 @@ export interface BusinessVerification {
 export interface Payout {
   id: string
   seshatPageId: string
-  payoutAccountId: string
   amount: number
-  status: 'pending' | 'scheduled' | 'paid' | 'held' | 'processing' | 'cancelled'
-  scheduledFor: string
-  paidAt: string | null
-  holdReason?: string
+  status: 'requested' | 'processing' | 'paid' | 'failed'
+  requestedAt: string
+  paidAt?: string
+  failureReason?: string
 }
 
 // Revenue Ledger Entry Interface
 export interface RevenueLedgerEntry {
   id: string
   seshatPageId: string
-  productKey: ProductKey
+  transactionType: 'sale' | 'refund' | 'payout' | 'adjustment'
   grossAmount: number
-  platformFee: number
-  reserveAmount: number
-  taxAmount: number
+  fees: number
   netAmount: number
-  settlementStatus: 'scheduled' | 'held' | 'paid' | 'pending' | 'settled' | 'returned'
   occurredAt: string
+  description?: string
 }
 
 export interface MonetizationMetrics {

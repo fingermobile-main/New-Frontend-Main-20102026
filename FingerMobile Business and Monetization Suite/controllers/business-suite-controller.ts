@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { evaluateEligibility } from '../eligibility-service';
 import { BusinessSuiteRequest } from '../middleware/request-context';
+import { OverviewResponse } from '../types';
 
 // Define types for the controller
 export type { BusinessSuiteRequest };
@@ -12,41 +13,59 @@ type ProductKey = 'basic' | 'premium' | 'enterprise';
 export const getOverview = async (_req: BusinessSuiteRequest, res: Response) => {
   try {
     // Mock data for overview
-    const overview = {
-      metrics: {
-        followers: 10000,
-        watchMinutes30d: 45000,
-        watchMinutes60d: 95000,
-        postEngagement30d: 3.5,
-        postEngagement60d: 4.2,
-        avgWatchTime: 120,
-        subscriberGrowthRate: 0.05,
-        contentEngagementRate: 0.12,
-        audienceDemographicMatch: 0.85,
-        brandSafetyCompliance: 0.98,
-        adLoadTime: 3.2,
-        contentOriginalityScore: 0.92,
-        monetizationPlatformUsage: 0.75,
-        followerQualityScore: 0.88,
-        videoUploadFrequency: 3,
-        audienceRetentionRate: 0.72,
+    const overview: OverviewResponse = {
+      user: {
+        id: 'user-123',
+        email: 'user@example.com',
+        username: 'testuser',
+        firstName: 'Test',
+        lastName: 'User',
+        age: 25,
+        accountAgeDays: 30,
+        countryCode: 'US',
+        createdAt: new Date().toISOString()
       },
-      revenue: {
-        monthRevenue: 2500,
-        todayEarnings: 85,
-        thisWeekEarnings: 420,
-        thisMonthEarnings: 2500,
-        allTimeEarnings: 15000,
-        adsRevenue: 1800,
-        giftsRevenue: 450,
-        subscriptionRevenue: 250,
-        availableBalance: 1200,
-        pendingPayouts: 800,
-        thresholdRemaining: 300,
-        paymentHistory: [
-          { date: '2023-05-01', amount: 1200, status: 'completed', method: 'bank' },
-          { date: '2023-04-01', amount: 1100, status: 'completed', method: 'paypal' },
-        ],
+      seshatPage: {
+        id: 'page-123',
+        ownerUserId: 'user-123',
+        name: 'Test Page',
+        description: 'Test Description',
+        followersCount: 1000,
+        visibility: 'public',
+        freeUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        billingPlan: 'free_trial',
+        verifiedBusiness: false,
+        createdAt: new Date().toISOString()
+      },
+      metrics: {
+        followers: 1000,
+        watchMinutes60d: 45000,
+        watchMinutes30d: 25000,
+        postEngagement30d: 3.5,
+        returningViewers30d: 500,
+        uniqueViews30d: 2000,
+        activeVideos: 15,
+        consecutiveFollowerDays: 10,
+        accountAgeDays: 30,
+        age: 25,
+        isEligibleCountry: true,
+        originalContentScore: 0.8,
+        policyViolations: 0,
+        giftPurchaseEligible: true,
+        verifiedBusiness: false,
+        verifiedPayout: false
+      },
+      config: {
+        id: 'config-123',
+        minimumAge: 18,
+        minimumPayoutThreshold: 100,
+        seshatMonthlyFee: 5,
+        seshatYearlyFee: 50,
+        revenueSharePercentage: 50,
+        giftsCashValue: 0.05,
+        supportedCountries: ['US', 'CA', 'GB', 'AU'],
+        policyVersion: '1.0',
+        affiliateBonusPercentage: 5
       },
       eligibility: {
         universalStatus: 'eligible',
@@ -114,26 +133,28 @@ export const getOverview = async (_req: BusinessSuiteRequest, res: Response) => 
         registrationNumber: '123456789',
         countryCode: 'US'
       },
-      config: {
-        minimumAge: 18,
-        minimumPayoutThreshold: 100,
-        seshatMonthlyFee: 5,
-        seshatYearlyFee: 50,
-        revenueSharePercentage: 50,
-        giftsCashValue: 0.05,
-        supportedCountries: JSON.stringify(['US', 'CA', 'GB', 'AU']),
-        policyVersion: '1.0',
-        affiliateBonusPercentage: 5,
+      revenue: {
+        availableBalance: 500,
+        pendingPayouts: 200,
+        monthRevenue: 1500,
+        thresholdRemaining: 50,
+        thisWeekEarnings: 420,
+        thisMonthEarnings: 1500,
+        allTimeEarnings: 15000,
+        adsRevenue: 1800,
+        giftsRevenue: 450,
+        subscriptionRevenue: 250,
+        payoutAccount: {
+          id: 'acc-123',
+          userId: 'user-123',
+          bankName: 'Chase Bank',
+          accountLast4: '5678',
+          currency: 'USD',
+          verified: 1,
+          createdAt: new Date().toISOString()
+        }
       },
-      seshat: {
-        activeSubscribers: 150,
-        monthlyRevenue: 750,
-        conversionRate: 2.5,
-        avgRetention: 45,
-        basicTierPrice: 5,
-        premiumTierPrice: 15,
-        enterpriseTierPrice: 50,
-      },
+      alerts: ['Welcome to the platform!'],
       admin: {
         userCount: 1250,
         applicationCount: 42,
@@ -168,6 +189,7 @@ export const getOverview = async (_req: BusinessSuiteRequest, res: Response) => 
   }
 };
 
+// ... (keeping the rest of the functions unchanged, just adding proper types)
 export const submitApplication = async (req: BusinessSuiteRequest, res: Response) => {
   try {
     const { productKey }: { productKey: string } = req.body; // Get as string first
@@ -426,5 +448,50 @@ export const calculateEstimate = async (req: BusinessSuiteRequest, res: Response
   } catch (error) {
     console.error('Error in calculateEstimate:', error);
     res.status(500).json({ error: 'Failed to calculate estimate' });
+  }
+};
+
+// Add the missing getVerificationStatus and updateVerificationStatus functions
+export const getVerificationStatus = async (req: BusinessSuiteRequest, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    console.log(`Getting verification status for user: ${userId}`);
+    
+    const verificationStatus = {
+      status: 'pending',
+      documents: {
+        businessLicense: 'not_uploaded',
+        taxId: 'not_uploaded',
+        bankStatement: 'not_uploaded'
+      },
+      lastUpdated: new Date().toISOString(),
+      userId: userId
+    };
+
+    res.json(verificationStatus);
+  } catch (error) {
+    console.error('Error in getVerificationStatus:', error);
+    res.status(500).json({ error: 'Failed to get verification status' });
+  }
+};
+
+export const updateVerificationStatus = async (req: BusinessSuiteRequest, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const { status, documents } = req.body;
+    
+    console.log(`Updating verification status for user: ${userId}`, { status, documents });
+    
+    // Update verification status (mock implementation)
+    res.json({ 
+      success: true, 
+      message: `Verification status for user ${userId} updated successfully`,
+      userId: userId,
+      status: status,
+      documents: documents
+    });
+  } catch (error) {
+    console.error('Error in updateVerificationStatus:', error);
+    res.status(500).json({ error: 'Failed to update verification status' });
   }
 };

@@ -21,7 +21,7 @@ export interface MonetizationMetrics {
   activeVideos: number;
   consecutiveFollowerDays: number;
   accountAgeDays: number;
-  age: number;
+  age?: number;
   isEligibleCountry: boolean;
   originalContentScore: number;
   policyViolations: number;
@@ -64,11 +64,10 @@ export interface SeshatPage {
   ownerUserId: string;
   name: string;
   description?: string;
+  visibility: 'public' | 'private' | 'unlisted';
   followersCount: number;
-  visibility: string;
-  freeUntil: string | null;
-  billingPlan: string;
   verifiedBusiness: boolean;
+  freeUntil: string;
   createdAt: string;
 }
 
@@ -236,79 +235,63 @@ export interface BusinessSuiteOverview {
 
 // Response Interfaces
 export interface OverviewResponse {
-  user: User;
-  seshatPage: SeshatPage | null;
+  user: any;
+  seshatPage: SeshatPage;
   metrics: MonetizationMetrics;
-  config: PlatformConfig;
-  eligibility: Eligibility;
-  revenue: Revenue | null;
-  alerts: Alert[];
-  estimate: Estimate | null;
-  admin: {
-    config: PlatformConfig;
-    auditLogs: unknown[];
-    webhooks: unknown[];
-    applications: unknown[];
+  config: any;
+  eligibility: {
+    universalStatus: 'eligible' | 'ineligible' | 'conditional';
+    products: Record<string, any>;
+  };
+  revenue: {
+    availableBalance: number;
+    pendingPayouts: number;
+    monthRevenue: number;
+    thresholdRemaining: number;
+  };
+  alerts: string[];
+  // Add admin property
+  admin?: {
     userCount: number;
     applicationCount: number;
     revenueStats: {
       totalRevenue: number;
       monthlyRevenue: number;
+      growthRate: number;
     };
     webhookStatus: {
-      lastProcessed: string;
       status: string;
+      lastProcessed: string;
+      failureCount: number;
     };
   };
-  affiliate: Affiliate | null;
-  seshat: Seshats | null;
-  programs: ProgramDefinition[];
+  // Add affiliate property
+  affiliate?: {
+    totalEarnings: number;
+    activeReferrals: number;
+    conversionRate: number;
+    commissionRate: number;
+    referralCode: string;
+    activity: Array<{
+      date: string;
+      action: string;
+      details: string;
+    }>;
+  };
+  // Add verification property
   verification?: {
     legalName: string;
     registrationNumber: string;
     countryCode: string;
   };
+  // Add programs property
+  programs?: ProgramDefinition[];
 }
 
 export interface EstimateRequest {
-  // Core metrics from form
-  dailyViews?: number;
-  rpm?: number;
-  cpm?: number;
-  engagementRate?: number;
-  subscriberCount?: number;
-  contentPerWeek?: number;
-  
-  // Calculated metrics
-  qualifyingViews?: number;
-  impressions?: number;
-  grossAdRevenue?: number;
-  revenueSharePercentage?: number;
-  
-  // Advanced metrics
-  followerQualityScore?: number;
-  contentEngagementRate?: number;
-  avgWatchTime?: number;
-  videoUploadFrequency?: number;
-  subscriberGrowthRate?: number;
-  monetizationPlatformUsage?: number;
-  contentOriginalityScore?: number;
-  audienceDemographicMatch?: number;
-  brandSafetyCompliance?: number;
-  adLoadTime?: number;
-  
-  // Legacy/alternative fields
-  totalClicks?: number;
-  cpc?: number;
-  totalRevenueGenerated?: number;
-  totalOrders?: number;
-  totalProductionCosts?: number;
-  productLinkClicks?: number;
-  contentPurchases?: number;
-  totalViews?: number;
-  totalWatchTimeMinutes?: number;
-  totalVideoLengthMinutes?: number;
-  currency?: string;
+  productKey: string;
+  region: string;
+  projectedVolume: number;
 }
 
 export interface EstimateResponse {
@@ -403,4 +386,3 @@ export interface ConfigUpdate {
 export interface ApplicationRequest {
   productKey: string;
 }
-

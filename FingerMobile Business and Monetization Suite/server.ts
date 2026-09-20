@@ -1,34 +1,32 @@
-/**
- * local server entry file, for local development
- */
-import app from './app.js';
+import express from 'express';
+import { router } from './business-suite-controller.js';
 
-/**
- * start server with port
- */
-const PORT = process.env.PORT || 3001;
+const app = express();
+const PORT = 3003;
 
-const server = app.listen(PORT, () => {
-  console.log(`Server ready on port ${PORT}`);
+app.use(express.json());
+
+// Mount the business suite routes
+app.use(router);
+
+// Add a basic health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Business Suite Controller is running' });
 });
 
-/**
- * close server
- */
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
+// Basic error handling middleware (without next param to satisfy ESLint)
+app.use((err: Error, req: express.Request, res: express.Response) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
-process.on('SIGINT', () => {
-  console.log('SIGINT signal received');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
+// Handle 404s
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
-export default app;
+app.listen(PORT, () => {
+  console.log(`🚀 Business Suite Controller is running on port ${PORT}`);
+  console.log(`📚 API Documentation available at http://localhost:${PORT}/docs`);
+  console.log(`🏥 Health check available at http://localhost:${PORT}/health`);
+});

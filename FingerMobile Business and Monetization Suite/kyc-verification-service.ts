@@ -1,3 +1,176 @@
+// KYC/KYB Verification Service
+
+export interface KYCSubmissionData {
+  userId: string;
+  fullName: string;
+  dateOfBirth: string; // ISO string
+  documentType: 'passport' | 'driver_license' | 'national_id';
+  documentFront: string; // Base64 encoded
+  documentBack?: string; // Base64 encoded
+  selfie: string; // Base64 encoded
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
+export interface KYBSubmissionData {
+  userId: string;
+  businessName: string;
+  registrationNumber: string;
+  incorporationDate: string; // ISO string
+  businessAddress: string;
+  businessCity: string;
+  businessState: string;
+  businessZipCode: string;
+  businessCountry: string;
+  businessType: string;
+  taxId: string;
+  directorFullName: string;
+  directorDateOfBirth: string; // ISO string
+  directorDocumentType: 'passport' | 'driver_license' | 'national_id';
+  directorDocumentFront: string; // Base64 encoded
+  directorDocumentBack?: string; // Base64 encoded
+  proofOfAddress: string; // Base64 encoded
+}
+
+interface KYCRecord {
+  id: string;
+  userId: string;
+  status: 'pending' | 'approved' | 'rejected';
+  submittedAt: string;
+  reviewedAt?: string;
+  reviewerId?: string;
+  rejectionReason?: string;
+  documents: {
+    documentType: string;
+    documentFront: string;
+    documentBack?: string;
+    selfie: string;
+  };
+}
+
+interface KYBRecord {
+  id: string;
+  userId: string;
+  status: 'pending' | 'approved' | 'rejected';
+  submittedAt: string;
+  reviewedAt?: string;
+  reviewerId?: string;
+  rejectionReason?: string;
+  businessDetails: {
+    businessName: string;
+    registrationNumber: string;
+    incorporationDate: string;
+    businessAddress: string;
+    businessCity: string;
+    businessState: string;
+    businessZipCode: string;
+    businessCountry: string;
+    businessType: string;
+    taxId: string;
+    directorFullName: string;
+    directorDateOfBirth: string;
+  };
+  documents: {
+    directorDocumentType: string;
+    directorDocumentFront: string;
+    directorDocumentBack?: string;
+    proofOfAddress: string;
+  };
+}
+
+class KYCVerificationService {
+  private kycRecords: Map<string, KYCRecord> = new Map();
+  private kybRecords: Map<string, KYBRecord> = new Map();
+
+  async submitKYC(data: KYCSubmissionData): Promise<KYCRecord> {
+    const record: KYCRecord = {
+      id: 'kyc_' + Math.random().toString(36).substr(2, 10),
+      userId: data.userId,
+      status: 'pending',
+      submittedAt: new Date().toISOString(),
+      documents: {
+        documentType: data.documentType,
+        documentFront: data.documentFront,
+        documentBack: data.documentBack,
+        selfie: data.selfie,
+      }
+    };
+
+    this.kycRecords.set(record.id, record);
+    console.log(`Submitted KYC for user ${data.userId}`);
+
+    return record;
+  }
+
+  async getKYCStatus(userId: string): Promise<{
+    status: 'not_found' | 'pending' | 'approved' | 'rejected';
+    kycRecord?: KYCRecord | null;
+  }> {
+    const record = Array.from(this.kycRecords.values()).find(r => r.userId === userId);
+    
+    if (!record) {
+      return { status: 'not_found', kycRecord: null };
+    }
+
+    return { status: record.status, kycRecord: record };
+  }
+
+  async submitKYB(data: KYBSubmissionData): Promise<KYBRecord> {
+    const record: KYBRecord = {
+      id: 'kyb_' + Math.random().toString(36).substr(2, 10),
+      userId: data.userId,
+      status: 'pending',
+      submittedAt: new Date().toISOString(),
+      businessDetails: {
+        businessName: data.businessName,
+        registrationNumber: data.registrationNumber,
+        incorporationDate: data.incorporationDate,
+        businessAddress: data.businessAddress,
+        businessCity: data.businessCity,
+        businessState: data.businessState,
+        businessZipCode: data.businessZipCode,
+        businessCountry: data.businessCountry,
+        businessType: data.businessType,
+        taxId: data.taxId,
+        directorFullName: data.directorFullName,
+        directorDateOfBirth: data.directorDateOfBirth,
+      },
+      documents: {
+        directorDocumentType: data.directorDocumentType,
+        directorDocumentFront: data.directorDocumentFront,
+        directorDocumentBack: data.directorDocumentBack,
+        proofOfAddress: data.proofOfAddress,
+      }
+    };
+
+    this.kybRecords.set(record.id, record);
+    console.log(`Submitted KYB for user ${data.userId}`);
+
+    return record;
+  }
+
+  async getKYBStatus(userId: string): Promise<{
+    status: 'not_found' | 'pending' | 'approved' | 'rejected';
+    kybRecord?: KYBRecord | null;
+  }> {
+    const record = Array.from(this.kybRecords.values()).find(r => r.userId === userId);
+    
+    if (!record) {
+      return { status: 'not_found', kybRecord: null };
+    }
+
+    return { status: record.status, kybRecord: record };
+  }
+}
+
+// Export singleton instance
+export const kycService = new KYCVerificationService();
+
+// Export types
+export type { KYCRecord, KYBRecord };
 import { Request, Response, NextFunction } from 'express';
 import { guardianAI, validateBiometricHash } from './guardian-ai-service.js';
 

@@ -20,6 +20,72 @@ export const DEFAULT_PLATFORM_CONFIG: PlatformConfig = {
 
 export const PROGRAM_DEFINITIONS: ProgramDefinition[] = [
   {
+    id: 'basic',
+    name: 'Basic Plan',
+    description: 'Entry-level monetization package',
+    features: ['Limited analytics', 'Basic support'],
+    requirements: { followers: 100 },
+  },
+  {
+    id: 'premium',
+    name: 'Premium Plan',
+    description: 'Advanced monetization features',
+    features: ['Advanced analytics', 'Priority support', 'Custom branding'],
+    requirements: { followers: 1000 },
+  },
+  {
+    id: 'enterprise',
+    name: 'Enterprise Plan',
+    description: 'Full monetization suite',
+    features: [
+      'Unlimited analytics',
+      '24/7 dedicated support',
+      'Custom integrations',
+      'Revenue optimization',
+    ],
+    requirements: { followers: 10000 },
+  },
+]
+
+export const UNIVERSAL_REQUIREMENTS = [
+  'Account is at least 30 days old',
+  'Member is at least 22 years old',
+  'Member resides in a supported country',
+  'Original content and authenticity requirements are satisfied',
+  'No unresolved severe policy violations',
+  'Valid bank account is linked before payouts',
+]
+
+export const ALERT_COPY = {
+  unsupportedCountry: 'Monetization is unavailable in the current country setting.',
+  underAge: 'Member must be at least 22 years old.',
+  accountTooNew: 'Account must be at least 30 days old.',
+  originalityRisk: 'Content originality score is below the monetization threshold.',
+  policyRisk: 'Policy violations are blocking one or more monetization products.',
+  payoutMissing: 'A verified payout account is required to collect earnings.',
+}
+import type { PlatformConfig, ProgramDefinition } from './types'
+
+export const APP_NAME = 'FingerMobile Business Suite'
+export const DEFAULT_PAGE_ID = 'page_fingermobile_demo'
+export const DEFAULT_USER_ID = 'user_fingermobile_demo'
+export const DEFAULT_POLICY_KEY = 'partner_monetization_policy'
+
+export const DEFAULT_PLATFORM_CONFIG: PlatformConfig = {
+  id: 'platform_default',
+  minimumAge: 22,
+  minimumPayoutThreshold: 100,
+  seshatMonthlyFee: 24.99,
+  seshatYearlyFee: 249.99,
+  revenueSharePercentage: 0.55,
+  giftsCashValue: 0.01,
+  supportedCountries: ['US', 'GB', 'CA', 'AU', 'NG', 'ZA', 'KE', 'IN', 'BR', 'MX'],
+  policyVersion: '2026.07',
+  affiliateBonusPercentage: 0.01,
+}
+
+export const PROGRAM_DEFINITIONS: ProgramDefinition[] = [
+  {
     key: 'in_stream_ads',
     title: 'In-Stream Ads',
     summary: 'Earn from ads placed before, during, or after eligible videos and live content.',

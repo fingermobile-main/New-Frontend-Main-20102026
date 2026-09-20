@@ -1,72 +1,47 @@
-import type { EstimateRequest, EstimateResponse } from './types'
-
-const safeDivide = (value: number, divisor: number): number => {
-  if (!divisor) {
-    return 0
-  }
-
-  return value / divisor
+interface EstimateRequest {
+  productKey: string;
+  region: string;
+  projectedVolume: number;
 }
 
-const round = (value: number): number => Number(value.toFixed(2))
+interface EstimateResult {
+  productKey: string;
+  region: string;
+  projectedVolume: number;
+  estimatedRevenue: number;
+  confidence: number;
+}
 
-export function calculateEstimates(input: EstimateRequest): EstimateResponse {
-  const qualifyingViews = input.qualifyingViews ?? 0;
-  const rpm = input.rpm ?? 0;
-  const impressions = input.impressions ?? 0;
-  const cpm = input.cpm ?? 0;
-  const grossAdRevenue = input.grossAdRevenue ?? 0;
-  const revenueSharePercentage = input.revenueSharePercentage ?? 0;
-  const totalClicks = input.totalClicks ?? 0;
-  const cpc = input.cpc ?? 0;
-  const totalRevenueGenerated = input.totalRevenueGenerated ?? 0;
-  const totalOrders = input.totalOrders ?? 0;
-  const totalProductionCosts = input.totalProductionCosts ?? 0;
-  const productLinkClicks = input.productLinkClicks ?? 0;
-  const contentPurchases = input.contentPurchases ?? 0;
-  const totalViews = input.totalViews ?? 0;
-  const totalWatchTimeMinutes = input.totalWatchTimeMinutes ?? 0;
-  const totalVideoLengthMinutes = input.totalVideoLengthMinutes ?? 0;
-
-  const totalEarnings = safeDivide(qualifyingViews, 1000) * rpm
-  const totalAdCost = safeDivide(impressions, 1000) * cpm
-  const creatorRevenueShare = grossAdRevenue * revenueSharePercentage
-  const cpcRevenue = totalClicks * cpc
-  const ctr = safeDivide(totalClicks, impressions) * 100
-  const averageOrderValue = safeDivide(
-    totalRevenueGenerated,
-    totalOrders,
-  )
-  const roi =
-    safeDivide(
-      totalRevenueGenerated - totalProductionCosts,
-      totalProductionCosts,
-    ) * 100
-  const clickToViewRatio =
-    safeDivide(productLinkClicks, totalViews) * 100
-  const salesConversionRate =
-    safeDivide(contentPurchases, productLinkClicks) * 100
-  const viewToPurchaseRate =
-    safeDivide(contentPurchases, totalViews) * 100
-  const averageViewDuration = safeDivide(
-    totalWatchTimeMinutes,
-    totalViews,
-  )
-  const retentionRate =
-    safeDivide(averageViewDuration, totalVideoLengthMinutes) * 100
-
+export function calculateEstimates(request: EstimateRequest): EstimateResult {
+  // Simple estimation algorithm - in reality this would be more sophisticated
+  const baseRate = 0.1; // $0.10 per unit
+  const regionalMultiplier = getRegionalMultiplier(request.region);
+  const volumeMultiplier = getVolumeMultiplier(request.projectedVolume);
+  
+  const estimatedRevenue = request.projectedVolume * baseRate * regionalMultiplier * volumeMultiplier;
+  
   return {
-    totalEarnings: round(totalEarnings),
-    totalAdCost: round(totalAdCost),
-    creatorRevenueShare: round(creatorRevenueShare),
-    cpcRevenue: round(cpcRevenue),
-    ctr: round(ctr),
-    averageOrderValue: round(averageOrderValue),
-    roi: round(roi),
-    clickToViewRatio: round(clickToViewRatio),
-    salesConversionRate: round(salesConversionRate),
-    viewToPurchaseRate: round(viewToPurchaseRate),
-    averageViewDuration: round(averageViewDuration),
-    retentionRate: round(retentionRate),
-  }
+    ...request,
+    estimatedRevenue: parseFloat(estimatedRevenue.toFixed(2)),
+    confidence: 0.85 // 85% confidence for all estimates in this example
+  };
+}
+
+function getRegionalMultiplier(region: string): number {
+  const multipliers: Record<string, number> = {
+    'US': 1.0,
+    'EU': 0.9,
+    'ASIA': 0.8,
+    'LATAM': 0.7,
+    'AFRICA': 0.6
+  };
+  
+  return multipliers[region.toUpperCase()] || 1.0;
+}
+
+function getVolumeMultiplier(volume: number): number {
+  if (volume > 100000) return 1.2;
+  if (volume > 50000) return 1.1;
+  if (volume > 10000) return 1.05;
+  return 1.0;
 }

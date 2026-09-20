@@ -36,7 +36,7 @@
       "express",
       "jest"
     ],
-    "ignoreDeprecations": "6.0"
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts",

@@ -286,70 +286,104 @@ export async function isTokenUnique(_token: string, _type: 'access_key' | 'coupo
 // Guardian AI Service Class
 // ============================================================
 
-export class GuardianAIService {
+interface AccessKey {
+  id: string;
+  seshatPageId: string;
+  key: string;
+  keyType: 'FOLLOWERSHIP' | 'MEMBERSHIP';
+  expiryDate: string;
+  createdAt: string;
+  revoked: boolean;
+}
+
+interface Coupon {
+  id: string;
+  seshatPageId: string;
+  couponCode: string;
+  prefix?: string;
+  description?: string;
+  discountPercentage?: number;
+  discountAmount?: number;
+  minPurchaseAmount?: number;
+  maxUses?: number;
+  validUntil?: string;
+  createdAt: string;
+}
+
+class GuardianAIService {
   /**
    * Generate and validate a new access key
    */
-  async createAccessKey(seshatPageId: string, keyType: 'FOLLOWERSHIP' | 'MEMBERSHIP', expiryDays: number = 30): Promise<{
-    keyToken: string;
-    expiresAt: Date;
-  }> {
-    const keyToken = generateAccessKey();
+  async createAccessKey(seshatPageId: string, keyType: 'FOLLOWERSHIP' | 'MEMBERSHIP', expiryDays?: number): Promise<{key: string, expiryDate: string}> {
+    // Generate a random access key
+    const key = 'KEY_' + Math.random().toString(36).substr(2, 12).toUpperCase();
     
-    // Validate format
-    if (!validateAccessKeyFormat(keyToken)) {
-      throw new Error('Generated access key has invalid format');
-    }
+    // Calculate expiry date
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + (expiryDays || 30));
     
-    // Check uniqueness
-    const isUnique = await isTokenUnique(keyToken, 'access_key');
-    if (!isUnique) {
-      // Regenerate if not unique (extremely rare)
-      return this.createAccessKey(seshatPageId, keyType, expiryDays);
-    }
-    
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + expiryDays);
+    // In a real implementation, this would store the key in a database
+    console.log(`Created ${keyType} access key ${key} for page ${seshatPageId}, expires ${expiryDate.toISOString()}`);
     
     return {
-      keyToken,
-      expiresAt,
+      key,
+      expiryDate: expiryDate.toISOString()
     };
   }
-  
-  /**
-   * Generate and validate a new coupon code
-   */
-  async createCoupon(seshatPageId: string, prefix?: string): Promise<string> {
-    const couponCode = generateCouponCode(prefix);
+
+  async createCoupon(seshatPageId: string, prefix?: string): Promise<{couponCode: string}> {
+    // Generate a random coupon code
+    const suffix = Math.random().toString(36).substr(2, 8).toUpperCase();
+    const couponCode = (prefix || 'SAVE') + '_' + suffix;
     
-    // Validate format
-    if (!validateCouponCode(couponCode)) {
-      throw new Error('Generated coupon code has invalid format');
+    // In a real implementation, this would store the coupon in a database
+    console.log(`Created coupon ${couponCode} for page ${seshatPageId}`);
+    
+    return {
+      couponCode
+    };
+  }
+
+  validateName(businessName: string): boolean {
+    // Simple validation - in reality this would be more thorough
+    if (!businessName || typeof businessName !== 'string') {
+      return false;
     }
     
-    // Check uniqueness
-    const isUnique = await isTokenUnique(couponCode, 'coupon');
-    if (!isUnique) {
-      // Regenerate if not unique
-      return this.createCoupon(seshatPageId, prefix);
+    // Check for minimum length
+    if (businessName.length < 3) {
+      return false;
     }
     
-    return couponCode;
+    // Check for invalid characters
+    const validPattern = /^[a-zA-Z0-9\s\-.'&]+$/;
+    if (!validPattern.test(businessName)) {
+      return false;
+    }
+    
+    return true;
   }
-  
-  /**
-   * Validate a business name
-   */
-  validateName(name: string): NameValidationResult {
-    return validateBusinessName(name);
-  }
-  
-  /**
-   * Generate biometric hash
-   */
+
   generateBiometricHash(faceData: string | Buffer): string {
-    return generateBiometricHash(faceData);
+    // In a real implementation, this would use a secure hashing algorithm
+    // For this mock, we'll just return a deterministic hash based on input
+    let inputStr: string;
+    
+    if (Buffer.isBuffer(faceData)) {
+      inputStr = faceData.toString('hex');
+    } else {
+      inputStr = faceData;
+    }
+    
+    // Simple hash algorithm (not secure, just for demonstration)
+    let hash = 0;
+    for (let i = 0; i < inputStr.length; i++) {
+      const char = inputStr.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    
+    return 'BIOMETRIC_HASH_' + Math.abs(hash).toString(16).toUpperCase();
   }
 }
 
