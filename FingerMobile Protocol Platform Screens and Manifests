@@ -1,0 +1,64 @@
+FingerMobile Protocol Platform Screens and Manifests
+Screen Category	Screen Name	File Path	Primary Function
+Home & Navigation	Home Page	./HomePage.tsx	Main landing page and navigation hub
+Authentication	Login Page	./auth/LoginPage.tsx	User authentication and login
+Authentication	Registration Page	./auth/RegisterPage.tsx	New user registration
+Social Features	Forum Page	./ForumPage.tsx	Community discussions and interactions
+Social Features	Groups Page	./GroupsPage.tsx	Group creation and management
+Social Features	Group Detail Page	./GroupDetailPage.tsx	Individual group details and activities
+Social Features	Hallmarks Page	./HallmarksPage.tsx	Recognition and achievement system
+Social Features	Mii Page	./MiiPage.tsx	Advanced messaging platform
+Social Features	Blogs Page	./BlogsPage.tsx	Community blog and content sharing
+Marketplace	Gems Page	./GemsPage.tsx	Premium content marketplace
+Marketplace	Marketplace Page	./MarketplacePage.tsx	Main marketplace for goods/services
+Financial	Wallet Page	./WalletPage.tsx	Digital wallet management
+Financial	My Wallet Page	./MyWalletPage.tsx	Personal wallet overview
+Financial	Wallet Funding Page	./WalletFundingPage.tsx	Wallet funding options
+Financial	FIC Vault Page	./FICVaultPage.tsx	FIC token management
+Financial	Paylinks Page	./PaylinksPage.tsx	Payment link creation and management
+Financial	Subscriptions Page	./SubscriptionsPage.tsx	Subscription management
+Content Creation	Create Post Page	./CreatePostPage.tsx	Post creation interface
+Content Creation	Edit Post Page	./EditPostPage.tsx	Post editing functionality
+Content Creation	Editor Page	./EditorPage.tsx	Content editor tools
+Content Creation	Enhanced Editor Page	./EnhancedEditorPage.tsx	Advanced content editor
+Media	Videos Page	./VideosPage.tsx	Video content management
+Media	Photos Page	./PhotosPage.tsx	Photo content management
+Media	Gallery Page	./GalleryPage.tsx	Media gallery display
+Media	Advanced Media Editor Page	./AdvancedMediaEditorPage.tsx	Advanced media editing tools
+Communication	Messages Page	./MessagesPage.tsx	Private messaging
+Communication	Private Messages Page	./PrivateMessagesPage.tsx	Private message management
+Communication	Notifications Page	./NotificationsPage.tsx	Notification center
+Communication	Live Streaming Page	./LiveStreamingPage.tsx	Live streaming functionality
+Music & Audio	Advanced Voice Page	./AdvancedVoicePage.tsx	Voice processing features
+Music & Audio	AI Playlist Page	./AiPlaylistPage.tsx	AI-generated playlists
+Games & Entertainment	Finger Wars Page	./FingerWarsPage.tsx	Gaming platform
+Games & Entertainment	Advanced Finger War Page	./AdvancedFingerWarPage.tsx	Advanced gaming features
+Games & Entertainment	Game On Page	./GameOnPage.tsx	Gaming hub
+Business & Monetization	Monetization Page	./MonetizationPage.tsx	Monetization tools and options
+Business & Monetization	Creator Dashboard Page	./CreatorDashboardPage.tsx	Creator-specific dashboard
+Business & Monetization	Business Hub Page	./BusinessHubPage.tsx	Business management hub
+Business & Monetization	Storefront Page	./StorefrontPage.tsx	E-commerce storefront
+Business & Monetization	Storefront Detail Page	./StorefrontDetailPage.tsx	Individual storefront details
+Analytics	Advanced Analytics Page	./AdvancedAnalyticsPage.tsx	Advanced analytics dashboard
+Analytics	Insights Page	./InsightsPage.tsx	Platform insights and metrics
+Analytics	Trends Page	./TrendsPage.tsx	Trending content and topics
+User Management	Profile Page	./ProfilePage.tsx	User profile management
+User Management	Settings Page	./SettingsPage.tsx	Account settings and preferences
+User Management	Members Page	./MembersPage.tsx	Member directory and profiles
+Admin	Admin Dashboard Page	./AdminDashboardPage.tsx	Administrative dashboard
+Admin	Admin Control Dashboard	./AdminControlDashboard.tsx	Administrative controls
+Admin	Admin Login Page	./AdminLoginPage.tsx	Admin authentication
+Legal & Compliance	Privacy Policy Page	./PrivacyPolicyPage.tsx	Privacy policy information
+Legal & Compliance	Terms Of Service Page	./TermsOfServicePage.tsx	Terms of service information
+Legal & Compliance	Community Guidelines Page	./CommunityGuidelinesPage.tsx	Community guidelines
+Legal & Compliance	Cookie Policy Page	./CookiePolicyPage.tsx	Cookie policy information
+Support	Support Page	./SupportPage.tsx	Customer support
+Support	Contact Us Page	./ContactUsPage.tsx	Contact information
+Search	Search Page	./SearchPage.tsx	Platform search functionality
+Discovery	Discover Page	./DiscoverPage.tsx	Content discovery
+Specialized Features	Finger Shorts Page	./FingerShortsPage.tsx	Short-form video content
+Specialized Features	Flamingo Page	./FlamingoPage.tsx	Specialized content feature
+Specialized Features	Beatwave NG Page	./BeatwaveNGPage.tsx	Music and audio features
+Specialized Features	Dancia4Tv Page	./Dancia4TvPage.tsx	TV and streaming features
+Specialized Features	Ownit Page	./OwnitPage.tsx	Ownership and control features
+This table represents the comprehensive list of platform screens in the FingerMobile Protocol, organized by functional categories. Each screen serves a specific purpose in the overall platform ecosystem, from basic authentication to specialized features like gaming, monetization, and content creation tools.

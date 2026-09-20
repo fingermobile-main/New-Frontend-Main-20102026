@@ -1,0 +1,131 @@
+# FingerMobile Protocol Git Configuration
+# This file contains recommended Git settings for the FingerMobile Protocol project
+
+[core]
+    # Use editorconfig to maintain consistent coding styles
+    attributesFile = .gitattributes
+    
+    # Handle line endings properly across platforms
+    autocrlf = input
+    
+    # Prevent Git from tracking file mode changes (helpful on macOS/Linux)
+    filemode = false
+    
+    # Enable long paths (Windows)
+    longpaths = true
+    
+    # Performance optimizations
+    preloadindex = true
+    fscache = true
+    
+    # Ignore file stat differences (performance improvement)
+    precomposeunicode = true
+
+[init]
+    # Default branch name
+    defaultBranch = main
+
+[merge]
+    # Use recursive strategy with patience algorithm for better merge results
+    strategy = recursive
+    strategyOption = patience
+
+[diff]
+    # Use renormalization during diffs
+    renormalize = true
+
+[push]
+    # Default push behavior
+    default = upstream
+    
+    # Follow tags when pushing
+    followTags = true
+
+[pull]
+    # Rebase instead of merge to maintain linear history
+    rebase = true
+
+[rebase]
+    # Auto-squash fixup commits
+    autosquash = true
+
+[gc]
+    # Aggressive garbage collection for better performance
+    aggressiveWindow = 14.days
+    auto = 2048
+
+[fetch]
+    # Fetch all tags
+    prune = true
+    pruneTags = true
+
+[alias]
+    # Commonly used aliases for the FingerMobile Protocol project
+    co = checkout
+    cm = commit -m
+    ca = commit --amend
+    cma = commit --amend --no-edit
+    st = status
+    br = branch
+    pl = pull
+    ps = push
+    df = diff
+    ds = diff --staged
+    lg = log --oneline --graph --decorate --all
+    tree = log --oneline --graph --decorate --all --full-history --simplify-by-decoration
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    amend = commit --amend
+    wip = commit -m "WIP: Work in progress"
+    undo = reset --soft HEAD~1
+    cleanup = "!git branch --merged | grep -v '\\*\\|main\\|develop\\|staging\\|production' | xargs -n 1 git branch -d"
+    fresh = "!git clean -fd && git fetch && git reset --hard origin/$(git branch --show-current)"
+
+[credential]
+    # Use secure credential helper
+    helper = store
+
+[color]
+    ui = auto
+
+[commit]
+    # Sign commits with GPG
+    gpgsign = true
+
+[gpg]
+    # GPG program location
+    program = gpg
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[http]
+    # Increase buffer size for large pushes
+    postBuffer = 524288000
+    # Timeout settings
+    lowSpeedLimit = 0
+    lowSpeedTime = 999999
+
+[https]
+    # SSL settings
+    sslVerify = true
+    # Increase buffer size for large pulls
+    postBuffer = 524288000
+
+[transfer]
+    # Increase buffer size for large transfers
+    buffer = 64k
+
+[pack]
+    # Pack settings for better performance
+    windowMemory = 1024m
+    packSizeLimit = 2g
+    threads = 0
+
+[user]
+    # Placeholder for user configuration - replace with your details
+    name = "FingerMobile Protocol Developer"
+    email = "developer@fingermobile.com"

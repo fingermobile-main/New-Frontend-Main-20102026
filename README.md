@@ -25,128 +25,134 @@
 
 ---
 
-## 🎯 Overview
+## 🎯 Project Overview
 
-FingerMobile Protocol is a next-generation communication platform that combines secure messaging, digital identity management, and e-commerce capabilities into a unified ecosystem. Built with security-first principles, it offers:
+FingerMobile Protocol is a mobile-first, end-to-end encrypted communication and digital commerce fusion platform focused on secure communications, decentralized identity (SSI), and integrated digital marketplaces with a "security-first" design philosophy.
 
-- 🔐 **End-to-End Encryption** - Sealed sender technology for private communications
-- 🆔 **Decentralized Identity** - Self-sovereign identity with OAuth2 integration
-- 💰 **Integrated Marketplace** - Digital goods, services, and payment processing
-- 🌐 **Real-time Communication** - WebSocket-based instant messaging
-- 📱 **Mobile-First Design** - Optimized for iOS and Android
-- ☁️ **Cloud-Native Architecture** - Scalable microservices on Docker/Kubernetes
-
----
-
-## ✨ Key Features
-
-### Communication
-- Encrypted direct messaging
-- Group chats with role-based access
-- Disappearing messages
-- Voice and video calling (planned)
-- File sharing with encryption
-
-### Identity & Authentication
-- Multi-factor authentication
-- OAuth2 social login (Google, Facebook, Apple)
-- Biometric authentication support
+### Key Features
+- Secure messaging with end-to-end encryption
 - Decentralized identity verification
-- Session management
-
-### Commerce
-- Digital marketplace for apps and services
-- Secure payment processing (Stripe, Paystack)
-- Wallet system with multi-currency support
-- Transaction history and receipts
-- Vendor management tools
-
-### Security
-- End-to-end encryption (E2EE)
-- Perfect forward secrecy
-- Certificate rotation
-- Rate limiting and DDoS protection
-- GDPR compliance tools
+- Integrated digital marketplace
+- Multi-factor authentication
+- GDPR compliance
 
 ---
 
-## 🏗️ Architecture
+## 🧾 Git Configuration
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  Client Applications                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │   Web    │  │  Mobile  │  │  Desktop (Electron)│  │
-│  │ (React)  │  │(Flutter) │  │                    │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
-└──────────────────────┬──────────────────────────────┘
-                       │ HTTPS/WSS
-┌──────────────────────▼──────────────────────────────┐
-│              API Gateway / Load Balancer             │
-│                   (Nginx/Cloudflare)                 │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│               Backend Services                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │   Auth   │  │  Messaging│  │   Marketplace    │  │
-│  │ Service  │  │  Service  │  │    Service       │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │  Wallet  │  │Notification│  │   Analytics     │  │
-│  │ Service  │  │  Service  │  │    Service       │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│                Data Layer                            │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
-│  │PostgreSQL│  │  Redis   │  │   Object Storage │  │
-│  │ (Primary)│  │ (Cache)  │  │   (S3/MinIO)     │  │
-│  └──────────┘  └──────────┘  └──────────────────┘  │
-└─────────────────────────────────────────────────────┘
+### Recommended Git Settings
+
+The project includes a `.gitconfig` file with recommended settings. To apply these settings:
+
+```bash
+# Apply the recommended Git configuration
+git config --local include.path ../.gitconfig
 ```
 
-### Microservices Structure
+### Git Hooks
+
+The project uses Git hooks to enforce code quality. The pre-commit hook checks for:
+- Sensitive data in commits
+- Large files (>10MB)
+- TODO comments in production code
+- Basic syntax errors
+- Commit message format
+
+To install the hooks:
+
+```bash
+# Copy hooks to .git/hooks directory
+cp -r .githooks/* .git/hooks/
+chmod +x .git/hooks/pre-commit
+```
+
+### .gitignore
+
+The project includes a comprehensive `.gitignore` file that excludes:
+- Build artifacts and dist folders
+- Environment files
+- Log files
+- IDE-specific files
+- OS-generated files
+- Sensitive data
+
+---
+
+## 🌿 Branching Strategy
+
+We follow a GitFlow-inspired branching model:
 
 ```
-apps/
-├── backend/              # Main API server (Express.js)
-├── frontend-main/        # Web application (React/Vite)
-├── camus/                # Video streaming service
-├── mystorefront/         # E-commerce storefront
-├── SuperVi-Game/         # Gaming platform
-└── ...                   # Additional microservices
+main (production-ready code)
+├── development (integration branch)
+├── feature/* (feature branches)
+├── bugfix/* (bug fixes)
+├── hotfix/* (urgent fixes for production)
+└── release/* (release preparation)
+```
+
+### Branch Naming Convention
+
+- Feature branches: `feature/short-description`
+- Bugfix branches: `bugfix/issue-number-short-description`
+- Hotfix branches: `hotfix/issue-number-short-description`
+- Release branches: `release/version-number`
+
+### Example
+
+```bash
+# Create a new feature branch
+git checkout -b feature/user-authentication
+
+# Create a bugfix branch
+git checkout -b bugfix/123-fix-login-issue
+
+# Create a hotfix branch
+git checkout -b hotfix/456-security-patch
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## ✍️ Commit Message Guidelines
 
-### Backend
-- **Runtime:** Node.js 18+ with Express.js
-- **Database:** PostgreSQL 14+ with Sequelize ORM
-- **Cache:** Redis for sessions and rate limiting
-- **Authentication:** Passport.js with OAuth2 strategies
-- **WebSocket:** ws library for real-time communication
-- **Logging:** Winston with daily rotation
-- **Security:** Helmet, CORS, rate limiting, XSS protection
+We follow the Conventional Commits specification for consistent commit messages:
 
-### Frontend
-- **Framework:** React 18+ with TypeScript
-- **Build Tool:** Vite
-- **State Management:** Redux Toolkit / Context API
-- **Styling:** Tailwind CSS / Styled Components
-- **HTTP Client:** Axios
-- **Testing:** Jest + React Testing Library
+```
+<type>(<scope>): <description>
 
-### Infrastructure
-- **Containerization:** Docker & Docker Compose
-- **Orchestration:** Kubernetes (production)
-- **Reverse Proxy:** Nginx
-- **CI/CD:** GitHub Actions
-- **Monitoring:** Winston logs, health checks
-- **Backup:** Automated PostgreSQL backups
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (white-space, formatting, etc.)
+- `refactor`: Code refactoring without functional changes
+- `test`: Adding or modifying tests
+- `chore`: Other changes that don't modify src or test files
+
+### Examples
+
+```
+feat(auth): add OAuth2 social login support
+
+- Implement Google OAuth2 strategy
+- Implement Facebook OAuth2 strategy
+- Add social login buttons to login page
+- Update user model to store social provider data
+```
+
+```
+fix(api): resolve null pointer exception in user profile
+
+- Added null checks in UserProfileController
+- Updated unit tests to cover edge cases
+- Fixed issue #123
+```
 
 ### Security
 - **Encryption:** libsodium for E2EE
@@ -155,402 +161,160 @@ apps/
 
 ---
 
-## 🚀 Quick Start
+## 🚀 CI/CD Pipeline
 
-### Prerequisites
+### Workflow Structure
 
-- Node.js 18.0 or higher
-- PostgreSQL 14 or higher
-- Redis 6 or higher
-- Docker & Docker Compose (optional)
+The CI/CD pipeline is defined in `.github/workflows/fingermobile-protocol-cicd.yml` and consists of the following stages:
 
-### 5-Minute Setup
+1. **Code Quality & Security** - Linting, type checking, and security scanning
+2. **Testing** - Unit, integration, and end-to-end tests
+3. **Building** - Docker image creation
+4. **Staging Deployment** - Deploy to staging environment
+5. **Production Deployment** - Deploy to production (with manual approval)
+6. **Release Notes** - Generate and publish release notes
 
-```bash
-# 1. Clone the repository
-git clone <repository-url>
-cd FingerMobile-Protocol
+### Environments
 
-# 2. Install dependencies
-cd apps/backend
-npm install
+- **Development**: Automatic deployment from `development` branch
+- **Staging**: Automatic deployment from `staging` branch
+- **Production**: Manual deployment from `main` branch
 
-cd ../frontend-main
-npm install
+### Secrets Management
 
-# 3. Configure environment
-cd ../backend
-cp .env.example .env
-# Edit .env with your database credentials
+The following secrets need to be configured in GitHub Secrets:
 
-# 4. Start database (using Docker)
-docker-compose up -d postgres redis
+#### Staging Environment
+- `STAGING_HOST`
+- `STAGING_USER`
+- `STAGING_SSH_KEY`
 
-# 5. Run database migrations
-npm run migrate
+#### Production Environment
+- `PRODUCTION_HOST`
+- `PRODUCTION_USER`
+- `PRODUCTION_SSH_KEY`
+- `DOCKER_USERNAME`
+- `DOCKER_PASSWORD`
+- `S3_BUCKET`
 
-# 6. Start development servers
-npm run dev  # Starts both backend and frontend
-```
-
-Visit `http://localhost:3000` to see the application!
-
----
-
-## 💻 Development Setup
-
-### Backend Development
-
-```bash
-cd apps/backend
-
-# Install dependencies
-npm install
-
-# Set up environment
-cp .env.example .env
-# Configure database connection in .env
-
-# Run database migrations
-npm run migrate
-
-# Start development server with hot reload
-npm run dev
-
-# Run tests
-npm test
-
-# Run linter
-npm run lint
-```
-
-### Frontend Development
-
-```bash
-cd apps/frontend-main
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Run tests
-npm test
-```
-
-### Database Setup
-
-```bash
-# Using Docker (recommended)
-docker-compose up -d postgres
-
-# Or local installation
-createdb fingermobile_dev
-psql fingermobile_dev < database/schema.sql
-```
-
-### Environment Variables
-
-Create `.env` file in `apps/backend/`:
-
-```bash
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=fingermobile_dev
-DB_USER=postgres
-DB_PASSWORD=your_secure_password
-
-# Session
-SESSION_SECRET=your_32_character_secret_key_here
-
-# Logging
-LOG_LEVEL=info
-
-# Frontend URL
-FRONTEND_URL=http://localhost:3000
-
-# OAuth2 (Social Login)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
-
-# Payment Processing
-STRIPE_SECRET_KEY=sk_test_your_stripe_key
-PAYSTACK_SECRET_KEY=sk_test_your_paystack_key
-
-# WebSocket
-ENABLE_WEBSOCKET=true
-
-# Backup
-ENABLE_AUTO_BACKUP=true
-BACKUP_SCHEDULE=0 2 * * *  # Daily at 2 AM
-```
-
-See `.env.example` for complete list of variables.
+#### Notifications
+- `SLACK_CHANNEL_ID`
+- `SLACK_BOT_TOKEN`
 
 ---
 
-## 📚 API Documentation
+## 🕓 Auto-Commit Watcher
 
-### Base URL
+The project includes an auto-commit watcher script (`auto_commit_watcher.js`) that automatically commits and pushes changes at regular intervals. This is particularly useful during active development phases.
 
+### Features
+
+- Watches specified directories for changes
+- Automatically commits changes with timestamp
+- Pushes changes to the configured remote repository
+- Includes safety checks to prevent committing sensitive data
+- Configurable commit intervals
+
+### Configuration
+
+The watcher monitors the following directories:
+- `FingerMobile Protocol/apps/frontend-main`
+- `FingerMobile Protocol/apps/backend`
+- `FingerMobile Business and Monetization Suite`
+
+### Running the Watcher
+
+```bash
+# Start the auto-commit watcher
+node auto_commit_watcher.js
 ```
-Development: http://localhost:5000/api
-Production: https://api.fingermobile.com/api
-```
-
-### Authentication
-
-All authenticated endpoints require JWT token in Authorization header:
-
-```
-Authorization: Bearer <your_jwt_token>
-```
-
-### Key Endpoints
-
-#### Authentication
-```
-POST   /auth/register          # User registration
-POST   /auth/login             # User login
-POST   /auth/logout            # User logout
-GET    /auth/me                # Get current user
-POST   /auth/refresh           # Refresh access token
-```
-
-#### Messaging
-```
-GET    /api/messages           # List conversations
-POST   /api/messages/send      # Send message
-GET    /api/messages/:id       # Get conversation
-DELETE /api/messages/:id       # Delete conversation
-```
-
-#### Marketplace
-```
-GET    /api/marketplace/items  # List items
-POST   /api/marketplace/items  # Create item
-GET    /api/marketplace/items/:id  # Get item details
-POST   /api/marketplace/purchase   # Purchase item
-```
-
-#### Wallet
-```
-GET    /api/wallet/balance     # Get wallet balance
-POST   /api/wallet/deposit     # Deposit funds
-POST   /api/wallet/withdraw    # Withdraw funds
-GET    /api/wallet/transactions # Transaction history
-```
-
-### API Documentation Tools
-
-- **Swagger/OpenAPI:** Available at `/api-docs` (development)
-- **Postman Collection:** See `docs/postman-collection.json`
-- **API Tests:** Run `npm run test:api` for endpoint tests
-
-For complete API documentation, see:
-- [API Reference Guide](docs/API_REFERENCE.md)
-- [Authentication Guide](docs/AUTHENTICATION.md)
-- [WebSocket Protocol](docs/WEBSOCKET_PROTOCOL.md)
 
 ---
 
-## 🚢 Deployment
+## 🔐 Security Considerations
 
-### Production Requirements
+### Sensitive Data Protection
 
-- Node.js 18+ LTS
-- PostgreSQL 14+
-- Redis 6+
-- Nginx (reverse proxy)
-- SSL/TLS certificates
-- Domain name
+- Never commit API keys, passwords, or other sensitive data
+- Use environment variables for configuration
+- The pre-commit hook checks for sensitive data patterns
+- Use Git LFS for large binary files
 
-### Docker Deployment
+### Access Control
 
-```bash
-# Build production images
-docker-compose -f docker-compose.production.yml build
+- Limit write access to main branches
+- Require pull request reviews before merging
+- Use branch protection rules
+- Regular security audits of dependencies
 
-# Start services
-docker-compose -f docker-compose.production.yml up -d
+### Vulnerability Management
 
-# View logs
-docker-compose -f docker-compose.production.yml logs -f
-```
-
-### Manual Deployment
-
-```bash
-# 1. Install dependencies
-NODE_ENV=production npm install --production
-
-# 2. Build frontend
-cd apps/frontend-main
-npm run build
-
-# 3. Run database migrations
-cd ../backend
-npm run migrate:prod
-
-# 4. Start with PM2
-pm2 start ecosystem.config.js --env production
-
-# 5. Configure Nginx (see nginx/nginx.conf)
-sudo nginx -t && sudo systemctl reload nginx
-```
-
-### Environment-Specific Configs
-
-- **Development:** `docker-compose.yml`
-- **Staging:** `docker-compose.staging.yml`
-- **Production:** `docker-compose.production.yml`
-
-### Monitoring & Logging
-
-```bash
-# View application logs
-tail -f apps/backend/logs/combined-$(date +%Y-%m-%d).log
-
-# Monitor error logs
-tail -f apps/backend/logs/error-$(date +%Y-%m-%d).log
-
-# Check service health
-curl http://localhost:5000/health
-
-# View PM2 status
-pm2 status
-pm2 monit
-```
-
-### Backup Strategy
-
-Automated backups run daily at 2 AM:
-
-```bash
-# Manual backup
-npm run backup
-
-# Restore from backup
-npm run restore -- --file backup-2026-06-22.sql.gz
-
-# List backups
-ls -lh backups/
-```
-
-See [Deployment Guide](docs/DEPLOYMENT.md) for detailed instructions.
+- Automated security scanning with Trivy
+- Regular dependency updates
+- Vulnerability reporting procedures
 
 ---
 
-## 🧪 Testing
+## 🛠️ Troubleshooting
 
-### Running Tests
+### Common Issues
+
+#### Large Files Error
+If you encounter errors about large files:
+```bash
+# Add the file to Git LFS
+git lfs track "path/to/large/file"
+git add .gitattributes
+git add "path/to/large/file"
+```
+
+#### Merge Conflicts
+```bash
+# Resolve conflicts manually, then
+git add <resolved-files>
+git commit
+```
+
+#### Failed CI Builds
+Check the GitHub Actions logs for specific error messages. Common issues include:
+- Linting errors
+- Type checking failures
+- Test failures
+- Missing environment variables
+
+### Git Commands Cheat Sheet
 
 ```bash
-# All tests
-npm test
+# Sync with remote
+git fetch origin
+git pull origin <branch>
 
-# Backend tests only
-cd apps/backend
-npm test
+# Undo last commit (keep changes)
+git reset --soft HEAD~1
 
-# Frontend tests only
-cd apps/frontend-main
-npm test
+# Undo last commit (remove changes)
+git reset --hard HEAD~1
 
-# With coverage
-npm run test:coverage
+# Stash changes temporarily
+git stash
+git stash pop
 
-# Watch mode
-npm run test:watch
+# View commit history
+git log --oneline --graph --all
+
+# Compare branches
+git diff main..<branch>
 ```
-
-### Test Structure
-
-```
-apps/backend/
-├── tests/
-│   ├── unit/           # Unit tests
-│   ├── integration/    # Integration tests
-│   └── e2e/           # End-to-end tests
-├── jest.config.js      # Jest configuration
-└── setup-tests.js      # Test setup
-```
-
-### Test Coverage Goals
-
-- **Unit Tests:** 80%+ coverage
-- **Integration Tests:** All API endpoints
-- **E2E Tests:** Critical user journeys
-
-Current test files: 47 tests found
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Guidelines
-
-- Follow existing code style and patterns
-- Write tests for new features
-- Update documentation as needed
-- Use conventional commits
-- Ensure CI passes before merging
-
-### Code Style
-
-- **JavaScript/TypeScript:** ESLint + Prettier
-- **Commits:** Conventional Commits specification
-- **Branch Naming:** `feature/`, `bugfix/`, `hotfix/`, `docs/`
-
-See [Contributing Guide](CONTRIBUTING.md) for detailed guidelines.
-
----
-
-## 📄 License
-
-This project is proprietary software. All rights reserved.
-
-Unauthorized copying, distribution, or modification is strictly prohibited.
-
----
 
 ## 📞 Support
 
-- **Documentation:** [docs/](docs/)
-- **Issues:** [GitHub Issues](../../issues)
-- **Email:** support@fingermobile.com
-- **Status Page:** [status.fingermobile.com](https://status.fingermobile.com)
+For support with Git and CI/CD configuration:
+- Check the GitHub Actions logs for CI/CD issues
+- Contact the development team for access issues
+- Review the documentation in the `docs/` directory
+- Open an issue in the repository for bugs or feature requests
 
 ---
 
-## 🙏 Acknowledgments
-
-- Express.js team for the excellent web framework
-- PostgreSQL community for robust database technology
-- React team for the powerful UI library
-- All open-source contributors
-
----
-
-**Built with ❤️ by the FingerMobile Team**
-
-*Last Updated: June 22, 2026*
+**Maintained by:** FingerMobile Protocol Team  
+**Last Updated:** September 2026

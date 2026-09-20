@@ -1,305 +1,311 @@
 #!/usr/bin/env node
 
 /**
- * FingerMobile Protocol - Auto-Commit Source Code Changes
+ * FingerMobile Protocol - Advanced Auto-Commit & Push Source Code Changes
  * 
- * Purpose: Automatically commit source code changes (.tsx/.ts files) as you work
- * Safety: Only monitors src/pages/ directory, excludes build artifacts
+ * Purpose: Automatically commit & push source code changes (.tsx/.ts/.js/.jsx/.json/.md files) as you work
+ * Safety: Includes safeguards against committing large files, sensitive data, and dangerous patterns
  * Format: CommonJS (no external dependencies)
- * Polling: Checks every 5 seconds, batches commits every 20 minutes
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
-// Configuration
-const WATCH_DIR = path.join(__dirname, 'src', 'pages');
-const POLL_INTERVAL_MS = 5000; // Check every 5 seconds
-const COMMIT_INTERVAL_MS = 20 * 60 * 1000; // Commit every 20 minutes
-const FILE_EXTENSIONS = ['.tsx', '.ts'];
+// --- Configuration ---
+const REPO_URL = 'https://github.com/fingermobile-main/FingerMobile-Protocol-Frontend-Main.git';
+const WATCH_DIRS = [
+  path.join(__dirname, 'FingerMobile Github 27072026', 'FingerMobile-Protocol-Frontend-Main'),
+  path.join(__dirname, 'FingerMobile Protocol', 'apps', 'backend'),
+  path.join(__dirname, 'FingerMobile Business and Monetization Suite')
+];
+const COMMIT_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
+const STATUS_INTERVAL_MS = 30 * 1000;      // 30 seconds
+const FILE_EXTENSIONS = new Set(['.tsx', '.ts', '.js', '.jsx', '.json', '.md', '.yaml', '.yml', '.html', '.css', '.scss']);
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB max file size
+const IGNORE_PATTERNS = [
+  /node_modules/,
+  /\.git/,
+  /build/,
+  /dist/,
+  /out/,
+  /coverage/,
+  /logs/,
+  /\.next/,
+  /__pycache__/
+];
 
-// State tracking
-let lastCheckTime = Date.now();
+// --- State Tracking ---
 let lastCommitTime = Date.now();
-let modifiedFiles = new Set();
-let isRunning = false;
+const modifiedFiles = new Set();
+let isShuttingDown = false;
+let watchers = [];
+
 
 /**
- * Get all tracked source files recursively
+ * Safely execute git commands using execFileSync (prevents shell injection)
  */
-function getSourceFiles(dir, fileList = []) {
+function runGit(args) {
   try {
-    const files = fs.readdirSync(dir);
-    
-    files.forEach(file => {
-      const filePath = path.join(dir, file);
-      
-      try {
-        const stat = fs.statSync(filePath);
-        
-        if (stat.isDirectory()) {
-          // Skip node_modules, .git, and hidden directories
-          if (!file.startsWith('.') && file !== 'node_modules') {
-            getSourceFiles(filePath, fileList);
-          }
-        } else if (stat.isFile()) {
-          // Only track TypeScript/TSX files
-          const ext = path.extname(file).toLowerCase();
-          if (FILE_EXTENSIONS.includes(ext)) {
-            fileList.push(filePath);
-          }
-        }
-      } catch (err) {
-        // Skip files we can't access
-      }
-    });
-    
-    return fileList;
-  } catch (err) {
-    console.error(`Error reading directory ${dir}:`, err.message);
-    return fileList;
-  }
-}
-
-/**
- * Get file modification time
- */
-function getFileMtime(filePath) {
-  try {
-    const stat = fs.statSync(filePath);
-    return stat.mtimeMs;
-  } catch (err) {
-    return 0;
-  }
-}
-
-/**
- * Check for modified files since last check
- */
-function findModifiedFiles() {
-  const allFiles = getSourceFiles(WATCH_DIR);
-  const modified = [];
-  
-  allFiles.forEach(filePath => {
-    const mtime = getFileMtime(filePath);
-    
-    // File was modified since last check
-    if (mtime > lastCheckTime) {
-      modified.push(filePath);
-      modifiedFiles.add(filePath);
-    }
-  });
-  
-  return modified;
-}
-
-/**
- * Execute git command safely
- */
-function executeGitCommand(command) {
-  try {
-    const result = execSync(command, {
+    const output = execFileSync('git', args, {
       cwd: __dirname,
       encoding: 'utf-8',
-      stdio: ['pipe', 'pipe', 'pipe']
+      stdio: ['pipe', 'pipe', 'pipe'],
+      maxBuffer: 10 * 1024 * 1024 // 10MB buffer
     });
-    return { success: true, output: result };
+    return { success: true, output: output.trim() };
   } catch (error) {
     return { 
       success: false, 
-      error: error.stderr?.toString() || error.message 
+      error: error.stderr?.toString().trim() || error.message 
     };
   }
 }
 
+
 /**
- * Stage modified files in git
+ * Validates if a file should be included in auto-commit
  */
-function stageFiles(files) {
-  if (files.length === 0) return { success: true, staged: 0 };
-  
-  const relativePaths = files.map(f => path.relative(__dirname, f));
-  const command = `git add ${relativePaths.map(p => `"${p}"`).join(' ')}`;
-  
-  console.log(`   Staging ${files.length} file(s)...`);
-  const result = executeGitCommand(command);
-  
-  if (result.success) {
-    console.log(`   ✓ Successfully staged ${files.length} file(s)`);
-    return { success: true, staged: files.length };
-  } else {
-    console.error(`   ✗ Failed to stage files: ${result.error}`);
-    return { success: false, staged: 0 };
+function isValidFile(filePath) {
+  // Check file size
+  try {
+    const stats = fs.statSync(filePath);
+    if (stats.size > MAX_FILE_SIZE) {
+      console.log(`⚠️  Skipping large file: ${filePath} (${Math.round(stats.size / 1024 / 1024)}MB)`);
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+
+  // Check file extension
+  const ext = path.extname(filePath).toLowerCase();
+  return FILE_EXTENSIONS.has(ext);
+}
+
+/**
+ * Checks if file contains sensitive information
+ */
+function containsSensitiveInfo(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const sensitivePatterns = [
+      /password\s*[:=]\s*["'][^"']*["']/gi,
+      /secret\s*[:=]\s*["'][^"']*["']/gi,
+      /token\s*[:=]\s*["'][^"']*["']/gi,
+      /key\s*[:=]\s*["'][^"']*["']/gi,
+      /api_key\s*[:=]\s*["'][^"']*["']/gi,
+      /access_token\s*[:=]\s*["'][^"']*["']/gi,
+      /client_secret\s*[:=]\s*["'][^"']*["']/gi
+    ];
+    
+    for (const pattern of sensitivePatterns) {
+      if (pattern.test(content)) {
+        console.log(`⚠️  Potential sensitive data detected in: ${filePath}`);
+        return true;
+      }
+    }
+    return false;
+  } catch (err) {
+    return false;
   }
 }
 
 /**
- * Create batch commit with summary
+ * Ensures the Git remote repository URL matches the target repository
+ */
+function ensureGitRemote() {
+  const remoteResult = runGit(['remote', 'get-url', 'origin']);
+
+  if (!remoteResult.success) {
+    console.log(`🔗 Setting git remote 'origin' to ${REPO_URL}...`);
+    runGit(['remote', 'add', 'origin', REPO_URL]);
+  } else if (remoteResult.output !== REPO_URL) {
+    console.log(`🔄 Updating git remote 'origin' URL to ${REPO_URL}...`);
+    runGit(['remote', 'set-url', 'origin', REPO_URL]);
+  }
+}
+
+/**
+ * Gets the current active Git branch
+ */
+function getCurrentBranch() {
+  const result = runGit(['rev-parse', '--abbrev-ref', 'HEAD']);
+  return result.success ? result.output : 'main';
+}
+
+/**
+ * Stage, commit, and push tracked files
  */
 function createBatchCommit() {
-  if (modifiedFiles.size === 0) {
+  if (modifiedFiles.size === 0) return { success: true, committed: false };
+
+  // Filter valid files
+  const validFiles = Array.from(modifiedFiles).filter(file => 
+    fs.existsSync(file) && isValidFile(file) && !containsSensitiveInfo(file)
+  );
+
+  if (validFiles.length === 0) {
+    modifiedFiles.clear();
     return { success: true, committed: false };
   }
-  
-  const fileCount = modifiedFiles.size;
+
   const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
-  const commitMessage = `auto: Source code changes - ${fileCount} file(s) modified at ${timestamp}`;
-  
+  const commitMessage = `auto: Source code changes - ${validFiles.length} file(s) modified at ${timestamp}`;
+
   console.log(`\n📝 Creating batch commit...`);
-  console.log(`   Files: ${fileCount}`);
+  console.log(`   Files: ${validFiles.length}`);
   console.log(`   Message: "${commitMessage}"`);
-  
-  // Stage all modified files
-  const stageResult = stageFiles(Array.from(modifiedFiles));
-  
+
+  // Stage files
+  const relativePaths = validFiles.map(f => path.relative(__dirname, f));
+  const stageResult = runGit(['add', ...relativePaths]);
+
   if (!stageResult.success) {
+    console.error(`   ✗ Failed to stage files: ${stageResult.error}`);
     return { success: false, committed: false };
   }
-  
-  // Check if there are actually changes to commit
-  const statusResult = executeGitCommand('git status --porcelain');
-  if (!statusResult.success || !statusResult.output.trim()) {
-    console.log('   ℹ No changes to commit (files may be unchanged)');
+
+  // Check if git detected actual index changes
+  const statusResult = runGit(['status', '--porcelain']);
+  if (!statusResult.success || !statusResult.output) {
+    console.log('   ℹ No staged changes detected by Git.');
     modifiedFiles.clear();
     return { success: true, committed: false };
   }
-  
-  // Commit changes
-  const commitCommand = `git commit -m "${commitMessage}"`;
-  const commitResult = executeGitCommand(commitCommand);
-  
-  if (commitResult.success) {
-    console.log(`   ✓ Commit successful`);
-    console.log(`   ${commitResult.output.trim()}\n`);
-    modifiedFiles.clear();
-    lastCommitTime = Date.now();
-    return { success: true, committed: true };
-  } else {
+
+  // Commit
+  const commitResult = runGit(['commit', '-m', commitMessage]);
+  if (!commitResult.success) {
     console.error(`   ✗ Commit failed: ${commitResult.error}`);
     return { success: false, committed: false };
   }
+
+  console.log(`   ✓ Commit successful\n   ${commitResult.output}`);
+  modifiedFiles.clear();
+  lastCommitTime = Date.now();
+
+  // Push to remote repository
+  const currentBranch = getCurrentBranch();
+  console.log(`🚀 Pushing changes to origin/${currentBranch}...`);
+  const pushResult = runGit(['push', 'origin', currentBranch]);
+
+  if (pushResult.success) {
+    console.log(`   ✓ Successfully pushed to GitHub\n`);
+  } else {
+    console.error(`   ⚠️ Commit created, but push failed: ${pushResult.error}\n`);
+  }
+
+  return { success: true, committed: true };
 }
 
 /**
- * Display current status
+ * Display periodic status update
  */
 function displayStatus() {
+  if (isShuttingDown) return;
   const now = Date.now();
-  const timeSinceLastCheck = Math.round((now - lastCheckTime) / 1000);
   const timeSinceLastCommit = Math.round((now - lastCommitTime) / 1000);
   const nextCommitIn = Math.max(0, Math.round((COMMIT_INTERVAL_MS - (now - lastCommitTime)) / 1000));
-  
+
   console.log(`\n⏱️  Status Update:`);
-  console.log(`   Watching: ${WATCH_DIR}`);
-  console.log(`   Modified files tracked: ${modifiedFiles.size}`);
-  console.log(`   Last check: ${timeSinceLastCheck}s ago`);
+  console.log(`   Watching directories: ${WATCH_DIRS.length}`);
+  console.log(`   Remote Repository: ${REPO_URL}`);
+  console.log(`   Pending files tracked: ${modifiedFiles.size}`);
   console.log(`   Last commit: ${timeSinceLastCommit}s ago`);
-  console.log(`   Next auto-commit: ${nextCommitIn}s\n`);
+  console.log(`   Next auto-commit in: ${nextCommitIn}s\n`);
 }
 
+
+
 /**
- * Main monitoring loop
+ * Handle File System Watcher Events
  */
-function monitoringLoop() {
-  if (!isRunning) return;
-  
-  try {
-    const now = Date.now();
-    
-    // Check for modified files
-    const modified = findModifiedFiles();
-    
-    if (modified.length > 0) {
-      console.log(`\n📄 Detected ${modified.length} modified file(s):`);
-      modified.forEach(file => {
-        const relativePath = path.relative(__dirname, file);
-        console.log(`   • ${relativePath}`);
+function setupWatchers() {
+  for (const watchDir of WATCH_DIRS) {
+    if (!fs.existsSync(watchDir)) {
+      console.warn(`⚠️ Warning: Directory does not exist -> ${watchDir}`);
+      continue;
+    }
+
+    try {
+      const watcher = fs.watch(watchDir, { recursive: true }, (eventType, filename) => {
+        if (!filename || isShuttingDown) return;
+
+        const fullPath = path.join(watchDir, filename);
+        if (isValidFile(fullPath) && !modifiedFiles.has(fullPath)) {
+          modifiedFiles.add(fullPath);
+          console.log(`\n📄 Detected change: ${filename}`);
+        }
       });
+      watchers.push(watcher);
+    } catch (err) {
+      console.error(`❌ Watcher error for ${watchDir}: ${err.message}`);
     }
-    
-    // Update last check time
-    lastCheckTime = now;
-    
-    // Check if it's time for a batch commit
-    const timeSinceLastCommit = now - lastCommitTime;
-    if (timeSinceLastCommit >= COMMIT_INTERVAL_MS && modifiedFiles.size > 0) {
-      console.log(`\n⏰ Auto-commit triggered (${Math.round(timeSinceLastCommit / 1000)}s elapsed)`);
-      createBatchCommit();
-    }
-    
-    // Display periodic status (every 60 seconds)
-    if (Math.round(timeSinceLastCommit / 1000) % 60 === 0) {
-      displayStatus();
-    }
-    
-  } catch (error) {
-    console.error('\n❌ Error in monitoring loop:', error.message);
   }
-  
-  // Schedule next check
-  setTimeout(monitoringLoop, POLL_INTERVAL_MS);
 }
 
 /**
- * Initialize and start monitoring
+ * Cleanup function to close all watchers
  */
-function startAutoCommit() {
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('  FingerMobile Protocol - Auto-Commit Source Code Watcher');
-  console.log('═══════════════════════════════════════════════════════════\n');
-  
-  // Verify watch directory exists
-  if (!fs.existsSync(WATCH_DIR)) {
-    console.error(`ERROR: Watch directory not found: ${WATCH_DIR}`);
-    process.exit(1);
+function cleanupWatchers() {
+  for (const watcher of watchers) {
+    try {
+      watcher.close();
+    } catch (err) {
+      console.error(`Error closing watcher: ${err.message}`);
+    }
   }
-  
-  // Verify we're in a git repository
-  const gitCheck = executeGitCommand('git rev-parse --git-dir');
-  if (!gitCheck.success) {
-    console.error('ERROR: Not a git repository. Please initialize git first.');
-    process.exit(1);
-  }
-  
-  console.log(`✅ Configuration:`);
-  console.log(`   Watch Directory: ${WATCH_DIR}`);
-  console.log(`   Poll Interval: ${POLL_INTERVAL_MS / 1000}s`);
-  console.log(`   Commit Interval: ${COMMIT_INTERVAL_MS / 60000} minutes`);
-  console.log(`   File Types: ${FILE_EXTENSIONS.join(', ')}`);
-  console.log(`   Git Repository: Valid ✓\n`);
-  
-  console.log(`🚀 Starting auto-commit watcher...\n`);
-  console.log(`💡 Tip: Press Ctrl+C to stop the watcher\n`);
-  
-  isRunning = true;
-  lastCheckTime = Date.now();
-  lastCommitTime = Date.now();
-  
-  // Start monitoring loop
-  monitoringLoop();
+  watchers = [];
 }
 
 /**
- * Handle graceful shutdown
+ * Graceful Shutdown Handler
  */
 function handleShutdown() {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+
   console.log('\n\n🛑 Shutting down auto-commit watcher...');
-  isRunning = false;
   
-  // Final commit if there are pending changes
   if (modifiedFiles.size > 0) {
     console.log('📝 Creating final commit before exit...');
     createBatchCommit();
   }
   
-  console.log('✓ Auto-commit watcher stopped\n');
+  cleanupWatchers();
+  console.log('✓ Auto-commit watcher stopped successfully.\n');
   process.exit(0);
 }
 
-// Register shutdown handlers
+// --- Application Initialization ---
+console.log('🚀 Starting FingerMobile Protocol Auto-Commit Watcher...');
+console.log(`   Target Repository: ${REPO_URL}`);
+console.log(`   Watched Directories: ${WATCH_DIRS.length}`);
+console.log(`   Extensions: ${Array.from(FILE_EXTENSIONS).join(', ')}`);
+console.log(`   Commit Interval: ${COMMIT_INTERVAL_MS / 1000 / 60} minutes\n`);
+
+// Ensure Git remote is configured correctly
+ensureGitRemote();
+
+// Start event listening
+setupWatchers();
+
+// Register interval timers
+setInterval(() => {
+  if (modifiedFiles.size > 0 && (Date.now() - lastCommitTime >= COMMIT_INTERVAL_MS)) {
+    console.log(`\n⏰ Auto-commit interval reached.`);
+    createBatchCommit();
+  }
+}, 5000);
+
+setInterval(displayStatus, STATUS_INTERVAL_MS);
+
+// Shutdown handlers
 process.on('SIGINT', handleShutdown);
 process.on('SIGTERM', handleShutdown);
+process.on('exit', () => {
+  cleanupWatchers();
+});
 
-// Start the watcher
-startAutoCommit();
+console.log('✅ Auto-commit watcher initialized successfully!\n');

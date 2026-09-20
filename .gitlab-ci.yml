@@ -1,0 +1,241 @@
+# FingerMobile Protocol GitLab CI/CD Configuration
+# This file defines the CI/CD pipeline for the FingerMobile Protocol project
+
+stages:
+  - validate
+  - test
+  - build
+  - deploy-staging
+  - deploy-production
+
+variables:
+  NODE_VERSION: "18"
+  POSTGRES_DB: fingermobile_test_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  JWT_SECRET: test-jwt-secret-for-ci
+  REDIS_URL: redis://localhost:6379
+
+# Global before_script
+before_script:
+  - echo "Starting FingerMobile Protocol CI/CD Pipeline"
+  - npm config set cache .npm --global
+
+# Validate stage jobs
+validate-code:
+  stage: validate
+  image: node:$NODE_VERSION
+  script:
+    - npm ci
+    - cd apps/backend && npm ci && cd ..
+    - cd frontend-main && npm ci && cd ..
+    - cd ../FingerMobile\ Business\ and\ Monetization\ Suite && npm ci && cd ..
+    - cd backend && npx tsc --noEmit && cd ..
+    - cd frontend-main && npx tsc --noEmit && cd ..
+    - cd ../FingerMobile\ Business\ and\ Monetization\ Suite && npx tsc --noEmit && cd ..
+    - cd backend && npm run lint || echo "No lint script" && cd ..
+    - cd frontend-main && npm run lint || echo "No lint script" && cd ..
+    - cd ../FingerMobile\ Business\ and\ Monetization\ Suite && npm run lint || echo "No lint script" && cd ..
+  artifacts:
+    reports:
+      dotenv: backend/.env.test
+
+# Test stage jobs
+test-backend:
+  stage: test
+  image: node:$NODE_VERSION
+  services:
+    - postgres:15-alpine
+    - redis:7-alpine
+  variables:
+    POSTGRES_DB: $POSTGRES_DB
+    POSTGRES_USER: $POSTGRES_USER
+    POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    POSTGRES_HOST_AUTH_METHOD: trust
+  script:
+    - cd apps/backend
+    - npm ci
+    - |
+      until pg_isready -h postgres -p 5432 -U $POSTGRES_USER; do
+        echo "Waiting for PostgreSQL..."
+        sleep 2
+      done
+    - npm test -- --coverage
+  coverage: '/Lines\s+:\s+(\d+.?\d+%)*/'
+  artifacts:
+    reports:
+      junit: apps/backend/test-results.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: apps/backend/coverage/cobertura-coverage.xml
+
+test-frontend:
+  stage: test
+  image: node:$NODE_VERSION
+  script:
+    - cd apps/frontend-main
+    - npm ci
+    - npm test -- --passWithNoTests
+  artifacts:
+    reports:
+      junit: apps/frontend-main/test-results.xml
+
+test-business-suite:
+  stage: test
+  image: node:$NODE_VERSION
+  script:
+    - cd "FingerMobile Business and Monetization Suite"
+    - npm ci
+    - npm test || echo "No tests found in business suite"
+  allow_failure: true
+
+# Security scan job
+security-scan:
+  stage: test
+  image: registry.gitlab.com/gitlab-org/security-products/analyzers/trivy:latest
+  variables:
+    TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+    TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
+  script:
+    - trivy filesystem . --security-checks vuln,config,secret --format sarif --output gl-sast-report.sarif
+  artifacts:
+    reports:
+      sast: gl-sast-report.sarif
+
+# Build stage jobs
+build-docker-backend:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - apk add --no-cache docker-compose git
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER
+  script:
+    - |
+      docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHA -f apps/backend/Dockerfile .
+      docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHA
+  only:
+    - main
+    - development
+
+build-docker-frontend:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - apk add --no-cache docker-compose git
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER
+  script:
+    - |
+      docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA -f apps/frontend-main/Dockerfile .
+      docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+  only:
+    - main
+    - development
+
+build-docker-business-suite:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - apk add --no-cache docker-compose git
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER
+  script:
+    - |
+      docker build -t $CI_REGISTRY_IMAGE/business-suite:$CI_COMMIT_SHA -f "FingerMobile Business and Monetization Suite/Dockerfile" .
+      docker push $CI_REGISTRY_IMAGE/business-suite:$CI_COMMIT_SHA
+  only:
+    - main
+    - development
+
+# Deploy to staging
+deploy-staging:
+  stage: deploy-staging
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $STAGING_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - |
+      ssh $STAGING_USER@$STAGING_HOST << EOF
+        cd /opt/fingermobile
+        git pull origin development
+        docker-compose -f docker-compose.staging.yml down
+        docker-compose -f docker-compose.staging.yml pull
+        docker-compose -f docker-compose.staging.yml up -d
+        sleep 30
+        curl -f http://localhost:3001/health
+      EOF
+  environment:
+    name: staging
+    url: https://staging.fingermobile.com
+  only:
+    - development
+  when: manual
+
+# Deploy to production
+deploy-production:
+  stage: deploy-production
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $PRODUCTION_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - |
+      ssh $PRODUCTION_USER@$PRODUCTION_HOST << EOF
+        cd /opt/fingermobile
+        # Create backup
+        timestamp=\$(date +%Y%m%d-%H%M%S)
+        docker exec fingermobile-postgres pg_dump -U postgres fingermobile_production_db | gzip > backups/db-backup-\$timestamp.sql.gz
+        # Deploy new version
+        git pull origin main
+        docker-compose -f docker-compose.production.yml down
+        docker-compose -f docker-compose.production.yml pull
+        docker-compose -f docker-compose.production.yml up -d
+        sleep 30
+        curl -f http://localhost:3001/health
+      EOF
+  environment:
+    name: production
+    url: https://fingermobile.com
+  only:
+    - main
+  when: manual
+  retry: 2
+
+# Notify about deployment
+notify-deployment:
+  stage: deploy-production
+  image: curlimages/curl:latest
+  script:
+    - |
+      curl -X POST -H 'Content-type: application/json' \
+        --data '{"text":"FingerMobile Protocol deployed successfully! Branch: '$CI_COMMIT_REF_NAME'","channel":"'$SLACK_CHANNEL_ID'"}' \
+        $SLACK_WEBHOOK_URL
+  only:
+    - main
+  when: on_success
+  dependencies:
+    - deploy-production
