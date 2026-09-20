@@ -35,6 +35,11 @@ const IGNORE_PATTERNS = [
   /__pycache__/
 ];
 
+// --- CLI Flags ---
+const ARGS = new Set(process.argv.slice(2));
+const RUN_NOW = ARGS.has('--now') || ARGS.has('-n');
+const RUN_ONCE = ARGS.has('--once') || ARGS.has('-1');
+
 // --- State Tracking ---
 let lastCommitTime = Date.now();
 const modifiedFiles = new Set();
@@ -309,3 +314,19 @@ process.on('exit', () => {
 });
 
 console.log('✅ Auto-commit watcher initialized successfully!\n');
+
+// Handle immediate run flags
+if (RUN_NOW) {
+  console.log('⏩ --now flag detected: attempting immediate commit...');
+  const result = createBatchCommit();
+  if (!result.success) {
+    console.error('Immediate commit failed.');
+  } else if (!result.committed) {
+    console.log('No changes detected for immediate commit.');
+  }
+}
+
+if (RUN_ONCE) {
+  console.log('🧪 --once flag detected: exiting after immediate attempt.');
+  handleShutdown();
+}

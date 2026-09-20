@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { AppShell as MantineAppShell, Text, Group, Burger /*, rem */ } from '@mantine/core';  // Removed unused rem import
 import { useDisclosure } from '@mantine/hooks';
 

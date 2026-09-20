@@ -1,233 +1,319 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { Pool, QueryResult } from 'pg';
+import { 
+  BusinessSuiteOverview, 
+  MonetizationMetrics, 
+  PlatformConfig, 
+  AdminData, 
+  Revenue,
+  Eligibility
+} from './shared/types';
 
-// Import types
-import type {
-  User,
-  SeshatPage,
-  MonetizationMetrics,
-  PlatformConfig,
-  PayoutAccount,
-  MonetizationApplication,
-  KYCRecord,
-  KYBRecord,
-  ContentPost,
-  InboxMessage,
-  Conversation,
-  AdCampaign,
-  Subscription,
-  ShopProduct,
-  Lead,
-  AnalyticsEvent,
-  TeamMember,
-  ContentMetrics,
-  WebhookEvent,
-  AffiliateEvent,
-  AuditLog,
-  BusinessVerification,
-  Payout,
-  RevenueLedgerEntry
-} from './types';
+// Database connection pool
+const pool = new Pool({
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5432'),
+  database: process.env.DB_NAME || 'fingermobile_db',
+  user: process.env.DB_USER || 'postgres',
+  password: process.env.DB_PASSWORD || 'password',
+});
 
-// Define file paths for data persistence
-const DATA_DIR = './data';
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const SESHAT_PAGES_FILE = path.join(DATA_DIR, 'seshat_pages.json');
-const METRICS_FILE = path.join(DATA_DIR, 'metrics.json');
-
-// Ensure data directory exists
-async function ensureDataDir(): Promise<void> {
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch (error) {
-    console.error('Error creating data directory:', error);
-  }
+// Repository interfaces
+interface BusinessSuiteOverviewRepository {
+  findByUserId(userId: string): Promise<BusinessSuiteOverview | null>;
+  create(overview: Omit<BusinessSuiteOverview, 'id'>): Promise<BusinessSuiteOverview>;
+  update(userId: string, overview: Partial<BusinessSuiteOverview>): Promise<BusinessSuiteOverview>;
 }
 
-// Helper function to read JSON file
-async function readJsonFile(filePath: string): Promise<any[]> {
-  try {
-    const data = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    // If file doesn't exist, return empty array
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return [];
+interface MonetizationMetricsRepository {
+  findByUserId(userId: string): Promise<MonetizationMetrics | null>;
+  create(metrics: Omit<MonetizationMetrics, 'id'>): Promise<MonetizationMetrics>;
+  update(userId: string, metrics: Partial<MonetizationMetrics>): Promise<MonetizationMetrics>;
+}
+
+interface PlatformConfigRepository {
+  findById(id: string): Promise<PlatformConfig | null>;
+  update(id: string, config: Partial<PlatformConfig>): Promise<PlatformConfig>;
+}
+
+interface AdminDataRepository {
+  findById(id: string): Promise<AdminData | null>;
+  update(id: string, data: Partial<AdminData>): Promise<AdminData>;
+}
+
+interface RevenueRepository {
+  findByUserId(userId: string): Promise<Revenue | null>;
+  create(revenue: Omit<Revenue, 'id'>): Promise<Revenue>;
+  update(userId: string, revenue: Partial<Revenue>): Promise<Revenue>;
+}
+
+// Define a type for objects that include a userId
+interface WithUserId {
+  userId: string;
+}
+
+// Define a type for eligibility with products
+interface EligibilityWithProducts {
+  userId: string;
+  products?: Array<{
+    product: string;
+    status: string;
+    passedRules?: string[];
+    failedRules?: string[];
+    nextActions?: string[];
+  }>;
+  // Include other Eligibility properties here as needed
+  universalStatus: 'eligible' | 'ineligible' | 'conditional';
+}
+
+// Implementations
+export const businessSuiteOverviewRepository: BusinessSuiteOverviewRepository = {
+  async findByUserId(userId: string): Promise<BusinessSuiteOverview | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM business_suite_overviews WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0] || null;
+  },
+
+  async create(overview: Omit<BusinessSuiteOverview, 'id'>): Promise<BusinessSuiteOverview> {
+    // Extract userId separately since it's not part of the overview object itself
+    const { userId, ...overviewData } = overview as WithUserId & Omit<BusinessSuiteOverview, 'id'>;
+    
+    // Convert object properties to individual parameters
+    const columns = Object.keys(overviewData);
+    const values = Object.values(overviewData);
+    
+    // Build dynamic query
+    const paramCount = columns.length;
+    const placeholders = Array.from({ length: paramCount }, (_, i) => `$${i + 1}`).join(', ');
+    
+    const query = `
+      INSERT INTO business_suite_overviews (${columns.join(', ')}, user_id)
+      VALUES (${placeholders}, $${paramCount + 1})
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
+  },
+
+  async update(userId: string, overview: Partial<BusinessSuiteOverview>): Promise<BusinessSuiteOverview> {
+    const columns = Object.keys(overview);
+    if (columns.length === 0) {
+      throw new Error('No fields to update');
     }
-    throw error;
+    
+    const values = Object.values(overview);
+    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+    
+    const query = `
+      UPDATE business_suite_overviews
+      SET ${setClause}
+      WHERE user_id = $${values.length + 1}
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
   }
-}
-
-// Helper function to write JSON file
-async function writeJsonFile(filePath: string, data: any[]): Promise<void> {
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-}
-
-// Repository functions
-export const findAllUsers = async (): Promise<User[]> => {
-  await ensureDataDir();
-  return await readJsonFile(USERS_FILE);
 };
 
-export const findUserById = async (id: string): Promise<User | undefined> => {
-  const users = await findAllUsers();
-  return users.find(user => user.id === id);
-};
+export const monetizationMetricsRepository: MonetizationMetricsRepository = {
+  async findByUserId(userId: string): Promise<MonetizationMetrics | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM monetization_metrics WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0] || null;
+  },
 
-export const createUser = async (userData: Omit<User, 'id' | 'createdAt'>): Promise<User> => {
-  await ensureDataDir();
-  const users = await findAllUsers();
-  
-  const newUser: User = {
-    ...userData,
-    id: `user_${Date.now()}`,
-    createdAt: new Date().toISOString(),
-  };
-  
-  users.push(newUser);
-  await writeJsonFile(USERS_FILE, users);
-  
-  return newUser;
-};
+  async create(metrics: Omit<MonetizationMetrics, 'id'>): Promise<MonetizationMetrics> {
+    const { userId, ...metricsData } = metrics as WithUserId & Omit<MonetizationMetrics, 'id'>;
+    
+    const columns = Object.keys(metricsData);
+    const values = Object.values(metricsData);
+    
+    const paramCount = columns.length;
+    const placeholders = Array.from({ length: paramCount }, (_, i) => `$${i + 1}`).join(', ');
+    
+    const query = `
+      INSERT INTO monetization_metrics (${columns.join(', ')}, user_id)
+      VALUES (${placeholders}, $${paramCount + 1})
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
+  },
 
-export const updateUser = async (id: string, userData: Partial<User>): Promise<User | null> => {
-  await ensureDataDir();
-  const users = await findAllUsers();
-  const userIndex = users.findIndex(user => user.id === id);
-  
-  if (userIndex === -1) {
-    return null;
+  async update(userId: string, metrics: Partial<MonetizationMetrics>): Promise<MonetizationMetrics> {
+    const columns = Object.keys(metrics);
+    if (columns.length === 0) {
+      throw new Error('No fields to update');
+    }
+    
+    const values = Object.values(metrics);
+    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+    
+    const query = `
+      UPDATE monetization_metrics
+      SET ${setClause}
+      WHERE user_id = $${values.length + 1}
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
   }
-  
-  users[userIndex] = { ...users[userIndex], ...userData, updatedAt: new Date().toISOString() };
-  await writeJsonFile(USERS_FILE, users);
-  
-  return users[userIndex];
 };
 
-export const findAllSeshatPages = async (): Promise<SeshatPage[]> => {
-  await ensureDataDir();
-  return await readJsonFile(SESHAT_PAGES_FILE);
-};
+export const platformConfigRepository: PlatformConfigRepository = {
+  async findById(id: string): Promise<PlatformConfig | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM platform_configs WHERE id = $1',
+      [id]
+    );
+    return result.rows[0] || null;
+  },
 
-export const findSeshatPageById = async (id: string): Promise<SeshatPage | undefined> => {
-  const pages = await findAllSeshatPages();
-  return pages.find(page => page.id === id);
-};
-
-export const createSeshatPage = async (pageData: Omit<SeshatPage, 'id' | 'createdAt' | 'followersCount' | 'billingPlan' | 'verifiedBusiness'>): Promise<SeshatPage> => {
-  await ensureDataDir();
-  const pages = await findAllSeshatPages();
-  
-  const newPage: SeshatPage = {
-    ...pageData,
-    id: `page_${Date.now()}`,
-    followersCount: 0,
-    billingPlan: 'free_trial',
-    verifiedBusiness: false,
-    createdAt: new Date().toISOString(),
-  };
-  
-  pages.push(newPage);
-  await writeJsonFile(SESHAT_PAGES_FILE, pages);
-  
-  return newPage;
-};
-
-export const updateSeshatPage = async (id: string, pageData: Partial<SeshatPage>): Promise<SeshatPage | null> => {
-  await ensureDataDir();
-  const pages = await findAllSeshatPages();
-  const pageIndex = pages.findIndex(page => page.id === id);
-  
-  if (pageIndex === -1) {
-    return null;
+  async update(id: string, config: Partial<PlatformConfig>): Promise<PlatformConfig> {
+    const columns = Object.keys(config);
+    if (columns.length === 0) {
+      throw new Error('No fields to update');
+    }
+    
+    const values = Object.values(config);
+    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+    
+    const query = `
+      UPDATE platform_configs
+      SET ${setClause}
+      WHERE id = $${values.length + 1}
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, id]);
+    return result.rows[0];
   }
-  
-  pages[pageIndex] = { ...pages[pageIndex], ...pageData };
-  await writeJsonFile(SESHAT_PAGES_FILE, pages);
-  
-  return pages[pageIndex];
 };
 
-export const findAllMetrics = async (): Promise<MonetizationMetrics[]> => {
-  await ensureDataDir();
-  return await readJsonFile(METRICS_FILE);
-};
+export const adminDataRepository: AdminDataRepository = {
+  async findById(id: string): Promise<AdminData | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM admin_data WHERE id = $1',
+      [id]
+    );
+    return result.rows[0] || null;
+  },
 
-export const findMetricsByUserId = async (userId: string): Promise<MonetizationMetrics | undefined> => {
-  const metrics = await findAllMetrics();
-  return metrics.find(m => m.id === userId); // Note: This assumes id field in metrics refers to userId
-};
-
-export const createMetrics = async (metricsData: Omit<MonetizationMetrics, 'id'>): Promise<MonetizationMetrics> => {
-  await ensureDataDir();
-  const metrics = await findAllMetrics();
-  
-  const newMetrics: MonetizationMetrics = {
-    ...metricsData,
-    id: `metrics_${Date.now()}`,
-  };
-  
-  metrics.push(newMetrics);
-  await writeJsonFile(METRICS_FILE, metrics);
-  
-  return newMetrics;
-};
-
-export const updateMetrics = async (id: string, metricsData: Partial<MonetizationMetrics>): Promise<MonetizationMetrics | null> => {
-  await ensureDataDir();
-  const metrics = await findAllMetrics();
-  const metricIndex = metrics.findIndex(m => m.id === id);
-  
-  if (metricIndex === -1) {
-    return null;
+  async update(id: string, data: Partial<AdminData>): Promise<AdminData> {
+    const columns = Object.keys(data);
+    if (columns.length === 0) {
+      throw new Error('No fields to update');
+    }
+    
+    const values = Object.values(data);
+    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+    
+    const query = `
+      UPDATE admin_data
+      SET ${setClause}
+      WHERE id = $${values.length + 1}
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, id]);
+    return result.rows[0];
   }
-  
-  metrics[metricIndex] = { ...metrics[metricIndex], ...metricsData };
-  await writeJsonFile(METRICS_FILE, metrics);
-  
-  return metrics[metricIndex];
 };
 
-// Additional repository methods for other entities would go here
-// For brevity, I'm implementing a few key ones:
+export const revenueRepository: RevenueRepository = {
+  async findByUserId(userId: string): Promise<Revenue | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM revenue WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0] || null;
+  },
 
-export const createMonetizationApplication = async (
-  applicationData: Omit<MonetizationApplication, 'id' | 'submittedAt' | 'status'>
-): Promise<MonetizationApplication> => {
-  const newApplication: MonetizationApplication = {
-    ...applicationData,
-    id: `app_${Date.now()}`,
-    status: 'submitted',
-    submittedAt: new Date().toISOString(),
-  };
-  return newApplication;
+  async create(revenue: Omit<Revenue, 'id'>): Promise<Revenue> {
+    const { userId, ...revenueData } = revenue as WithUserId & Omit<Revenue, 'id'>;
+    
+    const columns = Object.keys(revenueData);
+    const values = Object.values(revenueData);
+    
+    const paramCount = columns.length;
+    const placeholders = Array.from({ length: paramCount }, (_, i) => `$${i + 1}`).join(', ');
+    
+    const query = `
+      INSERT INTO revenue (${columns.join(', ')}, user_id)
+      VALUES (${placeholders}, $${paramCount + 1})
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
+  },
+
+  async update(userId: string, revenue: Partial<Revenue>): Promise<Revenue> {
+    const columns = Object.keys(revenue);
+    if (columns.length === 0) {
+      throw new Error('No fields to update');
+    }
+    
+    const values = Object.values(revenue);
+    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+    
+    const query = `
+      UPDATE revenue
+      SET ${setClause}
+      WHERE user_id = $${values.length + 1}
+      RETURNING *
+    `;
+    
+    const result: QueryResult = await pool.query(query, [...values, userId]);
+    return result.rows[0];
+  }
 };
 
-export const createKYCRecord = async (
-  kycData: Omit<KYCRecord, 'id' | 'submittedAt' | 'createdAt' | 'updatedAt' | 'status'>
-): Promise<KYCRecord> => {
-  const newKYC: KYCRecord = {
-    ...kycData,
-    id: `kyc_${Date.now()}`,
-    status: 'PENDING',
-    submittedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  return newKYC;
-};
+// Fix the eligibility data - the original code had an issue with the products property
+export const eligibilityRepository = {
+  async findByUserId(userId: string): Promise<Eligibility | null> {
+    const result: QueryResult = await pool.query(
+      'SELECT * FROM eligibility WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0] || null;
+  },
 
-export const createKYBRecord = async (
-  kybData: Omit<KYBRecord, 'id' | 'submittedAt' | 'createdAt' | 'updatedAt' | 'status'>
-): Promise<KYBRecord> => {
-  const newKYB: KYBRecord = {
-    ...kybData,
-    id: `kyb_${Date.now()}`,
-    status: 'PENDING',
-    submittedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  return newKYB;
+  async create(eligibility: Omit<Eligibility, 'id'>): Promise<Eligibility> {
+    const { userId, products, ...eligibilityData } = eligibility as EligibilityWithProducts;
+    
+    // Insert eligibility record
+    const eligibilityColumns = Object.keys(eligibilityData);
+    const eligibilityValues = Object.values(eligibilityData);
+    
+    const eligibilityParamCount = eligibilityColumns.length;
+    const eligibilityPlaceholders = Array.from({ length: eligibilityParamCount }, (_, i) => `$${i + 1}`).join(', ');
+    
+    const eligibilityQuery = `
+      INSERT INTO eligibility (${eligibilityColumns.join(', ')}, user_id)
+      VALUES (${eligibilityPlaceholders}, $${eligibilityParamCount + 1})
+      RETURNING *
+    `;
+    
+    const eligibilityResult: QueryResult = await pool.query(eligibilityQuery, [...eligibilityValues, userId]);
+    
+    // Handle products separately if needed
+    if (products && Array.isArray(products)) {
+      for (const product of products) {
+        await pool.query(
+          'INSERT INTO eligibility_products (eligibility_id, product, status, passed_rules, failed_rules, next_actions) VALUES ($1, $2, $3, $4, $5, $6)',
+          [eligibilityResult.rows[0].id, product.product, product.status, JSON.stringify(product.passedRules || []), JSON.stringify(product.failedRules || []), JSON.stringify(product.nextActions || [])]
+        );
+      }
+    }
+    
+    return eligibilityResult.rows[0];
+  }
 };

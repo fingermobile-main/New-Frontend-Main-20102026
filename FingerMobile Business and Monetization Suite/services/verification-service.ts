@@ -1,3 +1,20 @@
+import { VerificationStatus } from '../shared/types';
+
+export const getVerification = async (): Promise<VerificationStatus> => {
+  // In a real implementation, this would fetch actual verification status
+  // For now, returning mock data
+  return {
+    businessVerified: false,
+    documentsSubmitted: false,
+    verificationStatus: 'pending',
+    rejectionReason: null
+  };
+};
+
+export default {
+  getVerification
+};
+
 export interface VerificationRecord {
   userId: string;
   status: 'pending' | 'verified' | 'rejected';

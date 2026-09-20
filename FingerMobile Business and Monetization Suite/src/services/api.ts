@@ -1,23 +1,24 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
-
-// Create axios instance with defaults
+// Create axios instance
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
+  timeout: 10000,
 });
 
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    // Get token from localStorage
+    const token = localStorage.getItem('accessToken');
+    
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
     }
+    
     return config;
   },
   (error) => {
@@ -25,73 +26,47 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle common errors
+// Response interceptor to handle token refresh
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    
+    // If token expired and not already tried refreshing
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      
+      try {
+        // Attempt token refresh
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (refreshToken) {
+          const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api'}/auth/refresh`, {
+            refreshToken
+          });
+          
+          // Type guard to safely extract accessToken
+          if (response.data && typeof response.data === 'object' && 'accessToken' in response.data) {
+            const accessToken = response.data.accessToken as string;
+            localStorage.setItem('accessToken', accessToken);
+            
+            // Retry original request with new token
+            originalRequest.headers!.Authorization = `Bearer ${accessToken}`;
+            return apiClient(originalRequest);
+          }
+        }
+      } catch (refreshError) { // Removed underscore since we're now using the error
+        console.error('Token refresh failed:', refreshError);
+        // If refresh fails, redirect to login
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+      }
     }
+    
     return Promise.reject(error);
   }
 );
 
-// Overview
-export const getOverview = () => apiClient.get('/business-suite/overview').then(res => res.data);
-
-// Programs
-export const getPrograms = () => apiClient.get('/business-suite/programs').then(res => res.data);
-
-// Verification
-export const getVerification = () => apiClient.get('/business-suite/verification').then(res => res.data);
-
-// Revenue
-export const getRevenue = () => apiClient.get('/business-suite/revenue').then(res => res.data);
-
-// Affiliate
-export const getAffiliate = () => apiClient.get('/business-suite/affiliate').then(res => res.data);
-
-// Policy
-export const getPolicy = () => apiClient.get('/business-suite/policy').then(res => res.data);
-
-// Admin
-export const getAdmin = () => apiClient.get('/business-suite/admin').then(res => res.data);
-
-// Applications
-export const submitApplication = (productKey: string) => 
-  apiClient.post('/business-suite/applications', { productKey }).then(res => res.data);
-
-// Estimates
-export const estimateRevenue = (payload: unknown) => 
-  apiClient.post('/business-suite/estimate', payload).then(res => res.data);
-
-// Business verification updates
-export const updateBusinessVerification = (payload: { legalName: string; registrationNumber: string; countryCode: string }) => 
-  apiClient.put('/business-suite/verification', payload).then(res => res.data);
-
-// Payout account updates
-export const updatePayoutAccount = (payload: { bankName: string; accountLast4: string; currency: string }) => 
-  apiClient.put('/business-suite/payout-account', payload).then(res => res.data);
-
-// Config updates
-export const updateConfig = (payload: Partial<import('@shared/types').PlatformConfig>) => 
-  apiClient.put('/business-suite/config', payload).then(res => res.data);
-
-export const businessSuiteService = {
-  getOverview,
-  getPrograms,
-  getVerification,
-  getRevenue,
-  getAffiliate,
-  getPolicy,
-  getAdmin,
-  submitApplication,
-  estimateRevenue,
-  updateBusinessVerification,
-  updatePayoutAccount,
-  updateConfig,
-};
-
-export default businessSuiteService;
+export default apiClient;

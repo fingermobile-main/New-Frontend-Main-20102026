@@ -160,3 +160,22 @@ class AffiliateServiceClass {
 }
 
 export const AffiliateService = new AffiliateServiceClass();
+
+import { AffiliateMetrics } from '../shared/types';
+
+export const getAffiliateData = async (): Promise<AffiliateMetrics> => {
+  // In a real implementation, this would fetch actual affiliate data
+  // For now, returning mock data
+  return {
+    totalEarnings: 0,
+    activeReferrals: 0,
+    conversionRate: 0,
+    commissionRate: 0.15, // 15% default commission
+    referralCode: 'USER123',
+    activity: []
+  };
+};
+
+export default {
+  getAffiliateData
+};

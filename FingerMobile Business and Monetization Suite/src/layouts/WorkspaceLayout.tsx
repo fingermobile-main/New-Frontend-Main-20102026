@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { RouteLoadingSpinner } from '../components/RouteLoadingSpinner';
 
@@ -9,9 +9,9 @@ export const WorkspaceLayout: React.FC = () => {
         <span className="text-xs font-mono tracking-widest text-zinc-400">STUDIO ENVIRONMENT</span>
       </header>
       <div className="flex-1 overflow-hidden">
-        <Suspense fallback={<RouteLoadingSpinner />}>
+        <React.Suspense fallback={<RouteLoadingSpinner />}>
           <Outlet />
-        </Suspense>
+        </React.Suspense>
       </div>
     </div>
   );
