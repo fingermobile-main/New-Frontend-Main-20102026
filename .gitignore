@@ -150,6 +150,20 @@ apps/backend/uploads/
 apps/backend/public/uploads/
 apps/backend/dist/
 
+# Ignore nested git repositories to prevent the "uncommitted changes" issue
+**/.git/
+**/FingerMobile Protocol/.git/
+**/FingerMobile Github 27072026/.git/
+
+# Additional nested directories that should be ignored
+**/archived_files/**
+**/BACKUP/**
+**/ARCHIVE/**
+**/Production Developement files*/
+**/frontend-main-backup-*/
+**/old-frontend-main/**
+**/frontend-main.bak.*/
+
 # Frontend specific ignores
 apps/frontend-main/.next/
 apps/frontend-main/out/
