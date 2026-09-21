@@ -1,85 +1,108 @@
-import type {
-  EstimateRequest,
-  PlatformConfig,
-} from '@shared/types'
-import type { Product } from './types'
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { 
+  getOverview, 
+  getSeshat, 
+  getPrograms, 
+  getEligibility, 
+  estimate, 
+  createApplication,
+  getApplicationById,
+  updateApplication,
+  deleteApplication,
+  getBusinessVerifications,
+  createBusinessVerification,
+  getBusinessVerificationById,
+  updateBusinessVerification,
+  deleteBusinessVerification,
+  getPayoutAccounts,
+  createPayoutAccount,
+  getPayoutAccountById,
+  updatePayoutAccount,
+  deletePayoutAccount,
+  getPlatformConfig,
+  updatePlatformConfig
+} from './business-suite-controller';
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+const app = express();
 
-  if (!response.ok) {
-    throw new Error(`Request failed with ${response.status}`)
-  }
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-  const payload = (await response.json()) as {
-    data: T
-  }
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 
-  return payload.data
-}
+// Routes
+app.get('/overview', getOverview);
+app.get('/seshat', getSeshat);
+app.get('/programs', getPrograms);
+app.get('/eligibility', getEligibility);
+app.post('/estimate', estimate);
+app.post('/application', createApplication);
+app.get('/application/:id', getApplicationById);
+app.put('/application/:id', updateApplication);
+app.delete('/application/:id', deleteApplication);
+app.get('/verifications', getBusinessVerifications);
+app.post('/verification', createBusinessVerification);
+app.get('/verification/:id', getBusinessVerificationById);
+app.put('/verification/:id', updateBusinessVerification);
+app.delete('/verification/:id', deleteBusinessVerification);
+app.get('/payout-accounts', getPayoutAccounts);
+app.post('/payout-account', createPayoutAccount);
+app.get('/payout-account/:id', getPayoutAccountById);
+app.put('/payout-account/:id', updatePayoutAccount);
+app.delete('/payout-account/:id', deletePayoutAccount);
+app.get('/config', getPlatformConfig);
+app.put('/config', updatePlatformConfig);
 
-export const api = {
-  getOverview: () => request('/api/overview'),
-  getPrograms: () => request('/api/monetization/programs'),
-  getEligibility: () => request('/api/monetization/eligibility'),
-  getVerification: () => request('/api/verification/status'),
-  getRevenue: () => request('/api/revenue/ledger'),
-  getAffiliate: () => request('/api/affiliate/performance'),
-  getPolicy: () => request('/api/policy/monetization'),
-  getAdmin: () => request('/api/admin/monitoring'),
-  submitApplication: (productKey: Product) =>
-    request('/api/monetization/applications', {
-      method: 'POST',
-      body: JSON.stringify({ productKey }),
-    }),
-  estimateRevenue: (payload: EstimateRequest) =>
-    request('/api/monetization/estimate', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  updateBusinessVerification: (payload: {
-    legalName: string
-    registrationNumber: string
-    countryCode: string
-  }) =>
-    request('/api/verification/business', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  updatePayoutAccount: (payload: {
-    bankName: string
-    accountLast4: string
-    currency: string
-  }) =>
-    request('/api/verification/payout-account', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  updateConfig: (payload: Partial<PlatformConfig>) =>
-    request('/api/admin/config', {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
-    }),
-}
+// Health check endpoint
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
-// Export individual functions for named imports
-export const {
+// Error handling middleware
+app.use((err: Error, req: Request, res: Response, next: Function) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use('*', (req: Request, res: Response) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+export default app;
+
+// Export all controller functions
+export {
   getOverview,
+  getSeshat,
   getPrograms,
   getEligibility,
-  getVerification,
-  getRevenue,
-  getAffiliate,
-  getPolicy,
-  getAdmin,
-  submitApplication,
-  estimateRevenue,
+  estimate,
+  createApplication,
+  getApplicationById,
+  updateApplication,
+  deleteApplication,
+  getBusinessVerifications,
+  createBusinessVerification,
+  getBusinessVerificationById,
   updateBusinessVerification,
+  deleteBusinessVerification,
+  getPayoutAccounts,
+  createPayoutAccount,
+  getPayoutAccountById,
   updatePayoutAccount,
-  updateConfig
-} = api;
+  deletePayoutAccount,
+  getPlatformConfig,
+  updatePlatformConfig
+};

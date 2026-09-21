@@ -1,1422 +1,1969 @@
-// types.ts
-import { ReactNode } from 'react';
+// Basic types
+export interface ProductKey {
+  id: string;
+  name: string;
+  description?: string;
+  visibility: 'public' | 'private' | 'unlisted';
+  billingPlan: 'basic' | 'premium' | 'enterprise' | 'free_trial';
+}
 
-// User and Authentication Types
+// Monetization types
+export interface MonetizationApplication {
+  id: string;
+  userId: string;
+  businessName: string;
+  website: string;
+  businessDescription: string;
+  monthlyRevenue?: number;
+  country: string;
+  productInterest: string[];
+  status: 'pending' | 'approved' | 'rejected' | 'under_review';
+  submittedAt: Date;
+  reviewedAt?: Date;
+  reviewerNotes?: string;
+}
+
+export interface Eligibility {
+  universalStatus: 'ineligible' | 'eligible' | 'conditional';
+  products: Record<string, {
+    eligible: boolean;
+    status: 'ineligible' | 'eligible' | 'conditional';
+    reasons: string[];
+  }>;
+  metrics: MonetizationMetrics;
+  alerts: string[];
+}
+
+export interface MonetizationMetrics {
+  userBase: number;
+  engagementRate: number;
+  contentVolume: number;
+  geographicDistribution: Record<string, number>;
+  deviceBreakdown: Record<string, number>;
+  revenuePotential: number;
+  riskFactors: string[];
+}
+
+export interface EstimateRequest {
+  projectedMonthlyUsers: number;
+  engagementRate: number;
+  avgSessionDuration: number;
+  conversionRate: number;
+  averageOrderValue: number;
+  contentCategories: string[];
+  geographicFocus: string[];
+}
+
+export interface EstimateResult {
+  potentialRevenueRange: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  keyDrivers: string[];
+  riskFactors: string[];
+  recommendations: string[];
+  confidenceLevel: 'low' | 'medium' | 'high';
+}
+
+export interface SeshatPage {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: 'draft' | 'published' | 'archived';
+  tags: string[];
+  views: number;
+  likes: number;
+  shares: number;
+}
+
+// Business verification types
+export interface BusinessVerification {
+  id: string;
+  userId: string;
+  businessName: string;
+  registrationNumber: string;
+  taxId: string;
+  incorporationDate: Date;
+  businessAddress: string;
+  supportingDocuments: string[];
+  verificationStatus: 'pending' | 'verified' | 'rejected';
+  verifiedAt?: Date;
+  notes?: string;
+}
+
+// Payout account types
+export interface PayoutAccount {
+  id: string;
+  userId: string;
+  accountHolderName: string;
+  accountNumber: string;
+  routingNumber: string;
+  bankName: string;
+  bankCountry: string;
+  currency: string;
+  verificationStatus: 'pending' | 'verified' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Platform configuration
+export interface PlatformConfig {
+  id: string;
+  minimumAge: number;
+  minimumPayoutThreshold: number;
+  seshatMonthlyFee: number;
+  seshatYearlyFee: number;
+  monetizationFeePercentage: number;
+  verificationFee: number;
+  payoutProcessingTime: number;
+  affiliateCommissionRate: number;
+  enableMonetization: boolean;
+  enableAffiliateProgram: boolean;
+  contentPolicy: string;
+  privacyPolicy: string;
+  termsOfService: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Content metrics
+export interface ContentMetrics {
+  id: string;
+  contentId: string;
+  impressions: number;
+  clicks: number;
+  engagementRate: number;
+  reach: number;
+  saves: number;
+  shares: number;
+  comments: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Affiliate event
+export interface AffiliateEvent {
+  id: string;
+  affiliateId: string;
+  eventId: string;
+  eventType: 'click' | 'signup' | 'purchase' | 'conversion';
+  commissionAmount: number;
+  currency: string;
+  metadata: Record<string, unknown>;
+  occurredAt: Date;
+}
+
+// Revenue ledger entry
+export interface RevenueLedgerEntry {
+  id: string;
+  userId: string;
+  transactionType: 'sale' | 'affiliate_commission' | 'subscription_fee' | 'refund';
+  amount: number;
+  currency: string;
+  description: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  processedAt: Date;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  metadata: Record<string, unknown>;
+}
+
+// User profile
 export interface User {
   id: string;
   username: string;
   email: string;
   firstName?: string;
   lastName?: string;
-  fullName?: string;
   avatar?: string;
   bio?: string;
-  role: UserRole;
-  permissions: string[];
-  isActive: boolean;
-  isVerified: boolean;
-  createdAt: string;
-  updatedAt: string;
-  lastLoginAt?: string;
-  preferences?: UserPreferences;
-  profile?: UserProfile;
-}
-
-export interface UserProfile {
-  id: string;
-  userId: string;
-  displayName?: string;
-  bio?: string;
-  avatar?: string;
-  coverImage?: string;
   location?: string;
   website?: string;
-  socialLinks?: SocialLinks;
-  privacySettings?: PrivacySettings;
-  notificationSettings?: NotificationSettings;
-  createdAt: string;
-  updatedAt: string;
+  socialLinks?: Record<string, string>;
+  role: 'user' | 'moderator' | 'admin' | 'super_admin';
+  status: 'active' | 'inactive' | 'suspended' | 'deleted';
+  lastLoginAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface SocialLinks {
-  twitter?: string;
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-  youtube?: string;
-  tiktok?: string;
-  website?: string;
-}
-
-export interface PrivacySettings {
-  profileVisibility: 'public' | 'friends' | 'private';
-  searchVisibility: 'public' | 'private';
-  allowMessaging: boolean;
-  showEmail: boolean;
-  showLocation: boolean;
-}
-
-export interface NotificationSettings {
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  smsNotifications?: boolean;
-  notificationFrequency: 'instant' | 'daily' | 'weekly';
-  marketingEmails: boolean;
-}
-
-export interface UserPreferences {
-  theme: 'light' | 'dark' | 'auto';
-  language: string;
-  timezone: string;
-  dateFormat: string;
-  timeFormat: string;
-  privacyLevel: number;
-  marketingConsent: boolean;
-  dataSharingConsent: boolean;
-}
-
-export enum UserRole {
-  GUEST = 'guest',
-  VERIFIED_USER = 'verified_user',
-  CREATOR = 'creator',
-  MERCHANT = 'merchant',
-  MODERATOR = 'moderator',
-  PLATFORM_ADMIN = 'platform_admin',
-  SYSTEM_ENGINEER = 'system_engineer',
-  AFFILIATE_PARTNER = 'affiliate_partner',
-  PREMIUM_MEMBER = 'premium_member',
-  BUSINESS_CLIENT = 'business_client',
-  API_CONSUMER = 'api_consumer'
-}
-
-export interface LoginCredentials {
-  username: string;
-  password: string;
-  rememberMe?: boolean;
-}
-
-export interface RegistrationData {
-  username: string;
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-  acceptTerms: boolean;
-}
-
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-}
-
-// Platform Configuration Types
-export interface PlatformConfig {
-  platformId: string;
-  platformName: string;
-  defaultPageId: string;
-  defaultUserId: string;
-  policyKey: string;
-  monetizationEnabled: boolean;
-  commissionStructure: CommissionStructure;
-  featureFlags: FeatureFlags;
-}
-
-export interface CommissionStructure {
-  standardRate: number;
-  premiumRate?: number; // Made optional
-  enterpriseRate?: number; // Made optional
-  volumeTiers?: TierThreshold[]; // Added for tiered commission structures
-  customRates?: boolean; // Added for custom rate configurations
-  bonusRate?: number; // Added for bonus calculations
-}
-
-export interface FeatureFlags {
-  enableRevenueSharing: boolean;
-  enableCommissionTracking: boolean;
-  enablePerformanceMetrics: boolean;
-  enablePartnerDashboards: boolean;
-}
-
-// Affiliate and Partnership Types
-export interface AffiliateProgram {
-  id: string;
-  name: string;
-  description: string;
-  commissionRate: number;
-  requirements: string[];
-  benefits: string[];
-  isActive: boolean;
-  startDate?: string;
-  endDate?: string;
-  termsUrl?: string;
-}
-
-export interface AffiliatePartner {
+// Post/thread
+export interface Post {
   id: string;
   userId: string;
-  programId: string;
-  partnerCode: string;
-  commissionRate: number;
-  status: AffiliateStatus;
-  joinDate: string;
-  lastPayoutDate?: string;
-  totalEarnings: number;
-  totalPayouts: number;
-  trackingParams: TrackingParams;
-  performanceMetrics: PerformanceMetrics;
-  paymentDetails: PaymentDetails;
-}
-
-export interface TrackingParams {
-  utmSource: string;
-  utmMedium: string;
-  utmCampaign: string;
-  customParams: Record<string, string>;
-}
-
-export interface PerformanceMetrics {
-  clicks: number;
-  conversions: number;
-  revenueGenerated: number;
-  commissionEarned: number;
-  conversionRate: number;
-  avgOrderValue: number;
-  uniqueVisitors: number;
-  bounceRate: number;
-  timeOnSite: number;
-}
-
-export interface PaymentDetails {
-  method: PaymentMethod;
-  details: PaymentMethodInfo;
-  preferredCurrency: string;
-  minimumPayoutAmount: number;
-  payoutSchedule: PayoutSchedule;
-}
-
-export interface PaymentMethodInfo {
-  paypalEmail?: string;
-  bankAccount?: BankAccountDetails;
-  cryptocurrencyAddress?: string;
-}
-
-export interface BankAccountDetails {
-  accountHolderName: string;
-  accountNumber: string;
-  routingNumber: string;
-  bankName: string;
-  bankAddress: string;
-  country: string;
-  currency: string;
-}
-
-export enum PaymentMethod {
-  PAYPAL = 'paypal',
-  BANK_TRANSFER = 'bank_transfer',
-  CRYPTOCURRENCY = 'cryptocurrency',
-  MOBILE_MONEY = 'mobile_money'
-}
-
-export enum PayoutSchedule {
-  WEEKLY = 'weekly',
-  BI_WEEKLY = 'bi-weekly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly'
-}
-
-export enum AffiliateStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  ACTIVE = 'active',
-  SUSPENDED = 'suspended',
-  TERMINATED = 'terminated',
-  INACTIVE = 'inactive'
-}
-
-// Monetization and Revenue Types
-export interface RevenueModel {
-  id: string;
-  name: string;
-  description: string;
-  type: RevenueModelType;
-  commissionStructure: CommissionStructure;
-  eligibilityCriteria: EligibilityCriteria;
-  terms: string;
-  isActive: boolean;
-}
-
-export enum RevenueModelType {
-  SUBSCRIPTION = 'subscription',
-  COMMISSION = 'commission',
-  FREEMIUM = 'freemium',
-  ADVERTISING = 'advertising',
-  LICENSING = 'licensing',
-  PARTNERSHIP = 'partnership'
-}
-
-export interface EligibilityCriteria {
-  minimumActivity: number;
-  verificationRequirements: string[];
-  performanceThresholds: PerformanceThresholds;
-}
-
-export interface PerformanceThresholds {
-  minimumClicks: number;
-  minimumConversions: number;
-  minimumRevenue: number;
-  minimumConversionRate: number;
-}
-
-export interface CommissionRule {
-  id: string;
-  name: string;
-  description: string;
-  rate: number;
-  conditions: CommissionConditions;
-  effectiveDate: string;
-  expiryDate?: string;
-  isActive: boolean;
-}
-
-export interface CommissionConditions {
-  minimumTransactionValue?: number;
-  productCategories?: string[];
-  customerGeography?: string[];
-  timeBased?: TimeBasedCondition;
-  volumeBased?: VolumeBasedCondition;
-}
-
-export interface TimeBasedCondition {
-  startTime?: string;
-  endTime?: string;
-  daysOfWeek?: number[];
-  seasonality?: SeasonalityCondition;
-}
-
-export interface SeasonalityCondition {
-  startDate: string;
-  endDate: string;
-  multiplier: number;
-}
-
-export interface VolumeBasedCondition {
-  tierThresholds: TierThreshold[];
-  progressive: boolean;
-}
-
-export interface TierThreshold {
-  minVolume: number;
-  maxVolume?: number;
-  rate: number;
-  threshold?: number; // Added to match constants
-  bonusRate?: number; // Added to match constants
-}
-
-// Content and Product Types
-export interface ContentItem {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt?: string;
-  authorId: string;
-  status: ContentStatus;
-  visibility: Visibility;
-  publishDate?: string;
-  tags: string[];
-  categories: string[];
-  featuredImage?: string;
-  seoMeta?: SeoMeta;
-  engagementMetrics?: EngagementMetrics;
-  monetizationSettings?: MonetizationSettings;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  shortDescription?: string;
-  vendorId: string;
-  categoryId: string;
-  price: number;
-  compareAtPrice?: number;
-  currency: string;
-  inventory: InventoryInfo;
-  images: Image[];
-  variants?: ProductVariant[];
-  tags: string[];
-  seoMeta?: SeoMeta;
-  status: ProductStatus;
-  visibility: Visibility;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface InventoryInfo {
-  quantity: number;
-  trackInventory: boolean;
-  lowStockThreshold: number;
-  reservedQuantity: number;
-}
-
-export interface ProductVariant {
-  id: string;
-  productId: string;
-  name: string;
-  sku: string;
-  price: number;
-  compareAtPrice?: number;
-  inventory: InventoryInfo;
-  attributes: Record<string, string>;
-  images?: Image[];
-}
-
-export interface Image {
-  id: string;
-  url: string;
-  altText?: string;
-  caption?: string;
-  isFeatured?: boolean;
-}
-
-export interface SeoMeta {
-  title: string;
-  description: string;
-  keywords: string[];
-  ogTitle?: string;
-  ogDescription?: string;
-  ogImage?: string;
-  twitterCard?: string;
-  canonicalUrl?: string;
-  noIndex?: boolean;
-  noFollow?: boolean;
-}
-
-export interface EngagementMetrics {
-  views: number;
-  likes: number;
-  shares: number;
-  comments: number;
-  saves: number;
-  conversions: number;
-  conversionRate: number;
-  averageTimeSpent: number;
-  bounceRate: number;
-}
-
-export interface MonetizationSettings {
-  enableAffiliateLinks: boolean;
-  commissionRate: number;
-  enableSponsoredContent: boolean;
-  enablePaywall: boolean;
-  pricingModel: PricingModel;
-  price?: number;
-  trialPeriod?: number;
-  billingCycle?: BillingCycle;
-}
-
-export enum ContentStatus {
-  DRAFT = 'draft',
-  PUBLISHED = 'published',
-  ARCHIVED = 'archived',
-  PENDING_REVIEW = 'pending_review',
-  SCHEDULED = 'scheduled'
-}
-
-export enum ProductStatus {
-  DRAFT = 'draft',
-  PUBLISHED = 'published',
-  OUT_OF_STOCK = 'out_of_stock',
-  DISCONTINUED = 'discontinued'
-}
-
-export enum Visibility {
-  PUBLIC = 'public',
-  PRIVATE = 'private',
-  UNLISTED = 'unlisted',
-  FRIENDS_ONLY = 'friends_only'
-}
-
-export enum PricingModel {
-  ONE_TIME = 'one_time',
-  SUBSCRIPTION = 'subscription',
-  FREEMIUM = 'freemium',
-  PAY_PER_USE = 'pay_per_use',
-  BUNDLE = 'bundle'
-}
-
-export enum BillingCycle {
-  MONTHLY = 'monthly',
-  YEARLY = 'yearly',
-  QUARTERLY = 'quarterly',
-  WEEKLY = 'weekly'
-}
-
-// Transaction and Payment Types
-export interface Transaction {
-  id: string;
-  type: TransactionType;
-  amount: number;
-  currency: string;
-  status: TransactionStatus;
-  source: TransactionSource;
-  referenceId: string;
-  userId: string;
-  partnerId?: string;
-  commissionAmount?: number;
-  commissionRate?: number;
-  metadata?: Record<string, unknown>;
-  processedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export enum TransactionType {
-  SALE = 'sale',
-  REFUND = 'refund',
-  COMMISSION = 'commission',
-  PAYOUT = 'payout',
-  CHARGE = 'charge',
-  CREDIT = 'credit'
-}
-
-export enum TransactionStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-  CANCELLED = 'cancelled',
-  REFUNDED = 'refunded'
-}
-
-export enum TransactionSource {
-  WEBSITE = 'website',
-  MOBILE_APP = 'mobile_app',
-  API = 'api',
-  PARTNER_INTEGRATION = 'partner_integration',
-  DIRECT_UPLOAD = 'direct_upload'
-}
-
-export interface Payout {
-  id: string;
-  partnerId: string;
-  amount: number;
-  currency: string;
-  method: PaymentMethod;
-  status: PayoutStatus;
-  scheduledDate: string;
-  processedDate?: string;
-  transactionId?: string;
-  fees?: number;
-  netAmount: number;
-  metadata?: Record<string, unknown>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export enum PayoutStatus {
-  SCHEDULED = 'scheduled',
-  PROCESSING = 'processing',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-  CANCELLED = 'cancelled',
-  ON_HOLD = 'on_hold'
-}
-
-// Analytics and Reporting Types
-export interface AnalyticsReport {
-  id: string;
-  name: string;
-  type: ReportType;
-  userId: string;
-  filters: ReportFilters;
-  data: ReportData;
-  schedule?: ReportSchedule;
-  deliveryPreferences?: DeliveryPreferences;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ReportFilters {
-  dateRange: DateRange;
-  metrics: string[];
-  dimensions: string[];
-  segments?: string[];
-  granularity?: Granularity;
-}
-
-export interface DateRange {
-  startDate: string;
-  endDate: string;
-}
-
-export enum ReportType {
-  PERFORMANCE = 'performance',
-  REVENUE = 'revenue',
-  AFFILIATE = 'affiliate',
-  COMMISSION = 'commission',
-  PAYOUT = 'payout',
-  CUSTOM = 'custom'
-}
-
-export interface ReportData {
-  columns: ReportColumn[];
-  rows: unknown[][];
-  summary: ReportSummary;
-  charts?: ChartData[];
-}
-
-export interface ReportColumn {
-  id: string;
-  name: string;
-  dataType: DataType;
-  format?: string;
-}
-
-export enum DataType {
-  STRING = 'string',
-  NUMBER = 'number',
-  DATE = 'date',
-  BOOLEAN = 'boolean',
-  CURRENCY = 'currency'
-}
-
-export interface ReportSummary {
-  totalRecords: number;
-  computedMetrics: Record<string, number>;
-  insights?: string[];
-  recommendations?: string[];
-}
-
-export interface ChartData {
-  type: ChartType;
-  title: string;
-  data: ChartSeries[];
-  options?: ChartOptions;
-}
-
-export interface ChartSeries {
-  name: string;
-  data: number[];
-  color?: string;
-}
-
-export interface ChartOptions {
   title?: string;
-  legend?: boolean;
-  tooltip?: boolean;
-  grid?: boolean;
-  responsive?: boolean;
+  content: string;
+  contentType: 'text' | 'image' | 'video' | 'link' | 'poll';
+  tags: string[];
+  visibility: 'public' | 'friends' | 'private';
+  parentId?: string;
+  mediaUrls?: string[];
+  pollOptions?: string[];
+  pollExpiresAt?: Date;
+  isPinned: boolean;
+  isLocked: boolean;
+  stats: {
+    likes: number;
+    dislikes: number;
+    comments: number;
+    shares: number;
+    views: number;
+    bookmarks: number;
+  };
+  moderation: {
+    status: 'pending' | 'approved' | 'rejected' | 'flagged';
+    flaggedBy?: string;
+    flaggedReason?: string;
+    reviewedBy?: string;
+    reviewedAt?: Date;
+  };
+  publishedAt: Date;
+  updatedAt: Date;
 }
 
-export enum ChartType {
-  LINE = 'line',
-  BAR = 'bar',
-  PIE = 'pie',
-  DOUGHNUT = 'doughnut',
-  AREA = 'area',
-  COLUMN = 'column'
-}
-
-export interface ReportSchedule {
-  frequency: Frequency;
-  interval: number;
-  startTime: string;
-  timezone: string;
-  nextRun?: string;
-}
-
-export enum Frequency {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly',
-  YEARLY = 'yearly'
-}
-
-export interface DeliveryPreferences {
-  format: ExportFormat;
-  deliveryMethod: DeliveryMethod;
-  recipients: string[];
-  includeVisualizations: boolean;
-  includeInsights: boolean;
-}
-
-export enum ExportFormat {
-  CSV = 'csv',
-  PDF = 'pdf',
-  XLSX = 'xlsx',
-  JSON = 'json'
-}
-
-export enum DeliveryMethod {
-  EMAIL = 'email',
-  DOWNLOAD = 'download',
-  API = 'api',
-  FTP = 'ftp'
-}
-
-export interface Granularity {
-  level: GranularityLevel;
-  customInterval?: number;
-}
-
-export enum GranularityLevel {
-  HOURLY = 'hourly',
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly',
-  YEARLY = 'yearly'
-}
-
-// Tracking and Attribution Types
-export interface TrackingLink {
+// Comment
+export interface Comment {
   id: string;
-  partnerId: string;
-  destinationUrl: string;
-  trackingParams: TrackingParams;
-  clicks: number;
-  conversions: number;
-  status: LinkStatus;
-  expirationDate?: string;
-  password?: string;
-  customDomain?: string;
-  createdAt: string;
-  updatedAt: string;
+  userId: string;
+  postId: string;
+  content: string;
+  parentId?: string;
+  isEdited: boolean;
+  stats: {
+    likes: number;
+    dislikes: number;
+  };
+  moderation: {
+    status: 'pending' | 'approved' | 'rejected' | 'flagged';
+    flaggedBy?: string;
+    flaggedReason?: string;
+    reviewedBy?: string;
+    reviewedAt?: Date;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum LinkStatus {
-  ACTIVE = 'active',
-  PAUSED = 'paused',
-  EXPIRED = 'expired',
-  DISABLED = 'disabled'
-}
-
-export interface Conversion {
-  id: string;
-  trackingLinkId: string;
-  partnerId: string;
-  transactionId: string;
-  value: number;
-  currency: string;
-  commissionAmount: number;
-  commissionRate: number;
-  status: ConversionStatus;
-  attributionData: AttributionData;
-  recordedAt: string;
-  createdAt: string;
-}
-
-export interface AttributionData {
-  clickId: string;
-  sessionId: string;
-  userAgent: string;
-  ipAddress: string;
-  referrer: string;
-  landingPage: string;
-  timeOnPage: number;
-  conversionPath: ConversionPathStep[];
-}
-
-export interface ConversionPathStep {
-  url: string;
-  timestamp: string;
-  referrer?: string;
-  timeOnPage?: number;
-}
-
-export enum ConversionStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
-  CHARGEBACK = 'chargeback'
-}
-
-// System and Admin Types
-export interface SystemConfig {
-  id: string;
-  key: string;
-  value: unknown;
-  valueType: ConfigValueType;
-  scope: ConfigScope;
-  isEncrypted: boolean;
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export enum ConfigValueType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  JSON = 'json',
-  ARRAY = 'array'
-}
-
-export enum ConfigScope {
-  GLOBAL = 'global',
-  TENANT = 'tenant',
-  USER = 'user',
-  APPLICATION = 'application'
-}
-
-export interface AuditLog {
-  id: string;
-  userId?: string;
-  action: string;
-  resourceType: string;
-  resourceId?: string;
-  oldValue?: unknown;
-  newValue?: unknown;
-  ipAddress?: string;
-  userAgent?: string;
-  timestamp: string;
-  metadata?: Record<string, unknown>;
-}
-
+// Notification
 export interface Notification {
   id: string;
   userId: string;
-  type: NotificationType;
+  type: 'like' | 'comment' | 'mention' | 'follow' | 'message' | 'system';
   title: string;
   message: string;
-  data?: unknown;
-  read: boolean;
-  readAt?: string;
-  scheduledAt?: string;
-  sentAt?: string;
-  createdAt: string;
-  updatedAt: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  isRead: boolean;
+  readAt?: Date;
+  createdAt: Date;
 }
 
-export enum NotificationType {
-  INFO = 'info',
-  WARNING = 'warning',
-  ERROR = 'error',
-  SUCCESS = 'success',
-  PROMOTIONAL = 'promotional',
-  SYSTEM = 'system',
-  AFFILIATE = 'affiliate'
-}
-
-export interface WebhookEndpoint {
+// Message
+export interface Message {
   id: string;
-  name: string;
-  url: string;
-  events: WebhookEvent[];
-  secret: string;
-  isActive: boolean;
-  retryPolicy: RetryPolicy;
-  rateLimit: RateLimit;
-  createdAt: string;
-  updatedAt: string;
+  senderId: string;
+  recipientId: string;
+  content: string;
+  threadId: string;
+  isRead: boolean;
+  readAt?: Date;
+  deliveredAt?: Date;
+  attachments?: string[];
+  status: 'sent' | 'delivered' | 'read';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface RetryPolicy {
-  maxRetries: number;
-  backoffStrategy: BackoffStrategy;
-  retryDelay: number;
-  maxRetryDelay: number;
+// Thread
+export interface Thread {
+  id: string;
+  participants: string[];
+  title?: string;
+  isGroup: boolean;
+  isArchived: boolean;
+  lastMessageAt?: Date;
+  lastMessage?: string;
+  unreadCount: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum BackoffStrategy {
-  FIXED = 'fixed',
-  LINEAR = 'linear',
-  EXPONENTIAL = 'exponential'
+// Report
+export interface Report {
+  id: string;
+  reporterId: string;
+  reportedEntityId: string;
+  reportedEntityType: 'post' | 'comment' | 'user' | 'message';
+  reason: string;
+  description?: string;
+  status: 'pending' | 'reviewed' | 'dismissed' | 'action_taken';
+  reviewedBy?: string;
+  reviewedAt?: Date;
+  evidence?: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface RateLimit {
-  requestsPerMinute: number;
-  burstLimit: number;
-}
-
-export interface AdminUser {
+// Activity
+export interface Activity {
   id: string;
   userId: string;
-  role: AdminRole;
-  permissions: string[];
-  assignedModules: string[];
+  action: string;
+  targetId?: string;
+  targetType?: string;
+  metadata: Record<string, unknown>;
+  ipAddress?: string;
+  userAgent?: string;
+  occurredAt: Date;
+}
+
+// Session
+export interface Session {
+  id: string;
+  userId: string;
+  token: string;
+  refreshToken?: string;
+  expiresAt: Date;
+  ipAddress?: string;
+  userAgent?: string;
   isActive: boolean;
-  lastLoginAt?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum AdminRole {
-  SUPER_ADMIN = 'super_admin',
-  SYSTEM_ADMIN = 'system_admin',
-  CONTENT_MODERATOR = 'content_moderator',
-  AFFILIATE_MANAGER = 'affiliate_manager',
-  FINANCE_MANAGER = 'finance_manager',
-  SUPPORT_AGENT = 'support_agent'
+// Category
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  parentId?: string;
+  icon?: string;
+  color?: string;
+  sortOrder: number;
+  isActive: boolean;
+  postCount: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Program and Campaign Types
-export interface ProgramDefinition {
+// Tag
+export interface Tag {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  usageCount: number;
+  isModerated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Moderation
+export interface ModerationAction {
+  id: string;
+  moderatorId: string;
+  targetId: string;
+  targetType: string;
+  action: 'approve' | 'reject' | 'flag' | 'suspend' | 'ban' | 'warn';
+  reason: string;
+  duration?: number; // in days for temporary actions
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+}
+
+// Analytics
+export interface AnalyticsData {
+  id: string;
+  userId: string;
+  metric: string;
+  value: number | string | Record<string, unknown>;
+  date: Date;
+  metadata: Record<string, unknown>;
+}
+
+// Subscription
+export interface Subscription {
+  id: string;
+  userId: string;
+  planId: string;
+  status: 'active' | 'cancelled' | 'expired' | 'past_due';
+  startDate: Date;
+  endDate?: Date;
+  nextBillingDate?: Date;
+  amount: number;
+  currency: string;
+  paymentMethod?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Plan
+export interface Plan {
   id: string;
   name: string;
   description: string;
-  requirements: string[]; // Fixed: Changed from Record<string, unknown> to string[]
-  benefits: string[];
-  commissionStructure: CommissionStructure;
-  duration: string;
-  terms: string;
+  price: number;
+  currency: string;
+  interval: 'month' | 'year';
+  features: string[];
   isActive: boolean;
+  sortOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
+// Payment
+export interface Payment {
+  id: string;
+  userId: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  paymentMethod: string;
+  transactionId?: string;
+  invoiceId?: string;
+  metadata: Record<string, unknown>;
+  processedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Invoice
+export interface Invoice {
+  id: string;
+  userId: string;
+  subscriptionId?: string;
+  items: {
+    description: string;
+    quantity: number;
+    unitPrice: number;
+    total: number;
+  }[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  currency: string;
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+  issuedAt: Date;
+  dueAt?: Date;
+  paidAt?: Date;
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Coupon
+export interface Coupon {
+  id: string;
+  code: string;
+  type: 'percentage' | 'fixed_amount';
+  value: number;
+  currency?: string;
+  usageLimit?: number;
+  usedCount: number;
+  validFrom: Date;
+  validUntil: Date;
+  applicablePlans: string[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Referral
+export interface Referral {
+  id: string;
+  referrerId: string;
+  refereeId: string;
+  rewardAmount: number;
+  rewardCurrency: string;
+  status: 'pending' | 'awarded' | 'expired';
+  rewardedAt?: Date;
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Reward
+export interface Reward {
+  id: string;
+  userId: string;
+  type: 'achievement' | 'referral' | 'loyalty' | 'bonus';
+  name: string;
+  description: string;
+  points: number;
+  value?: number;
+  status: 'pending' | 'awarded' | 'redeemed';
+  awardedAt?: Date;
+  redeemedAt?: Date;
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Achievement
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon?: string;
+  points: number;
+  requirements: {
+    type: 'activity' | 'duration' | 'milestone';
+    condition: string;
+    threshold: number;
+  }[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Bookmark
+export interface Bookmark {
+  id: string;
+  userId: string;
+  entityId: string;
+  entityType: 'post' | 'comment' | 'article' | 'video';
+  folder?: string;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Follow
+export interface Follow {
+  id: string;
+  followerId: string;
+  followingId: string;
+  status: 'following' | 'requested' | 'blocked';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Block
+export interface Block {
+  id: string;
+  blockerId: string;
+  blockedId: string;
+  reason?: string;
+  expiresAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Privacy setting
+export interface PrivacySetting {
+  id: string;
+  userId: string;
+  setting: string;
+  value: string | boolean | number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Preference
+export interface Preference {
+  id: string;
+  userId: string;
+  category: string;
+  key: string;
+  value: string | boolean | number | Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Setting
+export interface Setting {
+  id: string;
+  key: string;
+  value: string | boolean | number | Record<string, unknown>;
+  scope: 'global' | 'user' | 'tenant';
+  dataType: 'string' | 'number' | 'boolean' | 'json';
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Tenant
+export interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  logo?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  settings: Record<string, unknown>;
+  status: 'active' | 'suspended' | 'archived';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Permission
+export interface Permission {
+  id: string;
+  name: string;
+  description: string;
+  resource: string;
+  action: string;
+  conditions?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Role
+export interface Role {
+  id: string;
+  name: string;
+  description: string;
+  permissions: string[];
+  isDefault: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Audit log
+export interface AuditLog {
+  id: string;
+  userId: string;
+  action: string;
+  entity: string;
+  entityId: string;
+  oldValue?: Record<string, unknown>;
+  newValue?: Record<string, unknown>;
+  ipAddress?: string;
+  userAgent?: string;
+  occurredAt: Date;
+}
+
+// Backup
+export interface Backup {
+  id: string;
+  fileName: string;
+  size: number;
+  checksum: string;
+  status: 'pending' | 'completed' | 'failed';
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Migration
+export interface Migration {
+  id: string;
+  name: string;
+  batch: number;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  startedAt?: Date;
+  completedAt?: Date;
+  error?: string;
+}
+
+// Cache entry
+export interface CacheEntry {
+  id: string;
+  key: string;
+  value: string;
+  ttl?: number;
+  createdAt: Date;
+  expiresAt?: Date;
+}
+
+// Queue job
+export interface QueueJob {
+  id: string;
+  queue: string;
+  name: string;
+  data: Record<string, unknown>;
+  attempts: number;
+  maxAttempts: number;
+  status: 'waiting' | 'active' | 'completed' | 'failed' | 'delayed';
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  startedAt?: Date;
+  finishedAt?: Date;
+  error?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Rate limit
+export interface RateLimit {
+  id: string;
+  key: string;
+  window: number; // in seconds
+  count: number;
+  resetAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Geo location
+export interface GeoLocation {
+  id: string;
+  userId: string;
+  latitude: number;
+  longitude: number;
+  accuracy?: number;
+  source: 'gps' | 'network' | 'manual';
+  timestamp: Date;
+  createdAt: Date;
+}
+
+// Device
+export interface Device {
+  id: string;
+  userId: string;
+  deviceId: string;
+  deviceType: 'mobile' | 'tablet' | 'desktop' | 'tv' | 'other';
+  os: string;
+  osVersion: string;
+  browser?: string;
+  browserVersion?: string;
+  appVersion?: string;
+  pushToken?: string;
+  isPrimary: boolean;
+  lastSeenAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Push notification
+export interface PushNotification {
+  id: string;
+  userId: string;
+  title: string;
+  body: string;
+  data?: Record<string, unknown>;
+  status: 'pending' | 'sent' | 'delivered' | 'failed';
+  sentAt?: Date;
+  deliveredAt?: Date;
+  error?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Email
+export interface Email {
+  id: string;
+  userId: string;
+  templateId: string;
+  subject: string;
+  body: string;
+  recipients: string[];
+  status: 'draft' | 'queued' | 'sent' | 'failed';
+  sentAt?: Date;
+  error?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// SMS
+export interface Sms {
+  id: string;
+  userId: string;
+  phoneNumber: string;
+  message: string;
+  status: 'queued' | 'sent' | 'delivered' | 'failed';
+  sentAt?: Date;
+  deliveredAt?: Date;
+  error?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// File upload
+export interface FileUpload {
+  id: string;
+  userId: string;
+  originalName: string;
+  fileName: string;
+  mimeType: string;
+  size: number;
+  url: string;
+  thumbnailUrl?: string;
+  status: 'uploading' | 'processing' | 'completed' | 'failed';
+  processingError?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Search index
+export interface SearchIndex {
+  id: string;
+  entity: string;
+  entityId: string;
+  content: string;
+  metadata: Record<string, unknown>;
+  indexedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// API key
+export interface ApiKey {
+  id: string;
+  userId: string;
+  name: string;
+  key: string;
+  permissions: string[];
+  expiresAt?: Date;
+  lastUsedAt?: Date;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Webhook
+export interface Webhook {
+  id: string;
+  name: string;
+  url: string;
+  events: string[];
+  secret: string;
+  isActive: boolean;
+  lastTriggeredAt?: Date;
+  lastResponseCode?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Integration
+export interface Integration {
+  id: string;
+  userId: string;
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+  credentials: Record<string, unknown>;
+  isActive: boolean;
+  lastSyncAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// OAuth app
+export interface OauthApp {
+  id: string;
+  name: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUris: string[];
+  scopes: string[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// OAuth token
+export interface OauthToken {
+  id: string;
+  userId: string;
+  oauthAppId: string;
+  token: string;
+  refreshToken?: string;
+  expiresAt: Date;
+  scopes: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Task
+export interface Task {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  dueDate?: Date;
+  assignedTo?: string;
+  completedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Event
+export interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  startTime: Date;
+  endTime: Date;
+  location?: string;
+  organizerId: string;
+  attendees: string[];
+  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Group
+export interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  ownerId: string;
+  members: string[];
+  roleAssignments: Record<string, string>; // userId -> role
+  settings: Record<string, unknown>;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Forum
+export interface Forum {
+  id: string;
+  name: string;
+  description?: string;
+  slug: string;
+  categoryId: string;
+  threadsCount: number;
+  postsCount: number;
+  moderators: string[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Thread (forum)
+export interface ForumThread {
+  id: string;
+  forumId: string;
+  userId: string;
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isLocked: boolean;
+  viewCount: number;
+  replyCount: number;
+  lastReplyAt?: Date;
+  lastReplyUserId?: string;
+  status: 'open' | 'closed' | 'archived';
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Poll
+export interface Poll {
+  id: string;
+  userId: string;
+  question: string;
+  options: string[];
+  votes: Record<number, number>; // option index -> vote count
+  isMultipleChoice: boolean;
+  expiresAt?: Date;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Vote
+export interface Vote {
+  id: string;
+  userId: string;
+  pollId: string;
+  optionIndex: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Cart
+export interface Cart {
+  id: string;
+  userId: string;
+  items: {
+    productId: string;
+    quantity: number;
+    price: number;
+    variant?: string;
+    options?: Record<string, unknown>;
+  }[];
+  total: number;
+  currency: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Order
+export interface Order {
+  id: string;
+  userId: string;
+  cartId: string;
+  items: {
+    productId: string;
+    quantity: number;
+    price: number;
+    variant?: string;
+    options?: Record<string, unknown>;
+  }[];
+  total: number;
+  currency: string;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  shippingAddress: {
+    fullName: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  paymentMethod: string;
+  trackingNumber?: string;
+  shippedAt?: Date;
+  deliveredAt?: Date;
+  cancelledAt?: Date;
+  refundedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Product
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  category: string;
+  tags: string[];
+  stockQuantity: number;
+  variants: Record<string, unknown>[];
+  images: string[];
+  rating: number;
+  reviewCount: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Review
+export interface Review {
+  id: string;
+  userId: string;
+  productId: string;
+  rating: number;
+  title: string;
+  content: string;
+  isVerifiedPurchase: boolean;
+  helpfulCount: number;
+  reportedCount: number;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Wishlist
+export interface Wishlist {
+  id: string;
+  userId: string;
+  productId: string;
+  addedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Advertisement
+export interface Advertisement {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  targetUrl: string;
+  campaignId: string;
+  adType: 'banner' | 'popup' | 'sidebar' | 'native';
+  placement: string;
+  targeting: {
+    demographics?: Record<string, unknown>;
+    interests?: string[];
+    behaviors?: string[];
+  };
+  budget: number;
+  spent: number;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  status: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
+  startDate: Date;
+  endDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Campaign
 export interface Campaign {
   id: string;
   name: string;
   description: string;
-  programId: string;
-  startDate: string;
-  endDate?: string;
-  targetAudience: TargetAudience;
-  promotionalMaterials: PromotionalMaterial[];
-  trackingParams: TrackingParams;
+  advertiserId: string;
+  objective: 'awareness' | 'traffic' | 'engagement' | 'conversions';
   budget: number;
-  status: CampaignStatus;
-  metrics?: CampaignMetrics;
-  createdAt: string;
-  updatedAt: string;
+  spent: number;
+  status: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
+  targeting: {
+    demographics?: Record<string, unknown>;
+    interests?: string[];
+    behaviors?: string[];
+    geographies?: string[];
+  };
+  startDate: Date;
+  endDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface TargetAudience {
-  demographics: DemographicCriteria;
-  interests: string[];
-  behaviors: string[];
-  geography: string[];
-}
-
-export interface DemographicCriteria {
-  ageRange?: { min: number; max: number };
-  gender?: ('male' | 'female' | 'other')[];
-  incomeLevel?: string[];
-  educationLevel?: string[];
-  occupation?: string[];
-}
-
-export interface PromotionalMaterial {
+// Click
+export interface Click {
   id: string;
-  type: MaterialType;
+  advertisementId: string;
+  userId?: string;
+  sessionId?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  timestamp: Date;
+  metadata: Record<string, unknown>;
+}
+
+// Conversion
+export interface Conversion {
+  id: string;
+  advertisementId: string;
+  userId?: string;
+  sessionId?: string;
+  value: number;
+  currency: string;
+  type: string;
+  timestamp: Date;
+  metadata: Record<string, unknown>;
+}
+
+// Media asset
+export interface MediaAsset {
+  id: string;
+  userId: string;
+  filename: string;
+  originalFilename: string;
+  mimeType: string;
+  size: number;
+  url: string;
+  thumbnailUrl?: string;
+  dimensions?: {
+    width: number;
+    height: number;
+  };
+  altText?: string;
+  caption?: string;
+  tags: string[];
+  folderId?: string;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Folder
+export interface Folder {
+  id: string;
+  name: string;
+  parentId?: string;
+  userId: string;
+  path: string;
+  assetCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Playlist
+export interface Playlist {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  coverImageUrl?: string;
+  tracks: string[]; // IDs of media assets
+  isPublic: boolean;
+  trackCount: number;
+  duration: number; // in seconds
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Stream
+export interface Stream {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  streamKey: string;
+  streamUrl: string;
+  thumbnailUrl?: string;
+  viewers: number;
+  isLive: boolean;
+  startedAt?: Date;
+  endedAt?: Date;
+  status: 'idle' | 'starting' | 'live' | 'ending' | 'ended';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Live event
+export interface LiveEvent {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  scheduledStart: Date;
+  scheduledEnd: Date;
+  actualStart?: Date;
+  actualEnd?: Date;
+  thumbnailUrl?: string;
+  viewers: number;
+  isLive: boolean;
+  status: 'scheduled' | 'live' | 'ended' | 'cancelled';
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Subscriber
+export interface Subscriber {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  status: 'subscribed' | 'unsubscribed' | 'bounced' | 'complained';
+  subscribedAt?: Date;
+  unsubscribedAt?: Date;
+  tags: string[];
+  preferences: Record<string, boolean>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Newsletter
+export interface Newsletter {
+  id: string;
+  title: string;
+  subject: string;
+  content: string;
+  status: 'draft' | 'scheduled' | 'sent';
+  scheduledAt?: Date;
+  sentAt?: Date;
+  recipients: number;
+  opens: number;
+  clicks: number;
+  bounces: number;
+  complaints: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Chat room
+export interface ChatRoom {
+  id: string;
+  name: string;
+  description?: string;
+  ownerId: string;
+  members: string[];
+  isPrivate: boolean;
+  maxMembers?: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Chat message
+export interface ChatMessage {
+  id: string;
+  roomId: string;
+  userId: string;
+  content: string;
+  messageType: 'text' | 'image' | 'file' | 'system';
+  isEdited: boolean;
+  editedAt?: Date;
+  reactions?: Record<string, string[]>; // emoji -> user IDs
+  repliedTo?: string; // message ID
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Knowledge base article
+export interface KbArticle {
+  id: string;
   title: string;
   content: string;
-  assetUrl?: string;
-  downloadUrl?: string;
-  approvalStatus: ApprovalStatus;
-  approvedBy?: string;
-  approvedAt?: string;
-  createdAt: string;
-  updatedAt: string;
+  authorId: string;
+  categoryId: string;
+  tags: string[];
+  isPublished: boolean;
+  viewCount: number;
+  likes: number;
+  helpfulCount: number;
+  unhelpfulCount: number;
+  status: 'draft' | 'review' | 'published' | 'archived';
+  publishedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum MaterialType {
-  BANNER_AD = 'banner_ad',
-  TEXT_AD = 'text_ad',
-  VIDEO_AD = 'video_ad',
-  SOCIAL_POST = 'social_post',
-  EMAIL_TEMPLATE = 'email_template',
-  LANDING_PAGE = 'landing_page'
+// Knowledge base category
+export interface KbCategory {
+  id: string;
+  name: string;
+  description?: string;
+  parentId?: string;
+  articleCount: number;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum ApprovalStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-  NEEDS_REVISION = 'needs_revision'
+// Ticket
+export interface Ticket {
+  id: string;
+  userId: string;
+  subject: string;
+  description: string;
+  category: string;
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  status: 'open' | 'in_progress' | 'resolved' | 'closed' | 'escalated';
+  assigneeId?: string;
+  resolution?: string;
+  resolvedAt?: Date;
+  closedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface CampaignMetrics {
-  impressions: number;
-  clicks: number;
-  conversions: number;
-  spend: number;
-  roi: number;
-  cpc: number;
-  ctr: number;
-  conversionRate: number;
+// FAQ
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+  categoryId: string;
+  tags: string[];
+  isPublished: boolean;
+  viewCount: number;
+  helpfulCount: number;
+  unhelpfulCount: number;
+  sortOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum CampaignStatus {
-  DRAFT = 'draft',
-  SCHEDULED = 'scheduled',
-  RUNNING = 'running',
-  PAUSED = 'paused',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled'
+// Survey
+export interface Survey {
+  id: string;
+  title: string;
+  description?: string;
+  creatorId: string;
+  questions: {
+    id: string;
+    type: 'text' | 'multiple_choice' | 'rating' | 'yes_no';
+    question: string;
+    options?: string[];
+    isRequired: boolean;
+  }[];
+  isActive: boolean;
+  startsAt: Date;
+  endsAt?: Date;
+  targetAudience?: string[];
+  responseCount: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Subscription and Billing Types
-export interface SubscriptionPlan {
+// Survey response
+export interface SurveyResponse {
+  id: string;
+  surveyId: string;
+  userId?: string;
+  answers: Record<string, string | string[] | number>; // question ID -> answer
+  submittedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Feature flag
+export interface FeatureFlag {
+  id: string;
+  name: string;
+  description?: string;
+  isEnabled: boolean;
+  rolloutPercentage: number; // 0-100
+  targeting: {
+    userIds?: string[];
+    roles?: string[];
+    tenants?: string[];
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// A/B test
+export interface AbTest {
+  id: string;
+  name: string;
+  description?: string;
+  featureId: string;
+  variants: {
+    id: string;
+    name: string;
+    trafficSplit: number; // percentage
+    config: Record<string, unknown>;
+  }[];
+  status: 'draft' | 'running' | 'completed' | 'cancelled';
+  startDate: Date;
+  endDate?: Date;
+  winnerVariantId?: string;
+  results?: {
+    variantId: string;
+    metricName: string;
+    value: number;
+    confidence: number;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Experiment
+export interface Experiment {
+  id: string;
+  name: string;
+  description?: string;
+  hypothesis: string;
+  goals: string[];
+  status: 'planning' | 'running' | 'analysis' | 'concluded';
+  startDate: Date;
+  endDate?: Date;
+  participants: number;
+  results?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Feature
+export interface Feature {
+  id: string;
+  name: string;
+  description?: string;
+  isActive: boolean;
+  dependencies: string[];
+  accessGroups: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Changelog
+export interface Changelog {
+  id: string;
+  title: string;
+  content: string;
+  version?: string;
+  releaseDate: Date;
+  authorId: string;
+  tags: string[];
+  isPublic: boolean;
+  isBreakingChange: boolean;
+  affectedComponents: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Announcement
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  authorId: string;
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  audience: 'all' | 'premium' | 'beta_testers';
+  publishedAt: Date;
+  expiresAt?: Date;
+  isDismissable: boolean;
+  viewCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Feedback
+export interface Feedback {
+  id: string;
+  userId: string;
+  subject: string;
+  content: string;
+  category: 'bug' | 'feature_request' | 'improvement' | 'complaint' | 'compliment';
+  status: 'received' | 'reviewed' | 'in_progress' | 'completed' | 'declined';
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  assignedTo?: string;
+  resolution?: string;
+  resolvedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Report summary
+export interface ReportSummary {
   id: string;
   name: string;
   description: string;
-  price: number;
-  currency: string;
-  billingCycle: BillingCycle;
-  features: string[];
-  limitations: Limitation[];
+  type: string;
+  schedule: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'custom';
+  filters: Record<string, unknown>;
+  recipients: string[];
   isActive: boolean;
-  sortOrder: number;
-  createdAt: string;
-  updatedAt: string;
+  lastRunAt?: Date;
+  nextRunAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Limitation {
-  feature: string;
-  limit: number | string;
-  appliesTo: LimitationScope;
+// Dashboard
+export interface Dashboard {
+  id: string;
+  name: string;
+  description?: string;
+  ownerId: string;
+  widgets: {
+    id: string;
+    type: string;
+    title: string;
+    config: Record<string, unknown>;
+    position: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+  }[];
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum LimitationScope {
-  USER = 'user',
-  ORGANIZATION = 'organization',
-  API = 'api',
-  FEATURE = 'feature'
+// Widget
+export interface Widget {
+  id: string;
+  dashboardId: string;
+  type: string;
+  title: string;
+  config: Record<string, unknown>;
+  position: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface UserSubscription {
+// Metric
+export interface Metric {
+  id: string;
+  name: string;
+  description: string;
+  calculation: string;
+  source: string;
+  valueType: 'count' | 'percentage' | 'ratio' | 'amount';
+  format: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// KPI
+export interface Kpi {
+  id: string;
+  name: string;
+  description: string;
+  target: number;
+  currentValue: number;
+  trend: 'up' | 'down' | 'stable';
+  status: 'on_track' | 'at_risk' | 'off_track';
+  lastUpdated: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Alert
+export interface Alert {
+  id: string;
+  name: string;
+  description: string;
+  condition: string;
+  threshold: number;
+  severity: 'info' | 'warning' | 'error' | 'critical';
+  status: 'active' | 'triggered' | 'resolved' | 'disabled';
+  triggerValue?: number;
+  triggeredAt?: Date;
+  resolvedAt?: Date;
+  notifiedUsers: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Notification preference
+export interface NotificationPreference {
   id: string;
   userId: string;
-  planId: string;
-  status: SubscriptionStatus;
-  startDate: string;
-  endDate?: string;
-  trialEndDate?: string;
-  cancellationDate?: string;
-  autoRenew: boolean;
-  paymentMethodId?: string;
-  billingInfo?: BillingInfo;
-  createdAt: string;
-  updatedAt: string;
+  channel: 'email' | 'push' | 'sms' | 'web';
+  eventType: string;
+  isEnabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum SubscriptionStatus {
-  ACTIVE = 'active',
-  TRIAL = 'trial',
-  PAST_DUE = 'past_due',
-  CANCELLED = 'cancelled',
-  EXPIRED = 'expired',
-  PAUSED = 'paused'
+// Data export
+export interface DataExport {
+  id: string;
+  userId: string;
+  exportType: string;
+  filters: Record<string, unknown>;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  downloadUrl?: string;
+  expiresAt?: Date;
+  fileSize?: number;
+  errorMessage?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface BillingInfo {
-  cardLastFour: string;
-  cardBrand: string;
-  expiryMonth: number;
-  expiryYear: number;
-  billingEmail: string;
-  billingAddress: Address;
+// Data import
+export interface DataImport {
+  id: string;
+  userId: string;
+  importType: string;
+  source: string;
+  fileUrl: string;
+  status: 'pending' | 'validating' | 'processing' | 'completed' | 'failed';
+  recordsProcessed: number;
+  recordsSuccessful: number;
+  recordsFailed: number;
+  errorMessage?: string;
+  startedAt?: Date;
+  completedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Address {
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
+// Backup schedule
+export interface BackupSchedule {
+  id: string;
+  name: string;
+  description?: string;
+  schedule: string; // cron expression
+  retentionPeriod: number; // in days
+  storageLocation: string;
+  lastRunAt?: Date;
+  nextRunAt?: Date;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// Extended Universal Profile Types
-export interface ExtendedUniversalProfile {
-  profileId: string;
-  profileType: string;
-  personalInformation: PersonalInformation;
-  behavioralInsights: BehavioralInsights;
-  psychologicalProfiling: PsychologicalProfiling;
-  contextualAdaptation: ContextualAdaptation;
-  privacyControls: PrivacyControls;
-  securitySettings: SecuritySettings;
-  integrationCapabilities: IntegrationCapabilities;
-  evolutionMechanisms: EvolutionMechanisms;
-  complianceFrameworks: ComplianceFrameworks;
-  auditTrail: AuditTrail;
+// Maintenance window
+export interface MaintenanceWindow {
+  id: string;
+  title: string;
+  description: string;
+  startAt: Date;
+  endAt: Date;
+  type: 'planned' | 'emergency';
+  impact: 'none' | 'low' | 'medium' | 'high';
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+  notifyUsers: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface PersonalInformation {
-  demographicData: DemographicData;
-  lifestyleFactors: LifestyleFactors;
-  professionalData: ProfessionalData;
-  socialConnections: SocialConnections;
+// System health
+export interface SystemHealth {
+  id: string;
+  service: string;
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  responseTime: number; // in milliseconds
+  lastCheckedAt: Date;
+  details?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface DemographicData {
-  age: number | null;
-  gender: string | null;
-  location: string | null;
-  language: string;
-  culturalPreferences: string[];
+// Performance metric
+export interface PerformanceMetric {
+  id: string;
+  metricName: string;
+  value: number;
+  unit: string;
+  timestamp: Date;
+  labels: Record<string, string>;
+  createdAt: Date;
 }
 
-export interface LifestyleFactors {
-  interests: string[];
-  hobbies: string[];
-  preferences: Record<string, unknown>;
-  behaviorPatterns: Record<string, unknown>;
-}
-
-export interface ProfessionalData {
-  occupation: string | null;
-  industry: string | null;
-  seniority: string | null;
-  skills: string[];
-  careerGoals: string[];
-}
-
-export interface SocialConnections {
-  networks: string[];
-  influenceLevel: string | null;
-  engagementStyle: string | null;
-}
-
-export interface BehavioralInsights {
-  interactionPatterns: InteractionPatterns;
-  decisionMaking: DecisionMaking;
-  learningStyle: LearningStyle;
-}
-
-export interface InteractionPatterns {
-  peakActivityTimes: string[];
-  preferredChannels: string[];
-  responseRates: Record<string, number>;
-  engagementTriggers: string[];
-}
-
-export interface DecisionMaking {
-  riskTolerance: string | null;
-  decisionSpeed: string | null;
-  influenceSusceptibility: string | null;
-  valuePriorities: string[];
-}
-
-export interface LearningStyle {
-  preference: string | null;
-  pace: string | null;
-  retentionMethods: string[];
-  feedbackReceptiveness: string | null;
-}
-
-export interface PsychologicalProfiling {
-  personalityTraits: PersonalityTraits;
-  cognitiveBiases: string[];
-  motivationDrivers: string[];
-  stressIndicators: string[];
-}
-
-export interface PersonalityTraits {
-  openness: number | null;
-  conscientiousness: number | null;
-  extraversion: number | null;
-  agreeableness: number | null;
-  neuroticism: number | null;
-}
-
-export interface ContextualAdaptation {
-  situationalAwareness: SituationalAwareness;
-  adaptiveInterfaces: AdaptiveInterfaces;
-  personalizedRecommendations: PersonalizedRecommendations;
-}
-
-export interface SituationalAwareness {
-  environmentalFactors: Record<string, unknown>;
-  temporalConsiderations: Record<string, unknown>;
-  socialContext: Record<string, unknown>;
-  deviceCapabilities: Record<string, unknown>;
-}
-
-export interface AdaptiveInterfaces {
-  uiPreferences: Record<string, unknown>;
-  accessibilityNeeds: string[];
-  interactionModalities: string[];
-}
-
-export interface PersonalizedRecommendations {
-  contentSuggestions: string[];
-  timingOptimization: Record<string, unknown>;
-  relevanceScoring: Record<string, number>;
-}
-
-export interface PrivacyControls {
-  dataSharingPermissions: DataSharingPermissions;
-  optOutPreferences: string[];
-  dataRetentionChoices: Record<string, unknown>;
-  profilingConsent: boolean;
-}
-
-export interface DataSharingPermissions {
-  personalData: boolean;
-  behavioralData: boolean;
-  demographicData: boolean;
-  inferredData: boolean;
-}
-
-export interface SecuritySettings {
-  authenticationPreferences: AuthenticationPreferences;
-  privacyShielding: PrivacyShielding;
-  threatProtection: ThreatProtection;
-}
-
-export interface AuthenticationPreferences {
-  primaryMethod: string;
-  secondaryMethods: string[];
-  biometricOptions: string[];
-  securityQuestions: string[];
-}
-
-export interface PrivacyShielding {
-  dataObfuscation: boolean;
-  syntheticIdentity: boolean;
-  sessionAnonymization: boolean;
-}
-
-export interface ThreatProtection {
-  anomalyDetection: boolean;
-  fraudPrevention: boolean;
-  identitySpoofing: boolean;
-}
-
-export interface IntegrationCapabilities {
-  thirdPartyConnectors: string[];
-  dataPortability: DataPortability;
-  interoperabilityStandards: string[];
-}
-
-export interface DataPortability {
-  exportFormats: string[];
-  transferProtocols: string[];
-  validationChecks: boolean;
-}
-
-export interface EvolutionMechanisms {
-  selfUpdating: boolean;
-  feedbackIntegration: boolean;
-  preferenceLearning: boolean;
-  contextPrediction: boolean;
-}
-
-export interface ComplianceFrameworks {
-  gdpr: unknown;
-  ccpa: boolean;
-  hipaa: boolean;
-  sox: boolean;
-  iso27001: boolean;
-}
-
-export interface AuditTrail {
-  profileChanges: boolean;
-  dataAccess: boolean;
-  consentModifications: boolean;
-  automatedDecisions: boolean;
-}
-
-// API Response Types
-export type ApiResponse<T = unknown> = {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-};
-
-export interface ApiError {
-  code: string;
+// Log entry
+export interface LogEntry {
+  id: string;
+  level: 'debug' | 'info' | 'warn' | 'error';
   message: string;
-  details?: string;
-  timestamp: string;
-  path?: string;
+  module: string;
+  userId?: string;
+  requestId?: string;
+  metadata: Record<string, unknown>;
+  timestamp: Date;
 }
 
-export interface PaginationMeta {
-  currentPage: number;
-  totalPages: number;
-  totalRecords: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-  pageSize: number;
+// Trace
+export interface Trace {
+  id: string;
+  traceId: string;
+  spanId: string;
+  parentSpanId?: string;
+  operationName: string;
+  startTime: Date;
+  endTime: Date;
+  duration: number; // in microseconds
+  tags: Record<string, string>;
+  logs: {
+    timestamp: Date;
+    fields: Record<string, unknown>;
+  }[];
+  createdAt: Date;
 }
 
-// Form and Validation Types
-export interface FormField {
+// Span
+export interface Span {
+  id: string;
+  traceId: string;
+  spanId: string;
+  parentSpanId?: string;
+  operationName: string;
+  startTime: Date;
+  endTime: Date;
+  duration: number; // in microseconds
+  tags: Record<string, string>;
+  logs: {
+    timestamp: Date;
+    fields: Record<string, unknown>;
+  }[];
+  createdAt: Date;
+}
+
+// Dependency
+export interface Dependency {
+  id: string;
   name: string;
-  label: string;
-  type: FormFieldType;
-  required: boolean;
-  defaultValue?: unknown;
-  validation?: FieldValidation;
-  options?: SelectOption[];
-  placeholder?: string;
-  helpText?: string;
+  version: string;
+  license: string;
+  homepage?: string;
+  repository?: string;
+  isDevDependency: boolean;
+  vulnerabilities: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export enum FormFieldType {
-  TEXT = 'text',
-  EMAIL = 'email',
-  PASSWORD = 'password',
-  SELECT = 'select',
-  MULTI_SELECT = 'multi_select',
-  CHECKBOX = 'checkbox',
-  RADIO = 'radio',
-  TEXTAREA = 'textarea',
-  DATE = 'date',
-  NUMBER = 'number',
-  FILE = 'file'
+// Vulnerability
+export interface Vulnerability {
+  id: string;
+  package: string;
+  version: string;
+  vulnerabilityId: string;
+  title: string;
+  description: string;
+  severity: 'low' | 'moderate' | 'high' | 'critical';
+  cvssScore?: number;
+  cveIds: string[];
+  recommendation: string;
+  advisoryUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface FieldValidation {
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: string;
-  customValidator?: (value: unknown) => boolean | string;
+// Security scan
+export interface SecurityScan {
+  id: string;
+  type: 'dependency' | 'code' | 'configuration' | 'secret';
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  findings: {
+    id: string;
+    type: string;
+    severity: string;
+    description: string;
+    location?: string;
+    codeSnippet?: string;
+    remediation: string;
+  }[];
+  startedAt: Date;
+  completedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface SelectOption {
+// Secret
+export interface Secret {
+  id: string;
+  name: string;
   value: string;
-  label: string;
-  disabled?: boolean;
+  description?: string;
+  scope: 'global' | 'tenant' | 'user';
+  encryptionAlgorithm: string;
+  isRotated: boolean;
+  rotatedAt?: Date;
+  expiresAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-// UI Component Types
-export interface TableColumn<T = unknown> {
-  key: string;
-  header: string;
-  render?: (item: T) => ReactNode;
-  sortable?: boolean;
-  width?: number | string;
-  align?: 'left' | 'center' | 'right';
-}
-
-export interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  children: ReactNode;
-}
-
-export interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  children: ReactNode;
-}
-
-export interface BadgeProps {
-  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-  children: ReactNode;
-}
-
-// Business Suite Specific Types
-export interface AffiliateData {
+// Encryption key
+export interface EncryptionKey {
   id: string;
   name: string;
-  email: string;
-  commissionRate: number;
-  totalSales: number;
-  totalCommission: number;
-  status: string;
-  joinDate: string;
+  publicKey: string;
+  privateKey?: string;
+  algorithm: string;
+  keyLength: number;
+  purpose: 'encryption' | 'signing' | 'authentication';
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface CommissionData {
+// Certificate
+export interface Certificate {
   id: string;
-  affiliateId: string;
-  saleAmount: number;
-  commissionRate: number;
-  commissionAmount: number;
-  status: string;
-  createdAt: string;
+  name: string;
+  certificate: string;
+  privateKey?: string;
+  issuer: string;
+  subject: string;
+  validFrom: Date;
+  validUntil: Date;
+  serialNumber: string;
+  fingerprint: string;
+  status: 'valid' | 'expiring_soon' | 'expired' | 'revoked';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface PayoutData {
+// Token bucket
+export interface TokenBucket {
   id: string;
-  affiliateId: string;
-  amount: number;
-  status: string;
-  scheduledDate: string;
-  processedDate?: string;
+  key: string;
+  capacity: number;
+  refillRate: number; // tokens per second
+  tokens: number;
+  lastRefillAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface PerformanceData {
+// Circuit breaker
+export interface CircuitBreaker {
   id: string;
-  affiliateId: string;
-  clicks: number;
-  conversions: number;
-  conversionRate: number;
-  revenue: number;
-  date: string;
+  name: string;
+  failureThreshold: number;
+  timeout: number; // in milliseconds
+  state: 'closed' | 'open' | 'half_open';
+  failureCount: number;
+  lastFailureAt?: Date;
+  openedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface BusinessSuiteConfig {
-  monetizationEnabled: boolean;
-  defaultCommissionRate: number;
-  payoutThreshold: number;
-  trackingWindow: number; // in days
-  supportedPaymentMethods: PaymentMethod[];
-  enableAdvancedAnalytics: boolean;
-  enableAutomatedPayouts: boolean;
+// Health check
+export interface HealthCheck {
+  id: string;
+  name: string;
+  url: string;
+  interval: number; // in seconds
+  timeout: number; // in seconds
+  expectedStatus: number;
+  isActive: boolean;
+  lastCheckedAt?: Date;
+  lastStatus?: number;
+  lastResponseTime?: number; // in milliseconds
+  createdAt: Date;
+  updatedAt: Date;
 }
 
+// Feature toggle
+export interface FeatureToggle {
+  id: string;
+  name: string;
+  description?: string;
+  enabled: boolean;
+  strategies: {
+    name: string;
+    parameters: Record<string, string>;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Launch darkly-like feature flag
+export interface FeatureFlagV2 {
+  id: string;
+  key: string;
+  name: string;
+  description?: string;
+  variations: {
+    id: string;
+    value: string | number | boolean | Record<string, unknown>;
+    name?: string;
+  }[];
+  rules: {
+    id: string;
+    clauses: {
+      attribute: string;
+      operator: string;
+      values: (string | number | boolean)[];
+    }[];
+    variationId: string;
+  }[];
+  fallthrough: {
+    variationId: string;
+  };
+  offVariation: string;
+  enabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Admin data
 export interface AdminData {
-  totalAffiliates: number;
-  totalSales: number;
-  totalCommission: number;
-  pendingPayouts: number;
-  activePrograms: number;
+  overview: {
+    totalUsers: number;
+    activeUsers: number;
+    totalPosts: number;
+    totalComments: number;
+    totalRevenue: number;
+    subscriptions: {
+      active: number;
+      pending: number;
+      expired: number;
+    };
+  };
+  recentActivity: {
+    action: string;
+    user: string;
+    timestamp: Date;
+    details: string;
+  }[];
+  systemStats: {
+    uptime: number;
+    memoryUsage: number;
+    cpuUsage: number;
+    diskUsage: number;
+  };
+  performanceMetrics: {
+    avgResponseTime: number;
+    requestsPerMinute: number;
+    errorRate: number;
+  }[];
 }
-
-export interface AffiliateMetrics {
-  totalClicks: number;
-  totalConversions: number;
-  conversionRate: number;
-  totalRevenue: number;
-  totalCommission: number;
-  avgOrderValue: number;
-  topPerformingLinks: string[];
-}
-
-// Enums with corrected naming to match constants.ts
-export enum RateLimitingStrategy {
-  fixed_window = 'fixed_window',
-  sliding_window = 'sliding_window',
-  token_bucket = 'token_bucket'
-}
-
-export enum AnalyticsProvider {
-  google_analytics = 'google_analytics',
-  mixpanel = 'mixpanel',
-  segment = 'segment',
-  amplitude = 'amplitude'
-}
-
-export enum FileStorageProvider {
-  aws_s3 = 'aws_s3',
-  google_cloud = 'google_cloud',
-  azure_blob = 'azure_blob',
-  cloudinary = 'cloudinary'
-}
-
-export enum DashboardWidget {
-  revenue_chart = 'revenue_chart',
-  commission_breakdown = 'commission_breakdown',
-  affiliate_performance = 'affiliate_performance',
-  conversion_metrics = 'conversion_metrics',
-  payout_summary = 'payout_summary'
-}
-
-export enum WebhookEvent {
-  sale_completed = 'sale.completed',
-  commission_calculated = 'commission.calculated',
-  payout_initiated = 'payout.initiated',
-  affiliate_registered = 'affiliate.registered',
-  program_updated = 'program.updated'
-}
-
