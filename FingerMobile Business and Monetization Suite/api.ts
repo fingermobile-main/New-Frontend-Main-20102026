@@ -1,8 +1,8 @@
 import type {
   EstimateRequest,
   PlatformConfig,
-  Product, /* ProductKey, */
 } from '@shared/types'
+import type { Product } from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
@@ -66,3 +66,20 @@ export const api = {
       body: JSON.stringify(payload),
     }),
 }
+
+// Export individual functions for named imports
+export const {
+  getOverview,
+  getPrograms,
+  getEligibility,
+  getVerification,
+  getRevenue,
+  getAffiliate,
+  getPolicy,
+  getAdmin,
+  submitApplication,
+  estimateRevenue,
+  updateBusinessVerification,
+  updatePayoutAccount,
+  updateConfig
+} = api;

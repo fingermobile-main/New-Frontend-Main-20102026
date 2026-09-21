@@ -193,3 +193,90 @@ export interface BusinessSuiteOverview {
   seshat: unknown | null;
   programs: unknown[];
 }
+
+// Add missing types that are referenced in the controller
+export interface ContentMetrics {
+  id: string;
+  userId: string;
+  videoId: string;
+  views: number;
+  likes: number;
+  shares: number;
+  comments: number;
+  watchTime: number;
+  engagementRate: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BusinessVerification {
+  id: string;
+  userId: string;
+  legalName: string;
+  businessDescription: string;
+  registrationNumber: string;
+  documents: string[];
+  status: 'pending' | 'approved' | 'rejected';
+  reviewedBy?: string;
+  reviewedAt?: string;
+  rejectionReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MonetizationApplication {
+  id: string;
+  userId: string;
+  productKey: string;
+  businessName: string;
+  businessDescription: string;
+  website: string;
+  country: string;
+  documents: string[];
+  status: 'pending' | 'approved' | 'rejected' | 'under_review';
+  submittedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RevenueLedgerEntry {
+  id: string;
+  userId: string;
+  transactionType: 'payout' | 'commission' | 'fee' | 'adjustment';
+  amount: number;
+  currency: string;
+  description: string;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  occurredAt: string;
+  createdAt: string;
+}
+
+export interface PayoutAccount {
+  id: string;
+  userId: string;
+  bankName: string;
+  accountNumber: string;
+  routingNumber: string;
+  accountType: 'checking' | 'savings';
+  verified: boolean;
+  verificationDate?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AffiliateEvent {
+  id: string;
+  userId: string;
+  referrerId?: string;
+  eventType: 'signup' | 'purchase' | 'conversion';
+  amount: number;
+  commissionRate: number;
+  commissionAmount: number;
+  status: 'pending' | 'completed' | 'cancelled';
+  recordedAt: string;
+  processedAt?: string;
+  createdAt: string;
+}

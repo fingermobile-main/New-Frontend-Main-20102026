@@ -15,7 +15,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["./shared/*"]
+    }
   },
   "include": ["src", "types.ts", "utils", "services", "components", "middleware", "database.ts", "repository.ts", "api.ts", "auth.ts", "http.ts", "requests.ts", "formulas.ts", "policy.ts", "error-handler.ts", "business-suite-service.ts", "business-suite-controller.ts", "business-suite-store.ts", "business-suite.ts", "useBusinessSuite.ts", "kyc-verification-service.ts", "eligibility-service.ts", "guardian-ai-service.ts", "index.ts", "server.ts", "request-context.ts", "database.js", "repository.js", "app.ts"]
 }

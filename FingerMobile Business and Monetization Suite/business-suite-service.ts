@@ -274,21 +274,40 @@ export const businessSuiteService = {
       ...payload,
     }
 
-    repository.updateConfig({
-      id: current.id ?? 'platform_default',
-      minimumAge: updated.minimumAge,
-      minimumPayoutThreshold: updated.minimumPayoutThreshold,
-      seshatMonthlyFee: updated.seshatMonthlyFee,
-      seshatYearlyFee: updated.seshatYearlyFee,
-      revenueSharePercentage: updated.revenueSharePercentage,
-      giftsCashValue: updated.giftsCashValue,
-      supportedCountriesJson: JSON.stringify(updated.supportedCountries),
-      policyVersion: updated.policyVersion,
-      affiliateBonusPercentage: updated.affiliateBonusPercentage,
+    // Create the repository update object with explicit typing
+    const repoUpdateObj: {
+      id?: string;
+      minimumAge?: number;
+      minimumPayoutThreshold?: number;
+      seshatMonthlyFee?: number;
+      seshatYearlyFee?: number;
+      revenueSharePercentage?: number;
+      giftsCashValue?: number;
+      supportedCountriesJson?: string;
+      policyVersion?: string;
+      affiliateBonusPercentage?: number;
+      updatedAt: string;
+    } = {
       updatedAt: new Date().toISOString(),
-    })
+    };
 
-    return repository.getPlatformConfig()
+    // Conditionally assign values to avoid type errors
+    if (updated.minimumAge !== undefined) repoUpdateObj.minimumAge = updated.minimumAge;
+    if (updated.minimumPayoutThreshold !== undefined) repoUpdateObj.minimumPayoutThreshold = updated.minimumPayoutThreshold;
+    if (updated.seshatMonthlyFee !== undefined) repoUpdateObj.seshatMonthlyFee = updated.seshatMonthlyFee;
+    if (updated.seshatYearlyFee !== undefined) repoUpdateObj.seshatYearlyFee = updated.seshatYearlyFee;
+    if (updated.revenueSharePercentage !== undefined) repoUpdateObj.revenueSharePercentage = updated.revenueSharePercentage;
+    if (updated.giftsCashValue !== undefined) repoUpdateObj.giftsCashValue = updated.giftsCashValue;
+    if (updated.supportedCountries !== undefined) repoUpdateObj.supportedCountriesJson = Array.isArray(updated.supportedCountries) 
+      ? JSON.stringify(updated.supportedCountries) 
+      : JSON.stringify([updated.supportedCountries]);
+    if (updated.policyVersion !== undefined) repoUpdateObj.policyVersion = updated.policyVersion;
+    if (updated.affiliateBonusPercentage !== undefined) repoUpdateObj.affiliateBonusPercentage = updated.affiliateBonusPercentage;
+    if (updated.id !== undefined) repoUpdateObj.id = updated.id;
+
+    repository.updateConfig(repoUpdateObj);
+
+    return repository.getPlatformConfig();
   },
   trackWebhook(eventType: string, payload: unknown) {
     const webhook = {

@@ -28,6 +28,7 @@ interface SeshatPayload {
   name: string;
   description?: string;
   visibility: 'public' | 'private' | 'unlisted';
+  billingPlan?: string;  // Add billingPlan property
 }
 
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -106,7 +107,7 @@ export function parseSeshatPayload(body: unknown): SeshatPayload {
     throw new Error('Invalid seshat payload');
   }
 
-  const { name, description, visibility } = body as Record<string, unknown>;
+  const { name, description, visibility, billingPlan } = body as Record<string, unknown>;
   
   if (!name || typeof name !== 'string') {
     throw new Error('Missing or invalid name');
@@ -119,7 +120,8 @@ export function parseSeshatPayload(body: unknown): SeshatPayload {
   return { 
     name, 
     description: typeof description === 'string' ? description : undefined,
-    visibility: (visibility as 'public' | 'private' | 'unlisted') || 'public'
+    visibility: (visibility as 'public' | 'private' | 'unlisted') || 'public',
+    billingPlan: typeof billingPlan === 'string' ? billingPlan : undefined
   };
 }
 
