@@ -12,7 +12,8 @@ import {
   AffiliateMetrics,
   AdminData,
   EstimateRequest  // Add this import
-} from './shared/types.js';  // Changed from ./types.js to ./shared/types.js
+} from './shared/types';
+import { businessSuiteService } from './business-suite-service';  // Moved import to the top
 
 // Add missing type if it's not in shared types
 export interface ProgramDefinition {
@@ -30,151 +31,130 @@ export interface UseBusinessSuiteReturn {
   data: BusinessSuiteOverview | null;
   estimate: EstimateResponse | null;
   admin: Record<string, unknown>;
-  affiliate: AffiliateMetrics | null;
-  seshat: unknown | null;
-  programs: ProgramDefinition[];
-  alerts: Alert[];
-  metrics: MonetizationMetrics;
-  eligibility: Eligibility;
-  revenue: Revenue | null;
-  config: PlatformConfig;
-  getOverview: () => void;
-  submitApplication: (productKey: string) => Promise<void>;
-  estimateRevenue: (payload: EstimateRequest) => Promise<EstimateResponse>; // Updated to return EstimateResponse
-  updateBusinessVerification: (payload: unknown) => Promise<void>;
-  updatePayoutAccount: (payload: unknown) => Promise<void>;
+  affiliate: Record<string, unknown>;
+  load: () => Promise<void>;
+  submitApplication: (productKey: string) => Promise<void>; // Changed from ApplicationRequest to string
+  estimateRevenue: (payload: EstimateRequest) => Promise<void>;
+  updateBusinessVerification: (payload: {
+    legalName: string;
+    registrationNumber: string;
+    countryCode: string;
+  }) => Promise<void>;
+  updatePayoutAccount: (payload: {
+    bankName: string;
+    accountLast4: string;
+    currency: string;
+  }) => Promise<void>;
   updateConfig: (payload: Partial<PlatformConfig>) => Promise<void>;
+  getPrograms: () => Promise<ProgramDefinition[]>;
 }
 
-// Update the function to properly use the types
-export function useBusinessSuite(): UseBusinessSuiteReturn {
-  const [loading, setLoading] = useState<boolean>(true);
+export const useBusinessSuite = (): UseBusinessSuiteReturn => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<BusinessSuiteOverview | null>(null);
   const [estimate, setEstimate] = useState<EstimateResponse | null>(null);
 
-  // Initialize data on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const overview = await businessSuiteService.getOverview();
-        setData(overview);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        console.error('Error fetching business suite data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const load = async () => {
+    setLoading(true);
+    setError(null);
 
-    fetchData();
+    try {
+      const response = await businessSuiteService.getOverview();
+      setData(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitApplication = async (productKey: string) => { // Changed parameter type
+    try {
+      await businessSuiteService.submitApplication(productKey); // Pass string directly
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit application');
+    }
+  };
+
+  const estimateRevenue = async (payload: EstimateRequest) => {
+    try {
+      const result = await businessSuiteService.estimateRevenue(payload);
+      setEstimate(result);
+      return result;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to estimate revenue');
+      throw err;
+    }
+  };
+
+  const updateBusinessVerification = async (payload: {
+    legalName: string;
+    registrationNumber: string;
+    countryCode: string;
+  }) => {
+    try {
+      await businessSuiteService.updateBusinessVerification(payload);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update verification');
+    }
+  };
+
+  const updatePayoutAccount = async (payload: {
+    bankName: string;
+    accountLast4: string;
+    currency: string;
+  }) => {
+    try {
+      await businessSuiteService.updatePayoutAccount(payload);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update payout account');
+    }
+  };
+
+  const updateConfig = async (payload: Partial<PlatformConfig>) => {
+    try {
+      await businessSuiteService.updateConfig(payload);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update config');
+    }
+  };
+
+  // Added getPrograms function
+  const getPrograms = async (): Promise<ProgramDefinition[]> => {
+    try {
+      const programs = await businessSuiteService.getPrograms();
+      return programs;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to get programs');
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    load();
   }, []);
 
-  // Return the proper interface implementation
   return {
     loading,
     error,
     data,
     estimate,
-    // Extract individual parts from data
     admin: data?.admin || {} as Record<string, unknown>,
-    affiliate: data?.affiliate || null,
-    seshat: data?.seshat || null,
-    programs: data?.programs || [],
-    alerts: data?.alerts || [],
-    metrics: data?.metrics || {
-      followers: 0,
-      watchMinutes60d: 0,
-      watchMinutes30d: 0,
-      postEngagement30d: 0,
-      returningViewers30d: 0,
-      uniqueViews30d: 0,
-      activeVideos: 0,
-      consecutiveFollowerDays: 0,
-      accountAgeDays: 0,
-      isEligibleCountry: false,
-      originalContentScore: 0,
-      policyViolations: 0,
-      giftPurchaseEligible: false,
-      verifiedBusiness: false,
-      verifiedPayout: false
-    },
-    eligibility: data?.eligibility || {
-      universalStatus: 'ineligible',
-      products: []
-    },
-    revenue: data?.revenue || null,
-    config: data?.config || {
-      minimumAge: 18,
-      minimumPayoutThreshold: 100,
-      seshatMonthlyFee: 24.99,
-      seshatYearlyFee: 249.99,
-      revenueSharePercentage: 0.55,
-      giftsCashValue: 0.01,
-      supportedCountries: ['US'],
-      policyVersion: '2026.07',
-      affiliateBonusPercentage: 0.01
-    },
-    // Methods implementation
-    getOverview: async () => {
-      try {
-        const overview = await businessSuiteService.getOverview();
-        setData(overview);
-        return overview;
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    },
-    submitApplication: async (productKey: string) => {
-      try {
-        await businessSuiteService.submitApplication(productKey);
-        // Refresh data after submission
-        const overview = await businessSuiteService.getOverview();
-        setData(overview);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    },
-    estimateRevenue: async (payload: EstimateRequest): Promise<EstimateResponse> => {
-      try {
-        const result: EstimateResponse = await businessSuiteService.estimateRevenue(payload);
-        setEstimate(result);
-        return result;
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    },
-    updateBusinessVerification: async (payload: unknown) => {
-      try {
-        await businessSuiteService.updateBusinessVerification(payload);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    },
-    updatePayoutAccount: async (payload: unknown) => {
-      try {
-        await businessSuiteService.updatePayoutAccount(payload);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    },
-    updateConfig: async (payload: Partial<PlatformConfig>) => {
-      try {
-        await businessSuiteService.updateConfig(payload);
-        // Refresh data after update
-        const overview = await businessSuiteService.getOverview();
-        setData(overview);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        throw err;
-      }
-    }
+    affiliate: data?.affiliate ? { ...data.affiliate } as Record<string, unknown> : {} as Record<string, unknown>,
+    load,
+    submitApplication,
+    estimateRevenue,
+    updateBusinessVerification,
+    updatePayoutAccount,
+    updateConfig,
+    getPrograms,
   };
-}
+};
+
+// Add this import at the end to reference the service properly
+import { businessSuiteService } from './business-suite-service';
