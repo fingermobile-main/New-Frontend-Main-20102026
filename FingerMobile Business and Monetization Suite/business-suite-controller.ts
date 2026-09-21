@@ -1,89 +1,152 @@
-  getOverview(_req: Request, res: Response) {
-    const overview = businessSuiteService.getOverview()
+import { Request, Response } from 'express';
+import { BusinessSuiteService } from './business-suite-service';
+import { 
+  parseApplicationPayload, 
+  parseBusinessVerificationPayload,
+  parsePayoutAccountPayload,
+  parsePlatformConfigPayload,
+  parseEstimatePayload
+} from './parsers';
+import { sendOk, sendCreated, sendNoContent } from './utils/response-utils';
+import { ApplicationPayload, BusinessVerificationPayload, PayoutAccountPayload, PlatformConfigPayload, EstimatePayload } from './requests';
+import { EstimateRequest } from './types';
 
-    return sendOk(res, overview)
-  },
+const businessSuiteService = new BusinessSuiteService();
 
-  getSeshat(_req: Request, res: Response) {
-    const page = businessSuiteService.getSeshatPage()
+export const getOverview = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getOverview();
+  sendOk(res, result);
+};
 
-    return sendOk(res, page)
-  },
+export const getSeshat = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getSeshat();
+  sendOk(res, result);
+};
 
-  // ... other methods with unused req parameters ...
+export const getPrograms = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getPrograms();
+  sendOk(res, result);
+};
 
-  getPrograms(_req: Request, res: Response) {
-    return sendOk(res, businessSuiteService.getPrograms())
-  },
+export const getEligibility = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getEligibility();
+  sendOk(res, result);
+};
 
-  getEligibility(_req: Request, res: Response) {
-    return sendOk(res, businessSuiteService.getEligibility())
-  },
+export const estimate = async (_req: Request, res: Response) => {
+  const payload = _req.body as EstimatePayload;
+  const request: EstimateRequest = parseEstimatePayload(payload);
+  
+  const result = await businessSuiteService.estimateRevenue(request);
+  sendOk(res, result);
+};
 
-  // ... continue for other methods that have unused req parameters ...
+export const createApplication = async (_req: Request, res: Response) => {
+  const payload = _req.body as ApplicationPayload;
+  const application = parseApplicationPayload(payload);
+  
+  const result = await businessSuiteService.createApplication(application);
+  sendCreated(res, result);
+};
 
-  estimate(_req: Request, res: Response) {
-    // Parse from the body instead of params since payload comes from request body
-    const payload = parseEstimatePayload(_req.body)
-    // Map EstimatePayload to EstimateRequest structure
-    const estimateRequest: EstimateRequest = {
-      projectedVolume: payload.projectedVolume,
-      conversionRate: payload.conversionRate,
-      averageOrderValue: payload.averageOrderValue
-    };
-    return sendOk(res, businessSuiteService.estimateRevenue(estimateRequest))
-  },
+export const getApplicationById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await businessSuiteService.getApplicationById(id);
+  sendOk(res, result);
+};
 
-  getApplications: (_req: Request, res: Response) => {
-    return sendOk(res, businessSuiteService.getApplications())
-  },
+export const updateApplication = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const payload = req.body as ApplicationPayload;
+  const application = parseApplicationPayload(payload);
+  
+  const result = await businessSuiteService.updateApplication(id, application);
+  sendOk(res, result);
+};
 
-  createApplication: (_req: Request, res: Response) => {
-    const payload = parseApplicationPayload(_req.body)
-    const productKey = payload.productKey as ProductKey;
-    return sendCreated(
-      res,
-      businessSuiteService.submitMonetizationApplication(productKey),
-    )
-  },
+export const deleteApplication = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  await businessSuiteService.deleteApplication(id);
+  sendNoContent(res);
+};
 
-  getApplicationById: (_req: Request, res: Response) => {
-    return sendOk(res, businessSuiteService.getApplicationById(_req.params.id))
-  },
+export const getBusinessVerifications = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getBusinessVerifications();
+  sendOk(res, result);
+};
 
-  updateApplication: (_req: Request, res: Response) => {
-    return sendOk(res, businessSuiteService.updateApplication(_req.params.id, _req.body))
-  },
+export const createBusinessVerification = async (_req: Request, res: Response) => {
+  const payload = _req.body as BusinessVerificationPayload;
+  const verification = parseBusinessVerificationPayload(payload);
+  
+  const result = await businessSuiteService.createBusinessVerification(verification);
+  sendCreated(res, result);
+};
 
-  deleteApplication: (_req: Request, res: Response) => {
-    businessSuiteService.deleteApplication(_req.params.id)
+export const getBusinessVerificationById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await businessSuiteService.getBusinessVerificationById(id);
+  sendOk(res, result);
+};
 
-    return res.status(204).send()
-  },
+export const updateBusinessVerification = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const payload = req.body as BusinessVerificationPayload;
+  const verification = parseBusinessVerificationPayload(payload);
+  
+  const result = await businessSuiteService.updateBusinessVerification(id, verification);
+  sendOk(res, result);
+};
 
-  getBusinessVerifications: (_req: Request, res: Response) => {
-    // TODO: Implement getBusinessVerifications
-    return sendOk(res, [])
-  },
+export const deleteBusinessVerification = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  await businessSuiteService.deleteBusinessVerification(id);
+  sendNoContent(res);
+};
 
-  createBusinessVerification: (_req: Request, res: Response) => {
-    // TODO: Implement createBusinessVerification
-    return sendCreated(res, { id: 'temp-id' })
-  },
+export const getPayoutAccounts = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getPayoutAccounts();
+  sendOk(res, result);
+};
 
-  getBusinessVerificationById: (_req: Request, res: Response) => {
-    // TODO: Implement getBusinessVerificationById
-    return sendOk(res, { id: _req.params.id })
-  },
+export const createPayoutAccount = async (_req: Request, res: Response) => {
+  const payload = _req.body as PayoutAccountPayload;
+  const account = parsePayoutAccountPayload(payload);
+  
+  const result = await businessSuiteService.createPayoutAccount(account);
+  sendCreated(res, result);
+};
 
-  updateBusinessVerification: (_req: Request, res: Response) => {
-    // TODO: Implement updateBusinessVerification
-    return sendOk(res, { id: _req.params.id, ..._req.body })
-  },
+export const getPayoutAccountById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await businessSuiteService.getPayoutAccountById(id);
+  sendOk(res, result);
+};
 
-  deleteBusinessVerification: (_req: Request, res: Response) => {
-    // TODO: Implement deleteBusinessVerification
-    return res.status(204).send()
-  },
+export const updatePayoutAccount = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const payload = req.body as PayoutAccountPayload;
+  const account = parsePayoutAccountPayload(payload);
+  
+  const result = await businessSuiteService.updatePayoutAccount(id, account);
+  sendOk(res, result);
+};
 
-  // ... continue for other methods ...
+export const deletePayoutAccount = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  await businessSuiteService.deletePayoutAccount(id);
+  sendNoContent(res);
+};
+
+export const getPlatformConfig = async (_req: Request, res: Response) => {
+  const result = await businessSuiteService.getPlatformConfig();
+  sendOk(res, result);
+};
+
+export const updatePlatformConfig = async (_req: Request, res: Response) => {
+  const payload = _req.body as PlatformConfigPayload;
+  const config = parsePlatformConfigPayload(payload);
+  
+  const result = await businessSuiteService.updatePlatformConfig(config);
+  sendOk(res, result);
+};
