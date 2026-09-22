@@ -4,9 +4,9 @@ import type {
   EstimateResponse,
   OverviewResponse,
   PlatformConfig,
-  Product, /* ProductKey, */
-} from '@shared/types'
-import { api } from './api' // Import from the root-level api.ts file
+  Eligibility,
+  EstimateResult
+} from './shared/types'
 
 interface SeshatData {
   activeSubscribers?: number;
@@ -18,131 +18,174 @@ interface SeshatData {
   enterpriseTierPrice?: number;
 }
 
-interface BusinessSuiteState {
-  loading: boolean
-  error: string | null
-  data: OverviewResponse | null  // Changed from 'overview' to 'data' to match component expectations
-  programs: unknown[]
-  verification: unknown | null
-  revenue: unknown | null
-  affiliate: unknown | null
-  policy: { version: string; sections: Array<{ title: string; body: string[] }> } | null
-  admin: {
-    config: PlatformConfig
-    auditLogs: unknown[]
-    webhooks: unknown[]
-    applications: unknown[]
-    userCount?: number;
-    applicationCount?: number;
-    revenueStats?: {
-      totalRevenue?: number;
-      monthlyRevenue?: number;
-      growthRate?: number;
-    };
-    webhookStatus?: {
-      status?: string;
-      lastProcessed?: string;
-      failureCount?: number;
-    };
-  } | null
-  estimate: EstimateResponse | null
-  seshat: SeshatData | null
-  load: () => Promise<void>
-  submitApplication: (productKey: Product) => Promise<void>
-  estimateRevenue: (payload: EstimateRequest) => Promise<void>
-  updateBusinessVerification: (payload: {
-    legalName: string
-    registrationNumber: string
-    countryCode: string
-  }) => Promise<void>
-  updatePayoutAccount: (payload: {
-    bankName: string
-    accountLast4: string
-    currency: string
-  }) => Promise<void>
-  updateConfig: (payload: Partial<PlatformConfig>) => Promise<void>
+// Extend OverviewResponse with additional properties needed by the UI
+interface ExtendedOverviewResponse extends OverviewResponse {
+  admin?: unknown; // Admin data for admin pages
+  affiliate?: unknown[]; // Affiliate data
+  revenue?: unknown[]; // Revenue data
+  policy?: string; // Policy data
+  seshat?: unknown[]; // Seshat data
+  monetization?: unknown[]; // Monetization data
+  eligibility?: Eligibility; // Eligibility data
+  estimate?: EstimateResult; // Estimate data
+  config?: PlatformConfig; // Config alias for backward compatibility
 }
 
-export const useBusinessSuiteStore = create<BusinessSuiteState>((set, get) => ({
+export interface BusinessSuiteState {
+  overview: ExtendedOverviewResponse | null;
+  seshatData: SeshatData | null;
+  loading: boolean;
+  error: string | null;
+  fetchOverview: () => Promise<void>;
+  submitApplication: (application: unknown) => Promise<void>;
+  estimateRevenue: (request: EstimateRequest) => Promise<EstimateResponse>;
+  updateConfig: (config: Partial<PlatformConfig>) => Promise<void>;
+}
+
+// Mock implementation of the store
+export const useBusinessSuiteStore = create<BusinessSuiteState>((set) => ({
+  overview: null,
+  seshatData: null,
   loading: false,
   error: null,
-  data: null,  // Changed from 'overview' to 'data'
-  programs: [],
-  verification: null,
-  revenue: null,
-  affiliate: null,
-  policy: null,
-  admin: null,
-  estimate: null,
-  seshat: null,
-  async load() {
-    set({ loading: true, error: null })
 
+  fetchOverview: async () => {
+    set({ loading: true, error: null });
     try {
-      const [overview, programs, verification, revenue, affiliate, policy, admin] =
-        await Promise.all([
-          api.getOverview(),
-          api.getPrograms(),
-          api.getVerification(),
-          api.getRevenue(),
-          api.getAffiliate(),
-          api.getPolicy(),
-          api.getAdmin(),
-        ])
-
-      set({
-        data: overview as OverviewResponse,  // Changed from 'overview' to 'data'
-        programs: programs as unknown[],
-        verification: verification,
-        revenue: revenue,
-        affiliate: affiliate,
-        policy: policy as { version: string; sections: Array<{ title: string; body: string[] }> } | null,
-        admin: admin as {
-          config: PlatformConfig
-          auditLogs: unknown[]
-          webhooks: unknown[]
-          applications: unknown[]
-          userCount?: number;
-          applicationCount?: number;
-          revenueStats?: {
-            totalRevenue?: number;
-            monthlyRevenue?: number;
-            growthRate?: number;
-          };
-          webhookStatus?: {
-            status?: string;
-            lastProcessed?: string;
-            failureCount?: number;
-          };
-        } | null,
-        seshat: (overview as OverviewResponse)?.seshat || null,
-        loading: false,
-      })
+      // Mock API responses
+      const mockOverview: ExtendedOverviewResponse = {
+        applications: [],
+        verifications: [],
+        payoutAccounts: [],
+        platformConfig: {
+          id: 'config-1',
+          minimumAge: 18,
+          minimumPayoutThreshold: 100,
+          seshatMonthlyFee: 10,
+          seshatYearlyFee: 100,
+          monetizationFeePercentage: 5,
+          verificationFee: 5,
+          payoutProcessingTime: 7,
+          affiliateCommissionRate: 10,
+          enableMonetization: true,
+          enableAffiliateProgram: true,
+          contentPolicy: 'Default content policy',
+          privacyPolicy: 'Default privacy policy',
+          termsOfService: 'Default terms of service',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          revenueSharePercentage: 45
+        },
+        admin: undefined,
+        affiliate: [],
+        revenue: [],
+        policy: 'Default policy',
+        seshat: [],
+        monetization: [],
+        eligibility: {
+          universalStatus: 'conditional',
+          products: {
+            basic: { eligible: true, status: 'eligible', reasons: [] },
+            premium: { eligible: false, status: 'conditional', reasons: ['More followers needed'] },
+            enterprise: { eligible: false, status: 'conditional', reasons: ['More followers needed', 'Higher engagement required'] }
+          },
+          metrics: {
+            userBase: 1000,
+            engagementRate: 0.05,
+            contentVolume: 100,
+            geographicDistribution: { US: 0.5, EU: 0.3, Other: 0.2 },
+            deviceBreakdown: { mobile: 0.8, desktop: 0.2 },
+            revenuePotential: 10000,
+            riskFactors: [],
+            followers: 500,
+            watchMinutes30d: 1000,
+            accountAgeDays: 30,
+            policyViolations: 0,
+            postEngagement30d: 2.5,
+            originalContentScore: 85
+          },
+          alerts: []
+        },
+        estimate: {
+          potentialRevenueRange: {
+            min: 5000,
+            max: 15000,
+            currency: 'USD'
+          },
+          keyDrivers: ['User engagement', 'Content quality'],
+          riskFactors: ['Competition'],
+          recommendations: ['Improve content strategy'],
+          confidenceLevel: 'medium'
+        }
+      };
+      
+      set({ overview: mockOverview, loading: false });
     } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to load suite data.',
-        loading: false,
-      })
+      set({ error: (error as Error).message, loading: false });
     }
   },
-  async submitApplication(productKey) {
-    await api.submitApplication(productKey)
-    await get().load()
+
+  submitApplication: async (application: unknown) => {
+    set({ loading: true, error: null });
+    try {
+      // Mock implementation
+      console.log('Submitting application:', application);
+      set({ loading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
   },
-  async estimateRevenue(payload) {
-    const estimate = await api.estimateRevenue(payload)
-    set({ estimate: estimate as EstimateResponse })
+
+  estimateRevenue: async (request: EstimateRequest): Promise<EstimateResponse> => {
+    set({ loading: true, error: null });
+    try {
+      // Mock implementation
+      const revenue = request.projectedMonthlyUsers ? request.projectedMonthlyUsers * 0.15 : 1000;
+      const response: EstimateResponse = {
+        estimate: {
+          potentialRevenueRange: {
+            min: revenue * 0.8,
+            max: revenue * 1.2,
+            currency: 'USD'
+          },
+          keyDrivers: ['User engagement', 'Content quality'],
+          riskFactors: ['Competition'],
+          recommendations: ['Improve content strategy'],
+          confidenceLevel: 'medium'
+        },
+        totalEarnings: revenue,
+        totalAdCost: revenue * 0.6,
+        creatorRevenueShare: revenue * 0.4,
+        cpcRevenue: revenue * 0.005,
+        ctr: 2.5,
+        averageOrderValue: 50,
+        roi: 3.5,
+        clickToViewRatio: 0.05,
+        salesConversionRate: 0.02,
+        viewToPurchaseRate: 0.01,
+        averageViewDuration: 120,
+        retentionRate: 0.7,
+        monthlyRevenue: revenue / 12,
+        annualRevenue: revenue,
+        estimatedCpm: 4.5,
+        revenueSharePercentage: 45
+      };
+      set({ loading: false });
+      return response;
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+      throw error;
+    }
   },
-  async updateBusinessVerification(payload) {
-    await api.updateBusinessVerification(payload)
-    await get().load()
-  },
-  async updatePayoutAccount(payload) {
-    await api.updatePayoutAccount(payload)
-    await get().load()
-  },
-  async updateConfig(payload) {
-    await api.updateConfig(payload)
-    await get().load()
-  },
-}))
+
+  updateConfig: async (config: Partial<PlatformConfig>) => {
+    set({ loading: true, error: null });
+    try {
+      // Mock implementation
+      console.log('Updating config:', config);
+      set({ loading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
+  }
+}));

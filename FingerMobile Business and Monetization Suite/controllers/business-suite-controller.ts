@@ -1,184 +1,233 @@
 import { Request, Response } from 'express';
+import { BusinessSuiteService } from '../services/business-suite-service';
 import { 
-  BusinessSuiteOverview, 
-  EstimateRequest, 
+  MonetizationApplication,
+  BusinessVerification,
+  PayoutAccount,
+  PlatformConfig,
+  EstimateRequest,
   EstimateResponse,
-  ConfigUpdate,
-  ApplicationRequest
+  OverviewResponse
 } from '../shared/types';
-import { getBusinessSuiteOverview } from '../services/business-suite-service';
-import { getEligibility } from '../services/eligibility-service';
-import { getEstimate } from '../services/estimate-service';
-import { getVerification as getVerificationService } from '../services/verification-service';
-import { getPayoutAccount as getPayoutAccountService } from '../services/payout-service';
-import { getPlatformConfig, updatePlatformConfig } from '../services/config-service';
-import { getAffiliateData } from '../services/affiliate-service';
-import { getProgramDefinitions } from '../services/program-service';
 
-// Define custom request type locally
-interface BusinessSuiteRequest extends Request {
-  user?: {
-    id: string;
-    email: string;
-    role: string;
-  };
-}
+// Initialize the service
+const businessSuiteService = new BusinessSuiteService();
 
-// Controller functions
-export const getOverview = async (req: BusinessSuiteRequest, res: Response) => {
+// Get all applications
+export const getApplications = async (_req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
-
-    const overview: BusinessSuiteOverview = await getBusinessSuiteOverview(userId);
-    res.json(overview);
+    const applications = await businessSuiteService.getApplications();
+    res.json(applications);
   } catch (error) {
-    console.error('Error in getOverview:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-export const calculateEligibility = async (req: BusinessSuiteRequest, res: Response) => {
+// Create a new application
+export const createApplication = async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
-
-    const eligibility = await getEligibility(userId);
-    res.json(eligibility);
+    const application: MonetizationApplication = req.body;
+    const result = await businessSuiteService.submitApplication(application);
+    res.status(201).json(result);
   } catch (error) {
-    console.error('Error in calculateEligibility:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-export const calculateEstimate = async (req: BusinessSuiteRequest, res: Response) => {
+// Get application by ID
+export const getApplicationById = async (req: Request, res: Response) => {
   try {
-    const { productKey, region, projectedVolume }: EstimateRequest = req.body;
-
-    if (!productKey || !region || !projectedVolume) {
-      return res.status(400).json({ error: 'Missing required fields: productKey, region, projectedVolume' });
+    const id = req.params.id;
+    const application = await businessSuiteService.getApplication(id);
+    if (!application) {
+      res.status(404).json({ error: 'Application not found' });
+      return;
     }
-
-    const estimate: EstimateResponse = await getEstimate({
-      productKey,
-      region,
-      projectedVolume
-    });
-
-    res.json(estimate);
+    res.json(application);
   } catch (error) {
-    console.error('Error in calculateEstimate:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-// Fixed: Removed unused req parameter
-export const getVerification = async (_req: BusinessSuiteRequest, res: Response) => {
+// Update application
+export const updateApplication = async (req: Request, res: Response) => {
   try {
-    // In a real implementation, you'd fetch the verification status
-    // For now, returning a mock response
-    const verification = await getVerificationService(); // Using aliased import
+    const id = req.params.id;
+    const application: MonetizationApplication = req.body;
+    const result = await businessSuiteService.updateApplication(id, application);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Delete application
+export const deleteApplication = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await businessSuiteService.deleteApplication(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get all business verifications
+export const getBusinessVerifications = async (_req: Request, res: Response) => {
+  try {
+    const verifications = await businessSuiteService.getVerifications();
+    res.json(verifications);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Create a new business verification
+export const createBusinessVerification = async (req: Request, res: Response) => {
+  try {
+    const verification: BusinessVerification = req.body;
+    const result = await businessSuiteService.submitVerification(verification);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get business verification by ID
+export const getBusinessVerificationById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const verification = await businessSuiteService.getVerification(id);
+    if (!verification) {
+      res.status(404).json({ error: 'Verification not found' });
+      return;
+    }
     res.json(verification);
   } catch (error) {
-    console.error('Error in getVerification:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-// Fixed: Removed unused req parameter
-export const getPayoutAccount = async (_req: BusinessSuiteRequest, res: Response) => {
+// Update business verification
+export const updateBusinessVerification = async (req: Request, res: Response) => {
   try {
-    // In a real implementation, you'd fetch the payout account details
-    // For now, returning a mock response
-    const payoutAccount = await getPayoutAccountService(); // Using aliased import
-    res.json(payoutAccount);
+    const id = req.params.id;
+    const verification: BusinessVerification = req.body;
+    const result = await businessSuiteService.updateVerification(id, verification);
+    res.json(result);
   } catch (error) {
-    console.error('Error in getPayoutAccount:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-// Fixed: Removed unused req parameter
-export const getConfig = async (_req: BusinessSuiteRequest, res: Response) => {
+// Delete business verification
+export const deleteBusinessVerification = async (req: Request, res: Response) => {
   try {
-    const config = await getPlatformConfig();
+    const id = req.params.id;
+    await businessSuiteService.deleteVerification(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get all payout accounts
+export const getPayoutAccounts = async (_req: Request, res: Response) => {
+  try {
+    const accounts = await businessSuiteService.getPayoutAccounts();
+    res.json(accounts);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Create a new payout account
+export const createPayoutAccount = async (req: Request, res: Response) => {
+  try {
+    const account: PayoutAccount = req.body;
+    const result = await businessSuiteService.createPayoutAccount(account);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get payout account by ID
+export const getPayoutAccountById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const account = await businessSuiteService.getPayoutAccount(id);
+    if (!account) {
+      res.status(404).json({ error: 'Payout account not found' });
+      return;
+    }
+    res.json(account);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Update payout account
+export const updatePayoutAccount = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const account: PayoutAccount = req.body;
+    const result = await businessSuiteService.updatePayoutAccount(id, account);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Delete payout account
+export const deletePayoutAccount = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await businessSuiteService.deletePayoutAccount(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get overview data
+export const getOverview = async (_req: Request, res: Response) => {
+  try {
+    const overview: OverviewResponse = await businessSuiteService.getOverview();
+    res.json(overview);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+// Get platform config
+export const getPlatformConfig = async (_req: Request, res: Response) => {
+  try {
+    const config: PlatformConfig = await businessSuiteService.getConfig();
     res.json(config);
   } catch (error) {
-    console.error('Error in getConfig:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-export const updateConfig = async (req: BusinessSuiteRequest, res: Response) => {
+// Update platform config
+export const updatePlatformConfig = async (req: Request, res: Response) => {
   try {
-    const configUpdate: ConfigUpdate = req.body;
-    const updatedConfig = await updatePlatformConfig(configUpdate);
+    const config: Partial<PlatformConfig> = req.body;
+    const updatedConfig: PlatformConfig = await businessSuiteService.updateConfig(config);
     res.json(updatedConfig);
   } catch (error) {
-    console.error('Error in updateConfig:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-// Fixed: Removed unused req parameter
-export const getPrograms = async (_req: BusinessSuiteRequest, res: Response) => {
+// Estimate revenue
+export const estimate = async (req: Request, res: Response) => {
   try {
-    const programs = await getProgramDefinitions();
-    res.json(programs);
+    const request: EstimateRequest = req.body;
+    const result: EstimateResponse = await businessSuiteService.estimateRevenue(request);
+    res.json(result);
   } catch (error) {
-    console.error('Error in getPrograms:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: (error as Error).message });
   }
-};
-
-// Fixed: Removed unused req parameter
-export const getAffiliate = async (_req: BusinessSuiteRequest, res: Response) => {
-  try {
-    // In a real implementation, you'd fetch the affiliate data for the user
-    // For now, returning a mock response
-    const affiliateData = await getAffiliateData(); // Assuming this service function exists
-    res.json(affiliateData);
-  } catch (error) {
-    console.error('Error in getAffiliate:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-export const submitApplication = async (req: BusinessSuiteRequest, res: Response) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
-
-    const { productKey }: ApplicationRequest = req.body;
-    
-    if (!productKey) {
-      return res.status(400).json({ error: 'Missing productKey' });
-    }
-
-    // In a real implementation, you'd submit the application
-    // For now, returning a mock response
-    res.json({ success: true, message: 'Application submitted successfully', productKey });
-  } catch (error) {
-    console.error('Error in submitApplication:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-export default {
-  getOverview,
-  calculateEligibility,
-  calculateEstimate,
-  getVerification,
-  getPayoutAccount,
-  getConfig,
-  updateConfig,
-  getPrograms,
-  getAffiliate,
-  submitApplication
 };

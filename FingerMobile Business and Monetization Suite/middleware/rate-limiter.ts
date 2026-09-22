@@ -1,43 +1,28 @@
-import rateLimit from 'express-rate-limit'
-import type { Request, Response } from 'express'
+import rateLimit from 'express-rate-limit';
 
-const WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10) // 15 minutes
-const MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10)
+// Define constants
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_REQUESTS = 100;
 
-export const apiLimiter = rateLimit({
-  windowMs: WINDOW_MS,
-  max: MAX_REQUESTS,
-  standardHeaders: true,
-  message: {
-    success: false,
-    error: 'Too many requests. Please try again later.',
-    retryAfter: Math.ceil(WINDOW_MS / 1000),
+const limiter = rateLimit({
+  windowMs: WINDOW_MS, // 15 minutes
+  max: MAX_REQUESTS, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  skipSuccessfulRequests: false,
+  skip: (_req) => {
+    void _req;
+    // Optionally skip rate limiting for certain requests
+    return false;
   },
-  handler: (req: Request, res: Response) => {
+  handler: (_req, res) => {
+    void _req;
     res.status(429).json({
-      success: false,
-      error: 'Rate limit exceeded. Please slow down.',
-      retryAfter: Math.ceil(WINDOW_MS / 1000),
-    })
-  },
-})
+      error: 'Too many requests, please try again later.',
+      retryAfter: Math.ceil(WINDOW_MS / 1000), // seconds to wait
+    });
+  }
+});
 
-export const strictLimiter = rateLimit({
-  windowMs: 60000, // 1 minute
-  max: 10, // 10 requests per minute
-  standardHeaders: true,
-  message: {
-    success: false,
-    error: 'Too many sensitive operations. Please wait before trying again.',
-  },
-})
-
-export const webhookLimiter = rateLimit({
-  windowMs: 60000, // 1 minute
-  max: 100, // 100 webhooks per minute
-  standardHeaders: true,
-  message: {
-    success: false,
-    error: 'Webhook rate limit exceeded.',
-  },
-})
+export { limiter };

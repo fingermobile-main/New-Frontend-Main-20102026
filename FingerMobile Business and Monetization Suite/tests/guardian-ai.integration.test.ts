@@ -69,13 +69,13 @@ describe('Guardian AI Services - Integration Tests', () => {
       const result = await guardianAI.createAccessKey('seshat_001', 'MEMBERSHIP', 90);
       
       expect(result).toBeDefined();
-      expect(result.keyToken).toBeDefined();
-      expect(result.expiresAt).toBeDefined();
-      expect(validateAccessKeyFormat(result.keyToken)).toBe(true);
+      expect(result.key).toBeDefined();
+      expect(result.expiryDate).toBeDefined();
+      expect(validateAccessKeyFormat(result.key)).toBe(true);
       
       // Check expiry date is approximately 90 days from now
       const now = new Date();
-      const expires = new Date(result.expiresAt);
+      const expires = new Date(result.expiryDate);
       const diffDays = (expires.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
       expect(diffDays).toBeGreaterThan(89);
       expect(diffDays).toBeLessThan(91);
@@ -142,7 +142,7 @@ describe('Guardian AI Services - Integration Tests', () => {
       
       for (let i = 0; i < 50; i++) {
         const code = await guardianAI.createCoupon('seshat_001', 'TEST');
-        codes.add(code);
+        codes.add(code.couponCode);
       }
       
       // All 50 codes should be unique
@@ -231,8 +231,7 @@ describe('Guardian AI Services - Integration Tests', () => {
 
     it('should handle service method validation', () => {
       const result = guardianAI.validateName('My Awesome Business');
-      expect(result.isValid).toBe(true);
-      expect(result.sanitizedName).toBe('My Awesome Business');
+      expect(result).toBe(true);
     });
   });
 

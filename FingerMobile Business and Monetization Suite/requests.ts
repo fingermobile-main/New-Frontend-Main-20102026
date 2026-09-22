@@ -1,5 +1,4 @@
 import { 
-  Application,
   BusinessVerification,
   PayoutAccount,
   PlatformConfig,
@@ -13,6 +12,9 @@ import {
 
 // Payload types for incoming requests
 export interface ApplicationPayload {
+  id?: string;
+  userId?: string;
+  businessName?: string;
   name: string;
   email: string;
   businessDescription: string;
@@ -20,24 +22,31 @@ export interface ApplicationPayload {
   monthlyRevenue?: number;
   country: string;
   productInterest: string[];
+  status?: string;
+  submittedAt?: Date;
 }
 
 export interface BusinessVerificationPayload {
+  id?: string;
   businessName: string;
   registrationNumber: string;
   taxId: string;
   incorporationDate: string;
   businessAddress: string;
   supportingDocuments: string[];
+  status?: string;
+  verifiedAt?: Date | null;
 }
 
 export interface PayoutAccountPayload {
+  id?: string;
   accountHolderName: string;
   accountNumber: string;
   routingNumber: string;
   bankName: string;
   bankCountry: string;
   currency: string;
+  isVerified?: boolean;
 }
 
 export interface PlatformConfigPayload {
@@ -66,9 +75,8 @@ export interface EstimatePayload {
   geographicFocus: string[];
 }
 
-// Export the types as well
-export {
-  Application,
+// Export the types as well using export type for isolatedModules
+export type {
   BusinessVerification,
   PayoutAccount,
   PlatformConfig,

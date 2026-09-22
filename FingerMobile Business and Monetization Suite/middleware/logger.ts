@@ -78,7 +78,7 @@ export const requestLogger = (req: RequestWithUser, res: Response, next: NextFun
   next()
 }
 
-export const errorLogger = (err: Error, req: RequestWithUser, res: Response, next: NextFunction) => {
+export const errorLogger = (err: Error, req: RequestWithUser, _res: Response, next: NextFunction) => {
   logger.error({
     type: 'http_error',
     message: err.message,

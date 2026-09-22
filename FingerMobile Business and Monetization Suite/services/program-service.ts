@@ -1,36 +1,50 @@
 import { ProgramDefinition } from '../shared/types';
 
-export const getProgramDefinitions = async (): Promise<ProgramDefinition[]> => {
-  // In a real implementation, this would fetch actual program definitions
-  // For now, returning mock data
-  return [
-    {
-      key: 'basic',
-      name: 'Basic Creator Program',
-      title: 'Basic Creator',
-      summary: 'Start earning with basic features',
-      description: 'Start earning with basic features',
-      requirements: ['100+ followers', 'Original content', 'Community guidelines compliance']
+const mockProgramDefinitions: ProgramDefinition[] = [
+  {
+    id: 'basic',
+    name: 'Basic Plan',
+    description: 'Entry level monetization plan',
+    features: ['Basic analytics', 'Limited support', 'Standard payouts'],
+    pricing: {
+      monthly: 9.99,
+      yearly: 99.99
     },
-    {
-      key: 'premium',
-      name: 'Premium Creator Program',
-      title: 'Premium Creator',
-      summary: 'Access premium tools and higher revenue shares',
-      description: 'Access premium tools and higher revenue shares',
-      requirements: ['1000+ followers', '30+ days account age', '4%+ engagement rate']
+    eligibilityRequirements: {}
+  },
+  {
+    id: 'premium',
+    name: 'Premium Plan',
+    description: 'Advanced monetization features',
+    features: ['Advanced analytics', 'Priority support', 'Faster payouts', 'Marketing tools'],
+    pricing: {
+      monthly: 29.99,
+      yearly: 299.99
     },
-    {
-      key: 'enterprise',
-      name: 'Enterprise Creator Program',
-      title: 'Enterprise Creator',
-      summary: 'Our highest tier with maximum revenue potential',
-      description: 'Our highest tier with maximum revenue potential',
-      requirements: ['10000+ followers', '60+ days account age', '5%+ engagement rate', 'Original content score 80+']
-    }
-  ];
+    eligibilityRequirements: {}
+  },
+  {
+    id: 'enterprise',
+    name: 'Enterprise Plan',
+    description: 'Full monetization suite',
+    features: ['All premium features', 'Custom integrations', 'Dedicated support', 'Custom pricing'],
+    pricing: {
+      monthly: 99.99,
+      yearly: 999.99
+    },
+    eligibilityRequirements: {}
+  }
+];
+
+export const getProgramDefinition = async (id: string): Promise<ProgramDefinition | null> => {
+  return mockProgramDefinitions.find(program => program.id === id) || null;
+};
+
+export const getAllProgramDefinitions = async (): Promise<ProgramDefinition[]> => {
+  return mockProgramDefinitions;
 };
 
 export default {
-  getProgramDefinitions
+  getProgramDefinition,
+  getAllProgramDefinitions
 };

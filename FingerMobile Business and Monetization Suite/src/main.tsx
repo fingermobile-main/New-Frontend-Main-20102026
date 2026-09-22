@@ -1,17 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App'
-import './index.css'
+/// <reference lib="dom" />
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './app/App';
+import './index.css';
 
-const container = document.getElementById('root')
+// Create root container
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container!);
 
-if (container) {
-  const root = createRoot(container)
-  root.render(
-    <StrictMode>
-      <App />
-    </StrictMode>,
-  )
-} else {
-  console.error('Failed to find the root element')
-}
+// Render the app
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// Temporarily comment out performance reporting
+// reportWebVitals();

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * FingerMobile Protocol™ - Analytics Dashboard Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.

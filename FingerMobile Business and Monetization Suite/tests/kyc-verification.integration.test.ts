@@ -6,14 +6,16 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Response, NextFunction } from 'express';
 import {
-  kycService,
+  KYCService,
   ageGateMiddleware,
   enhancedAgeGateWithKYC,
   type AuthenticatedRequest,
-  type KYCSubmissionData,
-  type KYBSubmissionData,
+  type KYCSubmissionDataV2 as KYCSubmissionData,
+  type KYBSubmissionDataV2 as KYBSubmissionData,
 } from '../kyc-verification-service.js';
 import { guardianAI } from '../guardian-ai-service.js';
+
+const kycService = new KYCService();
 
 // Mock response object
 const createMockResponse = () => {

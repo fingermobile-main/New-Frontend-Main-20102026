@@ -286,30 +286,6 @@ export async function isTokenUnique(_token: string, _type: 'access_key' | 'coupo
 // Guardian AI Service Class
 // ============================================================
 
-interface AccessKey {
-  id: string;
-  seshatPageId: string;
-  key: string;
-  keyType: 'FOLLOWERSHIP' | 'MEMBERSHIP';
-  expiryDate: string;
-  createdAt: string;
-  revoked: boolean;
-}
-
-interface Coupon {
-  id: string;
-  seshatPageId: string;
-  couponCode: string;
-  prefix?: string;
-  description?: string;
-  discountPercentage?: number;
-  discountAmount?: number;
-  minPurchaseAmount?: number;
-  maxUses?: number;
-  validUntil?: string;
-  createdAt: string;
-}
-
 class GuardianAIService {
   /**
    * Generate and validate a new access key

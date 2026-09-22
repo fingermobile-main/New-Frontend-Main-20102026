@@ -1,18 +1,20 @@
 import { VerificationStatus } from '../shared/types';
 
-export const getVerification = async (): Promise<VerificationStatus> => {
-  // In a real implementation, this would fetch actual verification status
-  // For now, returning mock data
+export const checkVerificationStatus = async (_userId: string): Promise<VerificationStatus> => {
+    void _userId;
+  // Mock implementation - in a real app, this would check the user's verification status
+  const statuses: ('pending' | 'verified' | 'rejected')[] = ['pending', 'verified', 'rejected'];
+  const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+  
   return {
-    businessVerified: false,
-    documentsSubmitted: false,
-    verificationStatus: 'pending',
-    rejectionReason: null
+    status: randomStatus,
+    notes: randomStatus === 'rejected' ? 'Additional documentation required' : undefined,
+    verifiedAt: randomStatus === 'verified' ? new Date() : undefined
   };
 };
 
 export default {
-  getVerification
+  checkVerificationStatus
 };
 
 export interface VerificationRecord {

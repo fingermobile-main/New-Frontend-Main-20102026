@@ -1,20 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 
-interface CustomError extends Error {
+export interface CustomError extends Error {
   statusCode?: number;
+  status?: string;
 }
 
-export const errorHandler = (err: CustomError, req: Request, res: Response, // eslint-disable-next-line @typescript-eslint/no-unused-vars
-next: NextFunction) => {
+export const errorHandler = (err: CustomError, _req: Request, res: Response, _next: NextFunction) => {
+    void _next;
   console.error(err.stack);
-  
-  const statusCode = err.statusCode || 500;
-  const message = statusCode === 500 ? 'Internal Server Error' : err.message;
-  
-  res.status(statusCode).json({
-    error: {
-      message,
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    }
+
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
   });
 };

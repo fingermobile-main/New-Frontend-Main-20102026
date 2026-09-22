@@ -18,7 +18,8 @@ interface AuthContextType {
 
 // Mock authentication service
 const authService = {
-  login: async (_email: string, _password: string): Promise<User> => { // Marking parameters as unused with underscore
+  login: async (_email: string, _password: string): Promise<User> => {
+    void _password; // Marking parameters as unused with underscore
     // Simulate API call
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -32,7 +33,8 @@ const authService = {
     });
   },
   
-  register: async (_email: string, _password: string): Promise<User> => { // Marking parameters as unused with underscore
+  register: async (_email: string, _password: string): Promise<User> => {
+    void _password; // Marking parameters as unused with underscore
     // Simulate API call
     return new Promise((resolve) => {
       setTimeout(() => {

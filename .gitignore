@@ -150,20 +150,6 @@ apps/backend/uploads/
 apps/backend/public/uploads/
 apps/backend/dist/
 
-# Ignore nested git repositories to prevent the "uncommitted changes" issue
-**/.git/
-**/FingerMobile Protocol/.git/
-**/FingerMobile Github 27072026/.git/
-
-# Additional nested directories that should be ignored
-**/archived_files/**
-**/BACKUP/**
-**/ARCHIVE/**
-**/Production Developement files*/
-**/frontend-main-backup-*/
-**/old-frontend-main/**
-**/frontend-main.bak.*/
-
 # Frontend specific ignores
 apps/frontend-main/.next/
 apps/frontend-main/out/
@@ -457,3 +443,19 @@ config/staging.json
 # Git LFS temporary files
 .lfs/
 .lfsconfig
+
+# Exclude nested git repositories
+# Development backup files and archives
+**/UPDATED dev files 09092026/**
+**/SLEEPERS MAIN/**
+**/ARCHIVE BACKEUP AND DEVELOPMENT FILES 09092026/**
+**/frontend-main-backup-20260819-185559/**
+**/old-frontend-main/**
+**/frontend-main.bak.1785580996/**
+**/Optimized FingerMobile/**
+**/archived_files/**
+**/dev files 13042026/**
+**/flutter/**
+
+# Exclude nested .git directories
+**/.git

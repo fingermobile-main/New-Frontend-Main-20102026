@@ -6,7 +6,7 @@ export class MonetizationService {
   /**
    * Get monetization overview
    */
-  static async getOverview(): Promise<any> {
+  static async getOverview(): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       totalRevenue: 0,
@@ -20,7 +20,7 @@ export class MonetizationService {
   /**
    * Get monetization trends
    */
-  static async getTrends(): Promise<any[]> {
+  static async getTrends(): Promise<unknown[]> {
     // Placeholder implementation - replace with actual logic
     return [
       { period: 'Jan', revenue: 0, growth: 0 },
@@ -32,7 +32,7 @@ export class MonetizationService {
   /**
    * Get monetization breakdown
    */
-  static async getBreakdown(): Promise<any> {
+  static async getBreakdown(): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       subscriptions: 0,
@@ -45,7 +45,7 @@ export class MonetizationService {
   /**
    * Get monetization forecast
    */
-  static async getForecast(): Promise<any> {
+  static async getForecast(): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       projectedRevenue: 0,

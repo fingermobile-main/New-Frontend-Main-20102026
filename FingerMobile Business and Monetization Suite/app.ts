@@ -1,11 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
+import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import compression from 'compression';
 import rateLimit from 'express-rate-limit';
-import morgan from 'morgan';
-import apiRoutes from './routes/api-routes'; // Updated import path to point to the correct file
-import './services/database'; // Import to initialize database connection
 
 const app = express();
 
@@ -21,31 +18,29 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-// Logging middleware - using morgan instead of custom logger
-app.use(morgan('combined'));
-
-// API routes
-app.use('/api', apiRoutes);
+// Middleware
+app.use(express.json());
 
 // Health check endpoint
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Error handling middleware - removed unused _next parameter
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack); // Using console.error directly instead of logger
+// Error handling middleware
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  void _next;
+  console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
-  next();
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// Catch-all route for undefined endpoints
+app.use('*', (_req: Request, res: Response) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
 export default app;

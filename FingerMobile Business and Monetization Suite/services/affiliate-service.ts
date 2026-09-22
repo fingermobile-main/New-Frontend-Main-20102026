@@ -165,14 +165,14 @@ import { AffiliateMetrics } from '../shared/types';
 
 export const getAffiliateData = async (): Promise<AffiliateMetrics> => {
   // In a real implementation, this would fetch actual affiliate data
-  // For now, returning mock data
+  // For now, returning mock data that conforms to AffiliateMetrics interface
   return {
-    totalEarnings: 0,
-    activeReferrals: 0,
+    totalReferrals: 0,
+    totalCommission: 0,
     conversionRate: 0,
-    commissionRate: 0.15, // 15% default commission
-    referralCode: 'USER123',
-    activity: []
+    averageCommissionPerReferral: 0,
+    topPerformingReferrals: [],
+    monthlyTrends: []
   };
 };
 

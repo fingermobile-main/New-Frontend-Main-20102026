@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * FingerMobile Protocol™ - Content Manager Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.

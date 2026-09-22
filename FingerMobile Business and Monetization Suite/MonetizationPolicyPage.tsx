@@ -1,4 +1,3 @@
-import React from 'react';
 import AppShell from './src/layouts/AppShell';
 import SectionCard from './src/components/SectionCard';
 import { Button, Checkbox /*, Text, useBusinessSuite */ } from '@mantine/core';  // Removed unused useBusinessSuite import

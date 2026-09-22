@@ -50,7 +50,7 @@ app.get('/api/revenue/report', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/revenue/by-source', async (req: Request, res: Response) => {
+app.get('/api/revenue/by-source', async (_req: Request, res: Response) => {
   try {
     const sources = await RevenueService.getRevenueBySource();
     res.status(200).json({ success: true, data: sources });
@@ -75,7 +75,7 @@ app.get('/api/affiliate/stats/:affiliateId', async (req: Request, res: Response)
 });
 
 // Admin routes
-app.get('/api/admin/stats', async (req: Request, res: Response) => {
+app.get('/api/admin/stats', async (_req: Request, res: Response) => {
   try {
     const stats = await AdminService.getPlatformStats();
     res.status(200).json({ success: true, data: stats });
@@ -87,8 +87,8 @@ app.get('/api/admin/stats', async (req: Request, res: Response) => {
 });
 
 // Health check
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'OK', message: 'Business Suite is running' });
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 // Start the server
