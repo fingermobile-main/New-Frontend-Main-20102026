@@ -1,282 +1,359 @@
+// Shared types for the FingerMobile protocol
+
+// User-related types
 export interface User {
   id: string;
-  fullName: string;
+  username: string;
   email: string;
-  role: string;
-  age: number;
-  countryCode: string;
-  accountAgeDays: number;
-  createdAt: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  socialLinks?: Record<string, string>;
+  role: 'user' | 'moderator' | 'admin' | 'super_admin';
+  status: 'active' | 'inactive' | 'suspended' | 'deleted';
+  lastLoginAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Product-related types
+export interface ProductKey {
+  id: string;
+  name: string;
+  description?: string;
+  visibility: 'public' | 'private' | 'unlisted';
+  billingPlan: 'basic' | 'premium' | 'enterprise' | 'free_trial';
+}
+
+// Monetization-related types
+export interface MonetizationApplication {
+  id: string;
+  userId: string;
+  businessName: string;
+  website: string;
+  businessDescription: string;
+  monthlyRevenue?: number;
+  country: string;
+  productInterest: string[];
+  status: 'pending' | 'approved' | 'rejected' | 'under_review';
+  submittedAt: Date;
+  reviewedAt?: Date;
+  reviewerNotes?: string;
+}
+
+export interface Eligibility {
+  universalStatus: 'ineligible' | 'eligible' | 'conditional';
+  products: Record<string, {
+    eligible: boolean;
+    status: 'ineligible' | 'eligible' | 'conditional';
+    reasons: string[];
+  }>;
+  metrics: MonetizationMetrics;
+  alerts: string[];
+}
+
+export interface MonetizationMetrics {
+  userBase: number;
+  engagementRate: number;
+  contentVolume: number;
+  geographicDistribution: Record<string, number>;
+  deviceBreakdown: Record<string, number>;
+  revenuePotential: number;
+  riskFactors: string[];
+}
+
+export interface EstimateRequest {
+  projectedMonthlyUsers: number;
+  engagementRate: number;
+  avgSessionDuration: number;
+  conversionRate: number;
+  averageOrderValue: number;
+  contentCategories: string[];
+  geographicFocus: string[];
+}
+
+export interface EstimateResult {
+  potentialRevenueRange: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  keyDrivers: string[];
+  riskFactors: string[];
+  recommendations: string[];
+  confidenceLevel: 'low' | 'medium' | 'high';
 }
 
 export interface SeshatPage {
   id: string;
-  ownerUserId: string;
-  name: string;
-  description?: string;
-  followersCount: number;
-  visibility: string;
-  freeUntil: string;
-  billingPlan: string;
-  verifiedBusiness: boolean;
-  createdAt: string;
+  title: string;
+  content: string;
+  author: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: 'draft' | 'published' | 'archived';
+  tags: string[];
+  views: number;
+  likes: number;
+  shares: number;
 }
 
-export interface MonetizationMetrics {
-  followers: number;
-  watchMinutes60d: number;
-  watchMinutes30d: number;
-  postEngagement30d: number;
-  returningViewers30d: number;
-  uniqueViews30d: number;
-  activeVideos: number;
-  consecutiveFollowerDays: number;
-  accountAgeDays: number;
-  age?: number;
-  isEligibleCountry: boolean;
-  originalContentScore: number;
-  policyViolations: number;
-  giftPurchaseEligible: boolean;
-  verifiedBusiness: boolean;
-  verifiedPayout: boolean;
+// Business verification types
+export interface BusinessVerification {
+  id: string;
+  userId: string;
+  businessName: string;
+  registrationNumber: string;
+  taxId: string;
+  incorporationDate: Date;
+  businessAddress: string;
+  supportingDocuments: string[];
+  verificationStatus: 'pending' | 'verified' | 'rejected';
+  verifiedAt?: Date;
+  notes?: string;
 }
 
-export interface EligibilityRequirements {
-  minFollowers: number;
-  minWatchMinutes30d: number;
-  minAccountAgeDays: number;
-  minEngagementRate?: number;
-  minContentScore?: number;
+// Payout account types
+export interface PayoutAccount {
+  id: string;
+  userId: string;
+  accountHolderName: string;
+  accountNumber: string;
+  routingNumber: string;
+  bankName: string;
+  bankCountry: string;
+  currency: string;
+  verificationStatus: 'pending' | 'verified' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
+// Platform configuration
 export interface PlatformConfig {
-  id?: string;
+  id: string;
   minimumAge: number;
   minimumPayoutThreshold: number;
   seshatMonthlyFee: number;
   seshatYearlyFee: number;
-  revenueSharePercentage: number;
-  giftsCashValue: number;
-  supportedCountries: string | string[];
-  policyVersion: string;
-  affiliateBonusPercentage: number;
-  basicEligibility?: EligibilityRequirements;
-  premiumEligibility?: EligibilityRequirements;
-  enterpriseEligibility?: EligibilityRequirements;
+  monetizationFeePercentage: number;
+  verificationFee: number;
+  payoutProcessingTime: number;
+  affiliateCommissionRate: number;
+  enableMonetization: boolean;
+  enableAffiliateProgram: boolean;
+  contentPolicy: string;
+  privacyPolicy: string;
+  termsOfService: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Revenue {
-  id: number;
-  userId: string;
-  availableBalance: number;
-  pendingPayouts: number;
-  monthRevenue: number;
-  thresholdRemaining: number;
-  todayEarnings?: number;
-  thisWeekEarnings?: number;
-  thisMonthEarnings?: number;
-  allTimeEarnings?: number;
-  adsRevenue?: number;
-  giftsRevenue?: number;
-  subscriptionRevenue?: number;
-  paymentHistory?: Array<{
-    date: string;
-    type: string;
-    amount: number;
-    status: string;
-  }>;
-  payoutAccount?: {
-    bankName: string;
-    accountLast4: string;
-    currency: string;
-  };
-  createdAt: string;
-}
-
-export interface EligibilityProduct {
-  product: string;
-  status: string;
-  passedRules: string[];
-  failedRules: string[];
-  nextActions: string[];
-}
-
-export interface Eligibility {
-  universalStatus: 'eligible' | 'ineligible' | 'conditional';
-  products: EligibilityProduct[];
-}
-
-export interface Alert {
-  id: string;
-  type: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-}
-
-export interface EstimateRequest {
-  projectedVolume: number;
-  conversionRate: number;
-  averageOrderValue: number;
-}
-
-export interface EstimateResponse {
-  totalEarnings: number;
-  totalAdCost: number;
-  creatorRevenueShare: number;
-  cpcRevenue: number;
-  ctr: number;
-  averageOrderValue: number;
-  roi: number;
-  clickToViewRatio: number;
-  salesConversionRate: number;
-  viewToPurchaseRate: number;
-  averageViewDuration: number;
-  retentionRate: number;
-  monthlyRevenue: number;
-  annualRevenue: number;
-  estimatedCpm: number;
-  revenueSharePercentage: number;
-}
-
-export interface AffiliateMetrics {
-  totalEarnings: number;
-  activeReferrals: number;
-  conversionRate: number;
-  commissionRate: number;
-  referralCode: string;
-  activity: Array<{
-    date: string;
-    referral: string;
-    action: string;
-    commission: number;
-    status: string;
-  }>;
-}
-
-export interface AdminData {
-  config: PlatformConfig;
-  auditLogs: unknown[];
-  webhooks: unknown[];
-  applications: unknown[];
-  userCount: number;
-  applicationCount: number;
-  revenueStats: {
-    totalRevenue: number;
-    monthlyRevenue: number;
-  };
-  webhookStatus: {
-    lastProcessed: string;
-    status: string;
-  };
-}
-
-export interface ApplicationRequest {
-  businessName: string;
-  businessDescription: string;
-  website: string;
-  country: string;
-  documents: string[];
-}
-
-export interface BusinessSuiteOverview {
-  user: User;
-  seshatPage: SeshatPage | null;
-  metrics: MonetizationMetrics;
-  config: PlatformConfig;
-  eligibility: Eligibility;
-  revenue: Revenue | null;
-  alerts: Alert[];
-  estimate: EstimateResponse | null;
-  admin: AdminData;
-  affiliate: unknown | null;
-  seshat: unknown | null;
-  programs: unknown[];
-}
-
-// Add missing types that are referenced in the controller
+// Content metrics
 export interface ContentMetrics {
   id: string;
-  userId: string;
-  videoId: string;
-  views: number;
-  likes: number;
+  contentId: string;
+  impressions: number;
+  clicks: number;
+  engagementRate: number;
+  reach: number;
+  saves: number;
   shares: number;
   comments: number;
-  watchTime: number;
-  engagementRate: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface BusinessVerification {
+// Affiliate event
+export interface AffiliateEvent {
   id: string;
-  userId: string;
-  legalName: string;
-  businessDescription: string;
-  registrationNumber: string;
-  documents: string[];
-  status: 'pending' | 'approved' | 'rejected';
-  reviewedBy?: string;
-  reviewedAt?: string;
-  rejectionReason?: string;
-  createdAt: string;
-  updatedAt: string;
+  affiliateId: string;
+  eventId: string;
+  eventType: 'click' | 'signup' | 'purchase' | 'conversion';
+  commissionAmount: number;
+  currency: string;
+  metadata: Record<string, unknown>;
+  occurredAt: Date;
 }
 
-export interface MonetizationApplication {
-  id: string;
-  userId: string;
-  productKey: string;
-  businessName: string;
-  businessDescription: string;
-  website: string;
-  country: string;
-  documents: string[];
-  status: 'pending' | 'approved' | 'rejected' | 'under_review';
-  submittedAt: string;
-  reviewedAt?: string;
-  reviewedBy?: string;
-  rejectionReason?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
+// Revenue ledger entry
 export interface RevenueLedgerEntry {
   id: string;
   userId: string;
-  transactionType: 'payout' | 'commission' | 'fee' | 'adjustment';
+  transactionType: 'sale' | 'affiliate_commission' | 'subscription_fee' | 'refund';
   amount: number;
   currency: string;
   description: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  processedAt: Date;
   status: 'pending' | 'completed' | 'failed' | 'refunded';
-  occurredAt: string;
-  createdAt: string;
+  metadata: Record<string, unknown>;
 }
 
-export interface PayoutAccount {
-  id: string;
-  userId: string;
-  bankName: string;
+// Admin data
+export interface AdminData {
+  overview: {
+    totalUsers: number;
+    activeUsers: number;
+    totalPosts: number;
+    totalComments: number;
+    totalRevenue: number;
+    subscriptions: {
+      active: number;
+      pending: number;
+      expired: number;
+    };
+  };
+  recentActivity: {
+    action: string;
+    user: string;
+    timestamp: Date;
+    details: string;
+  }[];
+  systemStats: {
+    uptime: number;
+    memoryUsage: number;
+    cpuUsage: number;
+    diskUsage: number;
+  };
+  performanceMetrics: {
+    avgResponseTime: number;
+    requestsPerMinute: number;
+    errorRate: number;
+  }[];
+}
+
+// Response types
+export interface OverviewResponse {
+  applications: MonetizationApplication[];
+  verifications: BusinessVerification[];
+  payoutAccounts: PayoutAccount[];
+  platformConfig: PlatformConfig;
+}
+
+export interface SeshatResponse {
+  pages: SeshatPage[];
+}
+
+export interface ProgramsResponse {
+  programs: ProductKey[];
+}
+
+export interface EligibilityResponse {
+  eligibility: Eligibility;
+}
+
+export interface EstimateResponse {
+  estimate: EstimateResult;
+}
+
+export interface ApplicationResponse {
+  application: MonetizationApplication;
+}
+
+export interface ApplicationsResponse {
+  applications: MonetizationApplication[];
+}
+
+export interface VerificationResponse {
+  verification: BusinessVerification;
+}
+
+export interface VerificationsResponse {
+  verifications: BusinessVerification[];
+}
+
+export interface PayoutAccountResponse {
+  account: PayoutAccount;
+}
+
+export interface PayoutAccountsResponse {
+  accounts: PayoutAccount[];
+}
+
+export interface ConfigResponse {
+  config: PlatformConfig;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
+  error?: string;
+}
+
+// API Request types
+export interface CreateApplicationRequest {
+  name: string;
+  email: string;
+  businessDescription: string;
+  website?: string;
+  monthlyRevenue?: number;
+  country: string;
+  productInterest: string[];
+}
+
+export interface UpdateApplicationRequest {
+  name?: string;
+  email?: string;
+  businessDescription?: string;
+  website?: string;
+  monthlyRevenue?: number;
+  country?: string;
+  productInterest?: string[];
+}
+
+export interface CreateVerificationRequest {
+  businessName: string;
+  registrationNumber: string;
+  taxId: string;
+  incorporationDate: string;
+  businessAddress: string;
+  supportingDocuments: string[];
+}
+
+export interface UpdateVerificationRequest {
+  businessName?: string;
+  registrationNumber?: string;
+  taxId?: string;
+  incorporationDate?: string;
+  businessAddress?: string;
+  supportingDocuments?: string[];
+}
+
+export interface CreatePayoutAccountRequest {
+  accountHolderName: string;
   accountNumber: string;
   routingNumber: string;
-  accountType: 'checking' | 'savings';
-  verified: boolean;
-  verificationDate?: string;
-  createdAt: string;
-  updatedAt: string;
+  bankName: string;
+  bankCountry: string;
+  currency: string;
 }
 
-export interface AffiliateEvent {
-  id: string;
-  userId: string;
-  referrerId?: string;
-  eventType: 'signup' | 'purchase' | 'conversion';
-  amount: number;
-  commissionRate: number;
-  commissionAmount: number;
-  status: 'pending' | 'completed' | 'cancelled';
-  recordedAt: string;
-  processedAt?: string;
-  createdAt: string;
+export interface UpdatePayoutAccountRequest {
+  accountHolderName?: string;
+  accountNumber?: string;
+  routingNumber?: string;
+  bankName?: string;
+  bankCountry?: string;
+  currency?: string;
+}
+
+export interface UpdateConfigRequest {
+  minimumAge?: number;
+  minimumPayoutThreshold?: number;
+  seshatMonthlyFee?: number;
+  seshatYearlyFee?: number;
+  monetizationFeePercentage?: number;
+  verificationFee?: number;
+  payoutProcessingTime?: number;
+  affiliateCommissionRate?: number;
+  enableMonetization?: boolean;
+  enableAffiliateProgram?: boolean;
+  contentPolicy?: string;
+  privacyPolicy?: string;
+  termsOfService?: string;
 }
