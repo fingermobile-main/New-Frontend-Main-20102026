@@ -1,20 +1,22 @@
 import { VerificationStatus } from '../shared/types';
+import { db } from '../database.js';
 
-export const checkVerificationStatus = async (_userId: string): Promise<VerificationStatus> => {
-    void _userId;
-  // Mock implementation - in a real app, this would check the user's verification status
-  const statuses: ('pending' | 'verified' | 'rejected')[] = ['pending', 'verified', 'rejected'];
-  const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+export const checkVerificationStatus = async (userId: string): Promise<VerificationStatus> => {
+  const row = db.prepare('SELECT verification_status, notes, verified_at FROM business_verifications WHERE user_id = ?').get(userId) as Record<string, unknown> | undefined;
   
-  return {
-    status: randomStatus,
-    notes: randomStatus === 'rejected' ? 'Additional documentation required' : undefined,
-    verifiedAt: randomStatus === 'verified' ? new Date() : undefined
-  };
-};
+  if (!row) {
+    return {
+      status: 'pending',
+      notes: undefined,
+      verifiedAt: undefined
+    };
+  }
 
-export default {
-  checkVerificationStatus
+  return {
+    status: row.verification_status as 'pending' | 'verified' | 'rejected',
+    notes: row.notes as string | undefined,
+    verifiedAt: row.verified_at ? new Date(row.verified_at as string) : undefined
+  };
 };
 
 export interface VerificationRecord {
@@ -26,55 +28,82 @@ export interface VerificationRecord {
 }
 
 class VerificationServiceClass {
-  private verifications: Map<string, VerificationRecord> = new Map();
-
   async getStatus(userId: string): Promise<VerificationRecord | null> {
-    return this.verifications.get(userId) || null;
+    const row = db.prepare('SELECT * FROM business_verifications WHERE user_id = ?').get(userId) as Record<string, unknown> | undefined;
+    if (!row) return null;
+    
+    return {
+      userId: row.user_id as string,
+      status: row.verification_status as 'pending' | 'verified' | 'rejected',
+      notes: row.notes as string | undefined,
+      createdAt: row.verified_at as string || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
   }
 
   async updateStatus(userId: string, status: VerificationRecord['status'], notes?: string): Promise<void> {
-    const existing = this.verifications.get(userId);
-    const record: VerificationRecord = {
-      userId,
-      status,
-      notes,
-      createdAt: existing?.createdAt || new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    this.verifications.set(userId, record);
+    const existing = await this.getStatus(userId);
+    
+    if (existing) {
+      db.prepare(`
+        UPDATE business_verifications 
+        SET verification_status = ?, notes = ?, verified_at = ?
+        WHERE user_id = ?
+      `).run(status, notes || null, status === 'verified' ? new Date().toISOString() : null, userId);
+    } else {
+      // Create new dummy record since one doesn't exist
+      const id = `bv-${Date.now()}`;
+      db.prepare(`
+        INSERT INTO business_verifications (id, user_id, business_name, verification_status, notes, verified_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run(id, userId, 'Unknown Business', status, notes || null, status === 'verified' ? new Date().toISOString() : null);
+    }
   }
 
   async getAll(): Promise<VerificationRecord[]> {
-    return Array.from(this.verifications.values());
+    const rows = db.prepare('SELECT * FROM business_verifications').all() as Record<string, unknown>[];
+    return rows.map(row => ({
+      userId: row.user_id as string,
+      status: row.verification_status as 'pending' | 'verified' | 'rejected',
+      notes: row.notes as string | undefined,
+      createdAt: row.verified_at as string || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }));
   }
 
   async create(verificationData: Omit<VerificationRecord, 'createdAt' | 'updatedAt'>): Promise<VerificationRecord> {
-    const record: VerificationRecord = {
+    const id = `bv-${Date.now()}`;
+    db.prepare(`
+      INSERT INTO business_verifications (id, user_id, business_name, verification_status, notes, verified_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      id, 
+      verificationData.userId, 
+      'Unknown Business', 
+      verificationData.status, 
+      verificationData.notes || null,
+      verificationData.status === 'verified' ? new Date().toISOString() : null
+    );
+    
+    return {
       ...verificationData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    this.verifications.set(verificationData.userId, record);
-    return record;
   }
 
-  async update(id: string, updateData: Partial<VerificationRecord>): Promise<VerificationRecord | null> {
-    const existing = this.verifications.get(id);
-    if (!existing) return null;
-
-    const updatedRecord: VerificationRecord = {
-      ...existing,
-      ...updateData,
-      updatedAt: new Date().toISOString()
-    };
-
-    this.verifications.set(id, updatedRecord);
-    return updatedRecord;
+  async update(userId: string, updateData: Partial<VerificationRecord>): Promise<VerificationRecord | null> {
+    await this.updateStatus(userId, updateData.status || 'pending', updateData.notes);
+    return this.getStatus(userId);
   }
 
-  async delete(id: string): Promise<void> {
-    this.verifications.delete(id);
+  async delete(userId: string): Promise<void> {
+    db.prepare('DELETE FROM business_verifications WHERE user_id = ?').run(userId);
   }
 }
 
 export const VerificationService = new VerificationServiceClass();
+
+export default {
+  checkVerificationStatus
+};

@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { db } from './database.js';
 
 /**
  * Guardian AI Services
@@ -270,16 +271,17 @@ export function validateBiometricHash(hash: string): boolean {
  * Checks if a token is unique (to be implemented with database query)
  * This is a placeholder that should be replaced with actual DB check
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function isTokenUnique(_token: string, _type: 'access_key' | 'coupon'): Promise<boolean> {
-  // TODO: Implement database query to check uniqueness
-  // For now, assume all generated tokens are unique
-  // In production, query the appropriate table:
-  // - access_keys table for access_key type
-  // - coupons table for coupon type
-  
-  console.warn('Token uniqueness check not implemented - using mock validation');
-  return true;
+export async function isTokenUnique(token: string, type: 'access_key' | 'coupon'): Promise<boolean> {
+  try {
+    const table = type === 'access_key' ? 'access_keys' : 'coupons';
+    // Using parameter binding for the value, but table name must be concatenated (safely, since we hardcode it)
+    const result = db.prepare(`SELECT 1 FROM ${table} WHERE token = ?`).get(token);
+    return !result;
+  } catch (error) {
+    console.error('Error checking token uniqueness:', error);
+    // Fail closed in production, but here we can return false
+    return false;
+  }
 }
 
 // ============================================================

@@ -173,6 +173,7 @@ export const kycService = new KYCVerificationService();
 export type { KYCRecord, KYBRecord };
 import { Request, Response, NextFunction } from 'express';
 import { guardianAI, validateBiometricHash } from './guardian-ai-service.js';
+import { db } from './database.js';
 
 /**
  * Age Gate Middleware
@@ -300,18 +301,21 @@ async function getKYCRecord(userId: string): Promise<{
   isAbove22Years: boolean;
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'UNDER_REVIEW';
 } | null> {
-  // TODO: Implement actual database query
-  // SELECT * FROM kyc_records WHERE user_id = $1
-  
-  console.warn('KYC record lookup not implemented - returning mock data');
-  
-  // Mock data for testing
-  return {
-    id: 'kyc_mock_001',
-    userId,
-    isAbove22Years: true,
-    status: 'APPROVED',
-  };
+  try {
+    const record = db.prepare('SELECT id, user_id as userId, is_above_22_years as isAbove22Years, status FROM kyc_records WHERE user_id = ?').get(userId) as Record<string, unknown> | undefined;
+    
+    if (!record) return null;
+    
+    return {
+      id: record.id as string,
+      userId: record.userId as string,
+      isAbove22Years: Boolean(record.isAbove22Years),
+      status: record.status as 'PENDING' | 'APPROVED' | 'REJECTED' | 'UNDER_REVIEW',
+    };
+  } catch (error) {
+    console.error('Error fetching KYC record:', error);
+    return null;
+  }
 }
 
 // ============================================================
@@ -382,16 +386,27 @@ export class KYCService {
         throw new Error('Invalid biometric hash format');
       }
       
-      // TODO: Insert into kyc_records table
-      // INSERT INTO kyc_records (...) VALUES (...)
+      const kycId = 'kyc_pending_' + Date.now();
       
-      console.log('KYC submission received for user:', data.userId);
+      db.prepare(`
+        INSERT INTO kyc_records (
+          id, user_id, full_legal_name, date_of_birth, nationality, 
+          id_document_type, id_document_number, address_line_1, address_line_2, 
+          city, state_province, postal_code, country_code, biometric_hash, is_above_22_years, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        kycId, data.userId, data.fullLegalName, data.dateOfBirth, data.nationality || null,
+        data.idDocumentType || null, data.idDocumentNumber || null, data.addressLine1 || null,
+        data.addressLine2 || null, data.city || null, data.stateProvince || null,
+        data.postalCode || null, data.countryCode || null, biometricHash, (age >= 22) ? 1 : 0, 'PENDING'
+      );
+      
+      console.log('KYC submission received and saved for user:', data.userId);
       console.log('Age calculated:', age);
-      console.log('Biometric hash generated:', biometricHash.substring(0, 20) + '...');
       
       return {
         success: true,
-        kycId: 'kyc_pending_' + Date.now(),
+        kycId,
         status: 'PENDING',
         message: 'KYC verification submitted successfully. Awaiting review.',
       };
@@ -431,15 +446,26 @@ export class KYCService {
         };
       }
       
-      // TODO: Insert into kyb_records table
-      // INSERT INTO kyb_records (...) VALUES (...)
+      const kybId = 'kyb_pending_' + Date.now();
       
-      console.log('KYB submission received for user:', data.userId);
-      console.log('Business name:', data.businessLegalName);
+      db.prepare(`
+        INSERT INTO kyb_records (
+          id, user_id, business_legal_name, business_registration_number, business_type,
+          tax_id, incorporation_date, registered_address, business_email, business_phone,
+          website_url, industry_category, annual_revenue_range, employee_count_range, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        kybId, data.userId, data.businessLegalName, data.businessRegistrationNumber, data.businessType,
+        data.taxId || null, data.incorporationDate || null, data.registeredAddress || null,
+        data.businessEmail || null, data.businessPhone || null, data.websiteUrl || null,
+        data.industryCategory || null, data.annualRevenueRange || null, data.employeeCountRange || null, 'PENDING'
+      );
+      
+      console.log('KYB submission received and saved for user:', data.userId);
       
       return {
         success: true,
-        kybId: 'kyb_pending_' + Date.now(),
+        kybId,
         status: 'PENDING',
         message: 'KYB verification submitted successfully. Awaiting review.',
       };
@@ -486,43 +512,67 @@ export class KYCService {
   /**
    * Get KYC status for a user
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getKYCStatus(_userId: string): Promise<{
+  async getKYCStatus(userId: string): Promise<{
     status: string;
     kycRecord?: unknown;
   }> {
-    // TODO: Query database for KYC record
-    // SELECT * FROM kyc_records WHERE user_id = $1
-    
-    console.warn('KYC status lookup not implemented - returning mock data');
-    
-    return {
-      status: 'PENDING',
-      kycRecord: null,
-    };
+    try {
+      const record = db.prepare('SELECT * FROM kyc_records WHERE user_id = ?').get(userId) as Record<string, unknown> | undefined;
+      if (!record) {
+        return {
+          status: 'NOT_SUBMITTED',
+          kycRecord: null,
+        };
+      }
+      return {
+        status: record.status as string,
+        kycRecord: record,
+      };
+    } catch (error) {
+      console.error('Error fetching KYC status:', error);
+      return {
+        status: 'ERROR',
+        kycRecord: null,
+      };
+    }
   }
   
   /**
    * Approve KYC verification (admin only)
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async approveKYC(kycId: string, reviewerId: string, _notes?: string): Promise<boolean> {
-    // TODO: Update kyc_records table
-    // UPDATE kyc_records SET status = 'APPROVED', reviewed_by = ..., review_notes = ... WHERE id = $1
-    
-    console.log(`KYC ${kycId} approved by reviewer ${reviewerId}`);
-    return true;
+  async approveKYC(kycId: string, reviewerId: string, notes?: string): Promise<boolean> {
+    try {
+      const info = db.prepare(`
+        UPDATE kyc_records 
+        SET status = 'APPROVED', reviewed_by = ?, review_notes = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(reviewerId, notes || null, kycId);
+      
+      console.log(`KYC ${kycId} approved by reviewer ${reviewerId}`);
+      return info.changes > 0;
+    } catch (error) {
+      console.error('Error approving KYC:', error);
+      return false;
+    }
   }
   
   /**
    * Reject KYC verification (admin only)
    */
   async rejectKYC(kycId: string, reviewerId: string, reason: string): Promise<boolean> {
-    // TODO: Update kyc_records table
-    // UPDATE kyc_records SET status = 'REJECTED', reviewed_by = ..., review_notes = ... WHERE id = $1
-    
-    console.log(`KYC ${kycId} rejected by reviewer ${reviewerId}: ${reason}`);
-    return true;
+    try {
+      const info = db.prepare(`
+        UPDATE kyc_records 
+        SET status = 'REJECTED', reviewed_by = ?, review_notes = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(reviewerId, reason, kycId);
+      
+      console.log(`KYC ${kycId} rejected by reviewer ${reviewerId}: ${reason}`);
+      return info.changes > 0;
+    } catch (error) {
+      console.error('Error rejecting KYC:', error);
+      return false;
+    }
   }
 }
 
