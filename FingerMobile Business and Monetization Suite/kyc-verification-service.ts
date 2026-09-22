@@ -1,6 +1,6 @@
 // KYC/KYB Verification Service
 
-export interface KYCSubmissionData {
+export interface KYCSubmissionDataV1 {
   userId: string;
   fullName: string;
   dateOfBirth: string; // ISO string
@@ -15,7 +15,7 @@ export interface KYCSubmissionData {
   country: string;
 }
 
-export interface KYBSubmissionData {
+export interface KYBSubmissionDataV1 {
   userId: string;
   businessName: string;
   registrationNumber: string;
@@ -85,7 +85,7 @@ class KYCVerificationService {
   private kycRecords: Map<string, KYCRecord> = new Map();
   private kybRecords: Map<string, KYBRecord> = new Map();
 
-  async submitKYC(data: KYCSubmissionData): Promise<KYCRecord> {
+  async submitKYC(data: KYCSubmissionDataV1): Promise<KYCRecord> {
     const record: KYCRecord = {
       id: 'kyc_' + Math.random().toString(36).substr(2, 10),
       userId: data.userId,
@@ -118,7 +118,7 @@ class KYCVerificationService {
     return { status: record.status, kycRecord: record };
   }
 
-  async submitKYB(data: KYBSubmissionData): Promise<KYBRecord> {
+  async submitKYB(data: KYBSubmissionDataV1): Promise<KYBRecord> {
     const record: KYBRecord = {
       id: 'kyb_' + Math.random().toString(36).substr(2, 10),
       userId: data.userId,
@@ -318,7 +318,7 @@ async function getKYCRecord(userId: string): Promise<{
 // KYC Verification Service
 // ============================================================
 
-export interface KYCSubmissionData {
+export interface KYCSubmissionDataV2 {
   userId: string;
   fullLegalName: string;
   dateOfBirth: string; // ISO date format
@@ -334,7 +334,7 @@ export interface KYCSubmissionData {
   biometricFaceData: string; // Base64 encoded image or hash
 }
 
-export interface KYBSubmissionData {
+export interface KYBSubmissionDataV2 {
   userId: string;
   businessLegalName: string;
   businessRegistrationNumber: string;
@@ -355,7 +355,7 @@ export class KYCService {
   /**
    * Submit KYC verification for a user
    */
-  async submitKYC(data: KYCSubmissionData): Promise<{
+  async submitKYC(data: KYCSubmissionDataV2): Promise<{
     success: boolean;
     kycId: string;
     status: string;
@@ -404,7 +404,7 @@ export class KYCService {
   /**
    * Submit KYB verification for a business
    */
-  async submitKYB(data: KYBSubmissionData): Promise<{
+  async submitKYB(data: KYBSubmissionDataV2): Promise<{
     success: boolean;
     kybId: string;
     status: string;
@@ -527,4 +527,4 @@ export class KYCService {
 }
 
 // Export singleton instance
-export const kycService = new KYCService();
+export const kycServiceV2 = new KYCService();

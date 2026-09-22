@@ -13,10 +13,11 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem('accessToken');
     
     if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-      };
+      if (config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        config.headers = { Authorization: `Bearer ${token}` } as unknown as import('axios').AxiosRequestHeaders;
+      }
     }
     
     return config;

@@ -6,7 +6,7 @@ export class HallmarkService {
   /**
    * Get all hallmarks
    */
-  static async getAll(): Promise<any[]> {
+  static async getAll(): Promise<unknown[]> {
     // Placeholder implementation - replace with actual logic
     return [];
   }
@@ -14,7 +14,7 @@ export class HallmarkService {
   /**
    * Get hallmark by ID
    */
-  static async getById(id: string): Promise<any> {
+  static async getById(id: string): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       id,
@@ -27,7 +27,7 @@ export class HallmarkService {
   /**
    * Create a new hallmark
    */
-  static async create(hallmarkData: any): Promise<any> {
+  static async create(hallmarkData: Record<string, unknown>): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -39,7 +39,7 @@ export class HallmarkService {
   /**
    * Update a hallmark
    */
-  static async update(id: string, updateData: any): Promise<any> {
+  static async update(id: string, updateData: Record<string, unknown>): Promise<unknown> {
     // Placeholder implementation - replace with actual logic
     return {
       id,

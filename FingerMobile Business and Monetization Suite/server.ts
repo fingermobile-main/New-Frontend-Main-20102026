@@ -10,18 +10,19 @@ app.use(express.json());
 app.use(router);
 
 // Add a basic health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'OK', message: 'Business Suite Controller is running' });
 });
 
-// Basic error handling middleware (without next param to satisfy ESLint)
-app.use((err: Error, req: express.Request, res: express.Response) => {
+// Basic error handling middleware
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  void _next;
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
 // Handle 404s
-app.use('*', (req, res) => {
+app.use('*', (_req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 

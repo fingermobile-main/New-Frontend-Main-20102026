@@ -13,10 +13,7 @@ import {
   CreateApplicationRequest,
   EstimateRequest
 } from '../../shared/types';
-import { BusinessSuiteService } from '../services/business-suite-service';
-
-// Initialize service instance
-const businessSuiteService = new BusinessSuiteService();
+import { businessSuiteService } from '../services/business-suite-service';
 
 interface BusinessSuiteState {
   overview: BusinessSuiteOverview | null;
