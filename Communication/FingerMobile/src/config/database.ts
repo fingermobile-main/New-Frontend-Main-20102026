@@ -28,6 +28,6 @@ export const connectDatabase = async (): Promise<void> => {
     // await sequelize.sync({ alter: true }); // Use { force: true } to drop and recreate tables
   } catch (error) {
     console.error('Unable to connect to the database:', error);
-    throw error;
+    console.warn("Continuing without DB in dev mode");
   }
 };

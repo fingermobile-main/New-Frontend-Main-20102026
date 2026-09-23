@@ -37,7 +37,7 @@ export default defineConfig({
             console.log('proxy error', err);
           });
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
+          proxy.on('proxyReq', (_proxyReq, req, _res) => {
             console.log('Sending Request to the Target:', req.method, req.url);
           });
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

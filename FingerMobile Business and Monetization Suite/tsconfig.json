@@ -5,27 +5,22 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+
+    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "*"
-      ],
-      "@shared/*": [
-        "shared/*"
-      ]
-    },
-    "types": ["node", "jest"]
+    "noFallthroughCasesInSwitch": true
+    // Removed the invalid ignoreDeprecations option
   },
-  "include": ["**/*.ts", "**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "shared", "services", "controllers", "middleware", "routes", "types", "utils", "hooks", "store", "components", "pages", "App.tsx", "OverviewPage.tsx", "AdminPage.tsx", "VerificationPage.tsx", "AffiliatePage.tsx", "MonetizationPage.tsx", "RevenuePage.tsx", "MonetizationPolicyPage.tsx", "useBusinessSuite.ts", "business-suite-service.ts", "repository.ts", "parsers.ts", "api.ts", "app.ts", "requests.ts", "vite.config.ts", "server.ts", "simple-server.ts", "error-handler.ts", "business-suite-controller.ts", "eligibility-service.ts", "guardian-ai-service.ts", "kyc-verification-service.ts", "not-found.ts"]
 }

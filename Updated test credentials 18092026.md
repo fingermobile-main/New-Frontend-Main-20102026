@@ -353,3 +353,22 @@ Regular User	user@fingermobile.com	+2348012345679	User@123
 Creator	creator@fingermobile.com	+2348012345680	Creator@123
 Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
 All accounts have been verified (email and phone) and are ready for testing on the platform
+
+The test users have been properly configured in the database with the following credentials:
+
+Role	Email	Phone	Password
+Admin	admin@fingermobile.com	+2348012345678	Admin@123
+Regular User	user@fingermobile.com	+2348012345679	User@123
+Creator	creator@fingermobile.com	+2348012345680	Creator@123
+Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
+All accounts have been verified (both email and phone) and are ready for testing on the platform. The database includes:
+
+Proper password hashes for each account
+Email and phone verification flags set to TRUE
+Appropriate roles assigned to each user type
+Active status for all accounts
+Complete user profiles
+Active wallets with $1000 USD balance
+The authentication system requires email, phone, and password for login, and all these test accounts meet the verification requirements. The database schema includes the necessary columns for email_verified, phone_verified, and other security features.
+
+These test credentials are ready to use for platform testing.

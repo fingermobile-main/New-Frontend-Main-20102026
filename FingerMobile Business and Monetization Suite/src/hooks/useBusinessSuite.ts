@@ -1,20 +1,22 @@
-// Removed unused import: import { ProgramsResponse, ... } from '../../shared/types';
+// Removed unused import: import { useState, useEffect } from 'react';
 import { 
   OverviewResponse, 
   EstimateResponse,
-  CreateApplicationRequest
+  CreateApplicationRequest,
+  EstimateRequest,
+  ProgramDefinition
 } from '../../shared/types';
 import { useBusinessSuiteStore } from '../stores/business-suite-store';
 
-// Define the return type interface
+// Define the return type interface with proper types
 interface UseBusinessSuiteReturn {
-  programs: any[] | null;  // Using any[] temporarily to avoid type mismatch
+  programs: ProgramDefinition[] | null;  // Changed to match store return type
   overview: OverviewResponse | null;
-  estimates: EstimateResponse | null;  // Fixing the property name to match implementation
+  estimate: EstimateResponse | null;
   loading: boolean;
   error: string | null;
   submitApplication: (application: CreateApplicationRequest) => Promise<void>;
-  estimateRevenue: (payload: any) => Promise<EstimateResponse>;
+  estimateRevenue: (payload: EstimateRequest) => Promise<EstimateResponse>;  // Changed to EstimateRequest
 }
 
 export const useBusinessSuite = (): UseBusinessSuiteReturn => {
@@ -22,7 +24,7 @@ export const useBusinessSuite = (): UseBusinessSuiteReturn => {
   const { 
     programs, 
     overview, 
-    estimates: estimate,  // Map estimates to estimate
+    estimate,  // Correct property name
     submitApplication,
     estimateRevenue,
     loading,
@@ -32,7 +34,7 @@ export const useBusinessSuite = (): UseBusinessSuiteReturn => {
   return {
     programs,
     overview,
-    estimates,
+    estimate,
     loading,
     error,
     submitApplication,

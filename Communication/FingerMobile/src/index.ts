@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import http from 'http';
-import { WebSocketServer, WebSocket } from 'ws';
+import { Server, Socket } from 'socket.io';
 import { connectDatabase } from './config/database';
 
 // Import routes
@@ -64,53 +64,60 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// WebSocket server for real-time communications
-const wss = new WebSocketServer({ server });
+// Socket.io server for real-time communications
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 
 // Store connected clients with their user info
 interface ClientConnection {
-  ws: WebSocket;
+  socket: Socket;
   userId: string;
   connectedAt: Date;
 }
 
 const connectedClients = new Map<string, ClientConnection>();
 
-wss.on('connection', (ws: WebSocket, req: any) => {
+io.on('connection', (socket: Socket) => {
   // Extract user info from connection (in a real implementation, you'd verify the token)
-  const userId = req.headers['user-id'] || 'anonymous';
-  const clientId = `${userId}_${Date.now()}`;
+  const userId = socket.handshake.headers['user-id'] as string || socket.handshake.query.userId as string || 'anonymous';
+  const clientId = `${userId}_${socket.id}`;
   
   console.log(`New client connected: ${clientId} (user: ${userId})`);
   
   // Store the connection
   connectedClients.set(clientId, {
-    ws,
-    userId: userId as string,
+    socket,
+    userId,
     connectedAt: new Date()
   });
+
+  // Join a room specifically for this user to receive direct messages
+  socket.join(`user_${userId}`);
   
-  ws.on('message', (data: any) => {
+  socket.on('message', (messageData: any) => {
     try {
-      const messageData = JSON.parse(data.toString());
       console.log(`Received message from ${userId}:`, messageData);
       
       // Handle different message types
       switch(messageData.type) {
         case 'DIRECT_MESSAGE':
-          handleDirectMessage(messageData, userId as string);
+          handleDirectMessage(messageData, userId);
           break;
         case 'GROUP_MESSAGE':
-          handleGroupMessage(messageData, userId as string);
+          handleGroupMessage(messageData, userId);
           break;
         case 'BROADCAST_MESSAGE':
-          handleBroadcastMessage(messageData, userId as string);
+          handleBroadcastMessage(messageData, userId);
           break;
         case 'TYPING_INDICATOR':
-          handleTypingIndicator(messageData, userId as string);
+          handleTypingIndicator(messageData, userId);
           break;
         case 'READ_RECEIPT':
-          handleReadReceipt(messageData, userId as string);
+          handleReadReceipt(messageData, userId);
           break;
         default:
           console.log(`Unknown message type: ${messageData.type}`);
@@ -119,14 +126,21 @@ wss.on('connection', (ws: WebSocket, req: any) => {
       console.error('Error processing message:', error);
     }
   });
-  
-  ws.on('close', () => {
-    console.log(`Client disconnected: ${clientId}`);
-    connectedClients.delete(clientId);
+
+  // Join a group room
+  socket.on('join_group', (groupId: string) => {
+    socket.join(`group_${groupId}`);
+    console.log(`User ${userId} joined group ${groupId}`);
+  });
+
+  // Leave a group room
+  socket.on('leave_group', (groupId: string) => {
+    socket.leave(`group_${groupId}`);
+    console.log(`User ${userId} left group ${groupId}`);
   });
   
-  ws.on('error', (error) => {
-    console.error(`WebSocket error for client ${clientId}:`, error);
+  socket.on('disconnect', () => {
+    console.log(`Client disconnected: ${clientId}`);
     connectedClients.delete(clientId);
   });
 });
@@ -135,42 +149,33 @@ wss.on('connection', (ws: WebSocket, req: any) => {
 function handleDirectMessage(messageData: any, senderUserId: string) {
   const { recipientUserId, content, msgType, mediaAttachments } = messageData;
   
-  // Find recipient's connection
-  for (const [clientId, client] of connectedClients.entries()) {
-    if (client.userId === recipientUserId) {
-      client.ws.send(JSON.stringify({
-        type: 'DIRECT_MESSAGE',
-        from: senderUserId,
-        content,
-        msgType: msgType || 'text', // Changed property name to avoid conflict
-        mediaAttachments,
-        timestamp: new Date().toISOString()
-      }));
-      break;
-    }
-  }
+  io.to(`user_${recipientUserId}`).emit('message', {
+    type: 'DIRECT_MESSAGE',
+    from: senderUserId,
+    content,
+    msgType: msgType || 'text',
+    mediaAttachments,
+    timestamp: new Date().toISOString()
+  });
 }
 
 // Function to handle group messages
 function handleGroupMessage(messageData: any, senderUserId: string) {
   const { groupId, content, msgType, mediaAttachments } = messageData;
   
-  // Broadcast to all members of the group
-  for (const [clientId, client] of connectedClients.entries()) {
-    // In a real implementation, you'd check if the user belongs to the group
-    // For now, we'll just send to everyone except the sender
-    if (client.userId !== senderUserId) {
-      client.ws.send(JSON.stringify({
-        type: 'GROUP_MESSAGE',
-        groupId,
-        from: senderUserId,
-        content,
-        msgType: msgType || 'text', // Changed property name to avoid conflict
-        mediaAttachments,
-        timestamp: new Date().toISOString()
-      }));
-    }
-  }
+  // Broadcast to all members of the group except the sender
+  // Wait, socket.io's io.to().emit() sends to everyone in the room. 
+  // For group messaging, we can use socket.to() if we pass the socket, or we just rely on clients ignoring their own messages,
+  // or we do it carefully. We will broadcast to the room.
+  io.to(`group_${groupId}`).emit('message', {
+    type: 'GROUP_MESSAGE',
+    groupId,
+    from: senderUserId,
+    content,
+    msgType: msgType || 'text',
+    mediaAttachments,
+    timestamp: new Date().toISOString()
+  });
 }
 
 // Function to handle broadcast messages
@@ -178,18 +183,15 @@ function handleBroadcastMessage(messageData: any, senderUserId: string) {
   const { content, msgType, targetAudience, mediaAttachments } = messageData;
   
   // Broadcast to all connected clients
-  for (const [clientId, client] of connectedClients.entries()) {
-    // In a real implementation, you'd check if the user matches the target audience
-    client.ws.send(JSON.stringify({
-      type: 'BROADCAST_MESSAGE',
-      from: senderUserId,
-      content,
-      msgType: msgType || 'text', // Changed property name to avoid conflict
-      targetAudience,
-      mediaAttachments,
-      timestamp: new Date().toISOString()
-    }));
-  }
+  io.emit('message', {
+    type: 'BROADCAST_MESSAGE',
+    from: senderUserId,
+    content,
+    msgType: msgType || 'text',
+    targetAudience,
+    mediaAttachments,
+    timestamp: new Date().toISOString()
+  });
 }
 
 // Function to handle typing indicators
@@ -197,17 +199,13 @@ function handleTypingIndicator(messageData: any, senderUserId: string) {
   const { groupId, isTyping } = messageData;
   
   // Notify other users in the group about typing status
-  for (const [clientId, client] of connectedClients.entries()) {
-    if (client.userId !== senderUserId) {
-      client.ws.send(JSON.stringify({
-        type: 'TYPING_INDICATOR',
-        userId: senderUserId,
-        groupId,
-        isTyping,
-        timestamp: new Date().toISOString()
-      }));
-    }
-  }
+  io.to(`group_${groupId}`).emit('message', {
+    type: 'TYPING_INDICATOR',
+    userId: senderUserId,
+    groupId,
+    isTyping,
+    timestamp: new Date().toISOString()
+  });
 }
 
 // Function to handle read receipts

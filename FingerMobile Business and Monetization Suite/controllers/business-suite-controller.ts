@@ -97,7 +97,7 @@ export const createBusinessVerification = async (req: Request, res: Response) =>
 export const getBusinessVerificationById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const verification = await businessSuiteService.getVerification(id);
+    const verification = await businessSuiteService.getVerificationById(id);
     if (!verification) {
       res.status(404).json({ error: 'Verification not found' });
       return;

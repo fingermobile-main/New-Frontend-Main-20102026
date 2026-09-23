@@ -52,7 +52,7 @@ export const submitApplication = async (req: Request, res: Response) => {
 
 export const getApplication = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const result = await businessSuiteService.getApplicationById(id);
+  const result = await businessSuiteService.getApplication(id);
   if (result) {
     sendOk(res, result);
   } else {

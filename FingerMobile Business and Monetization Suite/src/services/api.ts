@@ -1,5 +1,18 @@
 import axios from 'axios';
 
+export const apiCall = async (endpoint: string, token: string) => {
+  const config = {
+    headers: { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  };
+  
+  // Make the actual API call
+  const response = await axios.get(endpoint, config);
+  return response;
+};
+
 // Create axios instance
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
@@ -16,7 +29,10 @@ apiClient.interceptors.request.use(
       if (config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       } else {
-        config.headers = { Authorization: `Bearer ${token}` } as unknown as import('axios').AxiosRequestHeaders;
+        config.headers = { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
       }
     }
     
