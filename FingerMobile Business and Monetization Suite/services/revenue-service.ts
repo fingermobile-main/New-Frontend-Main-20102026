@@ -1,11 +1,41 @@
+import { db } from '../database.js';
+
+// Row → RevenueRecord mapper using the revenue_ledger table schema
+function mapRow(row: Record<string, unknown>) {
+  return {
+    id: row.id as string,
+    userId: row.user_id as string,
+    transactionType: row.transaction_type as string,
+    amount: row.amount as number,
+    currency: row.currency as string,
+    description: row.description as string,
+    relatedEntityId: row.related_entity_id as string | undefined,
+    relatedEntityType: row.related_entity_type as string | undefined,
+    status: row.status as 'pending' | 'completed' | 'failed' | 'refunded',
+    metadata: row.metadata_json ? JSON.parse(row.metadata_json as string) : {},
+    processedAt: new Date(row.processed_at as string),
+    // Legacy field aliases for backward compat
+    date: row.processed_at as string,
+    source: row.related_entity_type as string || 'platform'
+  };
+}
+
 export interface RevenueRecord {
   id: string;
   userId: string;
+  transactionType: string;
   amount: number;
   currency: string;
+  description: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  metadata: Record<string, unknown>;
+  processedAt: Date;
+  /** @deprecated use processedAt */
   date: string;
+  /** @deprecated use relatedEntityType */
   source: string;
-  status: 'pending' | 'completed' | 'failed';
 }
 
 interface RevenueReport {
@@ -33,148 +63,104 @@ interface TopProduct {
 }
 
 class RevenueServiceClass {
-  private revenueRecords: Map<string, RevenueRecord> = new Map();
-
-  async getRevenueByUser(userId: string): Promise<RevenueRecord[]> {
-    return Array.from(this.revenueRecords.values()).filter(record => record.userId === userId);
+  getRevenueByUser(userId: string): RevenueRecord[] {
+    const rows = db.prepare(
+      "SELECT * FROM revenue_ledger WHERE user_id = ? ORDER BY processed_at DESC"
+    ).all(userId) as Record<string, unknown>[];
+    return rows.map(mapRow);
   }
 
   async getTotalRevenue(): Promise<number> {
-    return Array.from(this.revenueRecords.values())
-      .filter(record => record.status === 'completed')
-      .reduce((sum, record) => sum + record.amount, 0);
+    const result = db.prepare(
+      "SELECT COALESCE(SUM(amount), 0) as total FROM revenue_ledger WHERE status = 'completed'"
+    ).get() as { total: number };
+    return result.total;
   }
 
-  async createRevenueRecord(record: Omit<RevenueRecord, 'id'>): Promise<RevenueRecord> {
-    const newRecord: RevenueRecord = {
-      ...record,
-      id: Math.random().toString(36).substring(2, 15) // Simple ID generation for demo purposes
-    };
-    this.revenueRecords.set(newRecord.id, newRecord);
-    return newRecord;
+  createRevenueRecord(record: Omit<RevenueRecord, 'id' | 'processedAt' | 'date'>): RevenueRecord {
+    const id = `rev-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const processedAt = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO revenue_ledger (id, user_id, transaction_type, amount, currency, description,
+        related_entity_id, related_entity_type, status, metadata_json, processed_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      id,
+      record.userId,
+      record.transactionType,
+      record.amount,
+      record.currency,
+      record.description,
+      record.relatedEntityId ?? null,
+      record.relatedEntityType ?? null,
+      record.status,
+      JSON.stringify(record.metadata ?? {}),
+      processedAt
+    );
+    const row = db.prepare('SELECT * FROM revenue_ledger WHERE id = ?').get(id) as Record<string, unknown>;
+    return mapRow(row);
   }
 
-  async getRevenueReport(startDate?: string, endDate?: string): Promise<RevenueRecord[]> {
-    let records = Array.from(this.revenueRecords.values());
-    
-    if (startDate) {
-      records = records.filter(r => r.date >= startDate);
-    }
-    
-    if (endDate) {
-      records = records.filter(r => r.date <= endDate);
-    }
-    
-    return records;
+  getRevenueReport(startDate?: string, endDate?: string): RevenueRecord[] {
+    let query = 'SELECT * FROM revenue_ledger WHERE 1=1';
+    const params: string[] = [];
+    if (startDate) { query += ' AND processed_at >= ?'; params.push(startDate); }
+    if (endDate)   { query += ' AND processed_at <= ?'; params.push(endDate); }
+    query += ' ORDER BY processed_at DESC';
+    const rows = db.prepare(query).all(...params) as Record<string, unknown>[];
+    return rows.map(mapRow);
   }
 
   async generateReport(startDate: string, endDate: string): Promise<RevenueReport> {
-    // Generate a revenue report between two dates
-    const records = await this.getRevenueReport(startDate, endDate);
+    const records = this.getRevenueReport(startDate, endDate);
     const totalRevenue = records
       .filter(r => r.status === 'completed')
-      .reduce((sum, record) => sum + record.amount, 0);
-
-    return {
-      startDate,
-      endDate,
-      totalRevenue,
-      records,
-      count: records.length
-    };
+      .reduce((sum, r) => sum + r.amount, 0);
+    return { startDate, endDate, totalRevenue, records, count: records.length };
   }
 
   async getRevenueBySource(): Promise<RevenueSource[]> {
-    const groupedBySource: { [key: string]: number } = {};
-    
-    Array.from(this.revenueRecords.values())
-      .filter(record => record.status === 'completed')
-      .forEach(record => {
-        if (!groupedBySource[record.source]) {
-          groupedBySource[record.source] = 0;
-        }
-        groupedBySource[record.source] += record.amount;
-      });
-
-    return Object.entries(groupedBySource).map(([source, amount]) => ({
-      source,
-      amount
-    }));
+    const rows = db.prepare(`
+      SELECT related_entity_type as source, SUM(amount) as amount
+      FROM revenue_ledger WHERE status = 'completed'
+      GROUP BY related_entity_type
+    `).all() as { source: string; amount: number }[];
+    return rows.map(r => ({ source: r.source || 'platform', amount: r.amount }));
   }
 
   async getMonthlyRevenue(): Promise<MonthlyRevenue[]> {
-    const groupedByMonth: { [key: string]: number } = {};
-    
-    Array.from(this.revenueRecords.values())
-      .filter(record => record.status === 'completed')
-      .forEach(record => {
-        const date = new Date(record.date);
-        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-        
-        if (!groupedByMonth[monthKey]) {
-          groupedByMonth[monthKey] = 0;
-        }
-        groupedByMonth[monthKey] += record.amount;
-      });
-
-    return Object.entries(groupedByMonth).map(([month, amount]) => ({
-      month,
-      amount
-    }));
+    const rows = db.prepare(`
+      SELECT strftime('%Y-%m', processed_at) as month, SUM(amount) as amount
+      FROM revenue_ledger WHERE status = 'completed'
+      GROUP BY month ORDER BY month DESC
+    `).all() as { month: string; amount: number }[];
+    return rows;
   }
 
   async getTopPerformingProducts(): Promise<TopProduct[]> {
-    // Group revenue records by source (assuming source represents product)
-    const groupedBySource: { [key: string]: number } = {};
-    
-    Array.from(this.revenueRecords.values())
-      .filter(record => record.status === 'completed')
-      .forEach(record => {
-        if (!groupedBySource[record.source]) {
-          groupedBySource[record.source] = 0;
-        }
-        groupedBySource[record.source] += record.amount;
-      });
-
-    // Convert to array and sort by amount
-    return Object.entries(groupedBySource)
-      .map(([source, amount]) => ({
-        productId: source,
-        productName: source, // In a real implementation, this would map to actual product names
-        amount
-      }))
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 10); // Top 10 performing products
+    const rows = db.prepare(`
+      SELECT related_entity_id as productId, related_entity_type as productName, SUM(amount) as amount
+      FROM revenue_ledger WHERE status = 'completed' AND related_entity_id IS NOT NULL
+      GROUP BY related_entity_id ORDER BY amount DESC LIMIT 10
+    `).all() as { productId: string; productName: string; amount: number }[];
+    return rows;
   }
 
   async getProjectedRevenue(): Promise<number> {
-    // Calculate projected revenue based on historical data
-    const allRecords = Array.from(this.revenueRecords.values());
-    const completedRecords = allRecords.filter(r => r.status === 'completed');
-    
-    if (completedRecords.length === 0) {
-      return 0;
-    }
+    const result = db.prepare(`
+      SELECT COALESCE(AVG(monthly_total), 0) as avg_monthly
+      FROM (
+        SELECT strftime('%Y-%m', processed_at) as month, SUM(amount) as monthly_total
+        FROM revenue_ledger WHERE status = 'completed'
+        GROUP BY month
+      )
+    `).get() as { avg_monthly: number };
+    return (result.avg_monthly || 0) * 12;
+  }
 
-    // Simple projection: average monthly revenue * 12 months
-    const now = new Date();
-    const earliestDate = new Date(Math.min(...completedRecords.map(r => new Date(r.date).getTime())));
-    const monthsDifference = (now.getFullYear() - earliestDate.getFullYear()) * 12 + (now.getMonth() - earliestDate.getMonth());
-
-    if (monthsDifference <= 0) {
-      // If we only have data for one month, use that month's revenue as projection
-      const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const currentMonthRevenue = completedRecords
-        .filter(r => r.date.startsWith(currentMonth))
-        .reduce((sum, record) => sum + record.amount, 0);
-      
-      return currentMonthRevenue * 12; // Annual projection
-    }
-
-    const totalRevenue = completedRecords.reduce((sum, record) => sum + record.amount, 0);
-    const avgMonthlyRevenue = totalRevenue / monthsDifference;
-    
-    return avgMonthlyRevenue * 12; // Annual projection
+  getAllEntries(): RevenueRecord[] {
+    const rows = db.prepare('SELECT * FROM revenue_ledger ORDER BY processed_at DESC').all() as Record<string, unknown>[];
+    return rows.map(mapRow);
   }
 }
 

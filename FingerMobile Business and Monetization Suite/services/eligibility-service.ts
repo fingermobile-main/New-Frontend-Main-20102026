@@ -1,6 +1,7 @@
 import { MonetizationMetrics, PlatformConfig, Eligibility } from '../shared/types';
 
 export const checkEligibility = async (_userId: string, metrics: MonetizationMetrics, config: PlatformConfig): Promise<Eligibility> => {
+  void _userId;
   // Check basic eligibility
   const basicEligibility = checkBasicEligibility(metrics, config);
   const premiumEligibility = checkPremiumEligibility(metrics, config);
@@ -156,6 +157,7 @@ export const getRecommendations = async (
   metrics: MonetizationMetrics,
   config: PlatformConfig
 ): Promise<{ basic: string[]; premium: string[]; enterprise: string[] }> => {
+  void _userId;
   const basicConfig = config.basicEligibility || {
     minFollowers: 100,
     minWatchMinutes30d: 500,

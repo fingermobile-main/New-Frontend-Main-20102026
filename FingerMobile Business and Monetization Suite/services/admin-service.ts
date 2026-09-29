@@ -1,3 +1,5 @@
+import { db } from '../database.js';
+
 export interface AdminUser {
   id: string;
   username: string;
@@ -24,14 +26,13 @@ interface PlatformStats {
   totalAdmins: number;
   totalActions: number;
   activeUsers: number;
-  registeredToday: number;
+  registeredToday: string;
   systemUptime: string;
   lastUpdated: string;
 }
 
 interface SystemHealth {
   status: string;
-  responseTime: string;
   memoryUsage: string;
   diskSpace: string;
   cpuLoad: string;
@@ -39,101 +40,138 @@ interface SystemHealth {
 }
 
 interface PlatformMetrics {
-  dailyActiveUsers: number;
-  monthlyActiveUsers: number;
   totalRevenue: number;
-  conversionRate: string;
-  sessionDuration: string;
+  totalApplications: number;
+  totalVerifications: number;
+  totalPayoutAccounts: number;
   reported: string;
 }
 
+function mapAdmin(row: Record<string, unknown>): AdminUser {
+  return {
+    id: row.id as string,
+    username: row.username as string,
+    email: row.email as string,
+    role: row.role as AdminUser['role'],
+    permissions: row.permissions_json ? JSON.parse(row.permissions_json as string) : [],
+    isActive: Boolean(row.is_active),
+    createdAt: row.created_at as string,
+    updatedAt: row.updated_at as string
+  };
+}
+
+function mapAction(row: Record<string, unknown>): AdminAction {
+  return {
+    id: row.id as string,
+    adminId: row.admin_id as string,
+    action: row.action as string,
+    target: row.target as string,
+    targetType: row.target_type as string,
+    timestamp: row.timestamp as string,
+    metadata: row.metadata_json ? JSON.parse(row.metadata_json as string) : undefined
+  };
+}
+
 class AdminServiceClass {
-  private admins: Map<string, AdminUser> = new Map();
-  private actions: Map<string, AdminAction> = new Map();
-
-  async getAdminById(adminId: string): Promise<AdminUser | null> {
-    return this.admins.get(adminId) || null;
+  getAdminById(adminId: string): AdminUser | null {
+    const row = db.prepare('SELECT * FROM admins WHERE id = ?').get(adminId) as Record<string, unknown> | undefined;
+    return row ? mapAdmin(row) : null;
   }
 
-  async createAdmin(admin: Omit<AdminUser, 'id' | 'createdAt' | 'updatedAt'>): Promise<AdminUser> {
-    const newAdmin: AdminUser = {
-      ...admin,
-      id: Math.random().toString(36).substring(2, 15),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    this.admins.set(newAdmin.id, newAdmin);
-    return newAdmin;
+  createAdmin(admin: Omit<AdminUser, 'id' | 'createdAt' | 'updatedAt'>): AdminUser {
+    const id = `admin-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    db.prepare(`
+      INSERT INTO admins (id, username, email, role, permissions_json, is_active)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(id, admin.username, admin.email, admin.role, JSON.stringify(admin.permissions), admin.isActive ? 1 : 0);
+    return this.getAdminById(id)!;
   }
 
-  async logAdminAction(action: Omit<AdminAction, 'id' | 'timestamp'>): Promise<AdminAction> {
-    const newAction: AdminAction = {
-      ...action,
-      id: Math.random().toString(36).substring(2, 15),
-      timestamp: new Date().toISOString()
-    };
-    this.actions.set(newAction.id, newAction);
-    return newAction;
+  logAdminAction(action: Omit<AdminAction, 'id' | 'timestamp'>): AdminAction {
+    const id = `act-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    db.prepare(`
+      INSERT INTO admin_actions (id, admin_id, action, target, target_type, metadata_json)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      id, action.adminId, action.action, action.target, action.targetType,
+      action.metadata ? JSON.stringify(action.metadata) : null
+    );
+    const row = db.prepare('SELECT * FROM admin_actions WHERE id = ?').get(id) as Record<string, unknown>;
+    return mapAction(row);
   }
 
-  async getAdminActions(adminId: string, limit: number = 50): Promise<AdminAction[]> {
-    return Array.from(this.actions.values())
-      .filter(action => action.adminId === adminId)
-      .slice(0, limit);
+  getAdminActions(adminId: string, limit = 50): AdminAction[] {
+    const rows = db.prepare(
+      'SELECT * FROM admin_actions WHERE admin_id = ? ORDER BY timestamp DESC LIMIT ?'
+    ).all(adminId, limit) as Record<string, unknown>[];
+    return rows.map(mapAction);
   }
 
-  async getPlatformStats(): Promise<PlatformStats> {
-    // Get overall platform statistics
+  getPlatformStats(): PlatformStats {
+    const { total: totalUsers } = db.prepare('SELECT COUNT(*) as total FROM users').get() as { total: number };
+    const { total: totalAdmins } = db.prepare('SELECT COUNT(*) as total FROM admins WHERE is_active = 1').get() as { total: number };
+    const { total: totalActions } = db.prepare('SELECT COUNT(*) as total FROM admin_actions').get() as { total: number };
+    const { total: activeUsers } = db.prepare("SELECT COUNT(*) as total FROM users WHERE status = 'active'").get() as { total: number };
     return {
-      totalUsers: Math.floor(Math.random() * 10000), // Simulated data
-      totalAdmins: this.admins.size,
-      totalActions: this.actions.size,
-      activeUsers: Math.floor(Math.random() * 5000), // Simulated data
-      registeredToday: Math.floor(Math.random() * 100), // Simulated data
-      systemUptime: '99.9%', // Simulated data
+      totalUsers,
+      totalAdmins,
+      totalActions,
+      activeUsers,
+      registeredToday: new Date().toISOString().split('T')[0],
+      systemUptime: 'N/A',
       lastUpdated: new Date().toISOString()
     };
   }
 
-  async getSystemHealth(): Promise<SystemHealth> {
-    // Get system health metrics
+  getSystemHealth(): SystemHealth {
+    const memoryUsage = process.memoryUsage();
+    const usedMB = Math.round(memoryUsage.heapUsed / 1024 / 1024);
+    const totalMB = Math.round(memoryUsage.heapTotal / 1024 / 1024);
     return {
       status: 'healthy',
-      responseTime: `${Math.floor(Math.random() * 100) + 50}ms`, // Simulated data
-      memoryUsage: `${Math.floor(Math.random() * 30) + 40}%`, // Simulated data
-      diskSpace: '75% free', // Simulated data
-      cpuLoad: `${Math.floor(Math.random() * 20) + 10}%`, // Simulated data
+      memoryUsage: `${usedMB}/${totalMB}MB`,
+      diskSpace: 'N/A',
+      cpuLoad: 'N/A',
       lastChecked: new Date().toISOString()
     };
   }
 
-  async getPlatformMetrics(): Promise<PlatformMetrics> {
-    // Get various platform metrics
+  getPlatformMetrics(): PlatformMetrics {
+    const { total: totalRevenue } = db.prepare(
+      "SELECT COALESCE(SUM(amount),0) as total FROM revenue_ledger WHERE status = 'completed'"
+    ).get() as { total: number };
+    const { total: totalApplications } = db.prepare('SELECT COUNT(*) as total FROM monetization_applications').get() as { total: number };
+    const { total: totalVerifications } = db.prepare('SELECT COUNT(*) as total FROM business_verifications').get() as { total: number };
+    const { total: totalPayoutAccounts } = db.prepare('SELECT COUNT(*) as total FROM payout_accounts').get() as { total: number };
     return {
-      dailyActiveUsers: Math.floor(Math.random() * 2000), // Simulated data
-      monthlyActiveUsers: Math.floor(Math.random() * 8000), // Simulated data
-      totalRevenue: Math.floor(Math.random() * 50000), // Simulated data
-      conversionRate: `${(Math.random() * 5 + 2).toFixed(2)}%`, // Simulated data
-      sessionDuration: `${Math.floor(Math.random() * 10) + 5}m`, // Simulated data
+      totalRevenue,
+      totalApplications,
+      totalVerifications,
+      totalPayoutAccounts,
       reported: new Date().toISOString()
     };
   }
 
-  async update(id: string, updateData: Partial<AdminUser>): Promise<AdminUser | null> {
-    const existing = this.admins.get(id);
+  update(id: string, updateData: Partial<AdminUser>): AdminUser | null {
+    const existing = this.getAdminById(id);
     if (!existing) return null;
-
-    const updated: AdminUser = {
-      ...existing,
-      ...updateData,
-      updatedAt: new Date().toISOString()
-    };
-    this.admins.set(id, updated);
-    return updated;
+    const fields: string[] = [];
+    const vals: unknown[] = [];
+    if (updateData.username !== undefined) { fields.push('username = ?'); vals.push(updateData.username); }
+    if (updateData.email !== undefined) { fields.push('email = ?'); vals.push(updateData.email); }
+    if (updateData.role !== undefined) { fields.push('role = ?'); vals.push(updateData.role); }
+    if (updateData.permissions !== undefined) { fields.push('permissions_json = ?'); vals.push(JSON.stringify(updateData.permissions)); }
+    if (updateData.isActive !== undefined) { fields.push('is_active = ?'); vals.push(updateData.isActive ? 1 : 0); }
+    if (fields.length > 0) {
+      fields.push('updated_at = CURRENT_TIMESTAMP');
+      vals.push(id);
+      db.prepare(`UPDATE admins SET ${fields.join(', ')} WHERE id = ?`).run(...vals);
+    }
+    return this.getAdminById(id);
   }
 
-  async delete(id: string): Promise<void> {
-    this.admins.delete(id);
+  delete(id: string): void {
+    db.prepare('DELETE FROM admins WHERE id = ?').run(id);
   }
 }
 
