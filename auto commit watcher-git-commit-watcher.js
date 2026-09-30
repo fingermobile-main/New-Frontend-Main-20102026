@@ -1,5 +1,3 @@
-auto commit watcher-git-commit-watcher.js
-
 #!/usr/bin/env node
 
 /**

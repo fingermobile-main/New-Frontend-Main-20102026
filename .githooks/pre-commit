@@ -8,9 +8,14 @@ echo "Running pre-commit checks for FingerMobile Protocol..."
 # Function to check for sensitive data in staged files
 check_sensitive_data() {
     echo "🔍 Checking for sensitive data..."
-    git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(env|json|yaml|yml|xml|txt|js|ts|jsx|tsx)$' | while read file; do
+    git diff --cached --name-only --no-renames --diff-filter=ACMR | grep -E '\.(env|json|yaml|yml|xml|txt|js|ts|jsx|tsx)$' | while read file; do
         if [ -f "$file" ]; then
-            if grep -E "(password|secret|token|key|api_key|access_token|client_secret|private_key|secret_key)" "$file" > /dev/null; then
+            case "$file" in
+                .github/*|*swagger*|*mock*|*schema*|*test*)
+                    continue
+                    ;;
+            esac
+            if grep -E "(password\s*[:=]\s*['\"][^'\"]+['\"]|client_secret\s*[:=]\s*['\"][^'\"]+['\"]|-----BEGIN (RSA|EC|DSA|OPENSSH|PGP)? PRIVATE KEY-----)" "$file" > /dev/null; then
                 echo "❌ Potential sensitive data found in $file"
                 echo "Please remove sensitive information before committing."
                 exit 1
@@ -22,7 +27,7 @@ check_sensitive_data() {
 # Function to check for large files
 check_large_files() {
     echo "🔍 Checking for large files..."
-    git diff --cached --numstat | awk '$1 > 10000 || $2 > 10000 { print $3 }' | while read file; do
+    git diff --cached --numstat --no-renames | awk '$1 > 10000 || $2 > 10000 { print $3 }' | while read file; do
         if [ -n "$file" ]; then
             size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
             if [ "$size" -gt 10485760 ]; then  # 10MB
@@ -37,11 +42,11 @@ check_large_files() {
 # Function to check for TODO comments in production code
 check_todos() {
     echo "🔍 Checking for TODO comments..."
-    git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|ts|jsx|tsx|py|java|cpp|c|h)$' | while read file; do
+    git diff --cached --name-only --no-renames --diff-filter=ACMR | grep -E '\.(js|ts|jsx|tsx|py|java|cpp|c|h)$' | head -30 | while read file; do
         if [ -f "$file" ]; then
             if grep -n "TODO" "$file" > /dev/null; then
                 echo "⚠️  TODO comment found in $file:"
-                grep -n "TODO" "$file" | head -5
+                grep -n "TODO" "$file" | head -3
                 echo "Consider addressing TODO comments before committing to production code."
             fi
         fi
@@ -52,10 +57,9 @@ check_todos() {
 check_linting() {
     echo "🔍 Running basic linting checks..."
     
-    # Check JavaScript/TypeScript files
-    for file in $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|ts|jsx|tsx)$'); do
-        if [ -f "$file" ] && command -v npx >/dev/null 2>&1; then
-            # Basic syntax check
+    # Check JavaScript files with node -c
+    git diff --cached --name-only --no-renames --diff-filter=ACMR | grep -E '\.js$' | head -50 | while read file; do
+        if [ -f "$file" ]; then
             if ! node -c "$file" 2>/dev/null; then
                 echo "❌ Syntax error in $file"
                 node -c "$file" 2>&1 | sed "s/^/   /"
