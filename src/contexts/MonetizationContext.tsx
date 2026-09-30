@@ -45,7 +45,7 @@ interface MonetizationEligibility {
 }
 
 // Action types
-type MonetizationAction = 
+type MonetizationAction =
   | { type: 'SET_EARNINGS'; payload: UserEarning[] }
   | { type: 'SET_SUBSCRIPTIONS'; payload: UserSubscription[] }
   | { type: 'SET_LOADING'; payload: boolean }
@@ -90,76 +90,76 @@ const initialState: MonetizationState = {
 // Reducer function
 const monetizationReducer = (state: MonetizationState, action: MonetizationAction): MonetizationState => {
   switch (action.type) {
-    case SET_EARNINGS:
-      return {
-        ...state,
-        userEarnings: action.payload,
-        isLoading: false,
-        error: null,
-        lastUpdated: new Date()
-      };
-    
-    case SET_SUBSCRIPTIONS:
-      return {
-        ...state,
-        userSubscriptions: action.payload,
-        isLoading: false,
-        error: null,
-        lastUpdated: new Date()
-      };
-    
-    case SET_LOADING:
-      return {
-        ...state,
-        isLoading: action.payload
-      };
-    
-    case SET_ERROR:
-      return {
-        ...state,
-        error: action.payload,
-        isLoading: false
-      };
-    
-    case UPDATE_ELIGIBILITY:
-      return {
-        ...state,
-        eligibility: {
-          ...state.eligibility,
-          ...action.payload
-        },
-        lastUpdated: new Date()
-      };
-    
-    case UPDATE_CURRENT_TIER:
-      return {
-        ...state,
-        currentTier: action.payload,
-        lastUpdated: new Date()
-      };
-    
-    case ADD_EARNING:
-      return {
-        ...state,
-        userEarnings: [...state.userEarnings, action.payload],
-        lastUpdated: new Date()
-      };
-    
-    case ADD_SUBSCRIPTION:
-      return {
-        ...state,
-        userSubscriptions: [...state.userSubscriptions, action.payload],
-        lastUpdated: new Date()
-      };
-    
-    case CLEAR_DATA:
-      return {
-        ...initialState,
-        lastUpdated: new Date()
-      };
-    
-    default:
-      return state;
+  case SET_EARNINGS:
+    return {
+      ...state,
+      userEarnings: action.payload,
+      isLoading: false,
+      error: null,
+      lastUpdated: new Date()
+    };
+
+  case SET_SUBSCRIPTIONS:
+    return {
+      ...state,
+      userSubscriptions: action.payload,
+      isLoading: false,
+      error: null,
+      lastUpdated: new Date()
+    };
+
+  case SET_LOADING:
+    return {
+      ...state,
+      isLoading: action.payload
+    };
+
+  case SET_ERROR:
+    return {
+      ...state,
+      error: action.payload,
+      isLoading: false
+    };
+
+  case UPDATE_ELIGIBILITY:
+    return {
+      ...state,
+      eligibility: {
+        ...state.eligibility,
+        ...action.payload
+      },
+      lastUpdated: new Date()
+    };
+
+  case UPDATE_CURRENT_TIER:
+    return {
+      ...state,
+      currentTier: action.payload,
+      lastUpdated: new Date()
+    };
+
+  case ADD_EARNING:
+    return {
+      ...state,
+      userEarnings: [...state.userEarnings, action.payload],
+      lastUpdated: new Date()
+    };
+
+  case ADD_SUBSCRIPTION:
+    return {
+      ...state,
+      userSubscriptions: [...state.userSubscriptions, action.payload],
+      lastUpdated: new Date()
+    };
+
+  case CLEAR_DATA:
+    return {
+      ...initialState,
+      lastUpdated: new Date()
+    };
+
+  default:
+    return state;
   }
 };
 
@@ -243,7 +243,7 @@ export const MonetizationProvider: React.FC<Props> = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: true });
     try {
       const eligibility = await MonetizationService.checkEligibility(userId);
-    // @ts-ignore - Auto-suppressed for compilation
+      // @ts-ignore - Auto-suppressed for compilation
       dispatch({ type: UPDATE_ELIGIBILITY, payload: eligibility });
     } catch (error: any) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to check eligibility';
@@ -266,7 +266,7 @@ export const MonetizationProvider: React.FC<Props> = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: true });
     try {
       const subscription = await MonetizationService.subscribeToTier(userId, tier);
-    // @ts-ignore - Auto-suppressed for compilation
+      // @ts-ignore - Auto-suppressed for compilation
       dispatch({ type: ADD_SUBSCRIPTION, payload: subscription });
       dispatch({ type: UPDATE_CURRENT_TIER, payload: tier });
       showToast('Successfully subscribed to tier', 'success');
@@ -284,7 +284,7 @@ export const MonetizationProvider: React.FC<Props> = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: true });
     try {
       const result = await MonetizationService.requestPayout(userId, amount);
-      showToast(`Payout requested successfully`, 'success');
+      showToast('Payout requested successfully', 'success');
       return result;
     } catch (error: any) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to request payout';
@@ -315,17 +315,17 @@ export const MonetizationProvider: React.FC<Props> = ({ children }) => {
     engagement: number;
   }) => {
     const { views, qualifiedViews, engagement } = metrics;
-    
+
     // Base rate per qualified view (this would come from backend)
     const baseRatePerView = 0.005;
-    
+
     // Calculate earnings based on qualified views
     const baseEarnings = qualifiedViews * baseRatePerView;
-    
+
     // Apply engagement bonus (up to 50% more for high engagement)
     const engagementBonus = Math.min(0.5, engagement * 0.1);
     const totalEarnings = baseEarnings * (1 + engagementBonus);
-    
+
     return parseFloat(totalEarnings.toFixed(2));
   };
 
@@ -421,12 +421,12 @@ export const MonetizationProvider: React.FC<Props> = ({ children }) => {
         MonetizationService.checkEligibility(userId),
         MonetizationService.getMonetizationDashboard(userId)
       ]);
-      
+
       dispatch({ type: SET_EARNINGS, payload: earnings as unknown as UserEarning[] });
       dispatch({ type: SET_SUBSCRIPTIONS, payload: subscriptions as unknown as UserSubscription[] });
-    // @ts-ignore - Auto-suppressed for compilation
+      // @ts-ignore - Auto-suppressed for compilation
       dispatch({ type: UPDATE_ELIGIBILITY, payload: eligibility });
-      
+
       return dashboard;
     } catch (error: any) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to refresh monetization data';

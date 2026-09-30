@@ -134,7 +134,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
           </svg>
           Achievements ({achievements.filter(a => a.unlocked).length}/{achievements.length})
         </h3>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {achievements.map(achievement => (
             <div
@@ -152,7 +152,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-gray-900 truncate">{achievement.title}</h4>
                   <p className="text-sm text-gray-600 mt-1">{achievement.description}</p>
-                  
+
                   {!achievement.unlocked && achievement.progress !== undefined && (
                     <div className="mt-2">
                       <div className="w-full bg-gray-200 rounded-full h-2">
@@ -166,7 +166,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
                       </p>
                     </div>
                   )}
-                  
+
                   {achievement.unlocked && achievement.unlockedAt && (
                     <p className="text-xs text-green-600 mt-2">
                       ✓ Unlocked {formatDate(achievement.unlockedAt)}
@@ -197,8 +197,8 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
               <div className="flex items-center space-x-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xl font-bold ${
                   game.result === 'win' ? 'bg-green-100 text-green-600' :
-                  game.result === 'loss' ? 'bg-red-100 text-red-600' :
-                  'bg-gray-200 text-gray-600'
+                    game.result === 'loss' ? 'bg-red-100 text-red-600' :
+                      'bg-gray-200 text-gray-600'
                 }`}>
                   {game.result === 'win' ? 'W' : game.result === 'loss' ? 'L' : 'D'}
                 </div>

@@ -41,8 +41,8 @@ const LoyaltyProgram: React.FC<LoyaltyProgramProps> = ({
           </div>
           <div className="mt-2">
             <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div 
-                className="bg-blue-600 h-2.5 rounded-full" 
+              <div
+                className="bg-blue-600 h-2.5 rounded-full"
                 style={{ width: `${tierProgress}%` }}
               ></div>
             </div>
@@ -57,8 +57,8 @@ const LoyaltyProgram: React.FC<LoyaltyProgramProps> = ({
         <h3 className="font-semibold mb-3">Available Rewards</h3>
         <div className="space-y-3">
           {rewards.map(reward => (
-            <div 
-              key={reward.id} 
+            <div
+              key={reward.id}
               className="flex justify-between items-center p-3 border rounded-lg"
             >
               <div>

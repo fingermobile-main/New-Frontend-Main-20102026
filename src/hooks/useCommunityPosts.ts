@@ -18,16 +18,16 @@ export const useCommunityPosts = (): UseCommunityPostsResult => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get<Post[]>("/posts", {
+      const response = await api.get<Post[]>('/posts', {
         params: {
-          category: "trends"
+          category: 'trends'
         }
       });
       if (response.data) {
         setPosts(response.data);
       }
     } catch (err) {
-      setError("Failed to fetch community posts.");
+      setError('Failed to fetch community posts.');
       console.error(err);
     } finally {
       setLoading(false);

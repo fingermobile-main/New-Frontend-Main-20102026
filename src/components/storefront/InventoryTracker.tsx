@@ -21,7 +21,7 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
       // Get all products first, then fetch inventory for each
       const productsData = await storefrontService.getProducts(storeId);
       const products = Array.isArray(productsData) ? productsData : (productsData as any).products || [];
-      
+
       const inventoryList: InventoryItem[] = [];
       for (const product of products) {
         const invData = await storefrontService.getInventory(product.id);
@@ -33,7 +33,7 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
           })));
         }
       }
-      
+
       setInventory(inventoryList);
       setError(null);
     } catch (err) {
@@ -187,7 +187,7 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
                   const status = getStockStatus(item);
                   const available = item.quantity - (item.reserved_quantity || 0);
                   const totalValue = item.quantity * ((item as any).unit_cost || 0);
-                  
+
                   return (
                     <tr key={item.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">

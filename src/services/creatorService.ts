@@ -22,8 +22,8 @@ export interface CreatorStats {
 
 class CreatorService {
   private api = axios.create({baseURL: `${API_BASE_URL}/discover`, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async getCreatorProfile(userId: string): Promise<CreatorProfile> {
@@ -77,8 +77,8 @@ interests: string[];
     });
 
     await this.api.post(`/verify/${userId}`, formData, {headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+      'Content-Type': 'multipart/form-data'
+    }
     });
   }
 

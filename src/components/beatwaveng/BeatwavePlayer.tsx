@@ -34,7 +34,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.7);
-  
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentTrack = tracks[currentTrackIndex];
 
@@ -128,8 +128,8 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
 
       <div className="px-6 pb-6 flex items-center justify-between">
         <button onClick={handlePrevious} className="p-2 text-gray-300 hover:text-white" aria-label="Button"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z" />
-          </svg>
+          <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z" />
+        </svg>
         </button>
 
         <button onClick={togglePlay} className="p-4 bg-purple-600 hover:bg-purple-700 rounded-full text-white shadow-lg">
@@ -145,8 +145,8 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
         </button>
 
         <button onClick={handleNext} className="p-2 text-gray-300 hover:text-white" aria-label="Button"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" />
-          </svg>
+          <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" />
+        </svg>
         </button>
       </div>
     </div>

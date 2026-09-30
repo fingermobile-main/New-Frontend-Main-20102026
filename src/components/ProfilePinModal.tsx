@@ -6,10 +6,10 @@ interface ProfilePinModalProps {
   onConfirm: (pin: string) => void;
 }
 
-const ProfilePinModal: React.FC<ProfilePinModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  onConfirm 
+const ProfilePinModal: React.FC<ProfilePinModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm
 }) => {
   const [pin, setPin] = React.useState('');
 
@@ -26,7 +26,7 @@ const ProfilePinModal: React.FC<ProfilePinModalProps> = ({
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Enter PIN</h2>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >

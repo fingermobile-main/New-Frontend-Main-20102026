@@ -16,42 +16,42 @@ const JobsOpportunities: React.FC = () => {
   const jobs: Job[] = [
     {
       id: 1,
-      title: "Senior Frontend Developer",
-      company: "Tech Innovations Inc.",
-      location: "Remote",
-      posted: "2 days ago",
-      type: "Full-time"
+      title: 'Senior Frontend Developer',
+      company: 'Tech Innovations Inc.',
+      location: 'Remote',
+      posted: '2 days ago',
+      type: 'Full-time'
     },
     {
       id: 2,
-      title: "Product Manager",
-      company: "Global Solutions Ltd.",
-      location: "New York, NY",
-      posted: "1 week ago",
-      type: "Full-time"
+      title: 'Product Manager',
+      company: 'Global Solutions Ltd.',
+      location: 'New York, NY',
+      posted: '1 week ago',
+      type: 'Full-time'
     },
     {
       id: 3,
-      title: "UX/UI Designer",
-      company: "Creative Minds Co.",
-      location: "San Francisco, CA",
-      posted: "3 days ago",
-      type: "Contract"
+      title: 'UX/UI Designer',
+      company: 'Creative Minds Co.',
+      location: 'San Francisco, CA',
+      posted: '3 days ago',
+      type: 'Contract'
     },
     {
       id: 4,
-      title: "Data Scientist",
-      company: "Analytics Pro",
-      location: "Austin, TX",
-      posted: "5 days ago",
-      type: "Full-time"
+      title: 'Data Scientist',
+      company: 'Analytics Pro',
+      location: 'Austin, TX',
+      posted: '5 days ago',
+      type: 'Full-time'
     }
   ];
 
   return (
     <div className="bg-white rounded-lg shadow-fm-card p-4">
       <h3 className="font-bold text-fm-gray-900 mb-4">Job Opportunities</h3>
-      
+
       <div className="mb-4">
         <div className="flex space-x-2 overflow-x-auto pb-2">
           <button className="px-3 py-1.5 bg-fm-orange text-white rounded-full text-sm whitespace-nowrap">
@@ -71,7 +71,7 @@ const JobsOpportunities: React.FC = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="space-y-4">
         {jobs.map(job => (
           <div key={job.id} className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
@@ -94,7 +94,7 @@ const JobsOpportunities: React.FC = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="mt-4">
         <Link to="/jobs" className="block text-center text-fm-orange hover:underline text-sm font-medium">
           View All Job Opportunities

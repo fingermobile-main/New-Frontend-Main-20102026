@@ -1,77 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
+import api from '../../services/api';
+
+interface MemberItem {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  lastActive: string;
+}
 
 const MembersPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [members, setMembers] = useState<MemberItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [newRole, setNewRole] = useState('user');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Mock member data
-  const members = [
-    {
-      id: "1",
-      name: "Jane Cooper",
-      email: "jane.cooper@example.com",
-      role: "Admin",
-      status: "Active",
-      lastActive: "2 hours ago"
-    },
-    {
-      id: "2",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      role: "Member",
-      status: "Active",
-      lastActive: "1 hour ago"
-    },
-    {
-      id: "3",
-      name: "Emily Smith",
-      email: "emily.smith@example.com",
-      role: "Creator",
-      status: "Active",
-      lastActive: "30 minutes ago"
-    },
-    {
-      id: "4",
-      name: "Michael Brown",
-      email: "michael.brown@example.com",
-      role: "Member",
-      status: "Suspended",
-      lastActive: "5 days ago"
-    },
-    {
-      id: "5",
-      name: "Sarah Johnson",
-      email: "sarah.johnson@example.com",
-      role: "Moderator",
-      status: "Active",
-      lastActive: "10 minutes ago"
-    },
-    {
-      id: "6",
-      name: "David Wilson",
-      email: "david.wilson@example.com",
-      role: "Member",
-      status: "Active",
-      lastActive: "Just now"
-    },
-    {
-      id: "7",
-      name: "Lisa Anderson",
-      email: "lisa.anderson@example.com",
-      role: "Creator",
-      status: "Active",
-      lastActive: "5 minutes ago"
-    },
-    {
-      id: "8",
-      name: "Robert Taylor",
-      email: "robert.taylor@example.com",
-      role: "Member",
-      status: "Inactive",
-      lastActive: "2 weeks ago"
+  const fetchMembers = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/admin/users');
+      const rawList = Array.isArray(res.data) 
+        ? res.data 
+        : (res.data?.users || res.data?.data || []);
+      
+      const mapped: MemberItem[] = rawList.map((u: any) => ({
+        id: String(u.id),
+        name: u.username || u.name || 'Member',
+        email: u.email || `${u.username || 'user'}@fingermobile.io`,
+        role: (u.role || 'Member').charAt(0).toUpperCase() + (u.role || 'Member').slice(1),
+        status: u.status || 'Active',
+        lastActive: u.updated_at ? new Date(u.updated_at).toLocaleDateString() : 'Recently active'
+      }));
+
+      setMembers(mapped);
+    } catch (err: any) {
+      console.error('Error fetching members:', err);
+      showToast('Failed to load members from protocol database', 'error');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const handleAddMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newEmail.trim()) return;
+    try {
+      setIsSubmitting(true);
+      const username = newEmail.split('@')[0] || `user_${Date.now()}`;
+      await api.post('/admin/members', {
+        email: newEmail,
+        role: newRole,
+        membername: username,
+        password: 'DefaultUser2026!'
+      });
+      showToast('Member added successfully', 'success');
+      setShowAddModal(false);
+      setNewEmail('');
+      setNewRole('user');
+      fetchMembers();
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to add member', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteMember = async (id: string) => {
+    try {
+      await api.delete(`/admin/members/${id}`);
+      showToast('Member deactivated', 'success');
+      setMembers(prev => prev.filter(m => m.id !== id));
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to deactivate member', 'error');
+    }
+  };
 
   const filteredMembers = members.filter(
     (member) =>
@@ -89,7 +101,10 @@ const MembersPage: React.FC = () => {
           </p>
         </div>
         <div className="mt-4 md:mt-0">
-          <button className="px-4 py-2 bg-brand-blue text-white rounded-md hover:bg-blue-700">
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition shadow-sm font-medium"
+          >
             Add Member
           </button>
         </div>
@@ -191,11 +206,11 @@ const MembersPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        member.status === "Active"
-                          ? "bg-green-100 text-green-800"
-                          : member.status === "Suspended"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-yellow-100 text-yellow-800"
+                        member.status === 'Active'
+                          ? 'bg-green-100 text-green-800'
+                          : member.status === 'Suspended'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-yellow-100 text-yellow-800'
                       }`}
                     >
                       {member.status}
@@ -208,7 +223,10 @@ const MembersPage: React.FC = () => {
                     <button className="text-brand-blue hover:text-blue-700 mr-3">
                       Edit
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button
+                      onClick={() => handleDeleteMember(member.id)}
+                      className="text-red-600 hover:text-red-900 font-medium"
+                    >
                       Delete
                     </button>
                   </td>
@@ -230,9 +248,9 @@ const MembersPage: React.FC = () => {
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">8</span> of{" "}
-                <span className="font-medium">8</span> results
+                Showing <span className="font-medium">1</span> to{' '}
+                <span className="font-medium">{filteredMembers.length}</span> of{' '}
+                <span className="font-medium">{filteredMembers.length}</span> results
               </p>
             </div>
             <div>
@@ -280,8 +298,58 @@ const MembersPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Add Protocol Member</h3>
+            <form onSubmit={handleAddMember} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="member@example.com"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <select
+                  value={newRole}
+                  onChange={(e) => setNewRole(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"
+                >
+                  <option value="user">User</option>
+                  <option value="creator">Creator</option>
+                  <option value="moderator">Moderator</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg shadow-sm"
+                >
+                  {isSubmitting ? 'Adding...' : 'Add Member'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
-  ); // Added missing closing brace for return statement
-}; // Added missing closing brace for component function
+  );
+};
 
 export default MembersPage;

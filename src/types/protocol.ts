@@ -25,6 +25,6 @@ export interface HandshakeResponse {accepted: boolean;
 }
 
 export interface Acknowledgement {messageId: string;
-  status: "success" | "failure";
+  status: 'success' | 'failure';
   errorCode?: string;
 }

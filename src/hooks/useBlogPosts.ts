@@ -30,8 +30,8 @@ export const useBlogPosts = () => {
   const fetchBlogPosts = async () => {
     try {
       setLoading(true);
-      const response = await ApiService.request("/blogs/posts", {
-        method: "GET"
+      const response = await ApiService.request('/blogs/posts', {
+        method: 'GET'
       });
 
       // Ensure response is an array before mapping (ApiService.request returns response.data directly)
@@ -61,7 +61,7 @@ export const useBlogPosts = () => {
       }
       setLoading(false);
     } catch (err: any) {
-      setError(err instanceof Error ? err.message : "Failed to fetch blog posts");
+      setError(err instanceof Error ? err.message : 'Failed to fetch blog posts');
       setLoading(false);
     }
   };
@@ -69,7 +69,7 @@ export const useBlogPosts = () => {
   const toggleLike = async (postId: string) => {
     try {
       const response = await ApiService.request(`/blogs/posts/${postId}/like`, {
-        method: "POST"
+        method: 'POST'
       });
 
       // Handle the response properly - ApiService.request returns response.data directly
@@ -79,16 +79,16 @@ export const useBlogPosts = () => {
           prevPosts.map((post) =>
             post.id === postId
               ? {
-                  ...post,
-                  likes: (response as any).like_count || post.likes,
-                  isLiked: !post.isLiked
-                }
+                ...post,
+                likes: (response as any).like_count || post.likes,
+                isLiked: !post.isLiked
+              }
               : post
           )
         );
         return {
           success: true,
-          message: "Post liked successfully"
+          message: 'Post liked successfully'
         };
       } else {
         // If response doesn't have expected structure, just toggle locally
@@ -96,22 +96,22 @@ export const useBlogPosts = () => {
           prevPosts.map((post) =>
             post.id === postId
               ? {
-                  ...post,
-                  likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-                  isLiked: !post.isLiked
-                }
+                ...post,
+                likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+                isLiked: !post.isLiked
+              }
               : post
           )
         );
         return {
           success: true,
-          message: "Post liked successfully"
+          message: 'Post liked successfully'
         };
       }
     } catch (err: any) {
       return {
         success: false,
-        message: err instanceof Error ? err.message : "Failed to like post"
+        message: err instanceof Error ? err.message : 'Failed to like post'
       };
     }
   };

@@ -84,8 +84,7 @@ result:[] = await response.json();
       // setUploadedFiles(result);
 
     } catch (err) {
-      console.error('Upload,
-error:', err);
+      console.error('Upload error:', err);
       setError(err instanceof Error ? err.,
 message : 'Upload failed');
     } finally {

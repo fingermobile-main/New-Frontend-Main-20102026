@@ -45,11 +45,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
 
   const getWarrantyStatus = (product: OwnitEntry) => {
     if (!product.warranty_end_date) return { label: 'No Warranty', color: 'bg-gray-100 text-gray-800' };
-    
+
     const endDate = new Date(product.warranty_end_date);
     const now = new Date();
     const daysLeft = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    
+
     if (daysLeft < 0) {
       return { label: 'Expired', color: 'bg-red-100 text-red-800' };
     } else if (daysLeft < 30) {

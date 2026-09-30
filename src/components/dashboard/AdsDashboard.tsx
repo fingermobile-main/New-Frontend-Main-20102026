@@ -8,8 +8,8 @@ import {
 import adsService from '../../services/adsService';
 
 const AdsDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState("overview");
-  const [timeRange, setTimeRange] = React.useState("7d");
+  const [activeTab, setActiveTab] = React.useState('overview');
+  const [timeRange, setTimeRange] = React.useState('7d');
   const [adsMetrics, setAdsMetrics] = React.useState<any[]>([]);
   const [performanceMetrics, setPerformanceMetrics] = React.useState<any[]>([]);
   const [demographics, setDemographics] = React.useState<any[]>([]);
@@ -23,13 +23,13 @@ const AdsDashboard: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      if (activeTab === "overview") {
+      if (activeTab === 'overview') {
         const metrics = await adsService.getMetrics(timeRange);
         setAdsMetrics(metrics);
-      } else if (activeTab === "performance") {
+      } else if (activeTab === 'performance') {
         const metrics = await adsService.getPerformanceMetrics();
         setPerformanceMetrics(metrics);
-      } else if (activeTab === "audience") {
+      } else if (activeTab === 'audience') {
         const demoData = await adsService.getDemographics();
         const interestsData = await adsService.getInterests();
 
@@ -37,7 +37,7 @@ const AdsDashboard: React.FC = () => {
         setTopInterests(interestsData);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -79,20 +79,20 @@ const AdsDashboard: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-gray-700 px-6">
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === "overview" ? "border-blue-500 text-white" : "border-transparent text-gray-400 hover:text-gray-200"}`}
-          onClick={() => setActiveTab("overview")}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'overview' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === "performance" ? "border-blue-500 text-white" : "border-transparent text-gray-400 hover:text-gray-200"}`}
-          onClick={() => setActiveTab("performance")}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'performance' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          onClick={() => setActiveTab('performance')}
         >
           Performance
         </button>
         <button
-          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === "audience" ? "border-blue-500 text-white" : "border-transparent text-gray-400 hover:text-gray-200"}`}
-          onClick={() => setActiveTab("audience")}
+          className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === 'audience' ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+          onClick={() => setActiveTab('audience')}
         >
           Audience
         </button>
@@ -100,7 +100,7 @@ const AdsDashboard: React.FC = () => {
 
       {/* Content */}
       <div className="p-6">
-        {activeTab === "overview" && (
+        {activeTab === 'overview' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {adsMetrics.map((metric, index) => (
               <div
@@ -109,23 +109,23 @@ const AdsDashboard: React.FC = () => {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2 bg-gray-700 rounded-lg">
-                    {metric.label === "Total Spend" && (
+                    {metric.label === 'Total Spend' && (
                       <CurrencyDollarIcon className="w-6 h-6 text-blue-400" />
                     )}
-                    {metric.label === "Impressions" && (
+                    {metric.label === 'Impressions' && (
                       <EyeIcon className="w-6 h-6 text-purple-400" />
                     )}
-                    {metric.label === "Clicks" && (
+                    {metric.label === 'Clicks' && (
                       <ChartBarIcon className="w-6 h-6 text-green-400" />
                     )}
-                    {metric.label === "Conversions" && (
+                    {metric.label === 'Conversions' && (
                       <ArrowTrendingUpIcon className="w-6 h-6 text-yellow-400" />
                     )}
                   </div>
                   <span
-                    className={`text-sm font-medium ${metric.change >= 0 ? "text-green-400" : "text-red-400"}`}
+                    className={`text-sm font-medium ${metric.change >= 0 ? 'text-green-400' : 'text-red-400'}`}
                   >
-                    {metric.change >= 0 ? "+" : ""}
+                    {metric.change >= 0 ? '+' : ''}
                     {metric.change}%
                   </span>
                 </div>
@@ -138,7 +138,7 @@ const AdsDashboard: React.FC = () => {
           </div>
         )}
 
-        {activeTab === "performance" && (
+        {activeTab === 'performance' && (
           <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
             <h3 className="text-lg font-bold mb-4">Campaign Performance</h3>
             <div className="space-y-4">
@@ -154,9 +154,9 @@ const AdsDashboard: React.FC = () => {
                   <div className="text-right">
                     <p className="font-bold">{metric.value}</p>
                     <p
-                      className={`text-sm ${metric.trend >= 0 ? "text-green-400" : "text-red-400"}`}
+                      className={`text-sm ${metric.trend >= 0 ? 'text-green-400' : 'text-red-400'}`}
                     >
-                      {metric.trend >= 0 ? "+" : ""}
+                      {metric.trend >= 0 ? '+' : ''}
                       {metric.trend}%
                     </p>
                   </div>
@@ -166,7 +166,7 @@ const AdsDashboard: React.FC = () => {
           </div>
         )}
 
-        {activeTab === "audience" && (
+        {activeTab === 'audience' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
               <h3 className="text-lg font-bold mb-4">Demographics</h3>

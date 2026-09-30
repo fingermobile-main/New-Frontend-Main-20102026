@@ -16,8 +16,8 @@ const CommunityManagementPage: React.FC = () => {
   const { hallmarks } = useHallmark();
   const { gems } = useGem();
   const { groups } = useGroup();
-  const [activeTab, setActiveTab] = useState<"hallmarks" | "gems" | "groups">(
-    "hallmarks",
+  const [activeTab, setActiveTab] = useState<'hallmarks' | 'gems' | 'groups'>(
+    'hallmarks',
   );
 
   const memberHallmarks: CommunitySummary[] = hallmarks
@@ -25,7 +25,7 @@ const CommunityManagementPage: React.FC = () => {
     .map((h: Hallmark) => ({
       id: h.id,
       name: h.name,
-      type: "Hallmark",
+      type: 'Hallmark',
       memberCount: (h.members || []).length,
       postCount: (h.posts || []).length
     }));
@@ -35,7 +35,7 @@ const CommunityManagementPage: React.FC = () => {
     .map((g: Gem) => ({
       id: g.id,
       name: g.name,
-      type: "Gem",
+      type: 'Gem',
       memberCount: (g.members || []).length,
       postCount: (g.posts || []).length
     }));
@@ -45,7 +45,7 @@ const CommunityManagementPage: React.FC = () => {
     .map((g: Group) => ({
       id: g.id,
       name: g.name,
-      type: "Group",
+      type: 'Group',
       memberCount: (g.members || []).length,
       postCount: (g.posts || []).length
     }));
@@ -59,12 +59,12 @@ const CommunityManagementPage: React.FC = () => {
   const activeData = dataMap[activeTab];
 
   const TabButton: React.FC<{
-    tab: "hallmarks" | "gems" | "groups";
+    tab: 'hallmarks' | 'gems' | 'groups';
     label: string;
   }> = ({ tab, label }) => (
     <button
       onClick={() => setActiveTab(tab)}
-      className={`py-2 px-4 font-semibold text-sm rounded-t-lg ${activeTab === tab ? "bg-white border border-b-0" : "bg-gray-100"}`}
+      className={`py-2 px-4 font-semibold text-sm rounded-t-lg ${activeTab === tab ? 'bg-white border border-b-0' : 'bg-gray-100'}`}
     >
       {label} ({dataMap[tab].length})
     </button>
@@ -88,7 +88,7 @@ const CommunityManagementPage: React.FC = () => {
             {community.name}
           </p>
           <p className="text-xs text-gray-500 lg:text-sm">
-            {(community.memberCount || 0).toLocaleString()} Members &middot;{" "}
+            {(community.memberCount || 0).toLocaleString()} Members &middot;{' '}
             {community.postCount} Posts
           </p>
         </div>

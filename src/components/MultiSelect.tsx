@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Check, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Check, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface Option {
   value: string;
@@ -21,12 +21,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   options,
   selected,
   onChange,
-  placeholder = "Select options...",
+  placeholder = 'Select options...',
   maxSelections,
   searchable = true
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(searchQuery.toLowerCase())
@@ -103,7 +103,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
               <div
                 key={option.value}
                 className={`flex items-center justify-between p-2 rounded cursor-pointer hover:bg-muted ${
-                  selected.includes(option.value) ? "bg-muted" : ""
+                  selected.includes(option.value) ? 'bg-muted' : ''
                 }`}
                 onClick={() => handleToggle(option.value)} role="button" tabIndex={0}
               >

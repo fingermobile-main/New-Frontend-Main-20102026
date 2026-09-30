@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Search, X, Image } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Search, X, Image } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface ImageSearchModalProps {
   isOpen: boolean;
@@ -21,17 +21,17 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
   onClose,
   onImageSelect
 }) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
   const [images, setImages] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    
+
     setIsLoading(true);
     // Simulate API call - replace with actual image search API
     setTimeout(() => {
-      const mockImages = Array.from({ length: 12 }, (_, i) => 
+      const mockImages = Array.from({ length: 12 }, (_, i) =>
         `https://picsum.photos/400/300?random=${Date.now()}-${i}`
       );
       setImages(mockImages);
@@ -40,7 +40,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSearch();
     }
   };
@@ -68,7 +68,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
           />
           <Button onClick={handleSearch} disabled={isLoading}>
             <Search className="h-4 w-4 mr-2" />
-            {isLoading ? "Searching..." : "Search"}
+            {isLoading ? 'Searching...' : 'Search'}
           </Button>
         </div>
 
@@ -98,7 +98,7 @@ const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
                     src={imageUrl}
                     alt={`Search result ${index + 1}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                   />
+                  />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <Button size="sm">Select</Button>
                   </div>

@@ -3,7 +3,7 @@ import { ComponentProps } from './editor-components';
 
 export interface CodeChange {file: string;
   lineNumber: number;
-  changeType: "add" | "delete" | "modify";
+  changeType: 'add' | 'delete' | 'modify';
   content: string;
   description?: string;
 }

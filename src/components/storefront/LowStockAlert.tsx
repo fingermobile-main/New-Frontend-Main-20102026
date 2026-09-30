@@ -22,7 +22,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
       // Get all products and filter for low stock items manually
       const productsData = await storefrontService.getProducts(storeId);
       const products = Array.isArray(productsData) ? productsData : (productsData as any).products || [];
-      
+
       const lowStockItems: any[] = [];
       for (const product of products) {
         const invData = await storefrontService.getInventory(product.id);
@@ -38,7 +38,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
           });
         }
       }
-      
+
       setLowStockItems(lowStockItems);
       setError(null);
     } catch (err) {
@@ -51,7 +51,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
 
   const handleRestock = async (item: any) => {
     if (!onRestock) return;
-    
+
     try {
       setRestocking(item.id);
       await onRestock(item.id);
@@ -136,7 +136,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
             {lowStockItems.filter(i => i.quantity === 0).length}
           </p>
         </div>
-        
+
         <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-2xl">⚡</span>
@@ -146,7 +146,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
             {lowStockItems.filter(i => i.quantity > 0 && i.quantity < i.reorder_point * 0.25).length}
           </p>
         </div>
-        
+
         <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-2xl">📦</span>
@@ -170,7 +170,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
           {lowStockItems.map((item) => {
             const urgency = getUrgencyLevel(item);
             const available = item.quantity - (item.reserved_quantity || 0);
-            
+
             return (
               <div
                 key={item.id}
@@ -186,7 +186,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                       <p className="text-sm text-gray-600 mt-1">SKU: {item.sku || 'N/A'}</p>
                     </div>
                   </div>
-                  
+
                   <span className={`px-3 py-1 ${urgency.color} text-white rounded-full text-xs font-semibold`}>
                     {urgency.level.toUpperCase()}
                   </span>
@@ -202,14 +202,14 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                       {item.quantity}
                     </p>
                   </div>
-                  
+
                   <div>
                     <p className="text-xs text-gray-600 mb-1">Reserved</p>
                     <p className="text-2xl font-bold text-gray-900">
                       {item.reserved_quantity || 0}
                     </p>
                   </div>
-                  
+
                   <div>
                     <p className="text-xs text-gray-600 mb-1">Available</p>
                     <p className={`text-2xl font-bold ${
@@ -218,7 +218,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                       {available}
                     </p>
                   </div>
-                  
+
                   <div>
                     <p className="text-xs text-gray-600 mb-1">Reorder Point</p>
                     <p className="text-2xl font-bold text-blue-600">
@@ -237,9 +237,9 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                     <div
                       className={`h-2 rounded-full transition-all ${
                         item.quantity === 0 ? 'bg-red-600' :
-                        item.quantity < item.reorder_point * 0.25 ? 'bg-red-500' :
-                        item.quantity < item.reorder_point * 0.5 ? 'bg-orange-500' :
-                        'bg-yellow-500'
+                          item.quantity < item.reorder_point * 0.25 ? 'bg-red-500' :
+                            item.quantity < item.reorder_point * 0.5 ? 'bg-orange-500' :
+                              'bg-yellow-500'
                       }`}
                       style={{ width: `${Math.min((item.quantity / item.reorder_point) * 100, 100)}%` }}
                     />
@@ -257,11 +257,11 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                       {restocking === item.id ? 'Restocking...' : '📦 Restock Now'}
                     </button>
                   )}
-                  
+
                   <button className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium">
                     View Details
                   </button>
-                  
+
                   <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
                     Dismiss
                   </button>

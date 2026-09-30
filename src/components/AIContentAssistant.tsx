@@ -7,10 +7,10 @@ interface AIContentAssistantProps {
   onGenerate?: (prompt: string, contentType: string) => void;
 }
 
-const AIContentAssistant: React.FC<AIContentAssistantProps> = ({ 
+const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
   isOpen = true,
   onClose,
-  onGenerate 
+  onGenerate
 }) => {
   const [prompt, setPrompt] = React.useState('');
   const [contentType, setContentType] = React.useState('post');
@@ -18,7 +18,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
-    
+
     setIsGenerating(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call

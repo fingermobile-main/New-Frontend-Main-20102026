@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import axios from "axios";
+import axios from 'axios';
 
 export interface VideoAsset {id: string;
   member_id: string;
@@ -48,15 +48,15 @@ export interface VideoProcessingJob {id: string;
 // Upload a video
 export const uploadVideo = async (
   videoFile: File,
-title: string,
+  title: string,
 ): Promise<VideoAsset> => {
   const formData = new FormData();
-  formData.append("video", videoFile);
-  formData.append("title", title);
+  formData.append('video', videoFile);
+  formData.append('title', title);
 
-  const response = await axios.post("/video-editor/upload", formData, {headers: {
-      "Content-Type": "multipart/form-data"
-    }
+  const response = await axios.post('/video-editor/upload', formData, {headers: {
+    'Content-Type': 'multipart/form-data'
+  }
   });
   return response.data.videoAsset;
 };
@@ -67,12 +67,12 @@ export const createVideoProject = async (
   projectData: unknown,
   description?: string,
 ): Promise<VideoProject> => {
-  const response = await axios.post("/video-editor/projects", {
+  const response = await axios.post('/video-editor/projects', {
     title,
     description,
-    projectData,
+    projectData
   });
-  return response.data;
+  return response.data.project;
 };
 
 // Get a video project by ID
@@ -85,14 +85,14 @@ export const getVideoProjectById = async (
 
 // Get all video projects for a member
 export const getVideoProjects = async (): Promise<VideoProject[]> => {
-  const response = await axios.get("/video-editor/projects");
+  const response = await axios.get('/video-editor/projects');
   return response.data.projects;
 };
 
 // Update a video project
 export const updateVideoProject = async (
   projectId: string,
-projectData: unknown,
+  projectData: unknown,
   title?: string,
   description?: string,
 ): Promise<VideoProject> => {
@@ -107,7 +107,7 @@ projectData: unknown,
 // Save project as draft
 export const saveDraft = async (
   projectId: string,
-projectData: unknown,
+  projectData: unknown,
 ): Promise<VideoProject> => {
   const response = await axios.post(
     `/video-editor/projects/${projectId}/save-draft`,
@@ -121,7 +121,7 @@ projectData: unknown,
 // Schedule a project for publishing
 export const scheduleProject = async (
   projectId: string,
-scheduleTime: string,
+  scheduleTime: string,
 ): Promise<VideoProject> => {
   const response = await axios.post(
     `/video-editor/projects/${projectId}/schedule`,
@@ -153,10 +153,10 @@ export const deleteVideoProject = async (
 // Create a processing job
 export const createProcessingJob = async (
   projectId: string,
-jobType: string,
-inputParams: unknown,
+  jobType: string,
+  inputParams: unknown,
 ): Promise<VideoProcessingJob> => {
-  const response = await axios.post("/video-editor/jobs", {
+  const response = await axios.post('/video-editor/jobs', {
     projectId,
     jobType,
     inputParams

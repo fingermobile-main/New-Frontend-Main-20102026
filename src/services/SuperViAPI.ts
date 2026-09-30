@@ -25,7 +25,7 @@ class SuperViAPI {
     return new Promise((resolve) => {
       setTimeout(() => {
         this.initialized = true;
-        console.info("SuperViAPI placeholder initialized");
+        console.info('SuperViAPI placeholder initialized');
         resolve();
       }, 300);
     });
@@ -34,7 +34,7 @@ class SuperViAPI {
   // Placeholder methods for future SuperVi API functionality
   public async getSuperViGameData(): Promise<unknown> {
     if (!this.initialized) {
-      console.warn("SuperViAPI not initialized");
+      console.warn('SuperViAPI not initialized');
       return null;
     }
 

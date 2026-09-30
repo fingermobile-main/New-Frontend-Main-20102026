@@ -15,10 +15,10 @@ const CsvImportTrigger: React.FC<CsvImportTriggerProps> = ({ onImportComplete })
     try {
       // Simulate CSV import process
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Call onImportComplete when finished
       onImportComplete();
-      
+
       // Show success notification using showToast
       showToast('CSV import completed successfully!', 'success');
     } catch (error) {

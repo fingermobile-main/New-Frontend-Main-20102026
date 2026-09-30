@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-;
 
 import { toast } from 'react-toastify';
 import { XIcon } from '../../components/icons';
@@ -61,11 +60,11 @@ const ManageMyHallmarkPage: React.FC = () => {
 
   const handleSaveChanges = async () => {
     if (!selectedHallmarkId) return;
-    
+
     try {
       const hallmarkToUpdate = hallmarks.find(h => h.id === selectedHallmarkId);
       if (!hallmarkToUpdate) return;
-      
+
       const updatedHallmark: Hallmark = {
         ...hallmarkToUpdate,
         name: name || hallmarkToUpdate.name,
@@ -73,7 +72,7 @@ const ManageMyHallmarkPage: React.FC = () => {
         tags: tags.length > 0 ? tags : hallmarkToUpdate.tags || [],
         // Preserve other properties
       };
-      
+
       await hallmarkService.updateHallmark(hallmarkToUpdate.id, updatedHallmark);
       toast.success('Hallmark updated successfully');
     } catch (err) {
@@ -85,7 +84,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
   const handleAddMember = async () => {
     if (!selectedHallmarkId || !newMemberEmail) return;
-    
+
     try {
       await hallmarkService.addMember(selectedHallmarkId, newMemberEmail);
       toast.success('Member invited successfully');
@@ -99,7 +98,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
   const handleUpdateMemberRole = async () => {
     if (!selectedHallmarkId || !editingMember || !memberRole) return;
-    
+
     try {
       await hallmarkService.updateMemberRole(selectedHallmarkId, editingMember.id, memberRole);
       toast.success('Member role updated successfully');
@@ -113,13 +112,13 @@ const ManageMyHallmarkPage: React.FC = () => {
 
   const handleStartSession = async () => {
     if (!selectedHallmarkId || !sessionTitle.trim()) {
-      showToast("Please enter a title for your live session.", 'warning');
+      showToast('Please enter a title for your live session.', 'warning');
       return;
     }
 
     try {
       const pin = await startSession(selectedHallmarkId, 'Hallmark', sessionTitle);
-      
+
       const handleJoinAsHost = () => {
         if (activeSession) {
           joinSession(activeSession.id);
@@ -129,13 +128,13 @@ const ManageMyHallmarkPage: React.FC = () => {
 
       openModal('sessionPin', { pin, title: sessionTitle, onJoin: handleJoinAsHost });
     } catch (error) {
-      console.error("Failed to start session:", error);
-      showToast("Could not start the live session. Please try again later.", 'error');
+      console.error('Failed to start session:', error);
+      showToast('Could not start the live session. Please try again later.', 'error');
     }
   };
 
   const handleEndSession = () => {
-    if (window.confirm("Are you sure you want to end this live session for everyone?")) {
+    if (window.confirm('Are you sure you want to end this live session for everyone?')) {
       leaveSession();
     }
   };
@@ -146,16 +145,16 @@ const ManageMyHallmarkPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Manage My Hallmark</h1>
-      
+
       {loading && <div>Loading...</div>}
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      
+
       {!loading && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-semibold mb-4">Select Hallmark</h2>
-              
+
               <select
                 value={selectedHallmarkId}
                 onChange={(e) => setSelectedHallmarkId(e.target.value)}
@@ -168,7 +167,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                   </option>
                 ))}
               </select>
-              
+
               {selectedHallmark && (
                 <div className="space-y-4">
                   <div>
@@ -180,7 +179,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
@@ -190,7 +189,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       rows={3}
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Tags</label>
                     <div className="flex mt-1">
@@ -208,7 +207,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                         Add
                       </button>
                     </div>
-                    
+
                     <div className="mt-2 flex flex-wrap gap-2">
                       {tags && tags.length > 0 ? tags.map((tag, index) => (
                         <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center">
@@ -220,7 +219,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                             <XIcon className="h-4 w-4" />
                           </button>
                         </div>
-                      )) : (selectedHallmark.tags || []).map((tag, index) => (
+                      )) : (selectedHallmark.tags || []).map((tag: string, index: number) => (
                         <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center">
                           {tag}
                           <button
@@ -233,7 +232,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                  
+
                   <button
                     onClick={handleSaveChanges}
                     className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
@@ -244,7 +243,7 @@ const ManageMyHallmarkPage: React.FC = () => {
               )}
             </div>
           </div>
-          
+
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-between items-center mb-4">
@@ -256,7 +255,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                   Add Member
                 </button>
               </div>
-              
+
               {showAddMemberForm && (
                 <div className="mb-4 p-4 border rounded">
                   <h3 className="font-medium mb-2">Add New Member</h3>
@@ -277,7 +276,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                   </div>
                 </div>
               )}
-              
+
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -288,12 +287,12 @@ const ManageMyHallmarkPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {(selectedHallmark?.members || []).filter((m): m is Member => typeof m !== 'string').map((member) => (
+                    {(selectedHallmark?.members || []).filter((m: Member | string): m is Member => typeof m !== 'string').map((member: Member) => (
                       <tr key={member.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
-                              <img className="h-10 w-10 rounded-full" src={member.avatar || "https://via.placeholder.com/40x40"} alt={member.name}  />
+                              <img className="h-10 w-10 rounded-full" src={member.avatar || 'https://via.placeholder.com/40x40'} alt={member.name}  />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">{member.name}</div>
@@ -322,16 +321,16 @@ const ManageMyHallmarkPage: React.FC = () => {
                 </table>
               </div>
             </div>
-            
+
             {editingMember && (
               <div className="mt-6 bg-white rounded-lg shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">Edit Member Role</h2>
-                
+
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">Current Role</label>
                   <p className="mt-1 text-sm text-gray-900">{editingMember.role}</p>
                 </div>
-                
+
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">New Role</label>
                   <select
@@ -344,7 +343,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                     <option value="member">Member</option>
                   </select>
                 </div>
-                
+
                 <div className="flex space-x-3">
                   <button
                     onClick={handleUpdateMemberRole}

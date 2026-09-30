@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Plus, Music, ListMusic, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { Plus, Music, ListMusic, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Checkbox } from '@/components/ui/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface Track {
   id: string;
@@ -44,14 +44,14 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
   onAddToPlaylist
 }) => {
   const [selectedPlaylists, setSelectedPlaylists] = React.useState<string[]>([]);
-  const [newPlaylistName, setNewPlaylistName] = React.useState("");
+  const [newPlaylistName, setNewPlaylistName] = React.useState('');
   const [showCreateForm, setShowCreateForm] = React.useState(false);
 
   const defaultPlaylists: Playlist[] = [
-    { id: "1", name: "Favorites", trackCount: 45 },
-    { id: "2", name: "Workout Mix", trackCount: 32 },
-    { id: "3", name: "Chill Vibes", trackCount: 28 },
-    { id: "4", name: "Road Trip", trackCount: 56 }
+    { id: '1', name: 'Favorites', trackCount: 45 },
+    { id: '2', name: 'Workout Mix', trackCount: 32 },
+    { id: '3', name: 'Chill Vibes', trackCount: 28 },
+    { id: '4', name: 'Road Trip', trackCount: 56 }
   ];
 
   const playlists = propPlaylists || defaultPlaylists;
@@ -67,7 +67,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
   const handleCreatePlaylist = () => {
     if (newPlaylistName.trim()) {
       onCreatePlaylist?.(newPlaylistName.trim());
-      setNewPlaylistName("");
+      setNewPlaylistName('');
       setShowCreateForm(false);
     }
   };
@@ -168,7 +168,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
             onClick={handleAddSelected}
             disabled={selectedPlaylists.length === 0}
           >
-            Add to {selectedPlaylists.length} Playlist{selectedPlaylists.length !== 1 ? "s" : ""}
+            Add to {selectedPlaylists.length} Playlist{selectedPlaylists.length !== 1 ? 's' : ''}
           </Button>
         </DialogFooter>
       </DialogContent>

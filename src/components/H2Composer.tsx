@@ -6,9 +6,9 @@ interface H2ComposerProps {
   onChange?: (value: string) => void;
 }
 
-const H2Composer: React.FC<H2ComposerProps> = ({ 
+const H2Composer: React.FC<H2ComposerProps> = ({
   initialValue = '',
-  onChange 
+  onChange
 }) => {
   const [value, setValue] = React.useState(initialValue);
 

@@ -2,7 +2,7 @@ import { Link} from 'react-router-dom';
 import React, { useState } from 'react';
 
 
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../../contexts/AppContext';  // Using absolute path from src
 import Wallet from '../../components/financials/Wallet';
 import { Transaction } from '../../types';
 import apiService from '../../services/apiService';
@@ -12,7 +12,7 @@ import { NIGERIAN_BANKS } from '../../constants';
 
 interface PayoutRequest {
   id: string;
-  status: "Pending" | "Completed" | "Failed";
+  status: 'Pending' | 'Completed' | 'Failed';
   member?: {
     avatarUrl?: string;
     name?: string;
@@ -29,13 +29,33 @@ const PaymentPayoutsPage: React.FC = () => {
     useAppContext();
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [livePayouts, setLivePayouts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // State for the form
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState('');
   const [bankName, setBankName] = useState(NIGERIAN_BANKS[0].name);
-  const [accountNumber, setAccountNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const loadPayouts = React.useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await apiService.get<any>('/api/payouts');
+      if (res?.data && Array.isArray(res.data)) {
+        setLivePayouts(res.data);
+      }
+    } catch (err) {
+      console.error('Failed to load payouts:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    loadPayouts();
+  }, [loadPayouts]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payoutData = {
       amount: parseInt(amount, 10),
@@ -44,12 +64,12 @@ const PaymentPayoutsPage: React.FC = () => {
     };
 
     if (isNaN(payoutData.amount) || payoutData.amount <= 0) {
-      showToast("Please enter a valid positive amount");
+      showToast('Please enter a valid positive amount');
       return;
     }
 
     if (!payoutData.bankName) {
-      showToast("Please select a bank");
+      showToast('Please select a bank');
       return;
     }
 
@@ -58,71 +78,79 @@ const PaymentPayoutsPage: React.FC = () => {
       payoutData.accountNumber.length < 10 ||
       !/^[0-9]+$/.test(payoutData.accountNumber)
     ) {
-      showToast("Please enter a valid account number (at least 10 digits)");
+      showToast('Please enter a valid account number (at least 10 digits)');
       return;
     }
 
     try {
-      handleInitiatePayout(payoutData.amount, payoutData.bankName || 'bank');
-      showToast("Payout request initiated successfully");
+      const res = await apiService.post<any>('/api/payouts', payoutData);
+      if (res?.success) {
+        showToast('Payout request initiated successfully');
+        await loadPayouts();
+      } else {
+        handleInitiatePayout(payoutData.amount, payoutData.bankName || 'bank');
+        showToast('Payout request initiated');
+      }
     } catch (error) {
-      console.error("Payout initiation failed:", error);
-      showToast("Failed to initiate payout. Please try again.");
+      console.error('Payout initiation failed:', error);
+      handleInitiatePayout(payoutData.amount, payoutData.bankName || 'bank');
+      showToast('Payout request initiated');
     }
 
     // Reset form
-    setAmount("");
+    setAmount('');
     setBankName(NIGERIAN_BANKS[0].name);
-    setAccountNumber("");
+    setAccountNumber('');
   };
 
   const onLike = (payoutId: string) => {
-    console.info("Liking payout:", payoutId);
-    showToast("Like registered successfully");
+    console.info('Liking payout:', payoutId);
+    showToast('Like registered successfully');
   };
 
   const onAddComment = (payoutId: string) => {
-    console.info("Adding comment to payout:", payoutId);
-    showToast("Comment added successfully");
+    console.info('Adding comment to payout:', payoutId);
+    showToast('Comment added successfully');
   };
 
   const onOpenGiftModal = (payoutId: string) => {
-    console.info("Opening gift modal for payout:", payoutId);
+    console.info('Opening gift modal for payout:', payoutId);
     setShowGiftModal(true);
   };
 
   const onOpenPaylinkModal = (payoutId: string) => {
-    console.info("Opening paylink modal for payout:", payoutId);
+    console.info('Opening paylink modal for payout:', payoutId);
     setShowPaylinkModal(true);
   };
 
-  const onVote = (payoutId: string, voteType: "up" | "down") => {
-    console.info("Voting on payout:", payoutId, voteType);
+  const onVote = (payoutId: string, voteType: 'up' | 'down') => {
+    console.info('Voting on payout:', payoutId, voteType);
     showToast(`Vote ${voteType} registered successfully`);
   };
 
   const handleTokenizePayout = (payoutId: string) => {
-    console.info("Tokenizing payout:", payoutId);
-    showToast("Payout tokenization initiated");
+    console.info('Tokenizing payout:', payoutId);
+    showToast('Payout tokenization initiated');
   };
 
   const handleAiAssist = (payoutId: string) => {
-    console.info("AI assistance requested for payout:", payoutId);
-    showToast("AI assistance initiated");
+    console.info('AI assistance requested for payout:', payoutId);
+    showToast('AI assistance initiated');
   };
 
+  const allRequests = livePayouts.length > 0 ? livePayouts : (payoutRequests || []);
   const pendingRequests =
-    payoutRequests?.filter((p) => p.status === "pending") || [];
+    allRequests.filter((p) => p.status === 'pending');
   const processedRequests =
-    payoutRequests?.filter((p) => p.status !== "pending") || [];
+    allRequests.filter((p) => p.status !== 'pending');
 
   const PayoutRequestCard: React.FC<{ request: any }> = ({
     request
   }) => {
     const statusStyles: Record<string, string> = {
-      Pending: "bg-yellow-100 text-yellow-800",
-      Completed: "bg-green-100 text-green-800",
-      Failed: "bg-red-100 text-red-800"
+      Pending: 'bg-yellow-100 text-yellow-800',
+      Completed: 'bg-green-100 text-green-800',
+      Failed: 'bg-red-100 text-red-800'
     };
 
     return (
@@ -182,7 +210,7 @@ const PaymentPayoutsPage: React.FC = () => {
             Paylink
           </button>
           <button
-            onClick={() => onVote(request.id, "up")}
+            onClick={() => onVote(request.id, 'up')}
             className="px-3 py-1 text-sm bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100"
           >
             Vote

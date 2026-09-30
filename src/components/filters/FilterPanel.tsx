@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Filter, SlidersHorizontal, X } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import { Checkbox } from "@/components/ui/Checkbox";
-import { Slider } from "@/components/ui/Slider";
-import { Badge } from "@/components/ui/Badge";
+import { Filter, SlidersHorizontal, X } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Label } from '@/components/ui/Label';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { Slider } from '@/components/ui/Slider';
+import { Badge } from '@/components/ui/Badge';
 
 interface FilterOption {
   id: string;
@@ -23,15 +23,15 @@ interface FilterPanelProps {
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
   categories = [
-    { id: "tech", label: "Technology", count: 1234 },
-    { id: "business", label: "Business", count: 856 },
-    { id: "design", label: "Design", count: 643 },
-    { id: "marketing", label: "Marketing", count: 521 }
+    { id: 'tech', label: 'Technology', count: 1234 },
+    { id: 'business', label: 'Business', count: 856 },
+    { id: 'design', label: 'Design', count: 643 },
+    { id: 'marketing', label: 'Marketing', count: 521 }
   ],
   tags = [
-    { id: "ai", label: "AI", count: 234 },
-    { id: "startup", label: "Startup", count: 189 },
-    { id: "innovation", label: "Innovation", count: 156 }
+    { id: 'ai', label: 'AI', count: 234 },
+    { id: 'startup', label: 'Startup', count: 189 },
+    { id: 'innovation', label: 'Innovation', count: 156 }
   ],
   priceRange = [0, 1000],
   onApplyFilters,
@@ -118,7 +118,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             {tags.map((tag) => (
               <Badge
                 key={tag.id}
-                variant={selectedTags.includes(tag.id) ? "default" : "outline"}
+                variant={selectedTags.includes(tag.id) ? 'default' : 'outline'}
                 className="cursor-pointer"
                 onClick={() => handleTagToggle(tag.id)}
               >

@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import messageService from '../../services/MessageService';
 
-import { 
+import {
   ChatBubbleLeftIcon as FiMessageSquare,
   UsersIcon as FiUsers,
   MagnifyingGlassIcon as FiSearch,
@@ -95,65 +96,91 @@ interface Conversation {
 }
 
 // ==========================================
-// Static API Mock Service (Outside Component)
+// Live Backend Service Integration
 // ==========================================
 const apiService = {
   getConversations: async (): Promise<Conversation[]> => {
-    return [
-      {
-        id: 'conv1',
-        participants: [
-          { id: 'user1', name: 'Alex Johnson', avatar: '/avatars/alex.jpg', status: 'online', isPremium: true },
-          { id: 'user2', name: 'Sam Wilson', avatar: '/avatars/sam.jpg', status: 'away', lastSeen: '2 hours ago', isPremium: false }
-        ],
-        lastMessage: {
-          id: 'msg1',
-          senderId: 'user2',
-          receiverId: 'user1',
-          content: 'Hey, are we still meeting tomorrow?',
-          timestamp: new Date(Date.now() - 3600000),
-          read: true,
-          delivered: true,
-          encrypted: false,
-          type: 'text',
-          status: 'read'
-        },
-        unreadCount: 0,
-        isGroup: false,
-        createdAt: new Date(Date.now() - 86400000),
-        isEncrypted: false,
-        isDisappearing: false,
-        disappearingDuration: 0,
-        isMuted: false,
-        securitySettings: {
+    try {
+      const res = await messageService.getConversations();
+      const raw = Array.isArray(res) ? res : (res?.data || []);
+      if (raw.length === 0) return [];
+      return raw.map((c: any) => {
+        const participant = c.participants?.[0] || { id: String(c.id), username: `User ${c.id}`, name: `User ${c.id}` };
+        return {
+          id: String(c.id),
+          participants: [
+            {
+              id: String(participant.id || c.id),
+              name: c.name || participant.name || participant.username || `User ${c.id}`,
+              avatar: c.avatarUrl || participant.avatar || `https://picsum.photos/seed/user${c.id}/100/100`,
+              status: 'online' as const,
+              isPremium: false
+            }
+          ],
+          lastMessage: c.lastMessage ? {
+            id: `msg-${Date.now()}`,
+            senderId: String(c.id),
+            receiverId: 'me',
+            content: c.lastMessage,
+            timestamp: new Date(c.updatedAt || Date.now()),
+            read: true,
+            delivered: true,
+            encrypted: false,
+            type: 'text' as const,
+            status: 'read' as const
+          } : undefined,
+          unreadCount: c.unreadCount || 0,
+          isGroup: false,
+          createdAt: new Date(c.updatedAt || Date.now()),
           isEncrypted: false,
-          encryptionAlgorithm: 'AES-GCM',
-          keyExchangeCompleted: false
-        }
-      }
-    ];
+          isDisappearing: false,
+          disappearingDuration: 0,
+          isMuted: false,
+          securitySettings: {
+            isEncrypted: false,
+            encryptionAlgorithm: 'AES-GCM' as const,
+            keyExchangeCompleted: false
+          }
+        };
+      });
+    } catch (err) {
+      console.error('Failed to get conversations from backend:', err);
+      return [];
+    }
   },
-  getMessages: async (_conversationId: string): Promise<Message[]> => {
-    return [
-      {
-        id: 'msg1',
-        senderId: 'user2',
-        receiverId: 'user1',
-        content: 'Hey, are we still meeting tomorrow?',
-        timestamp: new Date(Date.now() - 3600000),
-        read: true,
+  getMessages: async (conversationId: string): Promise<Message[]> => {
+    try {
+      const res = await messageService.getMessages(conversationId);
+      const raw = Array.isArray(res) ? res : (res?.data || []);
+      return raw.map((m: any) => ({
+        id: String(m.id),
+        senderId: String(m.sender_id || m.senderId),
+        receiverId: String(m.receiver_id || m.receiverId),
+        content: m.content,
+        timestamp: new Date(m.sent_at || m.sentAt || Date.now()),
+        read: !!(m.is_read || m.isRead),
         delivered: true,
         encrypted: false,
-        type: 'text',
-        status: 'read'
-      }
-    ];
+        type: 'text' as const,
+        status: (m.is_read ? 'read' : 'delivered') as any
+      }));
+    } catch (err) {
+      console.error('Failed to get messages from backend:', err);
+      return [];
+    }
   },
   sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'status' | 'delivered'>): Promise<Message> => {
+    const textContent = typeof message.content === 'string' ? message.content : JSON.stringify(message.content);
+    const res = await messageService.sendMessage({
+      recipient_id: String(message.receiverId),
+      content: textContent,
+      message_type: message.type
+    });
+    const saved = res.data;
     return {
       ...message,
-      id: `msg${Date.now()}`,
-      timestamp: new Date(),
+      id: String(saved?.id || `msg-${Date.now()}`),
+      timestamp: new Date(saved?.sent_at || Date.now()),
       status: 'sent',
       delivered: true
     };
@@ -172,7 +199,7 @@ const bufToHex = (buffer: ArrayBuffer): string => {
 const hexToBuf = (hex: string): Uint8Array => {
   const matches = hex.match(/.{1,2}/g);
   if (!matches) return new Uint8Array(0);
-  
+
   // Create a standard ArrayBuffer and populate it
   const bytes = matches.map(byte => parseInt(byte, 16));
   return new Uint8Array(bytes);
@@ -195,7 +222,7 @@ const MessagesPage: React.FC = () => {
   const [groupName, setGroupName] = useState('');
   const [isSecureMode, setIsSecureMode] = useState(false);
   const [isDisappearingMode, setIsDisappearingMode] = useState(false);
-  const [_disappearingDuration, _setDisappearingDuration] = useState(60); 
+  const [_disappearingDuration, _setDisappearingDuration] = useState(60);
   const [showSecureOptions, setShowSecureOptions] = useState(false);
   const [showDisappearingOptions, setShowDisappearingOptions] = useState(false);
   const [_isTyping, _setIsTyping] = useState(false);
@@ -218,13 +245,13 @@ const MessagesPage: React.FC = () => {
     try {
       const keyPair = await window.crypto.subtle.generateKey(
         {
-          name: "RSA-OAEP",
+          name: 'RSA-OAEP',
           modulusLength: 2048,
           publicExponent: new Uint8Array([1, 0, 1]),
-          hash: "SHA-256"
+          hash: 'SHA-256'
         },
         true,
-        ["encrypt", "decrypt"]
+        ['encrypt', 'decrypt']
       );
       _setEncryptionKeys(keyPair);
     } catch (error) {
@@ -234,16 +261,16 @@ const MessagesPage: React.FC = () => {
 
   const encryptMessage = useCallback(async (content: string): Promise<EncryptedMessageContent> => {
     if (!activeConversationRef.current?.securitySettings.symmetricKey) {
-      throw new Error("Symmetric key not available for encryption");
+      throw new Error('Symmetric key not available for encryption');
     }
     const encoder = new TextEncoder();
     const data = encoder.encode(content);
     const iv = window.crypto.getRandomValues(new Uint8Array(12));
-    
+
     const encryptedData = await window.crypto.subtle.encrypt(
-      { name: "AES-GCM", iv },
+      { name: 'AES-GCM', iv },
       activeConversationRef.current.securitySettings.symmetricKey,
-      data
+      data as any
     );
 
     return {
@@ -255,7 +282,7 @@ const MessagesPage: React.FC = () => {
   const decryptMessage = useCallback(async (encryptedContent: EncryptedMessageContent): Promise<string> => {
     const activeConv = activeConversationRef.current;
     if (!activeConv?.securitySettings.symmetricKey) {
-      throw new Error("Symmetric key not available for decryption");
+      throw new Error('Symmetric key not available for decryption');
     }
     const decoder = new TextDecoder();
     const iv = hexToBuf(encryptedContent.iv);
@@ -263,7 +290,7 @@ const MessagesPage: React.FC = () => {
 
     // Type assertion to ensure compatibility with Web Crypto API
     const decryptedData = await window.crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: iv as BufferSource },
+      { name: 'AES-GCM', iv: iv as BufferSource },
       activeConv.securitySettings.symmetricKey,
       encryptedData as BufferSource
     );
@@ -280,20 +307,20 @@ const MessagesPage: React.FC = () => {
         content = '[Encrypted message could not be decrypted]';
       }
     }
-    
+
     const incoming: Message = {
       ...messageData,
       content,
       timestamp: new Date(messageData.timestamp)
     };
-    
+
     setMessages(prev => [...prev, incoming]);
-    
+
     if (activeConversationRef.current && activeConversationRef.current.id === messageData.conversationId) {
-      setConversations(prev => 
-        prev.map(conv => 
-          conv.id === messageData.conversationId 
-            ? { ...conv, lastMessage: incoming, unreadCount: conv.unreadCount + 1 } 
+      setConversations(prev =>
+        prev.map(conv =>
+          conv.id === messageData.conversationId
+            ? { ...conv, lastMessage: incoming, unreadCount: conv.unreadCount + 1 }
             : conv
         )
       );
@@ -302,22 +329,22 @@ const MessagesPage: React.FC = () => {
 
   const handleKeyExchange = useCallback(async (keyData: { conversationId: string; publicKey: string }) => {
     const symmetricKey = await window.crypto.subtle.generateKey(
-      { name: "AES-GCM", length: 256 },
+      { name: 'AES-GCM', length: 256 },
       true,
-      ["encrypt", "decrypt"]
+      ['encrypt', 'decrypt']
     );
-    
-    setConversations(prev => 
-      prev.map(conv => 
-        conv.id === keyData.conversationId 
-          ? { 
-              ...conv, 
-              securitySettings: { 
-                ...conv.securitySettings, 
-                keyExchangeCompleted: true,
-                symmetricKey
-              } 
-            } 
+
+    setConversations(prev =>
+      prev.map(conv =>
+        conv.id === keyData.conversationId
+          ? {
+            ...conv,
+            securitySettings: {
+              ...conv.securitySettings,
+              keyExchangeCompleted: true,
+              symmetricKey
+            }
+          }
           : conv
       )
     );
@@ -336,23 +363,23 @@ const MessagesPage: React.FC = () => {
     ws.onmessage = async (event) => {
       const data: WebSocketMessage = JSON.parse(event.data);
       switch (data.type) {
-        case 'MESSAGE':
-          if (typeof data.payload === 'object' && data.payload !== null) {
-            await handleIncomingMessage(data.payload as Message & { conversationId: string });
-          }
-          break;
-        case 'TYPING':
-          if (typeof data.payload === 'object' && data.payload !== null && 'isTyping' in data.payload) {
-            _setIsTyping((data.payload as { isTyping: boolean }).isTyping);
-          }
-          break;
-        case 'ENCRYPTION_KEY_EXCHANGE':
-          if (typeof data.payload === 'object' && data.payload !== null && 'conversationId' in data.payload && 'publicKey' in data.payload) {
-            await handleKeyExchange(data.payload as { conversationId: string; publicKey: string });
-          }
-          break;
-        default:
-          break;
+      case 'MESSAGE':
+        if (typeof data.payload === 'object' && data.payload !== null) {
+          await handleIncomingMessage(data.payload as Message & { conversationId: string });
+        }
+        break;
+      case 'TYPING':
+        if (typeof data.payload === 'object' && data.payload !== null && 'isTyping' in data.payload) {
+          _setIsTyping((data.payload as { isTyping: boolean }).isTyping);
+        }
+        break;
+      case 'ENCRYPTION_KEY_EXCHANGE':
+        if (typeof data.payload === 'object' && data.payload !== null && 'conversationId' in data.payload && 'publicKey' in data.payload) {
+          await handleKeyExchange(data.payload as { conversationId: string; publicKey: string });
+        }
+        break;
+      default:
+        break;
       }
     };
 
@@ -390,7 +417,7 @@ const MessagesPage: React.FC = () => {
     if (text.toLowerCase().includes('how are you')) {
       suggestions = ['Good, thanks!', 'Doing well, how about you?'];
     } else if (text.toLowerCase().includes('meeting')) {
-      suggestions = ["Yes, I'm looking forward to it", 'I will be there'];
+      suggestions = ['Yes, I\'m looking forward to it', 'I will be there'];
     }
     setAiSuggestions(suggestions);
     setShowAiSuggestions(suggestions.length > 0);
@@ -496,9 +523,9 @@ const MessagesPage: React.FC = () => {
 
   // Memoized filter lists to avoid processing arrays on unrelated state changes
   const filteredConversations = useMemo(() => {
-    return conversations.filter(conv => 
-      conv.isGroup 
-        ? conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase()) 
+    return conversations.filter(conv =>
+      conv.isGroup
+        ? conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase())
         : conv.participants.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   }, [conversations, searchQuery]);
@@ -592,10 +619,10 @@ const MessagesPage: React.FC = () => {
                 </h2>
               </div>
               <div className="flex space-x-3 text-gray-500">
-                <button onClick={() => { setIsSecureMode(!isSecureMode); setShowSecureOptions(true); }} className={isSecureMode ? "text-green-600" : ""}>
+                <button onClick={() => { setIsSecureMode(!isSecureMode); setShowSecureOptions(true); }} className={isSecureMode ? 'text-green-600' : ''}>
                   <FiLock className="w-5 h-5" />
                 </button>
-                <button onClick={() => { setIsDisappearingMode(!isDisappearingMode); setShowDisappearingOptions(true); }} className={isDisappearingMode ? "text-purple-600" : ""}>
+                <button onClick={() => { setIsDisappearingMode(!isDisappearingMode); setShowDisappearingOptions(true); }} className={isDisappearingMode ? 'text-purple-600' : ''}>
                   <FiClock className="w-5 h-5" />
                 </button>
                 <FiPhone className="w-5 h-5 cursor-pointer" />

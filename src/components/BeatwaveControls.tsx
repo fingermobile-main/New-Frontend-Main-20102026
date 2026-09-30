@@ -22,17 +22,17 @@ const BeatwaveControls: React.FC<BeatwaveControlsProps> = ({
 }) => {
   return (
     <div className="flex items-center justify-center space-x-4 p-4 bg-gray-800 text-white rounded-lg">
-      <button 
+      <button
         onClick={onPrevious}
         aria-label="Previous track"
         className="p-2 hover:bg-gray-700 rounded-full"
       >
         <SkipBack className="h-6 w-6" />
       </button>
-      
-      <button 
+
+      <button
         onClick={onPlayPause}
-        aria-label={isPlaying ? "Pause" : "Play"}
+        aria-label={isPlaying ? 'Pause' : 'Play'}
         className="p-2 hover:bg-gray-700 rounded-full"
       >
         {isPlaying ? (
@@ -41,15 +41,15 @@ const BeatwaveControls: React.FC<BeatwaveControlsProps> = ({
           <Play className="h-8 w-8" />
         )}
       </button>
-      
-      <button 
+
+      <button
         onClick={onNext}
         aria-label="Next track"
         className="p-2 hover:bg-gray-700 rounded-full"
       >
         <SkipForward className="h-6 w-6" />
       </button>
-      
+
       <div className="flex items-center space-x-2 ml-4">
         <Volume2 className="h-6 w-6" />
         <input
@@ -62,8 +62,8 @@ const BeatwaveControls: React.FC<BeatwaveControlsProps> = ({
           className="w-24 accent-blue-500"
         />
       </div>
-      
-      <button 
+
+      <button
         onClick={onFullscreen}
         aria-label="Toggle fullscreen"
         className="ml-4 p-2 hover:bg-gray-700 rounded-full"

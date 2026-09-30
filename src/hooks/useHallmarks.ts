@@ -19,17 +19,17 @@ export const useHallmarks = (): UseHallmarksResult => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.request<PostType[]>("/posts", {method: "GET",
-  // @ts-ignore - params might not be in ApiRequestOptions but ApiService seems to handle it via baseURL construction if passed correctly params: { category: "hallmarks" }
+      const response = await ApiService.request<PostType[]>('/posts', {method: 'GET',
+        // @ts-ignore - params might not be in ApiRequestOptions but ApiService seems to handle it via baseURL construction if passed correctly params: { category: "hallmarks" }
       });
       if (response) {
         setHallmarks(response);
       } else {
-        setError("Failed to fetch hallmarks.");
+        setError('Failed to fetch hallmarks.');
       }
     } catch (err) {
-      setError("Failed to fetch hallmarks.");
-      console.error("Error fetching hallmarks:", err);
+      setError('Failed to fetch hallmarks.');
+      console.error('Error fetching hallmarks:', err);
     } finally {
       setLoading(false);
     }

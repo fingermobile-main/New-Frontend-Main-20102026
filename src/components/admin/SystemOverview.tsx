@@ -1,14 +1,14 @@
 import React, {} from 'react';
-import { User, Shield, Settings, Activity } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { User, Shield, Settings, Activity } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 
 interface SystemMetric {
   label: string;
   value: string | number;
-  status: "healthy" | "warning" | "critical";
-  trend?: "up" | "down" | "stable";
+  status: 'healthy' | 'warning' | 'critical';
+  trend?: 'up' | 'down' | 'stable';
 }
 
 interface SystemOverviewProps {
@@ -23,37 +23,37 @@ const SystemOverview: React.FC<SystemOverviewProps> = ({
   onViewDetails
 }) => {
   const defaultMetrics: SystemMetric[] = [
-    { label: "Server Uptime", value: "99.9%", status: "healthy", trend: "stable" },
-    { label: "Active Users", value: "12,456", status: "healthy", trend: "up" },
-    { label: "API Response Time", value: "245ms", status: "healthy", trend: "down" },
-    { label: "Database Connections", value: "87/100", status: "warning", trend: "up" },
-    { label: "Error Rate", value: "0.3%", status: "healthy", trend: "down" },
-    { label: "Memory Usage", value: "72%", status: "warning", trend: "up" }
+    { label: 'Server Uptime', value: '99.9%', status: 'healthy', trend: 'stable' },
+    { label: 'Active Users', value: '12,456', status: 'healthy', trend: 'up' },
+    { label: 'API Response Time', value: '245ms', status: 'healthy', trend: 'down' },
+    { label: 'Database Connections', value: '87/100', status: 'warning', trend: 'up' },
+    { label: 'Error Rate', value: '0.3%', status: 'healthy', trend: 'down' },
+    { label: 'Memory Usage', value: '72%', status: 'warning', trend: 'up' }
   ];
 
   const metrics = propMetrics || defaultMetrics;
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "healthy":
-        return "bg-green-500";
-      case "warning":
-        return "bg-yellow-500";
-      case "critical":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
+    case 'healthy':
+      return 'bg-green-500';
+    case 'warning':
+      return 'bg-yellow-500';
+    case 'critical':
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 
   const getTrendIcon = (trend?: string) => {
     switch (trend) {
-      case "up":
-        return "↑";
-      case "down":
-        return "↓";
-      default:
-        return "→";
+    case 'up':
+      return '↑';
+    case 'down':
+      return '↓';
+    default:
+      return '→';
     }
   };
 

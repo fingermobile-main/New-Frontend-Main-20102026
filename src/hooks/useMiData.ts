@@ -6,8 +6,8 @@ interface Contact {id: string; name: string; avatar: string; lastSeen: string; i
   status?: string;
 }
 
-interface Message {id: string; senderId: string; content: string; timestamp: string; type: "text" | "image" | "video" | "voice" | "gif" | "file";
-  isOwn: boolean; status: "sent" | "delivered" | "read";
+interface Message {id: string; senderId: string; content: string; timestamp: string; type: 'text' | 'image' | 'video' | 'voice' | 'gif' | 'file';
+  isOwn: boolean; status: 'sent' | 'delivered' | 'read';
 }
 
 interface Conversation {id: string; contactId: string; messages: Message[]; lastMessage: string; lastMessageTime: string; unreadCount: number;
@@ -27,28 +27,28 @@ export const useMiData = (): UseMiDataResult => {
     setError(null);
     try {
       const contactsResponse = await ApiService.request<Contact[]>(
-        "/mi/contacts",
-        {method: "GET" },
+        '/mi/contacts',
+        {method: 'GET' },
       );
       if (contactsResponse) {
         setContacts(contactsResponse);
       } else {
-        setError("Failed to fetch contacts.");
+        setError('Failed to fetch contacts.');
       }
 
       const conversationsResponse = await ApiService.request<Conversation[]>(
-        "/mi/conversations",
-        {method: "GET" },
+        '/mi/conversations',
+        {method: 'GET' },
       );
       if (conversationsResponse) {
         setConversations(conversationsResponse);
       } else {
         setError(
-          "Failed to fetch conversations.",
+          'Failed to fetch conversations.',
         );
       }
     } catch (err) {
-      setError("Failed to fetch Mi data.");
+      setError('Failed to fetch Mi data.');
       console.error(err);
     } finally {
       setLoading(false);

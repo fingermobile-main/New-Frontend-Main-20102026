@@ -17,19 +17,19 @@ interface InputOTPSlotProps {
   hasFakeCaret?: boolean;
 }
 
-const InputOTP = ({ 
-  length, 
-  onChange, 
-  onComplete, 
-  className = '', 
-  disabled = false 
+const InputOTP = ({
+  length,
+  onChange,
+  onComplete,
+  className = '',
+  disabled = false
 }: InputOTPProps) => {
   const [values, setValues] = useState<string[]>(Array(length).fill(''));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     onChange(values.join(''));
-    
+
     if (values.every(val => val !== '') && onComplete) {
       onComplete(values.join(''));
     }
@@ -47,7 +47,7 @@ const InputOTP = ({
         }
       });
       setValues(newValues);
-      
+
       // Focus the last filled input
       const nextIndex = Math.min(index + pasteValues.length, length - 1);
       inputRefs.current[nextIndex]?.focus();
@@ -55,7 +55,7 @@ const InputOTP = ({
       const newValues = [...values];
       newValues[index] = inputValue;
       setValues(newValues);
-      
+
       // Move to next input if current is filled
       if (inputValue && index < length - 1) {
         inputRefs.current[index + 1]?.focus();
@@ -98,13 +98,13 @@ const InputOTPGroup: React.FC<InputOTPGroupProps> = ({ children }) => {
   return <div className="flex items-center gap-2">{children}</div>;
 };
 
-const InputOTPSlot: React.FC<InputOTPSlotProps> = ({ 
-  index, 
-  isActive = false, 
-  hasFakeCaret = false 
+const InputOTPSlot: React.FC<InputOTPSlotProps> = ({
+  index,
+  isActive = false,
+  hasFakeCaret = false
 }) => {
   return (
-    <div 
+    <div
       className={`relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md ${
         isActive ? 'z-10 ring-1 ring-ring' : 'border-input'
       }`}

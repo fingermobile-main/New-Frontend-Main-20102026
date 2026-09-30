@@ -30,3 +30,22 @@ build_errors*.txt
 ts_errors*.log
 alerts*.txt
 toast*.txt
+.next/
+*.tsbuildinfo
+*.txt
+*.png
+* (1)*
+* (1)
+*.py
+*.sh
+check-ts-errors.js
+fix-*.js
+fix_*.js
+setup-git-environment.ps1
+test_*.js
+*.backup
+*.disabled*
+emergency*.js
+debug_browser.js
+scaffoldPages.js
+mapApiServices.js

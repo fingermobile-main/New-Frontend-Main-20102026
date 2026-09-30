@@ -25,9 +25,9 @@ export class ParentalControlServiceClass {
   private pinHash: string | null = null;
   private lockState = false;
   private verificationState: VerificationState = {
-  emailVerified: false, phoneVerified: false };
+    emailVerified: false, phoneVerified: false };
   private aiScanState: AIScanState = {
-  isEnabled: true, flaggedContentCount: 0, scanResults: [] };
+    isEnabled: true, flaggedContentCount: 0, scanResults: [] };
   private failedAttempts = 0;
   private readonly MAX_FAILED_ATTEMPTS = 5;
   private lockoutTimeout = 300000; // 5 minutes
@@ -164,10 +164,10 @@ verification: ${verified}`);
     // Simulate AI scan (in production, this would call an actual AI service)
     const result: AIScanResult = {id: `scan_${Date.now()}`,
       mediaId,
-timestamp: new Date(),
-confidence: 0.95,
-reason: 'Content matches IARC classification',
-action: 'approved'
+      timestamp: new Date(),
+      confidence: 0.95,
+      reason: 'Content matches IARC classification',
+      action: 'approved'
     };
 
     this.aiScanState.scanResults.push(result);
@@ -237,11 +237,11 @@ action: 'approved'
    */
   exportData(): Record<string, unknown> {
     return {pinSet: this.pinHash !== null,
-  verificationState: this.verificationState,
-  aiScanState: {
-  isEnabled: this.aiScanState.isEnabled,
-  flaggedContentCount: this.aiScanState.flaggedContentCount,
-  scanResults: this.aiScanState.scanResults
+      verificationState: this.verificationState,
+      aiScanState: {
+        isEnabled: this.aiScanState.isEnabled,
+        flaggedContentCount: this.aiScanState.flaggedContentCount,
+        scanResults: this.aiScanState.scanResults
       }
     };
   }
@@ -250,9 +250,9 @@ action: 'approved'
     this.pinHash = null;
     this.lockState = false;
     this.verificationState = {
-  emailVerified: false, phoneVerified: false };
+      emailVerified: false, phoneVerified: false };
     this.aiScanState = {
-  isEnabled: true, flaggedContentCount: 0, scanResults: [] };
+      isEnabled: true, flaggedContentCount: 0, scanResults: [] };
     this.failedAttempts = 0;
     this.lastFailedAttempt = null;
     console.info('[ParentalControlService] All data cleared');

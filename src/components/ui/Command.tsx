@@ -37,14 +37,14 @@ const Command = ({ children, label = 'Command Menu', className = '' }: CommandPr
   );
 };
 
-const CommandInput: React.FC<CommandInputProps> = ({ 
-  placeholder = 'Type a command or search...', 
-  value = '', 
-  onValueChange, 
-  className = '' 
+const CommandInput: React.FC<CommandInputProps> = ({
+  placeholder = 'Type a command or search...',
+  value = '',
+  onValueChange,
+  className = ''
 }) => {
   const [internalValue, setInternalValue] = useState(value);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInternalValue(newValue);
@@ -52,7 +52,7 @@ const CommandInput: React.FC<CommandInputProps> = ({
       onValueChange(newValue);
     }
   };
-  
+
   return (
     <div className="flex items-center border-b border-input px-3">
       <svg
@@ -85,7 +85,7 @@ const CommandInput: React.FC<CommandInputProps> = ({
 
 const CommandList: React.FC<CommandListProps> = ({ children, className = '' }) => {
   return (
-    <div 
+    <div
       id="command-list"
       className={`overflow-y-auto overflow-x-hidden py-2 ${className}`}
       role="listbox"
@@ -97,7 +97,7 @@ const CommandList: React.FC<CommandListProps> = ({ children, className = '' }) =
 
 const CommandItem: React.FC<CommandItemProps> = ({ children, onSelect, className = '' }) => {
   const [isSelected, setIsSelected] = useState(false);
-  
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -106,7 +106,7 @@ const CommandItem: React.FC<CommandItemProps> = ({ children, onSelect, className
       }
     }
   };
-  
+
   return (
     <div
       role="option"

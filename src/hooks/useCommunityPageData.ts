@@ -16,7 +16,7 @@ export interface CommunityPageTierLogistics {
 }
 
 export interface SecurityAccessMetadata {
-  userRole: "owner" | "moderator" | "premium_member" | "free_member" | "guest";
+  userRole: 'owner' | 'moderator' | 'premium_member' | 'free_member' | 'guest';
   canPost: boolean;
   canModerate: boolean;
   isBanGated: boolean;
@@ -30,7 +30,7 @@ export interface UseCommunityPageDataResult {
   loading: boolean;
   error: string | null;
   refreshData: () => void;
-  interactWithPost: (postId: string, action: "like" | "share") => Promise<boolean>;
+  interactWithPost: (postId: string, action: 'like' | 'share') => Promise<boolean>;
   processMemberTierUpsell: (targetTierId: string) => Promise<{ success: boolean; gatewayUrl?: string }>;
 }
 
@@ -48,7 +48,7 @@ export const useCommunityPageData = (
 
   // Dynamic Access Boundary Matrix Initialization
   const [accessControl, setAccessControl] = React.useState<SecurityAccessMetadata>({
-    userRole: "guest",
+    userRole: 'guest',
     canPost: false,
     canModerate: false,
     isBanGated: false
@@ -60,15 +60,15 @@ export const useCommunityPageData = (
    */
   const fetchCommunityPageData = React.useCallback(async () => {
     if (!pageId || !pageType) return;
-    
+
     setLoading(true);
     setError(null);
 
     try {
       const endpoints = [
-        ApiService.request<CommunityPage>(`/community/${pageType}/${pageId}`, { method: "GET" }),
-        ApiService.request<CommunityPost[]>(`/community/${pageType}/${pageId}/posts`, { method: "GET" }),
-        ApiService.request<CommunityMember[]>(`/community/${pageType}/${pageId}/members`, { method: "GET" })
+        ApiService.request<CommunityPage>(`/community/${pageType}/${pageId}`, { method: 'GET' }),
+        ApiService.request<CommunityPost[]>(`/community/${pageType}/${pageId}/posts`, { method: 'GET' }),
+        ApiService.request<CommunityMember[]>(`/community/${pageType}/${pageId}/members`, { method: 'GET' })
       ];
 
       const [pageResult, postsResult, membersResult] = await Promise.allSettled(endpoints);
@@ -76,18 +76,18 @@ export const useCommunityPageData = (
       // 1. Process Core Page Aggregations
       if (pageResult.status === 'fulfilled' && pageResult.value) {
         setPageData(pageResult.value as CommunityPage & { monetization?: CommunityPageTierLogistics });
-        
+
         // Dynamically compute access matrix control layout flags safely from network session details
         const meta = (pageResult.value as any).viewerMeta || {};
         setAccessControl({
-          userRole: meta.role || "guest",
+          userRole: meta.role || 'guest',
           canPost: meta.canPost || false,
           canModerate: meta.canModerate || false,
           isBanGated: meta.isBanned || false
         });
       } else {
-        console.error("Critical: Page layout extraction failure.", pageResult.status === 'rejected' ? pageResult.reason : 'Empty result');
-        setError("Failed to extract structural community page layout context.");
+        console.error('Critical: Page layout extraction failure.', pageResult.status === 'rejected' ? pageResult.reason : 'Empty result');
+        setError('Failed to extract structural community page layout context.');
       }
 
       // 2. Process Post Context Hydration
@@ -107,8 +107,8 @@ export const useCommunityPageData = (
       }
 
     } catch (globalErr) {
-      setError("An unexpected ecosystem pipeline failure occurred.");
-      console.error("Synchronized network lifecycle error:", globalErr);
+      setError('An unexpected ecosystem pipeline failure occurred.');
+      console.error('Synchronized network lifecycle error:', globalErr);
     } finally {
       setLoading(false);
     }
@@ -126,7 +126,7 @@ export const useCommunityPageData = (
   /**
    * Optimistic interaction handler for updating dynamic engagement analytics metrics
    */
-  const interactWithPost = React.useCallback(async (postId: string, action: "like" | "share"): Promise<boolean> => {
+  const interactWithPost = React.useCallback(async (postId: string, action: 'like' | 'share'): Promise<boolean> => {
     // Basic structural authorization guard pattern
     if (accessControl.isBanGated) return false;
 
@@ -134,7 +134,7 @@ export const useCommunityPageData = (
     setPosts((prevPosts) =>
       prevPosts.map((post) => {
         if (post.id !== postId) return post;
-        const adjustment = action === "like" ? 1 : 0; // Increment dynamically
+        const adjustment = action === 'like' ? 1 : 0; // Increment dynamically
         return {
           ...post,
           likes: (post as any).likes + adjustment
@@ -143,7 +143,7 @@ export const useCommunityPageData = (
     );
 
     try {
-      await ApiService.request(`/community/posts/${postId}/${action}`, { method: "POST" });
+      await ApiService.request(`/community/posts/${postId}/${action}`, { method: 'POST' });
       return true;
     } catch (err) {
       console.error(`Failed to register action: ${action} for object id context ${postId}:`, err);
@@ -159,7 +159,7 @@ export const useCommunityPageData = (
       const response = await ApiService.request<{ success: boolean; gatewayUrl?: string }>(
         `/community/${pageId}/subscribe`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({ tierId: targetTierId })
         }
       );
@@ -168,7 +168,7 @@ export const useCommunityPageData = (
       }
       return { success: false };
     } catch (err) {
-      console.error("Financial tier billing gateway setup error:", err);
+      console.error('Financial tier billing gateway setup error:', err);
       return { success: false };
     }
   }, [pageId]);

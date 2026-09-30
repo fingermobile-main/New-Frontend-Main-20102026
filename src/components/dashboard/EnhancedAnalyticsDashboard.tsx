@@ -107,7 +107,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
                 <span className="text-sm text-gray-600 w-24">{item.period}</span>
                 <div className="flex-1 mx-4">
                   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
                       style={{ width: `${Math.min(item.retention_rate, 100)}%` }}
                     ></div>
@@ -150,8 +150,8 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
                       <td key={retIdx} className="px-4 py-3 whitespace-nowrap text-sm">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
                           ret.retention_rate >= 70 ? 'bg-green-100 text-green-800' :
-                          ret.retention_rate >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
+                            ret.retention_rate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
                         }`}>
                           {ret.retention_rate.toFixed(1)}%
                         </span>

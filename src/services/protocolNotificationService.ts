@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 // protocolNotificationService.ts
 // Production-grade singleton state dispatch matrix with protected callback execution blocks.
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import protocolService from './protocolService';
 
 export type ProtocolStatus = 'connected' | 'disconnected' | 'error' | 'warning' | 'info';
@@ -15,7 +15,7 @@ export type NotificationCallback = (status: ProtocolStatus, message: string) => 
 class ProtocolNotificationService {
   private static instance: ProtocolNotificationService;
   private registeredCallbacks: Set<NotificationCallback> = new Set();
-  
+
   private constructor() {}
 
   public static getInstance(): ProtocolNotificationService {
@@ -75,7 +75,7 @@ export const protocolNotificationService = ProtocolNotificationService.getInstan
  */
 export const useProtocolNotifications = () => {
   const { showToast } = useAppContext();
-  
+
   // Use a stable ref for the toast handler to prevent redundant subscription teardowns
   const showToastRef = useRef(showToast);
   useEffect(() => {
@@ -85,7 +85,7 @@ export const useProtocolNotifications = () => {
   useEffect(() => {
     const handleProtocolNotification: NotificationCallback = (status, message) => {
       let toastType: 'success' | 'error' | 'info' | 'warning' = 'info';
-      
+
       if (status === 'connected') {
         toastType = 'success';
       } else if (status === 'disconnected' || status === 'error') {
@@ -120,7 +120,7 @@ export const setupProtocolNotifications = (): void => {
 
   const originalConnectToProtocol = serviceContext.connectToProtocol.bind(serviceContext);
   const originalDisconnectProtocol = serviceContext.disconnectProtocol.bind(serviceContext);
-  
+
   // Override connecting sequence to safely dispatch operational success hooks
   serviceContext.connectToProtocol = async function (...args: any[]) {
     try {
@@ -152,7 +152,7 @@ export const setupProtocolNotifications = (): void => {
       protocolNotificationService.notifyDisconnected(event.code, event.reason);
       if (originalOnClose) originalOnClose.call(this, event);
     };
-    
+
     const originalOnError = serviceContext.socket.onerror;
     serviceContext.socket.onerror = function (error: Event) {
       protocolNotificationService.notifyError(error);

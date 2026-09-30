@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { 
-  WifiIcon as FiWifi, 
-  SlashIcon as FiWifiOff, 
-  PaperAirplaneIcon as FiSend, 
-  ShieldCheckIcon as FiShield, 
-  ClockIcon as FiClock, 
-  ArrowPathIcon as FiRefreshCw, 
-  XMarkIcon as FiX, 
-  Cog6ToothIcon as FiSettings 
+import {
+  WifiIcon as FiWifi,
+  SlashIcon as FiWifiOff,
+  PaperAirplaneIcon as FiSend,
+  ShieldCheckIcon as FiShield,
+  ClockIcon as FiClock,
+  ArrowPathIcon as FiRefreshCw,
+  XMarkIcon as FiX,
+  Cog6ToothIcon as FiSettings
 } from '@heroicons/react/24/solid';
 import ProtocolBridge from '../services/protocolBridge';
 import { ProtocolMessage as RawProtocolMessage } from '../types/protocol';
@@ -44,7 +44,9 @@ interface ProtocolSecuritySettings {
 }
 
 interface ProtocolCommunicationProps {
+  // eslint-disable-next-line no-unused-vars
   onMessageReceived?: (message: ProtocolMessage) => void;
+  // eslint-disable-next-line no-unused-vars
   onConnectionChange?: (status: ProtocolConnectionStatus) => void;
   securitySettings?: Partial<ProtocolSecuritySettings>;
   autoConnect?: boolean;
@@ -66,13 +68,13 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
     latency: 0,
     lastPing: null
   });
-  
+
   const [messages, setMessages] = useState<ProtocolMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [encryptionEnabled, setEncryptionEnabled] = useState(securitySettings.encryptionEnabled || false);
   const [showSecuritySettings, setShowSecuritySettings] = useState(false);
   const [pingLatency, setPingLatency] = useState<number | null>(null);
-  
+
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const messageBufferRef = useRef<ProtocolMessage[]>([]);
@@ -91,7 +93,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   // Encrypt message content
   const encryptMessage = useCallback(async (content: string): Promise<string> => {
     if (!encryptionEnabled) return content;
-    
+
     try {
       // In a real implementation, we would encrypt the content
       // For demo purposes, we'll just return the content with an encrypted prefix
@@ -105,12 +107,12 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   const sendProtocolMessage = useCallback(async (message: Omit<ProtocolMessage, 'id' | 'timestamp' | 'status'>): Promise<boolean> => {
     try {
       let content = message.content;
-      
+
       // Encrypt if enabled
       if (message.encrypted || encryptionEnabled) {
         content = await encryptMessage(content);
       }
-      
+
       const protocolMessage: ProtocolMessage = {
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         senderId: message.senderId || 'me',
@@ -123,39 +125,39 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
         isDisappearing: message.isDisappearing,
         expirationTime: message.expirationTime
       };
-      
+
       // If not connected, buffer the message
       if (!connectionStatus.isConnected) {
         messageBufferRef.current.push(protocolMessage);
-        
+
         // Update status to show it's buffered
         const bufferedMessage: ProtocolMessage = {
           ...protocolMessage,
           status: 'sending'
         };
-        
+
         setMessages(prev => [...prev, bufferedMessage]);
         return true;
       }
-      
+
       // Send via protocol bridge
       const result = await ProtocolBridge.sendGenericMessage(
         protocolMessage.receiverId,
         protocolMessage.type,
         { content: protocolMessage.content }
       );
-      
+
       if (result) {
         // Update message status to sent
         const sentMessage: ProtocolMessage = {
           ...protocolMessage,
           status: 'sent'
         };
-        
-        setMessages(prev => [...prev.map(msg => 
+
+        setMessages(prev => [...prev.map(msg =>
           msg.id === protocolMessage.id ? sentMessage : msg
         )]);
-        
+
         return true;
       } else {
         // Add error status message
@@ -163,7 +165,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           ...protocolMessage,
           status: 'error'
         };
-        
+
         setMessages(prev => [...prev, errorMessage]);
         return false;
       }
@@ -179,7 +181,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
         type: message.type || 'text',
         status: 'error'
       };
-      
+
       setMessages(prev => [...prev, errorMessage]);
       return false;
     }
@@ -189,7 +191,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   const handleProtocolMessage = useCallback((rawMessage: RawProtocolMessage) => {
     // Convert raw protocol message to our internal format
     const content = typeof rawMessage.payload === 'string' ? rawMessage.payload : JSON.stringify(rawMessage.payload);
-    
+
     const newMessage: ProtocolMessage = {
       id: rawMessage.messageId,
       senderId: rawMessage.source,
@@ -201,17 +203,17 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
       status: 'delivered',
       isDisappearing: false
     };
-    
+
     setMessages(prev => [...prev, newMessage]);
     onMessageReceived?.(newMessage);
   }, [onMessageReceived]);
 
   // Initialize connection
   const connect = useCallback(async () => {
-    
+
     try {
       const result = await ProtocolBridge.connect(serverUrl);
-      
+
       if (result.success) {
         setConnectionStatus(prev => ({
           ...prev,
@@ -219,10 +221,10 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           connectionQuality: 'excellent',
           signalStrength: 100
         }));
-        
+
         // Add message listener to receive messages
         ProtocolBridge.addMessageListener(handleProtocolMessage);
-        
+
         // Send buffered messages
         if (messageBufferRef.current.length > 0) {
           for (const bufferedMsg of messageBufferRef.current) {
@@ -230,7 +232,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           }
           messageBufferRef.current = [];
         }
-        
+
         onConnectionChange?.({
           isConnected: true,
           connectionQuality: 'excellent',
@@ -238,7 +240,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           latency: 0,
           lastPing: new Date()
         });
-        
+
       } else {
         setConnectionStatus(prev => ({
           ...prev,
@@ -269,7 +271,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   // Send the current message
   const handleSendMessage = useCallback(async () => {
     if (!newMessage.trim()) return;
-    
+
     await sendProtocolMessage({
       receiverId: 'broadcast', // In a real app, this would be a specific recipient
       content: newMessage,
@@ -277,7 +279,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
       encrypted: false, // This property is required according to the type definition
       senderId: 'me' // This property is required according to the type definition
     });
-    
+
     setNewMessage('');
   }, [newMessage, sendProtocolMessage]);
 
@@ -285,18 +287,18 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   const sendPing = useCallback(() => {
     // We'll simulate latency measurement since the protocol service doesn't have a ping mechanism
     const startTime = Date.now();
-    
+
     // Simulate a round trip by scheduling a callback
     setTimeout(() => {
       const latency = Date.now() - startTime;
       setPingLatency(latency);
-      
+
       setConnectionStatus(prev => ({
         ...prev,
         latency,
         lastPing: new Date()
       }));
-      
+
       // Update connection quality based on latency and signal strength
       setConnectionStatus(prev => {
         const connectionQuality = calculateConnectionQuality(prev.signalStrength, latency);
@@ -314,22 +316,22 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   const disconnect = useCallback(() => {
     ProtocolBridge.removeMessageListener(handleProtocolMessage);
     ProtocolBridge.disconnect();
-    
+
     if (reconnectTimeoutRef.current) {
       clearTimeout(reconnectTimeoutRef.current);
     }
-    
+
     if (pingIntervalRef.current) {
       clearInterval(pingIntervalRef.current);
     }
-    
+
     setConnectionStatus(prev => ({
       ...prev,
       isConnected: false,
       connectionQuality: 'disconnected',
       signalStrength: 0
     }));
-    
+
     onConnectionChange?.({
       isConnected: false,
       connectionQuality: 'disconnected',
@@ -344,17 +346,16 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
     if (autoConnect) {
       connect();
     }
-    
+
     // Start periodic ping to measure latency
     pingIntervalRef.current = setInterval(() => { // TODO: Remember to clear this interval with clearInterval(current)
       if (connectionStatus.isConnected) {
         sendPing();
       }
     }, 10000); // Ping every 10 seconds
-    
+
     return () => {
       disconnect();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       const currentTimeout = reconnectTimeoutRef.current;
       if (currentTimeout) {
         clearTimeout(currentTimeout);
@@ -395,23 +396,23 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             </span>
           )}
         </div>
-        
+
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={() => setShowSecuritySettings(!showSecuritySettings)}
             className="p-1.5 rounded hover:bg-gray-200 text-gray-600"
             title="Security Settings"
           >
             <FiSettings className="w-4 h-4" />
           </button>
-          <button 
+          <button
             onClick={connectionStatus.isConnected ? disconnect : connect}
             className={`p-1.5 rounded ${
-              connectionStatus.isConnected 
-                ? 'hover:bg-red-100 text-red-500' 
+              connectionStatus.isConnected
+                ? 'hover:bg-red-100 text-red-500'
                 : 'hover:bg-green-100 text-green-500'
             }`}
-            title={connectionStatus.isConnected ? "Disconnect" : "Connect"}
+            title={connectionStatus.isConnected ? 'Disconnect' : 'Connect'}
           >
             {connectionStatus.isConnected ? <FiWifiOff className="w-4 h-4" /> : <FiWifi className="w-4 h-4" />}
           </button>
@@ -425,7 +426,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             <h3 className="font-medium text-blue-800 flex items-center">
               <FiShield className="mr-2" aria-hidden="true" /> Security Settings
             </h3>
-            <button 
+            <button
               onClick={() => setShowSecuritySettings(false)}
               className="text-blue-600 hover:text-blue-800"
               aria-label="Close security settings"
@@ -433,7 +434,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
               <FiX className="w-[18px] h-[18px]" aria-hidden="true" />
             </button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="flex items-center space-x-2">
@@ -443,7 +444,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
                   onChange={(e) => {
                     const enabled = e.target.checked;
                     setEncryptionEnabled(enabled);
-                    
+
                     if (enabled) {
                       initializeEncryption();
                     }
@@ -452,10 +453,10 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
                 />
                 <span className="text-sm">Enable End-to-End Encryption</span>
               </label>
-              
+
               <div className="mt-2">
                 <label htmlFor="encryption-algorithm" className="block text-xs text-gray-600 mb-1">Encryption Algorithm</label>
-                <select 
+                <select
                   id="encryption-algorithm"
                   value={securitySettings.encryptionAlgorithm || 'AES-GCM'}
                   onChange={() => { /* Algorithm selection disabled */ }}
@@ -468,7 +469,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
                 </select>
               </div>
             </div>
-            
+
             <div>
               <div className="text-sm mb-2">
                 <span className="text-gray-600">Public Key:</span>
@@ -537,7 +538,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
               rows={1}
             />
           </div>
-          
+
           <button
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}
@@ -550,7 +551,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             <FiSend className="w-[18px] h-[18px]" />
           </button>
         </div>
-        
+
         <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center">
             {encryptionEnabled && (
@@ -562,8 +563,8 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
               <FiClock className="mr-1" /> Disappearing: Off
             </span>
           </div>
-          
-          <button 
+
+          <button
             onClick={initializeEncryption}
             className="flex items-center text-blue-600 hover:text-blue-800"
           >

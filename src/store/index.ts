@@ -19,9 +19,9 @@ export type NotificationState = any;
 // Configure store
 const store = configureStore({reducer: { auth: authReducer, ui: uiReducer
   // Add placeholders for non-existent reducers or remove them if not needed
-    //, user: userReducer
+  //, user: userReducer
   //, notifications: notificationsReducer
-  },
+},
 middleware: (getDefaultMiddleware: any) => getDefaultMiddleware(),
 devTools: process.env.NODE_ENV !== 'production'
 });

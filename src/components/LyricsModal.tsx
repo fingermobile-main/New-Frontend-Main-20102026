@@ -9,12 +9,12 @@ interface LyricsModalProps {
   onSave?: (lyrics: string) => void;
 }
 
-const LyricsModal: React.FC<LyricsModalProps> = ({ 
-  isOpen, 
+const LyricsModal: React.FC<LyricsModalProps> = ({
+  isOpen,
   onClose,
   lyrics = '',
   songTitle = 'Untitled',
-  onSave 
+  onSave
 }) => {
   const [editedLyrics, setEditedLyrics] = React.useState(lyrics);
 

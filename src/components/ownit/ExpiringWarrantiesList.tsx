@@ -22,17 +22,17 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
     try {
       setLoading(true);
       const data = await ownitService.getExpiringWarranties(daysThreshold);
-      
+
       // Filter products expiring within threshold
       const now = new Date();
       const thresholdDate = new Date(now.getTime() + (daysThreshold * 24 * 60 * 60 * 1000));
-      
+
       const filtered = (data || []).filter(product => {
         if (!product.warranty_end_date) return false;
         const endDate = new Date(product.warranty_end_date);
         return endDate > now && endDate <= thresholdDate;
       });
-      
+
       setExpiringProducts(filtered);
       setError(null);
     } catch (err) {
@@ -115,7 +115,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
             <div>
               <h3 className="font-bold text-red-900 mb-1">Action Required</h3>
               <p className="text-sm text-red-700">
-                You have {expiringProducts.length} product{expiringProducts.length !== 1 ? 's' : ''} with warranties expiring soon. 
+                You have {expiringProducts.length} product{expiringProducts.length !== 1 ? 's' : ''} with warranties expiring soon.
                 Consider extending coverage or filing claims before expiration.
               </p>
             </div>
@@ -135,7 +135,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
           {expiringProducts.map((product) => {
             const daysLeft = getDaysLeft(product.warranty_end_date!);
             const urgency = getUrgencyLevel(daysLeft);
-            
+
             return (
               <div
                 key={product.id}
@@ -151,7 +151,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="text-right">
                     <div className="text-2xl font-bold">{daysLeft}</div>
                     <div className="text-xs uppercase tracking-wide">days left</div>

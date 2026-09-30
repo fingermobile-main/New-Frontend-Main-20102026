@@ -31,7 +31,7 @@ export interface MusicUploadData {file: File; title: string;
 
 class MusicService {
   private api = axios.create({baseURL: `${API_BASE_URL}/discover`, headers: { 'Content-Type': 'application/json'
-    }
+  }
   });
 
   async uploadTrack(uploadData: MusicUploadData): Promise<MusicTrack> {
@@ -44,15 +44,15 @@ class MusicService {
     if (uploadData.description) formData.append('description', uploadData.description);
 
     const response = await this.api.post('/upload', formData, {headers: { 'Content-Type': 'multipart/form-data'
-      }
+    }
     });
     return response.data;
   }
 
   async getTracks(genre?: string,
-limit: number = 20): Promise<MusicTrack[]> {
+    limit: number = 20): Promise<MusicTrack[]> {
     const response = await this.api.get('/tracks', {params: { genre,
-  limit } });
+      limit } });
     return response.data;
   }
 
@@ -72,7 +72,7 @@ limit: number = 20): Promise<MusicTrack[]> {
   }
 
   async createPlaylist(name: string, description?: string,
-isPublic: boolean = true): Promise<Playlist> {
+    isPublic: boolean = true): Promise<Playlist> {
     const response = await this.api.post('/playlists', { name, description, isPublic });
     return response.data;
   }

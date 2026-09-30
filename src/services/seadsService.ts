@@ -61,13 +61,13 @@ class SeadsService {
 
   async getCarbonCredits(availableOnly = false): Promise<CarbonCredit[]> {
     const response = await api.get(`${this.baseUrl}/carbon-credits`, {params: {
-  available: availableOnly }
+      available: availableOnly }
     });
     return response.data;
   }
 
   async purchaseCarbonCredit(creditId: string,
-quantity: number): Promise<void> {
+    quantity: number): Promise<void> {
     await api.post(`${this.baseUrl}/carbon-credits/${creditId}/purchase`, { quantity });
   }
 

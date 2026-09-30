@@ -33,11 +33,11 @@ const RestockForm: React.FC<RestockFormProps> = ({
   const loadData = async () => {
     try {
       setLoading(true);
-      
+
       // Load product details
       const productData = await storefrontService.getProduct(productId);
       setProduct(productData);
-      
+
       // Load inventory if inventoryId provided, otherwise get first inventory record
       if (inventoryId) {
         const inventories = await storefrontService.getInventory(productId);
@@ -57,7 +57,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
           setUnitCost(inventories[0].unit_cost || 0);
         }
       }
-      
+
       setError(null);
     } catch (err) {
       setError('Failed to load product information');
@@ -69,22 +69,22 @@ const RestockForm: React.FC<RestockFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (quantity <= 0) {
       setError('Quantity must be greater than 0');
       return;
     }
-    
+
     if (!inventory) {
       setError('No inventory record found');
       return;
     }
-    
+
     try {
       setSubmitting(true);
       setError(null);
       setSuccess(null);
-      
+
       // Update inventory with new values
       const updatedInventory = await storefrontService.updateInventory(inventory.id, {
         quantity: inventory.quantity + quantity,
@@ -93,17 +93,17 @@ const RestockForm: React.FC<RestockFormProps> = ({
         supplier_id: supplierId || undefined,
         lastRestocked: new Date().toISOString()
       });
-      
+
       // Create inventory log entry
       await storefrontService.restockInventory(inventory.id, quantity, notes);
-      
+
       setSuccess(`Successfully restocked ${quantity} units`);
       setQuantity(0);
       setNotes('');
-      
+
       // Refresh inventory data
       await loadData();
-      
+
       // Call success callback
       if (onSuccess) {
         onSuccess();
@@ -178,8 +178,8 @@ const RestockForm: React.FC<RestockFormProps> = ({
                 <p className="text-blue-700 mb-1">Status</p>
                 <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                   inventory.quantity > 10 ? 'bg-green-100 text-green-800' :
-                  inventory.quantity > 0 ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-red-100 text-red-800'
+                    inventory.quantity > 0 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
                 }`}>
                   {inventory.status ? inventory.status.toUpperCase() : 'UNKNOWN'}
                 </span>
@@ -220,7 +220,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
               placeholder="Enter quantity"
               required
             />
-            
+
             {/* Quick Select Buttons */}
             <div className="flex gap-2 flex-wrap">
               {commonQuantities.map((qty) => (
@@ -341,7 +341,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
               'Confirm Restock'
             )}
           </button>
-          
+
           {onCancel && (
             <button
               type="button"

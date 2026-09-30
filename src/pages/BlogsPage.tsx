@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+/*
+ * FingerMobile Protocol™ - Blogs Page Component
+ * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
+ * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
+ * which are the sole and exclusive intellectual property of Mbah Israel Obinna.
+ *
+ * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
+ */
 
-import { useAppContext } from "../contexts/AppContext";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import PostCard from '../components/PostCard';
 import type { AiAssistData, AiAssistResponse } from '../components/PostCard';
 import { useHaptic } from '../contexts/HapticFeedbackContext';
@@ -20,14 +28,438 @@ import {
   ChatBubbleLeftRightIcon,
   GiftIcon,
   LinkIcon
-} from '../icons';
+} from '../components/icons';
 
 const BlogsPage: React.FC = () => {
+  const { showToast, ficBalance } = useAppContext();
+  const { triggerHaptic } = useHaptic();
+  const { displayOption, setDisplayOption } = useCommunity();
+  const { blogPosts, loading, error } = useBlogPosts();
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [sortBy, setSortBy] = React.useState('recent');
+  const [categoryFilter, setCategoryFilter] = React.useState('all');
+  const [bookmarkedOnly, setBookmarkedOnly] = React.useState(false);
+
+  // Infinite scroll state
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<BlogPost[]>([]);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track user login state
+
+  // Check if user is logged in (implement your own logic)
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      // Check if user is logged in by checking localStorage, cookies, or auth tokens
+      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+      setIsLoggedIn(!!token || !!user);
+    };
+
+    checkLoginStatus();
+
+    // Listen for auth changes
+    const handleStorageChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // Simulate loading more blog posts for infinite scroll
+  const loadMoreItems = useCallback(async () => {
+    if (isLoggedIn || !hasMore || isLoadingMore) return;
+
+    setIsLoadingMore(true);
+
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // In a real implementation, this would fetch more blog posts from the API
+    // For now, we'll duplicate some existing blog posts to simulate more content
+    if (blogPosts && blogPosts.length > 0) {
+      const newItems = [...blogPosts].slice(0, 3).map((post, index) => ({
+        ...post,
+        id: `${post.id}-more-${page}-${index}`,
+        title: `${post.title} (Part ${page}.${index + 1})`
+      }));
+
+      setItems(prev => [...prev, ...newItems]);
+      setPage(prev => prev + 1);
+
+      // Stop loading more if we've reached a certain threshold or user has logged in
+      if (page >= 5) { // Example limit
+        setHasMore(false);
+      }
+    } else {
+      setHasMore(false);
+    }
+
+    setIsLoadingMore(false);
+  }, [blogPosts, hasMore, isLoadingMore, isLoggedIn, page]);
+
+  // Handle infinite scroll
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Stop infinite scroll when user logs in
+      setHasMore(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoadingMore || !hasMore) {
+        return;
+      }
+      loadMoreItems();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loadMoreItems, isLoadingMore, hasMore, isLoggedIn]);
+
+  // Initialize items with existing blog posts when not logged in
+  useEffect(() => {
+    if (!isLoggedIn && blogPosts && blogPosts.length > 0) {
+      setItems(blogPosts);
+    }
+  }, [blogPosts, isLoggedIn]);
+
+  // Ensure we're using the correct type for setDisplayOption
+  const handleSetDisplayOption = (option: string) => {
+    if (option === 'card' || option === 'row') {
+      setDisplayOption(option);
+    }
+  };
+
+  if (loading && items.length === 0) {
+    return (
+      <MainLayout>
+        <div className="p-4 text-center">Loading blog posts...</div>
+      </MainLayout>
+    );
+  }
+
+  if (error && items.length === 0) {
+    return (
+      <MainLayout>
+        <div className="p-4 text-center text-red-500">Error: {error}</div>
+      </MainLayout>
+    );
+  }
+
+  if ((!blogPosts || blogPosts.length === 0) && items.length === 0) {
+    return (
+      <MainLayout>
+        <div className="p-4 text-center">No blog posts found.</div>
+      </MainLayout>
+    );
+  }
+
+  // Filter and sort posts (use infinite scroll items when not logged in, otherwise use API data)
+  const allPosts = (!isLoggedIn && items.length > 0) ? items : (blogPosts || []);
+  const filteredPosts = allPosts
+    .filter((post: BlogPost) => {
+      const matchesSearch =
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory =
+        categoryFilter === 'all' || post.category === categoryFilter;
+      const isBookmarked = bookmarkedOnly ? post.isBookmarked : true;
+      return matchesSearch && matchesCategory && isBookmarked;
+    })
+    .sort((a: BlogPost, b: BlogPost) => {
+      if (sortBy === 'recent')
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      if (sortBy === 'popular') return b.views - a.views;
+      if (sortBy === 'liked') return b.likes - a.likes;
+      return 0;
+    });
+
+  const categories = [
+    'all',
+    ...Array.from(new Set(allPosts.map((post: BlogPost) => post.category)))
+  ];
+
+  const handleHaptic = () => {
+    triggerHaptic('selection');
+  };
+
+  const toggleDisplayOption = () => {
+    setDisplayOption(displayOption === 'card' ? 'row' : 'card');
+    handleHaptic();
+  };
+
+  // Placeholder functions
+  const onLike = () => {
+    showToast('Like action triggered', 'info');
+  };
+
+  const onAddComment = () => {
+    showToast('Add comment action triggered', 'info');
+  };
+
+  const onOpenGiftModal = () => {
+    showToast('Gift modal opened', 'info');
+  };
+
+  const onOpenPaylinkModal = () => {
+    showToast('Paylink modal opened', 'info');
+  };
+
+  const onVote = () => {
+    showToast('Vote action triggered', 'info');
+  };
+
+  const handleDeletePost = () => {
+    showToast('Delete post action triggered', 'info');
+  };
+
+  const handleTokenizePost = () => {
+    showToast('Tokenize post action triggered', 'info');
+  };
+
+  const handleAiAssist = async (
+    action: string,
+    data: unknown,
+  ): Promise<unknown> => {
+    showToast(`AI Assist action: ${action}`, 'info');
+    return { success: true, response: 'AI assistance provided' };
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4">
-      <h1 className="text-2xl font-bold">Blogs</h1>
-      <p>This is the blogs page.</p>
-    </div>
+    <MainLayout>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="mb-10">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-3 rounded-xl">
+              <SearchIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-3xl font-bold text-gray-900">
+                Community Blog
+              </h1>
+              <p className="text-gray-600">
+                Discover stories, tutorials, and updates from our community
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+
+            {/* Search and filters */}
+            <div className="bg-white rounded-2xl p-4 mb-6 shadow-md border border-gray-100">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search blog posts..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-gray-100 text-gray-900 pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <select
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                    className="bg-gray-100 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  >
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-gray-100 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  >
+                    <option value="recent">Most Recent</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="liked">Most Liked</option>
+                  </select>
+                  <button
+                    onClick={() => setBookmarkedOnly(!bookmarkedOnly)}
+                    className={`p-2 rounded-lg ${bookmarkedOnly ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                    title="Show bookmarks only"
+                  >
+                    <BookmarkIcon className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={toggleDisplayOption}
+                    className="p-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                    title="Toggle view"
+                  >
+                    {displayOption === 'card' ? (
+                      <ViewListIcon className="w-5 h-5" />
+                    ) : (
+                      <ViewGridIcon className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+                <h3 className="text-gray-600 text-sm">Total Posts</h3>
+                <p className="text-2xl font-bold text-gray-900">{allPosts.length}</p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+                <h3 className="text-gray-600 text-sm">Authors</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  {
+                    Array.from(new Set(allPosts.map((post: BlogPost) => post.author.id)))
+                      .length
+                  }
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+                <h3 className="text-gray-600 text-sm">Views</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  {allPosts
+                    .reduce((sum: number, post: BlogPost) => sum + post.views, 0)
+                    .toLocaleString()}
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+                <h3 className="text-gray-600 text-sm">Categories</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  {categories.length - 1}
+                </p>
+              </div>
+            </div>
+
+            {/* Blog posts */}
+            {filteredPosts.length > 0 ? (
+              <div
+                className={
+                  displayOption === 'card'
+                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                    : 'space-y-6'
+                }
+              >
+                {filteredPosts.map((post: BlogPost) => (
+                  <PostCard
+                    key={post.id}
+                    post={post as any}
+                    displayStyle={displayOption}
+                    onLike={onLike}
+                    onAddComment={onAddComment}
+                    onOpenGiftModal={onOpenGiftModal}
+                    onOpenPaylinkModal={onOpenPaylinkModal}
+                    onVote={onVote}
+                    handleDeletePost={handleDeletePost}
+                    handleTokenizePost={handleTokenizePost}
+                    // @ts-ignore - Auto-suppressed for compilation
+                    handleAiAssist={handleAiAssist}
+                  />
+                ))}
+
+                {/* Load More Button */}
+                {!isLoggedIn && hasMore && (
+                  <div className="text-center pt-4">
+                    <button
+                      onClick={loadMoreItems}
+                      disabled={isLoadingMore}
+                      className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {isLoadingMore ? 'Loading...' : 'Load More Posts'}
+                    </button>
+                  </div>
+                )}
+
+                {/* Show message when user has logged in */}
+                {isLoggedIn && (
+                  <div className="text-center py-4">
+                    <p className="text-gray-400">Welcome back! You're now viewing personalized content.</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-12 text-center shadow-md border border-gray-100">
+                <p className="text-gray-600 text-lg">
+              No blog posts found matching your criteria.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setCategoryFilter('all');
+                    setBookmarkedOnly(false);
+                  }}
+                  className="mt-4 text-purple-600 hover:text-purple-700 font-medium"
+                >
+              Clear all filters
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <UserCircleIcon className="h-5 w-5 text-purple-600 mr-2" />
+            Your FIC Balance
+              </h2>
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+                <button className="text-sm bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-purple-700 hover:to-indigo-700">
+              Add Funds
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Blog Actions</h2>
+              <div className="space-y-3">
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-purple-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <HeartIcon className="h-5 w-5 text-purple-600 mr-3" />
+              Like Post
+                </button>
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-purple-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <ChatBubbleLeftRightIcon className="h-5 w-5 text-purple-600 mr-3" />
+              Comment
+                </button>
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-purple-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <GiftIcon className="h-5 w-5 text-purple-600 mr-3" />
+              Send Gift
+                </button>
+                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-purple-50 hover:to-indigo-50 transition-colors flex items-center">
+                  <LinkIcon className="h-5 w-5 text-purple-600 mr-3" />
+              Create Paylink
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+              <h3 className="font-bold text-gray-900 mb-2">Blogging Tips</h3>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Write engaging titles</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Include relevant images</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  <span>Interact with readers</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
   );
 };
 

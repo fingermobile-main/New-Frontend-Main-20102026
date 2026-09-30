@@ -1,15 +1,15 @@
 import React, {} from 'react';
-import { Calendar, Clock, Bell } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Calendar, Clock, Bell } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface ScheduledEvent {
   id: string;
   title: string;
   date: string;
   time: string;
-  type: "stream" | "meeting" | "reminder" | "other";
+  type: 'stream' | 'meeting' | 'reminder' | 'other';
   participants?: number;
 }
 
@@ -26,27 +26,27 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({
 }) => {
   const defaultEvents: ScheduledEvent[] = [
     {
-      id: "1",
-      title: "Live Stream - Gaming Session",
-      date: "2026-06-08",
-      time: "18:00",
-      type: "stream",
+      id: '1',
+      title: 'Live Stream - Gaming Session',
+      date: '2026-06-08',
+      time: '18:00',
+      type: 'stream',
       participants: 234
     },
     {
-      id: "2",
-      title: "Team Meeting - Product Review",
-      date: "2026-06-09",
-      time: "10:00",
-      type: "meeting",
+      id: '2',
+      title: 'Team Meeting - Product Review',
+      date: '2026-06-09',
+      time: '10:00',
+      type: 'meeting',
       participants: 8
     },
     {
-      id: "3",
-      title: "Content Upload Reminder",
-      date: "2026-06-10",
-      time: "14:00",
-      type: "reminder"
+      id: '3',
+      title: 'Content Upload Reminder',
+      date: '2026-06-10',
+      time: '14:00',
+      type: 'reminder'
     }
   ];
 
@@ -54,14 +54,14 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "stream":
-        return "bg-purple-500";
-      case "meeting":
-        return "bg-blue-500";
-      case "reminder":
-        return "bg-yellow-500";
-      default:
-        return "bg-gray-500";
+    case 'stream':
+      return 'bg-purple-500';
+    case 'meeting':
+      return 'bg-blue-500';
+    case 'reminder':
+      return 'bg-yellow-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 
@@ -72,11 +72,11 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return "Today";
+      return 'Today';
     } else if (date.toDateString() === tomorrow.toDateString()) {
-      return "Tomorrow";
+      return 'Tomorrow';
     } else {
-      return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
   };
 

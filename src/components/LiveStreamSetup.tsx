@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { Video, Users, Settings, Mic, Camera, Monitor } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import { Input } from "@/components/ui/Input";
+import { Video, Users, Settings, Mic, Camera, Monitor } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Label } from '@/components/ui/Label';
+import { Input } from '@/components/ui/Input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface LiveStreamSetupProps {
   onStartStream?: (config: any) => void;
 }
 
 const LiveStreamSetup: React.FC<LiveStreamSetupProps> = ({ onStartStream }) => {
-  const [streamTitle, setStreamTitle] = React.useState("");
-  const [category, setCategory] = React.useState("gaming");
-  const [privacy, setPrivacy] = React.useState("public");
+  const [streamTitle, setStreamTitle] = React.useState('');
+  const [category, setCategory] = React.useState('gaming');
+  const [privacy, setPrivacy] = React.useState('public');
   const [enableChat, setEnableChat] = React.useState(true);
   const [enableRecording, setEnableRecording] = React.useState(false);
 

@@ -6,10 +6,10 @@ interface DashboardLayoutProps {
   header?: React.ReactNode;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 
-  children, 
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  children,
   sidebar,
-  header 
+  header
 }) => {
   return (
     <div className="min-h-screen bg-gray-50">

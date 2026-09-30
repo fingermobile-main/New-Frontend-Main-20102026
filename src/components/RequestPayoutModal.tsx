@@ -8,8 +8,8 @@ interface RequestPayoutModalProps {
   availableBalance?: number;
 }
 
-const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({ 
-  isOpen, 
+const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
+  isOpen,
   onClose,
   onSubmit,
   availableBalance = 0

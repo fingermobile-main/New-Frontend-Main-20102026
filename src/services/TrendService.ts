@@ -11,7 +11,7 @@ export interface Trend {id: string; hashtag: string;
   period: string;
 }
 
-export interface TrendingContent {id: string; type: "post" | "video" | "music" | "product";
+export interface TrendingContent {id: string; type: 'post' | 'video' | 'music' | 'product';
   title: string;
   authorId: string;
   authorName: string;
@@ -24,20 +24,20 @@ export interface TrendingContent {id: string; type: "post" | "video" | "music" |
 
 class TrendService {
   private api = axios.create({baseURL: API_BASE_URL, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async getTrendingHashtags(category?: string, limit: number = 20): Promise<Trend[]> {
     const response = await this.api.get('/hashtags', {params: { category,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async getTrendingContent(type?: string, period: string = '24h', limit: number = 20): Promise<TrendingContent[]> {
     const response = await this.api.get('/content', {params: { type,
-  period,
-  limit } });
+      period,
+      limit } });
     return response.data;
   }
 

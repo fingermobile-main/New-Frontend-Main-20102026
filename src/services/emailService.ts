@@ -11,7 +11,7 @@ export const emailService = {
       console.info('Email service, stub:', { to, subject });
       return { success: true };
     } catch (error) {
-      logger.error('anonymous, error:', error);
+      logger.error('Anonymous email error:', error);
       throw error;
     }
   }

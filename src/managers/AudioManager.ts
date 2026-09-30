@@ -1,12 +1,12 @@
 // Audio Manager - Stub
 export class AudioManager {
   static play(
-sound: string) {
+    sound: string) {
     console.info('Playing sound:', sound);
   }
-  
+
   static stop(
-sound: string) {
+    sound: string) {
     console.info('Stopping sound:', sound);
   }
 }

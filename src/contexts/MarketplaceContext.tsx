@@ -21,7 +21,7 @@ interface MarketplaceContextType {
   removeFromCart: (productId: string) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
   placeOrder: () => void;
-  addReview: (productId: string, review: Omit<Review, "id" | "productId">) => void;
+  addReview: (productId: string, review: Omit<Review, 'id' | 'productId'>) => void;
   addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
   fetchProducts: () => void;
@@ -35,34 +35,34 @@ export const MarketplaceContext = createContext<MarketplaceContextType | undefin
 // Mock videos data structure (static reference outside the component to prevent re-creations)
 const MOCK_VIDEOS = [
   {
-    id: "vid1",
-    title: "Sample Video",
-    description: "A sample video product",
-    genre: "Electronics",
-    contentTags: ["sample", "video"],
+    id: 'vid1',
+    title: 'Sample Video',
+    description: 'A sample video product',
+    genre: 'Electronics',
+    contentTags: ['sample', 'video'],
     createdAt: new Date().toISOString(),
-    authorId: "auth1",
-    monetizationModel: "subscription",
-    IARCClassification: "3+",
+    authorId: 'auth1',
+    monetizationModel: 'subscription',
+    IARCClassification: '3+',
     uploadFee: 0,
-    length: "10:00",
-    duration: "10:00",
-    resolution: "1080p",
+    length: '10:00',
+    duration: '10:00',
+    resolution: '1080p',
     engagementScore: 85,
-    bitrate: "5000 kbps",
-    codec: "H.264",
-    sampleRate: "44.1 kHz",
-    channels: "Stereo",
+    bitrate: '5000 kbps',
+    codec: 'H.264',
+    sampleRate: '44.1 kHz',
+    channels: 'Stereo',
     downloadCount: 0,
     views: 100,
     shareCount: 5,
     saveCount: 3,
     likeCount: 10,
-    likes: ["user1", "user2"],
+    likes: ['user1', 'user2'],
     dislikes: [],
     mashupCount: 0,
-    url: "/videos/sample.mp4",
-    uploader: "SampleUploader"
+    url: '/videos/sample.mp4',
+    uploader: 'SampleUploader'
   }
 ];
 
@@ -83,41 +83,40 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     try {
       setLoading(true);
       setError(null);
-      
-      await new Promise(resolve => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => resolve(undefined), 500);
-      });
-      
-      const videos = MOCK_VIDEOS;
 
-      // Transform videos to product format
-      const transformedProducts = videos.map(video => ({
-        id: video.id,
-        name: video.title,
-        description: video.description,
-        price: (video as any).price || 0,  // Using type assertion since price may not exist on video
-        currency: 'NGN',
-        category: video.genre,
+      const { default: apiService } = await import('../services/apiService');
+      const data = await apiService.get('/api/storefronts').catch(() => {
+        console.warn('Using mock products data in MarketplaceContext');
+        return MOCK_VIDEOS;
+      });
+
+      // Transform response data to product format
+      const transformedProducts: Product[] = (Array.isArray(data) ? data : data?.storefronts || []).map((item: any) => ({
+        id: item.id || `prod_${Date.now()}_${Math.random()}`,
+        name: item.name || item.title || 'Product',
+        description: item.description || '',
+        price: item.price || 0,
+        currency: item.currency || 'NGN',
+        category: item.category || item.genre || 'General',
         platform: 'Video',
-        imageUrl: (video as any).thumbnail || '/images/default-video-thumbnail.jpg', // Added missing property
-        images: (video as any).thumbnail ? [(video as any).thumbnail] : [], // Handle optional thumbnail
-        rating: (video as any).rating || 0, // Rating might not exist on video
-        sellerId: (video as any).creatorId || video.authorId, // Use creatorId if available, otherwise authorId
-        sellerName: 'Video Creator', // Placeholder - would come from actual user data
-        stock: (video as any).stock || 100, // Assuming high stock for digital products
-        salesCount: (video as any).salesCount || (video as any).saveCount || 0, // Use salesCount or saveCount
-        createdAt: video.createdAt,
-        updatedAt: video.createdAt,
-        ageRestricted: (video as any).ageRestriction || false, // Handle optional property
-        contentRating: (video as any).contentRating || 'General' // Handle optional property
+        imageUrl: item.image_url || item.thumbnail || '/images/default-video-thumbnail.jpg',
+        images: item.image_url ? [item.image_url] : [],
+        rating: item.rating || 0,
+        sellerId: item.seller_id || item.creatorId || item.authorId || 'unknown',
+        sellerName: item.seller_name || 'Creator',
+        stock: item.stock || 100,
+        salesCount: item.sales_count || item.saveCount || 0,
+        createdAt: item.created_at || new Date().toISOString(),
+        updatedAt: item.updated_at || new Date().toISOString(),
+        ageRestricted: item.age_restricted || false,
+        contentRating: item.content_rating || 'General'
       }));
 
       setProducts(transformedProducts);
     } catch (err) {
-      const errMsg = err instanceof Error ? err.message : "Unknown error";
+      const errMsg = err instanceof Error ? err.message : 'Unknown error';
       setError(errMsg);
-      showToast("Failed to load products", "error");
+      showToast('Failed to load products', 'error');
     } finally {
       setLoading(false);
     }
@@ -127,12 +126,12 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   useEffect(() => {
     void loadProductsData();
 
-    const savedCart = localStorage.getItem("marketplaceCart");
+    const savedCart = localStorage.getItem('marketplaceCart');
     if (savedCart) setCart(JSON.parse(savedCart));
 
-    const savedWishlist = localStorage.getItem("marketplaceWishlist");
+    const savedWishlist = localStorage.getItem('marketplaceWishlist');
     if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
-  
+
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
@@ -140,12 +139,12 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   // Sync Cart Updates
   useEffect(() => {
-    localStorage.setItem("marketplaceCart", JSON.stringify(cart));
+    localStorage.setItem('marketplaceCart', JSON.stringify(cart));
   }, [cart]);
 
   // Sync Wishlist Updates
   useEffect(() => {
-    localStorage.setItem("marketplaceWishlist", JSON.stringify(wishlist));
+    localStorage.setItem('marketplaceWishlist', JSON.stringify(wishlist));
   }, [wishlist]);
 
   const cartTotal = useMemo(() => {
@@ -187,12 +186,12 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       };
       setCart([...cart, newCartItem]);
     }
-    showToast(`${product.name} added to cart`, "success");
+    showToast(`${product.name} added to cart`, 'success');
   };
 
   const removeFromCart = (productId: string) => {
     setCart(cart.filter((item) => item.product?.id !== productId));
-    showToast("Item removed from cart", "info");
+    showToast('Item removed from cart', 'info');
   };
 
   const updateCartQuantity = (productId: string, quantity: number) => {
@@ -209,7 +208,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const placeOrder = () => {
     if (cart.length === 0) {
-      showToast("Cart is empty", "warning");
+      showToast('Cart is empty', 'warning');
       return;
     }
 
@@ -218,9 +217,9 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       memberId: 'current-user-id', // Placeholder - should come from auth context
       items: [...cart],
       totalAmount: cartTotal,
-      currency: cart[0]?.product?.currency || "USD",
-      status: "pending",
-      paymentStatus: "pending",
+      currency: cart[0]?.product?.currency || 'USD',
+      status: 'pending',
+      paymentStatus: 'pending',
       placedAt: new Date().toISOString(),
       orderNumber: `ORD-${Date.now()}`,
       customerId: 'current-user-id', // Placeholder - should come from auth context
@@ -228,12 +227,12 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     setOrders([...orders, newOrder]);
     setCart([]); // Clear cart after order
-    showToast("Order placed successfully", "success");
+    showToast('Order placed successfully', 'success');
   };
 
   const addReview = (
     productId: string,
-    review: Omit<Review, "id" | "productId">
+    review: Omit<Review, 'id' | 'productId'>
   ) => {
     const newReview: Review = {
       id: `review_${Date.now()}`,
@@ -243,7 +242,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     };
 
     setReviews([...reviews, newReview]);
-    showToast("Review added successfully", "success");
+    showToast('Review added successfully', 'success');
   };
 
   const addToWishlist = (product: Product) => {
@@ -255,13 +254,13 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
         addedAt: new Date().toISOString()
       };
       setWishlist([...wishlist, wishlistItem]);
-      showToast(`${product.name} added to wishlist`, "success");
+      showToast(`${product.name} added to wishlist`, 'success');
     }
   };
 
   const removeFromWishlist = (productId: string) => {
     setWishlist(wishlist.filter(item => item.productId !== productId));
-    showToast("Item removed from wishlist", "info");
+    showToast('Item removed from wishlist', 'info');
   };
 
   return (
@@ -294,7 +293,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 export const useMarketplace = () => {
   const context = useContext(MarketplaceContext);
   if (context === undefined) {
-    throw new Error("useMarketplace must be used within a MarketplaceProvider");
+    throw new Error('useMarketplace must be used within a MarketplaceProvider');
   }
   return context;
 };

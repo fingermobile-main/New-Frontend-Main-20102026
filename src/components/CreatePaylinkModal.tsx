@@ -10,12 +10,12 @@ interface CreatePaylinkModalProps {
   paylinkAmount: string;
   setPaylinkAmount: (amount: string) => void;
   paylinkDescription?: string;
-  setPaylinkDescription: React.Dispatch<React.SetStateAction<string>>;
+  setPaylinkDescription: (description: string) => void;
   ficBalance: number;
   isProcessing: boolean;
 }
 
-const CreatePaylinkModal: React.FC<CreatePaylinkModalProps> = ({ 
+const CreatePaylinkModal: React.FC<CreatePaylinkModalProps> = ({
   isOpen,
   onClose,
   onCreatePaylink,

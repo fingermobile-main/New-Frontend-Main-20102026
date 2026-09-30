@@ -84,7 +84,7 @@ export interface OrderItem {
   productName: string;
   quantity: number;
   price: number;
-  unitCostSnapshot: number; 
+  unitCostSnapshot: number;
 }
 
 export interface OrderFinancialSplit {
@@ -211,20 +211,15 @@ export interface DashboardStats {
   low_stock_count: number;
 }
 
+import apiService from './apiService';
+
 // ==========================================
 // 🚀 STOREFRONT & MONETIZATION ENGINE SERVICE
 // ==========================================
 
 class StorefrontService {
-  private api: AxiosInstance;
-
   constructor() {
-    this.api = axios.create({
-      baseURL: `${API_BASE_URL}/storefront`,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    // Relying on central apiService
   }
 
   // --- MONETIZATION LOGIC AND FINANCIAL MATRIX FORMULAS ---
@@ -238,11 +233,11 @@ class StorefrontService {
       return storefront.platform_fee_override_bps;
     }
     switch (storefront.subscription_tier) {
-      case 'enterprise': return 75;  // 0.75%
-      case 'pro':        return 200; // 2.0%
-      case 'growth':     return 350; // 3.5%
-      case 'free':       
-      default:           return 500; // 5.0%
+    case 'enterprise': return 75;  // 0.75%
+    case 'pro':        return 200; // 2.0%
+    case 'growth':     return 350; // 3.5%
+    case 'free':
+    default:           return 500; // 5.0%
     }
   }
 
@@ -257,7 +252,7 @@ class StorefrontService {
     storefront: Storefront
   ): OrderFinancialSplit {
     const platformBps = this.calculatePlatformCommissionBasisPoints(storefront);
-    
+
     // Platform cut logic captures base percentage out of the pure product subtotal pool
     const productSubtotal = Math.max(0, grossPayloadAmount - taxAmount - shippingFee);
     const platformCommissionFee = Math.round((productSubtotal * platformBps) / 10000);
@@ -281,70 +276,70 @@ class StorefrontService {
   // --- ADMINISTRATIVE VENDOR REPOSITORIES STOREFRONTS ---
 
   async getStorefronts(params?: { limit?: number; offset?: number; is_verified?: boolean }): Promise<GetStorefrontsResponse> {
-    const response = await this.api.get<GetStorefrontsResponse>('/', { params });
-    return response.data;
+    const response = await apiService.get('/api/storefront/', { params });
+    return response;
   }
 
   async getStorefront(slug: string): Promise<Storefront> {
-    const response = await this.api.get<Storefront>(`/${slug}`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/${slug}`);
+    return response;
   }
 
   async createStorefront(storefrontData: Partial<Storefront>): Promise<Storefront> {
-    const response = await this.api.post<Storefront>('/', storefrontData);
-    return response.data;
+    const response = await apiService.post('/api/storefront/', storefrontData);
+    return response;
   }
 
   async updateStorefront(storefrontId: string, storefrontData: Partial<Storefront>): Promise<Storefront> {
-    const response = await this.api.put<Storefront>(`/${storefrontId}`, storefrontData);
-    return response.data;
+    const response = await apiService.put(`/api/storefront/${storefrontId}`, storefrontData);
+    return response;
   }
 
   async deleteStorefront(storefrontId: string): Promise<void> {
-    await this.api.delete(`/${storefrontId}`);
+    await apiService.delete(`/api/storefront/${storefrontId}`);
   }
 
   // --- PRODUCT MANAGEMENT OPERATIONS ---
 
   async getProducts(storefrontId: string, status?: string): Promise<StorefrontProduct[]> {
-    const response = await this.api.get<StorefrontProduct[]>(`/products/${storefrontId}`, { params: { status } });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/products/${storefrontId}`, { params: { status } });
+    return response;
   }
 
   async getProduct(productId: string): Promise<StorefrontProduct> {
-    const response = await this.api.get<StorefrontProduct>(`/products/detail/${productId}`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/products/detail/${productId}`);
+    return response;
   }
 
   async createProduct(storefrontId: string, productData: Partial<StorefrontProduct>): Promise<StorefrontProduct> {
-    const response = await this.api.post<StorefrontProduct>(`/products/${storefrontId}`, productData);
-    return response.data;
+    const response = await apiService.post(`/api/storefront/products/${storefrontId}`, productData);
+    return response;
   }
 
   async updateProduct(productId: string, updates: Partial<StorefrontProduct>): Promise<StorefrontProduct> {
-    const response = await this.api.put<StorefrontProduct>(`/products/${productId}`, updates);
-    return response.data;
+    const response = await apiService.put(`/api/storefront/products/${productId}`, updates);
+    return response;
   }
 
   async deleteProduct(productId: string): Promise<void> {
-    await this.api.delete(`/products/${productId}`);
+    await apiService.delete(`/api/storefront/products/${productId}`);
   }
 
   // --- TRANSACTIONAL & ADMINISTRATIVE ORDERS MANAGEMENT ---
 
   async getOrders(storefrontId: string, status?: string): Promise<StorefrontOrder[]> {
-    const response = await this.api.get<StorefrontOrder[]>(`/orders/${storefrontId}`, { params: { status } });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/orders/${storefrontId}`, { params: { status } });
+    return response;
   }
 
   async getOrderById(orderId: string): Promise<StorefrontOrder> {
-    const response = await this.api.get<StorefrontOrder>(`/orders/detail/${orderId}`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/orders/detail/${orderId}`);
+    return response;
   }
 
   async updateOrderStatus(orderId: string, status: StorefrontOrder['status']): Promise<StorefrontOrder> {
-    const response = await this.api.put<StorefrontOrder>(`/orders/${orderId}/status`, { status });
-    return response.data;
+    const response = await apiService.put(`/api/storefront/orders/${orderId}/status`, { status });
+    return response;
   }
 
   /**
@@ -352,62 +347,62 @@ class StorefrontService {
    * Processes order returns or structural cancellation loops, returning escrow funds back to consumer pools
    */
   async processOrderClawback(orderId: string, reason: string): Promise<StorefrontOrder> {
-    const response = await this.api.post<StorefrontOrder>(`/orders/${orderId}/clawback`, { reason });
-    return response.data;
+    const response = await apiService.post(`/api/storefront/orders/${orderId}/clawback`, { reason });
+    return response;
   }
 
   // --- COMPLEX INVENTORY RECONCILIATION CHANNELS ---
 
   async getInventory(storefrontId: string): Promise<InventoryItem[]> {
-    const response = await this.api.get<InventoryItem[]>(`/inventory/${storefrontId}`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/inventory/${storefrontId}`);
+    return response;
   }
 
   async restockProduct(productId: string, quantity: number): Promise<InventoryItem> {
-    const response = await this.api.post<InventoryItem>(`/inventory/${productId}/restock`, { quantity });
-    return response.data;
+    const response = await apiService.post(`/api/storefront/inventory/${productId}/restock`, { quantity });
+    return response;
   }
 
   async getLowStockAlerts(storefrontId: string, threshold = 10): Promise<InventoryItem[]> {
-    const response = await this.api.get<InventoryItem[]>(`/inventory/${storefrontId}/low-stock`, { params: { threshold } });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/inventory/${storefrontId}/low-stock`, { params: { threshold } });
+    return response;
   }
 
   async getInventoryLogs(inventoryId: string, params?: { limit?: number; offset?: number }): Promise<GetLogsResponse> {
-    const response = await this.api.get<GetLogsResponse>(`/inventory/${inventoryId}/logs`, { params });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/inventory/${inventoryId}/logs`, { params });
+    return response;
   }
 
   async updateInventory(inventoryId: string, updates: Partial<InventoryItem>): Promise<InventoryItem> {
-    const response = await this.api.put<InventoryItem>(`/inventory/${inventoryId}`, updates);
-    return response.data;
+    const response = await apiService.put(`/api/storefront/inventory/${inventoryId}`, updates);
+    return response;
   }
 
   async restockInventory(inventoryId: string, quantity: number, notes?: string): Promise<InventoryItem> {
-    const response = await this.api.post<InventoryItem>(`/inventory/${inventoryId}/restock`, { quantity, notes });
-    return response.data;
+    const response = await apiService.post(`/api/storefront/inventory/${inventoryId}/restock`, { quantity, notes });
+    return response;
   }
 
   // --- ANALYTICS AND ACCOUNTING LEDGERS ---
 
   async getDailyAnalytics(storefrontId: string, params?: { start_date?: string; end_date?: string }): Promise<StorefrontAnalyticsDaily[]> {
-    const response = await this.api.get<StorefrontAnalyticsDaily[]>(`/${storefrontId}/analytics/daily`, { params });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/${storefrontId}/analytics/daily`, { params });
+    return response;
   }
 
   async getRealTimeEvents(storefrontId: string, params?: { limit?: number; event_type?: string }): Promise<StorefrontAnalyticsEvent[]> {
-    const response = await this.api.get<StorefrontAnalyticsEvent[]>(`/${storefrontId}/analytics/events`, { params });
-    return response.data;
+    const response = await apiService.get(`/api/storefront/${storefrontId}/analytics/events`, { params });
+    return response;
   }
 
   async getDashboardStats(storefrontId: string): Promise<DashboardStats> {
-    const response = await this.api.get<DashboardStats>(`/stats/${storefrontId}`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/stats/${storefrontId}`);
+    return response;
   }
 
   async getUserStorefronts(userId: string): Promise<Storefront[]> {
-    const response = await this.api.get<Storefront[]>(`/users/${userId}/storefronts`);
-    return response.data;
+    const response = await apiService.get(`/api/storefront/users/${userId}/storefronts`);
+    return response;
   }
 }
 

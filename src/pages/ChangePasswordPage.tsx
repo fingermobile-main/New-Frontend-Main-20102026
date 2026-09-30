@@ -18,7 +18,7 @@ const ChangePasswordPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ currentPassword?: string; newPassword?: string; confirmPassword?: string }>({});
-  
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -53,7 +53,7 @@ const ChangePasswordPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -62,28 +62,28 @@ const ChangePasswordPage: React.FC = () => {
 
     try {
       await authService.changePassword(currentPassword, newPassword);
-      
+
       toast({
-        title: "Password Changed",
-        description: "Your password has been updated successfully.",
-        variant: "default"
+        title: 'Password Changed',
+        description: 'Your password has been updated successfully.',
+        variant: 'default'
       });
-      
+
       // Clear the must change password flag
       authService.clearMustChangePasswordFlag();
-      
+
       // Redirect to forum after successful password change
       navigate('/forum');
     } catch (error: any) {
       console.error('Change password error:', error);
-      
-      const errorMessage = error.response?.data?.message || 
+
+      const errorMessage = error.response?.data?.message ||
                           'Failed to change password. Please try again.';
-      
+
       toast({
-        title: "Error",
+        title: 'Error',
         description: errorMessage,
-        variant: "destructive"
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);

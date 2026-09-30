@@ -1,7 +1,7 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 
 import { useAuth } from '../contexts/AuthContext';
@@ -39,73 +39,59 @@ const NyscPage: React.FC = () => {
   const navigate = useNavigate();
   const { nyscEvents, discussions, showToast } = useAppContext();
 
-  const [events, setEvents] = useState<NyscEvent[]>([
-    {
-      id: "1",
-      title: "Orientation Camp",
-      date: "Jan 15, 2025",
-      location: "Kaduna State",
-      description: "Annual orientation camp for new corps members",
-      participants: 1200,
-      organizer: "NYSC Kaduna State"
-    },
-    {
-      id: "2",
-      title: "Community Development Project",
-      date: "Feb 20, 2025",
-      location: "Lagos State",
-      description: "Environmental cleanup initiative",
-      participants: 800,
-      organizer: "Lagos State NYSC Secretariat"
-    },
-    {
-      id: "3",
-      title: "Skills Acquisition Workshop",
-      date: "Mar 5, 2025",
-      location: "Abuja",
-      description: "Tech skills training for corps members",
-      participants: 500,
-      organizer: "Federal Capital Territory"
-    }
-  ]);
-
-  const [discussionsList, setDiscussionsList] = useState<Discussion[]>([
-    {
-      id: "1",
-      title: "Best practices for primary school teaching",
-      author: "Corps Member",
-      timeAgo: "2 hours ago",
-      content:
-        "Sharing ideas on how to effectively teach primary school students during primary assignment...",
-      replies: 15,
-      views: 42
-    },
-    {
-      id: "2",
-      title: "Corps members meetup in Lagos",
-      author: "Lagos Corps",
-      timeAgo: "5 hours ago",
-      content:
-        "Planning a meetup for corps members serving in Lagos State. Who wants to join?",
-      replies: 28,
-      views: 76
-    },
-    {
-      id: "3",
-      title: "State of origin documentation",
-      author: "Documentation Help",
-      timeAgo: "1 day ago",
-      content:
-        "What documents are required for clearance? Need guidance from those who have completed their service year.",
-      replies: 32,
-      views: 91
-    }
-  ]);
-
-  const [filter, setFilter] = useState("");
+  const [events, setEvents] = useState<NyscEvent[]>([]);
+  const [discussionsList, setDiscussionsList] = useState<Discussion[]>([]);
+  const [stats, setStats] = useState<{ totalMembers: number; activeMembers: number; statesCount: number; batchesCount: number }>({
+    totalMembers: 0,
+    activeMembers: 0,
+    statesCount: 0,
+    batchesCount: 0
+  });
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    // Component logic
+    const fetchNyscData = async () => {
+      try {
+        const { nyscService } = await import('../services/nyscService');
+        const [liveEvents, liveDiscussions, liveStats] = await Promise.all([
+          nyscService.getEvents(),
+          nyscService.getDiscussions(),
+          nyscService.getStats()
+        ]);
+
+        if (liveEvents && liveEvents.length > 0) {
+          setEvents(liveEvents.map((e: any) => ({
+            id: String(e.id),
+            title: e.title,
+            date: e.date,
+            location: e.location,
+            description: e.description,
+            participants: e.participants || e.participants_count || 0,
+            organizer: e.organizer
+          })));
+        }
+
+        if (liveDiscussions && liveDiscussions.length > 0) {
+          setDiscussionsList(liveDiscussions.map((d: any) => ({
+            id: String(d.id),
+            title: d.title,
+            author: d.author,
+            timeAgo: d.timeAgo || d.time_ago || 'Recently',
+            content: d.content,
+            replies: d.replies || 0,
+            views: d.views || 0
+          })));
+        }
+
+        if (liveStats) {
+          setStats(liveStats);
+        }
+      } catch (err) {
+        console.error('Failed to load NYSC data:', err);
+      }
+    };
+
+    fetchNyscData();
   }, []);
 
   return (
@@ -134,7 +120,7 @@ const NyscPage: React.FC = () => {
             institutions.
           </p>
           <button
-            onClick={() => navigate("/network")}
+            onClick={() => navigate('/network')}
             className="text-blue-600 font-semibold hover:underline"
           >
             Explore Network
@@ -150,7 +136,7 @@ const NyscPage: React.FC = () => {
             Access helpful resources and guides for NYSC service year.
           </p>
           <button
-            onClick={() => navigate("/resources")}
+            onClick={() => navigate('/resources')}
             className="text-blue-600 font-semibold hover:underline"
           >
             View Resources
@@ -166,7 +152,7 @@ const NyscPage: React.FC = () => {
             Stay updated with NYSC events and community gatherings.
           </p>
           <button
-            onClick={() => navigate("/events")}
+            onClick={() => navigate('/events')}
             className="text-blue-600 font-semibold hover:underline"
           >
             Browse Events
@@ -218,18 +204,18 @@ const NyscPage: React.FC = () => {
         <EnhancedFilterBar
           filterOptions={{
             categories: [
-              "all",
-              "Orientation",
-              "Primary Assignment",
-              "Community Development",
-              "Clearance"
+              'all',
+              'Orientation',
+              'Primary Assignment',
+              'Community Development',
+              'Clearance'
             ],
             sortByOptions: [
-              { value: "recent", label: "Most Recent" },
-              { value: "popular", label: "Most Popular" },
-              { value: "replies", label: "Most Replies" }
+              { value: 'recent', label: 'Most Recent' },
+              { value: 'popular', label: 'Most Popular' },
+              { value: 'replies', label: 'Most Replies' }
             ],
-            searchPlaceholder: "Search discussions..."
+            searchPlaceholder: 'Search discussions...'
           }}
         />
         <div className="space-y-4 mt-4">

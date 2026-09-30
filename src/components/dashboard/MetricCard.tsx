@@ -8,7 +8,7 @@ interface MetricCardProps {
   trend?: string;
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({ 
+const MetricCard: React.FC<MetricCardProps> = ({
   title = 'Metric',
   value = '0',
   icon = '📊',

@@ -76,7 +76,7 @@ metadata: Partial<any>): Promise<any> {
   originalFileSize: metadata.originalFileSize || 0,
   processedUrl: metadata.processedUrl || '',
   thumbnailUrl: metadata.thumbnailUrl || '',
-  metadata: {,
+  metadata: {
   fileName: metadata.originalFileName || 'unknown',
   fileSize: metadata.originalFileSize || 0,
   mimeType: metadata.originalMimeType || 'unknown',

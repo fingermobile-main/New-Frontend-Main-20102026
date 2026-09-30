@@ -30,9 +30,9 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({ onOpenSettings }) => 
       <div className="flex items-center space-x-6">
         <div className="hidden lg:flex items-center bg-white/5 border border-white/10 rounded-full px-4 py-2 w-64 focus-within:w-80 focus-within:border-blue-500/50 transition-all">
           <Search size={18} className="text-gray-500" />
-          <input 
-            type="text" 
-            placeholder="Search favorites..." 
+          <input
+            type="text"
+            placeholder="Search favorites..."
             className="bg-transparent border-0 text-sm text-white focus:ring-0 w-full ml-3" />
         </div>
 
@@ -41,7 +41,7 @@ const Dancia4TvHeader: React.FC<Dancia4TvHeaderProps> = ({ onOpenSettings }) => 
             <Bell size={20} />
             <span className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full border-2 border-gray-900"></span>
           </button>
-          <button 
+          <button
             onClick={onOpenSettings}
             className="p-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
           >

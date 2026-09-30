@@ -135,8 +135,8 @@ const EarningsDashboard: React.FC = () => {
                   <span className="text-gray-900 font-medium">${value.toFixed(2)}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full" 
+                  <div
+                    className="bg-blue-600 h-2 rounded-full"
                     style={{ width: `${(value / earningsData.totalEarnings) * 100}%` }}
                   ></div>
                 </div>
@@ -166,8 +166,8 @@ const EarningsDashboard: React.FC = () => {
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         ${txn.type === 'commission' ? 'bg-green-100 text-green-800' :
-                          txn.type === 'ad-revenue' ? 'bg-blue-100 text-blue-800' :
-                          'bg-purple-100 text-purple-800'}`}>
+                    txn.type === 'ad-revenue' ? 'bg-blue-100 text-blue-800' :
+                      'bg-purple-100 text-purple-800'}`}>
                         {txn.type.replace('-', ' ')}
                       </span>
                     </td>

@@ -8,10 +8,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/a
 
 // --- Typed Domain Interfaces ---
 
-export type DiscoverItemType = "user" | "post" | "community" | "music" | "video";
+export type DiscoverItemType = 'user' | 'post' | 'community' | 'music' | 'video';
 
 export interface DiscoverItem {
-  id: string; 
+  id: string;
   type: DiscoverItemType;
   title: string;
   description?: string;
@@ -21,9 +21,9 @@ export interface DiscoverItem {
 }
 
 export interface Recommendation {
-  id: string; 
+  id: string;
   reason: string;
-  score: number; 
+  score: number;
   item: DiscoverItem;
 }
 
@@ -36,7 +36,7 @@ export interface PersonalizedRecommendations {
 }
 
 export interface DiscoveryAnalytics {
-  totalInteractions: number; 
+  totalInteractions: number;
   clickThroughRate: number;
   favoriteCategories: string[];
   engagementScore: number;
@@ -51,7 +51,7 @@ class DiscoverService {
 
   constructor() {
     this.api = axios.create({
-      baseURL: `${API_BASE_URL}/discover`, 
+      baseURL: `${API_BASE_URL}/discover`,
       headers: {
         'Content-Type': 'application/json'
       }

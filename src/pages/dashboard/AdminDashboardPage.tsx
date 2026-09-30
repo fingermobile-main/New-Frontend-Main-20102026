@@ -8,72 +8,104 @@ import {
   CurrencyDollarIcon
 } from '../../components/icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { adminOperationsService } from '../../services/adminOperationsService';
 
 const AdminDashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState('overview');
   const [ficBalance, setFicBalance] = useState(0);
-
-  // Mock data for dashboard
-  const stats = [
+  const [stats, setStats] = useState([
     {
-      title: "Total Members",
-      value: "12,482",
-      change: "+12.5%",
-      color: "blue"
+      title: 'Total Members',
+      value: '12,482',
+      change: '+12.5%',
+      color: 'blue'
     },
     {
-      title: "Revenue (FIC)",
-      value: "1,240,500",
-      change: "+8.3%",
-      color: "green"
+      title: 'Revenue (FIC)',
+      value: '1,240,500',
+      change: '+8.3%',
+      color: 'green'
     },
     {
-      title: "Content Posts",
-      value: "42,680",
-      change: "+5.7%",
-      color: "purple"
+      title: 'Content Posts',
+      value: '42,680',
+      change: '+5.7%',
+      color: 'purple'
     },
     {
-      title: "Active Sessions",
-      value: "3,240",
-      change: "+3.2%",
-      color: "yellow"
+      title: 'Active Sessions',
+      value: '3,240',
+      change: '+3.2%',
+      color: 'yellow'
     }
-  ];
+  ]);
+
+  React.useEffect(() => {
+    adminOperationsService.getDashboardStats().then(data => {
+      if (data) {
+        setStats([
+          {
+            title: 'Total Members',
+            value: data.totalUsers.toLocaleString(),
+            change: '+12.5%',
+            color: 'blue'
+          },
+          {
+            title: 'Transactions Recorded',
+            value: data.totalTransactions.toLocaleString(),
+            change: '+8.3%',
+            color: 'green'
+          },
+          {
+            title: 'Moderation Items',
+            value: `${data.pendingModeration} Pending`,
+            change: `${data.totalModeration} total`,
+            color: 'purple'
+          },
+          {
+            title: 'Active Sessions',
+            value: data.activeSessions.toLocaleString(),
+            change: `${data.systemUptime}% uptime`,
+            color: 'yellow'
+          }
+        ]);
+      }
+    }).catch(() => {});
+  }, []);
 
   const recentActivity = [
     {
       id: 1,
-      member: "Alex Johnson",
-      action: "Created new post",
-      time: "2 min ago"
+      member: 'Alex Johnson',
+      action: 'Created new post',
+      time: '2 min ago'
     },
     {
       id: 2,
-      member: "Sam Wilson",
-      action: "Purchased premium plan",
-      time: "15 min ago"
+      member: 'Sam Wilson',
+      action: 'Purchased premium plan',
+      time: '15 min ago'
     },
     {
       id: 3,
-      member: "Taylor Swift",
-      action: "Uploaded new video",
-      time: "1 hour ago"
+      member: 'Taylor Swift',
+      action: 'Uploaded new video',
+      time: '1 hour ago'
     },
     {
       id: 4,
-      member: "John Doe",
-      action: "Reported inappropriate content",
-      time: "2 hours ago"
+      member: 'John Doe',
+      action: 'Reported inappropriate content',
+      time: '2 hours ago'
     }
   ];
 
   const memberRoles = [
-    { id: 1, name: "Super Admin", permissions: 33, members: 1 },
-    { id: 2, name: "Admin", permissions: 28, members: 5 },
-    { id: 3, name: "Finance", permissions: 12, members: 3 },
-    { id: 4, name: "Moderator", permissions: 15, members: 12 },
-    { id: 5, name: "Support", permissions: 8, members: 8 }
+    { id: 1, name: 'Super Admin', permissions: 33, members: 1 },
+    { id: 2, name: 'Admin', permissions: 28, members: 5 },
+    { id: 3, name: 'Finance', permissions: 12, members: 3 },
+    { id: 4, name: 'Moderator', permissions: 15, members: 12 },
+    { id: 5, name: 'Support', permissions: 8, members: 8 }
   ];
 
   return (
@@ -109,41 +141,41 @@ const AdminDashboardPage: React.FC = () => {
           <div className="border-b border-gray-200">
             <nav className="flex space-x-8 px-6">
               <button
-                onClick={() => setActiveTab("overview")}
+                onClick={() => setActiveTab('overview')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "overview"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'overview'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Overview
               </button>
               <button
-                onClick={() => setActiveTab("members")}
+                onClick={() => setActiveTab('members')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "members"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'members'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Member Management
               </button>
               <button
-                onClick={() => setActiveTab("roles")}
+                onClick={() => setActiveTab('roles')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "roles"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'roles'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Roles & Permissions
               </button>
               <button
-                onClick={() => setActiveTab("activity")}
+                onClick={() => setActiveTab('activity')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "activity"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'activity'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Activity Log
@@ -153,7 +185,7 @@ const AdminDashboardPage: React.FC = () => {
 
           <div className="p-6">
             {/* Overview Tab */}
-            {activeTab === "overview" && (
+            {activeTab === 'overview' && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2">
@@ -226,7 +258,7 @@ const AdminDashboardPage: React.FC = () => {
             )}
 
             {/* Member Management Tab */}
-            {activeTab === "members" && (
+            {activeTab === 'members' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-medium text-gray-900">
@@ -282,7 +314,7 @@ const AdminDashboardPage: React.FC = () => {
                                 className="h-10 w-10 rounded-full"
                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                 alt=""
-                               />
+                              />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
@@ -328,7 +360,7 @@ const AdminDashboardPage: React.FC = () => {
             )}
 
             {/* Member Management Tab */}
-            {activeTab === "members" && (
+            {activeTab === 'members' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-medium text-gray-900">
@@ -384,7 +416,7 @@ const AdminDashboardPage: React.FC = () => {
                                 className="h-10 w-10 rounded-full"
                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                 alt=""
-                               />
+                              />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
@@ -430,7 +462,7 @@ const AdminDashboardPage: React.FC = () => {
             )}
 
             {/* Roles & Permissions Tab */}
-            {activeTab === "roles" && (
+            {activeTab === 'roles' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-medium text-gray-900">
@@ -472,7 +504,7 @@ const AdminDashboardPage: React.FC = () => {
             )}
 
             {/* Activity Log Tab */}
-            {activeTab === "activity" && (
+            {activeTab === 'activity' && (
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Activity Log

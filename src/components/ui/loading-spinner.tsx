@@ -1,21 +1,21 @@
 import React, {} from 'react';
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const spinnerVariants = cva(
-  "animate-spin rounded-full border-2 border-current border-t-transparent",
+  'animate-spin rounded-full border-2 border-current border-t-transparent',
   {
     variants: {
       size: {
-        sm: "h-4 w-4 border-2",
-        md: "h-6 w-6 border-2",
-        lg: "h-8 w-8 border-3",
-        xl: "h-12 w-12 border-4"
+        sm: 'h-4 w-4 border-2',
+        md: 'h-6 w-6 border-2',
+        lg: 'h-8 w-8 border-3',
+        xl: 'h-12 w-12 border-4'
       }
     },
     defaultVariants: {
-      size: "md"
+      size: 'md'
     }
   }
 );
@@ -31,7 +31,7 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col items-center justify-center gap-2", className)}
+        className={cn('flex flex-col items-center justify-center gap-2', className)}
         {...props}
       >
         <div className={cn(spinnerVariants({ size }))} />
@@ -40,6 +40,6 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
     );
   }
 );
-LoadingSpinner.displayName = "LoadingSpinner";
+LoadingSpinner.displayName = 'LoadingSpinner';
 
 export { LoadingSpinner };

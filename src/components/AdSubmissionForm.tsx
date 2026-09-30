@@ -5,9 +5,9 @@ interface AdSubmissionFormProps {
   isLoading?: boolean;
 }
 
-const AdSubmissionForm: React.FC<AdSubmissionFormProps> = ({ 
-  onSubmit, 
-  isLoading = false 
+const AdSubmissionForm: React.FC<AdSubmissionFormProps> = ({
+  onSubmit,
+  isLoading = false
 }) => {
   const [formData, setFormData] = React.useState({
     title: '',

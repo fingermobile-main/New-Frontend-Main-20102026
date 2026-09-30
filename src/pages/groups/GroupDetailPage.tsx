@@ -1,32 +1,49 @@
-import { useParams} from 'react-router-dom';
-import React, {} from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import PostCard from '../../components/PostCard';
 import PageHeader from '../../components/PageHeader';
 import { LiveIcon, PhoneGroupIcon } from '../../components/icons';
 import { Post } from '../../types';
 import { useAppContext } from '../../contexts/AppContext';
+import groupsService from '../../services/groupsService';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const GroupDetailPage = () => {
   const { slug } = useParams();
   const { showToast } = useAppContext();
+  const [group, setGroup] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
 
-  // Mock data
-  const groups: {
-    id: string;
-    slug: string;
-    name: string;
-    description?: string;
-    logoUrl: string;
-    members: string[];
-    owner: { id: string; name: string };
-    posts: string[];
-  }[] = [];
+  useEffect(() => {
+    let mounted = true;
+    const fetchGroup = async () => {
+      if (!slug) return;
+      try {
+        setLoading(true);
+        const res = await groupsService.getGroupById(slug);
+        if (mounted && res.group) {
+          setGroup({
+            ...res.group,
+            logoUrl: res.group.avatarUrl || 'https://picsum.photos/seed/group/100/100',
+            members: Array.isArray(res.group.members) ? res.group.members : Array(res.group.members || 1).fill('member'),
+            posts: Array.isArray((res.group as any).posts) ? (res.group as any).posts : []
+          });
+        }
+      } catch (err) {
+        console.warn('Failed to fetch group by id:', err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
 
-  const allPosts: Post[] = [];
+    fetchGroup();
+    return () => { mounted = false; };
+  }, [slug]);
 
   const openModal = (modalType: string, props: { postId: string }) => {
-    console.info("Opening modal:", modalType, props);
+    console.info('Opening modal:', modalType, props);
   };
 
   const ficBalance = 0;
@@ -34,12 +51,12 @@ const GroupDetailPage = () => {
     action: string,
     data: Record<string, string | number | boolean>,
   ) => {
-    console.warn("AI assist:", action, data);
-    return { success: true, response: "AI response" } as any;
+    console.warn('AI assist:', action, data);
+    return { success: true, response: 'AI response' } as any;
   };
 
   const triggerSpecialEffect = (effect: string) => {
-    console.info("Triggering effect:", effect);
+    console.info('Triggering effect:', effect);
   };
 
   const activeAudioCall: {
@@ -49,7 +66,7 @@ const GroupDetailPage = () => {
   } | null = null as any;
 
   const handleJoinGroupAudioCall = (callId: string) => {
-    console.info("Joining group audio call:", callId);
+    console.info('Joining group audio call:', callId);
   };
 
   const isSessionActive = (_id: string, _type: string) => false;
@@ -60,23 +77,26 @@ const GroupDetailPage = () => {
     groupId: string;
   } | null = null as any;
   const joinSession = (sessionId: string) => {
-    console.warn("Joining session:", sessionId);
+    console.warn('Joining session:', sessionId);
   };
 
   const onVote = async () => {
     try {
-      console.warn("Voting on post:");
-      showToast("Vote recorded successfully!", "success");
+      console.warn('Voting on post:');
+      showToast('Vote recorded successfully!', 'success');
     } catch (error) {
-      console.error("Error voting on post:", error);
-      showToast("Failed to record vote. Please try again.", "error");
+      console.error('Error voting on post:', error);
+      showToast('Failed to record vote. Please try again.', 'error');
     }
   };
 
-  const group = groups.find(
-    (g: { slug: string; posts: string[]; members: string[] }) =>
-      g?.slug === slug,
-  );
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!group) {
     return (
@@ -84,10 +104,10 @@ const GroupDetailPage = () => {
     );
   }
 
-  const isLive = isSessionActive(group.id, "Group");
+  const isLive = isSessionActive(group.id, 'Group');
   const isAudioCallActive =
-    activeAudioCall?.type === "group" && activeAudioCall?.groupId === group.id;
-  const isMember = false;
+    activeAudioCall?.type === 'group' && activeAudioCall?.groupId === group.id;
+  const isMember = group.isJoined || false;
   const isOwner = false;
 
   const featuredPosts: Post[] = allPosts.filter(
@@ -96,39 +116,49 @@ const GroupDetailPage = () => {
 
   const onLike = async (postId: string) => {
     try {
-      console.info("Liking post:", postId);
-      showToast("Post liked successfully!", "success");
+      console.info('Liking post:', postId);
+      showToast('Post liked successfully!', 'success');
     } catch (error) {
-      console.error("Error liking post:", error);
-      showToast("Failed to like post. Please try again.", "error");
+      console.error('Error liking post:', error);
+      showToast('Failed to like post. Please try again.', 'error');
     }
   };
 
   const onAddComment = async (postId: string, comment: string) => {
     try {
-      console.info("Adding comment to post:", postId, comment);
-      showToast("Comment added successfully!", "success");
+      console.info('Adding comment to post:', postId, comment);
+      showToast('Comment added successfully!', 'success');
     } catch (error) {
-      console.error("Error adding comment:", error);
-      showToast("Failed to add comment. Please try again.", "error");
+      console.error('Error adding comment:', error);
+      showToast('Failed to add comment. Please try again.', 'error');
+    }
+  };
+
+  const handleJoin = async () => {
+    try {
+      await groupsService.joinGroup(group.id);
+      setGroup((prev: any) => ({ ...prev, isJoined: true }));
+      showToast('Successfully joined the group!', 'success');
+    } catch (err) {
+      showToast('Failed to join the group', 'error');
     }
   };
 
   const onOpenGiftModal = (postId: string) => {
-    console.info("Opening gift modal for post:", postId);
-    openModal("gift", { postId });
+    console.info('Opening gift modal for post:', postId);
+    openModal('gift', { postId });
   };
 
   const onOpenPaylinkModal = (postId: string) => {
-    openModal("createPaylink", { postId });
+    openModal('createPaylink', { postId });
   };
 
   const handleDeletePost = (postId: string) => {
-    console.info("Deleting post:", postId);
+    console.info('Deleting post:', postId);
   };
 
   const handleTokenizePost = (postId: string) => {
-    console.info("Tokenizing post:", postId);
+    console.info('Tokenizing post:', postId);
   };
 
   const handleJoinSession = () => {
@@ -137,17 +167,13 @@ const GroupDetailPage = () => {
     }
   };
 
-  const handleJoin = () => {
-    showToast("Successfully joined the group!", "success");
-  };
-
   const CommunityHeader = () => (
     <div className="bg-white border-b p-6 text-center">
       <img
         src={group.logoUrl}
         alt={group.name}
         className="w-24 h-24 rounded-full border-4 border-white mx-auto mb-2 bg-white object-cover"
-       />
+      />
       <h1 className="text-3xl font-bold">{group.name}</h1>
       <p className="text-gray-600 mt-2">{group.description}</p>
       <div className="flex justify-center gap-4 mt-4">

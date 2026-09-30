@@ -96,11 +96,11 @@ const PremiumPages: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {premiumTiers.map((tier) => (
-          <div 
+          <div
             key={tier.id}
             className={`border rounded-lg p-6 cursor-pointer transition-all ${
-              selectedTier === tier.id 
-                ? 'border-blue-500 ring-2 ring-blue-200 bg-blue-50' 
+              selectedTier === tier.id
+                ? 'border-blue-500 ring-2 ring-blue-200 bg-blue-50'
                 : 'border-gray-200 hover:border-blue-300'
             }`}
             onClick={() => setSelectedTier(tier.id)} role="button" tabIndex={0}
@@ -128,11 +128,11 @@ const PremiumPages: React.FC = () => {
       {selectedTierDetails && (
         <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Subscribe to {selectedTierDetails.name}</h2>
-          
+
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Payment Method</label>
-            <select 
-              value={paymentMethod} 
+            <select
+              value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
@@ -148,13 +148,13 @@ const PremiumPages: React.FC = () => {
                 Total: <span className="font-bold text-blue-600">${selectedTierDetails.price}/{selectedTierDetails.currency}/year</span>
               </p>
             </div>
-            
+
             <button
               onClick={handleSubscribe}
               disabled={isProcessing}
               className={`px-6 py-3 rounded-md text-white font-medium ${
-                isProcessing 
-                  ? 'bg-gray-400 cursor-not-allowed' 
+                isProcessing
+                  ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
@@ -178,7 +178,7 @@ const PremiumPages: React.FC = () => {
 
       <div className="mt-10">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Premium Pages Benefits</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-4 border border-gray-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Visitor Analytics</h3>
@@ -186,21 +186,21 @@ const PremiumPages: React.FC = () => {
               See who visited your page, including job titles and locations. Understand your audience better to tailor your content.
             </p>
           </div>
-          
+
           <div className="p-4 border border-gray-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">AI Writing Assistance</h3>
             <p className="text-gray-600">
               Get AI-powered suggestions to improve your page content, headlines, and descriptions to match the algorithm.
             </p>
           </div>
-          
+
           <div className="p-4 border border-gray-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Auto-Invites</h3>
             <p className="text-gray-600">
               Automatically invite highly engaged followers to visit your page based on their interactions with your content.
             </p>
           </div>
-          
+
           <div className="p-4 border border-gray-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-800 mb-2">Competitor Tracking</h3>
             <p className="text-gray-600">

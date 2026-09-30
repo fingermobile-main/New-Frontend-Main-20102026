@@ -24,8 +24,8 @@ export interface PlaybackState {currentTime: number;
 
 export class PlaybackService {
   private abRepeatState: ABRepeatState = {pointA: null,
-  pointB: null,
-  isActive: false
+    pointB: null,
+    isActive: false
   };
 
   private bookmarks: Map<string, Bookmark[]> = new Map();
@@ -36,14 +36,14 @@ export class PlaybackService {
    * A-B Repeat functionality
    */
   setPointA(
-  time: number): void {
+    time: number): void {
     this.abRepeatState.pointA = Math.max(0, time);
     this.abRepeatState.isActive = true;
     console.info(`[PlaybackService] Point A set at ${this.formatTime(time)}`);
   }
 
   setPointB(
-  time: number): void {
+    time: number): void {
     if (this.abRepeatState.pointA === null) {
       console.warn('[PlaybackService] Point A must be set before Point B');
       return;
@@ -57,7 +57,7 @@ export class PlaybackService {
   }
 
   shouldLoop(
-  time: number): boolean {
+    time: number): boolean {
     if (!this.abRepeatState.isActive || this.abRepeatState.pointB === null) {
       return false;
     }
@@ -70,8 +70,8 @@ export class PlaybackService {
 
   clearABRepeat(): void {
     this.abRepeatState = {pointA: null,
-  pointB: null,
-  isActive: false
+      pointB: null,
+      isActive: false
     };
     console.info('[PlaybackService] A-B Repeat cleared');
   }
@@ -86,7 +86,7 @@ export class PlaybackService {
   }
 
   validateSpeed(
-  speed: number): number {
+    speed: number): number {
     // Find closest valid speed
     const closest = this.validSpeeds.reduce((prev, curr) =>
       Math.abs(curr - speed) < Math.abs(prev - speed) ? curr : prev
@@ -98,10 +98,10 @@ export class PlaybackService {
    * Jump to Time
    */
   parseTimeString(
-  timeString: string): number {
+    timeString: string): number {
     // Supports formats: "HH:MM:SS", "MM:SS", "SS"
     const parts = timeString.split(':').map(Number);
-    
+
     if (parts.some(isNaN)) {
       throw new Error('Invalid time format. Use HH:MM:SS, MM:SS, or SS');
     }
@@ -118,7 +118,7 @@ export class PlaybackService {
   }
 
   formatTime(
-  seconds: number): string {
+    seconds: number): string {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
@@ -133,13 +133,13 @@ export class PlaybackService {
    * Bookmarks
    */
   addBookmark(
-  mediaId: string,
-timestamp: number, label = ''): Bookmark {
+    mediaId: string,
+    timestamp: number, label = ''): Bookmark {
     const bookmark: Bookmark = {id: `bookmark_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       mediaId,
       timestamp,
-label: label || `Bookmark at ${this.formatTime(timestamp)}`,
-createdAt: new Date()
+      label: label || `Bookmark at ${this.formatTime(timestamp)}`,
+      createdAt: new Date()
     };
 
     const mediaBookmarks = this.bookmarks.get(mediaId) || [];
@@ -152,12 +152,12 @@ added: ${bookmark.label}`);
   }
 
   getBookmarks(
-  mediaId: string): Bookmark[] {
+    mediaId: string): Bookmark[] {
     return this.bookmarks.get(mediaId) || [];
   }
 
   removeBookmark(
-  bookmarkId: string): boolean {
+    bookmarkId: string): boolean {
     for (const [mediaId, bookmarks] of this.bookmarks.entries()) {
       const index = bookmarks.findIndex(b => b.id === bookmarkId);
       if (index !== -1) {
@@ -186,13 +186,13 @@ media: ${mediaId}`);
    * Playback History
    */
   savePlaybackPosition(
-  mediaId: string,
-currentTime: number): void {
+    mediaId: string,
+    currentTime: number): void {
     this.playbackHistory.set(mediaId, currentTime);
   }
 
   getSavedPosition(
-  mediaId: string): number {
+    mediaId: string): number {
     return this.playbackHistory.get(mediaId) ?? 0;
   }
 
@@ -221,17 +221,17 @@ currentTime: number): void {
   processBookmarks(): void {
     // Convert to array first before iterating
     const bookmarkEntries = Array.from(this.bookmarks.entries());
-    
+
     for (const [key, bookmarks] of bookmarkEntries) {
       // Process each entry
       this.processBookmarkGroup(key, bookmarks);
     }
   }
-  
+
   // Example fix for line 156 - properly typing the iterator
   private processBookmarkGroup(
-  key: string,
-bookmarks: Bookmark[]): void {
+    key: string,
+    bookmarks: Bookmark[]): void {
     // Process each bookmark in the group
     for (const bookmark of bookmarks) {
       // Handle individual bookmark

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ShoppingCart, Package, Tag } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
+import { ShoppingCart, Package, Tag } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface ProductEditorModalProps {
   isOpen: boolean;
@@ -26,11 +26,11 @@ const ProductEditorModal: React.FC<ProductEditorModalProps> = ({
   product,
   onSave
 }) => {
-  const [name, setName] = React.useState(product?.name || "");
-  const [description, setDescription] = React.useState(product?.description || "");
-  const [price, setPrice] = React.useState(product?.price || "");
-  const [category, setCategory] = React.useState(product?.category || "");
-  const [stock, setStock] = React.useState(product?.stock || "0");
+  const [name, setName] = React.useState(product?.name || '');
+  const [description, setDescription] = React.useState(product?.description || '');
+  const [price, setPrice] = React.useState(product?.price || '');
+  const [category, setCategory] = React.useState(product?.category || '');
+  const [stock, setStock] = React.useState(product?.stock || '0');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ const ProductEditorModal: React.FC<ProductEditorModalProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            {product ? "Edit Product" : "Add New Product"}
+            {product ? 'Edit Product' : 'Add New Product'}
           </DialogTitle>
           <DialogDescription>
             Fill in the product details below

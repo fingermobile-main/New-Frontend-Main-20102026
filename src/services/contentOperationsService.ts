@@ -13,7 +13,7 @@ export const contentOperationsService = {
   uploadContent: async (file: File, metadata?: any) => {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     if (metadata) {
       formData.append('metadata', JSON.stringify(metadata));
     }

@@ -9,12 +9,12 @@ interface PageHeaderProps {
   className?: string;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ 
-  title, 
-  description, 
-  actionText, 
-  onAction, 
-  className = '' 
+const PageHeader: React.FC<PageHeaderProps> = ({
+  title,
+  description,
+  actionText,
+  onAction,
+  className = ''
 }) => {
   return (
     <div className={`mb-8 ${className}`}>

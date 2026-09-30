@@ -15,7 +15,7 @@ export function lazyLoadComponent<P extends Record<string, unknown>>(
       </React.Suspense>
     );
   });
-  
+
   LazyLoadedComponent.displayName = 'LazyLoadedComponent';
 
   return LazyLoadedComponent;

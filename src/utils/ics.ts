@@ -11,7 +11,7 @@ export const generateICSFile = (
     location?: string;
   }) => {
   const cal = ical();
-  
+
   cal.createEvent({
     start: eventDetails.start,
     end: eventDetails.end || new Date(eventDetails.start.getTime() + 60 * 60 * 1000), // Default to 1 hour duration

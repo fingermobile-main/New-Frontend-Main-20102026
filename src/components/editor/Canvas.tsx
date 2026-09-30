@@ -15,10 +15,10 @@ interface CanvasProps {
   selectedComponentId?: string | null;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ 
-  components = [], 
+const Canvas: React.FC<CanvasProps> = ({
+  components = [],
   onSelect,
-  selectedComponentId 
+  selectedComponentId
 }) => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ const Canvas: React.FC<CanvasProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="flex-1 p-8 bg-gray-50 min-h-full"
       onDrop={handleDrop}
       onDragOver={handleDragOver}

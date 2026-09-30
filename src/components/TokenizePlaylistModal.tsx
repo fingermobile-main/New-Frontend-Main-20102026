@@ -8,11 +8,11 @@ interface TokenizePlaylistModalProps {
   onTokenize?: (playlistId: string, tokenData: unknown) => void;
 }
 
-const TokenizePlaylistModal: React.FC<TokenizePlaylistModalProps> = ({ 
-  isOpen, 
+const TokenizePlaylistModal: React.FC<TokenizePlaylistModalProps> = ({
+  isOpen,
   onClose,
   playlistId,
-  onTokenize 
+  onTokenize
 }) => {
   const [tokenName, setTokenName] = React.useState('');
   const [tokenSymbol, setTokenSymbol] = React.useState('');

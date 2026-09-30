@@ -19,12 +19,12 @@ export interface Wallet {
 export interface Transaction {
   id: string;
   walletId: string;
-  type: "credit" | "debit";
+  type: 'credit' | 'debit';
   amount: number;
   currency: string; // Crucial for ledger validation
   description?: string;
   category: string;
-  status: "pending" | "completed" | "failed";
+  status: 'pending' | 'completed' | 'failed';
   reference?: string;
   metadata?: Record<string, any>; // Flexible context tracking (order id, invoice reference etc.)
   createdAt: string;
@@ -40,8 +40,8 @@ export interface TransferData {
 export interface TransactionFilterParams {
   limit?: number;
   offset?: number;
-  type?: "credit" | "debit";
-  status?: "pending" | "completed" | "failed";
+  type?: 'credit' | 'debit';
+  status?: 'pending' | 'completed' | 'failed';
 }
 
 class WalletService {
@@ -58,7 +58,7 @@ class WalletService {
     // Injects client authentication state automatically & implicitly
     this.api.interceptors.request.use((config) => {
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
         if (token && config.headers) {
           config.headers['Authorization'] = `Bearer ${token}`;
         }
@@ -76,7 +76,7 @@ class WalletService {
       return response.data;
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || 'Wallet transaction failed';
-      console.error(`[WalletService Error]:`, errorMessage, error);
+      console.error('[WalletService Error]:', errorMessage, error);
       throw new Error(errorMessage);
     }
   }
@@ -87,26 +87,26 @@ class WalletService {
    * Fetches the wallet context of the current authenticated user session securely.
    */
   async getMyWallet(): Promise<Wallet> {
-    return this.request<Wallet>({ method: 'GET', url: '/me' });
+    return this.request<Wallet>({ method: 'GET', url: '/' });
   }
 
   /**
    * Fetches total available balance safely without downloading unnecessary sub-ledger frames
    */
   async getBalance(): Promise<{ balance: number; pendingBalance: number; currency: string }> {
-    return this.request<{ balance: number; pendingBalance: number; currency: string }>({ 
-      method: 'GET', 
-      url: '/me/balance' 
+    return this.request<{ balance: number; pendingBalance: number; currency: string }>({
+      method: 'GET',
+      url: '/balance'
     });
   }
 
   // --- LEDGER TRANSACTIONS & MUTATIONS ---
 
   async getTransactions(filters?: TransactionFilterParams): Promise<{ data: Transaction[]; total: number }> {
-    return this.request<{ data: Transaction[]; total: number }>({ 
-      method: 'GET', 
-      url: '/me/transactions', 
-      params: filters 
+    return this.request<{ data: Transaction[]; total: number }>({
+      method: 'GET',
+      url: '/transactions',
+      params: filters
     });
   }
 
@@ -160,10 +160,10 @@ class WalletService {
     topSource: string;
     transactions: Transaction[];
   }> {
-    return this.request({ 
-      method: 'GET', 
-      url: '/me/summary/earnings', 
-      params: { period } 
+    return this.request({
+      method: 'GET',
+      url: '/me/summary/earnings',
+      params: { period }
     });
   }
 
@@ -173,10 +173,10 @@ class WalletService {
     topCategory: string;
     transactions: Transaction[];
   }> {
-    return this.request({ 
-      method: 'GET', 
-      url: '/me/summary/spending', 
-      params: { period } 
+    return this.request({
+      method: 'GET',
+      url: '/me/summary/spending',
+      params: { period }
     });
   }
 

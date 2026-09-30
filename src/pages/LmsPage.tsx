@@ -1,7 +1,7 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 import { useAuth } from '../contexts/AuthContext';
 import {
@@ -44,7 +44,7 @@ interface UpcomingEvent {
   title: string;
   date: string;
   time: string;
-  type: "live-session" | "deadline" | "exam";
+  type: 'live-session' | 'deadline' | 'exam';
 }
 
 const LmsPage: React.FC = () => {
@@ -52,83 +52,71 @@ const LmsPage: React.FC = () => {
   const navigate = useNavigate();
   const { courses, assignments, showToast } = useAppContext();
 
-  const [myCourses, setMyCourses] = useState<Course[]> ([
-    {
-      id: "1",
-      title: "Introduction to Digital Marketing",
-      instructor: "Dr. Jane Smith",
-      progress: 75,
-      enrolledDate: "2024-09-15",
-      dueDate: "2025-01-30",
-      thumbnail: "/images/digital-marketing.jpg",
-      category: "Marketing",
-      rating: 4.8,
-      duration: "8 weeks"
-    },
-    {
-      id: "2",
-      title: "Advanced JavaScript Concepts",
-      instructor: "Prof. John Doe",
-      progress: 45,
-      enrolledDate: "2024-10-01",
-      thumbnail: "/images/javascript.jpg",
-      category: "Programming",
-      rating: 4.9,
-      duration: "10 weeks"
-    },
-    {
-      id: "3",
-      title: "Data Science Fundamentals",
-      instructor: "Dr. Emily Johnson",
-      progress: 20,
-      enrolledDate: "2024-10-10",
-      thumbnail: "/images/data-science.jpg",
-      category: "Data Science",
-      rating: 4.7,
-      duration: "12 weeks"
-    },
-    {
-      id: "4",
-      title: "UI/UX Design Principles",
-      instructor: "Michael Brown",
-      progress: 100,
-      enrolledDate: "2024-08-20",
-      dueDate: "2024-12-15",
-      thumbnail: "/images/ui-ux-design.jpg",
-      category: "Design",
-      rating: 4.6,
-      duration: "6 weeks"
-    }
-  ]);
-
-  const [filter, setFilter] = useState("");
+  const [myCourses, setMyCourses] = useState<Course[]>([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    // Component logic
+    const fetchLmsCourses = async () => {
+      try {
+        const { elearningService } = await import('../services/elearningService');
+        const enrolled = await elearningService.getMyEnrolledCourses();
+        if (enrolled && enrolled.length > 0) {
+          setMyCourses(enrolled.map((c: any) => ({
+            id: String(c.id),
+            title: c.title,
+            instructor: c.instructor_name || 'Dr. Expert',
+            progress: parseFloat(c.progress) || 0,
+            enrolledDate: c.enrolled_at ? String(c.enrolled_at).slice(0, 10) : '2026-09-01',
+            thumbnail: c.thumbnail_url || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80',
+            category: c.category || 'Engineering',
+            rating: parseFloat(c.rating_average) || 4.8,
+            duration: c.duration_hours ? `${c.duration_hours} hours` : '6 weeks'
+          })));
+        } else {
+          const catalog = await elearningService.getCourses({ isPublished: 'true' });
+          if (catalog.courses && catalog.courses.length > 0) {
+            setMyCourses(catalog.courses.map((c: any) => ({
+              id: String(c.id),
+              title: c.title,
+              instructor: c.instructor?.displayName || c.instructor?.username || 'Dr. Expert',
+              progress: 0,
+              enrolledDate: 'Explore',
+              thumbnail: c.thumbnail_url || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80',
+              category: c.category || (c.category_id === 1 ? 'Software Engineering' : 'Design'),
+              rating: parseFloat(c.rating_average) || 4.8,
+              duration: c.duration_hours ? `${c.duration_hours} hours` : '6 weeks'
+            })));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch LMS courses:', err);
+      }
+    };
+    fetchLmsCourses();
   }, []);
 
   const [myAssignments, setMyAssignments] = useState<Assignment[]> ([
     {
-      id: "a1",
-      title: "Marketing Strategy Analysis",
-      course: "Digital Marketing",
-      dueDate: "2025-01-20",
+      id: 'a1',
+      title: 'Marketing Strategy Analysis',
+      course: 'Digital Marketing',
+      dueDate: '2025-01-20',
       completed: false,
       submitted: false
     },
     {
-      id: "a2",
-      title: "JavaScript DOM Manipulation",
-      course: "Advanced JavaScript",
-      dueDate: "2025-01-25",
+      id: 'a2',
+      title: 'JavaScript DOM Manipulation',
+      course: 'Advanced JavaScript',
+      dueDate: '2025-01-25',
       completed: false,
       submitted: false
     },
     {
-      id: "a3",
-      title: "Final Project Submission",
-      course: "UI/UX Design",
-      dueDate: "2024-12-15",
+      id: 'a3',
+      title: 'Final Project Submission',
+      course: 'UI/UX Design',
+      dueDate: '2024-12-15',
       completed: true,
       submitted: true
     }
@@ -136,31 +124,31 @@ const LmsPage: React.FC = () => {
 
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]> ([
     {
-      id: "e1",
-      title: "Live Q&A Session: JavaScript Best Practices",
-      date: "2025-01-15",
-      time: "15:00 GMT",
-      type: "live-session"
+      id: 'e1',
+      title: 'Live Q&A Session: JavaScript Best Practices',
+      date: '2025-01-15',
+      time: '15:00 GMT',
+      type: 'live-session'
     },
     {
-      id: "e2",
-      title: "Assignment Deadline: Data Science Project",
-      date: "2025-01-18",
-      time: "23:59 GMT",
-      type: "deadline"
+      id: 'e2',
+      title: 'Assignment Deadline: Data Science Project',
+      date: '2025-01-18',
+      time: '23:59 GMT',
+      type: 'deadline'
     },
     {
-      id: "e3",
-      title: "Midterm Exam: Digital Marketing",
-      date: "2025-01-22",
-      time: "10:00 GMT",
-      type: "exam"
+      id: 'e3',
+      title: 'Midterm Exam: Digital Marketing',
+      date: '2025-01-22',
+      time: '10:00 GMT',
+      type: 'exam'
     }
   ]);
 
   const [activeTab, setActiveTab] = useState<
-    "courses" | "assignments" | "calendar"
-  >("courses");
+    'courses' | 'assignments' | 'calendar'
+  >('courses');
 
   const incompleteAssignments = myAssignments.filter(
     (a) => !a.completed && !a.submitted,
@@ -237,32 +225,32 @@ const LmsPage: React.FC = () => {
       {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-6">
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === "courses" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-          onClick={() => setActiveTab("courses")}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'courses' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          onClick={() => setActiveTab('courses')}
         >
           My Courses
         </button>
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === "assignments" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-          onClick={() => setActiveTab("assignments")}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'assignments' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          onClick={() => setActiveTab('assignments')}
         >
           Assignments
         </button>
         <button
-          className={`py-2 px-4 font-medium text-sm ${activeTab === "calendar" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-          onClick={() => setActiveTab("calendar")}
+          className={`py-2 px-4 font-medium text-sm ${activeTab === 'calendar' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+          onClick={() => setActiveTab('calendar')}
         >
           Calendar
         </button>
       </div>
 
       {/* Tab Content */}
-      {activeTab === "courses" && (
+      {activeTab === 'courses' && (
         <div>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">My Courses</h2>
             <button
-              onClick={() => navigate("/camus/explore")}
+              onClick={() => navigate('/camus/explore')}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
             >
               Browse More Courses
@@ -280,7 +268,7 @@ const LmsPage: React.FC = () => {
                     src={course.thumbnail}
                     alt={course.title}
                     className="w-full h-40 object-cover"
-                   />
+                  />
                   <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded">
                     {course.category}
                   </div>
@@ -299,7 +287,7 @@ const LmsPage: React.FC = () => {
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
                           key={i}
-                          className={`w-4 h-4 ${i < Math.floor(course.rating) ? "fill-current" : "text-gray-300"}`}
+                          className={`w-4 h-4 ${i < Math.floor(course.rating) ? 'fill-current' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
@@ -323,7 +311,7 @@ const LmsPage: React.FC = () => {
 
                   <div className="flex justify-between text-xs text-gray-500 mb-4">
                     <span>
-                      <ClockIcon className="w-4 h-4 inline mr-1" />{" "}
+                      <ClockIcon className="w-4 h-4 inline mr-1" />{' '}
                       {course.duration}
                     </span>
                     <span>
@@ -352,7 +340,7 @@ const LmsPage: React.FC = () => {
         </div>
       )}
 
-      {activeTab === "assignments" && (
+      {activeTab === 'assignments' && (
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             My Assignments
@@ -414,17 +402,17 @@ const LmsPage: React.FC = () => {
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           assignment.submitted
-                            ? "bg-green-100 text-green-800"
+                            ? 'bg-green-100 text-green-800'
                             : assignment.completed
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-yellow-100 text-yellow-800"
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
                         {assignment.submitted
-                          ? "Submitted"
+                          ? 'Submitted'
                           : assignment.completed
-                            ? "Completed"
-                            : "Pending"}
+                            ? 'Completed'
+                            : 'Pending'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -434,7 +422,7 @@ const LmsPage: React.FC = () => {
                         }
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        {assignment.submitted ? "Review" : "Work On"}
+                        {assignment.submitted ? 'Review' : 'Work On'}
                       </button>
                     </td>
                   </tr>
@@ -445,7 +433,7 @@ const LmsPage: React.FC = () => {
         </div>
       )}
 
-      {activeTab === "calendar" && (
+      {activeTab === 'calendar' && (
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             Upcoming Events
@@ -460,13 +448,13 @@ const LmsPage: React.FC = () => {
                 <div className="flex items-start">
                   <div className="mr-4">
                     <div className="bg-blue-100 p-2 rounded-lg">
-                      {event.type === "live-session" && (
+                      {event.type === 'live-session' && (
                         <VideoCameraIcon className="w-6 h-6 text-blue-600" />
                       )}
-                      {event.type === "deadline" && (
+                      {event.type === 'deadline' && (
                         <DocumentTextIcon className="w-6 h-6 text-blue-600" />
                       )}
-                      {event.type === "exam" && (
+                      {event.type === 'exam' && (
                         <AcademicCapIcon className="w-6 h-6 text-blue-600" />
                       )}
                     </div>
@@ -477,7 +465,7 @@ const LmsPage: React.FC = () => {
                       {event.date} at {event.time}
                     </p>
                     <button
-                      onClick={() => navigate("/calendar")}
+                      onClick={() => navigate('/calendar')}
                       className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
                     >
                       Add to Calendar

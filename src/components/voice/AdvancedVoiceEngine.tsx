@@ -14,8 +14,8 @@ const AdvancedVoiceEngine: React.FC = () => {
         <button
           onClick={() => setIsRecording(!isRecording)}
           className={`w-full px-4 py-3 rounded-lg transition-colors ${
-            isRecording 
-              ? 'bg-red-600 hover:bg-red-700' 
+            isRecording
+              ? 'bg-red-600 hover:bg-red-700'
               : 'bg-blue-600 hover:bg-blue-700'
           } text-white`}
         >

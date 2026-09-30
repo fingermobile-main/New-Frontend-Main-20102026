@@ -1,121 +1,281 @@
-import React, {} from 'react';
-import axios from 'axios';
+import ApiService from './api';
+import { Post } from '../types/post';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-
-export interface Post {id: string;
-  userId: string;
-  username: string;
-  userAvatar?: string;
+interface CreatePostData {
   content: string;
+  title?: string;
+  tags?: string[];
   media?: string[];
-  mediaUrls?: string[];
-  type: "text" | "image" | "video" | "audio" | "link";
-  likes: number;
-  comments: number;
-  shares: number;
-  views: number;
-  engagement?: number;
-  isLiked?: boolean;
-  isBookmarked?: boolean;
-  isFollowing?: boolean;
-  createdAt: string;
-  updatedAt: string;
+  visibility?: 'public' | 'friends' | 'private';
+  scheduledAt?: string;
+  groupId?: string;
 }
 
-export interface CreatePostData {content: string;
-  media?: File[];
-  type?: "text" | "image" | "video" | "audio" | "link";
+interface UpdatePostData {
+  content?: string;
+  title?: string;
   tags?: string[];
-  location?: string;
+  media?: string[];
+  visibility?: 'public' | 'friends' | 'private';
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  message: string;
+  error?: string;
 }
 
 class PostService {
-  private api = axios.create({baseURL: `${API_BASE_URL}/posts`,
-headers: {
-      'Content-Type': 'application/json'
+  // Create a new post
+  static async createPost(postData: CreatePostData): Promise<ApiResponse<Post>> {
+    try {
+      const response = await ApiService.post('/posts', postData);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Post created successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create post',
+        error: error.response?.data?.message || error.message || 'An error occurred while creating post',
+      };
     }
-  });
-
-  async getPosts(limit: number = 20,
-offset: number = 0): Promise<Post[]> {
-    const response = await this.api.get('/', {params: { limit,
-  offset } });
-    return response.data;
   }
 
-  async getUserPosts(userId: string,
-limit: number = 20): Promise<Post[]> {
-    const response = await this.api.get(`/user/${userId}`, {params: { limit } });
-    return response.data;
-  }
-
-  async getPostById(postId: string): Promise<Post> {
-    const response = await this.api.get(`/${postId}`);
-    return response.data;
-  }
-
-  async createPost(data: CreatePostData): Promise<Post> {
-    const formData = new FormData();
-    formData.append('content', data.content);
-    if (data.type) formData.append('type', data.type);
-    if (data.tags) formData.append('tags', JSON.stringify(data.tags));
-    if (data.location) formData.append('location', data.location);
-    if (data.media) {
-      data.media.forEach((file) => {
-        formData.append('media', file);
-      });
+  // Get a post by ID
+  static async getPostById(postId: string): Promise<ApiResponse<Post>> {
+    try {
+      const response = await ApiService.get(`/posts/${postId}`);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Post retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve post',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching post',
+      };
     }
+  }
 
-    const response = await this.api.post('/', formData, {headers: {
-        'Content-Type': 'multipart/form-data'
+  // Get posts feed
+  static async getPostsFeed(limit: number = 10, offset: number = 0, filters?: {
+    userId?: string;
+    groupId?: string;
+    tags?: string[];
+    dateFrom?: string;
+    dateTo?: string
+  }): Promise<ApiResponse<{ posts: Post[]; total: number; hasNext: boolean }>> {
+    try {
+      let url = `/posts/feed?limit=${limit}&offset=${offset}`;
+
+      if (filters) {
+        if (filters.userId) url += `&userId=${filters.userId}`;
+        if (filters.groupId) url += `&groupId=${filters.groupId}`;
+        if (filters.tags) url += `&tags=${filters.tags.join(',')}`;
+        if (filters.dateFrom) url += `&dateFrom=${filters.dateFrom}`;
+        if (filters.dateTo) url += `&dateTo=${filters.dateTo}`;
       }
-    });
-    return response.data;
+
+      const response = await ApiService.get(url);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Posts feed retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve posts feed',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching posts feed',
+      };
+    }
   }
 
-  async updatePost(postId: string,
-content: string): Promise<Post> {
-    const response = await this.api.put(`/${postId}`, { content });
-    return response.data;
+  // Update a post
+  static async updatePost(postId: string, postData: UpdatePostData): Promise<ApiResponse<Post>> {
+    try {
+      const response = await ApiService.put(`/posts/${postId}`, postData);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Post updated successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to update post',
+        error: error.response?.data?.message || error.message || 'An error occurred while updating post',
+      };
+    }
   }
 
-  async deletePost(postId: string): Promise<void> {
-    await this.api.delete(`/${postId}`);
+  // Delete a post
+  static async deletePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/posts/${postId}`);
+      return {
+        success: true,
+        message: 'Post deleted successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to delete post',
+        error: error.response?.data?.message || error.message || 'An error occurred while deleting post',
+      };
+    }
   }
 
-  async likePost(postId: string): Promise<void> {
-    await this.api.post(`/${postId}/like`);
+  // Like a post
+  static async likePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/posts/${postId}/like`);
+      return {
+        success: true,
+        message: 'Post liked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to like post',
+        error: error.response?.data?.message || error.message || 'An error occurred while liking post',
+      };
+    }
   }
 
-  async unlikePost(postId: string): Promise<void> {
-    await this.api.delete(`/${postId}/like`);
+  // Unlike a post
+  static async unlikePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/posts/${postId}/like`);
+      return {
+        success: true,
+        message: 'Post unliked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unlike post',
+        error: error.response?.data?.message || error.message || 'An error occurred while unliking post',
+      };
+    }
   }
 
-  async sharePost(postId: string): Promise<void> {
-    await this.api.post(`/${postId}/share`);
+  // Comment on a post
+  static async commentOnPost(postId: string, content: string): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post(`/posts/${postId}/comments`, { content });
+      return {
+        success: true,
+        data: response.data,
+        message: 'Comment added successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to add comment',
+        error: error.response?.data?.message || error.message || 'An error occurred while adding comment',
+      };
+    }
   }
 
-  async bookmarkPost(postId: string): Promise<void> {
-    await this.api.post(`/${postId}/bookmark`);
+  // Share a post
+  static async sharePost(postId: string, message?: string): Promise<ApiResponse<Post>> {
+    try {
+      const response = await ApiService.post(`/posts/${postId}/share`, { message });
+      return {
+        success: true,
+        data: response.data,
+        message: 'Post shared successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to share post',
+        error: error.response?.data?.message || error.message || 'An error occurred while sharing post',
+      };
+    }
   }
 
-  async unbookmarkPost(postId: string): Promise<void> {
-    await this.api.delete(`/${postId}/bookmark`);
+  // Get post engagement stats
+  static async getPostStats(postId: string): Promise<ApiResponse<{
+    likes: number;
+    comments: number;
+    shares: number;
+    views: number;
+    engagementRate: number;
+  }>> {
+    try {
+      const response = await ApiService.get(`/posts/${postId}/stats`);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Post stats retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve post stats',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching post stats',
+      };
+    }
   }
 
-  async getTrendingPosts(limit: number = 10): Promise<Post[]> {
-    const response = await this.api.get('/trending', {params: { limit } });
-    return response.data;
+  // Pin a post
+  static async pinPost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/posts/${postId}/pin`);
+      return {
+        success: true,
+        message: 'Post pinned successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to pin post',
+        error: error.response?.data?.message || error.message || 'An error occurred while pinning post',
+      };
+    }
   }
 
-  async searchPosts(query: string,
-limit: number = 20): Promise<Post[]> {
-    const response = await this.api.get('/search', {params: { query,
-  limit } });
-    return response.data;
+  // Unpin a post
+  static async unpinPost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/posts/${postId}/pin`);
+      return {
+        success: true,
+        message: 'Post unpinned successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unpin post',
+        error: error.response?.data?.message || error.message || 'An error occurred while unpinning post',
+      };
+    }
+  }
+
+  // Report a post
+  static async reportPost(postId: string, reason: string, description?: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/posts/${postId}/report`, { reason, description });
+      return {
+        success: true,
+        message: 'Post reported successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to report post',
+        error: error.response?.data?.message || error.message || 'An error occurred while reporting post',
+      };
+    }
   }
 }
 
-export const postService = new PostService();
-export default postService;
+export default PostService;

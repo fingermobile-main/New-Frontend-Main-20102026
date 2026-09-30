@@ -62,7 +62,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleSettingChange('email')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <BellIcon className="w-5 h-5 text-purple-500" />
@@ -76,7 +76,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleSettingChange('push')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <SmartphoneIcon className="w-5 h-5 text-green-500" />
@@ -90,7 +90,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleSettingChange('sms')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <GlobeIcon className="w-5 h-5 text-orange-500" />
@@ -106,7 +106,7 @@ const NotificationManagement: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-medium mb-4">Notification Categories</h3>
             <div className="space-y-4">
@@ -120,7 +120,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleCategoryChange('announcements')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Product Updates</p>
@@ -131,7 +131,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleCategoryChange('updates')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Promotions</p>
@@ -142,7 +142,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleCategoryChange('promotions')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Reminders</p>
@@ -153,7 +153,7 @@ const NotificationManagement: React.FC = () => {
                   onCheckedChange={() => handleCategoryChange('reminders')}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Security Alerts</p>
@@ -166,7 +166,7 @@ const NotificationManagement: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="flex justify-end">
             <Button>Save Preferences</Button>
           </div>

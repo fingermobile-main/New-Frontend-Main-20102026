@@ -35,8 +35,8 @@ interface SubscriptionRecommendationFormProps {
   onRecommendationReceived: (recommendation: RecommendationData) => void;
 }
 
-const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormProps> = React.memo(({ 
-  onRecommendationReceived 
+const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormProps> = React.memo(({
+  onRecommendationReceived
 }) => {
   const { member } = useAuth();
 
@@ -57,7 +57,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const recommendation = await getRecommendations(
         followers,
@@ -65,7 +65,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
         bandwidthUsage,
         monetizationEarnings
       );
-      
+
       if (recommendation) {
         onRecommendationReceived(recommendation);
       }
@@ -107,7 +107,7 @@ const SubscriptionRecommendationForm: React.FC<SubscriptionRecommendationFormPro
               </div>
             </div>
           )}
-          
+
           <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
             <div>
               <label htmlFor="followers" className="block text-sm font-medium text-gray-700">

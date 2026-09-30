@@ -8,10 +8,10 @@ interface AlertProps {
   className?: string;
 }
 
-const Alert = ({ 
-  children, 
-  variant = 'default', 
-  className = '' 
+const Alert = ({
+  children,
+  variant = 'default',
+  className = ''
 }: AlertProps) => {
   const variantClasses = {
     default: 'bg-blue-50 border-blue-200 text-blue-800',
@@ -19,7 +19,7 @@ const Alert = ({
   };
 
   return (
-    <div 
+    <div
       role="alert"
       className={`border-l-4 p-4 rounded-md ${variantClasses[variant]} ${className}`}
     >

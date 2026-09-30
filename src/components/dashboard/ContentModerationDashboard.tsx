@@ -11,16 +11,16 @@ const ContentModerationDashboard = () => {
   ]);
 
   const handleApprove = (id: number) => {
-    setModerationQueue(queue => 
-      queue.map(item => 
+    setModerationQueue(queue =>
+      queue.map(item =>
         item.id === id ? { ...item, status: 'approved' } : item
       )
     );
   };
 
   const handleReject = (id: number) => {
-    setModerationQueue(queue => 
-      queue.map(item => 
+    setModerationQueue(queue =>
+      queue.map(item =>
         item.id === id ? { ...item, status: 'rejected' } : item
       )
     );
@@ -52,12 +52,12 @@ const ContentModerationDashboard = () => {
                     <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{item.content}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge 
+                      <Badge
                         variant={
-                          item.status === 'pending' ? 'secondary' : 
-                          item.status === 'approved' ? 'success' : 
-                          item.status === 'rejected' ? 'destructive' : 
-                          'destructive'
+                          item.status === 'pending' ? 'secondary' :
+                            item.status === 'approved' ? 'success' :
+                              item.status === 'rejected' ? 'destructive' :
+                                'destructive'
                         }
                       >
                         {item.status}
@@ -66,17 +66,17 @@ const ContentModerationDashboard = () => {
                     <td className="px-6 py-4 whitespace-nowrap">{item.timestamp}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => handleApprove(item.id)}
                           disabled={item.status !== 'pending'}
                         >
                           Approve
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
+                        <Button
+                          variant="destructive"
+                          size="sm"
                           onClick={() => handleReject(item.id)}
                           disabled={item.status !== 'pending'}
                         >

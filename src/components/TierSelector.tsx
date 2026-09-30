@@ -72,7 +72,7 @@ const TierSelector: React.FC<TierSelectorProps> = ({
         badge: 'bg-green-100 text-green-800'
       }
     };
-    
+
     return colors[color] || colors.blue;
   };
 

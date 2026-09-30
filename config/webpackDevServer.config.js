@@ -45,9 +45,7 @@ Note: ["localhost", ".localhost"] will support subdomains - but we might
     // want to allow setting the allowedHosts manually for more complex setups,
 allowedHosts: disableFirewall ? "all" : [allowedHost],
 headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-      "Access-Control-Allow-Headers": "*"
+      "Access-Control-Allow-Origin": "*"       "Access-Control-Allow-Methods": "*"       "Access-Control-Allow-Headers": "*"
     },
     // Enable gzip compression of generated files.,
 compress: true,
@@ -96,8 +94,7 @@ devMiddleware: {
       // It is important to tell WebpackDevServer to use the same "publicPath" path as
       // we specified in the webpack config. When homepage is '.', default to serving
       // from the root.
-      // remove last slash so user can land on `/test` instead of `/test/`,
-publicPath: paths.publicUrlOrPath.slice(0, -1)
+      // remove last slash so user can land on `/test` instead of `/test/` publicPath: paths.publicUrlOrPath.slice(0, -1)
     },
 https: getHttpsConfig(),
     host,

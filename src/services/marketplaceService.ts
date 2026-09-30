@@ -46,7 +46,7 @@ export interface Promotion {id: string;
 class MarketplaceService {
   private baseUrl: string;
 
-  constructor(baseUrl = "/marketplace") {
+  constructor(baseUrl = '/marketplace') {
     this.baseUrl = baseUrl;
   }
 
@@ -56,7 +56,7 @@ class MarketplaceService {
     minPrice?: number;
     maxPrice?: number;
     searchQuery?: string;
-    sortBy?: "price_asc" | "price_desc" | "rating" | "newest";
+    sortBy?: 'price_asc' | 'price_desc' | 'rating' | 'newest';
     page?: number;
     limit?: number;
   }): Promise<Product[]> {
@@ -75,13 +75,13 @@ class MarketplaceService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
       throw error;
     }
   }
 
   async getProductById(
-  id: string): Promise<Product> {
+    id: string): Promise<Product> {
     try {
       const response = await api.get(`${this.baseUrl}/products/${id}`);
       return response.data;
@@ -92,7 +92,7 @@ class MarketplaceService {
   }
 
   async createProduct(
-  productData: Omit<Product, "id" | "createdAt" | "updatedAt">,
+    productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Product> {
     try {
       const response = await api.post(
@@ -101,14 +101,14 @@ class MarketplaceService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error('Error creating product:', error);
       throw error;
     }
   }
 
   async updateProduct(
-  id: string,
-productData: Partial<Product>,
+    id: string,
+    productData: Partial<Product>,
   ): Promise<Product> {
     try {
       const response = await api.put(
@@ -123,7 +123,7 @@ productData: Partial<Product>,
   }
 
   async deleteProduct(
-  id: string): Promise<void> {
+    id: string): Promise<void> {
     try {
       await api.delete(`${this.baseUrl}/products/${id}`);
     } catch (error) {
@@ -138,7 +138,7 @@ productData: Partial<Product>,
       const response = await api.get(`${this.baseUrl}/categories`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error('Error fetching categories:', error);
       throw error;
     }
   }
@@ -149,13 +149,13 @@ productData: Partial<Product>,
       const response = await api.get(`${this.baseUrl}/cart`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching cart:", error);
+      console.error('Error fetching cart:', error);
       throw error;
     }
   }
 
   async addToCart(
-  productId: string, quantity = 1): Promise<CartItem[]> {
+    productId: string, quantity = 1): Promise<CartItem[]> {
     try {
       const response = await api.post(`${this.baseUrl}/cart`, {
         productId,
@@ -163,14 +163,14 @@ productData: Partial<Product>,
       });
       return response.data;
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error('Error adding to cart:', error);
       throw error;
     }
   }
 
   async updateCartItem(
-  productId: string,
-quantity: number,
+    productId: string,
+    quantity: number,
   ): Promise<CartItem[]> {
     try {
       const response = await api.put(`${this.baseUrl}/cart/${productId}`, {
@@ -184,7 +184,7 @@ quantity: number,
   }
 
   async removeFromCart(
-  productId: string): Promise<CartItem[]> {
+    productId: string): Promise<CartItem[]> {
     try {
       const response = await api.delete(`${this.baseUrl}/cart/${productId}`);
       return response.data;
@@ -198,7 +198,7 @@ quantity: number,
     try {
       await api.delete(`${this.baseUrl}/cart`);
     } catch (error) {
-      console.error("Error clearing cart:", error);
+      console.error('Error clearing cart:', error);
       throw error;
     }
   }
@@ -209,13 +209,13 @@ quantity: number,
       const response = await api.get(`${this.baseUrl}/orders`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      console.error('Error fetching orders:', error);
       throw error;
     }
   }
 
   async getOrderById(
-  id: number): Promise<Order> {
+    id: number): Promise<Order> {
     try {
       const response = await api.get(`${this.baseUrl}/orders/${id}`);
       return response.data;
@@ -226,9 +226,9 @@ quantity: number,
   }
 
   async createOrder(
-  items: {productId: string;
+    items: {productId: string;
   quantity: number }[],
-paymentMethod: string,
+    paymentMethod: string,
   ): Promise<Order> {
     try {
       const response = await api.post(`${this.baseUrl}/orders`, {
@@ -237,14 +237,14 @@ paymentMethod: string,
       });
       return response.data;
     } catch (error) {
-      console.error("Error creating order:", error);
+      console.error('Error creating order:', error);
       throw error;
     }
   }
 
   async updateOrderStatus(
-  orderId: string,
-status: Order["status"],
+    orderId: string,
+    status: Order['status'],
   ): Promise<Order> {
     try {
       const response = await api.patch(`${this.baseUrl}/orders/${orderId}`, {
@@ -260,7 +260,7 @@ status:`, error);
 
   // Reviews
   async getReviews(
-  productId: string): Promise<Review[]> {
+    productId: string): Promise<Review[]> {
     try {
       const response = await api.get(
         `${this.baseUrl}/products/${productId}/reviews`,
@@ -273,8 +273,8 @@ status:`, error);
   }
 
   async addReview(
-  productId: string,
-reviewData: Omit<Review, "id" | "created_at" | "product_id" | "member_id">,
+    productId: string,
+    reviewData: Omit<Review, 'id' | 'created_at' | 'product_id' | 'member_id'>,
   ): Promise<Review> {
     try {
       const response = await api.post(
@@ -294,13 +294,13 @@ reviewData: Omit<Review, "id" | "created_at" | "product_id" | "member_id">,
       const response = await api.get(`${this.baseUrl}/wishlist`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching wishlist:", error);
+      console.error('Error fetching wishlist:', error);
       throw error;
     }
   }
 
   async addToWishlist(
-  productId: string): Promise<WishlistItem[]> {
+    productId: string): Promise<WishlistItem[]> {
     try {
       const response = await api.post(`${this.baseUrl}/wishlist`, {
         productId
@@ -314,7 +314,7 @@ wishlist:`, error);
   }
 
   async removeFromWishlist(
-  productId: string): Promise<WishlistItem[]> {
+    productId: string): Promise<WishlistItem[]> {
     try {
       const response = await api.delete(
         `${this.baseUrl}/wishlist/${productId}`,
@@ -332,14 +332,14 @@ wishlist:`, error);
       const response = await api.get(`${this.baseUrl}/promotions/active`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching active promotions:", error);
+      console.error('Error fetching active promotions:', error);
       throw error;
     }
   }
 
   // Search
   async searchProducts(
-  query: string,
+    query: string,
     filters?: {
       category?: string;
       minPrice?: number;
@@ -361,7 +361,7 @@ wishlist:`, error);
       );
       return response.data;
     } catch (error) {
-      console.error("Error searching products:", error);
+      console.error('Error searching products:', error);
       throw error;
     }
   }

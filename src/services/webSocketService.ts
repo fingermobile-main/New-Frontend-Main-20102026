@@ -38,7 +38,7 @@ export abstract class WebSocketService {
   protected reconnectAttempts = 0;
   protected config: WebSocketConfig;
   protected endpoint: string;
-  
+
   protected heartbeatInterval: ReturnType<typeof setInterval> | null = null;
   protected pongTimeout: ReturnType<typeof setTimeout> | null = null;
   protected memberId: string | null = null;
@@ -195,10 +195,10 @@ export abstract class WebSocketService {
       data && typeof data === 'object' && 'event' in data && 'data' in data
         ? (data as unknown as WebSocketMessage)
         : {
-            event,
-            data,
-            timestamp: Date.now()
-          };
+          event,
+          data,
+          timestamp: Date.now()
+        };
 
     try {
       this.socket.send(JSON.stringify(message));
@@ -230,7 +230,7 @@ export abstract class WebSocketService {
       callbacks.forEach((callback) => {
         try {
           let processedData = data;
-          
+
           // Deserialize nested specialized platform structures (Maps & Sets)
           if (data && typeof data === 'object') {
             const dataObj = data as Record<string, any>;
@@ -242,7 +242,7 @@ export abstract class WebSocketService {
               }
             }
           }
-          
+
           callback(processedData);
         } catch (error) {
           console.error(`[${this.constructor.name}] Exception thrown inside handler executing for event "${event}":`, error);
@@ -262,7 +262,7 @@ export abstract class WebSocketService {
     }
 
     this.reconnectAttempts++;
-    
+
     // Exponential binary backoff capped cleanly at a maximum threshold of 30 seconds
     const delay = Math.min(
       Math.pow(2, this.reconnectAttempts) * this.config.baseReconnectDelay,

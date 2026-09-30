@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import React, { useState, useEffect } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import { ShieldCheckIcon, FingerPrintIcon, LockClosedIcon, DeviceMobileIcon, UserCircleIcon, CreditCardIcon } from '../icons';
 
 const SecuritySetupPage: React.FC = () => {
@@ -9,31 +9,71 @@ const SecuritySetupPage: React.FC = () => {
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [faceIdEnabled, setFaceIdEnabled] = useState(false);
   const [fingerprintEnabled, setFingerprintEnabled] = useState(false);
-  const [backupCodesEnabled, setBackupCodesEnabled] = useState(false);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phoneVerification, setPhoneVerification] = useState('+1 (555) 123-4567');
   const [showBackupCodes, setShowBackupCodes] = useState(false);
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [backupCodesEnabled, setBackupCodesEnabled] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const { identityService } = await import('../services/identityService');
+        const settings = await identityService.getSecuritySettings();
+        if (settings) {
+          setTwoFactorEnabled(!!settings.twoFactorEnabled);
+          setMultiFactorEnabled(!!settings.multiFactorEnabled);
+          setBiometricEnabled(!!settings.biometricEnabled);
+          if (settings.phoneVerification) setPhoneVerification(settings.phoneVerification);
+          if (settings.backupCodes && settings.backupCodes.length > 0) {
+            setBackupCodes(settings.backupCodes);
+            setBackupCodesEnabled(true);
+          }
+        }
+      } catch (err) {
+        // ignore initial fetch error
+      }
+    };
+    loadSettings();
+  }, []);
 
   // Generate backup codes
-  const generateBackupCodes = () => {
-    const codes = Array.from({ length: 10 }, () => 
-      Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)).join('')
-    );
-    setBackupCodes(codes);
-    setShowBackupCodes(true);
-    showToast('Backup codes generated successfully', 'success');
+  const generateBackupCodes = async () => {
+    try {
+      const { identityService } = await import('../services/identityService');
+      const codes = await identityService.generateBackupCodes();
+      setBackupCodes(codes);
+      setBackupCodesEnabled(true);
+      setShowBackupCodes(true);
+      showToast('8 single-use cryptographic backup codes generated and saved.', 'success');
+    } catch (err) {
+      showToast('Failed to generate backup codes', 'error');
+    }
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     if (newPassword && newPassword !== confirmPassword) {
       showToast('Passwords do not match', 'error');
       return;
     }
-    
-    showToast('Security settings updated successfully', 'success');
+
+    setIsSaving(true);
+    try {
+      const { identityService } = await import('../services/identityService');
+      await identityService.updateSecuritySettings({
+        twoFactorEnabled,
+        biometricEnabled,
+        backupCodes
+      });
+      showToast('Security posture and preferences updated successfully.', 'success');
+    } catch (err) {
+      showToast('Failed to update security settings', 'error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -233,7 +273,7 @@ const SecuritySetupPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-purple-50 rounded-lg">
                   <h3 className="font-medium text-purple-800">Required Factors</h3>
                   <div className="mt-3">
@@ -295,7 +335,7 @@ const SecuritySetupPage: React.FC = () => {
                     <span className="text-sm">Enable fingerprint authentication</span>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center">
                     <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
@@ -327,7 +367,7 @@ const SecuritySetupPage: React.FC = () => {
               <div>
                 <h2 className="text-lg font-medium text-gray-900">Backup Codes</h2>
                 <p className="text-sm text-gray-500">
-                  Codes to access your account if you lose your device
+                  Codes to access your account if you lose your device {backupCodesEnabled && <span className="ml-2 text-xs font-semibold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Active</span>}
                 </p>
               </div>
               <button
@@ -376,16 +416,16 @@ const SecuritySetupPage: React.FC = () => {
                   <option>Private</option>
                 </select>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium text-gray-900">Message Encryption</h3>
                   <p className="text-sm text-gray-500">End-to-end encryption for messages</p>
                 </div>
                 <div className="relative inline-block w-10 mr-2 align-middle select-none">
-                  <input 
-                    type="checkbox" 
-                    name="encrypt-messages" 
+                  <input
+                    type="checkbox"
+                    name="encrypt-messages"
                     id="encrypt-messages"
                     defaultChecked
                     className="sr-only"
@@ -400,9 +440,10 @@ const SecuritySetupPage: React.FC = () => {
           <div className="pt-4 flex justify-end">
             <button
               onClick={handleSaveChanges}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium"
+              disabled={isSaving}
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium disabled:opacity-50"
             >
-              Save Security Settings
+              {isSaving ? 'Saving Security Settings...' : 'Save Security Settings'}
             </button>
           </div>
         </div>

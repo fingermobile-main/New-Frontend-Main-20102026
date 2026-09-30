@@ -48,10 +48,10 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       const cacheKey = 'posts_list';
       const cachedData = dataCache.get<Post[]>(cacheKey);
-      
+
       if (cachedData) {
         setPosts(cachedData);
         return;
@@ -60,7 +60,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await new Promise<void>((resolve) => {
         timerRef.current = setTimeout(() => resolve(), 1000);
       });
-      
+
       const mockPosts: Post[] = [];
       dataCache.set(cacheKey, mockPosts);
       setPosts(mockPosts);
@@ -91,7 +91,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       // Create new post object with all required properties
       const newPost: Post = {
         id: Date.now().toString(),
@@ -111,10 +111,10 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      
+
       setPosts((prev) => [newPost, ...prev]);
       dataCache.delete('posts_list');
-      
+
       return newPost;
     } catch (err) {
       setError('Failed to create post');
@@ -129,11 +129,11 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       setPosts((prev) =>
         prev.map((post) => (post.id === postId ? { ...post, ...postData } : post))
       );
-      
+
       dataCache.delete('posts_list');
     } catch (err) {
       setError('Failed to update post');
@@ -148,7 +148,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       setPosts((prev) => prev.filter((post) => post.id !== postId));
       dataCache.delete('posts_list');
     } catch (err) {
@@ -164,7 +164,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       setPosts((prev) =>
         prev.map((post) => {
           if (post.id === postId) {
@@ -177,7 +177,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return post;
         })
       );
-      
+
       dataCache.delete('posts_list');
     } catch (err) {
       setError('Failed to add comment');
@@ -197,7 +197,7 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
         timestamp: new Date().toISOString(),
         likes: 0,
       };
-      
+
       addComment(postId, newComment).catch((err) => {
         console.error('Failed to add comment via handler:', err);
       });
@@ -210,12 +210,12 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
       prevPosts.map((post) =>
         post.id === postId
           ? {
-              ...post,
-              isLiked: !post.isLiked,
-              likesCount: post.isLiked
-                ? Math.max(0, (post.likesCount || 0) - 1)
-                : (post.likesCount || 0) + 1,
-            }
+            ...post,
+            isLiked: !post.isLiked,
+            likesCount: post.isLiked
+              ? Math.max(0, (post.likesCount || 0) - 1)
+              : (post.likesCount || 0) + 1,
+          }
           : post
       )
     );
@@ -241,11 +241,11 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (post.id === postId) {
           const updatedPollOptions = post.pollOptions
             ? post.pollOptions.map((option) => ({
-                ...option,
-                text: option.text || option.id,
-              }))
+              ...option,
+              text: option.text || option.id,
+            }))
             : [];
-            
+
           if (post.type === 'poll' && updatedPollOptions.length > 0) {
             return {
               ...post,

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 /*
  * FingerMobile Protocol™ - Hallmark Achievements Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -10,7 +10,7 @@ import React, { useState } from 'react';
  */
 
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import AdBanner from '../components/AdBanner';
 import FixedAdBanner from '../components/FixedAdBanner';
 import BurgerMenu from '../components/BurgerMenu';
@@ -22,6 +22,7 @@ import {
   MusicNoteIcon,
   ShoppingBagIcon
 } from '../icons';
+import { hallmarksService } from '../services/HallmarksService';
 
 const HallmarkPage: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,8 +32,8 @@ const HallmarkPage: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Mock hallmark achievements data
-  const achievements = [
+  // Hallmark achievements data with live service sync
+  const [achievements, setAchievements] = useState<any[]>([
     {
       id: 1,
       title: 'Community Builder',
@@ -83,7 +84,27 @@ const HallmarkPage: React.FC = () => {
       progress: 100,
       criteria: 'Receive 500+ comments on your posts'
     }
-  ];
+  ]);
+
+  useEffect(() => {
+    let mounted = true;
+    hallmarksService.getAllHallmarks().then((res) => {
+      if (mounted && res.data && res.data.length > 0) {
+        const mapped = res.data.map((h: any) => ({
+          id: h.id,
+          title: h.name,
+          description: h.description,
+          level: h.rarity ? h.rarity.charAt(0).toUpperCase() + h.rarity.slice(1) : 'Gold',
+          earnedDate: h.createdAt ? new Date(h.createdAt).toLocaleDateString() : 'Active',
+          image: h.icon || 'https://placehold.co/100x100/f59e0b/white?text=🏅',
+          progress: 100,
+          criteria: h.description || 'Awarded on FingerMobile'
+        }));
+        setAchievements(mapped);
+      }
+    }).catch(err => console.warn('Failed to load live hallmarks in HallmarkPage:', err));
+    return () => { mounted = false; };
+  }, []);
 
 
   // Navigation items
@@ -116,9 +137,9 @@ const HallmarkPage: React.FC = () => {
           <h1 className="text-xl font-bold mb-6 text-blue-600">🌀 FingerMobile Protocol</h1>
           <nav className="flex flex-col gap-3 text-sm">
             {navItems.map((item, index) => (
-              <Link 
-                key={index} 
-                to={item.path} 
+              <Link
+                key={index}
+                to={item.path}
                 className="hover:text-blue-500 py-1"
               >
                 {item.name}
@@ -160,8 +181,8 @@ const HallmarkPage: React.FC = () => {
         {/* H1 Menu (Dancia-4Tv, BeatwaveNG, Marketplace) */}
         <div className="flex flex-wrap gap-2 mb-6">
           {h1MenuItems.map((item, index) => (
-            <Link 
-              key={index} 
+            <Link
+              key={index}
               to={item.path}
               className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-sm hover:opacity-90 transition flex items-center"
             >
@@ -208,19 +229,19 @@ const HallmarkPage: React.FC = () => {
               <div key={achievement.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
                 <div className="p-5">
                   <div className="flex items-start">
-                    <img 
-                      src={achievement.image} 
+                    <img
+                      src={achievement.image}
                       alt={achievement.title}
                       className="w-16 h-16 rounded-lg"
-                     />
+                    />
                     <div className="ml-4">
                       <h3 className="font-semibold text-lg text-gray-900">{achievement.title}</h3>
                       <div className="flex items-center mt-1">
                         <span className={`text-sm font-medium px-2 py-0.5 rounded ${
                           achievement.level === 'Gold' ? 'bg-yellow-100 text-yellow-800' :
-                          achievement.level === 'Silver' ? 'bg-gray-100 text-gray-800' :
-                          achievement.level === 'Platinum' ? 'bg-purple-100 text-purple-800' :
-                          'bg-blue-100 text-blue-800'
+                            achievement.level === 'Silver' ? 'bg-gray-100 text-gray-800' :
+                              achievement.level === 'Platinum' ? 'bg-purple-100 text-purple-800' :
+                                'bg-blue-100 text-blue-800'
                         }`}>
                           {achievement.level}
                         </span>
@@ -232,8 +253,8 @@ const HallmarkPage: React.FC = () => {
                   <div className="mt-4">
                     <div className="text-xs text-gray-500 mb-1">Progress</div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-500 h-2 rounded-full" 
+                      <div
+                        className="bg-green-500 h-2 rounded-full"
                         style={{ width: `${achievement.progress}%` }}
                       ></div>
                     </div>

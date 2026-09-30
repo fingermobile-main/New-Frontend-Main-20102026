@@ -105,7 +105,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
           <p className="text-3xl font-bold text-green-900">{formatCurrency(earnings.totalEarnings)}</p>
           <p className="text-xs text-green-600 mt-2">All time</p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">This Month</p>
           <p className="text-3xl font-bold text-blue-600">{formatCurrency(earnings.currentMonth)}</p>
@@ -113,13 +113,13 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
             {earnings.growth >= 0 ? '↑' : '↓'} {Math.abs(earnings.growth)}% vs last month
           </p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Last Month</p>
           <p className="text-3xl font-bold text-purple-600">{formatCurrency(earnings.previousMonth)}</p>
           <p className="text-xs text-gray-500 mt-2">Completed</p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Next Payout</p>
           <p className="text-3xl font-bold text-orange-600">{formatCurrency(earnings.nextPayout.estimatedAmount)}</p>
@@ -141,7 +141,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
               tips: 'bg-yellow-500',
               sponsorships: 'bg-green-500'
             };
-            
+
             return (
               <div key={source}>
                 <div className="flex justify-between text-sm mb-1">
@@ -171,7 +171,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
               tip: '💰',
               sponsorship: '🤝'
             };
-            
+
             return (
               <div key={txn.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">

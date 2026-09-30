@@ -31,34 +31,34 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
   const startRecording = async () => {
     try {
       setError(null);
-      
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream);
-      
+
       const chunks: Blob[] = [];
-      
+
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
           chunks.push(e.data);
         }
       };
-      
+
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: 'audio/webm' });
         const url = URL.createObjectURL(blob);
         setAudioURL(url);
         setAudioChunks(chunks);
-        
+
         // Stop all tracks
         stream.getTracks().forEach(track => track.stop());
       };
-      
+
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
       setIsPaused(false);
       setDuration(0);
-      
+
       // Start timer
       const timer = setInterval(() => {
         setDuration(prev => {
@@ -70,7 +70,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
           return prev + 1;
         });
       }, 1000);
-      
+
     } catch (err: any) {
       setError('Failed to access microphone. Please grant permission.');
       console.error('Recording error:', err);
@@ -101,7 +101,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
 
   const handleSave = async () => {
     if (audioChunks.length === 0) return;
-    
+
     try {
       const blob = new Blob(audioChunks, { type: 'audio/webm' });
       if (onRecordingComplete) {
@@ -167,14 +167,14 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
                     {formatTime(duration)}
                   </div>
                   <p className="text-sm text-gray-600 mt-2">
-                    {isRecording 
-                      ? isPaused 
-                        ? 'Paused' 
+                    {isRecording
+                      ? isPaused
+                        ? 'Paused'
                         : 'Recording...'
                       : 'Ready to record'
                     }
                   </p>
-                  
+
                   {/* Progress Bar */}
                   {isRecording && (
                     <div className="mt-4">
@@ -235,7 +235,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
                           <span className="text-white text-3xl">⏸️</span>
                         </button>
                       )}
-                      
+
                       <button
                         onClick={stopRecording}
                         className="w-16 h-16 rounded-full bg-gray-700 hover:bg-gray-800 flex items-center justify-center transition-all"
@@ -277,7 +277,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
                   >
                     🔄 Retake
                   </button>
-                  
+
                   <button
                     onClick={handleSave}
                     className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"

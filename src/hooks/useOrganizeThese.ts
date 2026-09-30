@@ -12,7 +12,7 @@ interface UseOrganizeTheseReturn {organizedData: OrganizationResult | null; isOr
   organizationStats: any;
   error: string | null;
   organizeMemberData: () => Promise<void>;
-  exportData: (format: "pdf" | "csv") => Promise<void>;
+  exportData: (format: 'pdf' | 'csv') => Promise<void>;
   getOrganizationStats: () => Promise<void>;
 }
 
@@ -35,8 +35,8 @@ export const useOrganizeThese = (): UseOrganizeTheseReturn => {
       const result = await organizeMemberData();
       setOrganizedData(result);
     } catch (err) {
-      setError("Failed to organize data. Please try again.");
-      console.error("Error organizing data:", err);
+      setError('Failed to organize data. Please try again.');
+      console.error('Error organizing data:', err);
     } finally {
       setIsOrganizing(false);
     }
@@ -46,9 +46,9 @@ export const useOrganizeThese = (): UseOrganizeTheseReturn => {
    * Function to export data
    */
   const handleExportData = React.useCallback(
-    async (format: "pdf" | "csv") => {
+    async (format: 'pdf' | 'csv') => {
       if (!organizedData) {
-        setError("No data to export");
+        setError('No data to export');
         return;
       }
 
@@ -72,8 +72,8 @@ export const useOrganizeThese = (): UseOrganizeTheseReturn => {
       const stats = await generateAnalyticsReport(organizedData);
       setOrganizationStats(stats);
     } catch (err) {
-      setError("Failed to generate analytics report");
-      console.error("Error generating analytics:", err);
+      setError('Failed to generate analytics report');
+      console.error('Error generating analytics:', err);
     }
   }, [organizedData]);
 
@@ -89,9 +89,9 @@ export const useOrganizeThese = (): UseOrganizeTheseReturn => {
     isOrganizing,
     organizationStats,
     error,
-organizeMemberData: handleOrganizeMemberData,
-exportData: handleExportData,
-getOrganizationStats: handleGetOrganizationStats
+    organizeMemberData: handleOrganizeMemberData,
+    exportData: handleExportData,
+    getOrganizationStats: handleGetOrganizationStats
   };
 };
 

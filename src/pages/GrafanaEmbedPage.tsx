@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { 
-  ChartBarIcon, 
+import { useAppContext } from '../contexts/AppContext';
+import {
+  ChartBarIcon,
   ArrowsPointingOutIcon,
   Cog6ToothIcon
 } from '../icons';
@@ -115,7 +115,7 @@ const GrafanaEmbedPage: React.FC = () => {
               </button>
             </div>
           )}
-          
+
           <iframe
             src={`http://localhost:3000/d/${selectedDashboard}?orgId=1&refresh=${autoRefresh > 0 ? `${autoRefresh}s` : ''}&kiosk`}
             width="100%"
@@ -132,7 +132,7 @@ const GrafanaEmbedPage: React.FC = () => {
           <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-blue-900 mb-2">About Grafana Integration</h3>
             <p className="text-blue-800 mb-4">
-              This page embeds Grafana dashboards directly into the FingerMobile platform. 
+              This page embeds Grafana dashboards directly into the FingerMobile platform.
               Grafana provides powerful visualization and alerting capabilities for your metrics.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Gift, QrCode, CheckCircle2, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { Gift, QrCode, CheckCircle2, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import {
   Dialog,
   DialogContent,
@@ -10,8 +10,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
-import { Card, CardContent } from "@/components/ui/Card";
+} from '@/components/ui/Dialog';
+import { Card, CardContent } from '@/components/ui/Card';
 
 interface RedeemGiftCardModalProps {
   isOpen: boolean;
@@ -24,9 +24,9 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
   onClose,
   onRedeem
 }) => {
-  const [code, setCode] = React.useState("");
+  const [code, setCode] = React.useState('');
   const [isRedeeming, setIsRedeeming] = React.useState(false);
-  const [redeemStatus, setRedeemStatus] = React.useState<"idle" | "success" | "error">("idle");
+  const [redeemStatus, setRedeemStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [giftCardInfo, setGiftCardInfo] = React.useState<{
     amount: number;
     issuer: string;
@@ -37,34 +37,34 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
     if (!code.trim()) return;
 
     setIsRedeeming(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       const isValid = code.length >= 10;
       if (isValid) {
-        setRedeemStatus("success");
+        setRedeemStatus('success');
         setGiftCardInfo({
           amount: 50,
-          issuer: "FingerMobile Protocol",
-          expiryDate: "2027-12-31"
+          issuer: 'FingerMobile Protocol',
+          expiryDate: '2027-12-31'
         });
         onRedeem?.(code);
       } else {
-        setRedeemStatus("error");
+        setRedeemStatus('error');
       }
       setIsRedeeming(false);
     }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleRedeem();
     }
   };
 
   const resetForm = () => {
-    setCode("");
-    setRedeemStatus("idle");
+    setCode('');
+    setRedeemStatus('idle');
     setGiftCardInfo(null);
   };
 
@@ -86,7 +86,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        {redeemStatus === "idle" && (
+        {redeemStatus === 'idle' && (
           <div className="space-y-4 mt-4">
             <div className="space-y-2">
               <Label htmlFor="gift-code">Gift Card Code</Label>
@@ -112,12 +112,12 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
               onClick={handleRedeem}
               disabled={!code.trim() || isRedeeming}
             >
-              {isRedeeming ? "Verifying..." : "Redeem"}
+              {isRedeeming ? 'Verifying...' : 'Redeem'}
             </Button>
           </div>
         )}
 
-        {redeemStatus === "success" && giftCardInfo && (
+        {redeemStatus === 'success' && giftCardInfo && (
           <div className="mt-4">
             <Card className="bg-green-50 border-green-200">
               <CardContent className="pt-6">
@@ -142,7 +142,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
           </div>
         )}
 
-        {redeemStatus === "error" && (
+        {redeemStatus === 'error' && (
           <div className="mt-4">
             <Card className="bg-red-50 border-red-200">
               <CardContent className="pt-6">
@@ -168,7 +168,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
           </div>
         )}
 
-        {redeemStatus === "idle" && (
+        {redeemStatus === 'idle' && (
           <DialogFooter>
             <p className="text-xs text-muted-foreground text-center w-full">
               Gift cards can be purchased from authorized retailers or received as gifts

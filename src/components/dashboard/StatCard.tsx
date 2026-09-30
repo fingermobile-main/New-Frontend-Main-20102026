@@ -8,7 +8,7 @@ interface StatCardProps {
   change?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ 
+const StatCard: React.FC<StatCardProps> = ({
   title = 'Stat',
   value = '0',
   icon = '📊',

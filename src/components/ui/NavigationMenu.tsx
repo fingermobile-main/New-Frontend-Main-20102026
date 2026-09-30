@@ -31,11 +31,11 @@ const NavigationMenuItem: React.FC<NavigationMenuItemProps> = ({ children }) => 
   return <li>{children}</li>;
 };
 
-const NavigationMenuLink: React.FC<NavigationMenuLinkProps> = ({ 
-  children, 
-  href, 
-  onClick, 
-  className = '' 
+const NavigationMenuLink: React.FC<NavigationMenuLinkProps> = ({
+  children,
+  href,
+  onClick,
+  className = ''
 }) => {
   return (
     <a

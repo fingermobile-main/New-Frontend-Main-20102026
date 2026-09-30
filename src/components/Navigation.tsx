@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 interface NavItem {
   label: string;
@@ -18,7 +18,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({
   items,
   logo,
-  className = ""
+  className = ''
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
@@ -39,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({
           {/* Logo */}
           <div className="flex items-center">
             {logo || (
-              <div className="text-xl font-bold text-primary">Logo</div>
+              <img src="/assets/branding/fingermobile/FingerMobile orange logo.webp" alt="FingerMobile Logo" className="h-10 object-contain" />
             )}
           </div>
 

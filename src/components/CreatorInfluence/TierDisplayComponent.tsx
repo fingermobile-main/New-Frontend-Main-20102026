@@ -98,7 +98,7 @@ const TierDisplayComponent: React.FC<TierDisplayComponentProps> = ({
         {Object.entries(tiers || {}).map(([_key, tier]) => {
           // Type guard for tier
           if (!tier || typeof tier !== 'object') return null;
-          
+
           const typedTier = tier as {
             name: string;
             level: string;
@@ -108,29 +108,29 @@ const TierDisplayComponent: React.FC<TierDisplayComponentProps> = ({
             durationMonths: number | null;
             features: string[];
           };
-          
+
           const isCurrentPlan = subscription && subscription.subscription_level === typedTier.level;
           const isDisabled = isCurrentPlan === null ? false : Boolean(isCurrentPlan);
-          
+
           return (
-            <div 
-              key={typedTier.level} 
+            <div
+              key={typedTier.level}
               className="border rounded-2xl shadow-sm overflow-hidden border-gray-200"
             >
               <div className="p-6">
                 <h3 className="text-lg font-medium text-gray-900">{typedTier.name}</h3>
-                
+
                 <div className="mt-4">
                   <p className="text-4xl font-extrabold text-gray-900">
                     {formatCurrency(typedTier.monthlyPriceNaira)}
                     <span className="text-base font-medium text-gray-500">/mo</span>
                   </p>
-                  
+
                   <p className="mt-1 text-gray-500">
                     {typedTier.minFollowers.toLocaleString()} - {typedTier.maxFollowers.toLocaleString()} followers
                   </p>
                 </div>
-                
+
                 <ul className="mt-6 space-y-4">
                   {typedTier.features.map((feature: string, idx: number) => (
                     <li key={idx} className="flex items-start">
@@ -141,12 +141,12 @@ const TierDisplayComponent: React.FC<TierDisplayComponentProps> = ({
                     </li>
                   ))}
                 </ul>
-                
+
                 <button
                   type="button"
                   className={`mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white ${
-                    isCurrentPlan 
-                      ? 'bg-gray-600 cursor-default' 
+                    isCurrentPlan
+                      ? 'bg-gray-600 cursor-default'
                       : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                   disabled={isDisabled}

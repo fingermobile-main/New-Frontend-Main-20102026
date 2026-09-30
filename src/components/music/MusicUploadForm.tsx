@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Music, Upload, FileAudio, CheckCircle2, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
+import { Music, Upload, FileAudio, CheckCircle2, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
-import { Progress } from "@/components/ui/Progress";
+} from '@/components/ui/Dialog';
+import { Progress } from '@/components/ui/Progress';
 
 interface MusicUploadFormProps {
   isOpen: boolean;
@@ -26,21 +26,21 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
   onUpload
 }) => {
   const [file, setFile] = React.useState<File | null>(null);
-  const [title, setTitle] = React.useState("");
-  const [artist, setArtist] = React.useState("");
-  const [album, setAlbum] = React.useState("");
-  const [genre, setGenre] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [title, setTitle] = React.useState('');
+  const [artist, setArtist] = React.useState('');
+  const [album, setAlbum] = React.useState('');
+  const [genre, setGenre] = React.useState('');
+  const [description, setDescription] = React.useState('');
   const [isUploading, setIsUploading] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile && selectedFile.type.startsWith("audio/")) {
+    if (selectedFile && selectedFile.type.startsWith('audio/')) {
       setFile(selectedFile);
       // Auto-fill title from filename
       if (!title) {
-        const fileName = selectedFile.name.replace(/\.[^/.]+$/, "");
+        const fileName = selectedFile.name.replace(/\.[^/.]+$/, '');
         setTitle(fileName);
       }
     }
@@ -50,7 +50,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
     if (!file || !title.trim() || !artist.trim()) return;
 
     setIsUploading(true);
-    
+
     // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
@@ -67,7 +67,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
       clearInterval(interval);
       setUploadProgress(100);
       onUpload?.(file, { title, artist, album, genre, description });
-      
+
       setTimeout(() => {
         resetForm();
         onClose();
@@ -77,11 +77,11 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
 
   const resetForm = () => {
     setFile(null);
-    setTitle("");
-    setArtist("");
-    setAlbum("");
-    setGenre("");
-    setDescription("");
+    setTitle('');
+    setArtist('');
+    setAlbum('');
+    setGenre('');
+    setDescription('');
     setIsUploading(false);
     setUploadProgress(0);
   };
@@ -220,7 +220,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
             onClick={handleUpload}
             disabled={!file || !title.trim() || !artist.trim() || isUploading}
           >
-            {isUploading ? "Uploading..." : "Upload Track"}
+            {isUploading ? 'Uploading...' : 'Upload Track'}
           </Button>
         </DialogFooter>
       </DialogContent>

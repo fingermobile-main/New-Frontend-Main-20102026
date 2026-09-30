@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Gamepad2, Trophy, Users, Timer } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Gamepad2, Trophy, Users, Timer } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface AdvancedFingerWarProps {
   gameId?: string;
@@ -16,33 +16,33 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
   onJoinGame,
   onLeaveGame
 }) => {
-  const [gameState, setGameState] = React.useState<"lobby" | "playing" | "finished">("lobby");
+  const [gameState, setGameState] = React.useState<'lobby' | 'playing' | 'finished'>('lobby');
   const [score, setScore] = React.useState(0);
   const [timeRemaining, setTimeRemaining] = React.useState(60);
   const [players, setPlayers] = React.useState([
-    { id: "1", name: "Player 1", score: 0 },
-    { id: "2", name: "Player 2", score: 0 }
+    { id: '1', name: 'Player 1', score: 0 },
+    { id: '2', name: 'Player 2', score: 0 }
   ]);
 
   React.useEffect(() => {
-    if (gameState === "playing" && timeRemaining > 0) {
+    if (gameState === 'playing' && timeRemaining > 0) {
       const timer = setInterval(() => {
         setTimeRemaining((prev) => prev - 1);
       }, 1000);
       return () => clearInterval(timer);
     } else if (timeRemaining === 0) {
-      setGameState("finished");
+      setGameState('finished');
     }
   }, [gameState, timeRemaining]);
 
   const handleStartGame = () => {
-    setGameState("playing");
+    setGameState('playing');
     setTimeRemaining(60);
     setScore(0);
   };
 
   const handleFingerTap = () => {
-    if (gameState === "playing") {
+    if (gameState === 'playing') {
       setScore((prev) => prev + 1);
     }
   };
@@ -60,7 +60,7 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {gameState === "lobby" && (
+          {gameState === 'lobby' && (
             <div className="text-center space-y-4">
               <div className="flex justify-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
@@ -78,7 +78,7 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
             </div>
           )}
 
-          {gameState === "playing" && (
+          {gameState === 'playing' && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -110,14 +110,14 @@ const AdvancedFingerWar: React.FC<AdvancedFingerWarProps> = ({
             </div>
           )}
 
-          {gameState === "finished" && (
+          {gameState === 'finished' && (
             <div className="text-center space-y-4">
               <Trophy className="h-16 w-16 mx-auto text-yellow-500" />
               <div>
                 <h3 className="text-2xl font-bold">Game Over!</h3>
                 <p className="text-muted-foreground">Your final score: {score}</p>
               </div>
-              <Button onClick={() => setGameState("lobby")} size="lg">
+              <Button onClick={() => setGameState('lobby')} size="lg">
                 Play Again
               </Button>
             </div>

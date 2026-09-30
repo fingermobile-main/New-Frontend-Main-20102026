@@ -7,10 +7,10 @@ interface CosmosGiftCardModalProps {
   onSubmit?: (giftCardData: any) => void;
 }
 
-const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({ 
-  isOpen, 
+const CosmosGiftCardModal: React.FC<CosmosGiftCardModalProps> = ({
+  isOpen,
   onClose,
-  onSubmit 
+  onSubmit
 }) => {
   const [formData, setFormData] = React.useState({
     recipientName: '',

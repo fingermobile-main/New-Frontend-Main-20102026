@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
 
 interface Member {
   id: string;
@@ -11,133 +12,82 @@ interface Member {
 
 const MemberManagementPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const { hasPermission } = useAuth();
+  const { state } = useAuth();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchMembers = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/admin/users');
+      const userList = Array.isArray(res.data) 
+        ? res.data 
+        : (res.data?.users || res.data?.data || []);
+      
+      const mapped: Member[] = userList.map((u: any) => ({
+        id: String(u.id),
+        email: u.email || `${u.username}@fingermobile.io`,
+        role: u.role || 'user',
+        createdAt: u.createdAt || u.created_at || new Date().toISOString()
+      }));
+
+      setMembers(mapped);
+      setError(null);
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || 'Failed to load members';
+      setError(msg);
+      showToast(msg, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchMembers = async () => {
-      if (!hasPermission("admin.members.view")) {
-        setError("You do not have permission to view members.");
-        setLoading(false);
-        showToast("Permission denied to view members", "error");
-        return;
-      }
-
-      try {
-        setLoading(true);
-        // Simulate API call delay safely
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        if (!isMounted) return;
-
-        const mockMembers: Member[] = [
-          {
-            id: "1",
-            email: "admin@example.com",
-            role: "admin",
-            createdAt: "2023-01-15T00:00:00Z"
-          },
-          {
-            id: "2",
-            email: "user@example.com",
-            role: "user",
-            createdAt: "2023-01-20T00:00:00Z"
-          },
-          {
-            id: "3",
-            email: "moderator@example.com",
-            role: "moderator",
-            createdAt: "2023-02-01T00:00:00Z"
-          }
-        ];
-
-        setMembers(mockMembers);
-        setError(null);
-      } catch (err) {
-        if (isMounted) {
-          setError(err instanceof Error ? err.message : "Unknown error occurred");
-          showToast("Failed to load members", "error");
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
     fetchMembers();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [hasPermission, showToast]);
+  }, []);
 
   const handleAddMember = async (email: string, role: string) => {
-    if (!hasPermission("admin.members.create")) {
-      showToast("Permission denied to add members", "error");
-      return;
-    }
-
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
-
-      const newMember: Member = {
-        id: `member_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
+      const username = email.split('@')[0] || `user_${Date.now()}`;
+      await api.post('/admin/members', {
         email,
         role,
-        createdAt: new Date().toISOString()
-      };
+        membername: username,
+        password: 'DefaultTempPassword2026!'
+      });
 
-      setMembers((prevMembers) => [...prevMembers, newMember]);
-      showToast("Member added successfully", "success");
-    } catch {
-      showToast("Failed to add member", "error");
+      showToast('Member added successfully', 'success');
+      fetchMembers();
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || 'Failed to add member';
+      showToast(msg, 'error');
     }
   };
 
   const handleUpdateMember = async (id: string, role: string) => {
-    if (!hasPermission("admin.members.update")) {
-      showToast("Permission denied to update members", "error");
-      return;
-    }
-
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 500);
-      });
-
+      await api.put(`/admin/members/${id}`, { role });
       setMembers((prevMembers) =>
         prevMembers.map((member) =>
           member.id === id ? { ...member, role } : member
         )
       );
-      showToast("Member updated successfully", "success");
-    } catch {
-      showToast("Failed to update member", "error");
+      showToast('Member role updated successfully', 'success');
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || 'Failed to update member';
+      showToast(msg, 'error');
     }
   };
 
   const handleDeleteMember = async (id: string) => {
-    if (!hasPermission("admin.members.delete")) {
-      showToast("Permission denied to delete members", "error");
-      return;
-    }
-
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 500);
-      });
-
+      await api.delete(`/admin/members/${id}`);
       setMembers((prevMembers) => prevMembers.filter((member) => member.id !== id));
-      showToast("Member deleted successfully", "success");
-    } catch {
-      showToast("Failed to delete member", "error");
+      showToast('Member deactivated successfully', 'success');
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || 'Failed to delete member';
+      showToast(msg, 'error');
     }
   };
 
@@ -163,20 +113,20 @@ const MemberManagementPage: React.FC = () => {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Member Management</h1>
-      
+
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Add New Member</h2>
-        <form 
+        <form
           onSubmit={async (e) => {
             e.preventDefault();
             const target = e.currentTarget;
             const formData = new FormData(target);
             const email = formData.get('email') as string;
             const role = formData.get('role') as string;
-            
+
             await handleAddMember(email, role);
             target.reset(); // Safely clear form values after adding
-          }} 
+          }}
           className="flex space-x-4"
         >
           <input

@@ -5,14 +5,14 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import AdminLayout from '../components/admin/AdminLayout';
 
 const AdminDashboardPage = lazy<ComponentType<any>>(
-  () => import("../pages/admin/AdminDashboardPage.js").then(module => ({ default: module.default as unknown as ComponentType<any> })),
+  () => import('../pages/admin/AdminDashboardPage.js').then(module => ({ default: module.default as unknown as ComponentType<any> })),
 );
-const AdminMembersPage = lazy<ComponentType<any>>(() => import("../pages/admin/MemberManagementPage.js").then(module => ({ default: module.default as unknown as ComponentType<any> })));
+const AdminMembersPage = lazy<ComponentType<any>>(() => import('../pages/admin/MemberManagementPage.js').then(module => ({ default: module.default as unknown as ComponentType<any> })));
 const AdminSecurityEventsPage = lazy<ComponentType<any>>(
-  () => import("../pages/admin/AdminSecurityEventsPage.js").then(module => ({ default: module.default as unknown as ComponentType<any> })),
+  () => import('../pages/admin/AdminSecurityEventsPage.js').then(module => ({ default: module.default as unknown as ComponentType<any> })),
 );
 const AdminSecuritySettingsPage = lazy<ComponentType<any>>(
-  () => import("../pages/admin/AdminSecuritySettingsPage.js").then(module => ({ default: module.default as unknown as ComponentType<any> })),
+  () => import('../pages/admin/AdminSecuritySettingsPage.js').then(module => ({ default: module.default as unknown as ComponentType<any> })),
 );
 
 const AdminRoutes: React.FC = () => {

@@ -11,7 +11,7 @@ export interface VideoEditProject {
   videoUrl: string;
   thumbnail?: string;
   duration: number; // in seconds
-  status: "draft" | "rendering" | "completed" | "failed";
+  status: 'draft' | 'rendering' | 'completed' | 'failed';
   effects: VideoEffect[];
   createdAt: string;
   updatedAt: string;
@@ -19,22 +19,22 @@ export interface VideoEditProject {
 
 export interface VideoEffect {
   id: string;
-  type: "trim" | "text" | "music" | "filter" | "transition";
+  type: 'trim' | 'text' | 'music' | 'filter' | 'transition';
   startTime: number; // Milliseconds or seconds timestamp
   endTime?: number;
   config: Record<string, any>; // Strictly type configuration variants
 }
 
 export interface ExportConfig {
-  format: "mp4" | "webm" | "mov";
-  resolution: "720p" | "1080p" | "4k"; // Used to enforce subscription/paywall constraints
+  format: 'mp4' | 'webm' | 'mov';
+  resolution: '720p' | '1080p' | '4k'; // Used to enforce subscription/paywall constraints
   fps: 30 | 60;
 }
 
 export interface ExportJobStatus {
   jobId: string;
   projectId: string;
-  status: "queued" | "processing" | "completed" | "failed";
+  status: 'queued' | 'processing' | 'completed' | 'failed';
   progress: number; // Percentage value (0 - 100)
   downloadUrl?: string;
   error?: string;
@@ -69,7 +69,7 @@ class VideoEditorService {
       return response.data;
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || 'Video composition pipeline error';
-      console.error(`[VideoEditorService Error]:`, errorMessage, error);
+      console.error('[VideoEditorService Error]:', errorMessage, error);
       throw new Error(errorMessage);
     }
   }
@@ -77,10 +77,10 @@ class VideoEditorService {
   // --- PROJECT MANAGEMENT (Session Secure) ---
 
   async createProject(name: string, videoUrl: string): Promise<VideoEditProject> {
-    return this.request<VideoEditProject>({ 
-      method: 'POST', 
-      url: '/projects', 
-      data: { name, videoUrl } 
+    return this.request<VideoEditProject>({
+      method: 'POST',
+      url: '/projects',
+      data: { name, videoUrl }
     });
   }
 
@@ -102,17 +102,17 @@ class VideoEditorService {
   // --- TIMELINE EFFECTS & STATE MANAGEMENT ---
 
   async addEffect(projectId: string, effect: Omit<VideoEffect, 'id'>): Promise<VideoEditProject> {
-    return this.request<VideoEditProject>({ 
-      method: 'POST', 
-      url: `/projects/${projectId}/effects`, 
-      data: effect 
+    return this.request<VideoEditProject>({
+      method: 'POST',
+      url: `/projects/${projectId}/effects`,
+      data: effect
     });
   }
 
   async removeEffect(projectId: string, effectId: string): Promise<VideoEditProject> {
-    return this.request<VideoEditProject>({ 
-      method: 'DELETE', 
-      url: `/projects/${projectId}/effects/${effectId}` 
+    return this.request<VideoEditProject>({
+      method: 'DELETE',
+      url: `/projects/${projectId}/effects/${effectId}`
     });
   }
 
@@ -135,10 +135,10 @@ class VideoEditorService {
    * Returns a long-running Job ID instead of an immediate download URL to avoid gateway timeouts.
    */
   async exportVideo(projectId: string, config: ExportConfig): Promise<{ jobId: string }> {
-    return this.request<{ jobId: string }>({ 
-      method: 'POST', 
-      url: `/projects/${projectId}/export`, 
-      data: config 
+    return this.request<{ jobId: string }>({
+      method: 'POST',
+      url: `/projects/${projectId}/export`,
+      data: config
     });
   }
 
@@ -146,9 +146,9 @@ class VideoEditorService {
    * Polls the live encoding processing progress of a background render job.
    */
   async getExportStatus(jobId: string): Promise<ExportJobStatus> {
-    return this.request<ExportJobStatus>({ 
-      method: 'GET', 
-      url: `/exports/jobs/${jobId}` 
+    return this.request<ExportJobStatus>({
+      method: 'GET',
+      url: `/exports/jobs/${jobId}`
     });
   }
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import TrendsFeed from '../components/TrendsFeed';
 import { FireIcon, UserCircleIcon, HeartIcon, ChatBubbleLeftRightIcon, GiftIcon, LinkIcon } from '../icons';
+import { apiService } from '../services/apiService';
+import { logError } from '../utils/errorLogger';
 
 interface PostType {
   id: string;
@@ -15,7 +17,7 @@ interface TrendsFeedPageProps {
   posts?: any[]; // Making posts optional to allow default empty array
   handleLikePost?: (postId: string) => void; // Making optional
   handleOpenGiftModal?: (post: any) => void; // Making optional
-  showToast?: (message: React.ReactNode, type?: "error" | "success" | "warning" | "info") => void; // Making optional
+  showToast?: (message: React.ReactNode, type?: 'error' | 'success' | 'warning' | 'info') => void; // Making optional
 }
 
 const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
@@ -26,6 +28,23 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
 }) => {
   const { openModal, showToast: contextShowToast, ficBalance } = useAppContext();
   const [posts, setLocalPosts] = useState<PostType[]>(propsPosts);
+
+  useEffect(() => {
+    if (propsPosts && propsPosts.length > 0) {
+      setLocalPosts(propsPosts);
+    } else {
+      apiService.get<any>('/api/trends')
+        .then((res) => {
+          const data = res.data?.data || res.data;
+          if (Array.isArray(data) && data.length > 0) {
+            setLocalPosts(data);
+          }
+        })
+        .catch((err) => {
+          logError(err, { context: 'TrendsFeedPage - Fetch trends' });
+        });
+    }
+  }, [propsPosts]);
 
   const trendingSource = useMemo(
     () => posts.filter((p) => p.contentImageUrl),
@@ -72,8 +91,8 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             {/* Component JSX */}
-            <TrendsFeed 
-              trends={posts as any} 
+            <TrendsFeed
+              trends={posts as any}
               onTrendClick={(trendId) => handleLikePost(trendId)}
               limit={10}
             />

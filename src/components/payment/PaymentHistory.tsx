@@ -51,7 +51,7 @@ const PaymentHistory: React.FC = () => {
           createdAt: '2026-05-20T09:15:00Z'
         }
       ];
-      
+
       setPayments(mockPayments);
     } catch (error) {
       console.error('Error fetching payment history:', error);
@@ -88,7 +88,7 @@ const PaymentHistory: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Payment History</Text>
-      
+
       {loading ? (
         <View style={styles.loadingContainer}>
           <Text>Loading payment history...</Text>

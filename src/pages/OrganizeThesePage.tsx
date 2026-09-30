@@ -1,27 +1,32 @@
 import React, {  useEffect  } from 'react';
 import { useOrganizeThese } from '../contexts/OrganizeTheseContext';
+import { useOnboarding } from '../contexts/OnboardingContext';
 import MainLayout from '../components/layout/MainLayout';
 import OrganizationVisualization from '../components/organize-these/OrganizationVisualization';
 import AnalyticsDashboard from '../components/organize-these/AnalyticsDashboard';
 
 const OrganizeThesePage: React.FC = () => {
-  const { 
-    organizedData, 
-    isOrganizing, 
+  const {
+    organizedData,
+    isOrganizing,
     organizationStats,
     organizeMemberData,
     exportData
   } = useOrganizeThese();
 
+  const { state: onboardingState } = useOnboarding();
+  const interests = onboardingState.progress?.interests || [];
+  const demographics = onboardingState.progress?.demographicInfo || null;
+
   useEffect(() => {
     // Automatically organize data when page loads
     if (!organizedData) {
-      organizeMemberData();
+      organizeMemberData({ interests, demographics });
     }
-  }, [organizedData, organizeMemberData]);
+  }, [organizedData, organizeMemberData, interests, demographics]);
 
   const handleOrganizeClick = () => {
-    organizeMemberData();
+    organizeMemberData({ interests, demographics });
   };
 
   const handleExportPDF = () => {
@@ -43,20 +48,20 @@ const OrganizeThesePage: React.FC = () => {
             </p>
           </div>
           <div className="flex space-x-4">
-            <button 
+            <button
               onClick={handleExportPDF}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
               disabled={!organizedData || isOrganizing}
-             aria-label="Button"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              aria-label="Button"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
               Export PDF
             </button>
-            <button 
+            <button
               onClick={handleExportCSV}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center"
               disabled={!organizedData || isOrganizing}
-             aria-label="Button"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              aria-label="Button"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
               Export CSV
@@ -81,9 +86,9 @@ const OrganizeThesePage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <OrganizationVisualization 
-            organizedData={organizedData} 
-            onReorganize={handleOrganizeClick} 
+          <OrganizationVisualization
+            organizedData={organizedData}
+            onReorganize={handleOrganizeClick}
           />
         )}
       </div>

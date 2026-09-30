@@ -9,7 +9,7 @@ interface DropdownProps {
   placeholder?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ 
+const Dropdown: React.FC<DropdownProps> = ({
   label,
   options,
   value,
@@ -37,7 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       {label && (
         <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       )}
-      
+
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

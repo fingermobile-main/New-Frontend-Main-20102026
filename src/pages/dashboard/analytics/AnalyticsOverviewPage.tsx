@@ -3,18 +3,18 @@ import { ChartBarIcon, MembersIcon, EyeIcon } from '../../../components/icons';
 
 // Mock data for charts
 const monthlyViewsData = [
-  { name: "Jan", views: 4000 },
-  { name: "Feb", views: 3000 },
-  { name: "Mar", views: 5000 },
-  { name: "Apr", views: 4500 },
-  { name: "May", views: 6000 },
-  { name: "Jun", views: 5500 }
+  { name: 'Jan', views: 4000 },
+  { name: 'Feb', views: 3000 },
+  { name: 'Mar', views: 5000 },
+  { name: 'Apr', views: 4500 },
+  { name: 'May', views: 6000 },
+  { name: 'Jun', views: 5500 }
 ];
 
 const engagementData = [
-  { type: "Likes", value: 12500, color: "bg-red-500" },
-  { type: "Comments", value: 3200, color: "bg-blue-500" },
-  { type: "Shares", value: 1800, color: "bg-green-500" }
+  { type: 'Likes', value: 12500, color: 'bg-red-500' },
+  { type: 'Comments', value: 3200, color: 'bg-blue-500' },
+  { type: 'Shares', value: 1800, color: 'bg-green-500' }
 ];
 
 const BarChart: React.FC<{ data: { name: string; views: number }[] }> = ({
@@ -71,7 +71,7 @@ const DoughnutChart: React.FC<{
                     strokeWidth="3.5"
                     strokeDasharray={`${percentage} ${100 - percentage}`}
                     strokeDashoffset={-acc.offset}
-                    className={`stroke-current ${seg.color.replace("bg-", "text-")}`}
+                    className={`stroke-current ${seg.color.replace('bg-', 'text-')}`}
                   />
                 );
                 acc.offset += percentage;

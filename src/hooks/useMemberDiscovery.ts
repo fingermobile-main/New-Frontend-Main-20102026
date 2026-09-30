@@ -16,8 +16,8 @@ interface UseMemberDiscoveryProps {
 }
 
 interface DiscoveryFeedback {
-  targetMemberId: string; 
-  action: "positive" | "negative";
+  targetMemberId: string;
+  action: 'positive' | 'negative';
 }
 
 export const useMemberDiscovery = ({
@@ -25,7 +25,7 @@ export const useMemberDiscovery = ({
   enabled = true
 }: UseMemberDiscoveryProps) => {
   const [preferences, setPreferences] = React.useState<DiscoveryPreferences>({
-    primaryOption: "multiDiversity"});
+    primaryOption: 'multiDiversity'});
 
   const [discoveredMembers, setDiscoveredMembers] = React.useState<Member[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -55,11 +55,11 @@ export const useMemberDiscovery = ({
         if (cachedResult) {
           setDiscoveredMembers(cachedResult);
           return {
-            members: cachedResult, 
+            members: cachedResult,
             algorithm: discoveryPrefs.primaryOption,
-            metadata: { 
+            metadata: {
               totalProcessed: cachedResult.length,
-              countriesIncluded: 0, 
+              countriesIncluded: 0,
               timestamp: new Date()
             }
           };
@@ -72,7 +72,7 @@ export const useMemberDiscovery = ({
         setLastDiscovery(result);
         return result;
       } catch (err) {
-        const platformError = err instanceof Error ? err : new Error("An unknown error occurred");
+        const platformError = err instanceof Error ? err : new Error('An unknown error occurred');
         setError(platformError);
         return null;
       } finally {
@@ -94,7 +94,7 @@ export const useMemberDiscovery = ({
       setDiscoveredMembers(filtered);
       return filtered;
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Failed to filter members by preferences"));
+      setError(err instanceof Error ? err : new Error('Failed to filter members by preferences'));
       return members;
     }
   }, []);
@@ -106,7 +106,7 @@ export const useMemberDiscovery = ({
       setDiscoveredMembers(filtered);
       return filtered;
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Failed to filter members by proximity"));
+      setError(err instanceof Error ? err : new Error('Failed to filter members by proximity'));
       return members;
     }
   }, [memberId]);
@@ -117,7 +117,7 @@ export const useMemberDiscovery = ({
       setDiscoveredMembers(ranked);
       return ranked;
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Failed to rank members"));
+      setError(err instanceof Error ? err : new Error('Failed to rank members'));
       return members;
     }
   }, [network]);
@@ -133,11 +133,11 @@ export const useMemberDiscovery = ({
         pipelineResult = await applyProximityFiltering(memberId, pipelineResult);
       }
       pipelineResult = await rankDiscoveredMembers(currentMember, pipelineResult, network);
-      
+
       setDiscoveredMembers(pipelineResult);
       return pipelineResult;
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Discovery pipeline processing failure"));
+      setError(err instanceof Error ? err : new Error('Discovery pipeline processing failure'));
       return baseMembers;
     } finally {
       setIsLoading(false);
@@ -162,13 +162,13 @@ export const useMemberDiscovery = ({
     }
   }, [preferences, enabled, memberId, discoverMembers]);
 
-  // Robustly handle feedback syncing loops 
+  // Robustly handle feedback syncing loops
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (feedbackQueue.current.length > 0) {
         console.info(`Processing and flushing ${feedbackQueue.current.length} platform feedback interactions.`);
         // Sync with backend API here
-        feedbackQueue.current = []; 
+        feedbackQueue.current = [];
       }
     }, 30000); // Evaluates queue every 30 seconds continuously
 

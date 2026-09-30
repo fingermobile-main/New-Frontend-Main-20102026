@@ -5,7 +5,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/a
 
 export interface Notification {id: string;
   userId: string;
-  type: "like" | "comment" | "follow" | "mention" | "message" | "system";
+  type: 'like' | 'comment' | 'follow' | 'mention' | 'message' | 'system';
   title: string;
   message: string;
   data?: any;
@@ -25,13 +25,13 @@ export interface NotificationPreferences {emailNotifications: boolean;
 
 class NotificationService {
   private api = axios.create({baseURL: API_BASE_URL, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async getNotifications(limit: number = 20, offset: number = 0): Promise<Notification[]> {
     const response = await this.api.get('/', {params: { limit,
-  offset } });
+      offset } });
     return response.data;
   }
 

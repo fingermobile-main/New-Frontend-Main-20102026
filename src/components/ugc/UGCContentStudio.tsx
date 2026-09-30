@@ -4,8 +4,8 @@ import { useAppContext } from '../../contexts/AppContext';
 interface ContentItem {
   id: string;
   title: string;
-  type: "post" | "image" | "video" | "audio";
-  status: "draft" | "scheduled" | "published";
+  type: 'post' | 'image' | 'video' | 'audio';
+  status: 'draft' | 'scheduled' | 'published';
   createdAt: string;
   scheduledFor?: string;
   views?: number;
@@ -17,29 +17,29 @@ const UGCContentStudio = () => {
   const { showToast} = useAppContext(); // Fixed hook name
   const [contents, setContents] = React.useState<ContentItem[]>([
     {
-      id: "1",
-      title: "My Weekend Adventure",
-      type: "post",
-      status: "published",
-      createdAt: "2023-06-15T10:30:00Z",
+      id: '1',
+      title: 'My Weekend Adventure',
+      type: 'post',
+      status: 'published',
+      createdAt: '2023-06-15T10:30:00Z',
       views: 1250,
       likes: 85,
       comments: 12
     },
     {
-      id: "2",
-      title: "Sunset Photography",
-      type: "image",
-      status: "draft",
-      createdAt: "2023-06-16T14:20:00Z"
+      id: '2',
+      title: 'Sunset Photography',
+      type: 'image',
+      status: 'draft',
+      createdAt: '2023-06-16T14:20:00Z'
     },
     {
-      id: "3",
-      title: "Music Session",
-      type: "audio",
-      status: "scheduled",
-      createdAt: "2023-06-17T09:15:00Z",
-      scheduledFor: "2023-06-20T18:00:00Z",
+      id: '3',
+      title: 'Music Session',
+      type: 'audio',
+      status: 'scheduled',
+      createdAt: '2023-06-17T09:15:00Z',
+      scheduledFor: '2023-06-20T18:00:00Z',
       views: 890,
       likes: 42,
       comments: 5
@@ -47,17 +47,17 @@ const UGCContentStudio = () => {
   ]);
 
   const [activeTab, setActiveTab] = React.useState<
-    "all" | "drafts" | "scheduled" | "published"
-  >("all");
+    'all' | 'drafts' | 'scheduled' | 'published'
+  >('all');
 
   const filteredContents = contents.filter((content) => {
-    if (activeTab === "all") return true;
+    if (activeTab === 'all') return true;
     return content.status === activeTab;
   });
 
   const handleCreateNew = () => {
     // Logic to create new content
-    console.info("Creating new content...");
+    console.info('Creating new content...');
   };
 
   const handleEdit = (id: string) => {
@@ -79,7 +79,7 @@ const UGCContentStudio = () => {
     // Logic to publish content
     setContents(
       contents.map((content) =>
-        content.id === id ? { ...content, status: "published" } : content,
+        content.id === id ? { ...content, status: 'published' } : content,
       ),
     );
   };
@@ -99,26 +99,26 @@ const UGCContentStudio = () => {
 
       <div className="content-tabs">
         <button
-          className={`tab ${activeTab === "all" ? "active" : ""}`}
-          onClick={() => setActiveTab("all")}
+          className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => setActiveTab('all')}
         >
           All Content
         </button>
         <button
-          className={`tab ${activeTab === "drafts" ? "active" : ""}`}
-          onClick={() => setActiveTab("drafts")}
+          className={`tab ${activeTab === 'drafts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('drafts')}
         >
           Drafts
         </button>
         <button
-          className={`tab ${activeTab === "scheduled" ? "active" : ""}`}
-          onClick={() => setActiveTab("scheduled")}
+          className={`tab ${activeTab === 'scheduled' ? 'active' : ''}`}
+          onClick={() => setActiveTab('scheduled')}
         >
           Scheduled
         </button>
         <button
-          className={`tab ${activeTab === "published" ? "active" : ""}`}
-          onClick={() => setActiveTab("published")}
+          className={`tab ${activeTab === 'published' ? 'active' : ''}`}
+          onClick={() => setActiveTab('published')}
         >
           Published
         </button>
@@ -141,7 +141,7 @@ const UGCContentStudio = () => {
               </div>
               <div className="content-meta">
                 <p>
-                  Type:{" "}
+                  Type:{' '}
                   {content.type.charAt(0).toUpperCase() + content.type.slice(1)}
                 </p>
                 <p>
@@ -149,7 +149,7 @@ const UGCContentStudio = () => {
                 </p>
                 {content.scheduledFor && (
                   <p>
-                    Scheduled:{" "}
+                    Scheduled:{' '}
                     {new Date(content.scheduledFor).toLocaleDateString()}
                   </p>
                 )}
@@ -166,7 +166,7 @@ const UGCContentStudio = () => {
                 >
                   Edit
                 </button>
-                {content.status === "draft" && (
+                {content.status === 'draft' && (
                   <>
                     <button
                       className="btn-secondary"
@@ -182,7 +182,7 @@ const UGCContentStudio = () => {
                     </button>
                   </>
                 )}
-                {content.status === "scheduled" && (
+                {content.status === 'scheduled' && (
                   <button
                     className="btn-primary"
                     onClick={() => handlePublish(content.id)}

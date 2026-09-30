@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 export interface SearchResult {
-  type: "user" | "post" | "music" | "video" | "product" | "community"; id: string; title: string;
+  type: 'user' | 'post' | 'music' | 'video' | 'product' | 'community'; id: string; title: string;
   description?: string;
   image?: string; relevanceScore: number;
 }
@@ -14,75 +14,75 @@ export interface SearchFilters {
   dateRange?: {
   start: string; end: string;
   };
-  sortBy?: "relevance" | "date" | "popularity";
-  order?: "asc" | "desc";
+  sortBy?: 'relevance' | 'date' | 'popularity';
+  order?: 'asc' | 'desc';
 }
 
 class SearchService {
   private api = axios.create({baseURL: `${API_BASE_URL}/search`,
-headers: {
+    headers: {
       'Content-Type': 'application/json'
     }
   });
 
   async search(query: string, filters?: SearchFilters,
-limit: number = 20): Promise<SearchResult[]> {
+    limit: number = 20): Promise<SearchResult[]> {
     const response = await this.api.post('/', { query, filters, limit });
     return response.data;
   }
 
   async searchUsers(query: string,
-limit: number = 10): Promise<SearchResult[]> {
+    limit: number = 10): Promise<SearchResult[]> {
     const response = await this.api.get('/users', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async searchPosts(query: string,
-limit: number = 20): Promise<SearchResult[]> {
+    limit: number = 20): Promise<SearchResult[]> {
     const response = await this.api.get('/posts', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async searchMusic(query: string,
-limit: number = 20): Promise<SearchResult[]> {
+    limit: number = 20): Promise<SearchResult[]> {
     const response = await this.api.get('/music', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async searchVideos(query: string,
-limit: number = 20): Promise<SearchResult[]> {
+    limit: number = 20): Promise<SearchResult[]> {
     const response = await this.api.get('/videos', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async searchProducts(query: string,
-limit: number = 20): Promise<SearchResult[]> {
+    limit: number = 20): Promise<SearchResult[]> {
     const response = await this.api.get('/products', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async searchCommunities(query: string,
-limit: number = 10): Promise<SearchResult[]> {
+    limit: number = 10): Promise<SearchResult[]> {
     const response = await this.api.get('/communities', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async getSearchSuggestions(query: string,
-limit: number = 5): Promise<string[]> {
+    limit: number = 5): Promise<string[]> {
     const response = await this.api.get('/suggestions', {params: { query,
-  limit } });
+      limit } });
     return response.data;
   }
 
   async getTrendingSearches(limit: number = 10): Promise<string[]> {
     const response = await this.api.get('/trending', {
-  params: { limit } });
+      params: { limit } });
     return response.data;
   }
 
@@ -92,7 +92,7 @@ limit: number = 5): Promise<string[]> {
 
   async getSearchHistory(limit: number = 10): Promise<string[]> {
     const response = await this.api.get('/history', {
-  params: { limit } });
+      params: { limit } });
     return response.data;
   }
 

@@ -46,9 +46,9 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
-const ToastComponent: React.FC<{ message: string; type: 'success' | 'error' | 'info' | 'warning' }> = ({ 
-  message, 
-  type 
+const ToastComponent: React.FC<{ message: string; type: 'success' | 'error' | 'info' | 'warning' }> = ({
+  message,
+  type
 }) => {
   const baseStyle: React.CSSProperties = {
     padding: '12px 16px',

@@ -9,12 +9,12 @@ interface PolicyEditorModalProps {
   onSave?: (policy: string) => void;
 }
 
-const PolicyEditorModal: React.FC<PolicyEditorModalProps> = ({ 
-  isOpen, 
+const PolicyEditorModal: React.FC<PolicyEditorModalProps> = ({
+  isOpen,
   onClose,
   policyType = 'Privacy Policy',
   currentPolicy = '',
-  onSave 
+  onSave
 }) => {
   const [editedPolicy, setEditedPolicy] = React.useState(currentPolicy);
 

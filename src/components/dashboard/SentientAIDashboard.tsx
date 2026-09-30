@@ -26,7 +26,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
     try {
       const anomalyList = await sentientService.getAnomalies(userId, 20);
       setAnomalies(anomalyList);
-      
+
       // Update stats
       setStats(prev => ({
         ...prev,
@@ -51,18 +51,18 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
         actions: JSON.parse(behaviorData),
         timestamp: new Date().toISOString()
       });
-      
+
       setLastAnalysis(analysis);
-      
+
       // Update stats
       setStats(prev => ({
         ...prev,
         totalAnalyses: prev.totalAnalyses + 1
       }));
-      
+
       // Refresh anomalies
       await loadAnomalies();
-      
+
       // Clear input
       setBehaviorData('');
     } catch (err: any) {
@@ -74,21 +74,21 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
 
   const getRiskLevelColor = (riskLevel: string) => {
     switch (riskLevel) {
-      case 'critical': return 'text-red-600 font-bold';
-      case 'high': return 'text-orange-500 font-semibold';
-      case 'medium': return 'text-yellow-500 font-semibold';
-      case 'low': return 'text-green-600 font-semibold';
-      default: return 'text-gray-600';
+    case 'critical': return 'text-red-600 font-bold';
+    case 'high': return 'text-orange-500 font-semibold';
+    case 'medium': return 'text-yellow-500 font-semibold';
+    case 'low': return 'text-green-600 font-semibold';
+    default: return 'text-gray-600';
     }
   };
 
   const getRiskLevelBadge = (riskLevel: string) => {
     switch (riskLevel) {
-      case 'critical': return 'bg-red-600 text-white';
-      case 'high': return 'bg-orange-500 text-white';
-      case 'medium': return 'bg-yellow-500 text-black';
-      case 'low': return 'bg-green-500 text-white';
-      default: return 'bg-gray-500 text-white';
+    case 'critical': return 'bg-red-600 text-white';
+    case 'high': return 'bg-orange-500 text-white';
+    case 'medium': return 'bg-yellow-500 text-black';
+    case 'low': return 'bg-green-500 text-white';
+    default: return 'bg-gray-500 text-white';
     }
   };
 
@@ -121,7 +121,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
       {/* Behavioral Analysis Input */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
         <h3 className="text-lg font-semibold mb-4">Analyze Member Behavior</h3>
-        
+
         <div className="space-y-4">
           <textarea
             value={behaviorData}
@@ -130,13 +130,13 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
             className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
             rows={4}
           />
-          
+
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-red-700 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
-          
+
           <button
             onClick={handleAnalyzeBehavior}
             disabled={analyzing}
@@ -151,7 +151,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
       {lastAnalysis && (
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
           <h3 className="text-lg font-semibold mb-4">Latest Behavioral Analysis</h3>
-          
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500 dark:text-gray-400">Risk Level:</span>
@@ -159,7 +159,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
                 {lastAnalysis.risk_level.toUpperCase()}
               </span>
             </div>
-            
+
             {lastAnalysis.anomalies.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Anomalies Detected ({lastAnalysis.anomalies.length})</h4>
@@ -180,7 +180,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
                 </div>
               </div>
             )}
-            
+
             {lastAnalysis.insights.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">AI Insights</h4>
@@ -191,7 +191,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
                 </ul>
               </div>
             )}
-            
+
             {lastAnalysis.recommendations.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Recommendations</h4>
@@ -209,7 +209,7 @@ const SentientAIDashboard: React.FC<SentientAIDashboardProps> = ({ userId }) => 
       {/* Anomaly Alerts */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
         <h3 className="text-lg font-semibold mb-4">Recent Anomaly Alerts</h3>
-        
+
         {anomalies.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             No anomalies detected. System operating normally.

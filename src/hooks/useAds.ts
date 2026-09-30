@@ -32,15 +32,20 @@ export const useAds = (): UseAdsResult => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.get<Ad[]>("/ads");
-      if (response && response.data) {
-        setAds(response.data);
-      } else {
-        setError("Failed to fetch ads.");
-      }
+      const response: any = await ApiService.get('/ads');
+      const list = Array.isArray(response?.data) 
+        ? response.data 
+        : Array.isArray(response?.data?.ads) 
+          ? response.data.ads 
+          : Array.isArray(response?.ads) 
+            ? response.ads 
+            : Array.isArray(response) 
+              ? response 
+              : [];
+      setAds(list);
     } catch (err) {
-      setError("Failed to fetch ads.");
-      console.error("Error fetching ads:", err);
+      setError('Failed to fetch ads.');
+      console.error('Error fetching ads:', err);
     } finally {
       setLoading(false);
     }

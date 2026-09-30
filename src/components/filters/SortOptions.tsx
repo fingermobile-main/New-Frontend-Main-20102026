@@ -1,18 +1,18 @@
 import React, {} from 'react';
-import { TrendingUp, Filter, Calendar } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { TrendingUp, Filter, Calendar } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface SortOptionsProps {
-  onSortChange?: (sortBy: string, order: "asc" | "desc") => void;
+  onSortChange?: (sortBy: string, order: 'asc' | 'desc') => void;
   onFilterChange?: (filter: string) => void;
   currentSort?: string;
   currentFilter?: string;
@@ -21,8 +21,8 @@ interface SortOptionsProps {
 const SortOptions: React.FC<SortOptionsProps> = ({
   onSortChange,
   onFilterChange,
-  currentSort = "recent",
-  currentFilter = "all"
+  currentSort = 'recent',
+  currentFilter = 'all'
 }) => {
   return (
     <Card>
@@ -35,7 +35,7 @@ const SortOptions: React.FC<SortOptionsProps> = ({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">Sort By</label>
-          <Select value={currentSort} onValueChange={(value) => onSortChange?.(value, "desc")}>
+          <Select value={currentSort} onValueChange={(value) => onSortChange?.(value, 'desc')}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

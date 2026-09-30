@@ -1,70 +1,70 @@
 import React, { useState } from 'react';
-import { useAppContext } from "contexts/AppContext";
+import { useAppContext } from '../../contexts/AppContext';
 
 interface ScheduledContent {
   id: string;
   title: string;
   type: string;
   scheduledTime: string;
-  status: "scheduled" | "published";
+  status: 'scheduled' | 'published';
 }
 
 const UGCScheduler: React.FC = () => {
   const { showToast } = useAppContext();
   const [scheduledContent, setScheduledContent] = React.useState<ScheduledContent[]>([
     {
-      id: "1",
-      title: "Morning Inspiration",
-      type: "Post",
-      scheduledTime: "2023-06-20T08:00:00Z",
-      status: "scheduled"
+      id: '1',
+      title: 'Morning Inspiration',
+      type: 'Post',
+      scheduledTime: '2023-06-20T08:00:00Z',
+      status: 'scheduled'
     },
     {
-      id: "2",
-      title: "Weekly Music Mix",
-      type: "Audio",
-      scheduledTime: "2023-06-22T19:00:00Z",
-      status: "scheduled"
+      id: '2',
+      title: 'Weekly Music Mix',
+      type: 'Audio',
+      scheduledTime: '2023-06-22T19:00:00Z',
+      status: 'scheduled'
     },
     {
-      id: "3",
-      title: "Cooking Tutorial",
-      type: "Video",
-      scheduledTime: "2023-06-25T15:00:00Z",
-      status: "scheduled"
+      id: '3',
+      title: 'Cooking Tutorial',
+      type: 'Video',
+      scheduledTime: '2023-06-25T15:00:00Z',
+      status: 'scheduled'
     }
   ]);
 
   const [showScheduleModal, setShowScheduleModal] = React.useState(false);
-  const [selectedContent, setSelectedContent] = React.useState("");
-  const [scheduleDate, setScheduleDate] = React.useState("");
-  const [scheduleTime, setScheduleTime] = React.useState("");
+  const [selectedContent, setSelectedContent] = React.useState('');
+  const [scheduleDate, setScheduleDate] = React.useState('');
+  const [scheduleTime, setScheduleTime] = React.useState('');
 
   const handleScheduleContent = () => {
     if (!selectedContent || !scheduleDate || !scheduleTime) {
-      showToast("Please fill all fields", "error");
+      showToast('Please fill all fields', 'error');
       return;
     }
 
     const newSchedule: ScheduledContent = {
       id: Date.now().toString(),
       title: selectedContent,
-      type: "Post",
+      type: 'Post',
       scheduledTime: new Date(`${scheduleDate}T${scheduleTime}`).toISOString(),
-      status: "scheduled"
+      status: 'scheduled'
     };
 
     setScheduledContent([...scheduledContent, newSchedule]);
     setShowScheduleModal(false);
-    setSelectedContent("");
-    setScheduleDate("");
-    setScheduleTime("");
-    showToast("Content scheduled successfully!", "success");
+    setSelectedContent('');
+    setScheduleDate('');
+    setScheduleTime('');
+    showToast('Content scheduled successfully!', 'success');
   };
 
   const handleCancelSchedule = (id: string) => {
     setScheduledContent(scheduledContent.filter((item) => item.id !== id));
-    showToast("Schedule cancelled", "info");
+    showToast('Schedule cancelled', 'info');
   };
 
   const formatDate = (dateString: string) => {
@@ -101,7 +101,7 @@ const UGCScheduler: React.FC = () => {
                 <div className="schedule-info">
                   <h4>{content.title}</h4>
                   <p>
-                    {content.type} • Scheduled for{" "}
+                    {content.type} • Scheduled for{' '}
                     {formatDate(content.scheduledTime)}
                   </p>
                 </div>

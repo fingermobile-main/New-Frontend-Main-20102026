@@ -22,13 +22,13 @@ const useShowcaseData = (): UseShowcaseDataResult => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.get("/showcase"); // Assuming an endpoint for showcase items
+      const response = await ApiService.get('/showcase'); // Assuming an endpoint for showcase items
       if (response && typeof response.data !== 'undefined') {
         setShowcaseItems(response.data as ShowcaseItem[]);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to fetch showcase items.");
-      console.error("Error fetching showcase items:", err);
+      setError(err.message || 'Failed to fetch showcase items.');
+      console.error('Error fetching showcase items:', err);
     } finally {
       setLoading(false);
     }

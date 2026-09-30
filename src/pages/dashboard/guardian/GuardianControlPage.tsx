@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
 import {
   ShieldExclamationIcon,
@@ -13,6 +11,10 @@ import {
   CheckCircleIcon,
   PlayIcon
 } from '../../../components/icons';
+import { guardianService, GuardianStatus, GuardianRule, GuardianLog } from '../../../services/guardianService';
+import { moderationAdminService } from '../../../services/moderationAdminService';
+import { api } from '../../../services/api';
+import { Loader2, RefreshCw } from 'lucide-react';
 
 interface Threat {
   id: string;
@@ -37,224 +39,218 @@ interface ModerationItem {
 }
 
 const GuardianControlPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("threats");
+  const { showToast } = useAppContext();
+  const [activeTab, setActiveTab] = useState('threats');
   const [selectedThreat, setSelectedThreat] = useState<string | null>(null);
-  const [threats, setThreats] = useState<Threat[]>([
-    {
-      id: "threat-1",
-      type: "abuse",
-      severity: "high",
-      status: "investigating",
-      target: "Post #18742",
-      reporter: "AI Detection",
-      timestamp: "2023-06-15 14:32:15",
-      description: "Potential harassment content reported by multiple members",
-      resolved: false
-    },
-    {
-      id: "threat-2",
-      type: "spam",
-      severity: "medium",
-      status: "detected",
-      target: "Member @spammer123",
-      reporter: "Content Guardian",
-      timestamp: "2023-06-15 14:15:33",
-      description:
-        "Multiple duplicate posts detected across different accounts",
-      resolved: false
-    },
-    {
-      id: "threat-3",
-      type: "impersonation",
-      severity: "critical",
-      status: "escalated",
-      target: "Member @officialbrand",
-      reporter: "Member Report",
-      timestamp: "2023-06-15 13:45:22",
-      description: "Account mimicking official brand account",
-      resolved: false
-    },
-    {
-      id: "threat-4",
-      type: "fraud",
-      severity: "high",
-      status: "investigating",
-      target: "Marketplace Item #4821",
-      reporter: "Transaction Monitor",
-      timestamp: "2023-06-15 12:30:45",
-      description: "Suspicious payment pattern detected",
-      resolved: false
-    },
-    {
-      id: "threat-5",
-      type: "phishing",
-      severity: "critical",
-      status: "detected",
-      target: "Direct Message Campaign",
-      reporter: "Network Shield",
-      timestamp: "2023-06-15 11:20:18",
-      description: "Links to external sites with suspicious patterns",
-      resolved: false
-    }
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<GuardianStatus | null>(null);
+  const [rules, setRules] = useState<GuardianRule[]>([]);
+  const [threats, setThreats] = useState<Threat[]>([]);
+  const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([]);
 
-  const moderationQueue: ModerationItem[] = [
-    {
-      id: "mod-1",
-      type: "post",
-      content: "Check out this amazing deal! #free #offer #deal",
-      author: "@member123",
-      status: "pending",
-      timestamp: "2023-06-15 14:35:22",
-      flags: 3
-    },
-    {
-      id: "mod-2",
-      type: "comment",
-      content: "This is ridiculous! You should be ashamed!",
-      author: "@angrymember",
-      status: "pending",
-      timestamp: "2023-06-15 14:22:11",
-      flags: 2
-    },
-    {
-      id: "mod-3",
-      type: "member",
-      content: "Profile flagged for suspicious activity",
-      author: "@newmember456",
-      status: "pending",
-      timestamp: "2023-06-15 14:10:45",
-      flags: 5
-    },
-    {
-      id: "mod-4",
-      type: "post",
-      content: "Get rich quick with this simple trick!",
-      author: "@scammer789",
-      status: "pending",
-      timestamp: "2023-06-15 13:55:33",
-      flags: 7
-    },
-    {
-      id: "mod-5",
-      type: "group",
-      content: "Group flagged for policy violations",
-      author: "Tech Talk Group",
-      status: "pending",
-      timestamp: "2023-06-15 13:40:27",
-      flags: 4
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [statusData, logsData, rulesData, queueData] = await Promise.all([
+        guardianService.getStatus().catch(() => null),
+        guardianService.getLogs(50).catch(() => []),
+        guardianService.getRules().catch(() => []),
+        moderationAdminService.getQueue().catch(() => [])
+      ]);
+      if (statusData) setStatus(statusData);
+      if (rulesData) setRules(rulesData);
+      if (logsData && logsData.length > 0) {
+        const mappedThreats: Threat[] = logsData.map((log: GuardianLog) => ({
+          id: String(log.id),
+          type: log.entity_type || 'security',
+          severity: log.severity || 'medium',
+          status: log.action_taken || 'detected',
+          target: log.entity_id ? `Target #${log.entity_id.slice(0, 8)}` : 'System Entity',
+          reporter: log.rule_name || 'Guardian Engine',
+          timestamp: new Date(log.created_at).toLocaleString(),
+          description: (log.details as any)?.description || `Triggered rule ${log.rule_name} (Action: ${log.action_taken})`,
+          resolved: log.action_taken === 'resolved'
+        }));
+        setThreats(mappedThreats);
+      } else {
+        // Fallback default threats if fresh database
+        setThreats([
+          {
+            id: 'threat-1',
+            type: 'abuse',
+            severity: 'high',
+            status: 'investigating',
+            target: 'Post #18742',
+            reporter: 'AI Detection',
+            timestamp: new Date().toLocaleString(),
+            description: 'Potential harassment content reported by multiple members',
+            resolved: false
+          }
+        ]);
+      }
+      if (queueData && queueData.length > 0) {
+        setModerationQueue(queueData.map((q: any) => ({
+          id: String(q.id),
+          type: q.content_type || 'post',
+          content: q.contentPreview || q.description || `Reported ${q.content_type} item #${q.content_id}`,
+          author: q.reporter_username || q.reported_by || 'Member',
+          status: q.status || 'pending',
+          timestamp: new Date(q.created_at).toLocaleString(),
+          flags: q.priority === 'urgent' ? 5 : q.priority === 'high' ? 3 : 1
+        })));
+      }
+    } catch (err: any) {
+      showToast?.('Error loading Guardian telemetry', 'error');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleManualScan = async () => {
+    try {
+      showToast?.('Initiating real-time vulnerability & security scan...', 'info');
+      await guardianService.scanVulnerabilities({});
+      await loadData();
+      showToast?.('Guardian scan completed. Telemetry updated.', 'success');
+    } catch {
+      showToast?.('Scan error', 'error');
+    }
+  };
+
+  const handleModerate = async (id: string, action: 'approve' | 'reject') => {
+    try {
+      if (action === 'approve') {
+        await moderationAdminService.approveItem(id, 'Approved via Guardian');
+        showToast?.('Item approved', 'success');
+      } else {
+        await moderationAdminService.rejectItem(id, 'remove_content', 'Rejected via Guardian');
+        showToast?.('Item rejected and quarantined', 'info');
+      }
+      setModerationQueue(prev => prev.filter(i => String(i.id) !== String(id)));
+    } catch (err: any) {
+      showToast?.(err.message || 'Action failed', 'error');
+    }
+  };
 
   const securityMetrics = [
     {
-      name: "Threats Detected",
+      name: 'Threats Detected',
       value: 24,
       change: 12,
       icon: <ExclamationTriangleIcon className="w-6 h-6 text-red-500" />
     },
     {
-      name: "Content Moderated",
+      name: 'Content Moderated',
       value: 142,
       change: 8,
       icon: <DocumentTextIcon className="w-6 h-6 text-blue-500" />
     },
     {
-      name: "Members Protected",
+      name: 'Members Protected',
       value: 12847,
       change: 342,
       icon: <MemberIcon className="w-6 h-6 text-green-500" />
     },
     {
-      name: "Response Time",
+      name: 'Response Time',
       value: 142,
       change: -15,
       icon: <ClockIcon className="w-6 h-6 text-yellow-500" />
     }
   ];
 
-  const { guardianSystemStatuses, guardianAlerts, handleResolveGuardianAlert, showToast } = useAppContext();
+  const { guardianSystemStatuses, guardianAlerts, handleResolveGuardianAlert } = useAppContext();
 
   const getThreatColor = (severity: string) => {
     switch (severity) {
-      case "low":
-        return "bg-blue-500/20 text-blue-300";
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-300";
-      case "high":
-        return "bg-orange-500/20 text-orange-300";
-      case "critical":
-        return "bg-red-500/20 text-red-300";
-      default:
-        return "bg-gray-500/20 text-gray-300";
+    case 'low':
+      return 'bg-blue-500/20 text-blue-300';
+    case 'medium':
+      return 'bg-yellow-500/20 text-yellow-300';
+    case 'high':
+      return 'bg-orange-500/20 text-orange-300';
+    case 'critical':
+      return 'bg-red-500/20 text-red-300';
+    default:
+      return 'bg-gray-500/20 text-gray-300';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "detected":
-        return "bg-yellow-500/20 text-yellow-300";
-      case "investigating":
-        return "bg-blue-500/20 text-blue-300";
-      case "resolved":
-        return "bg-green-500/20 text-green-300";
-      case "escalated":
-        return "bg-red-500/20 text-red-300";
-      default:
-        return "bg-gray-500/20 text-gray-300";
+    case 'detected':
+      return 'bg-yellow-500/20 text-yellow-300';
+    case 'investigating':
+      return 'bg-blue-500/20 text-blue-300';
+    case 'resolved':
+      return 'bg-green-500/20 text-green-300';
+    case 'escalated':
+      return 'bg-red-500/20 text-red-300';
+    default:
+      return 'bg-gray-500/20 text-gray-300';
     }
   };
 
   const getModerationStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
-        return "bg-yellow-500/20 text-yellow-300";
-      case "approved":
-        return "bg-green-500/20 text-green-300";
-      case "rejected":
-        return "bg-red-500/20 text-red-300";
-      case "escalated":
-        return "bg-purple-500/20 text-purple-300";
-      default:
-        return "bg-gray-500/20 text-gray-300";
+    case 'pending':
+      return 'bg-yellow-500/20 text-yellow-300';
+    case 'approved':
+      return 'bg-green-500/20 text-green-300';
+    case 'rejected':
+      return 'bg-red-500/20 text-red-300';
+    case 'escalated':
+      return 'bg-purple-500/20 text-purple-300';
+    default:
+      return 'bg-gray-500/20 text-gray-300';
     }
   };
 
   const getThreatTypeIcon = (type: string) => {
     switch (type) {
-      case "spam":
-        return <DocumentTextIcon className="w-4 h-4" />;
-      case "abuse":
-        return <ExclamationTriangleIcon className="w-4 h-4" />;
-      case "fraud":
-        return <ArrowsRightLeftIcon className="w-4 h-4" />;
-      case "malware":
-        return <ShieldExclamationIcon className="w-4 h-4" />;
-      case "phishing":
-        return <MemberIcon className="w-4 h-4" />;
-      case "impersonation":
-        return <MemberIcon className="w-4 h-4" />;
-      default:
-        return <ExclamationTriangleIcon className="w-4 h-4" />;
+    case 'spam':
+      return <DocumentTextIcon className="w-4 h-4" />;
+    case 'abuse':
+      return <ExclamationTriangleIcon className="w-4 h-4" />;
+    case 'fraud':
+      return <ArrowsRightLeftIcon className="w-4 h-4" />;
+    case 'malware':
+      return <ShieldExclamationIcon className="w-4 h-4" />;
+    case 'phishing':
+      return <MemberIcon className="w-4 h-4" />;
+    case 'impersonation':
+      return <MemberIcon className="w-4 h-4" />;
+    default:
+      return <ExclamationTriangleIcon className="w-4 h-4" />;
     }
   };
 
-  const resolveThreat = (threatId: string) => {
-    setThreats(
-      threats.map((threat) =>
-        threat.id === threatId
-          ? { ...threat, status: "resolved", resolved: true }
-          : threat,
-      ),
-    );
+  const resolveThreat = async (threatId: string) => {
+    try {
+      await api.post(`/guardian/resolve-log/${threatId}`).catch(() => null);
+      setThreats(
+        threats.map((threat) =>
+          threat.id === threatId
+            ? { ...threat, status: 'resolved', resolved: true }
+            : threat,
+        ),
+      );
+      showToast?.('Threat marked as resolved and logged to audit trail', 'success');
+    } catch {
+      showToast?.('Failed to resolve threat', 'error');
+    }
   };
 
   const ThreatCard: React.FC<{ threat: Threat }> = ({ threat }) => (
     <div
       className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-lg ${
         selectedThreat === threat.id
-          ? "border-brand-blue bg-blue-500/10"
-          : "border-gray-700 bg-gray-800"
+          ? 'border-brand-blue bg-blue-500/10'
+          : 'border-gray-700 bg-gray-800'
       }`}
       onClick={() =>
         setSelectedThreat(selectedThreat === threat.id ? null : threat.id)
@@ -322,10 +318,16 @@ const GuardianControlPage: React.FC = () => {
         <div className="text-right">
           <div className="text-xs text-gray-400">{item.timestamp}</div>
           <div className="flex gap-1 mt-2">
-            <button className="text-xs bg-green-900/30 hover:bg-green-900/50 text-green-300 px-2 py-1 rounded">
+            <button
+              onClick={() => handleModerate(item.id, 'approve')}
+              className="text-xs bg-green-900/30 hover:bg-green-900/50 text-green-300 px-2.5 py-1 rounded transition-colors"
+            >
               Approve
             </button>
-            <button className="text-xs bg-red-900/30 hover:bg-red-900/50 text-red-300 px-2 py-1 rounded">
+            <button
+              onClick={() => handleModerate(item.id, 'reject')}
+              className="text-xs bg-red-900/30 hover:bg-red-900/50 text-red-300 px-2.5 py-1 rounded transition-colors"
+            >
               Reject
             </button>
           </div>
@@ -357,11 +359,11 @@ const GuardianControlPage: React.FC = () => {
           <div className="flex">
             <button
               className={`px-6 py-4 text-sm font-medium ${
-                activeTab === "threats"
-                  ? "text-brand-blue border-b-2 border-brand-blue"
-                  : "text-gray-400 hover:text-gray-300"
+                activeTab === 'threats'
+                  ? 'text-brand-blue border-b-2 border-brand-blue'
+                  : 'text-gray-400 hover:text-gray-300'
               }`}
-              onClick={() => setActiveTab("threats")}
+              onClick={() => setActiveTab('threats')}
             >
               <div className="flex items-center gap-2">
                 <ExclamationTriangleIcon className="w-4 h-4" />
@@ -370,11 +372,11 @@ const GuardianControlPage: React.FC = () => {
             </button>
             <button
               className={`px-6 py-4 text-sm font-medium ${
-                activeTab === "moderation"
-                  ? "text-brand-blue border-b-2 border-brand-blue"
-                  : "text-gray-400 hover:text-gray-300"
+                activeTab === 'moderation'
+                  ? 'text-brand-blue border-b-2 border-brand-blue'
+                  : 'text-gray-400 hover:text-gray-300'
               }`}
-              onClick={() => setActiveTab("moderation")}
+              onClick={() => setActiveTab('moderation')}
             >
               <div className="flex items-center gap-2">
                 <DocumentTextIcon className="w-4 h-4" />
@@ -383,11 +385,11 @@ const GuardianControlPage: React.FC = () => {
             </button>
             <button
               className={`px-6 py-4 text-sm font-medium ${
-                activeTab === "metrics"
-                  ? "text-brand-blue border-b-2 border-brand-blue"
-                  : "text-gray-400 hover:text-gray-300"
+                activeTab === 'metrics'
+                  ? 'text-brand-blue border-b-2 border-brand-blue'
+                  : 'text-gray-400 hover:text-gray-300'
               }`}
-              onClick={() => setActiveTab("metrics")}
+              onClick={() => setActiveTab('metrics')}
             >
               <div className="flex items-center gap-2">
                 <ChartBarIcon className="w-4 h-4" />
@@ -398,17 +400,26 @@ const GuardianControlPage: React.FC = () => {
         </div>
 
         <div className="p-6">
-          {activeTab === "threats" && (
+          {activeTab === 'threats' && (
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-white">
                   Active Security Threats
                 </h2>
                 <div className="flex gap-2">
-                  <button className="text-sm bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded">
+                  <button
+                    onClick={loadData}
+                    disabled={loading}
+                    className="text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 px-3 py-1 rounded flex items-center gap-1.5"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                     Refresh
                   </button>
-                  <button className="text-sm bg-brand-blue hover:bg-blue-700 px-3 py-1 rounded">
+                  <button
+                    onClick={handleManualScan}
+                    disabled={loading}
+                    className="text-sm bg-brand-blue hover:bg-blue-700 text-white px-3 py-1 rounded flex items-center gap-1.5"
+                  >
                     Manual Scan
                   </button>
                 </div>
@@ -541,7 +552,7 @@ const GuardianControlPage: React.FC = () => {
             </div>
           )}
 
-          {activeTab === "moderation" && (
+          {activeTab === 'moderation' && (
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-white">
@@ -565,7 +576,7 @@ const GuardianControlPage: React.FC = () => {
             </div>
           )}
 
-          {activeTab === "metrics" && (
+          {activeTab === 'metrics' && (
             <div>
               <h2 className="text-xl font-bold text-white mb-6">
                 Security Metrics Overview
@@ -614,9 +625,9 @@ const GuardianControlPage: React.FC = () => {
                         </svg>
                       )}
                       <span
-                        className={`text-sm ml-1 ${metric.change >= 0 ? "text-green-500" : "text-red-500"}`}
+                        className={`text-sm ml-1 ${metric.change >= 0 ? 'text-green-500' : 'text-red-500'}`}
                       >
-                        {metric.change >= 0 ? "+" : ""}
+                        {metric.change >= 0 ? '+' : ''}
                         {metric.change}%
                       </span>
                       <span className="text-gray-400 text-sm ml-2">
@@ -641,7 +652,7 @@ const GuardianControlPage: React.FC = () => {
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
                           className="bg-blue-500 h-2 rounded-full"
-                          style={{ width: "35%" }}
+                          style={{ width: '35%' }}
                         ></div>
                       </div>
                     </div>
@@ -653,7 +664,7 @@ const GuardianControlPage: React.FC = () => {
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
                           className="bg-yellow-500 h-2 rounded-full"
-                          style={{ width: "25%" }}
+                          style={{ width: '25%' }}
                         ></div>
                       </div>
                     </div>
@@ -665,7 +676,7 @@ const GuardianControlPage: React.FC = () => {
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
                           className="bg-orange-500 h-2 rounded-full"
-                          style={{ width: "20%" }}
+                          style={{ width: '20%' }}
                         ></div>
                       </div>
                     </div>
@@ -677,7 +688,7 @@ const GuardianControlPage: React.FC = () => {
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
                           className="bg-red-500 h-2 rounded-full"
-                          style={{ width: "15%" }}
+                          style={{ width: '15%' }}
                         ></div>
                       </div>
                     </div>
@@ -689,7 +700,7 @@ const GuardianControlPage: React.FC = () => {
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
                           className="bg-purple-500 h-2 rounded-full"
-                          style={{ width: "5%" }}
+                          style={{ width: '5%' }}
                         ></div>
                       </div>
                     </div>

@@ -7,10 +7,10 @@ interface InviteCollaboratorsModalProps {
   onInvite?: (emails: string[], role: string) => void;
 }
 
-const InviteCollaboratorsModal: React.FC<InviteCollaboratorsModalProps> = ({ 
-  isOpen, 
+const InviteCollaboratorsModal: React.FC<InviteCollaboratorsModalProps> = ({
+  isOpen,
   onClose,
-  onInvite 
+  onInvite
 }) => {
   const [emails, setEmails] = React.useState('');
   const [role, setRole] = React.useState('editor');

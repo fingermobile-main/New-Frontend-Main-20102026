@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Play, Heart, MessageCircle, Share2, MoreVertical } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Play, Heart, MessageCircle, Share2, MoreVertical } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 
 interface VideoPost {
   id: string;
@@ -34,23 +34,23 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
 }) => {
   const defaultVideos: VideoPost[] = [
     {
-      id: "1",
-      userId: "user1",
-      username: "Creator One",
-      thumbnail: "/api/placeholder/400/300",
-      title: "Amazing Tutorial Video",
-      duration: "5:23",
+      id: '1',
+      userId: 'user1',
+      username: 'Creator One',
+      thumbnail: '/api/placeholder/400/300',
+      title: 'Amazing Tutorial Video',
+      duration: '5:23',
       views: 1234,
       likes: 89,
       comments: 12
     },
     {
-      id: "2",
-      userId: "user2",
-      username: "Creator Two",
-      thumbnail: "/api/placeholder/400/300",
-      title: "Quick Tips & Tricks",
-      duration: "3:45",
+      id: '2',
+      userId: 'user2',
+      username: 'Creator Two',
+      thumbnail: '/api/placeholder/400/300',
+      title: 'Quick Tips & Tricks',
+      duration: '3:45',
       views: 5678,
       likes: 234,
       comments: 45
@@ -78,7 +78,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
               src={video.thumbnail}
               alt={video.title}
               className="w-full h-full object-cover"
-             />
+            />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
               <div className="bg-white/90 rounded-full p-3">
                 <Play className="h-8 w-8 text-primary" />
@@ -92,9 +92,9 @@ const VideoFeed: React.FC<VideoFeedProps> = ({
           <CardContent className="p-4">
             {/* Video Info */}
             <div className="flex gap-3">
-              <Avatar 
-                src={video.userAvatar} 
-                alt={video.username} 
+              <Avatar
+                src={video.userAvatar}
+                alt={video.username}
                 fallback={video.username.charAt(0)}
                 size="md"
               />

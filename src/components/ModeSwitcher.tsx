@@ -12,7 +12,7 @@ const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ currentMode, onModeChange }
       <p className="text-xs text-fm-gray-500 mb-4">
         Adjust your experience between professional and social contexts
       </p>
-      
+
       <div className="flex rounded-full bg-gray-200 p-1 mb-3">
         <button
           onClick={() => onModeChange('professional')}
@@ -35,10 +35,10 @@ const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ currentMode, onModeChange }
           Social
         </button>
       </div>
-      
+
       <div className="text-xs text-fm-gray-500">
-        {currentMode === 'professional' 
-          ? 'Showing professional content, job opportunities, and industry news' 
+        {currentMode === 'professional'
+          ? 'Showing professional content, job opportunities, and industry news'
           : 'Showing social content, personal updates, and casual interactions'}
       </div>
     </div>

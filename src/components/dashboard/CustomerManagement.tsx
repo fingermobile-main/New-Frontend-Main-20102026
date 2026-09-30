@@ -15,74 +15,74 @@ const CustomerManagement: React.FC = () => {
     // In a real implementation, this would fetch customer data
     // For now, we'll use mock data based on members
     const mockCustomers = [
-      { 
-        id: 'cust-1', 
-        name: 'John Doe', 
-        email: 'john@example.com', 
-        phone: '+1-555-123-4567', 
-        location: 'New York, USA', 
-        joinDate: '2026-01-15', 
-        status: 'active', 
+      {
+        id: 'cust-1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1-555-123-4567',
+        location: 'New York, USA',
+        joinDate: '2026-01-15',
+        status: 'active',
         totalSpent: 1250.75,
         lastPurchase: '2026-07-10',
         purchases: 12
       },
-      { 
-        id: 'cust-2', 
-        name: 'Jane Smith', 
-        email: 'jane@example.com', 
-        phone: '+1-555-987-6543', 
-        location: 'London, UK', 
-        joinDate: '2026-02-20', 
-        status: 'active', 
+      {
+        id: 'cust-2',
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        phone: '+1-555-987-6543',
+        location: 'London, UK',
+        joinDate: '2026-02-20',
+        status: 'active',
         totalSpent: 890.50,
         lastPurchase: '2026-07-05',
         purchases: 8
       },
-      { 
-        id: 'cust-3', 
-        name: 'Robert Johnson', 
-        email: 'robert@example.com', 
-        phone: '+1-555-456-7890', 
-        location: 'Sydney, Australia', 
-        joinDate: '2026-03-10', 
-        status: 'inactive', 
+      {
+        id: 'cust-3',
+        name: 'Robert Johnson',
+        email: 'robert@example.com',
+        phone: '+1-555-456-7890',
+        location: 'Sydney, Australia',
+        joinDate: '2026-03-10',
+        status: 'inactive',
         totalSpent: 450.25,
         lastPurchase: '2026-05-15',
         purchases: 5
       },
-      { 
-        id: 'cust-4', 
-        name: 'Emily Davis', 
-        email: 'emily@example.com', 
-        phone: '+1-555-321-0987', 
-        location: 'Toronto, Canada', 
-        joinDate: '2026-04-05', 
-        status: 'active', 
+      {
+        id: 'cust-4',
+        name: 'Emily Davis',
+        email: 'emily@example.com',
+        phone: '+1-555-321-0987',
+        location: 'Toronto, Canada',
+        joinDate: '2026-04-05',
+        status: 'active',
         totalSpent: 2100.00,
         lastPurchase: '2026-07-12',
         purchases: 18
       },
-      { 
-        id: 'cust-5', 
-        name: 'Michael Wilson', 
-        email: 'michael@example.com', 
-        phone: '+1-555-654-3210', 
-        location: 'Berlin, Germany', 
-        joinDate: '2026-05-18', 
-        status: 'suspended', 
+      {
+        id: 'cust-5',
+        name: 'Michael Wilson',
+        email: 'michael@example.com',
+        phone: '+1-555-654-3210',
+        location: 'Berlin, Germany',
+        joinDate: '2026-05-18',
+        status: 'suspended',
         totalSpent: 0,
         lastPurchase: null,
         purchases: 0
       },
-      { 
-        id: 'cust-6', 
-        name: 'Sarah Brown', 
-        email: 'sarah@example.com', 
-        phone: '+1-555-789-0123', 
-        location: 'Tokyo, Japan', 
-        joinDate: '2026-06-22', 
-        status: 'active', 
+      {
+        id: 'cust-6',
+        name: 'Sarah Brown',
+        email: 'sarah@example.com',
+        phone: '+1-555-789-0123',
+        location: 'Tokyo, Japan',
+        joinDate: '2026-06-22',
+        status: 'active',
         totalSpent: 675.30,
         lastPurchase: '2026-07-08',
         purchases: 7
@@ -123,10 +123,10 @@ const CustomerManagement: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-yellow-100 text-yellow-800';
-      case 'suspended': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+    case 'active': return 'bg-green-100 text-green-800';
+    case 'inactive': return 'bg-yellow-100 text-yellow-800';
+    case 'suspended': return 'bg-red-100 text-red-800';
+    default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -197,8 +197,8 @@ const CustomerManagement: React.FC = () => {
             <div>
               <p className="text-gray-600 text-sm">Avg. Order Value</p>
               <p className="text-2xl font-bold text-gray-800">
-                ${filteredCustomers.length > 0 
-                  ? (filteredCustomers.reduce((sum, customer) => sum + customer.totalSpent, 0) / filteredCustomers.length).toFixed(2) 
+                ${filteredCustomers.length > 0
+                  ? (filteredCustomers.reduce((sum, customer) => sum + customer.totalSpent, 0) / filteredCustomers.length).toFixed(2)
                   : '0.00'}
               </p>
             </div>
@@ -217,7 +217,7 @@ const CustomerManagement: React.FC = () => {
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        
+
         <div className="flex items-center">
           <FiFilter className="mr-2 text-gray-500" />
           <select
@@ -318,7 +318,7 @@ const CustomerManagement: React.FC = () => {
             </span>{' '}
             of <span className="font-medium">{filteredCustomers.length}</span> results
           </div>
-          
+
           <div className="flex space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
@@ -331,7 +331,7 @@ const CustomerManagement: React.FC = () => {
             >
               Previous
             </button>
-            
+
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <button
                 key={page}
@@ -345,7 +345,7 @@ const CustomerManagement: React.FC = () => {
                 {page}
               </button>
             ))}
-            
+
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}

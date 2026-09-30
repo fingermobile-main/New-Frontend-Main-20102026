@@ -30,12 +30,12 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title.trim() || !content.trim()) {
       setError('Title and content are required');
       return;
     }
-    
+
     if (!scheduledDate || !scheduledTime) {
       setError('Please select a date and time');
       return;
@@ -44,9 +44,9 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
     try {
       setSubmitting(true);
       setError(null);
-      
+
       const scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`);
-      
+
       const postData = {
         title,
         content,
@@ -56,16 +56,16 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
         tags: tags.split(',').map(t => t.trim()).filter(Boolean),
         status: 'scheduled'
       };
-      
+
       // Mock API call - replace with actual service
       console.info('Scheduling post:', postData);
-      
+
       if (onSchedule) {
         onSchedule(postData);
       }
-      
+
       setSuccess(`Post scheduled for ${scheduledDateTime.toLocaleString()}`);
-      
+
       // Reset form
       setTitle('');
       setContent('');
@@ -73,7 +73,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
       setScheduledTime('');
       setCategory('');
       setTags('');
-      
+
     } catch (err: any) {
       setError(err.message || 'Failed to schedule post');
     } finally {
@@ -166,7 +166,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Time *
@@ -269,7 +269,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
               'Schedule Post'
             )}
           </button>
-          
+
           <button
             type="button"
             onClick={() => {/* save as draft */}}

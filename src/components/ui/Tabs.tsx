@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+
 interface TabsProps {
   children: React.ReactNode;
-  defaultValue: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   className?: string;
 }
 
@@ -22,8 +25,16 @@ interface TabsContentProps {
   className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ children, defaultValue, className = '' }) => {
-  const [activeTab, setActiveTab] = useState(defaultValue);
+const Tabs: React.FC<TabsProps> = ({ children, defaultValue, value, onValueChange, className = '' }) => {
+  const [internalTab, setInternalTab] = useState(defaultValue || '');
+  const activeTab = value !== undefined ? value : internalTab;
+
+  const handleTabChange = (val: string) => {
+    setInternalTab(val);
+    if (onValueChange) {
+      onValueChange(val);
+    }
+  };
 
   const triggers = React.Children.toArray(children).filter(
     child => (child as React.ReactElement).type === TabsTrigger
@@ -33,11 +44,11 @@ const Tabs: React.FC<TabsProps> = ({ children, defaultValue, className = '' }) =
     child => (child as React.ReactElement).type === TabsContent
   );
 
-  const validTriggers = triggers.filter(trigger => 
+  const validTriggers = triggers.filter(trigger =>
     (trigger as React.ReactElement<{ value: string }>).props.value === activeTab
   );
 
-  const validContents = contents.filter(content => 
+  const validContents = contents.filter(content =>
     (content as React.ReactElement<{ value: string }>).props.value === activeTab
   );
 
@@ -47,16 +58,16 @@ const Tabs: React.FC<TabsProps> = ({ children, defaultValue, className = '' }) =
         {triggers.map((trigger, index) => {
           const triggerElement = trigger as React.ReactElement<TabsTriggerProps>;
           const isActive = triggerElement.props.value === activeTab;
-          
+
           return (
             <button
               key={index}
               className={`py-2 px-4 font-medium text-sm border-b-2 -mb-px ${
-                isActive 
-                  ? 'border-primary text-primary' 
+                isActive
+                  ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
-              onClick={() => setActiveTab(triggerElement.props.value)}
+              onClick={() => handleTabChange(triggerElement.props.value)}
             >
               {triggerElement.props.children}
             </button>

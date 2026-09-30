@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../contexts/AppContext';  // Using absolute path from src
 import { XIcon, LockClosedIcon, CurrencyDollarIcon } from '../icons'; // Changed XMarkIcon to XIcon
 
 interface TokenizePostModalProps {
@@ -9,9 +9,9 @@ interface TokenizePostModalProps {
   postId: string;
 }
 
-const TokenizePostModal: React.FC<TokenizePostModalProps> = ({ 
-  isOpen, 
-  onClose, 
+const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
+  isOpen,
+  onClose,
   onTokenize,
   postId
 }) => {
@@ -53,14 +53,14 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">Tokenize Post</h3>
-            <button 
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
             >
               <XIcon className="h-6 w-6" />
             </button>
           </div>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Token Name</label>
@@ -73,7 +73,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Token Symbol</label>
               <input
@@ -86,7 +86,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Initial Supply</label>
               <input
@@ -99,7 +99,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Creator Royalty (%)</label>
               <input
@@ -113,20 +113,20 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
               />
               <p className="mt-1 text-sm text-gray-500">Percentage of future sales you'll earn</p>
             </div>
-            
+
             <div className="mb-6 p-4 bg-yellow-50 rounded-md">
               <div className="flex">
                 <LockClosedIcon className="h-5 w-5 text-yellow-500 mr-2 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-medium text-yellow-800">Important</h4>
                   <p className="text-sm text-yellow-700 mt-1">
-                    Tokenizing this post will create a digital asset that others can buy shares of. 
+                    Tokenizing this post will create a digital asset that others can buy shares of.
                     You'll earn royalties on future transactions.
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-between items-center mb-4">
               <span className="text-sm font-medium text-gray-700">Cost to tokenize:</span>
               <div className="flex items-center">
@@ -134,7 +134,7 @@ const TokenizePostModal: React.FC<TokenizePostModalProps> = ({
                 <span className="font-medium text-green-600">10 FIC</span>
               </div>
             </div>
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 type="button"

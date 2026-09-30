@@ -8,11 +8,11 @@ interface CreatePostPaylinkModalProps {
   postId?: string;
 }
 
-const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({ 
-  isOpen, 
+const CreatePostPaylinkModal: React.FC<CreatePostPaylinkModalProps> = ({
+  isOpen,
   onClose,
   onSubmit,
-  postId 
+  postId
 }) => {
   const [formData, setFormData] = React.useState({
     amount: '',

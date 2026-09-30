@@ -2,55 +2,70 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import AdminLayout from '../../components/admin/AdminLayout'; // Adjust path as needed
 
+import { adminOperationsService } from '../../services/adminOperationsService';
+
 const AdminDashboard: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = useState("overview");
-
-  // Mock data for dashboard
-  const stats = {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
     totalMembers: 12540,
     activeMembers: 8742,
     totalPosts: 45210,
     totalTransactions: 23150,
     platformBalance: 1254000,
     revenue: 125000
-  };
+  });
+
+  React.useEffect(() => {
+    adminOperationsService.getDashboardStats().then(data => {
+      if (data) {
+        setStats(prev => ({
+          ...prev,
+          totalMembers: data.totalUsers || prev.totalMembers,
+          activeMembers: data.activeSessions || prev.activeMembers,
+          totalTransactions: data.totalTransactions || prev.totalTransactions
+        }));
+      }
+    }).catch(() => {
+      // Keep baseline
+    });
+  }, []);
 
   const recentActivity = [
     {
       id: 1,
-      type: "member_registration",
-      description: "New member registered: john_doe",
-      timestamp: "2 minutes ago"
+      type: 'member_registration',
+      description: 'New member registered: john_doe',
+      timestamp: '2 minutes ago'
     },
     {
       id: 2,
-      type: "post_created",
-      description: "New post created in Forum",
-      timestamp: "15 minutes ago"
+      type: 'post_created',
+      description: 'New post created in Forum',
+      timestamp: '15 minutes ago'
     },
     {
       id: 3,
-      type: "transaction",
-      description: "Transaction completed: 25 FIC",
-      timestamp: "30 minutes ago"
+      type: 'transaction',
+      description: 'Transaction completed: 25 FIC',
+      timestamp: '30 minutes ago'
     }
   ];
 
   const topContent = [
     {
-      id: "post-1",
-      title: "Summer Vibes",
-      type: "image",
-      author: "john_doe",
+      id: 'post-1',
+      title: 'Summer Vibes',
+      type: 'image',
+      author: 'john_doe',
       likes: 245,
       comments: 32
     },
     {
-      id: "post-2",
-      title: "New Music Drop",
-      type: "audio",
-      author: "jane_smith",
+      id: 'post-2',
+      title: 'New Music Drop',
+      type: 'audio',
+      author: 'jane_smith',
       likes: 512,
       comments: 47
     }
@@ -61,7 +76,7 @@ const AdminDashboard: React.FC = () => {
       {/* Dashboard Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Overview Tab */}
-        {activeTab === "overview" && (
+        {activeTab === 'overview' && (
           <div>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -275,7 +290,7 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {/* Members Tab */}
-        {activeTab === "members" && (
+        {activeTab === 'members' && (
           <div>
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
               <div className="px-4 py-5 border-b border-gray-200 sm:px-6">

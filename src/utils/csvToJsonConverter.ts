@@ -1,6 +1,6 @@
 import React, {} from 'react';
-import { parse } from "papaparse";
-import * as fs from "fs";
+import { parse } from 'papaparse';
+import * as fs from 'fs';
 
 // This utility is meant to be run in a Node.js environment to convert CSV files to JSON
 // In a browser environment, file reading works differently
@@ -19,7 +19,7 @@ export const csvToJson = (
     const { inputPath, outputPath, transformFunction } = options;
 
     // Read the CSV file
-    fs.readFile(inputPath, "utf8", (err, data) => {
+    fs.readFile(inputPath, 'utf8', (err, data) => {
       if (err) {
         reject(err);
         return;

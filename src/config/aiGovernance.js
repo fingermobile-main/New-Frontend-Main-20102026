@@ -25,10 +25,10 @@ export const aiGovernanceConfig = {version: "1.0.0",
           new RegExp(String.raw`(0x[a-fA-F0-9]{40})`)
         ]
       },
-audit: {logEvents: true,
-  retentionDays: 90,
-  destination: ",
-  mcp://governance/events"
+      audit: {
+        logEvents: true,
+        retentionDays: 90,
+        destination: "mcp://governance/events"
       }
     }
   }

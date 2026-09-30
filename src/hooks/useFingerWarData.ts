@@ -9,7 +9,7 @@ interface FingerWarTournament {id: string;
   prizePool: number;
   participants: number;
   maxParticipants: number;
-  status: "upcoming" | "active" | "completed";
+  status: 'upcoming' | 'active' | 'completed';
 }
 
 interface FingerWarAchievement {id: string;
@@ -34,7 +34,7 @@ interface FingerWarBattle {id: string;
   avatarUrl: string;
   score: number;
   };
-status: "pending" | "accepted" | "completed";
+status: 'pending' | 'accepted' | 'completed';
   yourScore?: number;
   opponentScore?: number;
 date: Date;
@@ -83,56 +83,56 @@ const useFingerWarData = (): FingerWarData => {
           challengesRes
         ] = await Promise.all([
           ApiService.request<FingerWarTournament[]>(
-            "/api/fingerwar/tournaments",
-            {method: "GET" },
+            '/api/fingerwar/tournaments',
+            {method: 'GET' },
           ),
           ApiService.request<FingerWarAchievement[]>(
-            "/api/fingerwar/achievements",
-            {method: "GET" },
+            '/api/fingerwar/achievements',
+            {method: 'GET' },
           ),
           ApiService.request<FingerWarLeaderboardEntry[]>(
-            "/api/fingerwar/leaderboard",
-            {method: "GET" },
+            '/api/fingerwar/leaderboard',
+            {method: 'GET' },
           ),
-          ApiService.request<FingerWarBattle[]>("/api/fingerwar/battles", {method: "GET"
+          ApiService.request<FingerWarBattle[]>('/api/fingerwar/battles', {method: 'GET'
           }),
           ApiService.request<FingerWarChallenge[]>(
-            "/api/fingerwar/challenges",
-            {method: "GET" },
+            '/api/fingerwar/challenges',
+            {method: 'GET' },
           )
         ]);
 
         if (tournamentsRes) {
           setTournaments(tournamentsRes as any);
         } else {
-          setError("Failed to fetch tournaments.");
+          setError('Failed to fetch tournaments.');
         }
 
         if (achievementsRes) {
           setAchievements(achievementsRes as any);
         } else {
-          setError("Failed to fetch achievements.");
+          setError('Failed to fetch achievements.');
         }
 
         if (leaderboardRes) {
           setLeaderboard(leaderboardRes as any);
         } else {
-          setError("Failed to fetch leaderboard.");
+          setError('Failed to fetch leaderboard.');
         }
 
         if (battlesRes) {
           setBattles(battlesRes as any);
         } else {
-          setError("Failed to fetch battles.");
+          setError('Failed to fetch battles.');
         }
 
         if (challengesRes) {
           setChallenges(challengesRes as any);
         } else {
-          setError("Failed to fetch challenges.");
+          setError('Failed to fetch challenges.');
         }
       } catch (err: any) {
-        setError(err.message || "Failed to fetch FingerWar data");
+        setError(err.message || 'Failed to fetch FingerWar data');
       } finally {
         setLoading(false);
       }

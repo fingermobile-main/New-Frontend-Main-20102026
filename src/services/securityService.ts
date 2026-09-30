@@ -22,25 +22,25 @@ export class SecurityService {
       // Basic phone number validation
       return {
         success: false,
-        message: "Invalid phone number format. Please include country code."
+        message: 'Invalid phone number format. Please include country code.'
       };
     }
 
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/send-phone-verification", 
-        { method: "POST", body: JSON.stringify({ phoneNumber }) }
+        '/auth/send-phone-verification',
+        { method: 'POST', body: JSON.stringify({ phoneNumber }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Verification code sent successfully"
+        success: response.success,
+        message: response.message || 'Verification code sent successfully'
       };
     } catch (error) {
-      console.error("Error sending phone verification:", error);
+      console.error('Error sending phone verification:', error);
       return {
-        success: false, 
-        message: "Failed to send verification code"
+        success: false,
+        message: 'Failed to send verification code'
       };
     }
   }
@@ -53,29 +53,29 @@ export class SecurityService {
    */
   async verifyPhoneNumber(phoneNumber: string, code: string): Promise<{ success: boolean; message: string }> {
     if (!phoneNumber || !/^\+\d{1,3}\d{10}$/.test(phoneNumber)) {
-      return { success: false, message: "Invalid phone number format." };
+      return { success: false, message: 'Invalid phone number format.' };
     }
 
     if (!code || !/^\d{6}$/.test(code)) {
       // Assuming a 6-digit code
-      return { success: false, message: "Invalid verification code format." };
+      return { success: false, message: 'Invalid verification code format.' };
     }
 
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/verify-phone", 
-        { method: "POST", body: JSON.stringify({ phoneNumber, code }) }
+        '/auth/verify-phone',
+        { method: 'POST', body: JSON.stringify({ phoneNumber, code }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Phone number verified successfully"
+        success: response.success,
+        message: response.message || 'Phone number verified successfully'
       };
     } catch (error) {
-      console.error("Error verifying phone number:", error);
+      console.error('Error verifying phone number:', error);
       return {
-        success: false, 
-        message: "Failed to verify phone number"
+        success: false,
+        message: 'Failed to verify phone number'
       };
     }
   }
@@ -89,19 +89,19 @@ export class SecurityService {
   async enableTwoFactor(memberId: string, method: string): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/enable-2fa", 
-        { method: "POST", body: JSON.stringify({ memberId, method }) }
+        '/auth/enable-2fa',
+        { method: 'POST', body: JSON.stringify({ memberId, method }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Two-factor authentication enabled"
+        success: response.success,
+        message: response.message || 'Two-factor authentication enabled'
       };
     } catch (error) {
-      console.error("Error enabling 2FA:", error);
+      console.error('Error enabling 2FA:', error);
       return {
-        success: false, 
-        message: "Failed to enable two-factor authentication"
+        success: false,
+        message: 'Failed to enable two-factor authentication'
       };
     }
   }
@@ -115,19 +115,19 @@ export class SecurityService {
   async verifyTwoFactor(memberId: string, code: string): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/verify-2fa", 
-        { method: "POST", body: JSON.stringify({ memberId, code }) }
+        '/auth/verify-2fa',
+        { method: 'POST', body: JSON.stringify({ memberId, code }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Two-factor code verified"
+        success: response.success,
+        message: response.message || 'Two-factor code verified'
       };
     } catch (error) {
-      console.error("Error verifying 2FA:", error);
+      console.error('Error verifying 2FA:', error);
       return {
-        success: false, 
-        message: "Failed to verify two-factor code"
+        success: false,
+        message: 'Failed to verify two-factor code'
       };
     }
   }
@@ -141,19 +141,19 @@ export class SecurityService {
   async enableMultiFactor(memberId: string, methods: string[]): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/enable-mfa", 
-        { method: "POST", body: JSON.stringify({ memberId, methods }) }
+        '/auth/enable-mfa',
+        { method: 'POST', body: JSON.stringify({ memberId, methods }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Multi-factor authentication enabled"
+        success: response.success,
+        message: response.message || 'Multi-factor authentication enabled'
       };
     } catch (error) {
-      console.error("Error enabling MFA:", error);
+      console.error('Error enabling MFA:', error);
       return {
-        success: false, 
-        message: "Failed to enable multi-factor authentication"
+        success: false,
+        message: 'Failed to enable multi-factor authentication'
       };
     }
   }
@@ -170,19 +170,19 @@ export class SecurityService {
   ): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/verify-mfa", 
-        { method: "POST", body: JSON.stringify({ memberId, factors }) }
+        '/auth/verify-mfa',
+        { method: 'POST', body: JSON.stringify({ memberId, factors }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Multi-factor authentication verified"
+        success: response.success,
+        message: response.message || 'Multi-factor authentication verified'
       };
     } catch (error) {
-      console.error("Error verifying MFA:", error);
+      console.error('Error verifying MFA:', error);
       return {
-        success: false, 
-        message: "Failed to verify multi-factor authentication"
+        success: false,
+        message: 'Failed to verify multi-factor authentication'
       };
     }
   }
@@ -193,22 +193,22 @@ export class SecurityService {
    * @param biometricType - The type of biometric (face, fingerprint)
    * @returns Promise resolving to enrollment status
    */
-  async enrollBiometric(memberId: string, biometricType: "face" | "fingerprint"): Promise<{ success: boolean; message: string }> {
+  async enrollBiometric(memberId: string, biometricType: 'face' | 'fingerprint'): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/enroll-biometric", 
-        { method: "POST", body: JSON.stringify({ memberId, biometricType }) }
+        '/auth/enroll-biometric',
+        { method: 'POST', body: JSON.stringify({ memberId, biometricType }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Biometric enrollment successful"
+        success: response.success,
+        message: response.message || 'Biometric enrollment successful'
       };
     } catch (error) {
-      console.error("Error enrolling biometric:", error);
+      console.error('Error enrolling biometric:', error);
       return {
-        success: false, 
-        message: "Failed to enroll biometric authentication"
+        success: false,
+        message: 'Failed to enroll biometric authentication'
       };
     }
   }
@@ -222,19 +222,19 @@ export class SecurityService {
   async verifyBiometric(memberId: string, biometricData: string): Promise<{ success: boolean; message: string }> {
     try {
       const response: SecurityApiResponse<any> = await this.apiService.request(
-        "/auth/verify-biometric", 
-        { method: "POST", body: JSON.stringify({ memberId, biometricData }) }
+        '/auth/verify-biometric',
+        { method: 'POST', body: JSON.stringify({ memberId, biometricData }) }
       );
 
       return {
-        success: response.success, 
-        message: response.message || "Biometric verified successfully"
+        success: response.success,
+        message: response.message || 'Biometric verified successfully'
       };
     } catch (error) {
-      console.error("Error verifying biometric:", error);
+      console.error('Error verifying biometric:', error);
       return {
-        success: false, 
-        message: "Failed to verify biometric"
+        success: false,
+        message: 'Failed to verify biometric'
       };
     }
   }
@@ -247,20 +247,20 @@ export class SecurityService {
   async generateBackupCodes(memberId: string): Promise<{ success: boolean; codes?: string[]; message?: string }> {
     try {
       const response: SecurityApiResponse<{ codes?: string[] }> = await this.apiService.request(
-        "/auth/generate-backup-codes", 
-        { method: "POST", body: JSON.stringify({ memberId }) }
+        '/auth/generate-backup-codes',
+        { method: 'POST', body: JSON.stringify({ memberId }) }
       );
 
       return {
-        success: response.success, 
-        codes: response.data?.codes, 
-        message: response.message || "Backup codes generated"
+        success: response.success,
+        codes: response.data?.codes,
+        message: response.message || 'Backup codes generated'
       };
     } catch (error) {
-      console.error("Error generating backup codes:", error);
+      console.error('Error generating backup codes:', error);
       return {
-        success: false, 
-        message: "Failed to generate backup codes"
+        success: false,
+        message: 'Failed to generate backup codes'
       };
     }
   }

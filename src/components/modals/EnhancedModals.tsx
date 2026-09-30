@@ -8,11 +8,11 @@ interface EnhancedModalsProps {
   children?: React.ReactNode;
 }
 
-const EnhancedModals: React.FC<EnhancedModalsProps> = ({ 
-  isOpen = false, 
-  onClose, 
+const EnhancedModals: React.FC<EnhancedModalsProps> = ({
+  isOpen = false,
+  onClose,
   title = 'Modal',
-  children 
+  children
 }) => {
   if (!isOpen) return null;
 

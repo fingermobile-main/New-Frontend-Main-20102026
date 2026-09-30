@@ -19,7 +19,7 @@ export interface RoomBillingModel {
 
 export interface WhiteboardSession {
   id: string;
-  roomId: string; 
+  roomId: string;
   userId: string;
   imageData: string; // Base64 or serialized JSON vector strokes
   timestamp: string;
@@ -35,11 +35,11 @@ export interface RoomAnalytics {
 
 export interface CollaborationRoom {
   id: string;
-  name: string; 
+  name: string;
   hostId: string;
   participants: string[];
   whiteboardData?: string;
-  createdAt: string; 
+  createdAt: string;
   isActive: boolean;
   billingModel: RoomBillingModel;
   analytics: RoomAnalytics;
@@ -73,9 +73,9 @@ class CollaborationService {
    * Initializes a new room integrated with transactional monetization protocols
    */
   public async createRoom(
-    name: string, 
-    hostId: string, 
-    participantIds: string[], 
+    name: string,
+    hostId: string,
+    participantIds: string[],
     billingOpts?: Partial<RoomBillingModel>
   ): Promise<CollaborationRoom> {
     const defaultBilling: RoomBillingModel = {
@@ -86,11 +86,11 @@ class CollaborationService {
       ...billingOpts
     };
 
-    const response = await this.api.post<CollaborationRoom>('/rooms', { 
-      name, 
-      hostId, 
+    const response = await this.api.post<CollaborationRoom>('/rooms', {
+      name,
+      hostId,
       participantIds,
-      billingModel: defaultBilling 
+      billingModel: defaultBilling
     });
     return response.data;
   }
@@ -99,8 +99,8 @@ class CollaborationService {
    * Joins a room, handles paywall deductions if applicable, and logs retention telemetry
    */
   public async joinRoom(roomId: string, userId: string, inviteCode?: string): Promise<CollaborationRoom> {
-    const response = await this.api.post<CollaborationRoom>(`/rooms/${roomId}/join`, { 
-      userId, 
+    const response = await this.api.post<CollaborationRoom>(`/rooms/${roomId}/join`, {
+      userId,
       inviteCode // Attaches referral code to credit initial sharp referrers
     });
     return response.data;
@@ -120,15 +120,15 @@ class CollaborationService {
    * Persists vectors or frame layers while maintaining time sequences for snapshot replays
    */
   public async saveWhiteboard(
-    roomId: string, 
-    imageData: string, 
-    userId: string, 
+    roomId: string,
+    imageData: string,
+    userId: string,
     sequenceNumber: number
   ): Promise<WhiteboardSession> {
-    const response = await this.api.post<WhiteboardSession>(`/rooms/${roomId}/whiteboard`, { 
-      imageData, 
+    const response = await this.api.post<WhiteboardSession>(`/rooms/${roomId}/whiteboard`, {
+      imageData,
       userId,
-      sequenceNumber 
+      sequenceNumber
     });
     return response.data;
   }

@@ -9,8 +9,8 @@ export class AIService {
   private apiUrl: string;
 
   private constructor(
-    apiKey = "mock-api-key",
-    apiUrl = "http://mock-ai-api.com",
+    apiKey = 'mock-api-key',
+    apiUrl = 'http://mock-ai-api.com',
   ) {
     this.apiKey = apiKey;
     this.apiUrl = apiUrl;
@@ -24,13 +24,13 @@ export class AIService {
   }
 
   async generateContent(
-    prompt = "Analyze security telemetry", context: Record<string, unknown> = {},
-  ): Promise<AIResponse> {;
+    prompt = 'Analyze security telemetry', context: Record<string, unknown> = {}
+  ): Promise<AIResponse> {
     console.info(`Generating content with prompt: ${prompt}`, context);
     // Return a mock response for now
-    return {content: `Mock AI response,
-  for: ${prompt}`,
-confidence: 0.95
+    return {
+      content: `Mock AI response for: ${prompt}`,
+      confidence: 0.95
     };
   }
 }

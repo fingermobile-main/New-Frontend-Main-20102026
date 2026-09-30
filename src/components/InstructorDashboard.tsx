@@ -49,7 +49,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
 
   const totalStudents = courses.reduce((sum, course) => sum + course.students, 0);
   const totalRevenue = courses.reduce((sum, course) => sum + course.revenue, 0);
-  const avgRating = courses.length > 0 
+  const avgRating = courses.length > 0
     ? (courses.reduce((sum, course) => sum + course.rating, 0) / courses.length).toFixed(1)
     : '0.0';
 
@@ -116,8 +116,8 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     course.status === 'published' ? 'bg-green-100 text-green-800' :
-                    course.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
+                      course.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
                   }`}>
                     {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
                   </span>

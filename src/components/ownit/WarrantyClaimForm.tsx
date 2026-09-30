@@ -43,7 +43,7 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.issue_category || !formData.issue_description) {
       setError('Please fill in all required fields');
       return;
@@ -52,9 +52,9 @@ const WarrantyClaimForm: React.FC<WarrantyClaimFormProps> = ({
     try {
       setSubmitting(true);
       setError(null);
-      
+
       const claim = await ownitService.createWarrantyClaim(formData);
-      
+
       if (onSuccess && claim) {
         onSuccess(claim);
       }

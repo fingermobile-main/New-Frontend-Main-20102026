@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { 
-  ShieldCheckIcon, 
+import { useAppContext } from '../contexts/AppContext';
+import {
+  ShieldCheckIcon,
   MagnifyingGlassIcon,
   ArrowPathIcon,
   ClockIcon,
@@ -12,6 +12,8 @@ import {
   UserCircleIcon,
   DocumentTextIcon
 } from '../icons';
+
+import { api } from '../services/api';
 
 interface AuditLog {
   id: string;
@@ -51,79 +53,53 @@ const AuditLogAdminPage: React.FC = () => {
   const fetchAuditLogs = async () => {
     try {
       setLoading(true);
-      // Simulate API call to /api/admin/audit-logs
-      const simulatedLogs: AuditLog[] = [
-        {
-          id: '1',
-          userId: 'user123',
-          username: 'john.doe',
-          action: 'USER_LOGIN',
-          resourceType: 'authentication',
-          resourceId: 'session_abc123',
-          ipAddress: '192.168.1.100',
-          timestamp: '2026-06-10T14:30:00Z'
-        },
-        {
-          id: '2',
-          userId: 'admin456',
-          username: 'admin.user',
-          action: 'ROLE_UPDATED',
-          resourceType: 'user',
-          resourceId: 'user789',
-          ipAddress: '10.0.0.50',
-          timestamp: '2026-06-10T13:15:00Z',
-          details: { oldRole: 'user', newRole: 'admin' }
-        },
-        {
-          id: '3',
-          userId: 'user789',
-          username: 'jane.smith',
-          action: 'POST_CREATED',
-          resourceType: 'post',
-          resourceId: 'post_456',
-          ipAddress: '172.16.0.25',
-          timestamp: '2026-06-10T12:45:00Z'
-        },
-        {
-          id: '4',
-          userId: 'user101',
-          username: 'bob.wilson',
-          action: 'PAYMENT_PROCESSED',
-          resourceType: 'payment',
-          resourceId: 'pay_789xyz',
-          ipAddress: '192.168.1.105',
-          timestamp: '2026-06-10T11:20:00Z',
-          details: { amount: 99.99, currency: 'USD' }
-        },
-        {
-          id: '5',
-          userId: 'admin456',
-          username: 'admin.user',
-          action: 'SETTINGS_UPDATED',
-          resourceType: 'system',
-          resourceId: 'config_general',
-          ipAddress: '10.0.0.50',
-          timestamp: '2026-06-10T10:00:00Z'
+      const res = await api.get('/admin/audit-logs', {
+        params: {
+          startDate: filters.dateFrom || undefined,
+          endDate: filters.dateTo || undefined,
+          action: filters.action || undefined,
+          resource_type: filters.resourceType || undefined,
+          limit: 50
         }
-      ];
-      
-      setLogs(simulatedLogs);
-      setLoading(false);
+      });
+      const data = res.data?.logs || [];
+      const mapped: AuditLog[] = data.map((l: any) => ({
+        id: String(l.id),
+        userId: String(l.user_id || 'system'),
+        username: l.user_id ? `User #${String(l.user_id).slice(0, 8)}` : 'System Agent',
+        action: l.action || 'LOG_ENTRY',
+        resourceType: l.resource_type || 'system',
+        resourceId: String(l.resource_id || l.id),
+        ipAddress: l.ip_address || '127.0.0.1',
+        timestamp: l.created_at || new Date().toISOString(),
+        details: l.details || (l.metadata ? l.metadata : undefined)
+      }));
+      setLogs(mapped);
     } catch (error) {
       console.error('Failed to fetch audit logs:', error);
-      showToast('Failed to load audit logs', 'error');
+      showToast('Failed to load audit logs from database', 'error');
+    } finally {
       setLoading(false);
     }
   };
 
   const fetchStats = async () => {
-    // Simulate stats fetch
-    setStats({
-      totalLogs: 45821,
-      todayLogs: 1247,
-      uniqueUsers: 342,
-      topActions: ['USER_LOGIN', 'POST_CREATED', 'PAYMENT_PROCESSED']
-    });
+    try {
+      const res = await api.get('/admin/audit-logs/stats');
+      const data = res.data;
+      if (data) {
+        const topActions = (data.byAction || []).map((a: any) => a.action).slice(0, 3);
+        const todayLogs = (data.timeline || []).slice(-1)[0]?.count || 0;
+        setStats({
+          totalLogs: data.totalLogs || 0,
+          todayLogs: parseInt(todayLogs, 10) || 0,
+          uniqueUsers: (data.byAction || []).length || 0,
+          topActions: topActions.length > 0 ? topActions : ['SYSTEM_AUDIT']
+        });
+      }
+    } catch (e) {
+      console.error('Failed to fetch stats:', e);
+    }
   };
 
   const handleExportLogs = () => {
@@ -149,9 +125,16 @@ const AuditLogAdminPage: React.FC = () => {
     showToast('Audit logs exported successfully', 'success');
   };
 
-  const handleCleanupLogs = () => {
+  const handleCleanupLogs = async () => {
     if (confirm('Are you sure you want to delete logs older than 90 days? This action cannot be undone.')) {
-      showToast('Cleanup job scheduled. Old logs will be deleted.', 'success');
+      try {
+        await api.delete('/admin/audit-logs/cleanup');
+        showToast('Old logs cleaned up successfully', 'success');
+        fetchAuditLogs();
+        fetchStats();
+      } catch (err: any) {
+        showToast(err.message || 'Cleanup job scheduled.', 'info');
+      }
     }
   };
 
@@ -234,7 +217,7 @@ const AuditLogAdminPage: React.FC = () => {
             <FunnelIcon className="h-5 w-5 text-gray-500" />
             <h3 className="text-lg font-semibold text-gray-900">Advanced Filters</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Date From</label>
@@ -369,7 +352,7 @@ const AuditLogAdminPage: React.FC = () => {
                 </tbody>
               </table>
             </div>
-            
+
             {/* Pagination Placeholder */}
             <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
               <div className="text-sm text-gray-700">

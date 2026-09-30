@@ -9,7 +9,7 @@ export interface BlockData {
 
 export interface MuteData {
   mutedUserId: string;
-  muteType: "notifications" | "ugc";
+  muteType: 'notifications' | 'ugc';
   reason?: string;
 }
 
@@ -30,31 +30,31 @@ class BlockMuteService {
 
   async blockUser(blockData: BlockData): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await api.post("/block", blockData);
+      const response = await api.post('/block', blockData);
       return {
         success: true,
-        message: response.data?.message || "User blocked successfully"};
+        message: response.data?.message || 'User blocked successfully'};
     } catch (error: any) {
-      console.error("Block user error:", error);
+      console.error('Block user error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || "Failed to block user"};
+        message: error.response?.data?.message || 'Failed to block user'};
     }
   }
 
   async unblockUser(blockedId: string): Promise<{ success: boolean; message: string }> {
     try {
-      // FIXED: Simplified path assuming semantic separation from mute types. 
+      // FIXED: Simplified path assuming semantic separation from mute types.
       // Adjust path if your backend strictly demands a dual-purpose endpoint.
       const response = await api.delete(`/block/${blockedId}`);
       return {
         success: true,
-        message: response.data?.message || "User unblocked successfully"};
+        message: response.data?.message || 'User unblocked successfully'};
     } catch (error: any) {
-      console.error("Unblock user error:", error);
+      console.error('Unblock user error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || "Failed to unblock user"};
+        message: error.response?.data?.message || 'Failed to unblock user'};
     }
   }
 
@@ -67,7 +67,7 @@ class BlockMuteService {
    */
   async muteUser(muteData: MuteData): Promise<{ success: boolean; message: string }> {
     try {
-      const endpoint = muteData.muteType === "notifications" ? "/mute/notifications" : "/mute/ugc";
+      const endpoint = muteData.muteType === 'notifications' ? '/mute/notifications' : '/mute/ugc';
       const response = await api.post(endpoint, muteData);
       return {
         success: true,
@@ -80,17 +80,17 @@ class BlockMuteService {
     }
   }
 
-  async unmuteUser(mutedId: string, muteType: "notifications" | "ugc"): Promise<{ success: boolean; message: string }> {
+  async unmuteUser(mutedId: string, muteType: 'notifications' | 'ugc'): Promise<{ success: boolean; message: string }> {
     try {
       const response = await api.delete(`/mute/${mutedId}/${muteType}`);
       return {
         success: true,
-        message: response.data?.message || "User unmuted successfully"};
+        message: response.data?.message || 'User unmuted successfully'};
     } catch (error: any) {
-      console.error("Unmute user error:", error);
+      console.error('Unmute user error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || "Failed to unmute user"};
+        message: error.response?.data?.message || 'Failed to unmute user'};
     }
   }
 
@@ -100,11 +100,11 @@ class BlockMuteService {
 
   async getBlocks(params: { page?: number; limit?: number } = {}): Promise<BlocksResponse> {
     try {
-      const response = await api.get("/blocks", { params });
+      const response = await api.get('/blocks', { params });
       // FIXED: Added missing commas in the fallback object literal
       return response.data || { blocks: [], mutes: [] };
     } catch (error: any) {
-      console.error("Get blocks error:", error);
+      console.error('Get blocks error:', error);
       return { blocks: [], mutes: [] };
     }
   }
@@ -115,7 +115,7 @@ class BlockMuteService {
       // FIXED: Added missing commas in the fallback object literal
       return response.data || { isBlocked: false, isMuted: false };
     } catch (error: any) {
-      console.error("Get block status error:", error);
+      console.error('Get block status error:', error);
       return { isBlocked: false, isMuted: false };
     }
   }
@@ -126,29 +126,29 @@ class BlockMuteService {
 
   async muteNotifications(muteData: MuteData): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await api.post("/mute", { ...muteData, muteType: "notifications" });
+      const response = await api.post('/mute', { ...muteData, muteType: 'notifications' });
       return {
         success: true,
-        message: response.data?.message || "Notifications muted successfully"};
+        message: response.data?.message || 'Notifications muted successfully'};
     } catch (error: any) {
-      console.error("Mute notifications error:", error);
+      console.error('Mute notifications error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || "Failed to mute notifications"};
+        message: error.response?.data?.message || 'Failed to mute notifications'};
     }
   }
 
   async muteUgc(muteData: MuteData): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await api.post("/mute", { ...muteData, muteType: "ugc" });
+      const response = await api.post('/mute', { ...muteData, muteType: 'ugc' });
       return {
         success: true,
-        message: response.data?.message || "UGC muted successfully"};
+        message: response.data?.message || 'UGC muted successfully'};
     } catch (error: any) {
-      console.error("Mute UGC error:", error);
+      console.error('Mute UGC error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || "Failed to mute UGC"};
+        message: error.response?.data?.message || 'Failed to mute UGC'};
     }
   }
 }

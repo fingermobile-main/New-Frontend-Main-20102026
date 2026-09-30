@@ -1,4 +1,4 @@
-export type CommunityPageType = "hallmarks" | "gems" | "blogs" | "groups";
+export type CommunityPageType = 'hallmarks' | 'gems' | 'blogs' | 'groups';
 
 export interface CommunityPage {id: string;
   name: string;
@@ -14,7 +14,7 @@ export interface CommunityPage {id: string;
   imageUrl?: string;
   subscriptionFee?: {amount: number;
   currency: string;
-  interval: "monthly" | "yearly";
+  interval: 'monthly' | 'yearly';
   };
   monetization: {platformShare: number; // Percentage,
   creatorShare: number; // Percentage,
@@ -30,7 +30,7 @@ export interface CommunityPage {id: string;
 export interface CommunityMember {id: string;
   memberId: string;
   pageId: string;
-  role: "admin" | "moderator" | "member";
+  role: 'admin' | 'moderator' | 'member';
   joinedAt: Date;
   isActive: boolean;
 }
@@ -46,13 +46,13 @@ export interface CommunityPost {id: string;
   commentsCount: number;
   sharesCount: number;
   };
-  aspectRatio: "square" | "portrait";
+  aspectRatio: 'square' | 'portrait';
 }
 
 export interface CommunityMembership {id: string;
   memberId: string;
   pageId: string;
-  status: "pending" | "active" | "suspended" | "rejected";
+  status: 'pending' | 'active' | 'suspended' | 'rejected';
   joinedAt?: Date;
   invitedAt?: Date;
   invitationId?: string;
@@ -73,5 +73,5 @@ export interface CommunityRule {id: string;
   ruleText: string;
   order: number;
 }
-  
-export {};  
+
+export {};

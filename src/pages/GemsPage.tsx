@@ -1,646 +1,302 @@
-import { Link } from 'react-router-dom';
-import React, { useState, useEffect, useRef } from 'react';
-
-import { useAppContext } from "../contexts/AppContext";
-import { playAudio } from '../utils/audioPlayer';
-import apiService, { ApiService } from '../services/apiService';
-import { VoiceLine } from '../types';
-
-
-import AdBanner from '../components/AdBanner';
-import FixedAdBanner from '../components/FixedAdBanner';
-import BurgerMenu from '../components/BurgerMenu';
-import {
-  GemIcon,
-  SearchIcon,
-  MicrophoneIcon,
-  TvIcon,
-  MusicalNoteIcon as MusicNoteIcon,
-  ShoppingBagIcon,
-  GiftIcon,
-  LinkIcon,
-  FilterIcon,
-  SortIcon,
-  HeartIcon,
-  ShareIcon,
-  SparklesIcon, 
-  CurrencyDollarIcon, 
-  ArrowTrendingUpIcon, 
-  UserGroupIcon,
-  ChevronDownIcon
-} from '../icons';
-import { useGems } from '../hooks/useGems';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import PostCard from '../components/PostCard';
-
-interface Gem {
-  id: number;
-  title: string;
-  author: string;
-  price: string;
-  image: string;
-  tags: string[];
-  likes: number;
-  views: number;
-  category: string;
-  isLiked?: boolean;
-  createdAt: string;
-}
+import { SearchIcon, StarIcon, HeartIcon } from '../components/icons';
+import gemsService, { GemItem } from '../services/gemsService';
 
 const GemsPage: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4">
-      <h1 className="text-2xl font-bold">Gems</h1>
-      <p>This is the gems page.</p>
-    </div>
-  );
-};
+  const { showToast, handleGlobalAction } = useAppContext();
+  const [allGems, setAllGems] = useState<GemItem[]>([]);  // Renamed from 'gems' to 'allGems' to avoid conflict
+  const [userBalance, setUserBalance] = useState<number>(0);
+  const [loadingState, setLoadingState] = useState(true); // Renamed from 'loading' to 'loadingState' to avoid conflict
+  const [errorState, setErrorState] = useState<string | null>(null); // Renamed from 'error' to 'errorState' to avoid conflict
+  const [searchTermState, setSearchTermState] = useState(''); // Renamed from 'searchTerm' to 'searchTermState' to avoid conflict
+  const [sortByState, setSortByState] = useState<'price' | 'rating' | 'newest'>('rating'); // Renamed from 'sortBy' to 'sortByState' to avoid conflict
 
-// Original complex version with all features
-const GemsPageOriginal: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showGiftModal, setShowGiftModal] = useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
-  const [showConvertModal, setShowConvertModal] = useState(false);
-  const [selectedGem, setSelectedGem] = useState<Gem | null>(null);
-  const [giftAmount, setGiftAmount] = useState('');
-  const [paylinkAmount, setPaylinkAmount] = useState('');
-  const [convertAmount, setConvertAmount] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { ficBalance, showToast } = useAppContext();
-  const { gems, loading, error, refreshGems } = useGems();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('recent');
-  const [filterBy, setFilterBy] = useState('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [voiceLines, setVoiceLines] = useState<VoiceLine[]>([]);
-
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Infinite scroll state
+  const [hasMoreState, setHasMoreState] = useState(true); // Renamed from 'hasMore' to 'hasMoreState' to avoid conflict
+  const [pageState, setPageState] = useState(1); // Renamed from 'page' to 'pageState' to avoid conflict
+  const [itemsState, setItemsState] = useState<GemItem[]>([]); // Renamed from 'items' to 'itemsState' to avoid conflict
+  const [isLoadingMoreState, setIsLoadingMoreState] = useState(false); // Renamed from 'isLoadingMore' to 'isLoadingMoreState' to avoid conflict
+  const observer = useRef<IntersectionObserver | null>(null);
+  const gemsPerPage = 6;
 
   useEffect(() => {
-    const fetchVoiceLines = async () => {
-      try {
-        // Mock voice lines fetch - ApiService.voices not implemented
-        setVoiceLines([]);
-      } catch (error) {
-        console.error("Failed to fetch voice lines:", error);
+    gemsService.getGemBalance().then(res => {
+      if (res.success) {
+        setUserBalance(res.balance);
       }
-    };
-
-    fetchVoiceLines();
-  
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
+    }).catch(err => console.warn('Could not fetch gem balance:', err));
   }, []);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 text-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center h-64">
-            <LoadingSpinner />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 text-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-            <p className="text-red-600 mb-4">Error loading gems: {error}</p>
-            <button 
-              onClick={refreshGems}
-              className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const lastGemElementRef = useCallback((node: Element | null) => {
+    if (node) {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMoreState) {
+          loadMoreItems();
+        }
+      });
+      observer.current.observe(node);
+    }
+  }, [hasMoreState]);
 
   // Filter and sort gems
-  const filteredGems = gems
-    .filter(gem => {
-      const matchesSearch = gem.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           gem.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           gem.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesFilter = filterBy === 'all' || gem.category === filterBy;
-      return matchesSearch && matchesFilter;
-    })
-    .sort((a, b) => {
-      if (sortBy === 'recent') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      if (sortBy === 'popular') return b.likes - a.likes;
-      if (sortBy === 'priceHigh') return parseFloat(b.price.replace('$', '')) - parseFloat(a.price.replace('$', ''));
-      if (sortBy === 'priceLow') return parseFloat(a.price.replace('$', '')) - parseFloat(b.price.replace('$', ''));
-      return 0;
-    });
+  const filteredGems = useMemo(() => {
+    return allGems
+      .filter(gem =>
+        gem.title.toLowerCase().includes(searchTermState.toLowerCase()) ||
+        gem.category.toLowerCase().includes(searchTermState.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortByState === 'price') return a.price - b.price;
+        if (sortByState === 'rating') return b.rating - a.rating;
+        return 0;
+      });
+  }, [allGems, searchTermState, sortByState]);
 
-  const categories = ['all', ...Array.from(new Set(gems.map(gem => gem.category)))];
+  useEffect(() => {
+    const fetchGems = async () => {
+      try {
+        setLoadingState(true);
+        const res = await gemsService.getGems();
+        if (res && res.data) {
+          setAllGems(res.data);
+        }
+      } catch (err) {
+        setErrorState('Failed to load gems');
+      } finally {
+        setLoadingState(false);
+      }
+    };
+    fetchGems();
+  }, []);
 
-  const handleLike = (gemId: number) => {
-    // In a real app, this would call an API
-    console.info('Liking gem:', gemId);
-    showToast('Added to favorites!', 'success');
-  };
+  // Initialize items with existing gems
+  useEffect(() => {
+    setItemsState(filteredGems.slice(0, gemsPerPage));
+    setPageState(1);
+    setHasMoreState(filteredGems.length > gemsPerPage);
+  }, [filteredGems]);
 
-  const handleShare = (gemId: number) => {
-    // In a real app, this would share the gem
-    console.info('Sharing gem:', gemId);
-    showToast('Link copied to clipboard!', 'success');
-  };
+  // Load more items for infinite scroll
+  const loadMoreItems = useCallback(() => {
+    setIsLoadingMoreState(true);
 
-  const openGiftModal = (gem: Gem) => {
-    setSelectedGem(gem);
-    setShowGiftModal(true);
-  };
-
-  const openPaylinkModal = (gem: Gem) => {
-    setSelectedGem(gem);
-    setShowPaylinkModal(true);
-  };
-
-  const openConvertModal = () => {
-    setShowConvertModal(true);
-  };
-
-  const handleSendGift = () => {
-    if (!selectedGem) return;
-    
-    setIsProcessing(true);
     // Simulate API call
     setTimeout(() => {
-      setIsProcessing(false);
-      setShowGiftModal(false);
-      setGiftAmount('');
-      showToast(`Gift sent to ${selectedGem.author}!`, 'success');
-    }, 1500);
-  };
+      const nextIndex = pageState * gemsPerPage;
+      const nextItems = filteredGems.slice(nextIndex, nextIndex + gemsPerPage);
 
-  const handleCreatePaylink = () => {
-    if (!selectedGem) return;
-    
-    setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false);
-      setShowPaylinkModal(false);
-      setPaylinkAmount('');
-      showToast(`Paylink created for ${selectedGem.title}!`, 'success');
-    }, 1500);
-  };
+      if (nextItems.length > 0) {
+        setItemsState(prev => [...prev, ...nextItems]);
+        setPageState(prev => prev + 1);
+      } else {
+        setHasMoreState(false);
+      }
 
-  const handleConvertGems = () => {
-    if (!convertAmount || parseFloat(convertAmount) <= 0) {
-      showToast('Please enter a valid amount', 'error');
-      return;
-    }
-    
-    setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false);
-      setShowConvertModal(false);
-      setConvertAmount('');
-      showToast(`Converted ${convertAmount} Gems to FIC!`, 'success');
-    }, 1500);
-  };
+      setIsLoadingMoreState(false);
+    }, 1000);
+  }, [filteredGems, pageState]);
+
+  // Handle infinite scrolling logic
+  useEffect(() => {
+    setItemsState(filteredGems.slice(0, gemsPerPage));
+    setPageState(1);
+    setHasMoreState(filteredGems.length > gemsPerPage);
+  }, [filteredGems]);
+
+  // Set up infinite scroll observer
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoadingMoreState || !hasMoreState) {
+        return;
+      }
+      loadMoreItems();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loadMoreItems, isLoadingMoreState, hasMoreState]);
+
+
+  if (loadingState) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-purple-600 shadow">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <div className="bg-white/20 p-2 rounded-lg">
-                <SparklesIcon className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-white">Gems Marketplace</h1>
-            </div>
-            <button
-              onClick={() => {
-                if (voiceLines.length > 0) {
-                  const randomIndex = Math.floor(Math.random() * voiceLines.length);
-                  playAudio(voiceLines[randomIndex].audioUrl);
-                } else {
-                  showToast("No voice lines available.", "info");
-                }
-              }}
-              className="ml-4 px-3 py-1 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-md hover:from-green-600 hover:to-teal-600"
-            >
-              Play Voice
-            </button>
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block">
-                <span className="text-blue-100">Balance:</span>
-                <span className="ml-2 font-bold text-yellow-300">{ficBalance} FIC</span>
-              </div>
-              <BurgerMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 py-8 px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Gems</h1>
+          <p className="text-gray-600">Discover premium content and exclusive offerings</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 bg-purple-100 border border-purple-200 text-purple-900 font-semibold rounded-full shadow-sm text-sm">
+            <span>💎 Gem Balance:</span>
+            <span className="text-purple-700 font-bold">{userBalance.toLocaleString()}</span>
           </div>
         </div>
-      </header>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Page header */}
-        <div className="mb-8">
-          <div className="flex items-center">
-            <SparklesIcon className="h-8 w-8 text-purple-600" />
-            <h1 className="text-3xl font-bold ml-2 text-gray-900">Premium Content Marketplace</h1>
+        {errorState && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-center" role="alert">
+            {errorState}
           </div>
-          <p className="text-gray-600 mt-2">Discover exclusive digital content from creators around the world</p>
-        </div>
+        )}
 
-        {/* Search and filters */}
-        <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+        {/* Search and Filters */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <SearchIcon className="h-5 w-5 text-gray-400" />
+              </div>
               <input
                 type="text"
                 placeholder="Search gems..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-gray-50 text-gray-900 pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none border border-gray-200"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                value={searchTermState}
+                onChange={(e) => setSearchTermState(e.target.value)}
               />
             </div>
-            <div className="flex gap-2 flex-wrap">
-              <div className="relative">
-                <select
-                  value={filterBy}
-                  onChange={(e) => setFilterBy(e.target.value)}
-                  className="bg-gray-50 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none appearance-none border border-gray-200 pr-8"
-                >
-                  {categories.map(category => (
-                    <option key={category} value={category}>
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-              </div>
-              <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-gray-50 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none appearance-none border border-gray-200 pr-8"
-                >
-                  <option value="recent">Most Recent</option>
-                  <option value="popular">Most Popular</option>
-                  <option value="priceHigh">Price: High to Low</option>
-                  <option value="priceLow">Price: Low to High</option>
-                </select>
-                <ChevronDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-              </div>
-              <div className="flex border border-gray-200 rounded-lg overflow-hidden">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700'}`}
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 ${viewMode === 'list' ? 'bg-purple-500 text-white' : 'bg-gray-100 text-gray-700'}`}
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <select
+              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              value={sortByState}
+              onChange={(e) => setSortByState(e.target.value as 'price' | 'rating' | 'newest')}
+            >
+              <option value="rating">Highest Rated</option>
+              <option value="price">Price: Low to High</option>
+              <option value="newest">Newest</option>
+            </select>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center">
-              <SparklesIcon className="h-6 w-6 text-purple-500 mr-2" />
-              <h3 className="text-gray-600 text-sm">Total Gems</h3>
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{gems.length}</p>
-          </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center">
-              <UserGroupIcon className="h-6 w-6 text-blue-500 mr-2" />
-              <h3 className="text-gray-600 text-sm">Creators</h3>
-            </div>
-            <p className="text-2xl font-bold text-gray-900">
-              {Array.from(new Set(gems.map(gem => gem.author))).length}
-            </p>
-          </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center">
-              <ArrowTrendingUpIcon className="h-6 w-6 text-green-500 mr-2" />
-              <h3 className="text-gray-600 text-sm">Categories</h3>
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{categories.length - 1}</p>
-          </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center">
-              <CurrencyDollarIcon className="h-6 w-6 text-yellow-500 mr-2" />
-              <h3 className="text-gray-600 text-sm">Avg. Price</h3>
-            </div>
-            <p className="text-2xl font-bold text-gray-900">
-              ${(gems.reduce((sum, gem) => sum + parseFloat(gem.price.replace('$', '')), 0) / gems.length).toFixed(2)}
-            </p>
-          </div>
-        </div>
-
-        {/* Gems grid/list */}
-        {filteredGems.length > 0 ? (
-          <div className={
-            viewMode === 'grid' 
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
-              : 'space-y-4'
-          }>
-            {filteredGems.map((gem) => (
-              <div 
-                key={gem.id} 
-                className={`bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-transform hover:shadow-md ${
-                  viewMode === 'list' ? 'flex' : ''
-                }`}
-              >
-                <div className={viewMode === 'list' ? 'w-1/3' : ''}>
+        {/* Gems Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {itemsState.map((gem, index) => {
+            if (index === itemsState.length - 1) {
+              return (
+                <div
+                  key={gem.id}
+                  ref={lastGemElementRef}
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                >
                   <div className="relative">
-                    <img 
-                      src={gem.image} 
-                      alt={gem.title} 
-                      className={`w-full object-cover ${viewMode === 'list' ? 'h-full' : 'h-48'}`} 
-                     />
-                    <div className="absolute top-2 right-2 bg-black/30 rounded-full p-1">
-                      <HeartIcon 
-                        className={`w-5 h-5 cursor-pointer ${gem.isLiked ? 'text-red-500 fill-current' : 'text-white'}`} 
-                        onClick={() => handleLike(gem.id)}
-                      />
+                    <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
+                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
+                      <StarIcon className="h-3 w-3 mr-1" />
+                      {gem.rating}
                     </div>
                   </div>
-                </div>
-                <div className={`p-4 ${viewMode === 'list' ? 'w-2/3' : ''}`}>
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">{gem.title}</h3>
-                      <p className="text-gray-500 text-sm">by {gem.author}</p>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-lg font-semibold text-gray-900">{gem.title}</h3>
+                      <span className="text-lg font-bold text-purple-600">${gem.price.toFixed(2)}</span>
                     </div>
-                    <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm font-bold">
-                      {gem.price} FIC
-                    </span>
-                  </div>
-
-                  <div className="flex items-center space-x-4 mb-4 text-sm text-gray-500">
-                    <span className="flex items-center">
-                      <HeartIcon className="w-4 h-4 mr-1" /> {gem.likes}
-                    </span>
-                    <span className="flex items-center">
-                      <TvIcon className="w-4 h-4 mr-1" /> {gem.views}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {gem.tags.map(tag => (
-                      <span key={tag} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
-                        #{tag}
+                    <p className="text-gray-500 text-sm mt-1">by {gem.creator}</p>
+                    <p className="text-gray-600 text-sm mt-3">{gem.description}</p>
+                    <div className="mt-4 flex justify-between items-center">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (handleGlobalAction) handleGlobalAction('like', gem.id);
+                        }}
+                        className="flex items-center text-gray-500 text-sm hover:text-red-500 transition-colors"
+                      >
+                        <HeartIcon className="h-4 w-4 mr-1" />
+                        {gem.likes} likes
+                      </button>
+                      <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
+                        {gem.category}
                       </span>
-                    ))}
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => openGiftModal(gem)}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center"
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (handleGlobalAction) handleGlobalAction('save', gem.id);
+                        showToast(`Added ${gem.title} to cart`, 'success');
+                      }}
+                      className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
                     >
-                      <GiftIcon className="w-4 h-4 mr-2" /> Gift
-                    </button>
-                    <button 
-                      onClick={() => openPaylinkModal(gem)}
-                      className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-lg text-sm font-bold flex items-center justify-center"
-                    >
-                      <LinkIcon className="w-4 h-4 mr-2" /> Paylink
-                    </button>
-                    <button 
-                      onClick={() => handleShare(gem.id)}
-                      className="bg-gray-100 hover:bg-gray-200 text-gray-800 p-2 rounded-lg"
-                    >
-                      <ShareIcon className="w-4 h-4" />
+                      Purchase
                     </button>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            } else {
+              return (
+                <div
+                  key={gem.id}
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className="relative">
+                    <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
+                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
+                      <StarIcon className="h-3 w-3 mr-1" />
+                      {gem.rating}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-lg font-semibold text-gray-900">{gem.title}</h3>
+                      <span className="text-lg font-bold text-purple-600">${gem.price.toFixed(2)}</span>
+                    </div>
+                    <p className="text-gray-500 text-sm mt-1">by {gem.creator}</p>
+                    <p className="text-gray-600 text-sm mt-3">{gem.description}</p>
+                    <div className="mt-4 flex justify-between items-center">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (handleGlobalAction) handleGlobalAction('like', gem.id);
+                        }}
+                        className="flex items-center text-gray-500 text-sm hover:text-red-500 transition-colors"
+                      >
+                        <HeartIcon className="h-4 w-4 mr-1" />
+                        {gem.likes} likes
+                      </button>
+                      <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
+                        {gem.category}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (handleGlobalAction) handleGlobalAction('save', gem.id);
+                        showToast(`Added ${gem.title} to cart`, 'success');
+                      }}
+                      className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
+                    >
+                      Purchase
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
+
+        {!hasMoreState && itemsState.length > 0 && (
+          <div className="text-center mt-8 text-gray-500">
+            You've reached the end of the gems list.
           </div>
-        ) : (
-          <div className="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
-            <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">No gems found</h3>
-            <p className="text-gray-500">Try adjusting your search or filters</p>
+        )}
+
+        {itemsState.length === 0 && !loadingState && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No gems found matching your criteria.</p>
+          </div>
+        )}
+
+        {/* Loading indicator for infinite scroll */}
+        {isLoadingMoreState && (
+          <div className="flex justify-center py-4">
+            <LoadingSpinner />
           </div>
         )}
       </div>
-
-      {/* Gift Modal */}
-      {showGiftModal && selectedGem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md shadow-xl">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-gray-900">Send a Gift</h3>
-              <button 
-                onClick={() => setShowGiftModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="flex items-center mb-4">
-                <img 
-                  src={selectedGem.image} 
-                  alt={selectedGem.title} 
-                  className="w-16 h-16 rounded-lg object-cover mr-4"
-                 />
-                <div>
-                  <h4 className="font-bold text-gray-900">{selectedGem.title}</h4>
-                  <p className="text-gray-500 text-sm">by {selectedGem.author}</p>
-                </div>
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Gift Amount (FIC)</label>
-                <input
-                  type="number"
-                  value={giftAmount}
-                  onChange={(e) => setGiftAmount(e.target.value)}
-                  className="w-full bg-gray-50 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none border border-gray-200"
-                  placeholder="Enter amount"
-                />
-              </div>
-              <div className="flex justify-between text-sm mb-4">
-                <span className="text-gray-600">Your Balance:</span>
-                <span className="text-purple-600 font-bold">{ficBalance} FIC</span>
-              </div>
-            </div>
-            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
-              <button 
-                onClick={() => setShowGiftModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-900"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleSendGift}
-                disabled={isProcessing || !giftAmount || parseFloat(giftAmount) <= 0 || parseFloat(giftAmount) > ficBalance}
-                className={`px-4 py-2 rounded-lg font-bold ${
-                  isProcessing || !giftAmount || parseFloat(giftAmount) <= 0 || parseFloat(giftAmount) > ficBalance
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white'
-                }`}
-              >
-                {isProcessing ? 'Sending...' : 'Send Gift'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Paylink Modal */}
-      {showPaylinkModal && selectedGem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md shadow-xl">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-gray-900">Create Paylink</h3>
-              <button 
-                onClick={() => setShowPaylinkModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="flex items-center mb-4">
-                <img 
-                  src={selectedGem.image} 
-                  alt={selectedGem.title} 
-                  className="w-16 h-16 rounded-lg object-cover mr-4"
-                 />
-                <div>
-                  <h4 className="font-bold text-gray-900">{selectedGem.title}</h4>
-                  <p className="text-gray-500 text-sm">by {selectedGem.author}</p>
-                </div>
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Paylink Amount (FIC)</label>
-                <input
-                  type="number"
-                  value={paylinkAmount}
-                  onChange={(e) => setPaylinkAmount(e.target.value)}
-                  className="w-full bg-gray-50 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none border border-gray-200"
-                  placeholder="Enter amount"
-                />
-              </div>
-              <div className="text-sm text-gray-600 mb-4">
-                Base price: <span className="text-purple-600">{selectedGem.price} FIC</span>
-              </div>
-            </div>
-            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
-              <button 
-                onClick={() => setShowPaylinkModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-700"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleCreatePaylink}
-                disabled={isProcessing || !paylinkAmount || parseFloat(paylinkAmount) <= 0}
-                className={`px-4 py-2 rounded-lg font-bold ${
-                  isProcessing || !paylinkAmount || parseFloat(paylinkAmount) <= 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white'
-                }`}
-              >
-                {isProcessing ? 'Creating...' : 'Create Paylink'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Convert Gems Modal */}
-      {showConvertModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md shadow-xl">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-gray-900">Convert Gems to FIC</h3>
-              <button 
-                onClick={() => setShowConvertModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Convert Amount (Gems)</label>
-                <input
-                  type="number"
-                  value={convertAmount}
-                  onChange={(e) => setConvertAmount(e.target.value)}
-                  className="w-full bg-gray-50 text-gray-900 px-3 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none border border-gray-200"
-                  placeholder="Enter amount"
-                />
-              </div>
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Exchange Rate:</span>
-                  <span className="text-gray-900 font-bold">1 Gem = 0.1 FIC</span>
-                </div>
-                <div className="flex justify-between text-sm mt-1">
-                  <span className="text-gray-600">Estimated Receive:</span>
-                  <span className="text-green-600 font-bold">{convertAmount ? (parseFloat(convertAmount) * 0.1).toFixed(2) : '0.00'} FIC</span>
-                </div>
-              </div>
-              <div className="flex justify-between text-sm mb-4">
-                <span className="text-gray-600">Your Gems Balance:</span>
-                <span className="text-purple-600 font-bold">1250 Gems</span>
-              </div>
-            </div>
-            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
-              <button 
-                onClick={() => setShowConvertModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-700"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleConvertGems}
-                disabled={isProcessing || !convertAmount || parseFloat(convertAmount) <= 0}
-                className={`px-4 py-2 rounded-lg font-bold ${
-                  isProcessing || !convertAmount || parseFloat(convertAmount) <= 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white'
-                }`}
-              >
-                {isProcessing ? 'Converting...' : 'Convert Gems'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <FixedAdBanner />
     </div>
   );
 };
+
 export default GemsPage;

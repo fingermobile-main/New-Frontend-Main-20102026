@@ -46,15 +46,15 @@ interface TrackingMapProps {
   onSelectShipment?: (shipment: Shipment) => void;
 }
 
-const TrackingMap: React.FC<TrackingMapProps> = ({ 
-  shipments = [], 
+const TrackingMap: React.FC<TrackingMapProps> = ({
+  shipments = [],
   selectedShipment,
-  onSelectShipment 
+  onSelectShipment
 }) => {
   // Calculate map center based on shipments
   const calculateCenter = (): [number, number] => {
     const validShipments = shipments.filter(s => s && s.currentLocation);
-    
+
     if (validShipments.length === 0) {
       return [0, 0]; // Default to center of the world
     }
@@ -71,9 +71,9 @@ const TrackingMap: React.FC<TrackingMapProps> = ({
   return (
     <div className="h-full w-full">
       <React.Suspense fallback={<div className="h-full w-full flex items-center justify-center bg-gray-100 rounded-lg">Loading Map...</div>}>
-        <MapContainer 
-          center={mapCenter} 
-          zoom={zoomLevel} 
+        <MapContainer
+          center={mapCenter}
+          zoom={zoomLevel}
           style={{ height: '100%', width: '100%' }}
           className="rounded-lg"
         >
@@ -81,15 +81,15 @@ const TrackingMap: React.FC<TrackingMapProps> = ({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          
+
           {shipments.map((shipment) => {
             if (!shipment || !shipment.currentLocation) return null;
-            
+
             // Determine marker color based on status
             let markerColor = 'red';
             if (shipment.status === 'delivered') markerColor = 'green';
             if (shipment.status === 'delayed') markerColor = 'orange';
-            
+
             // Create custom icon with color
             const customIcon = L.divIcon({
               className: 'custom-marker',
@@ -120,7 +120,7 @@ const TrackingMap: React.FC<TrackingMapProps> = ({
                     <p><strong>Tracking:</strong> {shipment.trackingNumber}</p>
                     <p><strong>Status:</strong> <span className={
                       shipment.status === 'delivered' ? 'text-green-500' :
-                      shipment.status === 'delayed' ? 'text-orange-500' : 'text-red-500'
+                        shipment.status === 'delayed' ? 'text-orange-500' : 'text-red-500'
                     }>{shipment.status}</span></p>
                     <p><strong>Est. Delivery:</strong> {shipment.estimatedDelivery}</p>
                   </div>

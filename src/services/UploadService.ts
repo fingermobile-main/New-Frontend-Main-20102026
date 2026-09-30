@@ -16,14 +16,14 @@ export interface MediaFile {id: string;
   filename: string;
   url: string;
   thumbnail?: string;
-  type: "image" | "video" | "audio" | "document";
+  type: 'image' | 'video' | 'audio' | 'document';
   size: number;
   duration?: number;
   uploadedAt: string;
 }
 
 class UploadService {
-  private api = axios.create({baseURL: ``,
+  private api = axios.create({baseURL: '',
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -79,9 +79,9 @@ class UploadService {
   }
 
   async getMediaLibrary(userId: string, type?: string,
-limit: number = 20): Promise<MediaFile[]> {
+    limit: number = 20): Promise<MediaFile[]> {
     const response = await this.api.get(`/library/${userId}`, { params: { type,
-  limit } });
+      limit } });
     return response.data;
   }
 

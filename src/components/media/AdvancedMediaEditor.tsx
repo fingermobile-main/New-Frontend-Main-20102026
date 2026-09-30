@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../../contexts/AppContext';  // Using absolute path from src
 
-import "./AdvancedMediaEditor.css";
+import './AdvancedMediaEditor.css';
 
 interface MediaFile {
   id: string;
@@ -39,11 +39,11 @@ const AdvancedMediaEditor: React.FC = () => {
   const { showToast } = useAppContext();
   const [mediaFile, setMediaFile] = React.useState<MediaFile | null>(null);
   const [mediaType, setMediaType] = React.useState<
-    "image" | "video" | "audio" | null
+    'image' | 'video' | 'audio' | null
   >(null);
   const [editingTools, setEditingTools] = React.useState<EditingState>({
-    filter: "",
-    text: "",
+    filter: '',
+    text: '',
     rotation: 0,
     scale: 100,
     brightness: 100,
@@ -53,7 +53,7 @@ const AdvancedMediaEditor: React.FC = () => {
     hue: 0,
     sharpen: 0
   });
-  const [selectedEffect, setSelectedEffect] = React.useState("");
+  const [selectedEffect, setSelectedEffect] = React.useState('');
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [gainMapData, setGainMapData] = React.useState<any | null>(null);
@@ -74,7 +74,7 @@ const AdvancedMediaEditor: React.FC = () => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
 
   React.useEffect(() => {
-    if (mediaType === "video" && videoRef.current) {
+    if (mediaType === 'video' && videoRef.current) {
       const video = videoRef.current;
 
       const updateTime = () => {
@@ -85,12 +85,12 @@ const AdvancedMediaEditor: React.FC = () => {
         }));
       };
 
-      video.addEventListener("timeupdate", updateTime);
-      video.addEventListener("loadedmetadata", updateTime);
+      video.addEventListener('timeupdate', updateTime);
+      video.addEventListener('loadedmetadata', updateTime);
 
       return () => {
-        video.removeEventListener("timeupdate", updateTime);
-        video.removeEventListener("loadedmetadata", updateTime);
+        video.removeEventListener('timeupdate', updateTime);
+        video.removeEventListener('loadedmetadata', updateTime);
       };
     }
   }, [mediaType]);
@@ -109,22 +109,22 @@ const AdvancedMediaEditor: React.FC = () => {
 
       setMediaFile(newMediaFile);
 
-      if (file.type.startsWith("image/")) {
-        setMediaType("image");
+      if (file.type.startsWith('image/')) {
+        setMediaType('image');
         setPreviewUrl(url);
-      } else if (file.type.startsWith("video/")) {
-        setMediaType("video");
+      } else if (file.type.startsWith('video/')) {
+        setMediaType('video');
         setPreviewUrl(url);
         setTrimSettings({ start: 0, end: 0 });
-      } else if (file.type.startsWith("audio/")) {
-        setMediaType("audio");
+      } else if (file.type.startsWith('audio/')) {
+        setMediaType('audio');
         setPreviewUrl(url);
       }
     }
   };
 
   const togglePlayback = () => {
-    if (mediaType === "video" && videoRef.current) {
+    if (mediaType === 'video' && videoRef.current) {
       const video = videoRef.current;
       if (videoState.isPlaying) {
         video.pause();
@@ -132,7 +132,7 @@ const AdvancedMediaEditor: React.FC = () => {
         video.play();
       }
       setVideoState((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
-    } else if (mediaType === "audio" && audioRef.current) {
+    } else if (mediaType === 'audio' && audioRef.current) {
       const audio = audioRef.current;
       if (videoState.isPlaying) {
         audio.pause();
@@ -144,9 +144,9 @@ const AdvancedMediaEditor: React.FC = () => {
   };
 
   const handleSeek = (time: number) => {
-    if (mediaType === "video" && videoRef.current) {
+    if (mediaType === 'video' && videoRef.current) {
       videoRef.current.currentTime = time;
-    } else if (mediaType === "audio" && audioRef.current) {
+    } else if (mediaType === 'audio' && audioRef.current) {
       audioRef.current.currentTime = time;
     }
   };
@@ -180,17 +180,17 @@ const AdvancedMediaEditor: React.FC = () => {
     if (editingTools.text.trim()) {
       const newLayer = {
         id: Date.now(),
-        type: "text",
+        type: 'text',
         content: editingTools.text,
         x: 50,
         y: 50,
         fontSize: 24,
-        color: "#ffffff"
+        color: '#ffffff'
       };
 
       setLayers((prev) => [...prev, newLayer]);
       setSelectedLayer(layers.length);
-      setEditingTools((prev) => ({ ...prev, text: "" }));
+      setEditingTools((prev) => ({ ...prev, text: '' }));
     }
   };
 
@@ -199,10 +199,10 @@ const AdvancedMediaEditor: React.FC = () => {
 
     try {
       setIsProcessing(true);
-      const response = await fetch("/api/media/trim", {
-        method: "POST",
+      const response = await fetch('/api/media/trim', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           filePath: mediaFile.url,
@@ -212,14 +212,14 @@ const AdvancedMediaEditor: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to trim media");
+        throw new Error('Failed to trim media');
       }
 
       const result = await response.json();
-      showToast(`Media trimmed successfully: ${result.output}`, "success");
+      showToast(`Media trimmed successfully: ${result.output}`, 'success');
     } catch (e) {
-      console.error("Error trimming media:", e);
-      showToast("Failed to trim media", "error");
+      console.error('Error trimming media:', e);
+      showToast('Failed to trim media', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -230,10 +230,10 @@ const AdvancedMediaEditor: React.FC = () => {
 
     try {
       setIsProcessing(true);
-      const response = await fetch("/api/media/apply-effect", {
-        method: "POST",
+      const response = await fetch('/api/media/apply-effect', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           filePath: mediaFile.url,
@@ -242,31 +242,31 @@ const AdvancedMediaEditor: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to apply effect");
+        throw new Error('Failed to apply effect');
       }
 
       const result = await response.json();
       setSelectedEffect(effectType);
       showToast(
-        `${effectType} effect applied successfully: ${result.output}`, "success"
+        `${effectType} effect applied successfully: ${result.output}`, 'success'
       );
     } catch (e) {
-      console.error("Error applying effect:", e);
-      showToast("Failed to apply effect", "error");
+      console.error('Error applying effect:', e);
+      showToast('Failed to apply effect', 'error');
     } finally {
       setIsProcessing(false);
     }
   };
 
   const createUltraHdrImage = async () => {
-    if (!mediaFile || mediaType !== "image") return;
+    if (!mediaFile || mediaType !== 'image') return;
 
     try {
       setIsProcessing(true);
-      const response = await fetch("/api/media/create-ultra-hdr", {
-        method: "POST",
+      const response = await fetch('/api/media/create-ultra-hdr', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           filePath: mediaFile.url,
@@ -275,15 +275,15 @@ const AdvancedMediaEditor: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create Ultra HDR image");
+        throw new Error('Failed to create Ultra HDR image');
       }
 
       const result = await response.json();
       setGainMapData(result.gainMapData);
-      showToast(`Ultra HDR image created successfully: ${result.output}`, "success");
+      showToast(`Ultra HDR image created successfully: ${result.output}`, 'success');
     } catch (e) {
-      console.error("Error creating Ultra HDR image:", e);
-      showToast("Failed to create Ultra HDR image", "error");
+      console.error('Error creating Ultra HDR image:', e);
+      showToast('Failed to create Ultra HDR image', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -294,10 +294,10 @@ const AdvancedMediaEditor: React.FC = () => {
 
     try {
       setIsProcessing(true);
-      const response = await fetch("/api/media/convert-format", {
-        method: "POST",
+      const response = await fetch('/api/media/convert-format', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           filePath: mediaFile.url,
@@ -306,14 +306,14 @@ const AdvancedMediaEditor: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to convert format");
+        throw new Error('Failed to convert format');
       }
 
       const result = await response.json();
-      showToast(`Media converted successfully: ${result.output}`, "success");
+      showToast(`Media converted successfully: ${result.output}`, 'success');
     } catch (e) {
-      console.error("Error converting format:", e);
-      showToast("Failed to convert format", "error");
+      console.error('Error converting format:', e);
+      showToast('Failed to convert format', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -325,10 +325,10 @@ const AdvancedMediaEditor: React.FC = () => {
     try {
       setIsProcessing(true);
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      showToast("Media exported successfully!", "success");
+      showToast('Media exported successfully!', 'success');
     } catch (e) {
-      console.error("Error exporting media:", e);
-      showToast("Failed to export media", "error");
+      console.error('Error exporting media:', e);
+      showToast('Failed to export media', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -338,8 +338,8 @@ const AdvancedMediaEditor: React.FC = () => {
     setMediaFile(null);
     setMediaType(null);
     setEditingTools({
-      filter: "",
-      text: "",
+      filter: '',
+      text: '',
       rotation: 0,
       scale: 100,
       brightness: 100,
@@ -349,7 +349,7 @@ const AdvancedMediaEditor: React.FC = () => {
       hue: 0,
       sharpen: 0
     });
-    setSelectedEffect("");
+    setSelectedEffect('');
     setPreviewUrl(null);
     setGainMapData(null);
     setVideoState({
@@ -365,40 +365,40 @@ const AdvancedMediaEditor: React.FC = () => {
     setSelectedLayer(null);
 
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
   const [availableFormats] = React.useState<string[]>([
-    "mp4",
-    "avi",
-    "mov",
-    "wmv",
-    "flv",
-    "webm",
-    "mkv",
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "bmp",
-    "tiff",
-    "webp",
-    "mp3",
-    "wav",
-    "flac",
-    "aac",
-    "ogg",
-    "wma"
+    'mp4',
+    'avi',
+    'mov',
+    'wmv',
+    'flv',
+    'webm',
+    'mkv',
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'bmp',
+    'tiff',
+    'webp',
+    'mp3',
+    'wav',
+    'flac',
+    'aac',
+    'ogg',
+    'wma'
   ]);
 
-  const [selectedFormat, setSelectedFormat] = React.useState("");
+  const [selectedFormat, setSelectedFormat] = React.useState('');
 
   return (
     <div className="advanced-media-editor">
@@ -422,7 +422,7 @@ const AdvancedMediaEditor: React.FC = () => {
             type="file"
             accept="image/*,video/*,audio/*"
             onChange={handleFileUpload}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
           />
 
           <div className="media-type-buttons">
@@ -450,12 +450,12 @@ const AdvancedMediaEditor: React.FC = () => {
         <div className="editor-container">
           <div className="preview-section">
             <div className="preview-container">
-              {mediaType === "image" && previewUrl && (
+              {mediaType === 'image' && previewUrl && (
                 <div className="image-preview-wrapper">
                   <img
                     src={previewUrl}
                     alt="Preview"
-                    className={`media-preview ${gainMapData ? "hdr-image" : ""}`}
+                    className={`media-preview ${gainMapData ? 'hdr-image' : ''}`}
                     style={{
                       transform: `rotate(${editingTools.rotation}deg) scale(${editingTools.scale / 100})`,
                       filter: `
@@ -466,18 +466,18 @@ const AdvancedMediaEditor: React.FC = () => {
                         hue-rotate(${editingTools.hue}deg)
                       `
                     }}
-                   />
+                  />
                   {layers.map((layer, index) => (
                     <div
                       key={layer.id}
-                      className={`layer-overlay ${selectedLayer === index ? "selected" : ""}`}
+                      className={`layer-overlay ${selectedLayer === index ? 'selected' : ''}`}
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         left: `${layer.x}%`,
                         top: `${layer.y}%`,
                         fontSize: `${layer.fontSize}px`,
                         color: layer.color,
-                        cursor: "move"
+                        cursor: 'move'
                       }}
                       onClick={() => setSelectedLayer(index)} role="button" tabIndex={0}
                     >
@@ -486,7 +486,7 @@ const AdvancedMediaEditor: React.FC = () => {
                   ))}
                 </div>
               )}
-              {mediaType === "video" && previewUrl && (
+              {mediaType === 'video' && previewUrl && (
                 <div className="video-player">
                   <video
                     ref={videoRef}
@@ -503,10 +503,10 @@ const AdvancedMediaEditor: React.FC = () => {
                   </video>
                   <div className="video-controls">
                     <button className="control-button" onClick={togglePlayback}>
-                      {videoState.isPlaying ? "⏸️" : "▶️"}
+                      {videoState.isPlaying ? '⏸️' : '▶️'}
                     </button>
                     <span className="time-display">
-                      {formatTime(videoState.currentTime)} /{" "}
+                      {formatTime(videoState.currentTime)} /{' '}
                       {formatTime(videoState.duration)}
                     </span>
                     <input
@@ -520,7 +520,7 @@ const AdvancedMediaEditor: React.FC = () => {
                   </div>
                 </div>
               )}
-              {mediaType === "audio" && previewUrl && (
+              {mediaType === 'audio' && previewUrl && (
                 <div className="audio-player">
                   <div className="audio-visualizer">
                     <div className="visualizer-bars">
@@ -542,10 +542,10 @@ const AdvancedMediaEditor: React.FC = () => {
                   </audio>
                   <div className="audio-controls">
                     <button className="control-button" onClick={togglePlayback}>
-                      {videoState.isPlaying ? "⏸️" : "▶️"}
+                      {videoState.isPlaying ? '⏸️' : '▶️'}
                     </button>
                     <span className="time-display">
-                      {formatTime(videoState.currentTime)} /{" "}
+                      {formatTime(videoState.currentTime)} /{' '}
                       {formatTime(videoState.duration)}
                     </span>
                     <input
@@ -564,7 +564,7 @@ const AdvancedMediaEditor: React.FC = () => {
             <div className="media-info">
               <h3>{mediaFile.name}</h3>
               <p>
-                {mediaType?.toUpperCase()} •{" "}
+                {mediaType?.toUpperCase()} •{' '}
                 {(mediaFile.size / 1024 / 1024).toFixed(2)} MB
               </p>
             </div>
@@ -590,19 +590,19 @@ const AdvancedMediaEditor: React.FC = () => {
               <h3>Filters</h3>
               <div className="filters">
                 {[
-                  "None",
-                  "Grayscale",
-                  "Sepia",
-                  "Vintage",
-                  "Blur",
-                  "Invert",
-                  "Brightness",
-                  "Contrast",
-                  "Saturate"
+                  'None',
+                  'Grayscale',
+                  'Sepia',
+                  'Vintage',
+                  'Blur',
+                  'Invert',
+                  'Brightness',
+                  'Contrast',
+                  'Saturate'
                 ].map((filter) => (
                   <button
                     key={filter}
-                    className={`tool-btn ${editingTools.filter === filter.toLowerCase() ? "active" : ""}`}
+                    className={`tool-btn ${editingTools.filter === filter.toLowerCase() ? 'active' : ''}`}
                     onClick={() => applyFilter(filter.toLowerCase())}
                   >
                     {filter}
@@ -623,7 +623,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     value={editingTools.brightness}
                     onChange={(e) =>
                       handleAdjustmentChange(
-                        "brightness",
+                        'brightness',
                         parseInt(e.target.value),
                       )
                     }
@@ -638,7 +638,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     value={editingTools.contrast}
                     onChange={(e) =>
                       handleAdjustmentChange(
-                        "contrast",
+                        'contrast',
                         parseInt(e.target.value),
                       )
                     }
@@ -653,7 +653,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     value={editingTools.saturation}
                     onChange={(e) =>
                       handleAdjustmentChange(
-                        "saturation",
+                        'saturation',
                         parseInt(e.target.value),
                       )
                     }
@@ -667,7 +667,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     max="20"
                     value={editingTools.blur}
                     onChange={(e) =>
-                      handleAdjustmentChange("blur", parseInt(e.target.value))
+                      handleAdjustmentChange('blur', parseInt(e.target.value))
                     }
                   />
                 </div>
@@ -679,7 +679,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     max="360"
                     value={editingTools.hue}
                     onChange={(e) =>
-                      handleAdjustmentChange("hue", parseInt(e.target.value))
+                      handleAdjustmentChange('hue', parseInt(e.target.value))
                     }
                   />
                 </div>
@@ -711,7 +711,7 @@ const AdvancedMediaEditor: React.FC = () => {
               </div>
             </div>
 
-            {mediaType === "image" && (
+            {mediaType === 'image' && (
               <div className="tool-group">
                 <h3>Layers</h3>
                 <div className="layers-panel">
@@ -721,9 +721,9 @@ const AdvancedMediaEditor: React.FC = () => {
                       placeholder="Enter text"
                       value={editingTools.text}
                       onChange={(e) => setEditingTools((prev) => ({
-                          ...prev,
-                          text: e.target.value
-                        }))
+                        ...prev,
+                        text: e.target.value
+                      }))
                       }
                     />
                     <button className="tool-btn" onClick={addText}>
@@ -734,10 +734,10 @@ const AdvancedMediaEditor: React.FC = () => {
                     {layers.map((layer, index) => (
                       <div
                         key={layer.id}
-                        className={`layer-item ${selectedLayer === index ? "selected" : ""}`}
+                        className={`layer-item ${selectedLayer === index ? 'selected' : ''}`}
                         onClick={() => setSelectedLayer(index)} role="button" tabIndex={0}
                       >
-                        {layer.type === "text"
+                        {layer.type === 'text'
                           ? `Text: ${layer.content}`
                           : `Layer ${index + 1}`}
                       </div>
@@ -747,7 +747,7 @@ const AdvancedMediaEditor: React.FC = () => {
               </div>
             )}
 
-            {(mediaType === "video" || mediaType === "audio") && (
+            {(mediaType === 'video' || mediaType === 'audio') && (
               <div className="tool-group">
                 <h3>Editing</h3>
                 <div className="media-editing-tools">
@@ -756,10 +756,10 @@ const AdvancedMediaEditor: React.FC = () => {
                     onClick={trimMedia}
                     disabled={isProcessing}
                   >
-                    ✂️ Trim {mediaType === "video" ? "Video" : "Audio"}
+                    ✂️ Trim {mediaType === 'video' ? 'Video' : 'Audio'}
                   </button>
 
-                  {mediaType === "video" && (
+                  {mediaType === 'video' && (
                     <div className="video-transform-controls">
                       <label>Video Scale: {editingTools.scale}%</label>
                       <input
@@ -798,7 +798,7 @@ const AdvancedMediaEditor: React.FC = () => {
             <div className="tool-group">
               <h3>Special Features</h3>
               <div className="special-tools">
-                {mediaType === "image" && (
+                {mediaType === 'image' && (
                   <button
                     className="tool-btn"
                     onClick={createUltraHdrImage}
@@ -814,7 +814,7 @@ const AdvancedMediaEditor: React.FC = () => {
                     className="effect-dropdown"
                   >
                     <option value="">Select Effect</option>
-                    {mediaType === "image" && (
+                    {mediaType === 'image' && (
                       <>
                         <option value="enhance">Enhance</option>
                         <option value="sharpen">Sharpen</option>
@@ -823,7 +823,7 @@ const AdvancedMediaEditor: React.FC = () => {
                         <option value="watercolor">Watercolor</option>
                       </>
                     )}
-                    {mediaType === "video" && (
+                    {mediaType === 'video' && (
                       <>
                         <option value="slow_motion">Slow Motion</option>
                         <option value="fast_motion">Fast Motion</option>
@@ -832,7 +832,7 @@ const AdvancedMediaEditor: React.FC = () => {
                         <option value="reverse">Reverse</option>
                       </>
                     )}
-                    {mediaType === "audio" && (
+                    {mediaType === 'audio' && (
                       <>
                         <option value="echo">Echo</option>
                         <option value="robot_voice">Robot Voice</option>
@@ -884,7 +884,7 @@ const AdvancedMediaEditor: React.FC = () => {
                 onClick={exportMedia}
                 disabled={isProcessing}
               >
-                {isProcessing ? "Processing..." : "Export"}
+                {isProcessing ? 'Processing...' : 'Export'}
               </button>
             </div>
           </div>

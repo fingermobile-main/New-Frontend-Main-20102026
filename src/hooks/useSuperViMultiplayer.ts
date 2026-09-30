@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 interface UseSuperViMultiplayerProps {
   memberId?: string;
@@ -53,9 +53,9 @@ export const useSuperViMultiplayer =({ memberId }: UseSuperViMultiplayerProps): 
   // Join a game room
   const joinGameRoom = React.useCallback(
     async (
-  roomId: string, maxPlayersCount: number) => {
+      roomId: string, maxPlayersCount: number) => {
       if (!memberId) {
-        showToast("Member not authenticated", "error");
+        showToast('Member not authenticated', 'error');
         return;
       }
 
@@ -65,14 +65,14 @@ export const useSuperViMultiplayer =({ memberId }: UseSuperViMultiplayerProps): 
         setIsGameRoomActive(true);
         setIsWaitingForPlayers(true);
 
-        const currentPlayer: Player = {id: memberId, membername: "You", score: 0, level: 1,
-  avatar: "👤", isCurrentMember: true, isConnected: true
+        const currentPlayer: Player = {id: memberId, membername: 'You', score: 0, level: 1,
+          avatar: '👤', isCurrentMember: true, isConnected: true
         };
 
         setPlayers([currentPlayer]);
-        showToast(`Joined game room ${roomId}!`, "success");
+        showToast(`Joined game room ${roomId}!`, 'success');
       } catch {
-        showToast("Failed to join game room", "error");
+        showToast('Failed to join game room', 'error');
       }
     },
     [memberId, showToast],
@@ -86,9 +86,9 @@ export const useSuperViMultiplayer =({ memberId }: UseSuperViMultiplayerProps): 
       setPlayers([]);
       setGameRoomId(undefined);
       setCurrentPlayers(0);
-      showToast("Left game room", "info");
+      showToast('Left game room', 'info');
     } catch {
-      showToast("Failed to leave game room", "error");
+      showToast('Failed to leave game room', 'error');
     }
   }, [showToast]);
 
@@ -97,27 +97,27 @@ export const useSuperViMultiplayer =({ memberId }: UseSuperViMultiplayerProps): 
     <K extends keyof ActionPayloads>(action: K, data: ActionPayloads[K]) => {
       // Simulate socket-broadcasting patterns cleanly with safe payload guards
       switch (action) {
-        case "move_made":
-          break;
-        case "combo_achieved": {
-          const payload = data as ActionPayloads["combo_achieved"];
-          showToast(`${payload.playerName} achieved a ${payload.comboType} combo!`, "info");
-          break;
-        }
-        case "stun_performed": {
-          const payload = data as ActionPayloads["stun_performed"];
-          showToast(`${payload.playerName} performed a stun!`, "info");
-          break;
-        }
-        case "powerup_used": {
-          const payload = data as ActionPayloads["powerup_used"];
-          showToast(`${payload.playerName} used ${payload.powerUpType}!`, "info");
-          break;
-        }
-        case "chat_message":
-          break;
-default:
-          break;
+      case 'move_made':
+        break;
+      case 'combo_achieved': {
+        const payload = data as ActionPayloads['combo_achieved'];
+        showToast(`${payload.playerName} achieved a ${payload.comboType} combo!`, 'info');
+        break;
+      }
+      case 'stun_performed': {
+        const payload = data as ActionPayloads['stun_performed'];
+        showToast(`${payload.playerName} performed a stun!`, 'info');
+        break;
+      }
+      case 'powerup_used': {
+        const payload = data as ActionPayloads['powerup_used'];
+        showToast(`${payload.playerName} used ${payload.powerUpType}!`, 'info');
+        break;
+      }
+      case 'chat_message':
+        break;
+      default:
+        break;
       }
     },
     [showToast],
@@ -125,13 +125,13 @@ default:
 
   // Update player score
   const updatePlayerScore = React.useCallback((
-  newScore: number) => {
+    newScore: number) => {
     if (!memberId) return;
 
     setPlayers((prevPlayers) =>
       prevPlayers.map((player) =>
         player.id === memberId ? { ...player,
-score: newScore } : player,
+          score: newScore } : player,
       ),
     );
   }, [memberId]);
@@ -146,10 +146,10 @@ score: newScore } : player,
       const simulatePlayerJoin = () => {
         if (players.length < maxPlayers) {
           const newPlayer: Player = {id: `player${players.length + 1}`,
-membername: `Player${players.length + 1}`,
-score: Math.floor(Math.random() * 100),
-level: 1, avatar: "",
-isCurrentMember: false, isConnected: true
+            membername: `Player${players.length + 1}`,
+            score: Math.floor(Math.random() * 100),
+            level: 1, avatar: '',
+            isCurrentMember: false, isConnected: true
           };
 
           setPlayers((prev) => [...prev, newPlayer]);
@@ -157,7 +157,7 @@ isCurrentMember: false, isConnected: true
 
           if (players.length + 1 >= maxPlayers) {
             setIsWaitingForPlayers(false);
-            showToast("Game room is full! Game starting...", "success");
+            showToast('Game room is full! Game starting...', 'success');
           }
         }
       };

@@ -1,97 +1,107 @@
-import React, { useState } from 'react';
-import { useWeb3 } from '../../contexts/Web3Context';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiService } from '../../services/apiService';
+
+interface TransactionItem {
+  id: string;
+  date: string;
+  member: string;
+  description: string;
+  amount: string;
+  type: 'credit' | 'debit';
+}
 
 const FinanceDashboardPage: React.FC = () => {
-  useWeb3();
-  const [timeRange, setTimeRange] = useState("30d");
+  const navigate = useNavigate();
+  const [timeRange, setTimeRange] = useState('30d');
+  const [balance, setBalance] = useState(0);
+  const [pendingPayoutsTotal, setPendingPayoutsTotal] = useState(0);
+  const [transactions, setTransactions] = useState<TransactionItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Mock data for financial stats
+  const loadDashboardData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const [balRes, txRes, payoutsRes] = await Promise.all([
+        apiService.get<any>('/api/wallet/balance').catch(() => null),
+        apiService.get<any>('/api/wallet/transactions').catch(() => null),
+        apiService.get<any>('/api/payouts').catch(() => null)
+      ]);
+
+      if (balRes?.data?.balance !== undefined) {
+        setBalance(Number(balRes.data.balance || 0));
+      }
+
+      if (payoutsRes?.data && Array.isArray(payoutsRes.data)) {
+        const pending = payoutsRes.data
+          .filter((p: any) => String(p.status).toLowerCase() === 'pending')
+          .reduce((sum: number, p: any) => sum + Number(p.amount || 0), 0);
+        setPendingPayoutsTotal(pending);
+      }
+
+      if (txRes?.data && Array.isArray(txRes.data)) {
+        setTransactions(txRes.data.slice(0, 10).map((t: any) => {
+          const isCredit = ['deposit', 'credit', 'interest', 'received', 'transfer_in'].includes(
+            (t.type || t.transactionType || '').toLowerCase()
+          );
+          return {
+            id: String(t.id),
+            date: t.createdAt ? new Date(t.createdAt).toLocaleDateString() : 'Recent',
+            member: t.to_account ? `Account #${t.to_account}` : 'Platform Member',
+            description: t.description || `${t.type || 'Transaction'}`,
+            amount: `${isCredit ? '+' : '-'}${Number(t.amount || 0).toLocaleString()} FIC`,
+            type: isCredit ? 'credit' : 'debit'
+          };
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to load dashboard data:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
+
+  const totalCredits = transactions
+    .filter(t => t.type === 'credit')
+    .reduce((sum, t) => sum + parseFloat(t.amount.replace(/[^0-9.]/g, '') || '0'), 0);
+
   const financialStats = [
     {
-      title: "Total Platform Balance",
-      value: "2,450,000 FIC",
-      subtitle: `≈ $${(2450000 * 0.1).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
-      color: "blue"
+      title: 'Total Platform Balance',
+      value: `${balance.toLocaleString()} FIC`,
+      subtitle: `≈ $${(balance * 0.1).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
+      color: 'blue'
     },
     {
-      title: "Earnings (This Month)",
-      value: "125,250 FIC",
-      subtitle: `≈ $${(125250 * 0.1).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
-      color: "green"
+      title: 'Inflow (This Period)',
+      value: `${totalCredits.toLocaleString()} FIC`,
+      subtitle: `≈ $${(totalCredits * 0.1).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
+      color: 'green'
     },
     {
-      title: "Pending Withdrawals",
-      value: "18,750 FIC",
-      subtitle: `≈ $${(18750 * 0.1).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
-      color: "yellow"
+      title: 'Pending Payouts',
+      value: `${pendingPayoutsTotal.toLocaleString()} FIC`,
+      subtitle: 'Awaiting administrator approval',
+      color: 'yellow'
     },
     {
-      title: "Total Transactions",
-      value: "1,242",
-      subtitle: "This month",
-      color: "indigo"
+      title: 'Ledger Records',
+      value: String(transactions.length),
+      subtitle: 'Synchronized with PostgreSQL',
+      color: 'indigo'
     }
   ];
 
-  // Mock transaction history
-  const transactions = [
-    {
-      id: "1",
-      date: "2023-06-15",
-      description: "Content monetization payout",
-      amount: "+4,500 FIC",
-      type: "credit",
-      member: "Alex Johnson"
-    },
-    {
-      id: "2",
-      date: "2023-06-12",
-      description: "Gift received from member",
-      amount: "+250 FIC",
-      type: "credit",
-      member: "Sam Wilson"
-    },
-    {
-      id: "3",
-      date: "2023-06-10",
-      description: "Token purchase",
-      amount: "-1,200 FIC",
-      type: "debit",
-      member: "Taylor Swift"
-    },
-    {
-      id: "4",
-      date: "2023-06-08",
-      description: "Subscription payment",
-      amount: "-500 FIC",
-      type: "debit",
-      member: "John Doe"
-    },
-    {
-      id: "5",
-      date: "2023-06-05",
-      description: "Content monetization payout",
-      amount: "+3,200 FIC",
-      type: "credit",
-      member: "Fiona Green"
-    },
-    {
-      id: "6",
-      date: "2023-06-01",
-      description: "Withdrawal to wallet",
-      amount: "-5,000 FIC",
-      type: "debit",
-      member: "Mike Thompson"
-    }
-  ];
-
-  // Mock data for revenue sources
   const revenueSources = [
-    { name: "Content Monetization", value: 45, color: "bg-blue-500" },
-    { name: "Subscriptions", value: 25, color: "bg-green-500" },
-    { name: "Token Sales", value: 15, color: "bg-purple-500" },
-    { name: "Gifts", value: 10, color: "bg-yellow-500" },
-    { name: "Ads", value: 5, color: "bg-red-500" }
+    { name: 'Content Monetization', value: 45, color: 'bg-blue-500' },
+    { name: 'Subscriptions', value: 25, color: 'bg-green-500' },
+    { name: 'Token Sales', value: 15, color: 'bg-purple-500' },
+    { name: 'Gift Cards', value: 10, color: 'bg-yellow-500' },
+    { name: 'Platform Commissions', value: 5, color: 'bg-red-500' }
   ];
 
   return (
@@ -99,10 +109,10 @@ const FinanceDashboardPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
-            Finance Dashboard
+            Finance & Treasury Dashboard
           </h1>
           <p className="text-gray-600">
-            Monitor platform finances, transactions, and revenue streams
+            Monitor platform liquidity, merchant payouts, subscriptions, and financial settlement
           </p>
         </div>
 
@@ -148,11 +158,14 @@ const FinanceDashboardPage: React.FC = () => {
 
           {/* Quick Actions */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-bold mb-6">Financial Actions</h3>
+            <h3 className="text-lg font-bold mb-6">Financial Operations</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <button
+                onClick={() => navigate('/dashboard/payouts')}
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-xl hover:bg-blue-50 transition-all text-center group"
+              >
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-blue-600"
@@ -168,14 +181,17 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-medium">Process Withdrawals</span>
-                <p className="text-sm text-gray-500 mt-1 text-center">
-                  Review and process pending withdrawal requests
+                <span className="font-semibold text-gray-900">Process Withdrawals</span>
+                <p className="text-xs text-gray-500 mt-1">
+                  Review and approve pending merchant payout requests
                 </p>
               </button>
 
-              <button className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-green-300 rounded-lg hover:bg-green-50">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+              <button
+                onClick={() => navigate('/monetization/dashboard')}
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-all text-center group"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-green-600"
@@ -191,14 +207,17 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-medium">Generate Reports</span>
-                <p className="text-sm text-gray-500 mt-1 text-center">
-                  Create financial reports for stakeholders
+                <span className="font-semibold text-gray-900">Monetization Analytics</span>
+                <p className="text-xs text-gray-500 mt-1">
+                  Review platform income reports and fee breakdowns
                 </p>
               </button>
 
-              <button className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-purple-300 rounded-lg hover:bg-purple-50">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+              <button
+                onClick={() => navigate('/financials/subscriptions')}
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-purple-300 rounded-xl hover:bg-purple-50 transition-all text-center group"
+              >
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-purple-600"
@@ -214,14 +233,17 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-medium">Manage Subscriptions</span>
-                <p className="text-sm text-gray-500 mt-1 text-center">
-                  View and manage member subscription plans
+                <span className="font-semibold text-gray-900">Manage Subscriptions</span>
+                <p className="text-xs text-gray-500 mt-1">
+                  View and manage creator plans & auto-renewals
                 </p>
               </button>
 
-              <button className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-indigo-300 rounded-lg hover:bg-indigo-50">
-                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
+              <button
+                onClick={() => navigate('/billing')}
+                className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-indigo-300 rounded-xl hover:bg-indigo-50 transition-all text-center group"
+              >
+                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-indigo-600"
@@ -237,9 +259,9 @@ const FinanceDashboardPage: React.FC = () => {
                     />
                   </svg>
                 </div>
-                <span className="font-medium">Payment Gateways</span>
-                <p className="text-sm text-gray-500 mt-1 text-center">
-                  Configure and monitor payment integrations
+                <span className="font-semibold text-gray-900">Billing & Gateways</span>
+                <p className="text-xs text-gray-500 mt-1">
+                  Configure payment cards and billing settlements
                 </p>
               </button>
             </div>
@@ -251,14 +273,14 @@ const FinanceDashboardPage: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">Transaction History</h2>
             <div className="flex gap-2">
-              {["7d", "30d", "90d"].map((range) => (
+              {['7d', '30d', '90d'].map((range) => (
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
                   className={`px-3 py-1 text-sm rounded-full ${
                     timeRange === range
-                      ? "bg-blue-100 text-blue-800 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
+                      ? 'bg-blue-100 text-blue-800 font-medium'
+                      : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
                   {range}
@@ -267,85 +289,99 @@ const FinanceDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Member
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Description
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Amount
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Type
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {transactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {transaction.date}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {transaction.member}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {transaction.description || 'No description'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span
-                        className={
-                          transaction.type === "credit"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {transaction.amount}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          transaction.type === "credit"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {transaction.type === "credit" ? "Credit" : "Debit"}
-                      </span>
-                    </td>
+          {isLoading ? (
+            <div className="py-8 text-center text-gray-500">Loading platform transactions...</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Account
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Description
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Type
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {transactions.map((transaction) => (
+                    <tr key={transaction.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {transaction.date}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {transaction.member}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {transaction.description || 'No description'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span
+                          className={
+                            transaction.type === 'credit'
+                              ? 'text-green-600 font-semibold'
+                              : 'text-red-600 font-semibold'
+                          }
+                        >
+                          {transaction.amount}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            transaction.type === 'credit'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
+                          {transaction.type === 'credit' ? 'Credit' : 'Debit'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  {transactions.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
+                        No transactions recorded on this account yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <div className="mt-6 flex justify-center">
-            <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-              View All Transactions
+            <button
+              onClick={() => navigate('/financials/wallet')}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium"
+            >
+              View Full Ledger in Wallet
             </button>
           </div>
         </div>

@@ -37,7 +37,7 @@ export const useAdvancedFingerWar = (
 
   const fetchData = React.useCallback(async () => {
     if (!memberId) {
-      setError("Member ID is required");
+      setError('Member ID is required');
       setLoading(false);
       return;
     }
@@ -49,11 +49,11 @@ export const useAdvancedFingerWar = (
       if (response && response.data) {
         setData(response.data);
       } else {
-        setError("Failed to fetch advanced finger war data.");
+        setError('Failed to fetch advanced finger war data.');
       }
     } catch (err) {
-      setError("Failed to fetch advanced finger war data.");
-      console.error("Error fetching advanced finger war data:", err);
+      setError('Failed to fetch advanced finger war data.');
+      console.error('Error fetching advanced finger war data:', err);
     } finally {
       setLoading(false);
     }

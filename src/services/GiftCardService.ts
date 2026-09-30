@@ -7,7 +7,7 @@ export interface GiftCard {id: string;
   code: string;
   amount: number;
   currency: string;
-  status: "active" | "redeemed" | "expired";
+  status: 'active' | 'redeemed' | 'expired';
   issuer: string;
   issuedDate: string;
   expiryDate: string;
@@ -20,13 +20,13 @@ export interface GiftCardRedemption {id: string;
   userId: string;
   amount: number;
   timestamp: string;
-  status: "success" | "failed";
+  status: 'success' | 'failed';
 }
 
 class GiftCardService {
   private api = axios.create({baseURL: API_BASE_URL, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async validateCode(code: string): Promise<GiftCard> {

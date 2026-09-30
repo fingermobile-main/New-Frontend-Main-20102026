@@ -7,11 +7,11 @@ interface DatabaseIntegrationReportCardProps {
   lastSync?: string;
 }
 
-const DatabaseIntegrationReportCard: React.FC<DatabaseIntegrationReportCardProps> = ({ 
-  componentName, 
-  status, 
-  endpoints, 
-  lastSync 
+const DatabaseIntegrationReportCard: React.FC<DatabaseIntegrationReportCardProps> = ({
+  componentName,
+  status,
+  endpoints,
+  lastSync
 }) => {
   return (
     <div>

@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { TrendingUp, Flame, Eye, Share2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { TrendingUp, Flame, Eye, Share2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 
 interface Trend {
   id: string;
@@ -25,41 +25,41 @@ const TrendsSlide: React.FC<TrendsSlideProps> = ({
 }) => {
   const defaultTrends: Trend[] = [
     {
-      id: "1",
-      title: "AI Revolution in Content Creation",
-      category: "Technology",
+      id: '1',
+      title: 'AI Revolution in Content Creation',
+      category: 'Technology',
       views: 125000,
       shares: 3400,
       热度: 98
     },
     {
-      id: "2",
-      title: "Sustainable Fashion Trends 2026",
-      category: "Fashion",
+      id: '2',
+      title: 'Sustainable Fashion Trends 2026',
+      category: 'Fashion',
       views: 98000,
       shares: 2800,
       热度: 95
     },
     {
-      id: "3",
-      title: "Crypto Market Analysis",
-      category: "Finance",
+      id: '3',
+      title: 'Crypto Market Analysis',
+      category: 'Finance',
       views: 87000,
       shares: 2100,
       热度: 92
     },
     {
-      id: "4",
-      title: "Healthy Meal Prep Ideas",
-      category: "Health",
+      id: '4',
+      title: 'Healthy Meal Prep Ideas',
+      category: 'Health',
       views: 76000,
       shares: 1900,
       热度: 89
     },
     {
-      id: "5",
-      title: "Travel Destinations for Summer",
-      category: "Travel",
+      id: '5',
+      title: 'Travel Destinations for Summer',
+      category: 'Travel',
       views: 65000,
       shares: 1600,
       热度: 86

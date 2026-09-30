@@ -10,7 +10,7 @@ const reportWebVitals = (onPerfEntry?: ReportHandler) => {
       getLCP(onPerfEntry);
       getTTFB(onPerfEntry);
     }).catch((error) => {
-      console.error("Error importing web- vitals:", error);
+      console.error('Error importing web- vitals:', error);
     });
   }
 };

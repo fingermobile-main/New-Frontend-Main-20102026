@@ -11,7 +11,7 @@ export function generateKey(): string {
   // For now, we'll generate a pseudo-random string
   return Array.from({ length: 32 }, () =>
     Math.floor(Math.random() * 16).toString(16),
-  ).join("");
+  ).join('');
 }
 
 /**
@@ -36,8 +36,8 @@ export function encryptData(
 
   // Convert to hex string for easy transport
   return Array.from(encryptedBytes)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 /**
@@ -78,26 +78,26 @@ export async function generateRSAKeyPair(): Promise<{
     // Generate RSA key pair using Web Crypto API
     const keyPair = await window.crypto.subtle.generateKey(
       {
-        name: "RSA-OAEP",
+        name: 'RSA-OAEP',
         modulusLength: 2048,
         publicExponent: new Uint8Array([1, 0, 1]),
-        hash: "SHA-256"
+        hash: 'SHA-256'
       },
       true, // extractable
-      ["encrypt", "decrypt"]
+      ['encrypt', 'decrypt']
     );
 
     // Export keys to JWK format for storage/transmission
-    const publicKeyJWK = await window.crypto.subtle.exportKey("jwk", keyPair.publicKey);
-    const privateKeyJWK = await window.crypto.subtle.exportKey("jwk", keyPair.privateKey);
+    const publicKeyJWK = await window.crypto.subtle.exportKey('jwk', keyPair.publicKey);
+    const privateKeyJWK = await window.crypto.subtle.exportKey('jwk', keyPair.privateKey);
 
     return {
       publicKey: JSON.stringify(publicKeyJWK),
       privateKey: JSON.stringify(privateKeyJWK)
     };
   } catch (error) {
-    console.error("Error generating RSA key pair:", error);
-    throw new Error("Failed to generate RSA key pair");
+    console.error('Error generating RSA key pair:', error);
+    throw new Error('Failed to generate RSA key pair');
   }
 }
 

@@ -8,7 +8,7 @@ export const getForumCategoryBySlug = (
   posts?: any[];
 } => {
   // Placeholder for forum utility functions
-  return { 
+  return {
     slug,
     name: `Category ${slug}`,
     description: `Description for ${slug}`,

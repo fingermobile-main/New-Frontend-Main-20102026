@@ -7,10 +7,10 @@ interface MemberDiscoverySettingsProps {
   onUpdate?: (settings: any) => void;
 }
 
-const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({ 
+const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
   userId,
   currentSettings,
-  onUpdate 
+  onUpdate
 }) => {
   const [settings, setSettings] = React.useState({
     profileVisible: true,

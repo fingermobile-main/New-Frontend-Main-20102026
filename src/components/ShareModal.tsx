@@ -7,9 +7,9 @@ interface ShareModalProps {
   title?: string;
 }
 
-const ShareModal: React.FC<ShareModalProps> = ({ 
-  isOpen, 
-  onClose, 
+const ShareModal: React.FC<ShareModalProps> = ({
+  isOpen,
+  onClose,
   url = window.location.href,
   title = 'Share this'
 }) => {
@@ -38,7 +38,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto" onClick={onClose} role="button" tabIndex={0}>
       <div className="flex items-center justify-center min-h-screen px-4">
         <div className="fixed inset-0 bg-black opacity-50"></div>
-        <div 
+        <div
           className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6"
           onClick={(e) => e.stopPropagation()} role="button" tabIndex={0}
         >

@@ -17,7 +17,7 @@ export interface LiveStream {
   thumbnail?: string;
   category: string;
   viewers: number;
-  status: "live" | "offline" | "scheduled";
+  status: 'live' | 'offline' | 'scheduled';
   startedAt?: string;
   scheduledFor?: string;
   enableChat: boolean;
@@ -37,7 +37,7 @@ export interface StreamConfig {
   title: string;
   description?: string;
   category: string;
-  privacy: "public" | "unlisted" | "private" | "subscribers-only";
+  privacy: 'public' | 'unlisted' | 'private' | 'subscribers-only';
   enableChat: boolean;
   enableRecording: boolean;
   monetization?: Partial<StreamMonetizationConfig>;
@@ -69,7 +69,7 @@ export interface StreamDiscoveryParams {
   category?: string;
   page?: number;
   limit?: number;
-  trendingScope?: "hourly" | "daily" | "global";
+  trendingScope?: 'hourly' | 'daily' | 'global';
   engagementWeight?: boolean; // Toggles advanced algorithmic ranking (likes + shares + chat velocity)
 }
 
@@ -199,7 +199,7 @@ class LiveStreamService {
     const response = await this.api.get<LiveStream[]>('/streams/popular', {
       params: {
         limit: params.limit || 10,
-        scope: params.trendingScope || "hourly",
+        scope: params.trendingScope || 'hourly',
         weighted: params.engagementWeight !== false
       }
     });

@@ -1,161 +1,133 @@
-import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import React, { useState, useEffect, useCallback } from 'react';
+import MainLayout from '../components/layout/MainLayout';
+import { useAppContext } from '../contexts/AppContext';
 import { logError } from '../utils/errorLogger';
 import { useWeb3 } from '../contexts/Web3Context';
 import PostCard from '../components/PostCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AdSubmissionForm from '../components/AdSubmissionForm';
 import { CanaryIcon, BellIcon, ShieldIcon, UserCircleIcon, CheckCircleIcon, ClockIcon } from '../icons';
-import MainLayout from '../components/layout/MainLayout';
 import type { Post } from '../types';
+import { advertisingService, CanaryAnnouncement } from '../services/advertisingService';
 
-// Mock canary data
-const mockCanaryPosts: Post[] = [
-  {
-    id: "1",
-    type: "canary" as any,
-    author: {
-      id: "101",
-      name: "Security Team",
-      membername: "security",
-      avatarUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      isVerified: true
-    },
-    timestamp: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    title: "Security Alert",
-    content:
-      "Important security update regarding recent platform changes. Please review and update your settings.",
-    category: "security",
-    status: "active",
-    likesCount: 245,
-    repliesCount: 32,
-    repostsCount: 18,
-    isLiked: false
+const mapToPost = (item: CanaryAnnouncement | any): Post => ({
+  id: String(item.id),
+  type: 'canary' as any,
+  author: {
+    id: String(item.author?.id || '101'),
+    name: item.author?.name || 'FingerMobile Security',
+    membername: item.author?.membername || 'security',
+    avatarUrl: item.author?.avatarUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    isVerified: item.author?.isVerified ?? true
   },
-  {
-    id: "2",
-    type: "canary" as any,
-    author: {
-      id: "102",
-      name: "System Updates",
-      membername: "system",
-      avatarUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      isVerified: true
-    },
-    timestamp: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    title: "System Maintenance",
-    content:
-      "Scheduled maintenance window for platform upgrades. Expected downtime: 2 hours.",
-    category: "maintenance",
-    status: "scheduled",
-    likesCount: 178,
-    repliesCount: 42,
-    repostsCount: 9,
-    isLiked: true
-  },
-  {
-    id: "3",
-    type: "canary" as any,
-    author: {
-      id: "103",
-      name: "Platform Announcements",
-      membername: "announcements",
-      avatarUrl:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      isVerified: true
-    },
-    timestamp: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    title: "New Feature Launch",
-    content:
-      "We are excited to announce the launch of our new video calling feature. Available now for all premium members.",
-    category: "features",
-    status: "active",
-    likesCount: 312,
-    repliesCount: 28,
-    repostsCount: 15,
-    isLiked: false
-  }
-];
+  timestamp: item.timestamp || item.createdAt || new Date().toISOString(),
+  createdAt: item.createdAt || new Date().toISOString(),
+  title: item.title,
+  content: item.content,
+  category: item.category || 'security',
+  status: item.status || 'active',
+  likesCount: Number(item.likesCount || 0),
+  repliesCount: Number(item.repliesCount || 0),
+  repostsCount: Number(item.repostsCount || 0),
+  isLiked: Boolean(item.isLiked)
+});
 
 const CanaryPage: React.FC = () => {
   const { balance } = useWeb3();
   const { ficBalance, openModal, showToast } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("active");
-  const [canaryPosts, setCanaryPosts] = useState(mockCanaryPosts);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('active');
+  const [canaryPosts, setCanaryPosts] = useState<Post[]>([]);
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
+
+  const loadAnnouncements = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const items = await advertisingService.getAnnouncements(
+        undefined,
+        activeTab === 'all' ? undefined : activeTab
+      );
+      setCanaryPosts(items.map(mapToPost));
+    } catch (err) {
+      logError(err, { context: 'CanaryPage - loadAnnouncements' });
+      showToast('Could not load announcements', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [activeTab, showToast]);
+
+  useEffect(() => {
+    loadAnnouncements();
+  }, [loadAnnouncements]);
 
   // Required functions
   const onLike = async (postId: string) => {
     try {
-      showToast("Like action triggered");
-      // Update the like status in the UI
+      const result = await advertisingService.likeAnnouncement(postId);
       setCanaryPosts((prevPosts) =>
         prevPosts.map((post) =>
           post.id === postId
             ? {
                 ...post,
-                isLiked: !post.isLiked,
-                likesCount: post.isLiked
-                  ? (post.likesCount || 0) - 1
-                  : (post.likesCount || 0) + 1
+                isLiked: result.liked,
+                likesCount: result.likesCount
               }
-            : post,
-        ),
+            : post
+        )
       );
+      showToast(result.liked ? 'Announcement liked!' : 'Like removed', 'success');
     } catch (error) {
-      logError(error, { context: "CanaryPage - Liking post" });
-      showToast("Failed to like post");
+      logError(error, { context: 'CanaryPage - Liking post' });
+      showToast('Failed to update like status', 'error');
     }
   };
 
   const onAddComment = (postId: string) => {
-    showToast("Add comment action triggered");
-    openModal("comment", { postId });
+    showToast('Add comment action triggered');
+    openModal('comment', { postId });
   };
 
   const onOpenGiftModal = (postId: string) => {
-    showToast("Gift modal opened");
-    openModal("gift", { postId });
+    showToast('Gift modal opened');
+    openModal('gift', { postId });
   };
 
   const onOpenPaylinkModal = (postId: string) => {
-    showToast("Paylink modal opened");
-    openModal("createPaylink", { postId });
+    showToast('Paylink modal opened');
+    openModal('createPaylink', { postId });
   };
 
   const onVote = (postId: string) => {
-    showToast("Vote action triggered");
+    showToast('Vote action triggered');
   };
 
   const handleDeletePost = (postId: string) => {
-    showToast("Delete post action triggered");
+    showToast('Delete post action triggered');
   };
 
   const handleTokenizePost = (postId: string) => {
-    showToast("Tokenize post action triggered");
+    showToast('Tokenize post action triggered');
   };
 
   const handleAiAssist = async (action: string, data: unknown) => {
-    showToast("AI assist action triggered");
+    showToast('AI assist action triggered');
     return Promise.resolve({ success: true });
   };
 
   const handleAdSubmission = async (data: any) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.info("Ad submission data:", data);
-      showToast("Ad submitted successfully! It will be reviewed shortly.");
+      await advertisingService.createAnnouncement({
+        title: data.title || data.headline || 'Platform Announcement',
+        content: data.content || data.description || '',
+        category: data.category || 'security',
+        status: 'active'
+      });
+      showToast('Announcement published successfully!', 'success');
       setShowSubmissionForm(false);
+      await loadAnnouncements();
     } catch (error) {
-      showToast("Failed to submit ad. Please try again.", "error");
+      showToast('Failed to submit announcement. Please try again.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +138,7 @@ const CanaryPage: React.FC = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout pageTitle="Canary">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-10">
           <div className="flex items-center">
@@ -184,15 +156,52 @@ const CanaryPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+          {/* Left Sidebar */}
+          <div className="hidden lg:block lg:col-span-3 space-y-6">
+            <div className="sticky top-20 space-y-6">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                  <ShieldIcon className="w-5 h-5 text-amber-600 mr-2" />
+                  Canary Navigation
+                </h3>
+                <ul className="space-y-3">
+                  <li><button className="w-full text-left font-medium text-amber-600 hover:underline">System Status</button></li>
+                  <li><button className="w-full text-left text-gray-600 hover:text-amber-600">Active Experiments</button></li>
+                  <li><button className="w-full text-left text-gray-600 hover:text-amber-600">Feature Roadmap</button></li>
+                </ul>
+              </div>
+
+              {/* Beta Program from HTML */}
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4">Beta Program</h3>
+                <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg p-5 text-center text-white mb-4">
+                  <h4 className="font-bold text-lg">Join the Beta</h4>
+                  <p className="text-sm mt-2 opacity-90">Get early access to new features and shape the platform.</p>
+                  <button className="mt-4 w-full px-4 py-2 bg-white text-amber-600 font-bold rounded-md hover:bg-gray-50">
+                    Sign Up Now
+                  </button>
+                </div>
+                <h4 className="text-sm font-bold text-gray-900 mb-2">Benefits</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-start"><CheckCircleIcon className="w-4 h-4 text-green-500 mr-2 mt-0.5" /> Early access</li>
+                  <li className="flex items-start"><CheckCircleIcon className="w-4 h-4 text-green-500 mr-2 mt-0.5" /> Influence development</li>
+                  <li className="flex items-start"><CheckCircleIcon className="w-4 h-4 text-green-500 mr-2 mt-0.5" /> Exclusive access</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-6 space-y-6">
             {/* Ad Submission Button */}
             <div className="mb-6">
               <button
                 onClick={() => setShowSubmissionForm(!showSubmissionForm)}
                 className="px-4 py-2.5 bg-gradient-to-r from-yellow-500 to-amber-600 text-white rounded-lg hover:from-yellow-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               >
-                {showSubmissionForm ? "Cancel Submission" : "Submit New Ad"}
+                {showSubmissionForm ? 'Cancel Submission' : 'Submit New Ad'}
               </button>
             </div>
 
@@ -216,17 +225,17 @@ const CanaryPage: React.FC = () => {
             {/* Tabs */}
             <div className="mb-6 border-b border-gray-200">
               <nav className="flex space-x-8" aria-label="Tabs">
-                {["active", "resolved", "all"].map((tab) => (
+                {['active', 'resolved', 'all'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`
                       py-4 px-1 border-b-2 font-medium text-sm sm:text-base
                       ${
-                        activeTab === tab
-                          ? "border-yellow-500 text-yellow-600"
-                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                      }
+                  activeTab === tab
+                    ? 'border-yellow-500 text-yellow-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }
                     `}
                   >
                     {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -248,14 +257,15 @@ const CanaryPage: React.FC = () => {
                   onVote={() => onVote(post.id)}
                   handleDeletePost={() => handleDeletePost(post.id)}
                   handleTokenizePost={() => handleTokenizePost(post.id)}
-    // @ts-ignore - Auto-suppressed for compilation
+                  // @ts-ignore - Auto-suppressed for compilation
                   handleAiAssist={handleAiAssist}
                 />
               ))}
             </div>
           </div>
 
-          <div className="space-y-6">
+          {/* Right Sidebar */}
+          <div className="lg:col-span-3 space-y-6">
             <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
                 <UserCircleIcon className="h-5 w-5 text-amber-600 mr-2" />
@@ -279,10 +289,10 @@ const CanaryPage: React.FC = () => {
               </div>
               <div className="space-y-4">
                 {[
-                  { name: "Web Application", status: "operational" },
-                  { name: "Database", status: "operational" },
-                  { name: "Storage", status: "operational" },
-                  { name: "Authentication", status: "operational" }
+                  { name: 'Web Application', status: 'operational' },
+                  { name: 'Database', status: 'operational' },
+                  { name: 'Storage', status: 'operational' },
+                  { name: 'Authentication', status: 'operational' }
                 ].map((service, index) => (
                   <div
                     key={index}
@@ -323,6 +333,7 @@ const CanaryPage: React.FC = () => {
           </div>
         </div>
       </div>
+
     </MainLayout>
   );
 };

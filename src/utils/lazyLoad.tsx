@@ -6,11 +6,11 @@ interface LazyLoadProps {
   [key: string]: any;
 }
 
-const LazyLoad: React.FC<LazyLoadProps> = ({ 
-  children, 
-  fallback = null, 
+const LazyLoad: React.FC<LazyLoadProps> = ({
+  children,
+  fallback = null,
   component: WrapperComponent = 'div',
-  ...props 
+  ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

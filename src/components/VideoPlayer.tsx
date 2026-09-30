@@ -9,9 +9,9 @@ interface VideoPlayerProps {
   className?: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
-  src, 
-  poster, 
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  src,
+  poster,
   title,
   autoplay = false,
   controls = true,
@@ -48,7 +48,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         onClick={togglePlay}
       />
       {!controls && (
-        <button 
+        <button
           onClick={togglePlay}
           className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors"
         >

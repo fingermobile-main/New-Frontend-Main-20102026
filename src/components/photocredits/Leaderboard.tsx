@@ -22,8 +22,8 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
             <div className="flex items-center gap-3">
               <span className={`w-8 h-8 flex items-center justify-center rounded-full font-bold ${
                 leader.rank === 1 ? 'bg-yellow-500 text-white' :
-                leader.rank === 2 ? 'bg-gray-400 text-white' :
-                'bg-orange-500 text-white'
+                  leader.rank === 2 ? 'bg-gray-400 text-white' :
+                    'bg-orange-500 text-white'
               }`}>
                 {leader.rank}
               </span>

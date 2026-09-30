@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { Tag, Filter, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Tag, Filter, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface CategoryHeaderProps {
   title: string;
@@ -14,8 +14,8 @@ interface CategoryHeaderProps {
 
 const CategoryHeader: React.FC<CategoryHeaderProps> = ({
   title,
-  categories = ["All", "Trending", "Recent", "Popular"],
-  activeCategory = "All",
+  categories = ['All', 'Trending', 'Recent', 'Popular'],
+  activeCategory = 'All',
   onCategoryChange,
   onFilterClick,
   showFilter = true
@@ -31,7 +31,7 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = ({
           {categories.map((category) => (
             <Button
               key={category}
-              variant={activeCategory === category ? "default" : "ghost"}
+              variant={activeCategory === category ? 'default' : 'ghost'}
               size="sm"
               onClick={() => onCategoryChange?.(category)}
               className="whitespace-nowrap"

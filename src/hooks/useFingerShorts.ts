@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 interface FingerShort {
-  id: string; type: "image" | "video" | "text"; content: string;
+  id: string; type: 'image' | 'video' | 'text'; content: string;
   duration?: string;
   views: number; timestamp: string; isPrivate: boolean; isSpoiler: boolean; author: {
   name: string; avatar: string; isVerified: boolean;
@@ -25,16 +25,16 @@ export const useFingerShorts = () => {
     setLoading(true);
     setError(null);
     try {
-      const forYouResponse = await api.get<FingerShort[]>("/fingershorts/for-you");
-      const followingResponse = await api.get<FingerShort[]>("/fingershorts/following");
-      const trendingResponse = await api.get<FingerShort[]>("/fingershorts/trending");
+      const forYouResponse = await api.get<FingerShort[]>('/fingershorts/for-you');
+      const followingResponse = await api.get<FingerShort[]>('/fingershorts/following');
+      const trendingResponse = await api.get<FingerShort[]>('/fingershorts/trending');
 
       setData({forYou: forYouResponse.data || [], following: followingResponse.data || [], trending: trendingResponse.data || []
       });
     } catch (err: any) {
-      const errorMessage = err.message || "Failed to fetch FingerShorts data";
+      const errorMessage = err.message || 'Failed to fetch FingerShorts data';
       setError(errorMessage);
-      showToast(errorMessage, "error");
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }

@@ -57,12 +57,12 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
         content: promptInput,
         source: 'dashboard_input'
       });
-      
+
       setLastAnalysis(analysis);
-      
+
       // Refresh history
       await loadThreatHistory();
-      
+
       // Clear input
       setPromptInput('');
     } catch (err: any) {
@@ -84,20 +84,20 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-600 text-white';
-      case 'high': return 'bg-orange-500 text-white';
-      case 'medium': return 'bg-yellow-500 text-black';
-      case 'low': return 'bg-blue-500 text-white';
-      default: return 'bg-gray-500 text-white';
+    case 'critical': return 'bg-red-600 text-white';
+    case 'high': return 'bg-orange-500 text-white';
+    case 'medium': return 'bg-yellow-500 text-black';
+    case 'low': return 'bg-blue-500 text-white';
+    default: return 'bg-gray-500 text-white';
     }
   };
 
   const getRiskLevelColor = (riskLevel: string) => {
     switch (riskLevel) {
-      case 'dangerous': return 'text-red-600 font-bold';
-      case 'suspicious': return 'text-orange-500 font-semibold';
-      case 'safe': return 'text-green-600 font-semibold';
-      default: return 'text-gray-600';
+    case 'dangerous': return 'text-red-600 font-bold';
+    case 'suspicious': return 'text-orange-500 font-semibold';
+    case 'safe': return 'text-green-600 font-semibold';
+    default: return 'text-gray-600';
     }
   };
 
@@ -127,8 +127,8 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
             <div className="text-sm text-gray-500 dark:text-gray-400">Detection Rate</div>
             <div className="text-2xl font-bold text-blue-600">
-              {stats.totalAnalyses > 0 
-                ? Math.round((stats.threatsDetected / stats.totalAnalyses) * 100) 
+              {stats.totalAnalyses > 0
+                ? Math.round((stats.threatsDetected / stats.totalAnalyses) * 100)
                 : 0}%
             </div>
           </div>
@@ -138,7 +138,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       {/* Prompt Analysis Input */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
         <h3 className="text-lg font-semibold mb-4">Analyze Prompt for Threats</h3>
-        
+
         <div className="space-y-4">
           <textarea
             value={promptInput}
@@ -147,13 +147,13 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
             className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
             rows={4}
           />
-          
+
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-red-700 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
-          
+
           <button
             onClick={handleAnalyzePrompt}
             disabled={analyzing}
@@ -168,7 +168,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       {lastAnalysis && (
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
           <h3 className="text-lg font-semibold mb-4">Latest Analysis Result</h3>
-          
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-500 dark:text-gray-400">Risk Level:</span>
@@ -176,7 +176,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
                 {lastAnalysis.risk_level.toUpperCase()}
               </span>
             </div>
-            
+
             {lastAnalysis.threats_found.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Threats Found ({lastAnalysis.threats_found.length})</h4>
@@ -190,7 +190,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{threat.description}</p>
-                      
+
                       {threat.countermeasures.length > 0 && (
                         <div>
                           <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Countermeasures:</p>
@@ -212,7 +212,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
                 </div>
               </div>
             )}
-            
+
             {lastAnalysis.recommendations.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Recommendations</h4>
@@ -230,7 +230,7 @@ const PromptsThreatDashboard: React.FC<PromptsThreatDashboardProps> = ({ userId 
       {/* Threat History */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
         <h3 className="text-lg font-semibold mb-4">Recent Threat Analysis History</h3>
-        
+
         {threatHistory.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             No threat analyses yet. Start by analyzing a prompt above.

@@ -50,8 +50,8 @@ const DashboardOverviewPage: React.FC = () => {
             {data.recentActivity.map((post) => (
               <div key={post.id} className="text-sm">
                 <p>
-                  <span className="font-semibold">{post.author.name}</span>{" "}
-                  created a new post: "{post.title || "Untitled Post"}"
+                  <span className="font-semibold">{post.author.name}</span>{' '}
+                  created a new post: "{post.title || 'Untitled Post'}"
                 </p>
                 <p className="text-xs text-gray-400">
                   {new Date(post.timestamp || Date.now()).toLocaleString()}
@@ -69,7 +69,7 @@ const DashboardOverviewPage: React.FC = () => {
                   src={member.avatarUrl}
                   alt={member.name}
                   className="w-10 h-10 rounded-full"
-                 />
+                />
                 <div>
                   <p className="font-semibold">{member.name}</p>
                   <p className="text-sm text-gray-500">@{member.membername}</p>

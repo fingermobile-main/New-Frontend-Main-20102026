@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
-import { 
-  PhoneIcon, 
-  EnvelopeIcon, 
-  GlobeAltIcon, 
-  MapPinIcon, 
+import {
+  PhoneIcon,
+  EnvelopeIcon,
+  GlobeAltIcon,
+  MapPinIcon,
   UserCircleIcon,
   ArrowRightIcon
 } from '../icons';
 
+import legalComplianceService from '../services/legalComplianceService';
+
 const ContactUsPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
+    name: '',
+    email: '',
+    department: 'general',
+    subject: '',
+    message: ''
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -29,12 +33,34 @@ const ContactUsPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, this would send the form data to your backend
-    console.info("Form submitted:", formData);
-    showToast("Thank you for your message. We will get back to you soon.", "success");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    if (!formData.name || !formData.email || !formData.message) {
+      showToast('Please fill out all required fields.', 'error');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await legalComplianceService.submitContact({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject || 'General Inquiry',
+        message: formData.message,
+        department: formData.department
+      });
+
+      if (res.success) {
+        showToast('Your message has been received! Our dispatch desk will respond shortly.', 'success');
+        setFormData({ name: '', email: '', department: 'general', subject: '', message: '' });
+      } else {
+        showToast(res.message || 'Submission failed. Please try again.', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to submit contact message. Please try again.', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -231,6 +257,29 @@ const ContactUsPage: React.FC = () => {
 
                     <div>
                       <label
+                        htmlFor="department"
+                        className="block text-sm sm:text-base font-medium text-gray-700"
+                      >
+                        Department
+                      </label>
+                      <div className="mt-1">
+                        <select
+                          name="department"
+                          id="department"
+                          value={formData.department}
+                          onChange={handleChange}
+                          className="py-3 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md text-sm sm:text-base bg-white"
+                        >
+                          <option value="general">General Inquiries</option>
+                          <option value="support">Customer Support & Technical</option>
+                          <option value="compliance">Legal, DSR & Compliance</option>
+                          <option value="partnerships">Protocol Partnerships & Media</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
                         htmlFor="subject"
                         className="block text-sm sm:text-base font-medium text-gray-700"
                       >
@@ -271,9 +320,10 @@ const ContactUsPage: React.FC = () => {
                     <div>
                       <button
                         type="submit"
-                        className="w-full flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-base sm:text-lg lg:text-xl font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        disabled={submitting}
+                        className="w-full flex justify-center items-center py-3 px-6 border border-transparent rounded-md shadow-sm text-base sm:text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-60 transition-all cursor-pointer"
                       >
-                        Send Message
+                        {submitting ? 'Transmitting Inbound Dispatch...' : 'Send Message'}
                       </button>
                     </div>
                   </form>
@@ -320,17 +370,17 @@ const ContactUsPage: React.FC = () => {
                 <p className="font-bold text-lg text-gray-900">{ficBalance.toFixed(2)} FIC</p>
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-3">
-              <a 
+              <a
                 href="mailto:fingerprotocolmobile@gmail.com"
                 className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center"
               >
                 Email Support
                 <ArrowRightIcon className="h-4 w-4 ml-2" />
               </a>
-              
-              <a 
+
+              <a
                 href="https://fingermobileprotocol.com"
                 target="_blank"
                 rel="noopener noreferrer"

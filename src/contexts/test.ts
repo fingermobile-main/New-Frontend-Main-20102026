@@ -1,4 +1,4 @@
-const message = "Hello, TypeScript!";
+const message = 'Hello, TypeScript!';
 console.info(message);
 
 export {};

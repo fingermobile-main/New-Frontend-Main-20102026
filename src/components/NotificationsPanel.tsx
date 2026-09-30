@@ -19,8 +19,8 @@ interface NotificationsPanelProps {
   onMarkAsRead?: (id: string) => void;
 }
 
-const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ 
-  isOpen, 
+const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
+  isOpen,
   onClose,
   notifications = [],
   onMarkAsRead
@@ -51,7 +51,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto" onClick={onClose} role="button" tabIndex={0}>
       <div className="flex items-start justify-end min-h-screen">
         <div className="fixed inset-0 bg-black opacity-50"></div>
-        <div 
+        <div
           className="relative bg-white shadow-xl max-w-md w-full max-h-screen overflow-y-auto"
           onClick={(e) => e.stopPropagation()} role="button" tabIndex={0}
         >

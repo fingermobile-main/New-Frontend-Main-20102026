@@ -22,27 +22,27 @@ interface PostPublishingProviderProps {
 }
 
 const defaultSettings: PublishingSettings = {
-  privacy: "publicGroup",
+  privacy: 'publicGroup',
   audience: {
-    gender: "everyone",
-    ageBracket: "everyone"
+    gender: 'everyone',
+    ageBracket: 'everyone'
   },
-  comments: "everyone",
+  comments: 'everyone',
   schedule: {
-    time: "",
-    day: "",
-    month: ""
+    time: '',
+    day: '',
+    month: ''
   },
   shareToMi: false,
   monetization: {
     enabled: false,
-    model: "subscription"
+    model: 'subscription'
   },
   broadcast: {
     enabled: false,
-    audience: "everyone",
-    gender: "everyone",
-    ageBracket: "everyone"
+    audience: 'everyone',
+    gender: 'everyone',
+    ageBracket: 'everyone'
   },
   collaboration: {
     enabled: false,
@@ -54,10 +54,10 @@ const defaultSettings: PublishingSettings = {
   },
   boosting: {
     enabled: false,
-    type: "daily",
+    type: 'daily',
     amount: 0,
-    region: "",
-    continent: ""
+    region: '',
+    continent: ''
   }
 };
 
@@ -140,7 +140,7 @@ export const PostPublishingProvider: React.FC<PostPublishingProviderProps> = ({
 export const usePostPublishing = () => {
   const context = React.useContext(PostPublishingContext);
   if (context === undefined) {
-    throw new Error("usePostPublishing must be used within a PostPublishingProvider");
+    throw new Error('usePostPublishing must be used within a PostPublishingProvider');
   }
   return context;
 };

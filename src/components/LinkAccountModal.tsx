@@ -1,9 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Link, Wallet, CreditCard, Banknote, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { Link, Wallet, CreditCard, Banknote, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
-import { Badge } from "@/components/ui/Badge";
+} from '@/components/ui/Dialog';
+import { Badge } from '@/components/ui/Badge';
 
 interface AccountType {
   id: string;
@@ -36,28 +36,28 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
   onUnlinkAccount
 }) => {
   const [selectedAccount, setSelectedAccount] = React.useState<string | null>(null);
-  const [credentials, setCredentials] = React.useState({ username: "", password: "" });
+  const [credentials, setCredentials] = React.useState({ username: '', password: '' });
 
   const accountTypes: AccountType[] = [
     {
-      id: "bank",
-      name: "Bank Account",
+      id: 'bank',
+      name: 'Bank Account',
       icon: <Banknote className="h-6 w-6" />,
-      description: "Connect your bank account for direct transfers",
+      description: 'Connect your bank account for direct transfers',
       connected: false
     },
     {
-      id: "paypal",
-      name: "PayPal",
+      id: 'paypal',
+      name: 'PayPal',
       icon: <CreditCard className="h-6 w-6" />,
-      description: "Link your PayPal account for quick payments",
+      description: 'Link your PayPal account for quick payments',
       connected: true
     },
     {
-      id: "crypto",
-      name: "Crypto Wallet",
+      id: 'crypto',
+      name: 'Crypto Wallet',
       icon: <Wallet className="h-6 w-6" />,
-      description: "Connect your cryptocurrency wallet",
+      description: 'Connect your cryptocurrency wallet',
       connected: false
     }
   ];
@@ -65,7 +65,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
   const handleLinkAccount = () => {
     if (selectedAccount) {
       onLinkAccount?.(selectedAccount, credentials);
-      setCredentials({ username: "", password: "" });
+      setCredentials({ username: '', password: '' });
       setSelectedAccount(null);
       onClose();
     }
@@ -91,7 +91,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                 <div
                   key={account.id}
                   className={`p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
-                    account.connected ? "bg-green-50 border-green-200" : ""
+                    account.connected ? 'bg-green-50 border-green-200' : ''
                   }`}
                   onClick={() => !account.connected && setSelectedAccount(account.id)} role="button" tabIndex={0}
                 >

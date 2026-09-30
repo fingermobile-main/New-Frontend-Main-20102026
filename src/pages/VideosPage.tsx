@@ -1,268 +1,508 @@
-import React, { useState } from 'react';
-import { PlayIcon } from '@heroicons/react/24/solid';
+import React, { useState, useEffect } from 'react';
+import apiService from '../services/apiService';
+import MainLayout from '../components/layout/MainLayout';
+import { useAppContext } from '../contexts/AppContext';
+import { GiftIcon, LinkIcon, PlayIcon, UserCircleIcon, HeartIcon, ShareIcon, BookmarkIcon, DotsHorizontalIcon, SearchIcon, FilterIcon } from '../icons';
+
+interface VideoType {
+  id: string;
+  [key: string]: any;
+}
 
 const VideosPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'foryou' | 'following'>('foryou');
-  
-  // Mock data for videos
-  const videos = [
+  const { ficBalance, showToast } = useAppContext();
+
+  // Mock videos data
+  const mockVideos = [
     {
-      id: 1,
-      title: "FingerWars grand finals highlights 🏆",
-      creator: "@tundewho",
-      views: "1.2M",
-      duration: "12:42",
-      thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=15"
+      id: '1',
+      title: 'Travel Vlog: Exploring Mountains',
+      duration: '12:45',
+      views: 1240,
+      creator: { name: 'Travel Adventures', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Mountain+Travel',
+      uploadDate: '2 days ago',
+      likes: 120,
+      category: 'Travel'
     },
     {
-      id: 2,
-      title: "5 storefront tips to triple sales",
-      creator: "@amara",
-      views: "880k",
-      duration: "8:10",
-      thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=32"
+      id: '2',
+      title: 'Cooking Tutorial: Authentic Pasta Recipe',
+      duration: '8:22',
+      views: 890,
+      creator: { name: 'Chef Delights', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Pasta+Cooking',
+      uploadDate: '1 week ago',
+      likes: 85,
+      category: 'Food'
     },
     {
-      id: 3,
-      title: "Unboxing the FingerLux collection",
-      creator: "@cnw",
-      views: "640k",
-      duration: "5:33",
-      thumbnail: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=5"
+      id: '3',
+      title: 'Tech Review: Latest Smartphone Unboxing',
+      duration: '15:30',
+      views: 2100,
+      creator: { name: 'Tech Gurus', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Smartphone+Review',
+      uploadDate: '3 days ago',
+      likes: 210,
+      category: 'Technology'
     },
     {
-      id: 4,
-      title: "Building the future of decentralized social networks",
-      creator: "@techguru",
-      views: "420k",
-      duration: "18:22",
-      thumbnail: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=7"
+      id: '4',
+      title: 'Fitness Routine: Morning Workout Session',
+      duration: '18:15',
+      views: 1560,
+      creator: { name: 'FitLife Pro', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Morning+Workout',
+      uploadDate: '5 days ago',
+      likes: 175,
+      category: 'Fitness'
     },
     {
-      id: 5,
-      title: "How to monetize your content effectively",
-      creator: "@creatorpro",
-      views: "310k",
-      duration: "14:05",
-      thumbnail: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=9"
+      id: '5',
+      title: 'Music Performance: Live Acoustic Session',
+      duration: '7:40',
+      views: 920,
+      creator: { name: 'Acoustic Vibes', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Live+Music',
+      uploadDate: '4 days ago',
+      likes: 95,
+      category: 'Music'
     },
     {
-      id: 6,
-      title: "Behind the scenes: FingerMobile launch",
-      creator: "@teamfinger",
-      views: "1.8M",
-      duration: "9:47",
-      thumbnail: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?w=500&q=60",
-      creatorAvatar: "https://i.pravatar.cc/40?img=12"
+      id: '6',
+      title: 'Gaming: Adventure Quest Epic Finale',
+      duration: '22:10',
+      views: 3400,
+      creator: { name: 'Game Masters', avatar: '' },
+      thumbnail: 'https://placehold.co/400x225?text=Gaming+Finale',
+      uploadDate: '1 day ago',
+      likes: 420,
+      category: 'Gaming'
     }
   ];
 
-  return (
-    <div className="flex w-full">
-      {/* Left Sidebar - Filters and Navigation */}
-      <aside className="col-left hidden md:flex flex-col w-1/5 p-4 space-y-6">
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h2 className="font-bold text-lg mb-3">Videos</h2>
-          <nav className="space-y-1">
-            <button 
-              className={`flex items-center w-full p-2 rounded-lg text-left ${
-                activeTab === 'foryou' ? 'bg-orange-500/20 text-orange-500' : 'hover:bg-gray-700'
-              }`}
-              onClick={() => setActiveTab('foryou')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-              </svg>
-              For You
-            </button>
-            <button 
-              className={`flex items-center w-full p-2 rounded-lg text-left ${
-                activeTab === 'following' ? 'bg-orange-500/20 text-orange-500' : 'hover:bg-gray-700'
-              }`}
-              onClick={() => setActiveTab('following')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
-                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-              </svg>
-              Following
-            </button>
-          </nav>
-        </div>
-        
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-2">Categories</h3>
-          <div className="space-y-2">
-            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Technology</button>
-            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Gaming</button>
-            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Music</button>
-            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Education</button>
-            <button className="block w-full text-left p-2 rounded-lg hover:bg-gray-700">Lifestyle</button>
-          </div>
-        </div>
-      </aside>
+  const [videosList, setVideosList] = useState<VideoType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoType | null>(null);
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
+  const [paylinkDescription, setPaylinkDescription] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
-      {/* Main Content - Videos Feed */}
-      <main className="col-center w-3/5 p-4">
-        <div className="bg-gray-800 rounded-xl p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold">Videos</h1>
-            <div className="flex gap-2">
-              <button 
-                className={`px-3 py-1.5 rounded-lg text-sm ${
-                  activeTab === 'foryou' 
-                    ? 'bg-gray-700 text-gray-100' 
-                    : 'bg-gray-700 text-gray-400'
-                }`}
-                onClick={() => setActiveTab('foryou')}
-              >
-                For you
-              </button>
-              <button 
-                className={`px-3 py-1.5 rounded-lg text-sm ${
-                  activeTab === 'following' 
-                    ? 'bg-gray-700 text-gray-100' 
-                    : 'bg-gray-700 text-gray-400'
-                }`}
-                onClick={() => setActiveTab('following')}
-              >
-                Following
-              </button>
+  const categories = ['All', 'Travel', 'Food', 'Technology', 'Fitness', 'Music', 'Gaming', 'Afrobeat', 'General'];
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchVideos = async () => {
+      try {
+        setLoading(true);
+        const res: any = await apiService.get('/api/dancia/videos').catch(() => null);
+        const list = Array.isArray(res) ? res : (res?.videos || res?.data || []);
+        if (mounted && list && list.length > 0) {
+          const mapped = list.map((v: any, idx: number) => ({
+            id: v.videoID || v.id || String(idx + 1),
+            title: v.title || 'Featured Video',
+            duration: typeof v.length === 'number' ? `${Math.floor(v.length / 60)}:${String(v.length % 60).padStart(2, '0')}` : (v.duration || '5:00'),
+            views: v.views || v.engagementScore || 1200,
+            creator: { name: v.uploaderID || v.creator?.name || 'Dancia Creator', avatar: '' },
+            thumbnail: v.thumbnailURL || v.thumbnail || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600',
+            uploadDate: v.uploadDate ? new Date(v.uploadDate).toLocaleDateString() : 'Recent',
+            likes: v.likeCount || v.likes || 150,
+            category: v.genre || v.category || 'General',
+            streamURL: v.streamURL || ''
+          }));
+          setVideosList(mapped);
+        } else if (mounted) {
+          setVideosList(mockVideos);
+        }
+      } catch (err) {
+        if (mounted) setVideosList(mockVideos);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchVideos();
+    return () => { mounted = false; };
+  }, []);
+
+  const activeVideos = videosList.length > 0 ? videosList : mockVideos;
+
+  const filteredVideos = activeVideos.filter(video => {
+    const creatorName = video.creator?.name || '';
+    const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          creatorName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || video.category.toLowerCase() === selectedCategory.toLowerCase();
+    return matchesSearch && matchesCategory;
+  });
+
+  const onOpenGiftModal = (video: VideoType) => {
+    if (ficBalance <= 0) {
+      showToast('Insufficient FIC balance to send gift', 'error');
+      return;
+    }
+    setSelectedVideo(video);
+    setShowGiftModal(true);
+  };
+
+  const onOpenPaylinkModal = (video: VideoType) => {
+    if (ficBalance <= 0) {
+      showToast('Insufficient FIC balance to create paylink', 'error');
+      return;
+    }
+    setSelectedVideo(video);
+    setShowPaylinkModal(true);
+  };
+
+  const handleSendGift = async () => {
+    if (!selectedVideo) return;
+    const amount = parseFloat(giftAmount);
+    if (isNaN(amount) || amount <= 0) {
+      showToast('Please enter a valid amount', 'error');
+      return;
+    }
+
+    if (amount > ficBalance) {
+      showToast('Insufficient FIC balance', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await apiService.post('/api/wallet/transfer', {
+        recipientId: 4,
+        amount,
+        description: `Gift tip for video: ${selectedVideo.title}`
+      }).catch(async () => {
+        return await apiService.post('/api/live-stream/tip', {
+          streamId: 1,
+          amount
+        });
+      });
+
+      showToast(`Successfully sent ${amount} FIC gift to creator!`, 'success');
+      setGiftAmount('');
+      setShowGiftModal(false);
+      setSelectedVideo(null);
+    } catch (error) {
+      showToast('Failed to send gift. Please check connection.', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleCreatePaylink = async () => {
+    if (!selectedVideo) return;
+    const amount = parseFloat(paylinkAmount);
+    if (isNaN(amount) || amount <= 0) {
+      showToast('Please enter a valid amount', 'error');
+      return;
+    }
+
+    if (amount > ficBalance) {
+      showToast('Insufficient FIC balance', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const res: any = await apiService.post('/api/paylinks', {
+        title: `Supporter Paylink: ${selectedVideo.title}`,
+        amount,
+        description: paylinkDescription || `Supporter paylink for ${selectedVideo.title}`,
+        currency: 'FIC'
+      });
+      const linkId = res?.data?.id || res?.id || 'live-link';
+      showToast(`Paylink #${linkId} created successfully!`, 'success');
+      setPaylinkAmount('');
+      setPaylinkDescription('');
+      setShowPaylinkModal(false);
+      setSelectedVideo(null);
+    } catch (error) {
+      showToast('Failed to create paylink', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <MainLayout>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
+              <PlayIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-3xl font-bold text-gray-900">Videos</h1>
+              <p className="text-gray-600">Discover, watch and support creators in the community</p>
             </div>
           </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {videos.map(video => (
-            <div key={video.id} className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
-              <div className="relative h-44">
-                <img 
-                  src={video.thumbnail} 
-                  alt={video.title} 
-                  className="w-full h-full object-cover"
-                />
-                <span className="text-[9px] absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/60 text-white">
-                  {video.duration}
-                </span>
-                <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-orange-500 text-gray-900 text-[9px] font-bold">
-                  <PlayIcon className="h-3 w-3 inline mr-1" />
-                  Play
-                </span>
-              </div>
-              <div className="p-3">
-                <div className="flex gap-2">
-                  <img 
-                    src={video.creatorAvatar} 
-                    alt={video.creator} 
-                    className="w-8 h-8 rounded-full"
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-200">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search videos or creators..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-gray-50 text-gray-900 pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-gray-200"
                   />
-                  <div className="flex-1">
-                    <p className="text-[12.5px] font-semibold line-clamp-2">{video.title}</p>
-                    <p className="text-[9px] text-gray-400">{video.creator} · {video.views} views</p>
-                  </div>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="bg-gray-50 text-gray-900 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-gray-200"
+                  >
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                  <button className="p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 border border-gray-200">
+                    <FilterIcon className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </main>
 
-      {/* Right Sidebar - Video Suggestions */}
-      <aside className="col-right hidden lg:flex flex-col w-1/5 p-4 space-y-4">
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-3">Recommended Channels</h3>
-          <div className="space-y-3">
-            <div className="flex items-center">
-              <img 
-                src="https://i.pravatar.cc/40?img=15" 
-                alt="Channel" 
-                className="w-10 h-10 rounded-full mr-3"
-              />
-              <div>
-                <p className="text-sm font-semibold">TechGuru</p>
-                <p className="text-xs text-gray-400">1.2M subscribers</p>
-              </div>
-              <button className="ml-auto text-xs bg-orange-500 text-gray-900 px-2 py-1 rounded">
-                Subscribe
-              </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredVideos.map((video) => (
+                <div
+                  key={video.id}
+                  className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className="relative">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                      {video.duration}
+                    </div>
+                    <div className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      {video.category}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg mb-2 line-clamp-2 h-14">{video.title}</h3>
+
+                    <div className="flex items-center mb-3">
+                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8" />
+                      <span className="ml-2 text-sm font-medium text-gray-700">{video.creator.name}</span>
+                    </div>
+
+                    <div className="flex justify-between text-sm text-gray-500 mb-4">
+                      <span>{video.views.toLocaleString()} views</span>
+                      <span>{video.uploadDate}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-4">
+                        <button className="flex items-center text-gray-500 hover:text-red-500">
+                          <HeartIcon className="w-5 h-5 mr-1" />
+                          <span>{video.likes}</span>
+                        </button>
+                        <button className="text-gray-500 hover:text-blue-500">
+                          <ShareIcon className="w-5 h-5" />
+                        </button>
+                        <button className="text-gray-500 hover:text-yellow-500">
+                          <BookmarkIcon className="w-5 h-5" />
+                        </button>
+                      </div>
+                      <button className="text-gray-500 hover:text-gray-700">
+                        <DotsHorizontalIcon className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="mt-4 flex gap-2">
+                      <button
+                        onClick={() => onOpenGiftModal(video)}
+                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
+                      >
+                        <GiftIcon className="w-4 h-4 mr-2" /> Gift
+                      </button>
+                      <button
+                        onClick={() => onOpenPaylinkModal(video)}
+                        className="flex-1 flex items-center justify-center py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-colors"
+                      >
+                        <LinkIcon className="w-4 h-4 mr-2" /> Pay
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center">
-              <img 
-                src="https://i.pravatar.cc/40?img=32" 
-                alt="Channel" 
-                className="w-10 h-10 rounded-full mr-3"
-              />
-              <div>
-                <p className="text-sm font-semibold">GameOn</p>
-                <p className="text-xs text-gray-400">850K subscribers</p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
+                Your FIC Balance
+              </h2>
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
+                <button className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700">
+                  Add Funds
+                </button>
               </div>
-              <button className="ml-auto text-xs bg-orange-500 text-gray-900 px-2 py-1 rounded">
-                Subscribe
-              </button>
             </div>
-            <div className="flex items-center">
-              <img 
-                src="https://i.pravatar.cc/40?img=5" 
-                alt="Channel" 
-                className="w-10 h-10 rounded-full mr-3"
-              />
-              <div>
-                <p className="text-sm font-semibold">CreatorPro</p>
-                <p className="text-xs text-gray-400">620K subscribers</p>
+
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Trending Categories</h2>
+              <div className="space-y-3">
+                {categories.slice(1, 5).map((category) => (
+                  <button
+                    key={category}
+                    className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors"
+                  >
+                    {category}
+                  </button>
+                ))}
               </div>
-              <button className="ml-auto text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">
-                Subscribed
-              </button>
+            </div>
+
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 border border-amber-100">
+              <h2 className="text-lg font-bold text-gray-900 mb-2">Creator Benefits</h2>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-center">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  Earn FIC tokens
+                </li>
+                <li className="flex items-center">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  Monetize content
+                </li>
+                <li className="flex items-center">
+                  <span className="text-amber-500 mr-2">✓</span>
+                  Engage with fans
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-        
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-3">Trending Videos</h3>
-          <div className="space-y-3">
-            <div className="flex">
-              <img 
-                src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=150&q=60" 
-                alt="Trending video" 
-                className="w-16 h-16 rounded object-cover mr-2"
-              />
+      </div>
+
+      {/* Gift Modal */}
+      {showGiftModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-2">Send Gift to Creator</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              Video: {selectedVideo?.title}
+            </p>
+            <p className="text-gray-600 mb-4">
+              Your Balance: {ficBalance.toLocaleString()} FIC
+            </p>
+            <div className="space-y-4">
               <div>
-                <p className="text-xs font-semibold line-clamp-2">FingerWars championship finals</p>
-                <p className="text-xs text-gray-400">1.8M views</p>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Amount (FIC)
+                </label>
+                <input
+                  type="number"
+                  value={giftAmount}
+                  onChange={(e) => setGiftAmount(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="Enter amount"
+                  min="0"
+                />
               </div>
-            </div>
-            <div className="flex">
-              <img 
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=60" 
-                alt="Trending video" 
-                className="w-16 h-16 rounded object-cover mr-2"
-              />
-              <div>
-                <p className="text-xs font-semibold line-clamp-2">New marketplace features</p>
-                <p className="text-xs text-gray-400">980K views</p>
-              </div>
-            </div>
-            <div className="flex">
-              <img 
-                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=150&q=60" 
-                alt="Trending video" 
-                className="w-16 h-16 rounded object-cover mr-2"
-              />
-              <div>
-                <p className="text-xs font-semibold line-clamp-2">FingerLux unboxing</p>
-                <p className="text-xs text-gray-400">750K views</p>
+              <div className="flex justify-end space-x-2">
+                <button
+                  className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-200"
+                  onClick={() => setShowGiftModal(false)}
+                  disabled={isProcessing}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700"
+                  onClick={handleSendGift}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? 'Sending...' : 'Send Gift'}
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </aside>
-    </div>
+      )}
+
+      {/* Paylink Modal */}
+      {showPaylinkModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-2">
+              Create Paylink for Video
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              Video: {selectedVideo?.title}
+            </p>
+            <p className="text-gray-600 mb-4">
+              Your Balance: {ficBalance.toLocaleString()} FIC
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Amount (FIC)
+                </label>
+                <input
+                  type="number"
+                  value={paylinkAmount}
+                  onChange={(e) => setPaylinkAmount(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="Enter amount"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  value={paylinkDescription}
+                  onChange={(e) => setPaylinkDescription(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="Enter description (optional)"
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-200"
+                  onClick={() => setShowPaylinkModal(false)}
+                  disabled={isProcessing}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600"
+                  onClick={handleCreatePaylink}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? 'Creating...' : 'Create Paylink'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </MainLayout>
   );
 };
 

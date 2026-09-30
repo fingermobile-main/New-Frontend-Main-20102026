@@ -10,8 +10,8 @@ type MarketplaceContextType = React.ContextType<typeof MarketplaceContext>;
 export const useMarketplace = (): MarketplaceContextType => {
   const ctx = React.useContext(MarketplaceContext);
   if (!ctx) {
-    throw new Error("useMarketplace must be used within MarketplaceProvider");
+    throw new Error('useMarketplace must be used within MarketplaceProvider');
   }
-  
+
   return ctx;
 };

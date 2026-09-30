@@ -38,7 +38,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
         setError('Please enter an email address');
         return;
       }
-      
+
       if (inviteMethod === 'username' && !username.trim()) {
         setError('Please enter a username');
         return;
@@ -60,8 +60,8 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
         await onInvite(inviteData);
       }
 
-      setSuccess(`Invitation sent successfully!`);
-      
+      setSuccess('Invitation sent successfully!');
+
       // Reset and close after delay
       setTimeout(() => {
         setEmail('');

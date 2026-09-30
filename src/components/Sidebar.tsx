@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   return (
     <>
       {/* Mobile sidebar */}
-      <div 
+      <div
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}
         onClick={onClose} role="button" tabIndex={0}
       >
@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <div className="w-8 h-8 bg-fm-orange rounded-md"></div>
             <span className="text-xl font-bold text-gray-800">FingerMobile</span>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
             aria-label="Close sidebar"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,17 +43,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </svg>
           </button>
         </div>
-        
+
         <nav className="mt-4 px-2 py-4">
           <div className="space-y-1">
             {navItems.map((item) => (
-              <Link 
-                key={item.path} 
+              <Link
+                key={item.path}
                 to={item.path}
                 onClick={onClose}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-md w-full ${
-                  isActive(item.path) 
-                    ? 'bg-fm-orange text-white' 
+                  isActive(item.path)
+                    ? 'bg-fm-orange text-white'
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
               >
@@ -75,16 +75,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <span className="text-xl font-bold text-gray-800">FingerMobile</span>
           </div>
         </div>
-        
+
         <nav className="flex-1 mt-4 px-2 py-4 overflow-y-auto">
           <div className="space-y-1">
             {navItems.map((item) => (
-              <Link 
-                key={item.path} 
+              <Link
+                key={item.path}
                 to={item.path}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-md w-full ${
-                  isActive(item.path) 
-                    ? 'bg-fm-orange text-white' 
+                  isActive(item.path)
+                    ? 'bg-fm-orange text-white'
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
               >
@@ -95,30 +95,30 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               </Link>
             ))}
           </div>
-          
+
           <div className="mt-8 px-3">
             <h3 className="font-semibold text-gray-500 text-xs uppercase tracking-wider">Quick Actions</h3>
             <ul className="mt-2 space-y-2">
               <li>
                 <Button variant="outline" className="w-full justify-start text-sm mt-2" aria-label="Create Post"><svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                    <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-                  </svg>
+                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                  <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
+                </svg>
                   Create Post
                 </Button>
               </li>
               <li>
                 <Button variant="outline" className="w-full justify-start text-sm" aria-label="Start Live Stream"><svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                  </svg>
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                </svg>
                   Start Live Stream
                 </Button>
               </li>
               <li>
                 <Button variant="outline" className="w-full justify-start text-sm" aria-label="Send Message"><svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
-                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2.396l2.5 2.5a1 1 0 001.414 0l.354-.354a1 1 0 000-1.414l-2.5-2.5a1 1 0 00-.707-.293H9.828a1 1 0 01-.707-.293L7.354 9.828A1 1 0 017 9.172V7a1 1 0 011-1h2a1 1 0 011 1v.354l1.767-1.767a1 1 0 01.707-.293H15z" />
-                  </svg>
+                  <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                  <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2.396l2.5 2.5a1 1 0 001.414 0l.354-.354a1 1 0 000-1.414l-2.5-2.5a1 1 0 00-.707-.293H9.828a1 1 0 01-.707-.293L7.354 9.828A1 1 0 017 9.172V7a1 1 0 011-1h2a1 1 0 011 1v.354l1.767-1.767a1 1 0 01.707-.293H15z" />
+                </svg>
                   Send Message
                 </Button>
               </li>
@@ -129,7 +129,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Overlay for mobile */}
       {isOpen && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 bg-gray-600 bg-opacity-75 z-40"
           onClick={onClose} role="button" tabIndex={0}
         ></div>

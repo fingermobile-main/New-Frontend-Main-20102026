@@ -5,7 +5,7 @@ interface AnalyticsMetric {
   name: string;
   value: string;
   change: string;
-  changeType: "positive" | "negative";
+  changeType: 'positive' | 'negative';
   icon?: React.ReactNode; // Icon will be handled in the component
 }
 
@@ -94,39 +94,39 @@ export const useAnalyticsData = (
         ] = await Promise.all([
           ApiService.request<AnalyticsMetric[]>(
             `/analytics/metrics?timeRange=${timeRange}`,
-            {method: "GET"}
+            {method: 'GET'}
           ),
           ApiService.request<HeatmapDataPoint[]>(
             `/analytics/heatmap?timeRange=${timeRange}`,
-            {method: "GET"}
+            {method: 'GET'}
           ),
           ApiService.request<{name: string; value: number }[]>(
             `/analytics/engagement-chart?timeRange=${timeRange}`,
-            {method: "GET"}
+            {method: 'GET'}
           ),
           ApiService.request<{name: string; value: number }[]>(
             `/analytics/traffic-chart?timeRange=${timeRange}`,
-            {method: "GET"}
+            {method: 'GET'}
           ),
           ApiService.request<{name: string; value: number }[]>(
             `/analytics/device-distribution?timeRange=${timeRange}`,
-            {method: "GET"}
+            {method: 'GET'}
           ),
           ApiService.request<{likes: string; comments: string; shares: string; saves: string;}>(
-            `/analytics/engagement-metrics?timeRange=${timeRange}`, 
-            {method: "GET"}
+            `/analytics/engagement-metrics?timeRange=${timeRange}`,
+            {method: 'GET'}
           ),
           ApiService.request<{highEngagementAreas: string; clickPatterns: string; scrollDepth: string;}>(
-            `/analytics/heatmap-insights?timeRange=${timeRange}`, 
-            {method: "GET"}
+            `/analytics/heatmap-insights?timeRange=${timeRange}`,
+            {method: 'GET'}
           ),
           ApiService.request<{mobile: { members: string; percentage: string }; desktop: { members: string; percentage: string }; tablet: { members: string; percentage: string };}>(
-            `/analytics/device-analytics?timeRange=${timeRange}`, 
-            {method: "GET"}
+            `/analytics/device-analytics?timeRange=${timeRange}`,
+            {method: 'GET'}
           ),
           ApiService.request<
             {country: string; members: string; percentage: string }[]
-          >(`/analytics/top-regions?timeRange=${timeRange}`, {method: "GET"})
+          >(`/analytics/top-regions?timeRange=${timeRange}`, {method: 'GET'})
         ]);
 
         if (
@@ -141,22 +141,22 @@ export const useAnalyticsData = (
           topRegionsResponse
         ) {
           setData({
-  metrics: metricsResponse,
-  heatmapData: heatmapResponse,
-  engagementData: engagementResponse,
-  trafficData: trafficResponse,
-  deviceData: deviceResponse,
-  engagementMetrics: engagementMetricsResponse,
-  heatmapInsights: heatmapInsightsResponse,
-  deviceAnalytics: deviceAnalyticsResponse,
-  topRegions: topRegionsResponse
+            metrics: metricsResponse,
+            heatmapData: heatmapResponse,
+            engagementData: engagementResponse,
+            trafficData: trafficResponse,
+            deviceData: deviceResponse,
+            engagementMetrics: engagementMetricsResponse,
+            heatmapInsights: heatmapInsightsResponse,
+            deviceAnalytics: deviceAnalyticsResponse,
+            topRegions: topRegionsResponse
           });
         } else {
-          setError("One or more analytics data fetches failed.");
+          setError('One or more analytics data fetches failed.');
         }
       } catch (err) {
-        setError("Failed to fetch analytics data.");
-        console.error("Error fetching analytics data:", err);
+        setError('Failed to fetch analytics data.');
+        console.error('Error fetching analytics data:', err);
       } finally {
         setLoading(false);
       }

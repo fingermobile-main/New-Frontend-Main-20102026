@@ -1,9 +1,9 @@
 import React, {} from 'react';
-import { Music, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Slider } from "@/components/ui/Slider";
-import { Badge } from "@/components/ui/Badge";
+import { Music, Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Slider } from '@/components/ui/Slider';
+import { Badge } from '@/components/ui/Badge';
 
 interface BeatwavePlayerProps {
   track?: {

@@ -1,5 +1,6 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect, useState, useCallback } from 'react';
+import MainLayout from '../components/layout/MainLayout';
 
 /*
  * FingerMobile Protocol™ - CAMUS Learning Management System Page
@@ -10,15 +11,17 @@ import React, { useEffect, useState, useCallback } from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { logError } from '../utils/errorLogger';
 import { GiftIcon, UserCircleIcon } from '../icons';
 
 
 import { useAuth } from '../contexts/AuthContext';
 import {
-  MemberGroupIcon, // Fixed typo from MembersGroupIcon
+  CamusIcon,
+  MembersIcon as MembersGroupIcon,
   VideoCameraIcon,
+  GraduationCapIcon,
   BookOpenIcon,
   AcademicCapIcon,
   UserGroupIcon
@@ -35,7 +38,6 @@ import type { CourseCategory } from '../constants/camusConstants';
 import CourseCard from '../components/CourseCard';
 import AnimatedAvatar from '../components/AnimatedAvatar';
 import EnhancedFilterBar from '../components/shared/EnhancedFilterBar';
-import MainLayout from '../components/layout/MainLayout';
 
 interface CourseFilters {
   query: string;
@@ -48,7 +50,7 @@ interface CourseCardProps {
   title: string;
   instructor: { name: string; avatarUrl: string };
   duration: string;
-  level: "Beginner" | "Intermediate" | "Advanced";
+  level: 'Beginner' | 'Intermediate' | 'Advanced';
   rating: number;
   students: number;
   price: number;
@@ -62,9 +64,9 @@ const CamusPage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast, ficBalance } = useAppContext();
   const [filters, setFilters] = useState<CourseFilters>({
-    query: "",
-    category: "all",
-    sortBy: "popular"
+    query: '',
+    category: 'all',
+    sortBy: 'popular'
   });
 
   const [filteredCourses, setFilteredCourses] = useState(CAMUS_COURSES);
@@ -79,12 +81,12 @@ const CamusPage: React.FC = () => {
         (course) =>
           course.title.toLowerCase().includes(query) ||
           course.instructor.name.toLowerCase().includes(query) ||
-          course.description?.toLowerCase().includes(query), // Added optional chaining
+          course.description?.toLowerCase().includes(query),
       );
     }
 
     // Apply category filter
-    if (newFilters.category !== "all") {
+    if (newFilters.category !== 'all') {
       result = result.filter(
         (course) => course.category === newFilters.category,
       );
@@ -92,23 +94,23 @@ const CamusPage: React.FC = () => {
 
     // Apply sorting
     switch (newFilters.sortBy) {
-      case "price_asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price_desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      case "students":
-        result.sort((a, b) => b.students - a.students);
-        break;
-      case "popular":
-      default:
-        // Sort by a combination of rating and students
-        result.sort((a, b) => b.rating * b.students - a.rating * a.students);
-        break;
+    case 'price_asc':
+      result.sort((a, b) => a.price - b.price);
+      break;
+    case 'price_desc':
+      result.sort((a, b) => b.price - a.price);
+      break;
+    case 'rating':
+      result.sort((a, b) => b.rating - a.rating);
+      break;
+    case 'students':
+      result.sort((a, b) => b.students - a.students);
+      break;
+    case 'popular':
+    default:
+      // Sort by a combination of rating and students
+      result.sort((a, b) => b.rating * b.students - a.rating * a.students);
+      break;
     }
 
     setFilteredCourses(result);
@@ -120,9 +122,9 @@ const CamusPage: React.FC = () => {
 
   const handleFiltersChange = (newFilters: CourseFilters | { query?: string; category?: string; sortBy?: string }) => {
     setFilters({
-      query: newFilters.query || "",
-      category: newFilters.category || "all",
-      sortBy: newFilters.sortBy || "popular"
+      query: newFilters.query || '',
+      category: newFilters.category || 'all',
+      sortBy: newFilters.sortBy || 'popular'
     });
   };
 
@@ -175,7 +177,7 @@ const CamusPage: React.FC = () => {
   }) => (
     <div className="bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center border border-gray-100">
       <AnimatedAvatar
-        staticUrl={instructor.avatarUrl || ""}
+        staticUrl={instructor.avatarUrl || ''}
         altText={instructor.name}
         className="w-24 h-24"
       />
@@ -186,7 +188,7 @@ const CamusPage: React.FC = () => {
           {[...Array(5)].map((_, i) => (
             <svg
               key={i}
-              className={`w-4 h-4 ${i < Math.floor(instructor.rating) ? "text-yellow-400" : "text-gray-300"}`}
+              className={`w-4 h-4 ${i < Math.floor(instructor.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -221,7 +223,7 @@ const CamusPage: React.FC = () => {
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`w-5 h-5 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-300"}`}
+            className={`w-5 h-5 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -233,12 +235,12 @@ const CamusPage: React.FC = () => {
   );
 
   return (
-    <MainLayout>
+    <MainLayout pageTitle="Camus">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-10">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
-              <BookOpenIcon className="h-8 w-8 text-white" />
+              <CamusIcon className="h-8 w-8 text-white" />
             </div>
             <div className="ml-4">
               <h1 className="text-3xl font-bold text-gray-900">
@@ -249,12 +251,50 @@ const CamusPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+          {/* Left Sidebar */}
+          <div className="hidden lg:block lg:col-span-3 space-y-6">
+            <div className="sticky top-20 space-y-6">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4">Camus Navigation</h3>
+                <ul className="space-y-3">
+                  <li><button onClick={() => navigate('/camus/dashboard')} className="w-full text-left font-medium text-blue-600 hover:underline flex items-center"><AcademicCapIcon className="w-5 h-5 mr-2" /> My Courses</button></li>
+                  <li><button className="w-full text-left text-gray-600 hover:text-blue-600 flex items-center"><BookOpenIcon className="w-5 h-5 mr-2" /> Certificates</button></li>
+                  <li><button className="w-full text-left text-gray-600 hover:text-blue-600 flex items-center"><VideoCameraIcon className="w-5 h-5 mr-2" /> Live Sessions</button></li>
+                </ul>
+              </div>
+
+              {/* Learning Stats from HTML */}
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4">Your Learning</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                    <span className="text-sm text-gray-500">Courses Enrolled</span>
+                    <span className="text-lg font-bold text-gray-900">8</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                    <span className="text-sm text-gray-500">Courses Completed</span>
+                    <span className="text-lg font-bold text-gray-900">3</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">Hours Learned</span>
+                    <span className="text-lg font-bold text-gray-900">42</span>
+                  </div>
+                  <button className="w-full mt-2 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                    Resume Learning
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-6 space-y-8">
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-8 mb-10">
               <div className="text-center">
-                <BookOpenIcon className="w-16 h-16 mx-auto text-white" />
+                <CamusIcon className="w-16 h-16 mx-auto text-white" />
                 <h1 className="mt-4 text-3xl font-extrabold sm:text-4xl md:text-5xl">
                   <span className="block">Advanced Education Platform</span>
                   <span className="block text-blue-200 mt-2">
@@ -267,7 +307,7 @@ const CamusPage: React.FC = () => {
                 <div className="mt-10 flex flex-wrap justify-center gap-4">
                   {member ? (
                     <button
-                      onClick={() => navigate("/camus/dashboard")}
+                      onClick={() => navigate('/camus/dashboard')}
                       className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 md:py-4 md:text-lg md:px-10"
                     >
                       Go to Dashboard
@@ -275,13 +315,13 @@ const CamusPage: React.FC = () => {
                   ) : (
                     <>
                       <button
-                        onClick={() => navigate("/auth/signup?role=student")}
+                        onClick={() => navigate('/auth/signup?role=student')}
                         className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 md:py-4 md:text-lg md:px-10"
                       >
                         Enroll as Student
                       </button>
                       <button
-                        onClick={() => navigate("/auth/signup?role=instructor")}
+                        onClick={() => navigate('/auth/signup?role=instructor')}
                         className="px-8 py-3 border border-white text-base font-medium rounded-md text-white bg-transparent hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
                       >
                         Become Instructor
@@ -348,15 +388,15 @@ const CamusPage: React.FC = () => {
 
               <EnhancedFilterBar
                 filterOptions={{
-                  categories: ["All Categories", ...categories],
+                  categories: ['All Categories', ...categories],
                   sortByOptions: [
-                    { value: "popular", label: "Most Popular" },
-                    { value: "rating", label: "Highest Rated" },
-                    { value: "students", label: "Most Students" },
-                    { value: "price_asc", label: "Price: Low to High" },
-                    { value: "price_desc", label: "Price: High to Low" }
+                    { value: 'popular', label: 'Most Popular' },
+                    { value: 'rating', label: 'Highest Rated' },
+                    { value: 'students', label: 'Most Students' },
+                    { value: 'price_asc', label: 'Price: Low to High' },
+                    { value: 'price_desc', label: 'Price: High to Low' }
                   ],
-                  searchPlaceholder: "Search courses..."
+                  searchPlaceholder: 'Search courses...'
                 }}
                 onFiltersChange={handleFiltersChange}
               />
@@ -429,7 +469,7 @@ const CamusPage: React.FC = () => {
                 </div>
                 <div className="mt-8 lg:mt-0">
                   <button
-                    onClick={() => navigate("/auth/signup")}
+                    onClick={() => navigate('/auth/signup')}
                     className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
                   >
                     Get started
@@ -439,7 +479,8 @@ const CamusPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
+          {/* Right Sidebar */}
+          <div className="lg:col-span-3 space-y-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
                 <UserCircleIcon className="h-5 w-5 text-blue-600 mr-2" />
@@ -491,6 +532,7 @@ const CamusPage: React.FC = () => {
           </div>
         </div>
       </div>
+
     </MainLayout>
   );
 };

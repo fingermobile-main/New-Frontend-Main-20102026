@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import RbacDashboard from '../components/dashboard/RbacDashboard';
 import useRbacData from '../hooks/useRbacData';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { logError } from '../utils/errorLogger';
-import AnimatedAvatar from '../components/AnimatedAvatar';
-import { EyeIcon, PencilIcon, TrashIcon, PlusIcon, UserGroupIcon, KeyIcon, BuildingOfficeIcon, UserCircleIcon } from '../icons';
+import { useAppContext } from '../contexts/AppContext';
+import { PlusIcon, UserGroupIcon, KeyIcon, BuildingOfficeIcon, UserCircleIcon } from '../icons';
 
 // Use FranchiseLocation type from the hook
 interface FranchiseLocation {
@@ -22,12 +20,38 @@ const RbacManagementPage: React.FC = () => {
 
   const [activeView, setActiveView] = useState('dashboard');
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['continent-1']));
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [assignUserId, setAssignUserId] = useState('');
+  const [assignRole, setAssignRole] = useState('');
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     if (error) {
-      showToast(`Error: ${error}`, "error");
+      showToast(`Error: ${error}`, 'error');
     }
   }, [error, showToast]);
+
+  const handleAssignRole = async () => {
+    if (!assignUserId || !assignRole) {
+      showToast('Please provide both User ID and Role', 'error');
+      return;
+    }
+
+    setAssigning(true);
+    try {
+      const { api } = await import('../services/api');
+      await api.post('/admin/rbac/assign', { userId: assignUserId, role: assignRole });
+      showToast('Role assigned successfully', 'success');
+      setShowAssignModal(false);
+      setAssignUserId('');
+      setAssignRole('');
+      refreshData();
+    } catch {
+      showToast('Failed to assign role', 'error');
+    } finally {
+      setAssigning(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -85,40 +109,40 @@ const RbacManagementPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             <div className="flex flex-wrap gap-2 mb-6">
-              <button 
+              <button
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  activeView === 'dashboard' 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                  activeView === 'dashboard'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
                 onClick={() => setActiveView('dashboard')}
               >
                 Dashboard
               </button>
-              <button 
+              <button
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  activeView === 'roles' 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                  activeView === 'roles'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
                 onClick={() => setActiveView('roles')}
               >
                 Roles & Permissions
               </button>
-              <button 
+              <button
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  activeView === 'departments' 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                  activeView === 'departments'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
                 onClick={() => setActiveView('departments')}
               >
                 Departments
               </button>
-              <button 
+              <button
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  activeView === 'franchise' 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white' 
+                  activeView === 'franchise'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
                 onClick={() => setActiveView('franchise')}
@@ -130,7 +154,7 @@ const RbacManagementPage: React.FC = () => {
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
               <div className="p-6">
                 {activeView === 'dashboard' && <RbacDashboard />}
-                
+
                 {activeView === 'roles' && (
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Roles & Permissions Management</h2>
@@ -140,14 +164,14 @@ const RbacManagementPage: React.FC = () => {
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Role Name</label>
-                            <input 
-                              type="text" 
+                            <input
+                              type="text"
                               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                               placeholder="Enter role name" />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea 
+                            <textarea
                               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                               placeholder="Enter role description"
                               rows={3}
@@ -167,7 +191,7 @@ const RbacManagementPage: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                      
+
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-bold text-gray-900 mb-4">Assign Permissions</h3>
                         <div className="space-y-3 max-h-96 overflow-y-auto p-2">
@@ -184,8 +208,8 @@ const RbacManagementPage: React.FC = () => {
                             'Support Ticket Management'
                           ].map((permission, index) => (
                             <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-gray-200">
-                              <input 
-                                type="checkbox" 
+                              <input
+                                type="checkbox"
                                 id={`perm-${index}`}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                               />
@@ -199,7 +223,7 @@ const RbacManagementPage: React.FC = () => {
                     </div>
                   </div>
                 )}
-                
+
                 {activeView === 'departments' && (
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Department Management</h2>
@@ -225,7 +249,7 @@ const RbacManagementPage: React.FC = () => {
                     </div>
                   </div>
                 )}
-                
+
                 {activeView === 'franchise' && (
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Franchise Location Management</h2>
@@ -237,7 +261,7 @@ const RbacManagementPage: React.FC = () => {
                           Add Location
                         </button>
                       </div>
-                      
+
                       <div className="space-y-4">
                         {franchiseLocations.map((continent: FranchiseLocation) => (
                           <div key={continent.id} className="border border-gray-300 rounded-xl">
@@ -341,7 +365,10 @@ const RbacManagementPage: React.FC = () => {
                   <KeyIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Manage Access
                 </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">
+                <button
+                  onClick={() => setShowAssignModal(true)}
+                  className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center"
+                >
                   <UserGroupIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Assign Roles
                 </button>
@@ -371,6 +398,72 @@ const RbacManagementPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Assign Role Modal */}
+        {showAssignModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Assign Role to User</h3>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    User ID *
+                  </label>
+                  <input
+                    type="text"
+                    value={assignUserId}
+                    onChange={(e) => setAssignUserId(e.target.value)}
+                    placeholder="Enter user ID"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Role *
+                  </label>
+                  <select
+                    value={assignRole}
+                    onChange={(e) => setAssignRole(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select a role</option>
+                    {roles.map((r: any) => (
+                      <option key={r.id || r.name} value={r.name || r.id}>
+                        {r.name || r.id}
+                      </option>
+                    ))}
+                    {/* Fallbacks if roles are empty */}
+                    {roles.length === 0 && (
+                      <>
+                        <option value="admin">Admin</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="user">User</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mt-6">
+                <button
+                  onClick={handleAssignRole}
+                  disabled={assigning}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors disabled:opacity-50"
+                >
+                  {assigning ? 'Assigning...' : 'Assign Role'}
+                </button>
+                <button
+                  onClick={() => setShowAssignModal(false)}
+                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

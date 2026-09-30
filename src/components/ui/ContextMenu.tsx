@@ -52,7 +52,7 @@ const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({ children, class
   };
 
   return (
-    <div 
+    <div
       className={className}
       onContextMenu={handleContextMenu}
     >
@@ -71,11 +71,11 @@ const ContextMenuContent: React.FC<ContextMenuContentProps> = ({ children, class
   );
 };
 
-const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ 
-  children, 
-  onClick, 
-  className = '', 
-  inset = false 
+const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
+  children,
+  onClick,
+  className = '',
+  inset = false
 }) => {
   return (
     <div

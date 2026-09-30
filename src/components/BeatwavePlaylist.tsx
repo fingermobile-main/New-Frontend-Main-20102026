@@ -1,14 +1,14 @@
 import React, {} from 'react';
-import { Music, ListMusic, Clock, MoreVertical } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Music, ListMusic, Clock, MoreVertical } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from "@/components/ui/DropdownMenu";
+} from '@/components/ui/DropdownMenu';
 
 interface Track {
   id: string;
@@ -41,24 +41,24 @@ const BeatwavePlaylist: React.FC<BeatwavePlaylistProps> = ({
 }) => {
   const defaultPlaylists: Playlist[] = [
     {
-      id: "1",
-      name: "My Favorites",
-      description: "All my favorite tracks in one place",
-      createdAt: "2026-01-15",
+      id: '1',
+      name: 'My Favorites',
+      description: 'All my favorite tracks in one place',
+      createdAt: '2026-01-15',
       tracks: [
-        { id: "t1", title: "Summer Vibes", artist: "DJ Cool", duration: "3:45" },
-        { id: "t2", title: "Night Drive", artist: "Synthwave Master", duration: "4:20" },
-        { id: "t3", title: "Ocean Waves", artist: "Chill Beats", duration: "3:15" }
+        { id: 't1', title: 'Summer Vibes', artist: 'DJ Cool', duration: '3:45' },
+        { id: 't2', title: 'Night Drive', artist: 'Synthwave Master', duration: '4:20' },
+        { id: 't3', title: 'Ocean Waves', artist: 'Chill Beats', duration: '3:15' }
       ]
     },
     {
-      id: "2",
-      name: "Workout Mix",
-      description: "High energy tracks for gym sessions",
-      createdAt: "2026-02-20",
+      id: '2',
+      name: 'Workout Mix',
+      description: 'High energy tracks for gym sessions',
+      createdAt: '2026-02-20',
       tracks: [
-        { id: "t4", title: "Power Up", artist: "Energy Boost", duration: "3:30" },
-        { id: "t5", title: "Beast Mode", artist: "Gym Tracks", duration: "4:00" }
+        { id: 't4', title: 'Power Up', artist: 'Energy Boost', duration: '3:30' },
+        { id: 't5', title: 'Beast Mode', artist: 'Gym Tracks', duration: '4:00' }
       ]
     }
   ];

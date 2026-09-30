@@ -22,7 +22,7 @@ const NotificationPage = () => {
   }, []);
 
   const markAsRead = (id: number) => {
-    setNotifications(notifications.map(notification => 
+    setNotifications(notifications.map(notification =>
       notification.id === id ? { ...notification, read: true } : notification
     ));
   };

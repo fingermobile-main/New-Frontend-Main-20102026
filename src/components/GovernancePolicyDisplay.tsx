@@ -123,23 +123,23 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
     { id: 'compliance', label: 'Compliance', icon: <Gavel size={16} /> }
   ];
 
-  const filteredPolicies = activeFilter === 'all' 
-    ? policies 
+  const filteredPolicies = activeFilter === 'all'
+    ? policies
     : policies.filter(p => p.category === activeFilter);
 
   const getStatusIcon = (status: GovernancePolicy['status']) => {
     switch (status) {
-      case 'active': return <CheckCircle size={18} className="text-green-500" />;
-      case 'pending': return <Clock size={18} className="text-yellow-500" />;
-      case 'deprecated': return <XCircle size={18} className="text-gray-500" />;
+    case 'active': return <CheckCircle size={18} className="text-green-500" />;
+    case 'pending': return <Clock size={18} className="text-yellow-500" />;
+    case 'deprecated': return <XCircle size={18} className="text-gray-500" />;
     }
   };
 
   const getEnforcementBadge = (level: GovernancePolicy['enforcementLevel']) => {
     switch (level) {
-      case 'strict': return <Shield size={14} className="text-red-500" />;
-      case 'moderate': return <AlertTriangle size={14} className="text-yellow-500" />;
-      case 'advisory': return <Info size={14} className="text-blue-500" />;
+    case 'strict': return <Shield size={14} className="text-red-500" />;
+    case 'moderate': return <AlertTriangle size={14} className="text-yellow-500" />;
+    case 'advisory': return <Info size={14} className="text-blue-500" />;
     }
   };
 
@@ -163,7 +163,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
           </div>
         </div>
         <p className="text-sm text-gray-300 leading-relaxed">
-          The FingerMobile Protocol™ employs AI-driven governance to ensure content safety, regulatory compliance, 
+          The FingerMobile Protocol™ employs AI-driven governance to ensure content safety, regulatory compliance,
           and community standards. All policies are continuously monitored and updated to protect our members.
         </p>
       </div>
@@ -206,7 +206,7 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                     <h3 className="text-base font-black text-white uppercase tracking-tight">{policy.title}</h3>
                   </div>
                   <p className="text-sm text-gray-400 leading-relaxed mb-4">{policy.description}</p>
-                  
+
                   <div className="flex items-center space-x-6 text-xs">
                     <div className="flex items-center space-x-2">
                       <Clock size={14} className="text-gray-500" />
@@ -239,9 +239,9 @@ const GovernancePolicyDisplay: React.FC<GovernancePolicyDisplayProps> = ({
                       {policy.consented ? 'Consented' : 'Consent Required'}
                     </button>
                   )}
-                  <ChevronRight 
-                    size={20} 
-                    className={`text-gray-500 transition-transform ${expandedPolicy === policy.id ? 'rotate-90' : ''}`} 
+                  <ChevronRight
+                    size={20}
+                    className={`text-gray-500 transition-transform ${expandedPolicy === policy.id ? 'rotate-90' : ''}`}
                   />
                 </div>
               </div>

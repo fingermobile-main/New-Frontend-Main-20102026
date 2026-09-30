@@ -42,7 +42,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
             src={post.featured_image_url}
             alt={post.title}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-           />
+          />
           {post.is_featured && (
             <Badge className="absolute top-2 right-2 bg-yellow-500">Featured</Badge>
           )}
@@ -100,7 +100,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
                 src={img}
                 alt={`Gallery ${idx + 1}`}
                 className="w-20 h-20 object-cover rounded"
-               />
+              />
             ))}
             {post.gallery_images.length > 3 && (
               <div className="w-20 h-20 bg-gray-100 rounded flex items-center justify-center text-sm text-muted-foreground">

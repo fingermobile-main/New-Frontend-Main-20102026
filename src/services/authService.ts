@@ -158,7 +158,7 @@ class AuthService {
     const response = await this.api.post<AuthResponse>('/login', credentials);
     if (response.data?.accessToken) {
       this.setSession(response.data);
-      
+
       // Check if user must change password
       if (response.data.user.mustChangePassword) {
         // Store flag for UI to redirect to password change screen
@@ -205,9 +205,9 @@ class AuthService {
     if (!currentRefreshToken) {
       throw new Error('No valid refresh signature token payload mapped in device storage.');
     }
-    
-    const response = await this.api.post<{ accessToken: string; refreshToken: string }>('/refresh', { 
-      refreshToken: currentRefreshToken 
+
+    const response = await this.api.post<{ accessToken: string; refreshToken: string }>('/refresh', {
+      refreshToken: currentRefreshToken
     });
 
     if (response.data?.accessToken) {

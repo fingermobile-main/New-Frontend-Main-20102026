@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import UGCContentStudio from '../components/ugc/UGCContentStudio';
 import UGCPublishingTools from '../components/ugc/UGCPublishingTools';
 import UGCAnalyticsDashboard from '../components/ugc/UGCAnalyticsDashboard';
 import UGCMonetizationPanel from '../components/ugc/UGCMonetizationPanel';
 import UGCScheduler from '../components/ugc/UGCScheduler';
-import { 
-  PencilIcon, 
-  ChartBarIcon, 
-  CurrencyDollarIcon, 
+import {
+  PencilIcon,
+  ChartBarIcon,
+  CurrencyDollarIcon,
   CalendarIcon,
   SparklesIcon,
   PhotoIcon,
@@ -16,11 +16,14 @@ import {
   MicrophoneIcon,
   ArrowUpTrayIcon
 } from '../icons';
+import UGCPrivacyControlModal from '../components/privacy/UGCPrivacyControlModal';
+import { Shield } from 'lucide-react';
 
 const UGCDashboardPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    "studio" | "analytics" | "monetization" | "scheduler"
-  >("studio");
+    'studio' | 'analytics' | 'monetization' | 'scheduler'
+  >('studio');
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -43,44 +46,44 @@ const UGCDashboardPage: React.FC = () => {
           <nav className="flex -mb-px">
             <button
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
-                activeTab === "studio"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                activeTab === 'studio'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
-              onClick={() => setActiveTab("studio")}
+              onClick={() => setActiveTab('studio')}
             >
               <PencilIcon className="h-5 w-5 mr-2" />
               Content Studio
             </button>
             <button
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
-                activeTab === "analytics"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                activeTab === 'analytics'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
-              onClick={() => setActiveTab("analytics")}
+              onClick={() => setActiveTab('analytics')}
             >
               <ChartBarIcon className="h-5 w-5 mr-2" />
               Analytics
             </button>
             <button
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
-                activeTab === "monetization"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                activeTab === 'monetization'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
-              onClick={() => setActiveTab("monetization")}
+              onClick={() => setActiveTab('monetization')}
             >
               <CurrencyDollarIcon className="h-5 w-5 mr-2" />
               Monetization
             </button>
             <button
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
-                activeTab === "scheduler"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                activeTab === 'scheduler'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
-              onClick={() => setActiveTab("scheduler")}
+              onClick={() => setActiveTab('scheduler')}
             >
               <CalendarIcon className="h-5 w-5 mr-2" />
               Scheduler
@@ -89,7 +92,7 @@ const UGCDashboardPage: React.FC = () => {
         </div>
 
         <div className="p-6">
-          {activeTab === "studio" && (
+          {activeTab === 'studio' && (
             <div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
@@ -103,7 +106,7 @@ const UGCDashboardPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-5 border border-purple-100">
                   <div className="flex items-center">
                     <div className="bg-purple-100 p-3 rounded-lg">
@@ -115,7 +118,7 @@ const UGCDashboardPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border border-green-100">
                   <div className="flex items-center">
                     <div className="bg-green-100 p-3 rounded-lg">
@@ -128,18 +131,34 @@ const UGCDashboardPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold text-gray-900">Content Studio</h2>
-                  <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg flex items-center">
-                    <ArrowUpTrayIcon className="h-5 w-5 mr-2" />
-                    Upload Content
-                  </button>
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => setIsPrivacyModalOpen(true)}
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center text-sm font-medium transition-colors"
+                    >
+                      <Shield className="h-4 w-4 mr-2" />
+                      Member Privacy Controls
+                    </button>
+                    <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg flex items-center text-sm font-medium">
+                      <ArrowUpTrayIcon className="h-5 w-5 mr-2" />
+                      Upload Content
+                    </button>
+                  </div>
                 </div>
                 <UGCContentStudio />
               </div>
-              
+
+              <UGCPrivacyControlModal
+                isOpen={isPrivacyModalOpen}
+                onClose={() => setIsPrivacyModalOpen(false)}
+                contentType="post"
+                contentId="default_ugc_post"
+              />
+
               <div>
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Publishing Tools</h2>
                 <UGCPublishingTools />
@@ -147,21 +166,21 @@ const UGCDashboardPage: React.FC = () => {
             </div>
           )}
 
-          {activeTab === "analytics" && (
+          {activeTab === 'analytics' && (
             <div>
               <h2 className="text-xl font-bold text-gray-900 mb-4">Analytics Dashboard</h2>
               <UGCAnalyticsDashboard />
             </div>
           )}
 
-          {activeTab === "monetization" && (
+          {activeTab === 'monetization' && (
             <div>
               <h2 className="text-xl font-bold text-gray-900 mb-4">Monetization Panel</h2>
               <UGCMonetizationPanel />
             </div>
           )}
 
-          {activeTab === "scheduler" && (
+          {activeTab === 'scheduler' && (
             <div>
               <h2 className="text-xl font-bold text-gray-900 mb-4">Content Scheduler</h2>
               <UGCScheduler />

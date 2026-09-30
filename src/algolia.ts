@@ -1,9 +1,8 @@
-import { algoliasearch } from "algoliasearch";
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
 
-// @ts-ignore: algoliasearch v5 type issue with default export in current build setup
 const searchClient = algoliasearch(
-  process.env.REACT_APP_ALGOLIA_APP_ID as string,
-  process.env.REACT_APP_ALGOLIA_SEARCH_KEY as string
+  process.env.REACT_APP_ALGOLIA_APP_ID || 'AH8QFD8X1H', // Application ID
+  process.env.REACT_APP_ALGOLIA_SEARCH_KEY || process.env.ALGOLIA_API_KEY || '', // Search API Key
 );
 
 export default searchClient;

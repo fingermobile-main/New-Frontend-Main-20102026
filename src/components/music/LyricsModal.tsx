@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Music, FileText, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Textarea } from "@/components/ui/Textarea";
+import { Music, FileText, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface Track {
   id: string;
@@ -33,11 +33,11 @@ const LyricsModal: React.FC<LyricsModalProps> = ({
   onSave,
   isEditable = false
 }) => {
-  const [lyrics, setLyrics] = React.useState(track?.lyrics || "");
+  const [lyrics, setLyrics] = React.useState(track?.lyrics || '');
 
   React.useEffect(() => {
     if (track) {
-      setLyrics(track.lyrics || "");
+      setLyrics(track.lyrics || '');
     }
   }, [track]);
 

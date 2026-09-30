@@ -114,13 +114,13 @@ const ProfileEnhancement: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Profile Enhancement</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Basic Info</h3>
-            
+
             <div className="mb-4">
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username (3-30 characters)</label>
               <input
@@ -134,7 +134,7 @@ const ProfileEnhancement: React.FC = () => {
                 maxLength={30}
                 minLength={3} />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
               <textarea
@@ -147,7 +147,7 @@ const ProfileEnhancement: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
               <input
@@ -159,7 +159,7 @@ const ProfileEnhancement: React.FC = () => {
                 placeholder="https://example.com/profile.jpg"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="profileVideo" className="block text-sm font-medium text-gray-700 mb-1">Profile Video URL (3-5s)</label>
               <input
@@ -172,7 +172,7 @@ const ProfileEnhancement: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <input
                 type="checkbox"
@@ -184,7 +184,7 @@ const ProfileEnhancement: React.FC = () => {
               <label htmlFor="aiGenerated" className="text-sm font-medium text-gray-700">
                 AI Generated Avatar
               </label>
-              
+
               <input
                 type="checkbox"
                 id="professional"
@@ -197,10 +197,10 @@ const ProfileEnhancement: React.FC = () => {
               </label>
             </div>
           </div>
-          
+
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Cover Images/GIFs (3 images)</h3>
-            
+
             {profile.coverImages.map((img, index) => (
               <div key={index} className="mb-3">
                 <label htmlFor={`coverImage-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Cover Image {index + 1}</label>
@@ -216,12 +216,12 @@ const ProfileEnhancement: React.FC = () => {
             ))}
           </div>
         </div>
-        
+
         {/* Right Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Skills (up to 25)</h3>
-            
+
             <div className="flex space-x-2 mb-4">
               <input
                 type="text"
@@ -246,7 +246,7 @@ const ProfileEnhancement: React.FC = () => {
                 Add
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-2">
               {profile.skills.map(skill => (
                 <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border">
@@ -254,8 +254,8 @@ const ProfileEnhancement: React.FC = () => {
                     <span className="font-medium">{skill.name}</span>
                     <div className="flex mt-1">
                       {[...Array(5)].map((_, i) => (
-                        <span 
-                          key={i} 
+                        <span
+                          key={i}
                           className={`text-xs ${i < skill.level ? 'text-yellow-500' : 'text-gray-300'}`}
                         >
                           ★
@@ -272,15 +272,15 @@ const ProfileEnhancement: React.FC = () => {
                 </div>
               ))}
             </div>
-            
+
             <p className="text-sm text-gray-500 mt-2">
               {profile.skills.length}/25 skills added
             </p>
           </div>
-          
+
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Links</h3>
-            
+
             <div className="flex space-x-2 mb-4">
               <input
                 type="text"
@@ -296,13 +296,13 @@ const ProfileEnhancement: React.FC = () => {
                 Add
               </button>
             </div>
-            
+
             <ul className="space-y-2">
               {profile.links.map((link, index) => (
                 <li key={index} className="flex items-center justify-between bg-white p-2 rounded border">
-                  <a 
-                    href={link} 
-                    target="_blank" 
+                  <a
+                    href={link}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-indigo-600 truncate max-w-[70%]"
                   >
@@ -320,7 +320,7 @@ const ProfileEnhancement: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="mt-6 flex justify-end">
         <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           Save Profile

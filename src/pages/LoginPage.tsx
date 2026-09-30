@@ -10,29 +10,37 @@ import { GoogleIcon, FacebookIcon, YahooIcon, LinkedInIcon, InstagramIcon, TikTo
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
+import { fingerBioAuth } from '../services/FingerBioSDK';
 
 const LoginPage: React.FC = () => {
-  const [phone, setPhone] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ phone?: string; password?: string }>({});
-  
+  const [errors, setErrors] = useState<{ identifier?: string; password?: string; twoFA?: string }>({});
+  const [requires2FA, setRequires2FA] = useState(false);
+  const [twoFACode, setTwoFACode] = useState('');
+  const [pending2FAUserId, setPending2FAUserId] = useState<number | string | null>(null);
+
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login: authLogin, mustChangePassword } = useAuth(); // Added mustChangePassword from AuthContext
+  const { login: authLogin } = useAuth();
 
   const validateForm = () => {
     let valid = true;
-    const newErrors: { phone?: string; password?: string } = {};
+    const newErrors: { identifier?: string; password?: string } = {};
 
-    // Validate phone number format
-    if (!phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+    // Validate email or phone number format
+    if (!identifier.trim()) {
+      newErrors.identifier = 'Email or Phone number is required';
       valid = false;
-    } else if (!/^[+]?[1-9][\d]{0,15}$/.test(phone.replace(/\s|\(|\)|-|_/g, ''))) {
-      newErrors.phone = 'Please enter a valid phone number';
-      valid = false;
+    } else {
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+      const isPhone = /^[+]?[1-9][\d]{0,15}$/.test(identifier.replace(/\s|\(|\)|-|_/g, ''));
+      if (!isEmail && !isPhone) {
+        newErrors.identifier = 'Please enter a valid email or phone number';
+        valid = false;
+      }
     }
 
     // Validate password
@@ -48,9 +56,53 @@ const LoginPage: React.FC = () => {
     return valid;
   };
 
+  const handle2FASubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!twoFACode || twoFACode.trim().length !== 6) {
+      setErrors({ twoFA: 'Please enter a complete 6-digit code' });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await api.post('/auth/verify-2fa-login', {
+        userId: pending2FAUserId,
+        totpCode: twoFACode.trim()
+      });
+
+      if (response.data && response.data.token) {
+        localStorage.setItem('accessToken', response.data.token);
+        localStorage.setItem('fingermobile_token', response.data.token);
+        localStorage.setItem('token', response.data.token);
+
+        if (response.data.user) {
+          await authLogin(response.data.user.email || identifier, password);
+        }
+
+        toast({
+          title: 'Login Successful',
+          description: 'Two-factor authentication verified.',
+          variant: 'default'
+        });
+
+        navigate('/forum');
+      } else {
+        throw new Error(response.data?.message || '2FA verification failed');
+      }
+    } catch (err: any) {
+      toast({
+        title: '2FA Failed',
+        description: err.response?.data?.message || 'Invalid 2FA code. Please try again.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -58,59 +110,114 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Call the actual backend login API
       const response = await api.post('/auth/login', {
-        email: phone, // Backend expects email field (using phone as identifier)
+        identifier: identifier.trim(),
+        email: identifier.trim(),
         password: password
       });
-      
+
+      if (response.data && response.data.requires2FA) {
+        setRequires2FA(true);
+        setPending2FAUserId(response.data.userId);
+        toast({
+          title: '2FA Verification Required',
+          description: 'Please enter the 6-digit verification code.'
+        });
+        return;
+      }
+
       if (response.data && response.data.success && response.data.token) {
         // Store token in localStorage
+        localStorage.setItem('accessToken', response.data.token);
         localStorage.setItem('fingermobile_token', response.data.token);
         localStorage.setItem('token', response.data.token);
-        
+
         // Update AuthContext with user data
         if (response.data.user) {
-          // Using the authLogin function from AuthContext instead of directly setting state
-          await authLogin(response.data.user.email || phone, password);
-          
-          // Check if user must change password using the AuthContext function
-          if (mustChangePassword) {  // Using the boolean value from AuthContext, not calling it as a function
-            toast({
-              title: "Password Change Required",
-              description: "Please change your password to continue using the platform.",
-              variant: "default"
-            });
-            
-            // Redirect to change password page
-            navigate('/change-password');
-            setIsLoading(false);
-            return;
-          }
+          await authLogin(response.data.user.email || identifier, password);
         }
-        
+
         toast({
-          title: "Login Successful",
-          description: "You have been logged in successfully.",
-          variant: "default"
+          title: 'Login Successful',
+          description: 'You have been logged in successfully.',
+          variant: 'default'
         });
-        
+
         // Navigate to forum page (main landing after login)
         navigate('/forum');
       } else {
         throw new Error('Invalid response from server');
       }
     } catch (error: any) {
-      console.error('Login error:', error);
-      
-      const errorMessage = error.response?.data?.message || 
+      const errorMessage = error.response?.data?.message ||
                           'Please check your credentials and try again.';
-      
+
       toast({
-        title: "Login Failed",
+        title: 'Login Failed',
         description: errorMessage,
-        variant: "destructive"
+        variant: 'destructive'
       });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleFaceLogin = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fingerBioAuth.identify1toN();
+      if (res.authenticated) {
+
+        // Mock token for bio login
+        localStorage.setItem('fingermobile_token', 'bio-mock-token');
+        localStorage.setItem('token', 'bio-mock-token');
+        await authLogin(res.identified_as || 'bio_user', 'bio-auth-skip');
+
+        toast({
+          title: 'Login Successful',
+          description: 'Authenticated with FingerBio.',
+          variant: 'default'
+        });
+
+        navigate('/forum');
+      }
+    } catch (err: any) {
+      if (err.message === 'AMBIGUOUS_MATCH_TRY_1TO1') {
+        toast({ title: 'Ambiguous Match', description: 'Match confidence low. Please enter your username and use the 1:1 Biometric Verification below.', variant: 'destructive' });
+      } else if (err.message !== 'CANCELLED_BY_USER') {
+        toast({ title: 'Face Login Failed', description: err.message, variant: 'destructive' });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerify1to1 = async () => {
+    if (!identifier) {
+      toast({ title: 'Required', description: 'Please enter your Email/Phone Number first for 1:1 verification.', variant: 'destructive' });
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const res = await fingerBioAuth.verify1to1(identifier);
+      if (res.authenticated) {
+        localStorage.setItem('fingermobile_token', 'bio-mock-token');
+        localStorage.setItem('token', 'bio-mock-token');
+        await authLogin(res.username || identifier, 'bio-auth-skip');
+
+        toast({
+          title: 'Verification Successful',
+          description: 'Identity verified with FingerBio.',
+          variant: 'default'
+        });
+
+        navigate('/forum');
+      }
+    } catch (err: any) {
+      if (err.message !== 'CANCELLED_BY_USER') {
+        toast({ title: 'Face Verification Failed', description: err.message, variant: 'destructive' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -119,8 +226,8 @@ const LoginPage: React.FC = () => {
   const handlePhoneVerification = () => {
     // TODO: Implement phone verification
     toast({
-      title: "Phone Verification",
-      description: "Phone verification requested."
+      title: 'Phone Verification',
+      description: 'Phone verification requested.'
     });
   };
 
@@ -130,7 +237,6 @@ const LoginPage: React.FC = () => {
       title: `Logging in with ${provider}`,
       description: `Redirecting to ${provider} authentication...`
     });
-    console.info(`Initiating login with ${provider}`);
   };
 
   return (
@@ -139,131 +245,190 @@ const LoginPage: React.FC = () => {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
           <CardDescription className="text-center">
-            Enter your phone number and password to access your account
+            Enter your email or phone number and password to access your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <div className="relative">
-                  <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+1 (234) 567-8900"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className={`pl-10 ${errors.phone ? 'border-red-500' : ''}`}
-                    required
-                  />
-                </div>
-                {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+          {requires2FA ? (
+            <form onSubmit={handle2FASubmit} className="space-y-4">
+              <div className="text-center py-2">
+                <span className="text-3xl">🔐</span>
+                <p className="text-sm text-gray-600 mt-2">
+                  Enter the 6-digit code from your authenticator app to complete login.
+                </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={errors.password ? 'border-red-500' : ''}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOffIcon className="w-5 h-5 text-gray-400" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                <Label htmlFor="twoFA">Two-Factor Authentication Code</Label>
+                <Input
+                  id="twoFA"
+                  type="text"
+                  placeholder="123456"
+                  maxLength={6}
+                  value={twoFACode}
+                  onChange={(e) => setTwoFACode(e.target.value)}
+                  className="text-center text-xl tracking-widest font-mono"
+                  required
+                />
+                {errors.twoFA && <p className="text-red-500 text-sm">{errors.twoFA}</p>}
               </div>
-            </div>
-            <Button 
-              type="submit" 
-              className="w-full mt-6" 
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </Button>
-          </form>
-          
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-3 gap-3">
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('Google')}
-            >
-              <GoogleIcon className="w-5 h-5 mr-2" />
+              <Button type="submit" className="w-full mt-4" disabled={isLoading}>
+                {isLoading ? 'Verifying 2FA...' : 'Verify & Enter'}
+              </Button>
+              <button
+                type="button"
+                onClick={() => setRequires2FA(false)}
+                className="w-full text-center text-sm text-gray-500 hover:text-gray-700 mt-2"
+              >
+                ← Back to Login
+              </button>
+            </form>
+          ) : (
+            <>
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="identifier">Email or Phone Number</Label>
+                    <div className="relative">
+                      <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <Input
+                        id="identifier"
+                        type="text"
+                        placeholder="name@example.com or +1 (234)..."
+                        value={identifier}
+                        onChange={(e) => setIdentifier(e.target.value)}
+                        className={`pl-10 ${errors.identifier ? 'border-red-500' : ''}`}
+                        required
+                      />
+                    </div>
+                    {errors.identifier && <p className="text-red-500 text-sm">{errors.identifier}</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={errors.password ? 'border-red-500' : ''}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOffIcon className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <EyeIcon className="w-5 h-5 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                  </div>
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full mt-6"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Signing in...' : 'Sign In'}
+                </Button>
+              </form>
+
+
+              <div className="flex flex-col gap-3 mt-4 mb-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleFaceLogin}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+              😁 Sign in with Face (Passwordless)
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleVerify1to1}
+                  disabled={isLoading || !identifier}
+                  className="w-full"
+                >
+              🛡 Verify Identity 1:1
+                </Button>
+              </div>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('Google')}
+                >
+                  <GoogleIcon className="w-5 h-5 mr-2" />
               Google
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('Facebook')}
-            >
-              <FacebookIcon className="w-5 h-5 mr-2" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('Facebook')}
+                >
+                  <FacebookIcon className="w-5 h-5 mr-2" />
               Facebook
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('Yahoo')}
-            >
-              <YahooIcon className="w-5 h-5 mr-2" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('Yahoo')}
+                >
+                  <YahooIcon className="w-5 h-5 mr-2" />
               Yahoo
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('LinkedIn')}
-            >
-              <LinkedInIcon className="w-5 h-5 mr-2" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('LinkedIn')}
+                >
+                  <LinkedInIcon className="w-5 h-5 mr-2" />
               LinkedIn
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('Instagram')}
-            >
-              <InstagramIcon className="w-5 h-5 mr-2" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('Instagram')}
+                >
+                  <InstagramIcon className="w-5 h-5 mr-2" />
               Instagram
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => handleSocialLogin('TikTok')}
-            >
-              <TikTokIcon className="w-5 h-5 mr-2" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center"
+                  onClick={() => handleSocialLogin('TikTok')}
+                >
+                  <TikTokIcon className="w-5 h-5 mr-2" />
               TikTok
-            </Button>
-          </div>
+                </Button>
+              </div>
+            </>
+          )}
         </CardContent>
         <CardFooter className="flex flex-col">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full mb-2"
             onClick={handlePhoneVerification}
           >

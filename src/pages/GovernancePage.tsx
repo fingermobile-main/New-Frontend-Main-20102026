@@ -24,51 +24,51 @@ const GovernancePage: React.FC = () => {
 
         {/* Detailed Policies Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-                { 
-                    title: 'Privacy Manifesto', 
-                    desc: 'Zero-knowledge proof systems ensure your identity remains yours.', 
-                    icon: <Eye className="text-pink-500" />,
-                    bg: 'bg-pink-500/5'
-                },
-                { 
-                    title: 'Fair Usage Policy', 
-                    desc: 'Automated revenue share modeling for transparent creator payouts.', 
-                    icon: <FileText className="text-emerald-500" />,
-                    bg: 'bg-emerald-500/5'
-                },
-                { 
-                    title: 'AI Ethics Code', 
-                    desc: 'Our seekers are governed by the strict human-centric protocol v4.0.', 
-                    icon: <BookOpen className="text-amber-500" />,
-                    bg: 'bg-amber-500/5'
-                }
-            ].map((policy, i) => (
-                <div key={i} className={`p-8 rounded-[2rem] border border-white/5 ${policy.bg} space-y-4 group hover:scale-[1.02] transition-transform cursor-pointer`}>
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-2">
-                        {policy.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-white tracking-tight">{policy.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed font-medium">{policy.desc}</p>
-                    <div className="pt-4 flex items-center text-xs font-bold text-white/40 group-hover:text-white transition-colors">
-                        <span>Read Full Document</span>
-                        <Info size={14} className="ml-2" />
-                    </div>
-                </div>
-            ))}
+          {[
+            {
+              title: 'Privacy Manifesto',
+              desc: 'Zero-knowledge proof systems ensure your identity remains yours.',
+              icon: <Eye className="text-pink-500" />,
+              bg: 'bg-pink-500/5'
+            },
+            {
+              title: 'Fair Usage Policy',
+              desc: 'Automated revenue share modeling for transparent creator payouts.',
+              icon: <FileText className="text-emerald-500" />,
+              bg: 'bg-emerald-500/5'
+            },
+            {
+              title: 'AI Ethics Code',
+              desc: 'Our seekers are governed by the strict human-centric protocol v4.0.',
+              icon: <BookOpen className="text-amber-500" />,
+              bg: 'bg-amber-500/5'
+            }
+          ].map((policy, i) => (
+            <div key={i} className={`p-8 rounded-[2rem] border border-white/5 ${policy.bg} space-y-4 group hover:scale-[1.02] transition-transform cursor-pointer`}>
+              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-2">
+                {policy.icon}
+              </div>
+              <h3 className="text-xl font-bold text-white tracking-tight">{policy.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">{policy.desc}</p>
+              <div className="pt-4 flex items-center text-xs font-bold text-white/40 group-hover:text-white transition-colors">
+                <span>Read Full Document</span>
+                <Info size={14} className="ml-2" />
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Bottom Banner */}
         <div className="p-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-[3rem] text-center space-y-6 shadow-2xl shadow-blue-900/40">
-            <h2 className="text-3xl font-black text-white tracking-tighter">Secure. Harmonized. FingerMobile.</h2>
-            <div className="flex flex-wrap justify-center gap-4">
-                <button className="px-8 py-3 bg-white text-blue-600 font-bold rounded-2xl hover:bg-white/90 transition-all shadow-lg">
+          <h2 className="text-3xl font-black text-white tracking-tighter">Secure. Harmonized. FingerMobile.</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button className="px-8 py-3 bg-white text-blue-600 font-bold rounded-2xl hover:bg-white/90 transition-all shadow-lg">
                     Contact Compliance Officer
-                </button>
-                <button className="px-8 py-3 bg-black/20 text-white font-bold rounded-2xl hover:bg-black/30 transition-all border border-white/10">
+            </button>
+            <button className="px-8 py-3 bg-black/20 text-white font-bold rounded-2xl hover:bg-black/30 transition-all border border-white/10">
                     Report an AI Anomaly
-                </button>
-            </div>
+            </button>
+          </div>
         </div>
       </div>
     </MainLayout>

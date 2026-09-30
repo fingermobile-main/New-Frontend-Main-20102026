@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { BarChart, TrendingUp } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { BarChart, TrendingUp } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 
 interface CampaignMetric {
   name: string;
@@ -17,23 +17,23 @@ interface CampaignAnalyticsProps {
 
 // Moved outside the component to prevent re-creation on every render
 const DEFAULT_METRICS: CampaignMetric[] = [
-  { name: "Total Impressions", value: "2.4M", change: 12.5, period: "vs last month" },
-  { name: "Click-Through Rate", value: "3.8%", change: -2.1, period: "vs last month" },
-  { name: "Conversions", value: "1,234", change: 8.3, period: "vs last month" },
-  { name: "Revenue", value: "$45,678", change: 15.7, period: "vs last month" }
+  { name: 'Total Impressions', value: '2.4M', change: 12.5, period: 'vs last month' },
+  { name: 'Click-Through Rate', value: '3.8%', change: -2.1, period: 'vs last month' },
+  { name: 'Conversions', value: '1,234', change: 8.3, period: 'vs last month' },
+  { name: 'Revenue', value: '$45,678', change: 15.7, period: 'vs last month' }
 ];
 
 const PERFORMANCE_DATA = [
-  { channel: "Social Media", impressions: "1.2M", ctr: "4.2%", revenue: "$23,456" },
-  { channel: "Email Marketing", impressions: "800K", ctr: "5.1%", revenue: "$15,234" },
-  { channel: "Search Ads", impressions: "400K", ctr: "2.8%", revenue: "$6,988" }
+  { channel: 'Social Media', impressions: '1.2M', ctr: '4.2%', revenue: '$23,456' },
+  { channel: 'Email Marketing', impressions: '800K', ctr: '5.1%', revenue: '$15,234' },
+  { channel: 'Search Ads', impressions: '400K', ctr: '2.8%', revenue: '$6,988' }
 ];
 
 const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
   metrics = DEFAULT_METRICS, // Used ES6 default parameters instead of manual assignment
   onMetricClick
 }) => {
-  
+
   // Handle keyboard interaction for accessible cards
   const handleKeyDown = (e: React.KeyboardEvent, metricName: string) => {
     if ((e.key === 'Enter' || e.key === ' ') && onMetricClick) {
@@ -62,8 +62,8 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
           return (
             <Card
               key={metric.name} // Using a unique string property instead of array index
-              className={`${isClickable ? "hover:shadow-md transition-shadow cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" : ""}`}
-              role={isClickable ? "button" : undefined}
+              className={`${isClickable ? 'hover:shadow-md transition-shadow cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring' : ''}`}
+              role={isClickable ? 'button' : undefined}
               tabIndex={isClickable ? 0 : undefined}
               onClick={() => onMetricClick?.(metric.name)}
               onKeyDown={(e) => handleKeyDown(e, metric.name)}
@@ -79,12 +79,12 @@ const CampaignAnalytics: React.FC<CampaignAnalyticsProps> = ({
                   <Badge
                     variant="secondary"
                     className={`${
-                      isPositive 
-                        ? "bg-green-500/10 text-green-700 dark:text-green-400" 
-                        : "bg-destructive/10 text-destructive"
+                      isPositive
+                        ? 'bg-green-500/10 text-green-700 dark:text-green-400'
+                        : 'bg-destructive/10 text-destructive'
                     } hover:bg-transparent`}
                   >
-                    <TrendingUp className={`h-3 w-3 mr-1 transition-transform ${!isPositive ? "rotate-180" : ""}`} />
+                    <TrendingUp className={`h-3 w-3 mr-1 transition-transform ${!isPositive ? 'rotate-180' : ''}`} />
                     {Math.abs(metric.change)}%
                   </Badge>
                   <span className="text-xs text-muted-foreground">{metric.period}</span>

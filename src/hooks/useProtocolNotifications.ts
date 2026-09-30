@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { ProtocolService } from '../services/protocolService';
 
 /**
@@ -15,18 +15,18 @@ export const useProtocolNotifications = () => {
   useEffect(() => {
     // Create stable event handlers
     const handleConnectCallback = () => {
-      console.info("Protocol connected");
-      showToast && showToast("Connected to protocol", "success");
+      console.info('Protocol connected');
+      showToast && showToast('Connected to protocol', 'success');
     };
 
     const handleDisconnectCallback = () => {
-      console.info("Protocol disconnected");
-      showToast && showToast("Disconnected from protocol", "info");
+      console.info('Protocol disconnected');
+      showToast && showToast('Disconnected from protocol', 'info');
     };
 
     const handleErrorCallback = (error: Event) => {
-      console.error("Protocol error:", error);
-      showToast && showToast(`Protocol error: ${error.type}`, "error");
+      console.error('Protocol error:', error);
+      showToast && showToast(`Protocol error: ${error.type}`, 'error');
     };
 
     // Store handlers in refs for cleanup

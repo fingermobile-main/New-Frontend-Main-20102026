@@ -1,4 +1,4 @@
-import React, {} from 'react';
+
 export enum ErrorType {
   API_ERROR = 'API_ERROR',
   AUTH_ERROR = 'AUTH_ERROR',
@@ -18,7 +18,7 @@ export interface LogError {
 const clientErrors: Array<LogError> = [];
 
 export const logError = (
-  error: unknown, 
+  error: unknown,
   typeOrMeta?: ErrorType | {
     context: string; error?: any; postId?: string; userId?: string; [
     key: string]: unknown },
@@ -26,7 +26,7 @@ export const logError = (
 ): void => {
   let errorType: ErrorType = ErrorType.UNKNOWN_ERROR;
   let errorMeta: Record<string, unknown> = meta || {};
-  
+
   if (typeOrMeta) {
     if (typeof typeOrMeta === 'string') {
       // Check if it's a valid ErrorType
@@ -44,7 +44,7 @@ export const logError = (
       errorType = typeOrMeta as ErrorType;
     }
   }
-  
+
   const logEntry: LogError = {
     type: errorType,
     message: (error instanceof Error) ? error.message : String(error),

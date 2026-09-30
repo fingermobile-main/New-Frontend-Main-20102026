@@ -100,8 +100,8 @@ export const useCreatorInfluenceSubscription = ({ memberId }: UseCreatorInfluenc
 
   // Get recommendations based on user metrics
   const getRecommendations = useCallback(async (
-  followers: number,
-engagementRate: number,
+    followers: number,
+    engagementRate: number,
     bandwidthUsage?: number,
     monetizationEarnings?: number
   ) => {
@@ -126,12 +126,12 @@ engagementRate: number,
 
   // Create a new subscription
   const createSubscription = async (
-  level: string, autoRenew = true) => {
+    level: string, autoRenew = true) => {
     try {
       setLoading(true);
       const newSubscription = await CreatorInfluenceSubscriptionService.createSubscription({member_id: memberId,
-  subscription_level: level,
-  auto_renew: autoRenew
+        subscription_level: level,
+        auto_renew: autoRenew
       });
       setSubscription(newSubscription);
       return newSubscription;
@@ -145,7 +145,7 @@ engagementRate: number,
 
   // Upgrade subscription
   const upgradeSubscription = async (
-  newLevel: string) => {
+    newLevel: string) => {
     try {
       setLoading(true);
       const upgradedSubscription = await CreatorInfluenceSubscriptionService.upgradeSubscription(
@@ -164,7 +164,7 @@ engagementRate: number,
 
   // Downgrade subscription
   const downgradeSubscription = async (
-  newLevel: string) => {
+    newLevel: string) => {
     try {
       setLoading(true);
       const downgradedSubscription = await CreatorInfluenceSubscriptionService.downgradeSubscription(
@@ -186,7 +186,7 @@ engagementRate: number,
     if (!subscription?.id) {
       throw new Error('No active subscription to cancel');
     }
-    
+
     try {
       setLoading(true);
       await CreatorInfluenceSubscriptionService.cancelSubscription(subscription.id, reason);
@@ -202,7 +202,7 @@ engagementRate: number,
 
   // Process payment
   const processPayment = async (
-  data: {subscription_level: string;
+    data: {subscription_level: string;
   amount: number;
   payment_method: string;
     currency?: string;
@@ -213,7 +213,7 @@ engagementRate: number,
       setLoading(true);
       const paymentResult = await CreatorInfluenceSubscriptionService.processPayment({
         ...data,
-member_id: memberId
+        member_id: memberId
       });
       return paymentResult;
     } catch (err: any) {
@@ -226,7 +226,7 @@ member_id: memberId
 
   // Get subscription benefits
   const getSubscriptionBenefits = async (
-  level: string): Promise<SubscriptionBenefits> => {
+    level: string): Promise<SubscriptionBenefits> => {
     try {
       return await CreatorInfluenceSubscriptionService.getSubscriptionBenefits(level);
     } catch (err: any) {

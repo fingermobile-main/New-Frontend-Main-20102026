@@ -7,32 +7,32 @@ import React, {} from 'react';
 import { ApiResponse } from '../types/api';
 
 // Strongly typed definitions for cleaner domain modeling
-export type VoiceLineCategory = 
-  | 'general' 
-  | 'sugarcrush' 
-  | 'fingerwars' 
-  | 'acquisition' 
-  | 'greeting' 
-  | 'lamentation' 
-  | 'exclamation' 
-  | 'earnings' 
-  | 'surprise' 
-  | 'appraisal' 
-  | 'enticement' 
-  | 'boastful' 
-  | 'request' 
-  | 'funding' 
-  | 'affection' 
-  | 'agreement' 
-  | 'expression' 
-  | 'stun' 
-  | 'combo' 
-  | 'combo_small' 
-  | 'combo_large' 
-  | 'combo_colossal' 
-  | 'supervi' 
-  | 'gameon' 
-  | 'forum' 
+export type VoiceLineCategory =
+  | 'general'
+  | 'sugarcrush'
+  | 'fingerwars'
+  | 'acquisition'
+  | 'greeting'
+  | 'lamentation'
+  | 'exclamation'
+  | 'earnings'
+  | 'surprise'
+  | 'appraisal'
+  | 'enticement'
+  | 'boastful'
+  | 'request'
+  | 'funding'
+  | 'affection'
+  | 'agreement'
+  | 'expression'
+  | 'stun'
+  | 'combo'
+  | 'combo_small'
+  | 'combo_large'
+  | 'combo_colossal'
+  | 'supervi'
+  | 'gameon'
+  | 'forum'
   | 'gems'
   | 'achievement';
 
@@ -59,8 +59,8 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'ev-4', text: 'Oh yeeeaah!', category: 'general', audioUrl: '/audio/african/oh-yeaah.mp3', keywords: ['gameplay', 'matches', 'effects', 'goal'] },
   { id: 'ev-5', text: 'Bootilicious!', category: 'fingerwars', audioUrl: '/audio/african/bootilicious.mp3', keywords: ['fingerwars', 'level', 'points', '12points', '20points', '27points'] },
   { id: 'ev-6', text: 'Oooh yeah go on!', category: 'general', audioUrl: '/audio/african/oooh-yeah-go-on.mp3', keywords: ['objective', 'completion', 'progress'] },
-  { id: 'ev-7', text: "Nice One, you're there already", category: 'fingerwars', audioUrl: '/audio/african/nice-one.mp3', keywords: ['variations', 'progress', 'completion'] },
-  { id: 'ev-8', text: "You're mine", category: 'acquisition', audioUrl: '/audio/african/youre-mine.mp3', keywords: ['acquisition', 'objects', 'gifts', 'earnings'] },
+  { id: 'ev-7', text: 'Nice One, you\'re there already', category: 'fingerwars', audioUrl: '/audio/african/nice-one.mp3', keywords: ['variations', 'progress', 'completion'] },
+  { id: 'ev-8', text: 'You\'re mine', category: 'acquisition', audioUrl: '/audio/african/youre-mine.mp3', keywords: ['acquisition', 'objects', 'gifts', 'earnings'] },
   { id: 'ev-9', text: 'Hi ya doing', category: 'greeting', audioUrl: '/audio/african/hi-ya-doing.mp3', keywords: ['greeting', 'meeting', 'first', 'time'] },
   { id: 'ev-10', text: 'Wahala Dey', category: 'lamentation', audioUrl: '/audio/african/wahala-dey.mp3', keywords: ['obstacle', 'problem', 'issue'] },
   { id: 'ev-11', text: 'See Gobe', category: 'lamentation', audioUrl: '/audio/african/see-gobe.mp3', keywords: ['obstacle', 'seeing', 'encountering'] },
@@ -79,7 +79,7 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'ev-24', text: 'I need Urgent 5k', category: 'funding', audioUrl: '/audio/african/i-need-urgent-5k.mp3', keywords: ['funding', 'begging', 'request'] },
   { id: 'ev-25', text: 'Miss me', category: 'affection', audioUrl: '/audio/african/miss-me.mp3', keywords: ['affection', 'P2P', 'matching', 'return'] },
   { id: 'ev-26', text: 'I miss you', category: 'affection', audioUrl: '/audio/african/i-miss-you.mp3', keywords: ['affection', 'P2P', 'matching', 'return'] },
-  { id: 'ev-27', text: "Let's do this", category: 'agreement', audioUrl: '/audio/african/lets-do-this.mp3', keywords: ['agreement', 'action'] },
+  { id: 'ev-27', text: 'Let\'s do this', category: 'agreement', audioUrl: '/audio/african/lets-do-this.mp3', keywords: ['agreement', 'action'] },
   { id: 'ev-28', text: 'Awesome', category: 'appraisal', audioUrl: '/audio/african/awesome.mp3', keywords: ['appraisal', 'affirmation', 'achievement', 'bonus', 'gifts'] },
   { id: 'ev-29', text: 'Thumbs up!', category: 'appraisal', audioUrl: '/audio/african/thumbs-up.mp3', keywords: ['appraisal', 'affirmation', 'achievement', 'bonus', 'gifts'] },
   { id: 'ev-30', text: 'Say whaaaaaaa', category: 'expression', audioUrl: '/audio/african/say-whaaaa.mp3', keywords: ['excitement', 'shock', 'jolt', 'surprise', 'injury'] },
@@ -95,8 +95,8 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'ev-40', text: 'Correct', category: 'achievement', audioUrl: '/audio/african/correct.mp3', keywords: ['achievement', 'made'] },
   { id: 'ev-41', text: 'oOoOO ma Gaddddd!', category: 'achievement', audioUrl: '/audio/african/ooooma-gaddddd.mp3', keywords: ['stunt', 'something', 'new', 'colossal'] },
   { id: 'ev-42', text: 'My Goodness', category: 'stun', audioUrl: '/audio/african/my-goodness.mp3', keywords: ['appraisal', 'surprise'] },
-  { id: 'ev-43', text: "You're Endowed", category: 'stun', audioUrl: '/audio/african/youre-endowed.mp3', keywords: ['appraisal', 'physical', 'attributes'] },
-  { id: 'ev-44', text: "You're gorgeous", category: 'stun', audioUrl: '/audio/african/youre-gorgeous.mp3', keywords: ['appraisal', 'admirations'] },
+  { id: 'ev-43', text: 'You\'re Endowed', category: 'stun', audioUrl: '/audio/african/youre-endowed.mp3', keywords: ['appraisal', 'physical', 'attributes'] },
+  { id: 'ev-44', text: 'You\'re gorgeous', category: 'stun', audioUrl: '/audio/african/youre-gorgeous.mp3', keywords: ['appraisal', 'admirations'] },
   { id: 'ev-45', text: 'Divine', category: 'stun', audioUrl: '/audio/african/divine.mp3', keywords: ['divine', 'mode', 'impressive', 'move'] },
   { id: 'ev-46', text: 'Blessings Blessings Blessings', category: 'stun', audioUrl: '/audio/african/blessings-blessings.mp3', keywords: ['appraisal', 'blessings'] },
   { id: 'cb-1', text: 'Small combo!', category: 'combo_small', audioUrl: '/audio/african/small-combo.mp3', keywords: ['small', 'combo', 'match'] },
@@ -254,7 +254,7 @@ class VoiceLineService {
     const lowerText = text.toLowerCase().trim();
     if (!lowerText) return [];
 
-    return voiceLines.filter((line) => 
+    return voiceLines.filter((line) =>
       line.keywords.some((kw) => {
         const lowerKw = kw.toLowerCase();
         return lowerKw.includes(lowerText) || lowerText.includes(lowerKw);
@@ -288,7 +288,7 @@ class VoiceLineService {
     categories.forEach((category) => {
       lines.push(...this.getVoiceLinesByCategory(category));
     });
-    
+
     if (lines.length === 0) return null;
     return lines[Math.floor(Math.random() * lines.length)];
   }
@@ -307,18 +307,18 @@ class VoiceLineService {
 
     try {
       let matchingVoiceLine: VoiceLine | undefined;
-      
+
       if (voiceLineId) {
         matchingVoiceLine = allVoiceLines.find((line) => line.id === voiceLineId);
       } else {
         matchingVoiceLine = allVoiceLines.find((line) => line.text.toLowerCase() === text.toLowerCase());
       }
-      
+
       if (matchingVoiceLine && matchingVoiceLine.audioUrl && typeof window !== 'undefined') {
         console.info(`Triggering audio trace asset: "${matchingVoiceLine.text}" -> ${matchingVoiceLine.audioUrl}`);
         const audio = new Audio(matchingVoiceLine.audioUrl);
         await audio.play();
-        
+
         await this.logVoiceLinePlay(matchingVoiceLine.id, eventType);
       } else {
         console.warn(`Audio node lookup mismatch for description: "${text}". Running execution delay thread simulator.`);

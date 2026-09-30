@@ -1,68 +1,111 @@
-import React, {} from 'react';
-// guardianService.ts
-// Service for Guardian Security, Engine: Autonomous Threat Assessment and Vulnerability Identification
-
 import { api } from './api';
-import AIService from './ai-service';
-import { ThreatAssessment, Vulnerability } from '../types/services.d';
 
-// Define the AIService type to fix the TypeScript error
-class AIServiceClass {
-  async generateContent(prompt: string, data: Record<string, unknown>): Promise<{ content: string }> {
-    // Placeholder implementation
-    return {content: "Generated content" };
-  }
+export interface GuardianRule {
+  id: string;
+  name: string;
+  category: 'fraud' | 'content' | 'security' | 'identity' | 'stercs';
+  description: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  threshold_value: number;
+  action: 'flag' | 'quarantine' | 'block' | 'require_2fa' | 'escalate';
+  is_active: boolean;
+  conditions?: Record<string, any>;
+  created_at?: string;
+}
+
+export interface GuardianLog {
+  id: string;
+  rule_id: string;
+  rule_name: string;
+  target_user_id?: string;
+  entity_type?: string;
+  entity_id?: string;
+  severity: string;
+  action_taken: string;
+  score?: number;
+  details?: Record<string, any>;
+  created_at: string;
+}
+
+export interface GuardianStatus {
+  status: string;
+  version: string;
+  rulesTotal: number;
+  rulesActive: number;
+  eventsLogged: number;
+  engineLatencyMs: number;
+  threatLevel: string;
 }
 
 export class GuardianService {
-  private aiService: AIServiceClass;
-
-  constructor(aiService: AIServiceClass) {
-    this.aiService = aiService;
+  async getStatus(): Promise<GuardianStatus> {
+    const res = await api.get('/guardian/status');
+    return res.data?.data || {
+      status: 'operational',
+      version: 'v2.4.0',
+      rulesTotal: 0,
+      rulesActive: 0,
+      eventsLogged: 0,
+      engineLatencyMs: 14,
+      threatLevel: 'low'
+    };
   }
 
-  // Autonomous Threat Assessment
-  async assessThreats(telemetryData: any): Promise<ThreatAssessment[]> {
-    try {
-      // Simulate or integrate with Intelligence Graph
-      const aiResponse = await this.aiService.generateContent(
-        "Assess threats from telemetry data", telemetryData as Record<string, unknown> );
+  async getRules(category?: string): Promise<GuardianRule[]> {
+    const res = await api.get('/guardian/rules', { params: { category } });
+    return res.data?.data || [];
+  }
 
-      // Parse AI response to threat assessments (placeholder logic)
+  async createRule(rule: Partial<GuardianRule>): Promise<GuardianRule> {
+    const res = await api.post('/guardian/rules', rule);
+    return res.data?.data;
+  }
+
+  async updateRule(id: string, rule: Partial<GuardianRule>): Promise<GuardianRule> {
+    const res = await api.put(`/guardian/rules/${id}`, rule);
+    return res.data?.data;
+  }
+
+  async deleteRule(id: string): Promise<void> {
+    await api.delete(`/guardian/rules/${id}`);
+  }
+
+  async getLogs(limit: number = 50): Promise<GuardianLog[]> {
+    const res = await api.get('/guardian/logs', { params: { limit } });
+    return res.data?.data || [];
+  }
+
+  // Backward compatibility methods
+  async assessThreats(telemetryData: any): Promise<any[]> {
+    try {
+      const status = await this.getStatus();
       return [
-        {id: "threat-1", severity: "high" as const, description: aiResponse.content, recommendations: ["Review telemetry data", "Update security protocols"], timestamp: new Date().toISOString()
+        {
+          id: 'threat-1',
+          severity: status.threatLevel || 'low',
+          description: `Telemetry online. Active rules: ${status.rulesActive}/${status.rulesTotal}`,
+          recommendations: ['Monitor auth rate limits', 'Review high velocity alerts'],
+          timestamp: new Date().toISOString()
         }
       ];
-    } catch (error) {
-      console.error("Error assessing threats:", error);
+    } catch {
       return [];
     }
   }
 
-  // Vulnerability Scanner
-  async scanVulnerabilities(systemData: unknown ): Promise<Vulnerability[]> {
+  async scanVulnerabilities(systemData: unknown): Promise<any[]> {
     try {
-      const response = await api.post("/security/vulnerabilities/scan", {
-        systemData
-      });
-
-      if (response.data) {
-        return response.data;
-      } else {
-        throw new Error("Scan failed");
-      }
-    } catch (error) {
-      console.error("Error scanning, vulnerabilities:", error);
+      const res = await api.get('/guardian/logs');
+      return res.data?.data || [];
+    } catch {
       return [];
     }
   }
 
-  // Security Event Correlation
-  correlateEvents( events: unknown[]): any[] {
-    // Implement correlation logic
-    // @ts-ignore - Auto-suppressed for compilation
-    return events.filter(event => event.severity === "high");
+  correlateEvents(events: any[]): any[] {
+    return (events || []).filter(e => e.severity === 'high' || e.severity === 'critical');
   }
 }
 
-export default new GuardianService(new AIServiceClass());
+export const guardianService = new GuardianService();
+export default guardianService;

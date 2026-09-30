@@ -127,7 +127,7 @@ export const usePaginatedCachedData = <T>(baseKey: string,
   fetchDataFn: (limit: number,
     offset: number
   ) => Promise<T[]>,
-options: UsePaginatedCachedDataOptions = {},
+  options: UsePaginatedCachedDataOptions = {},
 ): UsePaginatedCachedDataResult<T> => {
   const { ttl = 5 * 60 * 1000, initialLimit = 20, initialOffset = 0 } = options;
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Gamepad2, Trophy, Star, Users, Zap } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { Gamepad2, Trophy, Star, Users, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 
 interface GameOnProps {
   userId?: string;
@@ -10,54 +10,54 @@ interface GameOnProps {
 }
 
 const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
-  const [activeTab, setActiveTab] = React.useState<"featured" | "popular" | "new">("featured");
+  const [activeTab, setActiveTab] = React.useState<'featured' | 'popular' | 'new'>('featured');
 
   const games = [
     {
-      id: "1",
-      title: "Finger War Championship",
-      description: "Compete in the ultimate finger speed challenge",
+      id: '1',
+      title: 'Finger War Championship',
+      description: 'Compete in the ultimate finger speed challenge',
       players: 1234,
       rating: 4.8,
-      category: "Action",
-      image: "🎮",
+      category: 'Action',
+      image: '🎮',
       featured: true
     },
     {
-      id: "2",
-      title: "Memory Matrix",
-      description: "Test your memory with pattern recognition",
+      id: '2',
+      title: 'Memory Matrix',
+      description: 'Test your memory with pattern recognition',
       players: 856,
       rating: 4.5,
-      category: "Puzzle",
-      image: "🧩",
+      category: 'Puzzle',
+      image: '🧩',
       featured: true
     },
     {
-      id: "3",
-      title: "Speed Typer",
-      description: "Race against time to type words correctly",
+      id: '3',
+      title: 'Speed Typer',
+      description: 'Race against time to type words correctly',
       players: 2341,
       rating: 4.7,
-      category: "Educational",
-      image: "⌨️",
+      category: 'Educational',
+      image: '⌨️',
       featured: false
     },
     {
-      id: "4",
-      title: "Reaction Master",
-      description: "Quick reflexes needed - can you beat the clock?",
+      id: '4',
+      title: 'Reaction Master',
+      description: 'Quick reflexes needed - can you beat the clock?',
       players: 1567,
       rating: 4.6,
-      category: "Action",
-      image: "⚡",
+      category: 'Action',
+      image: '⚡',
       featured: false
     }
   ];
 
   const filteredGames = games.filter((game) => {
-    if (activeTab === "featured") return game.featured;
-    if (activeTab === "popular") return game.players > 1000;
+    if (activeTab === 'featured') return game.featured;
+    if (activeTab === 'popular') return game.players > 1000;
     return true;
   });
 
@@ -81,24 +81,24 @@ const GameOn: React.FC<GameOnProps> = ({ userId, onGameSelect }) => {
 
       <div className="flex gap-2 border-b">
         <Button
-          variant={activeTab === "featured" ? "default" : "ghost"}
-          onClick={() => setActiveTab("featured")}
+          variant={activeTab === 'featured' ? 'default' : 'ghost'}
+          onClick={() => setActiveTab('featured')}
           className="rounded-none"
         >
           <Star className="h-4 w-4 mr-2" />
           Featured
         </Button>
         <Button
-          variant={activeTab === "popular" ? "default" : "ghost"}
-          onClick={() => setActiveTab("popular")}
+          variant={activeTab === 'popular' ? 'default' : 'ghost'}
+          onClick={() => setActiveTab('popular')}
           className="rounded-none"
         >
           <Trophy className="h-4 w-4 mr-2" />
           Popular
         </Button>
         <Button
-          variant={activeTab === "new" ? "default" : "ghost"}
-          onClick={() => setActiveTab("new")}
+          variant={activeTab === 'new' ? 'default' : 'ghost'}
+          onClick={() => setActiveTab('new')}
           className="rounded-none"
         >
           <Zap className="h-4 w-4 mr-2" />

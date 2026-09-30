@@ -108,7 +108,7 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
               <div className="flex-1">
                 <h4 className="text-2xl font-bold text-gray-900 mb-1">{spotlightMember.name}</h4>
                 <p className="text-purple-600 font-medium mb-2">{spotlightMember.role}</p>
-                
+
                 {/* Level Badge */}
                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold bg-gradient-to-r ${getLevelColor(spotlightMember.contributionScore)}`}>
                   {getLevelBadge(spotlightMember.contributionScore)}
@@ -122,12 +122,12 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
                 <p className="text-3xl font-bold text-purple-600">{spotlightMember.achievements}</p>
                 <p className="text-sm text-gray-600 mt-1">Achievements</p>
               </div>
-              
+
               <div className="bg-blue-50 rounded-lg p-4 text-center">
                 <p className="text-3xl font-bold text-blue-600">{spotlightMember.contributionScore.toLocaleString()}</p>
                 <p className="text-sm text-gray-600 mt-1">Contribution Score</p>
               </div>
-              
+
               <div className="bg-green-50 rounded-lg p-4 text-center">
                 <p className="text-sm text-gray-600 mb-1">Member Since</p>
                 <p className="text-sm font-medium text-gray-900">{formatDate(spotlightMember.joinDate)}</p>
@@ -158,11 +158,11 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
               >
                 ← Previous
               </button>
-              
+
               <span className="text-sm text-gray-600">
                 {currentIndex + 1} of {members.length}
               </span>
-              
+
               <button
                 onClick={nextMember}
                 className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium"

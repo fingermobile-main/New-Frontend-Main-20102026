@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { LayoutDashboard, Settings, Users } from "lucide-react";
+import { LayoutDashboard, Settings, Users } from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

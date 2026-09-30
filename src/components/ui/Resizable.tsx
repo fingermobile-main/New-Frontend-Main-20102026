@@ -19,10 +19,10 @@ interface ResizablePanelProps {
   order?: number;
 }
 
-const ResizablePanelGroup = ({ 
-  children, 
-  className = '', 
-  direction = 'horizontal' 
+const ResizablePanelGroup = ({
+  children,
+  className = '',
+  direction = 'horizontal'
 }: ResizablePanelGroupProps) => {
   return (
     <div
@@ -34,9 +34,9 @@ const ResizablePanelGroup = ({
   );
 };
 
-const ResizableHandle: React.FC<ResizableHandleProps> = ({ 
-  className = '', 
-  withHandle = false 
+const ResizableHandle: React.FC<ResizableHandleProps> = ({
+  className = '',
+  withHandle = false
 }) => {
   return (
     <div
@@ -72,15 +72,15 @@ const ResizableHandle: React.FC<ResizableHandleProps> = ({
   );
 };
 
-const ResizablePanel: React.FC<ResizablePanelProps> = ({ 
-  children, 
-  className = '', 
+const ResizablePanel: React.FC<ResizablePanelProps> = ({
+  children,
+  className = '',
   defaultSize = 50,
   minSize = 0,
-  maxSize = 100 
+  maxSize = 100
 }) => {
   const [size, setSize] = useState(defaultSize);
-  
+
   return (
     <div
       className={`relative h-full w-full flex-1 ${className}`}

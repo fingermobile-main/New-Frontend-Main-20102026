@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { History, Filter, Download, Search } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Badge } from "@/components/ui/Badge";
+import { History, Filter, Download, Search } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui/Badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface Transaction {
   id: string;
-  type: "deposit" | "withdrawal" | "transfer" | "payment";
+  type: 'deposit' | 'withdrawal' | 'transfer' | 'payment';
   amount: number;
   date: string;
   description?: string;
-  status: "completed" | "pending" | "failed";
+  status: 'completed' | 'pending' | 'failed';
   category?: string;
 }
 
@@ -33,55 +33,55 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
   transactions: propTransactions,
   onExport
 }) => {
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [filterType, setFilterType] = React.useState<string>("all");
-  const [filterStatus, setFilterStatus] = React.useState<string>("all");
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [filterType, setFilterType] = React.useState<string>('all');
+  const [filterStatus, setFilterStatus] = React.useState<string>('all');
 
   const defaultTransactions: Transaction[] = [
     {
-      id: "1",
-      type: "deposit",
+      id: '1',
+      type: 'deposit',
       amount: 500,
-      date: "2026-06-08 10:30 AM",
-      description: "Bank Transfer Deposit",
-      status: "completed",
-      category: "Income"
+      date: '2026-06-08 10:30 AM',
+      description: 'Bank Transfer Deposit',
+      status: 'completed',
+      category: 'Income'
     },
     {
-      id: "2",
-      type: "payment",
+      id: '2',
+      type: 'payment',
       amount: 45.99,
-      date: "2026-06-07 03:15 PM",
-      description: "Online Purchase - Electronics",
-      status: "completed",
-      category: "Shopping"
+      date: '2026-06-07 03:15 PM',
+      description: 'Online Purchase - Electronics',
+      status: 'completed',
+      category: 'Shopping'
     },
     {
-      id: "3",
-      type: "transfer",
+      id: '3',
+      type: 'transfer',
       amount: 200,
-      date: "2026-06-06 09:00 AM",
-      description: "Transfer to Savings Account",
-      status: "completed",
-      category: "Transfer"
+      date: '2026-06-06 09:00 AM',
+      description: 'Transfer to Savings Account',
+      status: 'completed',
+      category: 'Transfer'
     },
     {
-      id: "4",
-      type: "withdrawal",
+      id: '4',
+      type: 'withdrawal',
       amount: 100,
-      date: "2026-06-05 02:45 PM",
-      description: "ATM Withdrawal",
-      status: "pending",
-      category: "Cash"
+      date: '2026-06-05 02:45 PM',
+      description: 'ATM Withdrawal',
+      status: 'pending',
+      category: 'Cash'
     },
     {
-      id: "5",
-      type: "payment",
+      id: '5',
+      type: 'payment',
       amount: 12.99,
-      date: "2026-06-04 11:20 AM",
-      description: "Subscription Renewal",
-      status: "failed",
-      category: "Subscription"
+      date: '2026-06-04 11:20 AM',
+      description: 'Subscription Renewal',
+      status: 'failed',
+      category: 'Subscription'
     }
   ];
 
@@ -91,36 +91,36 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
     const matchesSearch =
       transaction.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       transaction.category?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = filterType === "all" || transaction.type === filterType;
-    const matchesStatus = filterStatus === "all" || transaction.status === filterStatus;
+    const matchesType = filterType === 'all' || transaction.type === filterType;
+    const matchesStatus = filterStatus === 'all' || transaction.status === filterStatus;
     return matchesSearch && matchesType && matchesStatus;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "completed":
-        return "bg-green-500";
-      case "pending":
-        return "bg-yellow-500";
-      case "failed":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
+    case 'completed':
+      return 'bg-green-500';
+    case 'pending':
+      return 'bg-yellow-500';
+    case 'failed':
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "deposit":
-        return "+";
-      case "withdrawal":
-        return "-";
-      case "transfer":
-        return "→";
-      case "payment":
-        return "💳";
-      default:
-        return "•";
+    case 'deposit':
+      return '+';
+    case 'withdrawal':
+      return '-';
+    case 'transfer':
+      return '→';
+    case 'payment':
+      return '💳';
+    default:
+      return '•';
     }
   };
 
@@ -204,12 +204,12 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                   </div>
                   <div
                     className={`col-span-2 font-semibold ${
-                      transaction.type === "deposit"
-                        ? "text-green-600"
-                        : "text-red-600"
+                      transaction.type === 'deposit'
+                        ? 'text-green-600'
+                        : 'text-red-600'
                     }`}
                   >
-                    {transaction.type === "deposit" ? "+" : "-"}$
+                    {transaction.type === 'deposit' ? '+' : '-'}$
                     {transaction.amount.toFixed(2)}
                   </div>
                   <div className="col-span-2 text-sm text-muted-foreground">

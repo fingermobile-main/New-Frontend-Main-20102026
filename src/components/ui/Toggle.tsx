@@ -10,11 +10,11 @@ interface ToggleProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const Toggle: React.FC<ToggleProps> = ({ 
-  pressed, 
-  onPressedChange, 
-  children, 
-  className = '', 
+const Toggle: React.FC<ToggleProps> = ({
+  pressed,
+  onPressedChange,
+  children,
+  className = '',
   disabled = false,
   variant = 'default',
   size = 'md'
@@ -25,8 +25,8 @@ const Toggle: React.FC<ToggleProps> = ({
     lg: 'h-10 px-4'
   };
 
-  const variantClasses = variant === 'outline' 
-    ? 'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground' 
+  const variantClasses = variant === 'outline'
+    ? 'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground'
     : 'hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground';
 
   const handleClick = () => {

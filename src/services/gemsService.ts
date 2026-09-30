@@ -1,188 +1,196 @@
-import React, {} from 'react';
-import axios, { AxiosResponse } from "axios";
-import dataCache from '../utils/dataCache';
+import axios from 'axios';
 
-interface GemBalance {
-  balance: number;
-  // Add other relevant fields for gem balance if any
+export interface GemItem {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  rating: number;
+  creator: string;
+  likes: number;
+  thumbnail: string;
 }
 
-interface GemTransaction {id: string; type: string; amount: number; date: string;
-  // Add other relevant fields for gem transactions
-}
-
-interface GemEarnings {id: string; amount: number; date: string;
-  // Add other relevant fields for gem earnings
+export interface GemsResponse {
+  success: boolean;
+  data: GemItem[];
+  total: number;
+  limit: number;
+  offset: number;
 }
 
 class GemsService {
-  private baseUrl: string;
-  private pendingRequests: Map<string, Promise<unknown>>;
+  private api = axios.create({
+    baseURL: process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
   constructor() {
-    this.baseUrl =
-      process.env.NODE_ENV === "production"
-        ? "https://fingerprotocol.com/api"
-        : "http://localhost:3001/api";
-    this.pendingRequests = new Map<string, Promise<unknown>>(); // Track pending requests to prevent duplicates
+    this.api.interceptors.request.use((config) => {
+      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
   }
 
-  /**
-   * Helper method to make API requests with deduplication
-   * @param {string} key - Request identifier
-   * @param {Function} requestFn - Function that makes the actual request
-   * @returns {Promise<unknown>} Response data
-   */
-  private async makeRequest<T>(key: string, requestFn: () => Promise<AxiosResponse<T>>,
-  ): Promise<T> {
-    // Return cached data if available
-    const cachedData = dataCache.get(key);
-    if (cachedData) {
-      return cachedData as T;
-    }
-
-    // Return pending request if one is already in flight
-    if (this.pendingRequests.has(key)) {
-      return this.pendingRequests.get(key) as Promise<T>;
-    }
-
-    // Create new request
-    const requestPromise = requestFn()
-      .then((response) => {
-        // Cache the result
-        dataCache.set(key, response.data);
-        // Remove from pending requests
-        this.pendingRequests.delete(key);
-        return response.data;
-      })
-      .catch(( error: any) => { // Remove from pending requests on error
-        this.pendingRequests.delete(key);
-        throw error;
+  async getGems(limit: number = 20, offset: number = 0): Promise<GemsResponse> {
+    try {
+      // First attempt fetching store items from /gems
+      const response = await this.api.get('/gems', {
+        params: { limit, offset }
       });
 
-    // Store pending request
-    this.pendingRequests.set(key, requestPromise);
-    return requestPromise;
-  }
+      const rawItems = response.data?.data || response.data?.gems || (Array.isArray(response.data) ? response.data : null);
+      if (Array.isArray(rawItems) && rawItems.length > 0) {
+        const items = rawItems.map((item: any, index: number) => ({
+          id: String(item.id || `gem-${index}`),
+          title: item.title || item.name || `Gem Item #${item.id || index}`,
+          description: item.description || 'Exclusive FingerMobile Gem item',
+          price: Number(item.price || item.cost || 100),
+          category: item.category || 'Collectibles',
+          rating: Number(item.rating || 4.8),
+          creator: item.creator || 'FingerMobile Protocol',
+          likes: Number(item.likes || 0),
+          thumbnail: item.thumbnail || item.icon || '/thumbnails/default-gem.jpg'
+        }));
 
-  // Get member's gem balance
-  async getGemBalance(forceRefresh = false): Promise<GemBalance> {
-    const token = localStorage.getItem("token");
-    const cacheKey = `gems_balance_${token}`;
-
-    if (forceRefresh) {
-      dataCache.delete(cacheKey);
-    }
-
-    return this.makeRequest<GemBalance>(cacheKey, () =>
-      axios.get(`${this.baseUrl}/gems/balance`, { headers: { Authorization: `Bearer ${token}` }
-      }),
-    );
-  }
-
-  // Get gem transactions history
-  async getGemTransactions(limit = 20, offset = 0, forceRefresh = false): Promise<GemTransaction[]> {;
-    const token = localStorage.getItem("token");
-    const cacheKey = `gems_transactions_${token}_${limit}_${offset}`;
-
-    if (forceRefresh) {
-      dataCache.delete(cacheKey);
-    }
-
-    return this.makeRequest<GemTransaction[]>(cacheKey, () =>
-      axios.get(`${this.baseUrl}/gems/transactions`, { headers: { Authorization: `Bearer ${token}`
-        },
-params: { limit, offset }
-      }),
-    );
-  }
-
-  // Send gems to another member
-  async sendGems(recipientMemberId: string, gemType: string, quantity: number, postId: string | null = null ): Promise<Record<string, unknown>> {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${this.baseUrl}/gems/send`,
-        {
-          recipientMemberId,
-          gemType,
-          quantity,
-          postId
-        }, {headers: { Authorization: `Bearer ${token}`
-          }
-        } );
-
-      // Invalidate related caches after sending gems
-      dataCache.delete(`gems_balance_${token}`);
-      dataCache.delete(`gems_transactions_${token}_20_0`);
-
-      return response.data;
-    } catch (error) {
-      console.error("Error sending, gems:", error);
-      throw error;
-    }
-  }
-
-  // Get gem earnings
-  async getGemEarnings(
-    limit = 20,
-    offset = 0,
-    forceRefresh = false,
-  ): Promise<GemEarnings[]> {;
-    const token = localStorage.getItem("token");
-    const cacheKey = `gems_earnings_${token}_${limit}_${offset}`;
-
-    if (forceRefresh) {
-      dataCache.delete(cacheKey);
-    }
-
-    return this.makeRequest<GemEarnings[]>(cacheKey, () =>
-      axios.get(`${this.baseUrl}/gems/earnings`, { headers: { Authorization: `Bearer ${token}`
-        },
-params: { limit, offset }
-      }),
-    );
-  }
-
-  // Convert gems to earnings (creator monetization)
-  async convertGemsToEarnings( gemType: string, quantity: number ): Promise<Record<string, unknown>> {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${this.baseUrl}/gems/convert`,
-        {
-          gemType,
-          quantity
-        }, {headers: { Authorization: `Bearer ${token}`
-          }
-        } );
-
-      // Invalidate related caches after converting gems
-      dataCache.delete(`gems_balance_${token}`);
-      dataCache.delete(`gems_earnings_${token}_20_0`);
-
-      return response.data;
-    } catch (error) {
-      console.error("Error converting gems to, earnings:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Clear all cached gem data for current member
-   */
-  clearCache() {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    // Clear all cache entries for this member
-    const keys = Array.from(dataCache.getKeys() as Iterable<string>);
-    for (const key of keys) {
-      if (key.includes(token)) {
-        dataCache.delete(key);
+        return {
+          success: true,
+          data: items,
+          total: response.data?.total || items.length,
+          limit,
+          offset
+        };
       }
+
+      // Fallback to transactions if /gems returns empty
+      const txResponse = await this.api.get('/gems/transactions', {
+        params: { limit, offset }
+      });
+      
+      if (txResponse.data && txResponse.data.data && txResponse.data.data.transactions) {
+        const gems = txResponse.data.data.transactions.map((transaction: any, index: number) => ({
+          id: String(transaction.id || `gem-${index}`),
+          title: transaction.description || `Gem Transaction #${transaction.id}`,
+          description: `Gems transaction of ${transaction.amount} for ${transaction.type}`,
+          price: transaction.amount || 0,
+          category: transaction.type || 'General',
+          rating: 4.5,
+          creator: 'System',
+          likes: 0,
+          thumbnail: '/thumbnails/default-gem.jpg'
+        }));
+        
+        return {
+          success: true,
+          data: gems,
+          total: txResponse.data.data.total || gems.length,
+          limit: txResponse.data.data.limit || limit,
+          offset: txResponse.data.data.offset || offset
+        };
+      }
+      
+      return {
+        success: true,
+        data: [],
+        total: 0,
+        limit,
+        offset
+      };
+    } catch (error) {
+      console.error('Error fetching gems:', error);
+      return {
+        success: false,
+        data: [],
+        total: 0,
+        limit,
+        offset
+      };
+    }
+  }
+
+  async getGemBalance(userId?: string | number): Promise<{ success: boolean; balance: number }> {
+    try {
+      const endpoint = userId ? `/gems/balance/${userId}` : '/gems/balance';
+      const response = await this.api.get(endpoint);
+
+      if (response.data && response.data.data) {
+        return {
+          success: true,
+          balance: response.data.data.balance || 0
+        };
+      }
+
+      return {
+        success: false,
+        balance: 0
+      };
+    } catch (error) {
+      console.error('Error fetching gem balance:', error);
+      return {
+        success: false,
+        balance: 0
+      };
+    }
+  }
+
+  async awardGems(userId: string | number, amount: number, reason?: string): Promise<{ success: boolean; newBalance?: number; message?: string }> {
+    try {
+      const response = await this.api.post('/gems/award', { userId, amount, reason });
+      return {
+        success: response.data.success,
+        newBalance: response.data.newBalance,
+        message: response.data.message
+      };
+    } catch (error) {
+      console.error('Error awarding gems:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to award gems'
+      };
+    }
+  }
+
+  async deductGems(userId: string | number, amount: number, reason?: string): Promise<{ success: boolean; newBalance?: number; message?: string }> {
+    try {
+      const response = await this.api.post('/gems/deduct', { userId, amount, reason });
+      return {
+        success: response.data.success,
+        newBalance: response.data.newBalance,
+        message: response.data.message
+      };
+    } catch (error) {
+      console.error('Error deducting gems:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to deduct gems'
+      };
+    }
+  }
+
+  // 空行分隔类方法
+  async searchGems(query: string, limit: number = 20, offset: number = 0): Promise<GemsResponse> {
+    try {
+      // For now, we'll just fetch all gems and filter on the frontend
+      // In a real implementation, this would be a dedicated search endpoint
+      return await this.getGems(limit, offset);
+    } catch (error) {
+      console.error('Error searching gems:', error);
+      return {
+        success: false,
+        data: [],
+        total: 0,
+        limit,
+        offset
+      };
     }
   }
 }
 
-export default new GemsService();
+export const gemsService = new GemsService();
+export default gemsService;

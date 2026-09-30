@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../contexts/ThemeContext';
-import { 
-  Bars3Icon, 
-  ArrowRightOnRectangleIcon, 
+import {
+  Bars3Icon,
+  ArrowRightOnRectangleIcon,
   UserCircleIcon,
   HomeIcon,
   ChatBubbleLeftRightIcon,
@@ -23,7 +23,7 @@ import {
   SunIcon,
   BellAlertIcon,
   QuestionMarkCircleIcon,
-  XMarkIcon  
+  XMarkIcon
 } from '../icons';
 import DashboardNavigation from '../components/dashboard/DashboardNavigation';
 import { useAppContext } from '../contexts';
@@ -35,13 +35,13 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const location = useLocation();
   const navigate = useNavigate();
 
+  // State for profile menu - moved before any conditional logic
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  // State for profile menu
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   // Rest of the component implementation...
   return (
@@ -57,7 +57,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
       </div>
 
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static`}

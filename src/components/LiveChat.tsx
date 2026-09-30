@@ -36,11 +36,11 @@ const LiveChat: React.FC<LiveChatProps> = ({
     };
 
     setMessages(prev => [...prev, message]);
-    
+
     if (onSendMessage) {
       onSendMessage(newMessage);
     }
-    
+
     setNewMessage('');
   };
 
@@ -144,7 +144,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
           >
             😊
           </button>
-          
+
           <input
             type="text"
             value={newMessage}
@@ -153,7 +153,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
             placeholder="Type a message..."
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           />
-          
+
           <button
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}

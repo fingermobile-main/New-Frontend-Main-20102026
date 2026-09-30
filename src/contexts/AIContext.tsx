@@ -28,34 +28,34 @@ export const AIProvider: React.FC<AIProviderProps> = ({ children }) => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Return mock playlist based on prompt
-      if (prompt.toLowerCase().includes("workout")) {
+      if (prompt.toLowerCase().includes('workout')) {
         return [
-          "Eye of the Tiger - Survivor",
-          "Lose Yourself - Eminem",
-          "Stronger - Kanye West",
-          "Can't Hold Us - Macklemore & Ryan Lewis",
-          "Thunder - Imagine Dragons"
+          'Eye of the Tiger - Survivor',
+          'Lose Yourself - Eminem',
+          'Stronger - Kanye West',
+          'Can\'t Hold Us - Macklemore & Ryan Lewis',
+          'Thunder - Imagine Dragons'
         ];
-      } else if (prompt.toLowerCase().includes("study")) {
+      } else if (prompt.toLowerCase().includes('study')) {
         return [
-          "Clair de Lune - Debussy",
-          "Moonlight Sonata - Beethoven",
-          "Gymnopédie No.1 - Satie",
-          "Comptine d'un autre été - Yann Tiersen",
-          "River Flows in You - Yiruma"
+          'Clair de Lune - Debussy',
+          'Moonlight Sonata - Beethoven',
+          'Gymnopédie No.1 - Satie',
+          'Comptine d\'un autre été - Yann Tiersen',
+          'River Flows in You - Yiruma'
         ];
       } else {
         return [
-          "Bohemian Rhapsody - Queen",
-          "Hotel California - Eagles",
-          "Stairway to Heaven - Led Zeppelin",
-          "Imagine - John Lennon",
-          "Smells Like Teen Spirit - Nirvana"
+          'Bohemian Rhapsody - Queen',
+          'Hotel California - Eagles',
+          'Stairway to Heaven - Led Zeppelin',
+          'Imagine - John Lennon',
+          'Smells Like Teen Spirit - Nirvana'
         ];
       }
     } catch (error) {
-      console.error("Error generating playlist:", error);
-      showToast("Failed to generate playlist", "error");
+      console.error('Error generating playlist:', error);
+      showToast('Failed to generate playlist', 'error');
       return [];
     } finally {
       setIsLoading(false);
@@ -70,17 +70,17 @@ export const AIProvider: React.FC<AIProviderProps> = ({ children }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Return mock content based on prompt
-      if (prompt.toLowerCase().includes("travel")) {
-        return "Just arrived at this stunning location! The views are absolutely breathtaking. Can't wait to share more of this amazing journey with you all. #TravelDiaries #Wanderlust";
-      } else if (prompt.toLowerCase().includes("food")) {
-        return "Made this incredible dish today! The flavors are just perfect. Recipe will be in my next post. Cooking is truly therapeutic. #HomeCooking #Foodie";
+      if (prompt.toLowerCase().includes('travel')) {
+        return 'Just arrived at this stunning location! The views are absolutely breathtaking. Can\'t wait to share more of this amazing journey with you all. #TravelDiaries #Wanderlust';
+      } else if (prompt.toLowerCase().includes('food')) {
+        return 'Made this incredible dish today! The flavors are just perfect. Recipe will be in my next post. Cooking is truly therapeutic. #HomeCooking #Foodie';
       } else {
-        return "Life is what happens when you're busy making other plans. Enjoy every moment and cherish the little things that make life beautiful. #LifeThoughts #Mindfulness";
+        return 'Life is what happens when you\'re busy making other plans. Enjoy every moment and cherish the little things that make life beautiful. #LifeThoughts #Mindfulness';
       }
     } catch (error) {
-      console.error("Error generating post content:", error);
-      showToast("Failed to generate post content", "error");
-      return "";
+      console.error('Error generating post content:', error);
+      showToast('Failed to generate post content', 'error');
+      return '';
     } finally {
       setIsLoading(false);
     }
@@ -99,8 +99,8 @@ export const AIProvider: React.FC<AIProviderProps> = ({ children }) => {
       // Return mock edited content
       return `${content} [Enhanced based on your request: ${instruction}]`;
     } catch (error) {
-      console.error("Error editing content:", error);
-      showToast("Failed to edit content", "error");
+      console.error('Error editing content:', error);
+      showToast('Failed to edit content', 'error');
       return content;
     } finally {
       setIsLoading(false);
@@ -125,7 +125,7 @@ export const AIProvider: React.FC<AIProviderProps> = ({ children }) => {
 export const useAI = () => {
   const context = React.useContext(AIContext);
   if (context === undefined) {
-    throw new Error("useAI must be used within an AIProvider");
+    throw new Error('useAI must be used within an AIProvider');
   }
   return context;
 };

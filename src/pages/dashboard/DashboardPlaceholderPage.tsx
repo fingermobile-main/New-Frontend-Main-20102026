@@ -6,9 +6,9 @@ import { ChartBarIcon } from '../../components/icons';
 const DashboardPlaceholderPage: React.FC = () => {
   const location = useLocation();
   const pageName = location.pathname
-    .split("/")
+    .split('/')
     .pop()
-    ?.replace(/-/g, " ")
+    ?.replace(/-/g, ' ')
     .replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (

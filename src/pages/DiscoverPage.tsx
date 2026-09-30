@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-
-import { useAppContext } from "../contexts/AppContext";
-import { useAuth } from '../contexts/AuthContext';
-import { useWeb3 } from '../contexts/Web3Context';
 import MainLayout from '../components/layout/MainLayout';
+
+import { useAppContext } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
 import PostCard, {
   AiAssistData,
   AiAssistResponse
@@ -20,9 +19,9 @@ interface TabNavigationProps {
 
 const TabNavigation: React.FC<TabNavigationProps> = React.memo(({ activeTab, setActiveTab }) => {
   const tabs = [
-    { id: "trending", label: "Trending" },
-    { id: "latest", label: "Latest" },
-    { id: "following", label: "Following" }
+    { id: 'trending', label: 'Trending' },
+    { id: 'latest', label: 'Latest' },
+    { id: 'following', label: 'Following' }
   ];
 
   return (
@@ -44,7 +43,7 @@ const TabNavigation: React.FC<TabNavigationProps> = React.memo(({ activeTab, set
   );
 });
 
-TabNavigation.displayName = "TabNavigation";
+TabNavigation.displayName = 'TabNavigation';
 
 // --- Subcomponent: Decoupled Discovery Actions Panel ---
 interface DiscoveryActionsPanelProps {
@@ -83,14 +82,14 @@ const DiscoveryActionsPanel: React.FC<DiscoveryActionsPanelProps> = React.memo((
   );
 });
 
-DiscoveryActionsPanel.displayName = "DiscoveryActionsPanel";
+DiscoveryActionsPanel.displayName = 'DiscoveryActionsPanel';
 
 // --- Subcomponent: Decoupled Discovery Tips Panel ---
 const DiscoveryTipsPanel: React.FC = React.memo(() => {
   const tips = [
-    "Engage with trending topics",
-    "Follow creators in your interests",
-    "Share valuable content"
+    'Engage with trending topics',
+    'Follow creators in your interests',
+    'Share valuable content'
   ];
 
   return (
@@ -107,7 +106,7 @@ const DiscoveryTipsPanel: React.FC = React.memo(() => {
   );
 });
 
-DiscoveryTipsPanel.displayName = "DiscoveryTipsPanel";
+DiscoveryTipsPanel.displayName = 'DiscoveryTipsPanel';
 
 // --- Subcomponent: Decoupled FIC Balance Panel ---
 interface BalancePanelProps {
@@ -131,14 +130,14 @@ const BalancePanel: React.FC<BalancePanelProps> = React.memo(({ ficBalance }) =>
   );
 });
 
-BalancePanel.displayName = "BalancePanel";
+BalancePanel.displayName = 'BalancePanel';
 
 // --- Main Container Page Component ---
 const DiscoverPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
-  const { member } = useAuth();
-  const { balance } = useWeb3();
-  const [activeTab, setActiveTab] = useState("discover");
+  const { state: authState } = useAuth();
+  const user = authState.user; // Access the user from auth state
+  const [activeTab, setActiveTab] = useState('discover');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [showGiftModal, setShowGiftModal] = useState(false);
@@ -147,11 +146,11 @@ const DiscoverPage: React.FC = () => {
 
   // Required functions - matching expected types from PostCard
   const onLike = useCallback(async (postId: string) => {
-    showToast("Like action triggered", "info");
+    showToast('Like action triggered', 'info');
   }, [showToast]);
 
   const onAddComment = useCallback(async (postId: string, comment: string) => {
-    showToast("Comment action triggered", "info");
+    showToast('Comment action triggered', 'info');
   }, [showToast]);
 
   const onOpenGiftModal = useCallback((postId: string) => {
@@ -166,24 +165,24 @@ const DiscoverPage: React.FC = () => {
 
   const onVote = useCallback(async (postId: string, voteType: unknown) => {
     const voteStr = typeof voteType === 'string' ? voteType : 'up';
-    showToast(`${voteStr} vote action triggered`, "info");
+    showToast(`${voteStr} vote action triggered`, 'info');
   }, [showToast]);
 
   const handleDeletePost = useCallback(async (postId?: string) => {
     if (!postId) return;
-    showToast("Delete post action triggered", "info");
+    showToast('Delete post action triggered', 'info');
   }, [showToast]);
 
   const handleTokenizePost = useCallback(async (postId?: string) => {
     if (!postId) return;
-    showToast("Tokenize post action triggered", "info");
+    showToast('Tokenize post action triggered', 'info');
   }, [showToast]);
 
   const handleAiAssist = useCallback(async (...args: unknown[]): Promise<AiAssistResponse> => {
     const action = args[0] as string;
     const data = args[1] as AiAssistData;
-    showToast("AI assist action triggered", "info");
-    return { success: true, message: "AI assist completed" };
+    showToast('AI assist action triggered', 'info');
+    return { success: true, message: 'AI assist completed' };
   }, [showToast]);
 
   // Mock data initialization
@@ -213,7 +212,7 @@ const DiscoverPage: React.FC = () => {
       createdAt: new Date().toISOString(),
       // Remove updatedAt if it doesn't exist in Post type
     }));
-    
+
     setPosts(mockPosts);
     setLoading(false);
   }, []);
@@ -227,7 +226,7 @@ const DiscoverPage: React.FC = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout pageTitle="Discover">
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Discover</h1>
@@ -236,8 +235,40 @@ const DiscoverPage: React.FC = () => {
 
         <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left Sidebar */}
+          <div className="hidden lg:block lg:col-span-3 space-y-6">
+            <div className="sticky top-20 space-y-6">
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                  <MagnifyingGlassIcon className="w-5 h-5 text-blue-600 mr-2" />
+                  Explore
+                </h3>
+                <ul className="space-y-3">
+                  <li><button onClick={() => setActiveTab('trending')} className={`w-full text-left font-medium ${activeTab === 'trending' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Trending Content</button></li>
+                  <li><button onClick={() => setActiveTab('latest')} className={`w-full text-left font-medium ${activeTab === 'latest' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Latest Posts</button></li>
+                  <li><button onClick={() => setActiveTab('following')} className={`w-full text-left font-medium ${activeTab === 'following' ? 'text-blue-600 hover:underline' : 'text-gray-600 hover:text-blue-600'}`}>Following</button></li>
+                </ul>
+              </div>
+
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                  <FireIcon className="w-5 h-5 text-red-500 mr-2" />
+                  Popular Topics
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {['#Web3', '#Design', '#AI', '#Startups', '#Tech'].map(tag => (
+                    <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-600 cursor-pointer transition-colors">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-6">
             <div className="space-y-6">
               {posts.map((post) => (
                 <PostCard
@@ -256,11 +287,12 @@ const DiscoverPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <DiscoveryActionsPanel 
-              onOpenGiftModal={onOpenGiftModal} 
-              onOpenPaylinkModal={onOpenPaylinkModal} 
-              ficBalance={ficBalance} 
+          {/* Right Sidebar */}
+          <div className="lg:col-span-3 space-y-6">
+            <DiscoveryActionsPanel
+              onOpenGiftModal={onOpenGiftModal}
+              onOpenPaylinkModal={onOpenPaylinkModal}
+              ficBalance={ficBalance}
             />
             <BalancePanel ficBalance={ficBalance} />
             <DiscoveryTipsPanel />
@@ -335,6 +367,7 @@ const DiscoverPage: React.FC = () => {
           </div>
         )}
       </div>
+
     </MainLayout>
   );
 };

@@ -15,34 +15,34 @@ const CommunitiesSection: React.FC = () => {
   const communities: Community[] = [
     {
       id: 1,
-      name: "Tech Enthusiasts",
-      description: "A community for tech professionals to discuss the latest innovations",
-      memberCount: "12.5K",
-      icon: "💻",
+      name: 'Tech Enthusiasts',
+      description: 'A community for tech professionals to discuss the latest innovations',
+      memberCount: '12.5K',
+      icon: '💻',
       isJoined: true
     },
     {
       id: 2,
-      name: "Design Masters",
-      description: "Where designers share inspiration and best practices",
-      memberCount: "8.3K",
-      icon: "🎨",
+      name: 'Design Masters',
+      description: 'Where designers share inspiration and best practices',
+      memberCount: '8.3K',
+      icon: '🎨',
       isJoined: false
     },
     {
       id: 3,
-      name: "Marketing Pros",
-      description: "Experts sharing marketing strategies and insights",
-      memberCount: "15.2K",
-      icon: "📢",
+      name: 'Marketing Pros',
+      description: 'Experts sharing marketing strategies and insights',
+      memberCount: '15.2K',
+      icon: '📢',
       isJoined: true
     },
     {
       id: 4,
-      name: "Entrepreneur Network",
-      description: "Connecting startup founders and business leaders",
-      memberCount: "22.1K",
-      icon: "🚀",
+      name: 'Entrepreneur Network',
+      description: 'Connecting startup founders and business leaders',
+      memberCount: '22.1K',
+      icon: '🚀',
       isJoined: false
     }
   ];
@@ -55,7 +55,7 @@ const CommunitiesSection: React.FC = () => {
           See all
         </Link>
       </div>
-      
+
       <div className="space-y-4">
         {communities.map(community => (
           <div key={community.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
@@ -69,7 +69,7 @@ const CommunitiesSection: React.FC = () => {
                 <p className="text-xs text-fm-gray-400">{community.memberCount} members</p>
               </div>
             </div>
-            
+
             {community.isJoined ? (
               <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
                 Joined
@@ -82,7 +82,7 @@ const CommunitiesSection: React.FC = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="mt-4 pt-4 border-t border-gray-100">
         <Link to="/communities/create" className="flex items-center justify-center text-fm-orange hover:underline text-sm font-medium">
           <span className="mr-1">+</span> Create a new community

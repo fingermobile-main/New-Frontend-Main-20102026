@@ -48,7 +48,7 @@ class CanaryService {
 
   async getAlerts(page = 1, limit = 20): Promise<{alerts: CanaryAlert[], total: number }> {
     const response = await api.get(`${this.baseUrl}/alerts`, {params: { page,
-  limit }
+      limit }
     });
     return response.data;
   }

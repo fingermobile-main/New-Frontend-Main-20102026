@@ -85,7 +85,7 @@ projections: {nextMonth: number;
   }
 
   async getCustomReport(userId: string,
-startDate: string, endDate: string, metrics: string[]): Promise<Blob> {
+    startDate: string, endDate: string, metrics: string[]): Promise<Blob> {
     const response = await this.api.post(`/report/${userId}`, {
       startDate,
       endDate,
@@ -102,7 +102,7 @@ startDate: string, endDate: string, metrics: string[]): Promise<Blob> {
   direction: 'up' | 'down' }[];
   }> {
     const response = await this.api.get(`/comparison/${userId}`, { params: { currentPeriod,
-  previousPeriod }
+      previousPeriod }
     });
     return response.data;
   }

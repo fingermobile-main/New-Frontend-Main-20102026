@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { Megaphone, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Megaphone, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface SponsoredAdProps {
   title: string;
@@ -10,7 +10,7 @@ interface SponsoredAdProps {
   ctaText: string;
   onCtaClick?: () => void;
   onClose?: () => void;
-  variant?: "banner" | "card" | "inline";
+  variant?: 'banner' | 'card' | 'inline';
 }
 
 const SponsoredAd: React.FC<SponsoredAdProps> = ({
@@ -20,9 +20,9 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
   ctaText,
   onCtaClick,
   onClose,
-  variant = "banner"
+  variant = 'banner'
 }) => {
-  if (variant === "banner") {
+  if (variant === 'banner') {
     return (
       <div className="relative w-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-l-4 border-primary p-4 rounded-r-lg">
         {onClose && (
@@ -54,7 +54,7 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
     );
   }
 
-  if (variant === "card") {
+  if (variant === 'card') {
     return (
       <div className="relative bg-card border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
         {onClose && (
@@ -73,7 +73,7 @@ const SponsoredAd: React.FC<SponsoredAdProps> = ({
               src={imageUrl}
               alt={title}
               className="w-full h-full object-cover"
-             />
+            />
             <Badge className="absolute top-2 left-2">Sponsored</Badge>
           </div>
         )}

@@ -15,7 +15,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
           <div key={index} className="flex items-center">
             <div className="w-20 text-sm text-gray-600">{item.name}</div>
             <div className="flex-1 ml-2">
-              <div 
+              <div
                 className="bg-blue-500 h-6 rounded"
                 style={{ width: `${(item.value / maxValue) * 100}%` }}
               ></div>

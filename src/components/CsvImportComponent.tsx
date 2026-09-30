@@ -33,13 +33,13 @@ const CsvImportComponent: React.FC<CsvImportProps> = ({ onImportComplete }) => {
 
   return (
     <div className="csv-import-component">
-      <input 
-        type="file" 
-        accept=".csv" 
-        onChange={handleFileChange} 
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileChange}
         disabled={loading}
       />
-      
+
       {loading && <div>Processing...</div>}
       {error && <div className="error">Error: {error}</div>}
     </div>

@@ -4,7 +4,7 @@ import { CommunityPageType } from '../types/communityPage';
 
 interface IntegrationTestResult {
   endpoint: string;
-  status: "success" | "failed" | "pending";
+  status: 'success' | 'failed' | 'pending';
   error?: string;
   data?: unknown;
 }
@@ -45,26 +45,26 @@ class DatabaseIntegrationVerifier {
 
   private async testMemberEndpoints() {
     try {
-      this.updateTestStatus("/members/me", "pending");
-      const result = await apiService.request("/members/me");
-      this.updateTestStatus("/members/me", "success", result);
+      this.updateTestStatus('/members/me', 'pending');
+      const result = await apiService.request('/members/me');
+      this.updateTestStatus('/members/me', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/members/me",
-        "failed",
+        '/members/me',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/members", "pending");
-      const result = await apiService.get("/members");
-      this.updateTestStatus("/members", "success", result);
+      this.updateTestStatus('/members', 'pending');
+      const result = await apiService.get('/members');
+      this.updateTestStatus('/members', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/members",
-        "failed",
+        '/members',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -73,26 +73,26 @@ class DatabaseIntegrationVerifier {
 
   private async testContentEndpoints() {
     try {
-      this.updateTestStatus("/posts", "pending");
-      const result = await apiService.get("/posts");
-      this.updateTestStatus("/posts", "success", result);
+      this.updateTestStatus('/posts', 'pending');
+      const result = await apiService.get('/posts');
+      this.updateTestStatus('/posts', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/posts",
-        "failed",
+        '/posts',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/forum/posts", "pending");
-      const result = await apiService.get("/forum/posts");
-      this.updateTestStatus("/forum/posts", "success", result);
+      this.updateTestStatus('/forum/posts', 'pending');
+      const result = await apiService.get('/forum/posts');
+      this.updateTestStatus('/forum/posts', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/forum/posts",
-        "failed",
+        '/forum/posts',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -101,26 +101,26 @@ class DatabaseIntegrationVerifier {
 
   private async testMarketplaceEndpoints() {
     try {
-      this.updateTestStatus("/products", "pending");
-      const result = await apiService.get("/products");
-      this.updateTestStatus("/products", "success", result);
+      this.updateTestStatus('/products', 'pending');
+      const result = await apiService.get('/products');
+      this.updateTestStatus('/products', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/products",
-        "failed",
+        '/products',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/ads", "pending");
-      const result = await apiService.get("/ads");
-      this.updateTestStatus("/ads", "success", result);
+      this.updateTestStatus('/ads', 'pending');
+      const result = await apiService.get('/ads');
+      this.updateTestStatus('/ads', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/ads",
-        "failed",
+        '/ads',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -129,26 +129,26 @@ class DatabaseIntegrationVerifier {
 
   private async testWalletEndpoints() {
     try {
-      this.updateTestStatus("/wallet", "pending");
-      const result = await apiService.get("/wallet");
-      this.updateTestStatus("/wallet", "success", result);
+      this.updateTestStatus('/wallet', 'pending');
+      const result = await apiService.get('/wallet');
+      this.updateTestStatus('/wallet', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/wallet",
-        "failed",
+        '/wallet',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/transactions", "pending");
-      const result = await apiService.get("/transactions");
-      this.updateTestStatus("/transactions", "success", result);
+      this.updateTestStatus('/transactions', 'pending');
+      const result = await apiService.get('/transactions');
+      this.updateTestStatus('/transactions', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/transactions",
-        "failed",
+        '/transactions',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -157,24 +157,24 @@ class DatabaseIntegrationVerifier {
 
   private async testCommunityEndpoints() {
     // Test with a generic community page type and ID
-    const testPageType: CommunityPageType = "groups";
-    const testPageId = "1";
+    const testPageType: CommunityPageType = 'groups';
+    const testPageId = '1';
 
     try {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}`,
-        "pending",
+        'pending',
       );
       const result = await apiService.get(`/communities/${testPageType}/${testPageId}`);
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}`,
-        "success",
+        'success',
         result,
       );
     } catch (error) {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}`,
-        "failed",
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -183,18 +183,18 @@ class DatabaseIntegrationVerifier {
     try {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/posts`,
-        "pending",
+        'pending',
       );
       const result = await apiService.get(`/communities/${testPageType}/${testPageId}/posts`);
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/posts`,
-        "success",
+        'success',
         result,
       );
     } catch (error) {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/posts`,
-        "failed",
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -203,18 +203,18 @@ class DatabaseIntegrationVerifier {
     try {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/members`,
-        "pending",
+        'pending',
       );
       const result = await apiService.get(`/communities/${testPageType}/${testPageId}/members`);
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/members`,
-        "success",
+        'success',
         result,
       );
     } catch (error) {
       this.updateTestStatus(
         `/communities/${testPageType}/${testPageId}/members`,
-        "failed",
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -223,13 +223,13 @@ class DatabaseIntegrationVerifier {
 
   private async testNotificationEndpoints() {
     try {
-      this.updateTestStatus("/notifications", "pending");
-      const result = await apiService.get("/notifications");
-      this.updateTestStatus("/notifications", "success", result);
+      this.updateTestStatus('/notifications', 'pending');
+      const result = await apiService.get('/notifications');
+      this.updateTestStatus('/notifications', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/notifications",
-        "failed",
+        '/notifications',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -238,13 +238,13 @@ class DatabaseIntegrationVerifier {
 
   private async testSettingsEndpoints() {
     try {
-      this.updateTestStatus("/settings", "pending");
-      const result = await apiService.get("/settings");
-      this.updateTestStatus("/settings", "success", result);
+      this.updateTestStatus('/settings', 'pending');
+      const result = await apiService.get('/settings');
+      this.updateTestStatus('/settings', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/settings",
-        "failed",
+        '/settings',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -253,39 +253,39 @@ class DatabaseIntegrationVerifier {
 
   private async testAnalyticsEndpoints() {
     try {
-      this.updateTestStatus("/analytics/members", "pending");
-      const result = await apiService.get("/analytics/members");
-      this.updateTestStatus("/analytics/members", "success", result);
+      this.updateTestStatus('/analytics/members', 'pending');
+      const result = await apiService.get('/analytics/members');
+      this.updateTestStatus('/analytics/members', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/analytics/members",
-        "failed",
+        '/analytics/members',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/analytics/content", "pending");
-      const result = await apiService.get("/analytics/content");
-      this.updateTestStatus("/analytics/content", "success", result);
+      this.updateTestStatus('/analytics/content', 'pending');
+      const result = await apiService.get('/analytics/content');
+      this.updateTestStatus('/analytics/content', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/analytics/content",
-        "failed",
+        '/analytics/content',
+        'failed',
         undefined,
         (error as Error).message,
       );
     }
 
     try {
-      this.updateTestStatus("/analytics/revenue", "pending");
-      const result = await apiService.get("/analytics/revenue");
-      this.updateTestStatus("/analytics/revenue", "success", result);
+      this.updateTestStatus('/analytics/revenue', 'pending');
+      const result = await apiService.get('/analytics/revenue');
+      this.updateTestStatus('/analytics/revenue', 'success', result);
     } catch (error) {
       this.updateTestStatus(
-        "/analytics/revenue",
-        "failed",
+        '/analytics/revenue',
+        'failed',
         undefined,
         (error as Error).message,
       );
@@ -294,7 +294,7 @@ class DatabaseIntegrationVerifier {
 
   private updateTestStatus(
     endpoint: string,
-    status: "success" | "failed" | "pending",
+    status: 'success' | 'failed' | 'pending',
     data?: unknown,
     error?: string,
   ) {
@@ -316,15 +316,15 @@ class DatabaseIntegrationVerifier {
   }
 
   getFailedTests(): IntegrationTestResult[] {
-    return this.testResults.filter((result) => result.status === "failed");
+    return this.testResults.filter((result) => result.status === 'failed');
   }
 
   getSuccessfulTests(): IntegrationTestResult[] {
-    return this.testResults.filter((result) => result.status === "success");
+    return this.testResults.filter((result) => result.status === 'success');
   }
 
   getPendingTests(): IntegrationTestResult[] {
-    return this.testResults.filter((result) => result.status === "pending");
+    return this.testResults.filter((result) => result.status === 'pending');
   }
 }
 

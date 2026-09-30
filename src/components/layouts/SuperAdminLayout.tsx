@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { Shield, Activity, Users, BarChart } from "lucide-react";
+import { Shield, Activity, Users, BarChart } from 'lucide-react';
 
 interface SuperAdminLayoutProps {
   children: React.ReactNode;
 }
 
 const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({ children }) => {
-  const [activeSection, setActiveSection] = React.useState("overview");
+  const [activeSection, setActiveSection] = React.useState('overview');
 
   const menuItems = [
-    { id: "overview", label: "System Overview", icon: <Activity className="h-5 w-5" /> },
-    { id: "security", label: "Security Monitor", icon: <Shield className="h-5 w-5" /> },
-    { id: "users", label: "User Management", icon: <Users className="h-5 w-5" /> },
-    { id: "analytics", label: "Analytics", icon: <BarChart className="h-5 w-5" /> }
+    { id: 'overview', label: 'System Overview', icon: <Activity className="h-5 w-5" /> },
+    { id: 'security', label: 'Security Monitor', icon: <Shield className="h-5 w-5" /> },
+    { id: 'users', label: 'User Management', icon: <Users className="h-5 w-5" /> },
+    { id: 'analytics', label: 'Analytics', icon: <BarChart className="h-5 w-5" /> }
   ];
 
   return (
@@ -49,8 +49,8 @@ const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({ children }) => {
                 onClick={() => setActiveSection(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeSection === item.id
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted"
+                    ? 'bg-primary text-primary-foreground'
+                    : 'hover:bg-muted'
                 }`}
               >
                 {item.icon}

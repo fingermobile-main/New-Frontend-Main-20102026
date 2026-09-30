@@ -39,14 +39,14 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                     src={avatar}
                     alt={communityName}
                     className="w-full h-full rounded-lg object-cover"
-                   />
+                  />
                 ) : (
                   <div className="w-full h-full rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-5xl font-bold text-white">
                     {communityName.charAt(0)}
                   </div>
                 )}
               </div>
-              
+
               {/* Online Indicator */}
               <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
                 <span className="text-white text-xs">●</span>
@@ -74,7 +74,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                       >
                         Leave
                       </button>
-                      
+
                       <div className="relative">
                         <button
                           onClick={() => setShowDropdown(!showDropdown)}
@@ -88,28 +88,28 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                         >
                           ⋯
                         </button>
-                        
+
                         {showDropdown && (
-                          <div 
+                          <div
                             className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10"
                             role="menu"
                             aria-orientation="vertical"
                           >
-                            <button 
+                            <button
                               className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
                               role="menuitem"
                               tabIndex={0}
                             >
                               🔔 Notification Settings
                             </button>
-                            <button 
+                            <button
                               className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
                               role="menuitem"
                               tabIndex={0}
                             >
                               📌 Pin to Sidebar
                             </button>
-                            <button 
+                            <button
                               className="w-full px-4 py-2 text-left hover:bg-gray-50 text-sm"
                               role="menuitem"
                               tabIndex={0}

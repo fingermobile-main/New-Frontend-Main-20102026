@@ -4,14 +4,14 @@ const CookieConsentBanner: React.FC = () => {
   const [showBanner, setShowBanner] = React.useState(false);
 
   React.useEffect(() => {
-    const consent = localStorage.getItem("cookieConsent");
+    const consent = localStorage.getItem('cookieConsent');
     if (!consent) {
       setShowBanner(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("cookieConsent", "true");
+    localStorage.setItem('cookieConsent', 'true');
     setShowBanner(false);
   };
 

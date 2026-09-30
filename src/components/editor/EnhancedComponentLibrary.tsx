@@ -10,7 +10,7 @@ interface EnhancedComponentLibraryProps {
   }>;
 }
 
-const EnhancedComponentLibrary: React.FC<EnhancedComponentLibraryProps> = ({ 
+const EnhancedComponentLibrary: React.FC<EnhancedComponentLibraryProps> = ({
   onComponentSelect,
   categories: propCategories
 }) => {

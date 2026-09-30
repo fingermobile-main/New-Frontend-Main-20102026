@@ -7,10 +7,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/a
 
 export interface PaymentMethod {
   id: string;
-  type: "card" | "bank" | "crypto" | "wallet";
+  type: 'card' | 'bank' | 'crypto' | 'wallet';
   name: string;
   last4?: string;
-  expiryDate?: string; 
+  expiryDate?: string;
   isDefault: boolean;
   verified: boolean;
 }
@@ -19,9 +19,9 @@ export interface PaymentIntent {
   id: string;
   amount: number;
   currency: string;
-  status: "pending" | "processing" | "completed" | "failed" | "refunded";
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
   description?: string;
-  paymentMethodId?: string; 
+  paymentMethodId?: string;
   createdAt: string;
   completedAt?: string;
   metadata?: Record<string, any>;
@@ -85,7 +85,7 @@ class PaymentService {
       return response.data;
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || 'Payment processing communication error';
-      console.error(`[PaymentService Error]:`, errorMessage, error);
+      console.error('[PaymentService Error]:', errorMessage, error);
       throw new Error(errorMessage);
     }
   }
@@ -117,7 +117,7 @@ class PaymentService {
 
   async createPaymentIntent(data: ChargeData, idempotencyKey?: string): Promise<PaymentIntent> {
     const headers = idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined;
-    return this.request<PaymentIntent>({ method: 'POST', url: '/intents', data, headers });
+    return this.request<PaymentIntent>({ method: 'POST', url: '/create-intent', data, headers });
   }
 
   async getPaymentIntent(intentId: string): Promise<PaymentIntent> {
@@ -126,11 +126,11 @@ class PaymentService {
 
   async confirmPayment(intentId: string, paymentMethodId: string, idempotencyKey?: string): Promise<PaymentIntent> {
     const headers = idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined;
-    return this.request<PaymentIntent>({ 
-      method: 'POST', 
-      url: `/intents/${intentId}/confirm`, 
-      data: { paymentMethodId },
-      headers 
+    return this.request<PaymentIntent>({
+      method: 'POST',
+      url: `/confirm`,
+      data: { paymentIntentId: intentId, paymentMethodId },
+      headers
     });
   }
 
@@ -144,10 +144,10 @@ class PaymentService {
    * Safe partial or full refund tracking
    */
   async refundPayment(paymentId: string, amount?: number, reason?: string): Promise<PaymentIntent> {
-    return this.request<PaymentIntent>({ 
-      method: 'POST', 
-      url: `/payments/${paymentId}/refund`, 
-      data: { amount, reason } 
+    return this.request<PaymentIntent>({
+      method: 'POST',
+      url: `/refund`,
+      data: { paymentIntentId: paymentId, amount, reason }
     });
   }
 
@@ -155,36 +155,36 @@ class PaymentService {
    * Request payout of accumulated internal balance/earnings to a bank account or crypto wallet
    */
   async requestPayout(payoutData: PayoutRequest): Promise<{ payoutId: string; status: string }> {
-    return this.request<{ payoutId: string; status: string }>({ 
-      method: 'POST', 
-      url: '/payouts', 
-      data: payoutData 
+    return this.request<{ payoutId: string; status: string }>({
+      method: 'POST',
+      url: '/payouts',
+      data: payoutData
     });
   }
 
   // --- DATA ARCHITECTURE & REPORTING ---
 
   async getPaymentHistory(params?: PaginationParams): Promise<{ data: PaymentIntent[]; total: number }> {
-    return this.request<{ data: PaymentIntent[]; total: number }>({ 
-      method: 'GET', 
-      url: '/history', 
-      params 
+    return this.request<{ data: PaymentIntent[]; total: number }>({
+      method: 'GET',
+      url: '/history',
+      params
     });
   }
 
   async getPaymentReceipt(paymentId: string): Promise<Blob> {
-    return this.request<Blob>({ 
-      method: 'GET', 
-      url: `/receipts/${paymentId}`, 
-      responseType: 'blob' 
+    return this.request<Blob>({
+      method: 'GET',
+      url: `/invoices/${paymentId}/download`,
+      responseType: 'blob'
     });
   }
 
   async processSubscriptionPayment(subscriptionId: string, amount: number): Promise<PaymentIntent> {
-    return this.request<PaymentIntent>({ 
-      method: 'POST', 
-      url: '/subscriptions/charge', 
-      data: { subscriptionId, amount } 
+    return this.request<PaymentIntent>({
+      method: 'POST',
+      url: '/subscriptions/charge',
+      data: { subscriptionId, amount }
     });
   }
 
@@ -196,10 +196,10 @@ class PaymentService {
     volumeHistory: { date: string; gross: number; net: number }[];
     successRate: number;
   }> {
-    return this.request({ 
-      method: 'GET', 
-      url: '/analytics/earnings', 
-      params: { period } 
+    return this.request({
+      method: 'GET',
+      url: '/analytics/earnings',
+      params: { period }
     });
   }
 }

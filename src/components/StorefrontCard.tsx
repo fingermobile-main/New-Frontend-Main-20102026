@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Package, Star, ShoppingCart } from "lucide-react";
-import { Card, CardContent, CardFooter } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Package, Star, ShoppingCart } from 'lucide-react';
+import { Card, CardContent, CardFooter } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface StorefrontCardProps {
   product: {
@@ -29,7 +29,7 @@ const StorefrontCard: React.FC<StorefrontCardProps> = ({
       <Star
         key={i}
         className={`h-4 w-4 ${
-          i < rating ? "text-yellow-500 fill-current" : "text-muted-foreground"
+          i < rating ? 'text-yellow-500 fill-current' : 'text-muted-foreground'
         }`}
       />
     ));
@@ -44,7 +44,7 @@ const StorefrontCard: React.FC<StorefrontCardProps> = ({
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover"
-           />
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <Package className="h-16 w-16 text-muted-foreground opacity-20" />

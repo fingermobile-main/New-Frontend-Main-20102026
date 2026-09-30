@@ -25,16 +25,16 @@ const useBlockMute = () => {
     try {
       // Pass page and limit as separate parameters
       const response = await blockMuteService.getBlocks({
-  page: 1,
-  limit: 50,
-  ...(muteType ? {
-  type: muteType
-  } : {}) // Change parameter name if needed
+        page: 1,
+        limit: 50,
+        ...(muteType ? {
+          type: muteType
+        } : {}) // Change parameter name if needed
       });
       // Combine both blocks and mutes into one array
       setBlockedMutedUsers([...response.blocks, ...response.mutes]);
     } catch (err: any) {
-      setError("Failed to fetch blocked/muted users.");
+      setError('Failed to fetch blocked/muted users.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -43,24 +43,24 @@ const useBlockMute = () => {
 
   // Block a user
   const blockUser = async (
-  blockData: Omit<BlockData, 'blockedUserId'> & {userId: string }) => {
+    blockData: Omit<BlockData, 'blockedUserId'> & {userId: string }) => {
     setLoading(true);
     setError(null);
 
     try {
       // Map userId to blockedUserId
       const mappedBlockData: BlockData = {
-  blockedUserId: blockData.userId,
-  reason: blockData.reason,
-  duration: blockData.duration
+        blockedUserId: blockData.userId,
+        reason: blockData.reason,
+        duration: blockData.duration
       };
-      
+
       await blockMuteService.blockUser(mappedBlockData);
-      
+
       // Refresh the list after blocking
       await fetchBlockedMutedUsers();
     } catch (err: any) {
-      setError("Failed to block user.");
+      setError('Failed to block user.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -69,23 +69,23 @@ const useBlockMute = () => {
 
   // Mute notifications
   const muteNotifications = async (
-  muteData: {mutedUserId: string }) => {
+    muteData: {mutedUserId: string }) => {
     setLoading(true);
     setError(null);
 
     try {
       // Create proper MuteData object
       const mappedMuteData: MuteData = {
-  mutedUserId: muteData.mutedUserId,
-  muteType: "notifications"
+        mutedUserId: muteData.mutedUserId,
+        muteType: 'notifications'
       };
-      
+
       await blockMuteService.muteNotifications(mappedMuteData);
-      
+
       // Refresh the list after muting
       await fetchBlockedMutedUsers();
     } catch (err: any) {
-      setError("Failed to mute notifications.");
+      setError('Failed to mute notifications.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -94,23 +94,23 @@ const useBlockMute = () => {
 
   // Mute UGC (User Generated Content)
   const muteUgc = async (
-  muteData: {mutedUserId: string }) => {
+    muteData: {mutedUserId: string }) => {
     setLoading(true);
     setError(null);
 
     try {
       // Create proper MuteData object
       const mappedMuteData: MuteData = {
-  mutedUserId: muteData.mutedUserId,
-  muteType: "ugc"
+        mutedUserId: muteData.mutedUserId,
+        muteType: 'ugc'
       };
-      
+
       await blockMuteService.muteUgc(mappedMuteData);
-      
+
       // Refresh the list after muting
       await fetchBlockedMutedUsers();
     } catch (err: any) {
-      setError("Failed to mute UGC.");
+      setError('Failed to mute UGC.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -120,8 +120,8 @@ const useBlockMute = () => {
 
   // Unblock a user
   const unblockUser = async (
-  blockedUserId: string,
-  muteType?: string) => {
+    blockedUserId: string,
+    muteType?: string) => {
     setLoading(true);
     setError(null);
 
@@ -130,7 +130,7 @@ const useBlockMute = () => {
       // Refresh the list after unblocking
       await fetchBlockedMutedUsers();
     } catch (err: any) {
-      setError("Failed to unblock user.");
+      setError('Failed to unblock user.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -139,7 +139,7 @@ const useBlockMute = () => {
 
   // Check if a user is blocked or muted
   const checkBlockMuteStatus = async (
-  targetUserId: string): Promise<BlockStatusResponse> => {
+    targetUserId: string): Promise<BlockStatusResponse> => {
     setLoading(true);
     setError(null);
 
@@ -148,12 +148,12 @@ const useBlockMute = () => {
       const status = await blockMuteService.getBlockStatus(targetUserId);
       return status;
     } catch (err: any) {
-      setError("Failed to check block/mute status.");
+      setError('Failed to check block/mute status.');
       console.error(err);
       return {
-  isBlocked: false,
-  isMuted: false
-  };
+        isBlocked: false,
+        isMuted: false
+      };
     } finally {
       setLoading(false);
     }

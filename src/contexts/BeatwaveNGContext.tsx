@@ -7,7 +7,7 @@ interface Track {
   title: string;
   artist: string;
   album: string;
-  duration: number; 
+  duration: number;
   coverArt?: string;
   url: string;
   plays?: number;
@@ -56,9 +56,9 @@ interface Album {
 interface AmeboHistoryItem {
   id: string;
   memberId: string;
-  action: string; 
+  action: string;
   targetId: string;
-  targetType: string; 
+  targetType: string;
   timestamp: string;
 }
 
@@ -149,67 +149,67 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
           artistsResponse,
           albumsResponse
         ] = await Promise.allSettled([
-          api.get("/beatwaveNG/tracks"),
-          api.get("/beatwaveNG/playlists"),
-          api.get("/beatwaveNG/artists"),
-          api.get("/beatwaveNG/albums")
+          api.get('/beatwaveNG/tracks'),
+          api.get('/beatwaveNG/playlists'),
+          api.get('/beatwaveNG/artists'),
+          api.get('/beatwaveNG/albums')
         ]);
 
-        if (tracksResponse.status === "fulfilled") {
+        if (tracksResponse.status === 'fulfilled') {
           setTracks(tracksResponse.value.data || []);
         } else {
-          showToast("Failed to fetch tracks", "error");
+          showToast('Failed to fetch tracks', 'error');
           setTracks([
             {
-              id: "1",
-              title: "Summer Vibes",
-              artist: "DJ Pulse",
-              album: "Beach Party",
-              duration: 225, 
-              coverArt: "", 
-              url: "",
+              id: '1',
+              title: 'Summer Vibes',
+              artist: 'DJ Pulse',
+              album: 'Beach Party',
+              duration: 225,
+              coverArt: '',
+              url: '',
               plays: 1200,
               likes: 240,
               dislikes: 5,
-              genre: "Electronic",
+              genre: 'Electronic',
               year: 2023,
               trackNumber: 1,
-              writer: "DJ Pulse",
-              producer: "Sound Master",
+              writer: 'DJ Pulse',
+              producer: 'Sound Master',
               explicit: false,
               bpm: 128,
-              key: "Am",
+              key: 'Am',
               createdAt: new Date().toISOString(),
-              authorId: "author1",
+              authorId: 'author1',
               isSaved: false,
-              isLiked: false 
+              isLiked: false
             }
           ]);
         }
 
-        if (playlistsResponse.status === "fulfilled") {
+        if (playlistsResponse.status === 'fulfilled') {
           setPlaylists(playlistsResponse.value.data || []);
         } else {
-          showToast("Failed to fetch playlists", "error");
+          showToast('Failed to fetch playlists', 'error');
           setPlaylists([]);
         }
 
-        if (artistsResponse.status === "fulfilled") {
+        if (artistsResponse.status === 'fulfilled') {
           setArtists(artistsResponse.value.data || []);
         } else {
-          showToast("Failed to fetch artists", "error");
+          showToast('Failed to fetch artists', 'error');
           setArtists([]);
         }
 
-        if (albumsResponse.status === "fulfilled") {
+        if (albumsResponse.status === 'fulfilled') {
           setAlbums(albumsResponse.value.data || []);
         } else {
-          showToast("Failed to fetch albums", "error");
+          showToast('Failed to fetch albums', 'error');
           setAlbums([]);
         }
       } catch {
-        setError("Failed to load BeatwaveNG data");
-        showToast("Failed to load BeatwaveNG data", "error");
+        setError('Failed to load BeatwaveNG data');
+        showToast('Failed to load BeatwaveNG data', 'error');
       } finally {
         setLoading(false);
       }
@@ -221,7 +221,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
   const playTrack = React.useCallback((track: Track, suppliedQueue?: Track[]) => {
     setCurrentTrack(track);
     setIsPlaying(true);
-    
+
     if (suppliedQueue && suppliedQueue.length > 0) {
       setQueue(suppliedQueue);
       const trackIndex = suppliedQueue.findIndex(t => t.id === track.id);
@@ -230,7 +230,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       setQueue([track]);
       setCurrentQueueIndex(0);
     }
-    
+
     setRecentlyPlayed(prev => {
       const existingIndex = prev.findIndex(t => t.id === track.id);
       if (existingIndex > -1) {
@@ -240,12 +240,12 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       }
       return [track, ...prev.slice(0, 9)];
     });
-    
+
     addToAmeboHistory({
-      memberId: "", 
-      action: "play",
+      memberId: '',
+      action: 'play',
       targetId: track.id,
-      targetType: "track",
+      targetType: 'track',
       timestamp: new Date().toISOString()
     });
   }, [currentTrack, addToAmeboHistory]);
@@ -267,7 +267,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
   const seekTrack = React.useCallback((time: number) => setPlaybackTime(time), []);
 
   const setVolumeLevel = React.useCallback((level: number) =>
-    setVolume(Math.max(0, Math.min(100, level))), []); 
+    setVolume(Math.max(0, Math.min(100, level))), []);
 
   const toggleMute = React.useCallback(() => {
     setVolume(prev => (prev === 0 ? 80 : 0));
@@ -279,7 +279,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
 
   const playNext = React.useCallback(() => {
     if (queue.length === 0 || currentQueueIndex === -1) return;
-    
+
     const nextIndex = currentQueueIndex + 1;
     if (nextIndex < queue.length) {
       setCurrentQueueIndex(nextIndex);
@@ -293,7 +293,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
 
   const playPrevious = React.useCallback(() => {
     if (queue.length === 0 || currentQueueIndex === -1) return;
-    
+
     const prevIndex = currentQueueIndex - 1;
     if (prevIndex >= 0) {
       setCurrentQueueIndex(prevIndex);
@@ -312,8 +312,8 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       );
       setTracks(response.data.tracks || []);
     } catch {
-      setError("Search failed");
-      showToast("Search failed", "error");
+      setError('Search failed');
+      showToast('Search failed', 'error');
     } finally {
       setLoading(false);
     }
@@ -329,29 +329,29 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
         prev.map((playlist) =>
           playlist.id === playlistId
             ? {
-                ...playlist,
-                tracks: [
-                  ...playlist.tracks,
+              ...playlist,
+              tracks: [
+                ...playlist.tracks,
                   tracks.find((t) => t.id === trackId)!
-                ]
-              }
+              ]
+            }
             : playlist,
         ),
       );
     } catch {
-      setError("Failed to add track to playlist");
-      showToast("Failed to add track to playlist", "error");
+      setError('Failed to add track to playlist');
+      showToast('Failed to add track to playlist', 'error');
     }
   }, [tracks, showToast]);
 
   const createPlaylist = React.useCallback(async (name: string) => {
     try {
-      const response = await api.post("/beatwaveNG/playlists", { name });
+      const response = await api.post('/beatwaveNG/playlists', { name });
       setPlaylists((prev) => [...prev, response.data]);
-      showToast("Playlist created successfully", "success");
+      showToast('Playlist created successfully', 'success');
     } catch {
-      setError("Failed to create playlist");
-      showToast("Failed to create playlist", "error");
+      setError('Failed to create playlist');
+      showToast('Failed to create playlist', 'error');
     }
   }, [showToast]);
 
@@ -365,10 +365,10 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
         return prev.map((track) =>
           track.id === trackId
             ? {
-                ...track,
-                likes: track.isLiked ? (track.likes || 0) - 1 : (track.likes || 0) + 1,
-                isLiked: !track.isLiked
-              }
+              ...track,
+              likes: track.isLiked ? (track.likes || 0) - 1 : (track.likes || 0) + 1,
+              isLiked: !track.isLiked
+            }
             : track,
         );
       });
@@ -389,9 +389,9 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
     } catch {
       if (previousTracks.length > 0) setTracks(previousTracks);
       if (previousCurrentTrack) setCurrentTrack(previousCurrentTrack);
-      
-      setError("Failed to like track");
-      showToast("Failed to update like status", "error");
+
+      setError('Failed to like track');
+      showToast('Failed to update like status', 'error');
     }
   }, [showToast]);
 
@@ -420,8 +420,8 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       if (previousTracks.length > 0) setTracks(previousTracks);
       if (previousCurrentTrack) setCurrentTrack(previousCurrentTrack);
 
-      setError("Failed to save track");
-      showToast("Failed to update save status", "error");
+      setError('Failed to save track');
+      showToast('Failed to update save status', 'error');
     }
   }, [showToast]);
 
@@ -430,17 +430,17 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       const response = await api.get(`/beatwaveNG/recommended/${memberId}`);
       return response.data;
     } catch {
-      showToast("Failed to fetch recommendations", "error");
+      showToast('Failed to fetch recommendations', 'error');
       return [];
     }
   }, [showToast]);
 
   const getTrendingTracks = React.useCallback(async (): Promise<Track[]> => {
     try {
-      const response = await api.get("/beatwaveNG/trending");
+      const response = await api.get('/beatwaveNG/trending');
       return response.data;
     } catch {
-      showToast("Failed to fetch trending tracks", "error");
+      showToast('Failed to fetch trending tracks', 'error');
       return [];
     }
   }, [showToast]);
@@ -450,7 +450,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       const response = await api.get(`/beatwaveNG/artists/${artistId}`);
       return response.data;
     } catch (err) {
-      showToast("Failed to fetch artist details", "error");
+      showToast('Failed to fetch artist details', 'error');
       throw err;
     }
   }, [showToast]);
@@ -460,7 +460,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
       const response = await api.get(`/beatwaveNG/albums/${albumId}`);
       return response.data;
     } catch (err) {
-      showToast("Failed to fetch album details", "error");
+      showToast('Failed to fetch album details', 'error');
       throw err;
     }
   }, [showToast]);
@@ -558,7 +558,7 @@ export const BeatwaveNGProvider: React.FC<BeatwaveNGProviderProps> = ({
 export const useBeatwaveNG = (): BeatwaveNGContextType => {
   const context = React.useContext(BeatwaveNGContext);
   if (context === undefined) {
-    throw new Error("useBeatwaveNG must be used within a BeatwaveNGProvider");
+    throw new Error('useBeatwaveNG must be used within a BeatwaveNGProvider');
   }
   return context;
 };

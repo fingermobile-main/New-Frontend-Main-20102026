@@ -19,7 +19,7 @@ const ForgotPasswordPage = () => {
       newErrors.emailOrPhone = 'Email or phone number is required';
       valid = false;
     } else if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrPhone) && 
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrPhone) &&
       !/^\+?[1-9]\d{1,14}$/.test(emailOrPhone)
     ) {
       newErrors.emailOrPhone = 'Please enter a valid email or phone number';
@@ -32,7 +32,7 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -40,8 +40,7 @@ const ForgotPasswordPage = () => {
     setSuccessMessage('');
 
     try {
-      // Simulate API call to forgot password endpoint
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, {
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

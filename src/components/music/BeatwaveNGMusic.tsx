@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Music, Headphones, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Slider } from "@/components/ui/Slider";
-import { Badge } from "@/components/ui/Badge";
+import { Music, Headphones, Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Slider } from '@/components/ui/Slider';
+import { Badge } from '@/components/ui/Badge';
 
 interface Track {
   id: string;
@@ -36,9 +36,9 @@ const BeatwaveNGMusic: React.FC<BeatwaveNGMusicProps> = ({
   const [volume, setVolume] = React.useState(80);
 
   const defaultTrack: Track = {
-    id: "1",
-    title: "Summer Vibes",
-    artist: "DJ Cool",
+    id: '1',
+    title: 'Summer Vibes',
+    artist: 'DJ Cool',
     duration: 225, // 3:45
   };
 

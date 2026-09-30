@@ -117,7 +117,7 @@ export const EmojiLadyBeetleIcon = I('M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M1
 export const EmojiAntIcon = I('M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'M10 10l-1 2M14 10l1 2');
 
 // Emoji icons that were missing from the original file
-export const EmojiWorriedIcon = I("M9.172 16.172a4 4 0 015.656 0M15 12a3 3 0 11-6 0 3 3 0 016 0z");
+export const EmojiWorriedIcon = I('M9.172 16.172a4 4 0 015.656 0M15 12a3 3 0 11-6 0 3 3 0 016 0z');
 
 // Add missing emoji icons as simple SVG placeholders using the I factory function
 export const EmojiConfoundedFaceIcon = I('M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'M9 15c.667-.667 1.667-1 3-1s2.333.333 3 1');

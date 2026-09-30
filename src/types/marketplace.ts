@@ -36,12 +36,12 @@ export interface MarketplaceFilters {
   maxPrice?: number;
   searchQuery?: string;
   sortBy?:
-    | "rating"
-    | "newest"
-    | "price_asc"
-    | "price_desc"
-    | "name_asc"
-    | "name_desc";
+    | 'rating'
+    | 'newest'
+    | 'price_asc'
+    | 'price_desc'
+    | 'name_asc'
+    | 'name_desc';
   page?: number;
   limit?: number;
   seller?: string;

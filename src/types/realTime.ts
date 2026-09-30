@@ -26,4 +26,4 @@ export interface EndCallData {callId: string;
 export interface VideoCallData {participants: string[];
 }
 
-export type ConnectionStatus = "disconnected" | "connecting" | "connected";
+export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';

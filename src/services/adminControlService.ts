@@ -40,50 +40,83 @@ class AdminControlService {
     return this.auditLogs;
   }
 
+  public async loadRealData(): Promise<void> {
+    try {
+      const { api } = await import('./api');
+      const [membersRes, auditRes] = await Promise.all([
+        api.get('/admin/members').catch(() => null),
+        api.get('/audit-log-admin').catch(() => null)
+      ]);
+      if (membersRes?.data && Array.isArray(membersRes.data) && membersRes.data.length > 0) {
+        this.members = membersRes.data.map((m: any) => ({
+          id: m.id.toString(),
+          name: m.membername || m.username || m.email,
+          role: (m.role || 'ADMIN').toUpperCase() as any,
+          permissions: ['ALL'],
+          lastLogin: new Date(m.created_at || Date.now()),
+          isActive: true
+        }));
+      }
+      if (auditRes?.data?.logs && Array.isArray(auditRes.data.logs) && auditRes.data.logs.length > 0) {
+        this.auditLogs = auditRes.data.logs.map((log: any) => ({
+          id: log.id,
+          actionId: log.action,
+          actionName: log.action,
+          performedBy: log.user_id || 'System Admin',
+          timestamp: new Date(log.created_at),
+          status: 'SUCCESS' as const,
+          details: typeof log.changes === 'object' ? JSON.stringify(log.changes) : (log.resource_type || '')
+        }));
+      }
+    } catch (e) {
+      // Fallback to defaults
+    }
+  }
+
   public getActionById(
-  id: string): AdminActionItem | undefined {
+    id: string): AdminActionItem | undefined {
     return this.actions.find((action) => action.id === id);
   }
 
   public getMemberById(
-  id: string): AdminMemberItem | undefined {
+    id: string): AdminMemberItem | undefined {
     return this.members.find((member) => member.id === id);
   }
 
   // SUPER ADMIN FUNCTIONS
   public isSuperAdmin(
-  memberId: string): boolean {
+    memberId: string): boolean {
     const member = this.getMemberById(memberId);
-    return member?.role === "OWNER";
+    return member?.role === 'OWNER';
   }
 
   public canAssignRoles(
-  memberId: string): boolean {
+    memberId: string): boolean {
     return this.isSuperAdmin(memberId);
   }
 
   public assignRole(
-  superMemberId: string,
-targetMemberId: string,
-newRole: AdminMemberItem["role"],
+    superMemberId: string,
+    targetMemberId: string,
+    newRole: AdminMemberItem['role'],
   ): {
   success: boolean; message: string } {
     // Only OWNER (SuperAdmin) can assign roles
     if (!this.isSuperAdmin(superMemberId)) {
       return {success: false,
-  message: "Only SuperAdmin can assign roles" };
+        message: 'Only SuperAdmin can assign roles' };
     }
 
     const targetMember = this.getMemberById(targetMemberId);
     if (!targetMember) {
       return {success: false,
-  message: "Member not found" };
+        message: 'Member not found' };
     }
 
     // Prevent OWNER from downgrading their own role
-    if (targetMemberId === superMemberId && newRole !== "OWNER") {
+    if (targetMemberId === superMemberId && newRole !== 'OWNER') {
       return {success: false,
-  message: "SuperAdmin cannot downgrade their own role"
+        message: 'SuperAdmin cannot downgrade their own role'
       };
     }
 
@@ -92,87 +125,87 @@ newRole: AdminMemberItem["role"],
 
     // Update permissions based on role
     switch (newRole) {
-      case "OWNER":
-        targetMember.permissions = ["all"];
-        break;
-      case "ADMIN":
-        targetMember.permissions = ["modules", "members", "content"];
-        break;
-      case "MODERATOR":
-        targetMember.permissions = ["content", "members"];
-        break;
-      case "AUDITOR":
-        targetMember.permissions = ["audit", "logs"];
-        break;
+    case 'OWNER':
+      targetMember.permissions = ['all'];
+      break;
+    case 'ADMIN':
+      targetMember.permissions = ['modules', 'members', 'content'];
+      break;
+    case 'MODERATOR':
+      targetMember.permissions = ['content', 'members'];
+      break;
+    case 'AUDITOR':
+      targetMember.permissions = ['audit', 'logs'];
+      break;
     }
 
     // Log the action
     this.addAuditLogItem({memberId: superMemberId,
-  actionId: "role-assignment",
-  details: `Assigned role ${newRole} to member ${targetMember.name}`,
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "success"
+      actionId: 'role-assignment',
+      details: `Assigned role ${newRole} to member ${targetMember.name}`,
+      ipAddress: '127.0.0.1',
+      memberAgent: 'Admin Control System',
+      status: 'success'
     });
 
     return {success: true,
-  message: `Role ${newRole} assigned to ${targetMember.name}`
+      message: `Role ${newRole} assigned to ${targetMember.name}`
     };
   }
 
   public addMember(
-  superMemberId: string,
-newMember: Omit<AdminMemberItem, "id">,
+    superMemberId: string,
+    newMember: Omit<AdminMemberItem, 'id'>,
   ): {
   success: boolean; message: string; memberId?: string } {
     // Only OWNER (SuperAdmin) can add members
     if (!this.isSuperAdmin(superMemberId)) {
       return {success: false,
-  message: "Only SuperAdmin can add members" };
+        message: 'Only SuperAdmin can add members' };
     }
 
     const memberId = `member-${Date.now()}`;
     this.members.push({
       ...newMember,
-id: memberId
+      id: memberId
     });
 
     // Log the action
     this.addAuditLogItem({memberId: superMemberId,
-  actionId: "member-addition",
-  details: `Added new member ${newMember.name} with role ${newMember.role}`,
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "success"
+      actionId: 'member-addition',
+      details: `Added new member ${newMember.name} with role ${newMember.role}`,
+      ipAddress: '127.0.0.1',
+      memberAgent: 'Admin Control System',
+      status: 'success'
     });
 
     return {success: true,
-  message: `Member ${newMember.name} added successfully`,
+      message: `Member ${newMember.name} added successfully`,
       memberId
     };
   }
 
   public removeMember(
-  superMemberId: string,
-targetMemberId: string,
+    superMemberId: string,
+    targetMemberId: string,
   ): {
   success: boolean; message: string } {
     // Only OWNER (SuperAdmin) can remove members
     if (!this.isSuperAdmin(superMemberId)) {
       return {success: false,
-  message: "Only SuperAdmin can remove members" };
+        message: 'Only SuperAdmin can remove members' };
     }
 
     // Prevent OWNER from removing themselves
     if (targetMemberId === superMemberId) {
       return {success: false,
-  message: "SuperAdmin cannot remove themselves" };
+        message: 'SuperAdmin cannot remove themselves' };
     }
 
     const targetMember = this.getMemberById(targetMemberId);
     if (!targetMember) {
       return {success: false,
-  message: "Member not found" };
+        message: 'Member not found' };
     }
 
     this.members = this.members.filter(
@@ -181,44 +214,44 @@ targetMemberId: string,
 
     // Log the action
     this.addAuditLogItem({memberId: superMemberId,
-  actionId: "member-removal",
-  details: `Removed member ${targetMember.name}`,
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "success"
+      actionId: 'member-removal',
+      details: `Removed member ${targetMember.name}`,
+      ipAddress: '127.0.0.1',
+      memberAgent: 'Admin Control System',
+      status: 'success'
     });
 
     return {success: true,
-  message: `Member ${targetMember.name} removed successfully`
+      message: `Member ${targetMember.name} removed successfully`
     };
   }
 
   public updateMember(
-  superMemberId: string,
-targetMemberId: string,
-updates: Partial<AdminMemberItem>,
+    superMemberId: string,
+    targetMemberId: string,
+    updates: Partial<AdminMemberItem>,
   ): {
   success: boolean; message: string } {
     // Only OWNER (SuperAdmin) can update members
     if (!this.isSuperAdmin(superMemberId)) {
       return {success: false,
-  message: "Only SuperAdmin can update members" };
+        message: 'Only SuperAdmin can update members' };
     }
 
     const targetMember = this.getMemberById(targetMemberId);
     if (!targetMember) {
       return {success: false,
-  message: "Member not found" };
+        message: 'Member not found' };
     }
 
     // Prevent OWNER from downgrading their own role through updates
     if (
       targetMemberId === superMemberId &&
       updates.role &&
-      updates.role !== "OWNER"
+      updates.role !== 'OWNER'
     ) {
       return {success: false,
-  message: "SuperAdmin cannot downgrade their own role"
+        message: 'SuperAdmin cannot downgrade their own role'
       };
     }
 
@@ -227,22 +260,22 @@ updates: Partial<AdminMemberItem>,
 
     // Log the action
     this.addAuditLogItem({memberId: superMemberId,
-  actionId: "member-update",
-  details: `Updated member ${targetMember.name}`,
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "success"
+      actionId: 'member-update',
+      details: `Updated member ${targetMember.name}`,
+      ipAddress: '127.0.0.1',
+      memberAgent: 'Admin Control System',
+      status: 'success'
     });
 
     return {success: true,
-  message: `Member ${targetMember.name} updated successfully`
+      message: `Member ${targetMember.name} updated successfully`
     };
   }
 
   public async executeAction(
-  actionId: string,
-memberId: string,
-_pin: string,
+    actionId: string,
+    memberId: string,
+    _pin: string,
     biometricData?: string,
     otp?: string,
     geoLocation?: string,
@@ -252,13 +285,13 @@ _pin: string,
 
     if (!action || !member) {
       return {success: false,
-  message: "Invalid action or member" };
+        message: 'Invalid action or member' };
     }
 
     // Check member permissions
-    if (member.role !== "OWNER" && member.role !== "ADMIN") {
+    if (member.role !== 'OWNER' && member.role !== 'ADMIN') {
       return {success: false,
-  message: "Insufficient permissions" };
+        message: 'Insufficient permissions' };
     }
 
     // OWNER (SuperAdmin) can bypass some restrictions
@@ -272,20 +305,20 @@ _pin: string,
       !isSuperAdmin
     ) {
       return {success: false,
-  message: "Action not allowed from your location"
+        message: 'Action not allowed from your location'
       };
     }
 
     // Check biometric requirement (OWNER can bypass in emergencies)
     if (action.requiresBiometric && !biometricData && !isSuperAdmin) {
       return {success: false,
-  message: "Biometric verification required" };
+        message: 'Biometric verification required' };
     }
 
     // Check OTP requirement (OWNER can bypass in emergencies)
     if (action.requiresOTP && !otp && !isSuperAdmin) {
       return {success: false,
-  message: "OTP required" };
+        message: 'OTP required' };
     }
 
     // Check multi-signature requirement (OWNER can bypass for non-critical actions)
@@ -319,7 +352,7 @@ required: ${action.minSignatures} signatures needed`,
     }
 
     return {success: true,
-  message: action.requiresConfirmation
+      message: action.requiresConfirmation
         ? `Action "${action.description}" scheduled to execute in ${action.confirmationWindow} seconds`
         : `Action "${action.description}" executed successfully`
     };
@@ -336,27 +369,27 @@ required: ${action.minSignatures} signatures needed`,
       if (action) {
         // Log cancellation
         this.auditLogs.push({id: `log-${Date.now()}`,
-memberId: "system",
-actionId: action.id,
-timestamp: new Date(),
-details: "Action cancelled by member",
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "cancelled"
+          memberId: 'system',
+          actionId: action.id,
+          timestamp: new Date(),
+          details: 'Action cancelled by member',
+          ipAddress: '127.0.0.1',
+          memberAgent: 'Admin Control System',
+          status: 'cancelled'
         });
 
         return {success: true,
-  message: "Action cancelled successfully" };
+          message: 'Action cancelled successfully' };
       }
     }
 
     return {success: false,
-  message: "No active action to cancel" };
+      message: 'No active action to cancel' };
   }
 
   private performAction(
-  actionId: string,
-memberId: string,
+    actionId: string,
+    memberId: string,
   ): {
   success: boolean; message: string } {
     const action = this.getActionById(actionId);
@@ -364,40 +397,40 @@ memberId: string,
 
     if (!action || !member) {
       return {success: false,
-  message: "Invalid action or member" };
+        message: 'Invalid action or member' };
     }
 
     // Simulate action execution
-    action.status = "executing";
+    action.status = 'executing';
     action.executionTime = new Date();
 
     // Log the action
     this.auditLogs.push({id: `log-${Date.now()}`,
-memberId: member.id,
-actionId: action.id,
-timestamp: new Date(),
-details: `Executing,
+      memberId: member.id,
+      actionId: action.id,
+      timestamp: new Date(),
+      details: `Executing,
 action: ${action.description}`,
-ipAddress: "127.0.0.1",
-memberAgent: "Admin Control System",
-status: "success"
+      ipAddress: '127.0.0.1',
+      memberAgent: 'Admin Control System',
+      status: 'success'
     });
 
     // Simulate action completion
     setTimeout(() => {
-      action.status = "completed";
+      action.status = 'completed';
     }, 2000);
 
     return {success: true,
-  message: "Action executed successfully" };
+      message: 'Action executed successfully' };
   }
 
   public addAuditLogItem(
-  log: Omit<AuditLogItem, "id" | "timestamp">): void {
+    log: Omit<AuditLogItem, 'id' | 'timestamp'>): void {
     this.auditLogs.push({
       ...log,
-id: `log-${Date.now()}`,
-timestamp: new Date()
+      id: `log-${Date.now()}`,
+      timestamp: new Date()
     });
   }
 

@@ -29,7 +29,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ filePath, className = '
         const text = await response.text();
         setContent(text);
       } catch (err) {
-        console.error("Error fetching markdown:", err);
+        console.error('Error fetching markdown:', err);
         setError((err as Error).message || 'Failed to load content.');
       } finally {
         setLoading(false);

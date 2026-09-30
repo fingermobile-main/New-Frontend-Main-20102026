@@ -60,7 +60,7 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
                 className={`w-40 h-40 rounded-full border-4 border-white shadow-2xl ${
                   callStatus === 'connecting' ? 'animate-pulse' : ''
                 }`}
-               />
+              />
             ) : (
               <div className={`w-40 h-40 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center shadow-2xl ${
                 callStatus === 'connecting' ? 'animate-pulse' : ''

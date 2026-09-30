@@ -1,6 +1,6 @@
 import React, {} from 'react';
 import AdvancedAnalyticsDashboard from '../components/dashboard/AdvancedAnalyticsDashboard';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { ChartBarIcon } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
 
@@ -30,7 +30,7 @@ const AdvancedAnalyticsPage: React.FC = () => {
           <div className="lg:col-span-3">
             <AdvancedAnalyticsDashboard />
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

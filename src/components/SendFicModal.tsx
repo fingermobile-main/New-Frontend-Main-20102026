@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { toast } from 'react-toastify';
 import { Web3Context } from '../contexts/Web3Context';
 
@@ -62,7 +62,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
       <div className="bg-white rounded-lg max-w-md w-full">
         <div className="p-6">
           <h3 className="text-xl font-bold mb-4">Send FIC</h3>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Recipient</label>
@@ -74,7 +74,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
                 placeholder="Enter wallet address or username"
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Amount (FIC)</label>
               <div className="relative">
@@ -93,7 +93,7 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
               </div>
               <p className="mt-1 text-sm text-gray-500">Available: {balance} FIC</p>
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>
               <textarea
@@ -104,13 +104,13 @@ const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
                 rows={3}
               />
             </div>
-            
+
             {error && (
               <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">
                 {error}
               </div>
             )}
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 type="button"

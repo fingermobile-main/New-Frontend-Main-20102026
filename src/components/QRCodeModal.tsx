@@ -80,7 +80,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
                   width={size}
                   height={size}
                   className="rounded"
-                 />
+                />
               </div>
             </div>
 
@@ -135,7 +135,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
               <span>⬇️</span>
               Download
             </button>
-            
+
             <button
               onClick={handleCopy}
               className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
@@ -143,7 +143,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
               <span>📋</span>
               Copy
             </button>
-            
+
             <button
               onClick={onClose}
               className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"

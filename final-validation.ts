@@ -93,7 +93,7 @@ testAuthResponse: LoginResponseExtended = {success: true,
   message: 'Login successful',
   accessToken: 'access-token',
   refreshToken: 'refresh-token',
-  user: {,
+  user: {
   id: 'user-123',
   email: 'test@example.com',
   firstName: 'Test',

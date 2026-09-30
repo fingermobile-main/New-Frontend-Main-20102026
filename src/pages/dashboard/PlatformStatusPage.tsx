@@ -1,88 +1,104 @@
-import React, {} from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminOperationsService, SystemHealthNode } from '../../services/adminOperationsService';
 import { useAppContext } from '../../contexts/AppContext';
-import { MOCK_MODULE_STATUSES, MOCK_COMPLIANCE_STATUSES } from '../../constants';
-// FIX: Remove unused ModuleStatus import, keep only what's needed
-// ModuleStatus is a string union type, not used directly in this component
 
 const PlatformStatusPage: React.FC = () => {
-    // FIX: Remove unused showToast variable
-    const {} = useAppContext();
+  const { showToast } = useAppContext();
+  const [nodes, setNodes] = useState<SystemHealthNode[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    // FIX: Use specific type instead of any for module items
-    interface ModuleItem {
-        name?: string;
-        module?: string;
-        engine?: string;
-        status?: string;
-        [key: string]: any;
+  useEffect(() => {
+    loadStatus();
+  }, []);
+
+  const loadStatus = async () => {
+    try {
+      setLoading(true);
+      const data = await adminOperationsService.getSystemStatus();
+      setNodes(data);
+    } catch {
+      showToast('Error loading platform status', 'error');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    // FIX: Add type guard to handle both string union types and object structures
-    const ModuleStatusCard: React.FC<{ item: ModuleItem }> = ({ item }) => {
-        // Guard against string values (like 'error' from ModuleStatus union type)
-        if (typeof item === 'string' || !item) {
-            return (
-                <div className="bg-red-50 p-4 rounded-lg border text-red-600">
-                    Error rendering module status
-                </div>
-            );
-        }
-
-        return (
-            <div className="bg-gray-50 p-4 rounded-lg border">
-                <p className="font-bold text-gray-800">{item.module || item.name || 'Unknown'}</p>
-                <p className="text-sm text-gray-500">{item.engine || ''}</p>
-                <p className="text-xs font-semibold text-yellow-600 mt-2">{item.status || 'unknown'}</p>
-            </div>
-        );
-    };
-
-    // FIX: Define proper type for compliance items based on actual mock data structure
-    interface ComplianceItem {
-        policyId?: string;
-        memberId?: string;
-        accepted?: boolean;
-        acceptedAt?: string;
-        requiresRenewal?: boolean;
-        name?: string;
-        status?: string;
-        [key: string]: any;
+  const handleRefresh = async () => {
+    try {
+      setLoading(true);
+      const data = await adminOperationsService.triggerHealthCheck();
+      setNodes(data);
+      showToast('Health checks dispatched across all nodes', 'success');
+    } catch {
+      showToast('Health check failed', 'error');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const ComplianceStatusCard: React.FC<{ item: ComplianceItem }> = ({ item }) => (
-        <div className="bg-gray-50 p-4 rounded-lg border flex justify-between items-center">
-            <p className="font-bold text-gray-800">{item.name || item.policyId || 'Policy'}</p>
-            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                item.accepted ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-            }`}>
-                {item.accepted ? 'Accepted' : 'Pending'}
-            </span>
-        </div>
-    );
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Operational</span>;
+      case 'degraded':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">Degraded</span>;
+      case 'offline':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Offline</span>;
+      default:
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300">Maintenance</span>;
+    }
+  };
 
-    return (
+  return (
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
         <div>
-            <h1 className="text-2xl font-bold mb-6">Platform Operations Status</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                    <h2 className="text-xl font-bold mb-4">Module Status</h2>
-                    <div className="space-y-4">
-                        {MOCK_MODULE_STATUSES.map((item, index) => (
-                            <ModuleStatusCard key={index} item={item as ModuleItem} />
-                        ))}
-                    </div>
-                </div>
-                <div>
-                    <h2 className="text-xl font-bold mb-4">Compliance Status</h2>
-                    <div className="space-y-4">
-                        {MOCK_COMPLIANCE_STATUSES.map((item, index) => (
-                            <ComplianceStatusCard key={index} item={item as ComplianceItem} />
-                        ))}
-                    </div>
-                </div>
-            </div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Platform Operations & Node Status</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Live PostgreSQL-backed cluster telemetry and service heartbeats</p>
         </div>
-    );
+        <button
+          onClick={handleRefresh}
+          disabled={loading}
+          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition shadow-sm text-sm"
+        >
+          {loading ? 'Polling Nodes...' : 'Run Diagnostics'}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {nodes.map((node) => (
+          <div key={node.id} className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div className="flex justify-between items-start mb-3">
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-base">{node.service_name}</h3>
+                <span className="text-xs uppercase font-mono tracking-wider text-gray-400">{node.category}</span>
+              </div>
+              {getStatusBadge(node.status)}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/50 text-sm">
+              <div>
+                <span className="text-xs text-gray-500 block">Latency</span>
+                <span className="font-semibold text-gray-800 dark:text-gray-200">{node.latency_ms} ms</span>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500 block">Uptime</span>
+                <span className="font-semibold text-green-600 dark:text-green-400">{node.uptime_pct}%</span>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500 block">Version</span>
+                <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{node.version}</span>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500 block">Last Check</span>
+                <span className="text-xs text-gray-700 dark:text-gray-300">{node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'Just now'}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default PlatformStatusPage;

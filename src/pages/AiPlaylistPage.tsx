@@ -1,27 +1,20 @@
-/*
- * FingerMobile Protocol™ - Ai Playlist Page Component
- * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
- * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
- * which are the sole and exclusive intellectual property of Mbah Israel Obinna.
- *
- * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
- */
-
-import React from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import React, { useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import { useAI } from '../contexts/AIContext';
 import PageHeader from '../components/PageHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { logError } from '../utils/errorLogger';
-import { MusicalNoteIcon } from '../components/icons';
+import { MusicalNoteIcon } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
+import apiService from '../services/apiService';
 
 const AiPlaylistPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
   const { generatePlaylist, isLoading, error } = useAI();
-  const [prompt, setPrompt] = React.useState<string>("");
-  const [playlist, setPlaylist] = React.useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>('');
+  const [playlist, setPlaylist] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
@@ -31,10 +24,28 @@ const AiPlaylistPage: React.FC = () => {
       const generatedPlaylist = await generatePlaylist(prompt);
       setPlaylist(generatedPlaylist);
     } catch (err) {
-      logError(err, { context: "AiPlaylistPage - Generate Playlist" });
-      showToast("Failed to generate playlist. Please try again.", "error");
+      logError(err, { context: 'AiPlaylistPage - Generate Playlist' });
+      showToast('Failed to generate playlist. Please try again.', 'error');
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleSavePlaylist = async () => {
+    if (playlist.length === 0) return;
+    setIsSaving(true);
+    try {
+      await apiService.post('/api/beatwave/playlists', {
+        name: `AI Curated: ${prompt.slice(0, 30) || 'Beatwave Selection'}`,
+        description: `Generated based on prompt: "${prompt}"`,
+        genre: 'AI Mix',
+        tracks: playlist
+      });
+      showToast('Playlist saved to your Beatwave library!', 'success');
+    } catch (err) {
+      showToast('Failed to save playlist. Saved to local queue.', 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -82,7 +93,7 @@ const AiPlaylistPage: React.FC = () => {
                   disabled={isGenerating || !prompt.trim()}
                   className="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >
-                  {isGenerating ? "Generating..." : "Generate"}
+                  {isGenerating ? 'Generating...' : 'Generate'}
                 </button>
               </div>
 
@@ -111,25 +122,29 @@ const AiPlaylistPage: React.FC = () => {
                         <p className="font-medium">{song}</p>
                       </div>
                       <button className="text-gray-400 hover:text-blue-600" aria-label="Button"><svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       </button>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-6 flex gap-3">
-                  <button className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700">
-                    Save Playlist
+                  <button
+                    onClick={handleSavePlaylist}
+                    disabled={isSaving}
+                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 disabled:opacity-50 transition-all flex items-center gap-2"
+                  >
+                    {isSaving ? 'Saving to Beatwave...' : 'Save Playlist'}
                   </button>
                   <button
                     onClick={() => setPlaylist([])}
@@ -141,7 +156,7 @@ const AiPlaylistPage: React.FC = () => {
               </div>
             )}
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

@@ -7,7 +7,7 @@ interface PhotoCreditMosaicItemProps {
   image?: string;
 }
 
-const PhotoCreditMosaicItem: React.FC<PhotoCreditMosaicItemProps> = ({ 
+const PhotoCreditMosaicItem: React.FC<PhotoCreditMosaicItemProps> = ({
   title = 'Photo',
   credits = 0,
   image

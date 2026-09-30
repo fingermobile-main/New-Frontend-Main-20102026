@@ -125,13 +125,13 @@ const CreatorDashboard: React.FC = () => {
           { id: '3', name: 'Total Comments', value: '5.2K', change: 15.2, icon: 'ChatBubbleLeftRightIcon', color: 'bg-green-500' },
           { id: '4', name: 'Total Shares', value: '3.7K', change: -2.1, icon: 'ShareIcon', color: 'bg-purple-500' }
         ]);
-        
+
         setContentPerformance([
           { id: '1', title: 'New Product Launch', thumbnail: 'video', likes: 1240, comments: 89, views: 12400, engagement: 12.4 },
           { id: '2', title: 'Behind the Scenes', thumbnail: 'video', likes: 890, comments: 45, views: 8900, engagement: 9.8 },
           { id: '3', title: 'Tutorial Guide', thumbnail: 'document', likes: 2100, comments: 120, views: 15600, engagement: 18.2 }
         ]);
-        
+
         setScheduledContent([
           { id: '1', title: 'Weekly Recap', date: '2023-06-15', type: 'Video' },
           { id: '2', title: 'Product Demo', date: '2023-06-18', type: 'Image' },
@@ -153,7 +153,7 @@ const CreatorDashboard: React.FC = () => {
           { range: '35-44', members: '0.8K', percentage: 8 },
           { range: '45+', members: '0.4K', percentage: 4 }
         ]);
-        
+
         setTopInterests([
           { interest: 'Technology', percentage: 32 },
           { interest: 'Gaming', percentage: 28 },
@@ -161,7 +161,7 @@ const CreatorDashboard: React.FC = () => {
           { interest: 'Sports', percentage: 12 },
           { interest: 'Fashion', percentage: 6 }
         ]);
-        
+
         setGeographicReach([
           { country: 'United States', reach: 42 },
           { country: 'Canada', reach: 18 },
@@ -194,7 +194,7 @@ const CreatorDashboard: React.FC = () => {
           { id: '2', title: 'Product Demo', date: '2023-06-18', type: 'Image' },
           { id: '3', title: 'Q&A Session', date: '2023-06-20', type: 'Live' }
         ]);
-        
+
         setBestPostingTimes([
           { day: 'Monday', time: '9:00 AM', engagement: 'Very High' },
           { day: 'Wednesday', time: '2:00 PM', engagement: 'High' },
@@ -211,27 +211,27 @@ const CreatorDashboard: React.FC = () => {
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
-      case 'EyeIcon':
-        return <EyeIcon className="w-6 h-6" />;
-      case 'HeartIcon':
-        return <HeartIcon className="w-6 h-6" />;
-      case 'ChatBubbleLeftRightIcon':
-        return <ChatBubbleLeftRightIcon className="w-6 h-6" />;
-      case 'ShareIcon':
-        return <ShareIcon className="w-6 h-6" />;
-      case 'CurrencyDollarIcon':
-        return <CurrencyDollarIcon className="w-6 h-6" />;
-      case 'ArrowTrendingUpIcon':
-      case 'TrendingUpIcon':  // Same icon for both names to maintain compatibility
-        return <ArrowTrendingUpIcon className="w-6 h-6" />;
-      case 'VideoCameraIcon':
-        return <VideoCameraIcon className="w-6 h-6" />;
-      case 'PhotoIcon':
-        return <PhotoIcon className="w-6 h-6" />;
-      case 'DocumentTextIcon':
-        return <DocumentTextIcon className="w-6 h-6" />;
-      default:
-        return <ChartBarIcon className="w-6 h-6" />;
+    case 'EyeIcon':
+      return <EyeIcon className="w-6 h-6" />;
+    case 'HeartIcon':
+      return <HeartIcon className="w-6 h-6" />;
+    case 'ChatBubbleLeftRightIcon':
+      return <ChatBubbleLeftRightIcon className="w-6 h-6" />;
+    case 'ShareIcon':
+      return <ShareIcon className="w-6 h-6" />;
+    case 'CurrencyDollarIcon':
+      return <CurrencyDollarIcon className="w-6 h-6" />;
+    case 'ArrowTrendingUpIcon':
+    case 'TrendingUpIcon':  // Same icon for both names to maintain compatibility
+      return <ArrowTrendingUpIcon className="w-6 h-6" />;
+    case 'VideoCameraIcon':
+      return <VideoCameraIcon className="w-6 h-6" />;
+    case 'PhotoIcon':
+      return <PhotoIcon className="w-6 h-6" />;
+    case 'DocumentTextIcon':
+      return <DocumentTextIcon className="w-6 h-6" />;
+    default:
+      return <ChartBarIcon className="w-6 h-6" />;
     }
   };
 
@@ -466,8 +466,8 @@ const CreatorDashboard: React.FC = () => {
                           <HeartIcon className="w-4 h-4" />
                         </button>
                         <button className="p-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg" aria-label="Button"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                          </svg>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
                         </button>
                       </div>
                     </div>
@@ -832,10 +832,10 @@ const CreatorDashboard: React.FC = () => {
                             time.engagement === 'Very High'
                               ? 'bg-green-500/20 text-green-700 dark:text-green-300'
                               : time.engagement === 'High'
-                              ? 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300'
-                              : time.engagement === 'Medium'
-                              ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300'
-                              : 'bg-gray-500/20 text-gray-700 dark:text-gray-300'
+                                ? 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300'
+                                : time.engagement === 'Medium'
+                                  ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300'
+                                  : 'bg-gray-500/20 text-gray-700 dark:text-gray-300'
                           }`}>
                             {time.engagement} Engagement
                           </span>

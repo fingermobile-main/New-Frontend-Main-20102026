@@ -54,11 +54,11 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
       setLoading(true);
       const data = await flamingoService.getBrandSizings();
       setBrandSizings(data || []);
-      
+
       if (!selectedBrand && data && data.length > 0) {
         setSelectedBrand(data[0].brand_name);
       }
-      
+
       setError(null);
     } catch (err) {
       setError('Failed to load brand sizing information');
@@ -72,18 +72,18 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
 
   const getFitAdvice = (pattern: string) => {
     switch (pattern) {
-      case 'runs_small':
-        return 'Consider sizing up for a comfortable fit';
-      case 'runs_large':
-        return 'Consider sizing down for a better fit';
-      case 'slim_fit':
-        return 'Designed for a close-to-body fit';
-      case 'relaxed_fit':
-        return 'Designed for a loose, comfortable fit';
-      case 'oversized':
-        return 'Intentionally oversized for a streetwear look';
-      default:
-        return 'Order your usual size';
+    case 'runs_small':
+      return 'Consider sizing up for a comfortable fit';
+    case 'runs_large':
+      return 'Consider sizing down for a better fit';
+    case 'slim_fit':
+      return 'Designed for a close-to-body fit';
+    case 'relaxed_fit':
+      return 'Designed for a loose, comfortable fit';
+    case 'oversized':
+      return 'Intentionally oversized for a streetwear look';
+    default:
+      return 'Order your usual size';
     }
   };
 

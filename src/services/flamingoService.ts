@@ -134,13 +134,13 @@ class FlamingoService {
   }
 
   async getSizeChart(
-  id: string): Promise<FlamingoSizeChart> {
+    id: string): Promise<FlamingoSizeChart> {
     const response = await api.get(`${this.baseUrl}/size-charts/${id}`);
     return response.data;
   }
 
   async createSizeChart(
-  chartData: Partial<FlamingoSizeChart>): Promise<FlamingoSizeChart> {
+    chartData: Partial<FlamingoSizeChart>): Promise<FlamingoSizeChart> {
     const response = await api.post(`${this.baseUrl}/size-charts`, chartData);
     return response.data;
   }
@@ -152,21 +152,21 @@ class FlamingoService {
   }
 
   async getBrandSizing(
-  brandName: string): Promise<FlamingoBrandSizing> {
+    brandName: string): Promise<FlamingoBrandSizing> {
     const response = await api.get(`${this.baseUrl}/brand-sizings/${encodeURIComponent(brandName)}`);
     return response.data;
   }
 
   async updateBrandSizing(
-  brandName: string,
-sizingData: Partial<FlamingoBrandSizing>): Promise<FlamingoBrandSizing> {
+    brandName: string,
+    sizingData: Partial<FlamingoBrandSizing>): Promise<FlamingoBrandSizing> {
     const response = await api.put(`${this.baseUrl}/brand-sizings/${encodeURIComponent(brandName)}`, sizingData);
     return response.data;
   }
 
   // User Measurements
   async getMeasurements(
-  userId: string): Promise<FlamingoMeasurements | null> {
+    userId: string): Promise<FlamingoMeasurements | null> {
     try {
       const response = await api.get(`${this.baseUrl}/measurements/${userId}`);
       return response.data;
@@ -176,30 +176,30 @@ sizingData: Partial<FlamingoBrandSizing>): Promise<FlamingoBrandSizing> {
   }
 
   async saveMeasurements(
-  userId: string,
-measurements: Partial<FlamingoMeasurements>): Promise<FlamingoMeasurements> {
+    userId: string,
+    measurements: Partial<FlamingoMeasurements>): Promise<FlamingoMeasurements> {
     const response = await api.post(`${this.baseUrl}/measurements/${userId}`, measurements);
     return response.data;
   }
 
   async updateMeasurements(
-  userId: string,
-measurements: Partial<FlamingoMeasurements>): Promise<FlamingoMeasurements> {
+    userId: string,
+    measurements: Partial<FlamingoMeasurements>): Promise<FlamingoMeasurements> {
     const response = await api.put(`${this.baseUrl}/measurements/${userId}`, measurements);
     return response.data;
   }
 
   // Size Recommendations
   async getSizeRecommendations(
-  userId: string, params?: { brand_name?: string; category_id?: string }): Promise<FlamingoSizeRecommendation[]> {
+    userId: string, params?: { brand_name?: string; category_id?: string }): Promise<FlamingoSizeRecommendation[]> {
     const response = await api.get(`${this.baseUrl}/users/${userId}/recommendations`, { params });
     return response.data;
   }
 
   async getSizeRecommendation(
-  userId: string,
-brandName: string,
-categoryId: string): Promise<FlamingoSizeRecommendation | null> {
+    userId: string,
+    brandName: string,
+    categoryId: string): Promise<FlamingoSizeRecommendation | null> {
     try {
       const response = await api.get(`${this.baseUrl}/users/${userId}/recommendations/${encodeURIComponent(brandName)}/${categoryId}`);
       return response.data;
@@ -209,59 +209,59 @@ categoryId: string): Promise<FlamingoSizeRecommendation | null> {
   }
 
   async submitFeedback(
-  recommendationId: string,
-feedback: 'perfect' | 'too_small' | 'too_large' | 'not_tried'): Promise<void> {
+    recommendationId: string,
+    feedback: 'perfect' | 'too_small' | 'too_large' | 'not_tried'): Promise<void> {
     await api.post(`${this.baseUrl}/recommendations/${recommendationId}/feedback`, { feedback });
   }
 
   // Outfits
   async getOutfits(
-  userId: string, params?: { is_public?: boolean; is_favorite?: boolean; occasion?: string }): Promise<FlamingoOutfit[]> {
+    userId: string, params?: { is_public?: boolean; is_favorite?: boolean; occasion?: string }): Promise<FlamingoOutfit[]> {
     const response = await api.get(`${this.baseUrl}/users/${userId}/outfits`, { params });
     return response.data;
   }
 
   async getOutfit(
-  outfitId: string): Promise<FlamingoOutfit> {
+    outfitId: string): Promise<FlamingoOutfit> {
     const response = await api.get(`${this.baseUrl}/outfits/${outfitId}`);
     return response.data;
   }
 
   async createOutfit(
-  outfitData: Partial<FlamingoOutfit>): Promise<FlamingoOutfit> {
+    outfitData: Partial<FlamingoOutfit>): Promise<FlamingoOutfit> {
     const response = await api.post(`${this.baseUrl}/outfits`, outfitData);
     return response.data;
   }
 
   async updateOutfit(
-  outfitId: string,
-outfitData: Partial<FlamingoOutfit>): Promise<FlamingoOutfit> {
+    outfitId: string,
+    outfitData: Partial<FlamingoOutfit>): Promise<FlamingoOutfit> {
     const response = await api.put(`${this.baseUrl}/outfits/${outfitId}`, outfitData);
     return response.data;
   }
 
   async deleteOutfit(
-  outfitId: string): Promise<void> {
+    outfitId: string): Promise<void> {
     await api.delete(`${this.baseUrl}/outfits/${outfitId}`);
   }
 
   // Outfit Items
   async addOutfitItem(
-  outfitId: string,
-itemData: Partial<FlamingoOutfitItem>): Promise<FlamingoOutfitItem> {
+    outfitId: string,
+    itemData: Partial<FlamingoOutfitItem>): Promise<FlamingoOutfitItem> {
     const response = await api.post(`${this.baseUrl}/outfits/${outfitId}/items`, itemData);
     return response.data;
   }
 
   async updateOutfitItem(
-  itemId: string,
-itemData: Partial<FlamingoOutfitItem>): Promise<FlamingoOutfitItem> {
+    itemId: string,
+    itemData: Partial<FlamingoOutfitItem>): Promise<FlamingoOutfitItem> {
     const response = await api.put(`${this.baseUrl}/outfit-items/${itemId}`, itemData);
     return response.data;
   }
 
   async removeOutfitItem(
-  itemId: string): Promise<void> {
+    itemId: string): Promise<void> {
     await api.delete(`${this.baseUrl}/outfit-items/${itemId}`);
   }
 
@@ -274,12 +274,12 @@ itemData: Partial<FlamingoOutfitItem>): Promise<FlamingoOutfitItem> {
 
   // Like/Save Outfit
   async likeOutfit(
-  outfitId: string): Promise<void> {
+    outfitId: string): Promise<void> {
     await api.post(`${this.baseUrl}/outfits/${outfitId}/like`);
   }
 
   async saveOutfit(
-  outfitId: string): Promise<void> {
+    outfitId: string): Promise<void> {
     await api.post(`${this.baseUrl}/outfits/${outfitId}/save`);
   }
 }

@@ -1,12 +1,12 @@
 export interface SubProfile {
-  id: string; 
+  id: string;
   memberId: string;
   name: string;
   avatar?: string;
   avatarUrl?: string;
   animatedAvatarUrl?: string;
   type?: string;
-  createdAt: string; 
+  createdAt: string;
   isDefault: boolean;
   blockedContentIds: string[];
   permissions?: string[];
@@ -14,7 +14,7 @@ export interface SubProfile {
 }
 
 export interface User {
-  id: string; 
+  id: string;
   email: string;
   username: string;
   name?: string;
@@ -107,13 +107,13 @@ export interface SuggestedMember {
 }
 
 export interface DanciaMember {
-  id: number; 
+  id: number;
   email: string;
-  name: string; 
+  name: string;
   username: string;
-  handle: string; 
+  handle: string;
   role: string;
-  phoneVerified: boolean; 
+  phoneVerified: boolean;
   twoFactorEnabled: boolean;
   multiFactorEnabled: boolean;
   subscriptionPlanID?: string;

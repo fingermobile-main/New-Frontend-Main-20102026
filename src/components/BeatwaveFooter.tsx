@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { Volume2, SkipBack, Play, Pause, SkipForward, Repeat, Shuffle } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Slider } from "@/components/ui/Slider";
+import { Volume2, SkipBack, Play, Pause, SkipForward, Repeat, Shuffle } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Slider } from '@/components/ui/Slider';
 
 interface BeatwaveFooterProps {
   isPlaying?: boolean;

@@ -36,7 +36,7 @@ interface Dancia4TvContextType {
   loadRecommendations: (memberId: string) => void;
   subscribeToPlan: (planID: string) => void;
   unsubscribeFromPlan: (planID: string) => void;
-  getMemberSubscriptionStatus: (planType: DanciaSubscriptionPlan["type"]) => boolean;
+  getMemberSubscriptionStatus: (planType: DanciaSubscriptionPlan['type']) => boolean;
 }
 
 const Dancia4TvContext = createContext<Dancia4TvContextType | undefined>(undefined);
@@ -44,7 +44,7 @@ const Dancia4TvContext = createContext<Dancia4TvContextType | undefined>(undefin
 export const useDancia4Tv = (): Dancia4TvContextType => {
   const context = useContext(Dancia4TvContext);
   if (context === undefined) {
-    throw new Error("useDancia4Tv must be used within a Dancia4TvProvider");
+    throw new Error('useDancia4Tv must be used within a Dancia4TvProvider');
   }
   return context;
 };
@@ -58,44 +58,44 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
   const [currentVideo, setCurrentVideo] = useState<DanciaVideo | null>(null);
   const [subscriptionPlans] = useState<DanciaSubscriptionPlan[]>([
     {
-      planID: "1",
-      name: "Pay-Tv & Live Broadcast",
-      type: "Pay-Tv",
-      features: ["Live TV channels", "Sports events", "News broadcasts", "Real-time content", "Multiple device streaming", "DVR functionality"],
-      pricing: { monthly: 29.99, yearly: 299.99, currency: "USD" },
-      coverageRegions: ["USA", "Europe", "Australia", "Africa", "Asia", "Middle East"]
+      planID: '1',
+      name: 'Pay-Tv & Live Broadcast',
+      type: 'Pay-Tv',
+      features: ['Live TV channels', 'Sports events', 'News broadcasts', 'Real-time content', 'Multiple device streaming', 'DVR functionality'],
+      pricing: { monthly: 29.99, yearly: 299.99, currency: 'USD' },
+      coverageRegions: ['USA', 'Europe', 'Australia', 'Africa', 'Asia', 'Middle East']
     },
     {
-      planID: "2",
-      name: "SVOD",
-      type: "SVOD",
-      features: ["Ad-free streaming", "Unlimited access to library", "Multiple devices", "Offline downloads", "4K content", "Exclusive originals"],
-      pricing: { monthly: 12.99, yearly: 119.99, currency: "USD" },
-      coverageRegions: ["USA", "Europe", "Australia", "Africa", "Asia", "Middle East"]
+      planID: '2',
+      name: 'SVOD',
+      type: 'SVOD',
+      features: ['Ad-free streaming', 'Unlimited access to library', 'Multiple devices', 'Offline downloads', '4K content', 'Exclusive originals'],
+      pricing: { monthly: 12.99, yearly: 119.99, currency: 'USD' },
+      coverageRegions: ['USA', 'Europe', 'Australia', 'Africa', 'Asia', 'Middle East']
     },
     {
-      planID: "3",
-      name: "TVOD",
-      type: "TVOD",
-      features: ["Rent individual content", "Keep content for 48 hours", "HD/4K quality", "New releases", "Classic films", "Premium content"],
-      pricing: { perItem: 4.99, currency: "USD" },
-      coverageRegions: ["USA", "Europe", "Australia", "Africa", "Asia", "Middle East"]
+      planID: '3',
+      name: 'TVOD',
+      type: 'TVOD',
+      features: ['Rent individual content', 'Keep content for 48 hours', 'HD/4K quality', 'New releases', 'Classic films', 'Premium content'],
+      pricing: { perItem: 4.99, currency: 'USD' },
+      coverageRegions: ['USA', 'Europe', 'Australia', 'Africa', 'Asia', 'Middle East']
     },
     {
-      planID: "4",
-      name: "AVOD",
-      type: "AVOD",
-      features: ["Free content with ads", "Basic streaming quality", "Limited selection", "Mobile access", "Tablet access", "Smart TV access"],
-      pricing: { monthly: 0, yearly: 0, currency: "USD" },
-      coverageRegions: ["USA", "Europe", "Australia", "Africa", "Asia", "Middle East"]
+      planID: '4',
+      name: 'AVOD',
+      type: 'AVOD',
+      features: ['Free content with ads', 'Basic streaming quality', 'Limited selection', 'Mobile access', 'Tablet access', 'Smart TV access'],
+      pricing: { monthly: 0, yearly: 0, currency: 'USD' },
+      coverageRegions: ['USA', 'Europe', 'Australia', 'Africa', 'Asia', 'Middle East']
     },
     {
-      planID: "5",
-      name: "HVOD",
-      type: "HVOD",
-      features: ["Combination of all models", "Flexible pricing", "Premium features", "Ad-free options", "Live and on-demand content", "Personalized recommendations"],
-      pricing: { monthly: 19.99, yearly: 179.99, currency: "USD" },
-      coverageRegions: ["USA", "Europe", "Australia", "Africa", "Asia", "Middle East"]
+      planID: '5',
+      name: 'HVOD',
+      type: 'HVOD',
+      features: ['Combination of all models', 'Flexible pricing', 'Premium features', 'Ad-free options', 'Live and on-demand content', 'Personalized recommendations'],
+      pricing: { monthly: 19.99, yearly: 179.99, currency: 'USD' },
+      coverageRegions: ['USA', 'Europe', 'Australia', 'Africa', 'Asia', 'Middle East']
     }
   ]);
   const [playlists, setPlaylists] = useState<DanciaPlaylist[]>([]);
@@ -118,15 +118,15 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const savedMember = localStorage.getItem("dancia4tv_member");
+    const savedMember = localStorage.getItem('dancia4tv_member');
     if (savedMember) {
       try {
         setCurrentMember(JSON.parse(savedMember) as DanciaMember);
       } catch {
-        setError("Failed to process local credentials");
+        setError('Failed to process local credentials');
       }
     }
-  
+
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -136,9 +136,9 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
 
   useEffect(() => {
     if (currentMember) {
-      localStorage.setItem("dancia4tv_member", JSON.stringify(currentMember));
+      localStorage.setItem('dancia4tv_member', JSON.stringify(currentMember));
     } else {
-      localStorage.removeItem("dancia4tv_member");
+      localStorage.removeItem('dancia4tv_member');
     }
   }, [currentMember]);
 
@@ -169,7 +169,7 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
   }, []);
 
   const calculateEngagementScore = useCallback((feedback: DanciaMemberEngagementFeedback): number => {
-    let score = 0.5; 
+    let score = 0.5;
     if (feedback.liked) score += 0.2;
     if (!feedback.skipped && feedback.listenedPast30Sec) score += 0.15;
     if (feedback.saved) score += 0.1;
@@ -194,25 +194,25 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
     timerRef.current = setTimeout(() => {
       const mockRecommendations: DanciaVideo[] = [
         {
-          videoID: "1",
-          title: "Action Movie 1",
-          description: "An exciting action movie",
-          genre: "Action",
-          IARCClassification: { classificationID: "1", rating: "18+", description: "Contains explicit content" },
+          videoID: '1',
+          title: 'Action Movie 1',
+          description: 'An exciting action movie',
+          genre: 'Action',
+          IARCClassification: { classificationID: '1', rating: '18+', description: 'Contains explicit content' },
           monetizationModel: {
-            modelID: "1",
-            name: "Starter Pack",
-            description: "Starter monetization tier",
+            modelID: '1',
+            name: 'Starter Pack',
+            description: 'Starter monetization tier',
             revenueShare: 50,
-            currency: "USD",
+            currency: 'USD',
             thresholds: { likes: 1000000, shares: 100000, comments: 200000, watchTimeSeconds: 10000 }
           },
           uploadFee: 0,
           length: 7200,
-          resolution: "4K",
-          contentTags: ["action", "adventure"],
+          resolution: '4K',
+          contentTags: ['action', 'adventure'],
           uploadDate: new Date(),
-          uploaderID: "member1",
+          uploaderID: 'member1',
           engagementScore: 0.8,
           downloadCount: 1500000,
           shareCount: 250000,
@@ -221,25 +221,25 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
           mashupCount: 50000
         },
         {
-          videoID: "2",
-          title: "Drama Series 1",
-          description: "A compelling drama series",
-          genre: "Drama",
-          IARCClassification: { classificationID: "2", rating: "18+", description: "Contains mature themes" },
+          videoID: '2',
+          title: 'Drama Series 1',
+          description: 'A compelling drama series',
+          genre: 'Drama',
+          IARCClassification: { classificationID: '2', rating: '18+', description: 'Contains mature themes' },
           monetizationModel: {
-            modelID: "2",
-            name: "Gem Pack",
-            description: "Intermediate monetization tier",
+            modelID: '2',
+            name: 'Gem Pack',
+            description: 'Intermediate monetization tier',
             revenueShare: 60,
-            currency: "USD",
+            currency: 'USD',
             thresholds: { likes: 2000000, shares: 300000, comments: 500000, watchTimeSeconds: 20000 }
           },
           uploadFee: 0,
           length: 3600,
-          resolution: "1080p",
-          contentTags: ["drama", "family"],
+          resolution: '1080p',
+          contentTags: ['drama', 'family'],
           uploadDate: new Date(),
-          uploaderID: "member2",
+          uploaderID: 'member2',
           engagementScore: 0.7,
           downloadCount: 900000,
           shareCount: 150000,
@@ -255,12 +255,12 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
 
   const subscribeToPlan = useCallback((planID: string) => {
     if (!currentMember) {
-      setError("You must be logged in to subscribe");
+      setError('You must be logged in to subscribe');
       return;
     }
     const plan = subscriptionPlans.find((p) => p.planID === planID);
     if (!plan) {
-      setError("Plan not found");
+      setError('Plan not found');
       return;
     }
     setCurrentMember({ ...currentMember, subscriptionPlanID: planID });
@@ -268,15 +268,15 @@ export const Dancia4TvProvider: React.FC<Dancia4TvProviderProps> = ({ children }
 
   const unsubscribeFromPlan = useCallback((planID: string) => {
     if (!currentMember) {
-      setError("You must be logged in to unsubscribe");
+      setError('You must be logged in to unsubscribe');
       return;
     }
     if (currentMember.subscriptionPlanID === planID) {
-      setCurrentMember({ ...currentMember, subscriptionPlanID: "" });
+      setCurrentMember({ ...currentMember, subscriptionPlanID: '' });
     }
   }, [currentMember]);
 
-  const getMemberSubscriptionStatus = useCallback((planType: DanciaSubscriptionPlan["type"]) => {
+  const getMemberSubscriptionStatus = useCallback((planType: DanciaSubscriptionPlan['type']) => {
     if (!currentMember) return false;
     const memberPlan = subscriptionPlans.find((plan) => plan.planID === currentMember.subscriptionPlanID);
     return memberPlan?.type === planType;

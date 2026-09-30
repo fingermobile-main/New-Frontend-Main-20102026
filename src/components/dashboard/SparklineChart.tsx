@@ -5,7 +5,7 @@ interface SparklineChartProps {
   color?: string;
 }
 
-const SparklineChart: React.FC<SparklineChartProps> = ({ 
+const SparklineChart: React.FC<SparklineChartProps> = ({
   data = [10, 25, 40, 35, 50, 65, 80],
   color = '#3B82F6'
 }) => {

@@ -27,13 +27,13 @@ export const useSubscriptions = (): UseSubscriptionsResult => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.get("/subscriptions"); // Adjust endpoint as needed
+      const response = await ApiService.get('/subscriptions'); // Adjust endpoint as needed
       if (response && typeof response.data !== 'undefined') {
         setSubscriptions(response.data as Subscription[]);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to fetch subscriptions.");
-      console.error("Error fetching subscriptions:", err);
+      setError(err.message || 'Failed to fetch subscriptions.');
+      console.error('Error fetching subscriptions:', err);
     } finally {
       setLoading(false);
     }

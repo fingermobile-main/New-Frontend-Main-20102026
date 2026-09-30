@@ -4,8 +4,27 @@ import React, {} from 'react';
  * Handles hallmark communities, memberships, and applications
  */
 
-import { api } from './api';
+import axios from 'axios';
+import { api as genericApi } from './api';
 import type { Hallmark } from '../types';
+
+const HALLMARKS_API_URL = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+const api = axios.create({
+  baseURL: HALLMARKS_API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+// Inherit token logic
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export interface HallmarkApplication {id: string; hallmarkId: string; applicantId: string; status: 'pending' | 'approved' | 'rejected'; applicationDate: string; requestedHallmark: { name: string; slug: string;
     logoUrl?: string;
@@ -26,18 +45,35 @@ class HallmarkService {
   }
 
   async getHallmarks(): Promise<Hallmark[]> {
-    const response = await api.get('/hallmarks');
-    return response.data;
+    try {
+      const response = await api.get('/hallmarks');
+      const list = response.data?.data || response.data?.hallmarks || (Array.isArray(response.data) ? response.data : []);
+      return list;
+    } catch (err) {
+      console.error('Failed to get hallmarks:', err);
+      return [];
+    }
   }
 
   async getHallmarkBySlug(slug: string): Promise<Hallmark> {
-    const response = await api.get(`/hallmarks/${slug}`);
-    return response.data;
+    try {
+      const response = await api.get(`/hallmarks/${slug}`);
+      return response.data?.data || response.data;
+    } catch (err) {
+      console.error('Failed to get hallmark by slug:', err);
+      throw err;
+    }
   }
 
   async applyForHallmark(application: Omit<HallmarkApplication, 'id' | 'status' | 'applicationDate'>): Promise<HallmarkApplication> {
-    const response = await api.post('/hallmarks/apply', application);
-    return response.data;
+    const response = await api.post('/hallmarks', {
+      name: application.requestedHallmark.name,
+      description: application.requestedHallmark.rules || 'Hallmark community badge',
+      category: 'community',
+      rarity: 'rare',
+      icon: application.requestedHallmark.logoUrl
+    });
+    return response.data?.data || response.data;
   }
 
   async joinHallmark(hallmarkId: string): Promise<void> {
@@ -58,12 +94,12 @@ class HallmarkService {
   }
 
   async updateMemberRole(hallmarkId: string, memberId: string,
-role: string): Promise<void> {
+    role: string): Promise<void> {
     await api.patch(`/hallmarks/${hallmarkId}/members/${memberId}`, { role });
   }
 
   async startSession(hallmarkId: string, type: string,
-title: string): Promise<{
+    title: string): Promise<{
   sessionId: string; pin: string }> {
     const response = await api.post(`/hallmarks/${hallmarkId}/sessions`, { type, title });
     return response.data;

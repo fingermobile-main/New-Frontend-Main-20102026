@@ -55,7 +55,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
   const handleBoost = async () => {
     try {
       setIsProcessing(true);
-      
+
       const boostData = {
         postId,
         budget,
@@ -65,11 +65,11 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
         estimatedReach: calculateReach(),
         estimatedImpressions: calculateImpressions()
       };
-      
+
       if (onBoost) {
         await onBoost(boostData);
       }
-      
+
       onClose();
     } catch (err) {
       console.error('Failed to boost post:', err);
@@ -134,7 +134,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                   <div className="font-semibold text-gray-900">Automatic</div>
                   <div className="text-xs text-gray-600 mt-1">AI-optimized targeting</div>
                 </button>
-                
+
                 <button
                   onClick={() => setSelectedAudience('custom')}
                   className={`p-4 border-2 rounded-lg transition-all ${

@@ -39,7 +39,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.order_id || !formData.reason || !formData.description) {
       setError('Please fill in all required fields');
       return;
@@ -48,9 +48,9 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
     try {
       setSubmitting(true);
       setError(null);
-      
+
       const returnRequest = await ownitService.createReturn(formData);
-      
+
       if (onSuccess && returnRequest) {
         onSuccess(returnRequest);
       }

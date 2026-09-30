@@ -40,48 +40,48 @@ interface DeviceDataCategory {title: string;
 
 // Define mockOrganizedData
 const mockOrganizedData: OrganizationResult = {
-  content: { 
-    posts: { 
-      title: "Posts", 
-      items: [], 
+  content: {
+    posts: {
+      title: 'Posts',
+      items: [],
       count: 0
     }
   },
   connections: {
-    friends: { 
-      title: "Friends", 
-      count: 0, 
+    friends: {
+      title: 'Friends',
+      count: 0,
       items: []
     }
   },
   transactions: {
-    purchases: { 
-      title: "Purchases", 
-      amount: 0, 
-      currency: "FIC", 
-      count: 0, 
+    purchases: {
+      title: 'Purchases',
+      amount: 0,
+      currency: 'FIC',
+      count: 0,
       items: []
     }
   },
   security: {
-    logins: { 
-      title: "Login Events", 
-      count: 0, 
+    logins: {
+      title: 'Login Events',
+      count: 0,
       items: []
     }
   },
   communications: {
-    messages: { 
-      title: "Messages", 
-      count: 0, 
+    messages: {
+      title: 'Messages',
+      count: 0,
       items: []
     }
   },
   deviceData: {
-    photos: { 
-      title: "Photos", 
-      size: "0 MB", 
-      count: 0, 
+    photos: {
+      title: 'Photos',
+      size: '0 MB',
+      count: 0,
       items: []
     }
   }
@@ -116,10 +116,10 @@ export const applySemanticAnalysis = async ( content: unknown[]) => {
   // - Compromise for client-side
   // - Or call external APIs like AWS Comprehend Google Cloud Natural Language
 
-  // Mock implementation
-  return content.map((item) => ({
-    ...(item as Record<string, unknown>), topics: ["technology", "social media"], entities: ["FingerMobile"], sentiment: "positive"
-  }));
+    // Mock implementation
+    return content.map((item) => ({
+      ...(item as Record<string, unknown>), topics: ['technology', 'social media'], entities: ['FingerMobile'], sentiment: 'positive'
+    }));
   } catch (error) {
     logger.error('anonymous error:', error);
     throw error;
@@ -138,10 +138,10 @@ export const applyBehavioralAnalysis = async () => {
 
   // Mock implementation
   return {
-    preferredCategories: ["technology", "innovation"], 
-    engagementPatterns: { 
-      peakHours: [9, 12, 18], 
-      preferredContentTypes: ["posts", "blogs"]
+    preferredCategories: ['technology', 'innovation'],
+    engagementPatterns: {
+      peakHours: [9, 12, 18],
+      preferredContentTypes: ['posts', 'blogs']
     }
   };
 };
@@ -159,8 +159,8 @@ export const generateAnalyticsReport = async (organizedData: OrganizationResult)
       Object.keys(organizedData.connections).length +
       Object.keys(organizedData.transactions).length,
     lastOrganized: new Date().toISOString(),
-    storageSaved: "250 MB",
-    topCategories: ["Posts", "Messages", "Connections"]
+    storageSaved: '250 MB',
+    topCategories: ['Posts', 'Messages', 'Connections']
   };
 };
 
@@ -191,7 +191,7 @@ const calculateTotalItems = ( organizedData: OrganizationResult) => {
 /**
  * Function to export data in various formats
  */
-export const exportData = async (_organizedData: OrganizationResult, format: "pdf" | "csv") => {
+export const exportData = async (_organizedData: OrganizationResult, format: 'pdf' | 'csv') => {
   console.warn(`Exporting data in ${format} format`);
   // Implementation would go here
   return `Data exported in ${format} format`;

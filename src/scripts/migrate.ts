@@ -1,11 +1,11 @@
 import React from 'react';
-import { promises as fs } from "fs";
-import { join } from "path";
+import { promises as fs } from 'fs';
+import { join } from 'path';
 import { pool } from '../config/database';
 
 async function runMigrations() {
   try {
-    console.info("Starting database migrations...");
+    console.info('Starting database migrations...');
 
     // Create migrations table if it doesn't exist
     await pool.query(`
@@ -18,14 +18,14 @@ async function runMigrations() {
 
     // Get list of already executed migrations
     const executedResult = await pool.query(
-      "SELECT name FROM migrations ORDER BY id",
+      'SELECT name FROM migrations ORDER BY id',
     );
     const executedMigrations = executedResult.rows.map((row: any) => row.name);
 
     // Get migration files
-    const migrationsDir = join(__dirname, "../../migrations");
+    const migrationsDir = join(__dirname, '../../migrations');
     const files = await fs.readdir(migrationsDir);
-    const migrationFiles = files.filter((file: string) => file.endsWith(".sql")).sort();
+    const migrationFiles = files.filter((file: string) => file.endsWith('.sql')).sort();
 
     console.info(`Found ${migrationFiles.length} migration files`);
 
@@ -36,13 +36,13 @@ async function runMigrations() {
 
         // Read migration file
         const filePath = join(migrationsDir, file);
-        const sql = await fs.readFile(filePath, "utf8");
+        const sql = await fs.readFile(filePath, 'utf8');
 
         // Execute migration
         await pool.query(sql);
 
         // Record migration as executed
-        await pool.query("INSERT INTO migrations (name) VALUES ($1)", [file]);
+        await pool.query('INSERT INTO migrations (name) VALUES ($1)', [file]);
 
         console.info(`Migration ${file} executed successfully`);
       } else {
@@ -50,9 +50,9 @@ async function runMigrations() {
       }
     }
 
-    console.info("All migrations completed successfully");
+    console.info('All migrations completed successfully');
   } catch (error) {
-    console.error("Migration failed:", error);
+    console.error('Migration failed:', error);
     process.exit(1);
   } finally {
     await pool.end();

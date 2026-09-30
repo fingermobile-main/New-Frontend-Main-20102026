@@ -7,11 +7,11 @@ interface EnhancedCanvasProps {
   onPreview?: () => void;
 }
 
-const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({ 
+const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
   projectId,
   pageId,
   onSave,
-  onPreview 
+  onPreview
 }) => {
   return (
     <div className="flex-1 bg-gray-50 overflow-auto">
@@ -24,7 +24,7 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
               {pageId && ` | Page: ${pageId}`}
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-4">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
               <p className="text-gray-500 mb-2">Drop components here to build your page</p>

@@ -1,175 +1,347 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useWeb3 } from '../contexts/Web3Context';
+import { useAppContext } from '../contexts/AppContext';
 import StatCard from '../components/StatCard';
+import { apiService } from '../services/apiService';
 
-// --- Subcomponent: Decoupled Quick Action Card ---
+// --- Subcomponent: Decoupled Quick Actions Grid ---
 interface QuickAction {
   title: string;
   description?: string;
   icon: JSX.Element;
+  color: string;
   onClick: () => void;
 }
 
-const QuickActionCard: React.FC<QuickAction> = ({ title, description, icon, onClick }) => (
-  <div 
-    className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
-    onClick={onClick}
-  >
-    <div className="flex items-center gap-3">
-      <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg text-blue-600 dark:text-blue-400">
-        {icon}
-      </div>
-      <div>
-        <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
-        {description && <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>}
+interface QuickActionsGridProps {
+  actions: QuickAction[];
+}
+
+const QuickActionsGrid: React.FC<QuickActionsGridProps> = React.memo(({ actions }) => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {actions.map((action, index) => (
+        <button
+          key={index}
+          onClick={action.onClick}
+          className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition-all text-left group"
+        >
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            {action.icon}
+          </div>
+          <span className="text-sm sm:text-base font-medium text-gray-900">{action.title}</span>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1 text-center">{action.description}</p>
+        </button>
+      ))}
+    </div>
+  );
+});
+
+QuickActionsGrid.displayName = 'QuickActionsGrid';
+
+// --- Subcomponent: Decoupled Exchange Rate Panel ---
+interface ExchangeRatePanelProps {
+  ficExchangeRate: string;
+  lastUpdated: string;
+}
+
+const ExchangeRatePanel: React.FC<ExchangeRatePanelProps> = React.memo(({ ficExchangeRate, lastUpdated }) => {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 className="text-lg sm:text-xl font-bold mb-6">FIC Exchange Rate</h2>
+      <div className="text-center">
+        <p className="text-xl sm:text-2xl font-bold text-gray-900">{ficExchangeRate}</p>
+        <p className="text-sm sm:text-base text-gray-500 mt-2">Current exchange rate</p>
+        <p className="text-xs sm:text-sm text-blue-700">Last updated: {lastUpdated}</p>
+
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+          <h3 className="text-sm sm:text-base font-medium text-blue-800 mb-2">Did you know?</h3>
+          <p className="text-xs sm:text-sm text-blue-700">
+            You can exchange your FIC tokens for USD or NGN at any time.
+            Minimum withdrawal amount is 50 FIC.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+});
 
-// --- Main Component ---
+ExchangeRatePanel.displayName = 'ExchangeRatePanel';
+
+// --- Subcomponent: Time Range Selector ---
+interface TimeRangeSelectorProps {
+  timeRange: string;
+  onTimeRangeChange: (range: string) => void;
+}
+
+const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = React.memo(({ timeRange, onTimeRangeChange }) => {
+  const ranges = ['7d', '30d', '90d'];
+  return (
+    <div className="flex gap-2">
+      {ranges.map((range) => (
+        <button
+          key={range}
+          className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${timeRange === range ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:bg-gray-50'}`}
+          onClick={() => onTimeRangeChange(range)}
+        >
+          {range}
+        </button>
+      ))}
+    </div>
+  );
+});
+
+TimeRangeSelector.displayName = 'TimeRangeSelector';
+
+// --- Subcomponent: Transaction History Table ---
+interface Transaction {
+  id: string;
+  date: string;
+  description?: string;
+  amount: string;
+  type: 'credit' | 'debit';
+}
+
+interface TransactionHistoryProps {
+  transactions: Transaction[];
+}
+
+const TransactionHistory: React.FC<TransactionHistoryProps> = React.memo(({ transactions }) => {
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th scope="col" className="px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Date</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Description</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Type</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {transactions.map((transaction) => (
+            <tr key={transaction.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base text-gray-900">{transaction.date}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base font-medium text-gray-900">{transaction.description || 'No description'}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base text-gray-500">
+                <span className={transaction.type === 'credit' ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                  {transaction.amount}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm sm:text-base text-gray-500">
+                <span className={`px-2 inline-flex text-xs sm:text-sm leading-5 font-semibold rounded-full ${
+                  transaction.type === 'credit'
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                  {transaction.type === 'credit' ? 'Credit' : 'Debit'}
+                </span>
+              </td>
+            </tr>
+          ))}
+          {transactions.length === 0 && (
+            <tr>
+              <td colSpan={4} className="px-6 py-8 text-center text-gray-400">
+                No recent transactions found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+});
+
+TransactionHistory.displayName = 'TransactionHistory';
+
+// --- Main Container Page Component ---
 const FinancialsPage: React.FC = () => {
-  const { balance } = useWeb3();
-  const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'analytics'>('overview');
+  const navigate = useNavigate();
+  const { balance: web3Balance } = useWeb3();
+  const { ficBalance: appFicBalance } = useAppContext();
+  const [timeRange, setTimeRange] = useState('30d');
+  const [liveBalance, setLiveBalance] = useState<number>(0);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [rateText, setRateText] = useState('10 FIC = $1.00 USD');
+  const [rateUpdated, setRateUpdated] = useState('Just now');
 
-  // Mock data for stats
-  const statsData = [
-    { title: "Total Balance", value: "₦1,250,000", change: "+12.5%", icon: "💰" },
-    { title: "Monthly Income", value: "₦340,000", change: "+8.2%", icon: "📈" },
-    { title: "Expenses", value: "₦120,500", change: "-3.1%", icon: "📉" },
-    { title: "Pending Payouts", value: "₦45,000", change: "0.0%", icon: "⏳" },
+  const loadFinancialData = useCallback(async () => {
+    try {
+      const [balRes, txRes, rateRes] = await Promise.all([
+        apiService.get<any>('/api/wallet/balance').catch(() => null),
+        apiService.get<any>('/api/wallet/transactions').catch(() => null),
+        apiService.get<any>('/api/wallet/exchange-rates').catch(() => null)
+      ]);
+
+      if (balRes?.data?.balance !== undefined) {
+        setLiveBalance(Number(balRes.data.balance || 0));
+      } else {
+        setLiveBalance(appFicBalance || web3Balance || 0);
+      }
+
+      if (txRes?.data && Array.isArray(txRes.data)) {
+        setTransactions(txRes.data.slice(0, 8).map((tx: any) => {
+          const isCredit = ['deposit', 'credit', 'interest', 'received', 'transfer_in'].includes(
+            (tx.type || tx.transactionType || '').toLowerCase()
+          );
+          return {
+            id: String(tx.id),
+            date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString() : 'Recent',
+            description: tx.description || `${tx.type || 'Transaction'}`,
+            amount: `${isCredit ? '+' : '-'}${Number(tx.amount || 0)} FIC`,
+            type: isCredit ? 'credit' : 'debit'
+          };
+        }));
+      }
+
+      if (rateRes?.data?.rates) {
+        const usdRate = rateRes.data.rates.USD || 0.1;
+        setRateText(`1 FIC = $${usdRate} USD`);
+        setRateUpdated('Live from backend');
+      }
+    } catch (err) {
+      console.error('Failed to load financial data:', err);
+    }
+  }, [appFicBalance, web3Balance]);
+
+  useEffect(() => {
+    loadFinancialData();
+  }, [loadFinancialData]);
+
+  const currentBalance = liveBalance || appFicBalance || web3Balance || 0;
+  const convertFICtoUSD = (fic: number) => fic * 0.1;
+
+  const financialStats = [
+    {
+      title: 'Total Balance',
+      value: `${currentBalance.toLocaleString()} FIC`,
+      subtitle: `≈ $${convertFICtoUSD(currentBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`,
+      color: 'blue'
+    },
+    {
+      title: 'Earnings (This Month)',
+      value: `${transactions.filter(t => t.type === 'credit').reduce((s, t) => s + parseFloat(t.amount.replace(/[^0-9.]/g, '') || '0'), 0).toLocaleString()} FIC`,
+      subtitle: 'From rewards & monetization',
+      color: 'green'
+    },
+    {
+      title: 'Active Outflow',
+      value: `${transactions.filter(t => t.type === 'debit').reduce((s, t) => s + parseFloat(t.amount.replace(/[^0-9.]/g, '') || '0'), 0).toLocaleString()} FIC`,
+      subtitle: 'Withdrawals & payments',
+      color: 'yellow'
+    },
+    {
+      title: 'Total Transactions',
+      value: String(transactions.length),
+      subtitle: 'Recorded on ledger',
+      color: 'indigo'
+    }
   ];
 
-  // Mock data for quick actions
   const quickActions: QuickAction[] = [
     {
-      title: "Send Money",
-      description: "Transfer to contacts",
-      icon: <span className="text-lg">💸</span>,
-      onClick: () => console.log("Send Money clicked")
+      title: 'Withdraw Funds',
+      description: 'Transfer FIC to your bank or external wallet',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      color: 'blue-300',
+      onClick: () => navigate('/financials/wallet')
     },
     {
-      title: "Request Payment",
-      description: "Ask for money",
-      icon: <span className="text-lg">🤲</span>,
-      onClick: () => console.log("Request Payment clicked")
+      title: 'Send Gift Card',
+      description: 'Send FIC tokens to any friend via gift card',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      ),
+      color: 'green-300',
+      onClick: () => navigate('/financials/giftcards')
     },
     {
-      title: "Top Up",
-      description: "Add funds to wallet",
-      icon: <span className="text-lg">💳</span>,
-      onClick: () => console.log("Top Up clicked")
+      title: 'Monetization Analytics',
+      description: 'Detailed platform earnings & revenue reports',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      color: 'purple-300',
+      onClick: () => navigate('/financials/monetization')
     },
     {
-      title: "Pay Bills",
-      description: "Utilities, subscriptions",
-      icon: <span className="text-lg">🧾</span>,
-      onClick: () => console.log("Pay Bills clicked")
+      title: 'Billing & Invoices',
+      description: 'Manage cards, receipts, and invoices',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      color: 'indigo-300',
+      onClick: () => navigate('/billing')
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white p-4 pb-20">
-      {/* Header */}
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold">Financials</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage your finances</p>
-      </header>
-
-      {/* Stats Overview */}
-      <section className="mb-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {statsData.map((stat, index) => (
-            <StatCard key={index} title={stat.title} value={stat.value} subtitle={stat.change} icon={stat.icon} />
-          ))}
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Financial Dashboard</h1>
+          <p className="text-sm sm:text-base text-gray-600">Manage your earnings, transactions, and financial settings</p>
         </div>
-      </section>
 
-      {/* Quick Actions */}
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold mb-3">Quick Actions</h2>
-        <div className="grid grid-cols-2 gap-3">
-          {quickActions.map((action, index) => (
-            <QuickActionCard 
+        {/* Financial Overview */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {financialStats.map((stat, index) => (
+            <StatCard
               key={index}
-              title={action.title}
-              description={action.description}
-              icon={action.icon}
-              onClick={action.onClick}
+              title={stat.title}
+              value={stat.value}
+              subtitle={stat.subtitle}
+              color={stat.color as string}
             />
           ))}
         </div>
-      </section>
 
-      {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
-        {(['overview', 'transactions', 'analytics'] as const).map(tab => (
-          <button
-            key={tab}
-            className={`py-2 px-4 font-medium text-sm ${
-              activeTab === tab
-                ? 'border-b-2 border-orange-500 text-orange-500'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-            }`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
-        {activeTab === 'overview' && (
-          <div>
-            <h3 className="font-semibold mb-3">Account Overview</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-300">Current Balance</span>
-                <span className="font-semibold">₦{balance || "0.00"}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-300">Available Funds</span>
-                <span className="font-semibold">₦1,205,000</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-300">Pending Transactions</span>
-                <span className="font-semibold">₦45,000</span>
-              </div>
+        {/* Financial Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Quick Actions</h2>
             </div>
-          </div>
-        )}
 
-        {activeTab === 'transactions' && (
-          <div>
-            <h3 className="font-semibold mb-3">Recent Transactions</h3>
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="flex items-center justify-between p-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400">✓</span>
-                    </div>
-                    <div>
-                      <p className="font-medium">Transaction #{i}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Today, 10:30 AM</p>
-                    </div>
-                  </div>
-                  <p className="font-semibold">₦25,000</p>
-                </div>
-              ))}
-            </div>
+            <QuickActionsGrid actions={quickActions} />
           </div>
-        )}
 
-        {activeTab === 'analytics' && (
-          <div>
-            <h3 className="font-semibold mb-3">Financial Analytics</h3>
-            <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-gray-700/30 rounded-lg">
-              <p className="text-gray-500 dark:text-gray-400">Analytics chart would go here</p>
-            </div>
+          <ExchangeRatePanel
+            ficExchangeRate={rateText}
+            lastUpdated={rateUpdated}
+          />
+        </div>
+
+        {/* Transaction History */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Transaction History</h2>
+            <TimeRangeSelector timeRange={timeRange} onTimeRangeChange={setTimeRange} />
           </div>
-        )}
+
+          <TransactionHistory transactions={transactions} />
+
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => navigate('/financials/wallet')}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-xs sm:text-sm font-medium"
+            >
+              View All Transactions in Wallet
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,18 +1,33 @@
-import React, {} from 'react';
-// User Types
-export interface User {id: string;
-  name: string;
-  email: string;
-  subProfiles?: Array<{
+export interface User {
   id: string;
-  name: string;
-    avatarUrl?: string;
-    animatedAvatarUrl?: string;
-    type?: string;
-  }>;
-}
-
-export interface UserProfile extends User {
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
   bio?: string;
   avatar?: string;
+  coverImage?: string;
+  role: string;
+  isVerified: boolean;
+  isOnline: boolean;
+  createdAt: string;
+  updatedAt: string;
+  lastSeenAt?: string;
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+  badges?: string[];
+  location?: string;
+  website?: string;
+  birthDate?: string;
+  privacySettings?: {
+    profileVisibility: 'public' | 'friends' | 'private';
+    messagePrivacy: 'everyone' | 'friends' | 'none';
+    emailVisibility: 'public' | 'friends' | 'private';
+  };
+  notificationSettings?: {
+    emailNotifications: boolean;
+    pushNotifications: boolean;
+    smsNotifications: boolean;
+  };
 }

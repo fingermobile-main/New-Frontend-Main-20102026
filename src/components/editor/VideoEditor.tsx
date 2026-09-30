@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Video, Scissors, Type, Music, Wand2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Video, Scissors, Type, Music, Wand2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface VideoEditorProps {
   videoUrl?: string;
@@ -10,13 +10,13 @@ interface VideoEditorProps {
 }
 
 const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
-  const [selectedTool, setSelectedTool] = React.useState<string>("trim");
+  const [selectedTool, setSelectedTool] = React.useState<string>('trim');
 
   const tools = [
-    { id: "trim", label: "Trim", icon: <Scissors className="h-5 w-5" /> },
-    { id: "text", label: "Add Text", icon: <Type className="h-5 w-5" /> },
-    { id: "music", label: "Add Music", icon: <Music className="h-5 w-5" /> },
-    { id: "effects", label: "Effects", icon: <Wand2 className="h-5 w-5" /> }
+    { id: 'trim', label: 'Trim', icon: <Scissors className="h-5 w-5" /> },
+    { id: 'text', label: 'Add Text', icon: <Type className="h-5 w-5" /> },
+    { id: 'music', label: 'Add Music', icon: <Music className="h-5 w-5" /> },
+    { id: 'effects', label: 'Effects', icon: <Wand2 className="h-5 w-5" /> }
   ];
 
   return (
@@ -45,7 +45,7 @@ const VideoEditor: React.FC<VideoEditorProps> = ({ videoUrl, onSave }) => {
           {tools.map((tool) => (
             <Button
               key={tool.id}
-              variant={selectedTool === tool.id ? "default" : "outline"}
+              variant={selectedTool === tool.id ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedTool(tool.id)}
               className="flex-1"

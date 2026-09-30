@@ -1,45 +1,47 @@
-import React, { useState, createContext, useContext, useReducer, ReactNode, useCallback, useMemo } from 'react';
-import { 
-  Member, 
-  Post, 
-  Video, 
-  Advertisement, 
-  NavigationSection, 
-  Trend, 
-  SuggestedMember, 
-  Group, 
-  Topic, 
-  Hashtag, 
-  Event, 
-  Course, 
-  Product, 
-  StoreOrder, 
-  Hallmark, 
-  Gem, 
-  LiveStream, 
-  MusicTrack, 
-  PayoutRequest, 
-  ChatMessage, 
-  Message, 
-  Module, 
-  SupportTicket, 
-  PhotoCredit, 
-  FeatureToggle, 
-  FlamingoSubmission, 
-  FlaggedContent, 
-  Domain 
+import React, { useState, useEffect, createContext, useContext, useReducer, ReactNode, useCallback, useMemo } from 'react';
+import {
+  Member,
+  Post,
+  Video,
+  Advertisement,
+  NavigationSection,
+  Trend,
+  SuggestedMember,
+  Group,
+  Topic,
+  Hashtag,
+  Event,
+  Course,
+  Product,
+  StoreOrder,
+  Hallmark,
+  Gem,
+  LiveStream,
+  MusicTrack,
+  PayoutRequest,
+  ChatMessage,
+  Message,
+  Module,
+  SupportTicket,
+  PhotoCredit,
+  FeatureToggle,
+  FlamingoSubmission,
+  FlaggedContent,
+  Domain
 } from '../types';
 
 import { ProtocolSettings } from '../types/dancia4tv';
 
 import MessageService from '../services/MessageService';
 import { hallmarkService } from '../services/hallmarkService';
-import { forumService } from '../services/forumService';
+import forumService from '../services/forumService';
 import { paylinkService } from '../services/paylinkService';
 import { commerceService, type CheckoutData, type CartItem } from '../services/CommerceService';
 import { liveStreamService } from '../services/liveStreamService';
 import { musicService } from '../services/MusicService';
 import adminControlService from '../services/adminControlService';
+import { advertisingService } from '../services/advertisingService';
+import { legalComplianceService } from '../services/legalComplianceService';
 
 export interface Enrollment {
   id: string;
@@ -73,51 +75,51 @@ type AIAssistant = unknown;
 
 export type SpecialEffect = 'confetti' | 'selection' | 'impact' | 'notification' | null;
 
-type ModalType = 
-  | 'login' 
-  | 'signup' 
-  | 'confirm' 
-  | 'custom' 
-  | 'video-call' 
-  | 'audio-call' 
-  | 'voiceFeed' 
-  | 'sessionPin' 
-  | 'gift' 
-  | 'paylink' 
-  | 'comment' 
-  | 'createPaylink' 
-  | 'cart' 
-  | 'composer' 
-  | 'h2Composer' 
-  | 'imageSearch' 
-  | 'sendFic' 
-  | 'acceptCollaboration' 
-  | 'collaborationInvite' 
-  | 'memberEdit' 
-  | 'tokenizePost' 
-  | 'createPlaylist' 
-  | 'addToPlaylist' 
-  | 'tokenizePlaylist' 
-  | 'inviteCollaborators' 
-  | 'mediaEditor' 
-  | 'lyrics' 
-  | 'profilePin' 
-  | 'agenticAi' 
-  | 'createPlaylistFolder' 
-  | 'requestTitle' 
-  | 'productEditor' 
-  | 'audioRecorder' 
-  | 'boostPost' 
-  | 'top-up' 
-  | 'withdraw' 
-  | 'policyEditor' 
-  | 'qrCode' 
-  | 'redeemGiftCard' 
-  | 'requestPayout' 
-  | 'watermarkPreview' 
-  | 'giftCardQR' 
-  | 'aiAssistant' 
-  | 'settings' 
+type ModalType =
+  | 'login'
+  | 'signup'
+  | 'confirm'
+  | 'custom'
+  | 'video-call'
+  | 'audio-call'
+  | 'voiceFeed'
+  | 'sessionPin'
+  | 'gift'
+  | 'paylink'
+  | 'comment'
+  | 'createPaylink'
+  | 'cart'
+  | 'composer'
+  | 'h2Composer'
+  | 'imageSearch'
+  | 'sendFic'
+  | 'acceptCollaboration'
+  | 'collaborationInvite'
+  | 'memberEdit'
+  | 'tokenizePost'
+  | 'createPlaylist'
+  | 'addToPlaylist'
+  | 'tokenizePlaylist'
+  | 'inviteCollaborators'
+  | 'mediaEditor'
+  | 'lyrics'
+  | 'profilePin'
+  | 'agenticAi'
+  | 'createPlaylistFolder'
+  | 'requestTitle'
+  | 'productEditor'
+  | 'audioRecorder'
+  | 'boostPost'
+  | 'top-up'
+  | 'withdraw'
+  | 'policyEditor'
+  | 'qrCode'
+  | 'redeemGiftCard'
+  | 'requestPayout'
+  | 'watermarkPreview'
+  | 'giftCardQR'
+  | 'aiAssistant'
+  | 'settings'
   | null;
 
 type AudioCallDetails = {
@@ -202,6 +204,9 @@ export interface AppState {
   payoutHistory?: unknown[];
   customerData?: unknown[];
   feedPreferences?: unknown;
+  userXP?: number;
+  userLevel?: number;
+  userStreak?: number;
 }
 
 type AppAction =
@@ -249,7 +254,10 @@ type AppAction =
   | { type: 'SET_GEM_SUBMISSIONS'; payload: unknown[] }
   | { type: 'SET_FLAGGED_CONTENT'; payload: FlaggedContent[] }
   | { type: 'SET_FEATURE_TOGGLES'; payload: FeatureToggle[] }
-  | { type: 'SET_POLICIES'; payload: unknown[] };
+  | { type: 'SET_POLICIES'; payload: unknown[] }
+  | { type: 'ADD_XP'; payload: number }
+  | { type: 'SET_LEVEL'; payload: number }
+  | { type: 'INCREMENT_STREAK' };
 
 const initialState: AppState = {
   currentUser: null,
@@ -317,132 +325,148 @@ const initialState: AppState = {
   navStructure: [],
   payoutHistory: [],
   customerData: [],
-  feedPreferences: {}
+  feedPreferences: {},
+  userXP: 0,
+  userLevel: 1,
+  userStreak: 0
 };
 
 const appReducer = (state: AppState, action: AppAction): AppState => {
   switch (action.type) {
-    case 'SET_MEMBERS':
-      return { ...state, members: action.payload };
-    case 'SET_POSTS':
-      return { ...state, posts: action.payload };
-    case 'SET_VIDEOS':
-      return { ...state, videos: action.payload };
-    case 'SET_ADVERTISEMENTS':
-      return { ...state, advertisements: action.payload };
-    case 'SET_NAVIGATION_SECTIONS':
-      return { ...state, navigationSections: action.payload };
-    case 'SET_TRENDS':
-      return { ...state, trends: action.payload };
-    case 'SET_SUGGESTED_MEMBERS':
-      return { ...state, suggestedMembers: action.payload };
-    case 'SET_GROUPS':
-      return { ...state, groups: action.payload };
-    case 'SET_TOPICS':
-      return { ...state, topics: action.payload };
-    case 'SET_HASHTAGS':
-      return { ...state, hashtags: action.payload };
-    case 'SET_EVENTS':
-      return { ...state, events: action.payload };
-    case 'SET_COURSES':
-      return { ...state, courses: action.payload };
-    case 'SET_HALLMARKS':
-      return { ...state, hallmarks: action.payload };
-    case 'SET_GEMS':
-      return { ...state, gems: action.payload };
-    case 'SET_LIVESTREAMS':
-      return { ...state, liveStreams: action.payload };
-    case 'SET_MUSIC_TRACKS':
-      return { ...state, musicTracks: action.payload };
-    case 'SET_LOADING':
-      return { ...state, loading: action.payload };
-    case 'SET_ERROR':
-      return { ...state, error: action.payload };
-    case 'SET_SELECTED_MEMBER':
-      return { ...state, selectedMember: action.payload };
-    case 'SET_SELECTED_POST':
-      return { ...state, selectedPost: action.payload };
-    case 'SET_SELECTED_GROUP':
-      return { ...state, selectedGroup: action.payload };
-    case 'SET_SEARCH_TERM':
-      return { ...state, searchTerm: action.payload };
-    case 'ADD_NOTIFICATION':
-      return { 
-        ...state, 
-        notifications: [...state.notifications, { 
-          ...action.payload, 
-          id: Date.now().toString(), 
-          read: false,
-          timestamp: new Date()
-        }],
-        unreadNotifications: state.unreadNotifications + 1
-      };
-    case 'MARK_NOTIFICATION_AS_READ':
-      return {
-        ...state,
-        notifications: state.notifications.map(n => n.read ? n : { ...n, read: true }),
-        unreadNotifications: 0
-      };
-    case 'ADD_PREMIUM_PAGE':
-      return { ...state, premiumPages: [...state.premiumPages, action.payload] };
-    case 'ADD_VISITOR':
-      return { ...state, userVisitors: [...state.userVisitors, action.payload] };
-    case 'SET_AUTHENTICITY_SCORE':
-      return { 
-        ...state, 
-        authenticityScores: { ...state.authenticityScores, [action.payload.userId]: action.payload.score } 
-      };
-    case 'SET_QUALIFIED_VIEWS':
-      return { 
-        ...state, 
-        qualifiedViews: { ...state.qualifiedViews, [action.payload.contentId]: action.payload.views } 
-      };
-    case 'SET_CREATOR_TIER':
-      return { 
-        ...state, 
-        creatorTiers: { ...state.creatorTiers, [action.payload.userId]: action.payload.tier } 
-      };
-    case 'ADD_AI_ASSISTANT':
-      return { ...state, aiAssistants: [...state.aiAssistants, action.payload] };
-    case 'SET_PAYOUT_REQUESTS':
-      return { ...state, payoutRequests: action.payload };
-    case 'ADD_PAYOUT_REQUEST':
-      return { ...state, payoutRequests: [...state.payoutRequests, action.payload] };
-    case 'UPDATE_PAYOUT_REQUEST':
-      return { 
-        ...state, 
-        payoutRequests: state.payoutRequests.map(req => req.id === action.payload.id ? { ...req, status: action.payload.status } : req) 
-      };
-    case 'SET_ENROLLMENTS':
-      return { ...state, enrollments: action.payload };
-    case 'SET_SEADS_INITIATIVES':
-      return { ...state, seadsInitiatives: action.payload };
-    case 'SET_MEMBER_COUPONS':
-      return { ...state, memberCoupons: action.payload };
-    case 'SET_AD_CAMPAIGNS':
-      return { ...state, adCampaigns: action.payload };
-    case 'SET_SALES_ANALYTICS':
-      return { ...state, salesAnalytics: action.payload };
-    case 'SET_FORUM_CATEGORIES':
-      return { ...state, forumCategories: action.payload };
-    case 'SET_FRANCHISES':
-      return { ...state, franchises: action.payload };
-    case 'SET_FLAMINGO_SUBMISSIONS':
-      return { ...state, flamingoSubmissions: action.payload };
-    case 'SET_GEM_SUBMISSIONS':
-      return { ...state, gemSubmissions: action.payload };
-    case 'SET_FLAGGED_CONTENT':
-      return { ...state, flaggedContent: action.payload };
-    case 'SET_FEATURE_TOGGLES':
-      return { ...state, featureToggles: action.payload };
-    case 'SET_POLICIES':
-      return { ...state, policies: action.payload };
-    default:
-      return state;
+  case 'SET_MEMBERS':
+    return { ...state, members: action.payload };
+  case 'SET_POSTS':
+    return { ...state, posts: action.payload };
+  case 'SET_VIDEOS':
+    return { ...state, videos: action.payload };
+  case 'SET_ADVERTISEMENTS':
+    return { ...state, advertisements: action.payload };
+  case 'SET_NAVIGATION_SECTIONS':
+    return { ...state, navigationSections: action.payload };
+  case 'SET_TRENDS':
+    return { ...state, trends: action.payload };
+  case 'SET_SUGGESTED_MEMBERS':
+    return { ...state, suggestedMembers: action.payload };
+  case 'SET_GROUPS':
+    return { ...state, groups: action.payload };
+  case 'SET_TOPICS':
+    return { ...state, topics: action.payload };
+  case 'SET_HASHTAGS':
+    return { ...state, hashtags: action.payload };
+  case 'SET_EVENTS':
+    return { ...state, events: action.payload };
+  case 'SET_COURSES':
+    return { ...state, courses: action.payload };
+  case 'SET_HALLMARKS':
+    return { ...state, hallmarks: action.payload };
+  case 'SET_GEMS':
+    return { ...state, gems: action.payload };
+  case 'SET_LIVESTREAMS':
+    return { ...state, liveStreams: action.payload };
+  case 'SET_MUSIC_TRACKS':
+    return { ...state, musicTracks: action.payload };
+  case 'SET_LOADING':
+    return { ...state, loading: action.payload };
+  case 'SET_ERROR':
+    return { ...state, error: action.payload };
+  case 'SET_SELECTED_MEMBER':
+    return { ...state, selectedMember: action.payload };
+  case 'SET_SELECTED_POST':
+    return { ...state, selectedPost: action.payload };
+  case 'SET_SELECTED_GROUP':
+    return { ...state, selectedGroup: action.payload };
+  case 'SET_SEARCH_TERM':
+    return { ...state, searchTerm: action.payload };
+  case 'ADD_NOTIFICATION':
+    return {
+      ...state,
+      notifications: [...state.notifications, {
+        ...action.payload,
+        id: Date.now().toString(),
+        read: false,
+        timestamp: new Date()
+      }],
+      unreadNotifications: state.unreadNotifications + 1
+    };
+  case 'MARK_NOTIFICATION_AS_READ':
+    return {
+      ...state,
+      notifications: state.notifications.map(n => n.read ? n : { ...n, read: true }),
+      unreadNotifications: 0
+    };
+  case 'ADD_PREMIUM_PAGE':
+    return { ...state, premiumPages: [...state.premiumPages, action.payload] };
+  case 'ADD_VISITOR':
+    return { ...state, userVisitors: [...state.userVisitors, action.payload] };
+  case 'SET_AUTHENTICITY_SCORE':
+    return {
+      ...state,
+      authenticityScores: { ...state.authenticityScores, [action.payload.userId]: action.payload.score }
+    };
+  case 'SET_QUALIFIED_VIEWS':
+    return {
+      ...state,
+      qualifiedViews: { ...state.qualifiedViews, [action.payload.contentId]: action.payload.views }
+    };
+  case 'SET_CREATOR_TIER':
+    return {
+      ...state,
+      creatorTiers: { ...state.creatorTiers, [action.payload.userId]: action.payload.tier }
+    };
+  case 'ADD_AI_ASSISTANT':
+    return { ...state, aiAssistants: [...state.aiAssistants, action.payload] };
+  case 'SET_PAYOUT_REQUESTS':
+    return { ...state, payoutRequests: action.payload };
+  case 'ADD_PAYOUT_REQUEST':
+    return { ...state, payoutRequests: [...state.payoutRequests, action.payload] };
+  case 'UPDATE_PAYOUT_REQUEST':
+    return {
+      ...state,
+      payoutRequests: state.payoutRequests.map(req => req.id === action.payload.id ? { ...req, status: action.payload.status } : req)
+    };
+  case 'SET_ENROLLMENTS':
+    return { ...state, enrollments: action.payload };
+  case 'SET_SEADS_INITIATIVES':
+    return { ...state, seadsInitiatives: action.payload };
+  case 'SET_MEMBER_COUPONS':
+    return { ...state, memberCoupons: action.payload };
+  case 'SET_AD_CAMPAIGNS':
+    return { ...state, adCampaigns: action.payload };
+  case 'SET_SALES_ANALYTICS':
+    return { ...state, salesAnalytics: action.payload };
+  case 'SET_FORUM_CATEGORIES':
+    return { ...state, forumCategories: action.payload };
+  case 'SET_FRANCHISES':
+    return { ...state, franchises: action.payload };
+  case 'SET_FLAMINGO_SUBMISSIONS':
+    return { ...state, flamingoSubmissions: action.payload };
+  case 'SET_GEM_SUBMISSIONS':
+    return { ...state, gemSubmissions: action.payload };
+  case 'SET_FLAGGED_CONTENT':
+    return { ...state, flaggedContent: action.payload };
+  case 'SET_FEATURE_TOGGLES':
+    return { ...state, featureToggles: action.payload };
+  case 'SET_POLICIES':
+    return { ...state, policies: action.payload };
+  case 'ADD_XP': {
+    const newXP = (state.userXP || 0) + action.payload;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    if (newLevel > (state.userLevel || 1)) {
+      return { ...state, userXP: newXP, userLevel: newLevel };
+    }
+    return { ...state, userXP: newXP };
+  }
+  case 'SET_LEVEL':
+    return { ...state, userLevel: action.payload };
+  case 'INCREMENT_STREAK':
+    return { ...state, userStreak: (state.userStreak || 0) + 1 };
+  default:
+    return state;
   }
 };
 
 export interface AppContextType extends AppState {
+  user: Member | null;
   setMembers: (members: Member[]) => void;
   setPosts: (posts: Post[]) => void;
   setVideos: (videos: Video[]) => void;
@@ -583,6 +607,9 @@ export interface AppContextType extends AppState {
   handleRemoveDownload?: (downloadId: string) => Promise<void>;
   fetchPhotoCredits?: () => Promise<unknown[]>;
   setMember?: (member: Member | null) => void;
+  addXP?: (amount: number) => void;
+  incrementStreak?: () => void;
+  handleGlobalAction?: (actionType: 'like' | 'save' | 'join' | 'view', itemId: string) => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
@@ -625,11 +652,11 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
   const setQualifiedViews = useCallback((contentId: string, views: number) => dispatch({ type: 'SET_QUALIFIED_VIEWS', payload: { contentId, views } }), []);
   const setCreatorTier = useCallback((userId: string, tier: string) => dispatch({ type: 'SET_CREATOR_TIER', payload: { userId, tier } }), []);
   const addAIAssistant = useCallback((assistant: AIAssistant) => dispatch({ type: 'ADD_AI_ASSISTANT', payload: assistant }), []);
-  
+
   const setPayoutRequests = useCallback((requests: PayoutRequest[]) => dispatch({ type: 'SET_PAYOUT_REQUESTS', payload: requests }), []);
   const addPayoutRequest = useCallback((request: PayoutRequest) => dispatch({ type: 'ADD_PAYOUT_REQUEST', payload: request }), []);
   const updatePayoutRequestStatus = useCallback((id: string, status: 'pending' | 'approved' | 'rejected' | 'processed') => dispatch({ type: 'UPDATE_PAYOUT_REQUEST', payload: { id, status } }), []);
-  
+
   const [toastNotification, setToastNotification] = useState<string | React.ReactNode | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info' | 'warning' | null>(null);
 
@@ -637,7 +664,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     setToastNotification(message);
     setToastType(type);
   }, []);
-  
+
   const showSuccessToast = useCallback((message: string | React.ReactNode) => showToast(message, 'success'), [showToast]);
   const showErrorToast = useCallback((message: string | React.ReactNode) => showToast(message, 'error'), [showToast]);
   const showInfoToast = useCallback((message: string | React.ReactNode) => showToast(message, 'info'), [showToast]);
@@ -657,11 +684,11 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    
+
     addPayoutRequest(newRequest);
     showToast('Payout request initiated successfully', 'success');
   }, [addPayoutRequest, showToast]);
-  
+
   const handleProcessPayout = useCallback(async (requestId: string, action: 'approve' | 'reject'): Promise<void> => {
     const newStatus = action === 'approve' ? 'approved' : 'rejected';
     updatePayoutRequestStatus(requestId, newStatus);
@@ -671,19 +698,19 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
   const [theme, setThemeState] = useState<'light' | 'dark'>('light');
   const toggleTheme = useCallback(() => setThemeState(prev => prev === 'light' ? 'dark' : 'light'), []);
   const setTheme = useCallback((newTheme: 'light' | 'dark') => setThemeState(newTheme), []);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('login');
   const [modalProps, setModalProps] = useState<Record<string, unknown> & { callDetails?: AudioCallDetails }>({});
-  
+
   const openModal = useCallback((type: ModalType, props: Record<string, unknown> = {}) => {
     setModalType(type);
     setModalProps(props);
     setIsModalOpen(true);
   }, []);
-  
+
   const closeModal = useCallback(() => setIsModalOpen(false), []);
-  
+
   const [specialEffect, setSpecialEffect] = useState<SpecialEffect>(null);
   const triggerSpecialEffect = useCallback((effect: SpecialEffect) => {
     if (effect === 'confetti') {
@@ -691,7 +718,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       setTimeout(() => setSpecialEffect(null), 3000);
     }
   }, []);
-  
+
   const [settings, setSettings] = useState<ProtocolSettings>({
     mediaFolders: [],
     autoRefreshEnabled: true,
@@ -726,7 +753,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     emailVerificationEnabled: true,
     phoneVerificationEnabled: true
   });
-  
+
   const updateSettings = useCallback((newSettings: Partial<ProtocolSettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
@@ -735,52 +762,52 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
   const [isLoading] = useState<boolean>(true);
   const [activeSubProfile] = useState<unknown>(null);
   const [ficBalance] = useState<number>(0);
+  const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
+
+  const fetchTickets = useCallback(async () => {
+    try {
+      const tickets = await legalComplianceService.getTickets();
+      setSupportTickets(tickets as any);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
 
   const notificationsCount = useMemo(() => state.notifications.filter(n => !n.read).length, [state.notifications]);
   const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
-  
+
   const sendMessage = useCallback(async (recipientId: string | number, content: string): Promise<void> => {
     try {
-      const conversations = await MessageService.getConversations(String(state.currentUser?.id || ''));
-      let conversation = conversations.find(c => 
-        c.participants.includes(String(recipientId)) && 
-        c.participants.length === 2
-      );
-      
-      if (!conversation) {
-        conversation = await MessageService.createConversation([String(state.currentUser?.id), String(recipientId)]);
-      }
-      
-      await MessageService.sendMessage(conversation.id, content, 'text');
+      await MessageService.sendMessage({
+        recipient_id: String(recipientId),
+        content
+      });
     } catch (error) {
       console.error('Failed to send message:', error);
       throw error;
     }
-  }, [state.currentUser?.id]);
-  
+  }, []);
+
   const handleSendMessage = useCallback(async (recipientId: string, message: string): Promise<void> => {
     try {
-      const conversations = await MessageService.getConversations(String(state.currentUser?.id || ''));
-      let conversation = conversations.find(c => 
-        c.participants.includes(recipientId) && 
-        c.participants.length === 2
-      );
-      
-      if (!conversation) {
-        conversation = await MessageService.createConversation([String(state.currentUser?.id), recipientId]);
-      }
-      
-      const sentMessage = await MessageService.sendMessage(conversation.id, message, 'text');
-      
+      const sentMessage = await MessageService.sendMessage({
+        recipient_id: recipientId,
+        content: message
+      });
+
       const newMessage: ChatMessage = {
-        id: sentMessage.id,
+        id: sentMessage.data?.id || String(Date.now()),
         senderId: String(state.currentUser?.id),
         receiverId: recipientId,
         content: message,
-        timestamp: sentMessage.createdAt,
+        timestamp: sentMessage.data?.sent_at || new Date().toISOString(),
         status: 'sent'
       };
-      
+
       setMessages(prev => ({
         ...prev,
         [recipientId]: [...(prev[recipientId] || []), newMessage]
@@ -790,47 +817,48 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       throw error;
     }
   }, [state.currentUser?.id]);
-  
+
   const getMessages = useCallback(async (threadId: string): Promise<Message[]> => {
     try {
-      return await MessageService.getMessages(threadId);
+      const res = await MessageService.getMessages(threadId);
+      return res.data || [];
     } catch (error) {
       console.error('Failed to get messages:', error);
       return [];
     }
   }, []);
-  
+
   const createConversation = useCallback(async (participants: (string | number)[]): Promise<unknown> => {
     try {
-      const participantIds = participants.map(p => String(p));
-      return await MessageService.createConversation(participantIds);
+      const res = await MessageService.getConversations();
+      return res.data;
     } catch (error) {
       console.error('Failed to create conversation:', error);
       throw error;
     }
   }, []);
-  
+
   const getConversations = useCallback(async (): Promise<unknown[]> => {
     try {
-      const userId = String(state.currentUser?.id || '');
-      return await MessageService.getConversations(userId);
+      const res = await MessageService.getConversations();
+      return res.data || [];
     } catch (error) {
       console.error('Failed to get conversations:', error);
       return [];
     }
-  }, [state.currentUser?.id]);
+  }, []);
 
   const [activeSession, setActiveSession] = useState<ActiveSession | null>(null);
-  
+
   const startSession = useCallback(async (hallmarkId: string, type: string, title: string): Promise<string> => {
     try {
       const result = await hallmarkService.startSession(hallmarkId, type, title);
-      setActiveSession({ 
-        id: result.sessionId, 
-        hallmarkId, 
-        type, 
+      setActiveSession({
+        id: result.sessionId,
+        hallmarkId,
+        type,
         title,
-        pin: result.pin 
+        pin: result.pin
       });
       return result.pin;
     } catch (error) {
@@ -838,12 +866,12 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       throw error;
     }
   }, []);
-  
+
   const joinSession = useCallback(async (sessionId: string, pin?: string): Promise<void> => {
     try {
       const sessionData = await hallmarkService.joinSession(sessionId, pin || '') as Record<string, unknown>;
-      setActiveSession({ 
-        id: sessionId, 
+      setActiveSession({
+        id: sessionId,
         hallmarkId: sessionData.hallmarkId as string,
         type: sessionData.type as string,
         title: sessionData.title as string,
@@ -854,7 +882,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       throw error;
     }
   }, []);
-  
+
   const leaveSession = useCallback(async (): Promise<void> => {
     try {
       if (activeSession?.id) {
@@ -870,11 +898,11 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
   const handleAiAssist = useCallback(async (prompt: string): Promise<string> => {
     return `AI response to: ${prompt}`;
   }, []);
-  
+
   const toggleSidebar = useCallback(() => setSidebarOpen(prev => !prev), []);
   const setEnrollments = useCallback((enrollments: Enrollment[]) => dispatch({ type: 'SET_ENROLLMENTS', payload: enrollments }), []);
   const setSeadsInitiatives = useCallback((initiatives: SeadsInitiative[]) => dispatch({ type: 'SET_SEADS_INITIATIVES', payload: initiatives }), []);
-  
+
   const setMemberCoupons = useCallback((coupons: unknown[]) => dispatch({ type: 'SET_MEMBER_COUPONS', payload: coupons }), []);
   const setAdCampaigns = useCallback((campaigns: unknown[]) => dispatch({ type: 'SET_AD_CAMPAIGNS', payload: campaigns }), []);
   const setSalesAnalytics = useCallback((analytics: unknown) => dispatch({ type: 'SET_SALES_ANALYTICS', payload: analytics }), []);
@@ -885,7 +913,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
   const setFlaggedContent = useCallback((content: FlaggedContent[]) => dispatch({ type: 'SET_FLAGGED_CONTENT', payload: content }), []);
   const setFeatureToggles = useCallback((toggles: FeatureToggle[]) => dispatch({ type: 'SET_FEATURE_TOGGLES', payload: toggles }), []);
   const setPolicies = useCallback((policies: unknown[]) => dispatch({ type: 'SET_POLICIES', payload: policies }), []);
-  
+
   const handleSecureClaimCoupon = useCallback(async (couponId: string): Promise<void> => {
     try {
       const result = await commerceService.applyCoupon(couponId, 0);
@@ -899,28 +927,34 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to claim coupon', 'error');
     }
   }, [showToast]);
-  
-  const getCampaignDetails = useCallback(async (_campaignId: string): Promise<unknown> => {
+
+  const getCampaignDetails = useCallback(async (campaignId: string): Promise<unknown> => {
     try {
-      showToast('Campaign details retrieval not yet available', 'info');
-      return null;
+      const details = await advertisingService.getCampaignAnalytics(campaignId);
+      return details;
     } catch (error) {
       console.error('Failed to get campaign details:', error);
       return null;
     }
-  }, [showToast]);
-  
+  }, []);
+
   const handleUpsertForumCategory = useCallback(async (category: unknown): Promise<void> => {
     try {
       const cat = category as Record<string, string>;
-      await forumService.createForum(cat.name || 'New Forum', cat.description || '', cat.id || 'general');
-      showToast('Forum category saved', 'success');
+      // Since there's no createForum method in ForumService, we'll use createThread instead
+      // Or we could create a new category if that functionality exists in the API
+      await forumService.createThread({
+        title: cat.name || 'New Thread',
+        content: cat.description || '',
+        categoryId: cat.id || 'general'
+      });
+      showToast('Forum thread created', 'success');
     } catch (error) {
-      console.error('Failed to save forum category:', error);
-      showToast('Failed to save forum category', 'error');
+      console.error('Failed to create forum thread:', error);
+      showToast('Failed to create forum thread', 'error');
     }
   }, [showToast]);
-  
+
   const handleDeleteForumCategory = useCallback(async (_categoryId: string): Promise<void> => {
     try {
       showToast('Forum category deleted', 'success');
@@ -929,7 +963,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to delete forum category', 'error');
     }
   }, [showToast]);
-  
+
   const handleApproveGemContent = useCallback(async (_id: string, approved: boolean): Promise<void> => {
     try {
       showToast(`Gem content ${approved ? 'approved' : 'rejected'}`, approved ? 'success' : 'warning');
@@ -938,7 +972,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to process gem content', 'error');
     }
   }, [showToast]);
-  
+
   const handleApproveContent = useCallback(async (_contentId: string): Promise<void> => {
     try {
       showToast('Content approved', 'success');
@@ -989,7 +1023,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       throw error;
     }
   }, [showToast]);
-  
+
   const handlePublishPolicy = useCallback(async (_policyId: string): Promise<void> => {
     try {
       showToast('Policy published', 'success');
@@ -998,25 +1032,15 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to publish policy', 'error');
     }
   }, [showToast]);
-  
+
   const getSystemHealth = useCallback(() => {
-    try {
-      return { status: 'healthy' };
-    } catch (error) {
-      console.error('Failed to get system health:', error);
-      return { status: 'unknown' };
-    }
+    return { status: 'healthy' };
   }, []);
-  
+
   const getSystemMetrics = useCallback(() => {
-    try {
-      return { cpu: 45, memory: 60 };
-    } catch (error) {
-      console.error('Failed to get system metrics:', error);
-      return { cpu: 0, memory: 0 };
-    }
+    return { cpu: 45, memory: 60 };
   }, []);
-  
+
   const performSystemMaintenance = useCallback(() => {
     try {
       showToast('Maintenance completed', 'success');
@@ -1025,7 +1049,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to perform maintenance', 'error');
     }
   }, [showToast]);
-  
+
   const getAuditLogs = useCallback(() => {
     try {
       return adminControlService.getAuditLogItems();
@@ -1034,7 +1058,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       return [];
     }
   }, []);
-  
+
   const handleDeletePaylink = useCallback(async (paylinkId: string): Promise<void> => {
     try {
       await paylinkService.deletePaylink(paylinkId);
@@ -1044,7 +1068,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to delete paylink', 'error');
     }
   }, [showToast]);
-  
+
   const handleGenerateAiPlaylist = useCallback(async (): Promise<unknown[]> => {
     try {
       showToast('AI playlist generation not yet available', 'info');
@@ -1055,7 +1079,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       return [];
     }
   }, [showToast]);
-  
+
   const handleGoLive = useCallback(async (): Promise<void> => {
     try {
       await liveStreamService.startStream({
@@ -1072,7 +1096,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       throw error;
     }
   }, [showToast]);
-  
+
   const handleStopLive = useCallback(async (): Promise<void> => {
     try {
       showToast('Stream ended', 'info');
@@ -1081,7 +1105,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to stop live stream', 'error');
     }
   }, [showToast]);
-  
+
   const handleStartConference = useCallback(async (): Promise<void> => {
     try {
       showToast('Conference started', 'success');
@@ -1090,7 +1114,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to start conference', 'error');
     }
   }, [showToast]);
-  
+
   const handlePlayMedia = useCallback(async (mediaId: string): Promise<void> => {
     try {
       const track = await musicService.getTrackById(mediaId);
@@ -1102,7 +1126,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to play media', 'error');
     }
   }, [showToast]);
-  
+
   const handleRemoveDownload = useCallback(async (_downloadId: string): Promise<void> => {
     try {
       showToast('Download removed', 'success');
@@ -1111,18 +1135,33 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast('Failed to remove download', 'error');
     }
   }, [showToast]);
-  
+
+  const addXP = useCallback((amount: number) => {
+    dispatch({ type: 'ADD_XP', payload: amount });
+    showToast(`+${amount} XP earned!`, 'success');
+  }, [showToast]);
+
+  const incrementStreak = useCallback(() => {
+    dispatch({ type: 'INCREMENT_STREAK' });
+    showToast('Streak increased! 🔥', 'success');
+  }, [showToast]);
+
+  const handleGlobalAction = useCallback(async (actionType: 'like' | 'save' | 'join' | 'view', itemId: string) => {
+    await new Promise(resolve => setTimeout(resolve, 300)); // Simulate API call
+    let xpReward = 5;
+    if (actionType === 'join') xpReward = 20;
+    else if (actionType === 'view') xpReward = 1;
+    addXP(xpReward);
+  }, [addXP]);
+
   const fetchPhotoCredits = useCallback(async (): Promise<unknown[]> => {
-    try {
-      return [];
-    } catch (error) {
-      console.error('Failed to fetch photo credits:', error);
-      return [];
-    }
+    return [];
   }, []);
 
   const value: AppContextType = useMemo(() => ({
     ...state,
+    user: state.currentUser,
+    forumService,
     setMembers,
     setPosts,
     setVideos,
@@ -1159,8 +1198,21 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     handleInitiatePayout,
     handleProcessPayout,
     setEnrollments,
-    handleSubmitAdCampaign: async (_campaignData: unknown) => {
-      showToast('Ad campaign submitted', 'success');
+    handleSubmitAdCampaign: async (campaignData: unknown) => {
+      try {
+        const data = campaignData as any;
+        await advertisingService.createCampaign({
+          title: data?.title || `${data?.adType || 'Canary'} Campaign`,
+          campaign_type: data?.adType === 'image' ? 'display' : 'video',
+          total_budget: data?.cost || 100,
+          daily_budget: (data?.cost ? Math.max(10, Math.round(data.cost / (data.duration ? data.duration / 86400 : 3))) : 25),
+          targeting: { placements: data?.placements || [] }
+        });
+        showToast('Ad campaign submitted successfully', 'success');
+      } catch (err: any) {
+        showToast(err?.message || 'Failed to submit ad campaign', 'error');
+        throw err;
+      }
     },
     setSeadsInitiatives,
     handleStercsLogin: async (pin1: string, pin2: string, _biometricData: string): Promise<boolean> => {
@@ -1237,9 +1289,35 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
       showToast(`AI action enforced: ${action}`, 'success');
       return { success: true };
     },
-    handleSubmitTicket: async (_ticketData: unknown) => {
-      showToast('Support ticket submitted', 'success');
-      return { success: true };
+    supportTickets,
+    handleSubmitTicket: async (ticketData: any) => {
+      try {
+        const res = await legalComplianceService.createTicket(ticketData);
+        showToast('Support ticket submitted successfully', 'success');
+        fetchTickets();
+        return { success: true, data: res.data };
+      } catch (err: any) {
+        showToast(err.message || 'Failed to submit ticket', 'error');
+        return { success: false };
+      }
+    },
+    handleReplyToTicket: async (ticketId: string, message: string) => {
+      try {
+        await legalComplianceService.replyToTicket(ticketId, message);
+        showToast('Reply sent successfully', 'success');
+        fetchTickets();
+      } catch (err: any) {
+        showToast(err.message || 'Failed to send reply', 'error');
+      }
+    },
+    handleUpdateTicketStatus: async (ticketId: string, status: any) => {
+      try {
+        await legalComplianceService.updateTicketStatus(ticketId, status);
+        showToast(`Ticket status updated to ${status}`, 'success');
+        fetchTickets();
+      } catch (err: any) {
+        showToast(err.message || 'Failed to update ticket status', 'error');
+      }
     },
     handleSecureClaimCoupon,
     getCampaignDetails,
@@ -1264,6 +1342,9 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     handleRemoveDownload,
     fetchPhotoCredits,
     setMember,
+    addXP,
+    incrementStreak,
+    handleGlobalAction,
     setMemberCoupons,
     setAdCampaigns,
     setSalesAnalytics,
@@ -1275,29 +1356,29 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     setFeatureToggles,
     setPolicies
   }), [
-    state, setMembers, setPosts, setVideos, setAdvertisements, setNavigationSections, 
-    setTrends, setSuggestedMembers, setGroups, setTopics, setHashtags, setEvents, 
-    setCourses, setHallmarks, setGems, setLiveStreams, setMusicTracks, setLoading, 
-    setError, setSelectedMember, setSelectedPost, setSelectedGroup, setSearchTerm, 
-    addNotification, markNotificationAsRead, addPremiumPage, addVisitor, 
-    setAuthenticityScore, setQualifiedViews, setCreatorTier, addAIAssistant, 
-    setPayoutRequests, addPayoutRequest, updatePayoutRequestStatus, handleInitiatePayout, 
-    handleProcessPayout, setEnrollments, setSeadsInitiatives, showToast, showSuccessToast, 
-    showErrorToast, showInfoToast, showWarningToast, toggleTheme, setTheme, theme, 
-    isModalOpen, modalType, modalProps, openModal, closeModal, triggerSpecialEffect, 
-    toastNotification, toastType, specialEffect, settings, updateSettings, member, 
-    isLoading, activeSubProfile, notificationsCount, ficBalance, messages, sendMessage, 
-    handleSendMessage, getMessages, createConversation, getConversations, activeSession, 
-    startSession, joinSession, leaveSession, handleAiAssist, sidebarOpen, toggleSidebar, 
-    handleSecureClaimCoupon, getCampaignDetails, handleUpsertForumCategory, 
-    handleDeleteForumCategory, handleApproveGemContent, handleApproveContent, 
-    handleRemoveContent, handleSavePolicy, handlePlaceOrder, handlePublishPolicy, 
-    getSystemHealth, getSystemMetrics, performSystemMaintenance, getAuditLogs, 
-    handleDeletePaylink, handleGenerateAiPlaylist, handleGoLive, handleStopLive, 
-    handleStartConference, handlePlayMedia, handleRemoveDownload, fetchPhotoCredits, 
-    setMemberCoupons, setAdCampaigns, setSalesAnalytics, setForumCategories, 
-    setFranchises, setFlamingoSubmissions, setGemSubmissions, setFlaggedContent, 
-    setFeatureToggles, setPolicies
+    state, setMembers, setPosts, setVideos, setAdvertisements, setNavigationSections,
+    setTrends, setSuggestedMembers, setGroups, setTopics, setHashtags, setEvents,
+    setCourses, setHallmarks, setGems, setLiveStreams, setMusicTracks, setLoading,
+    setError, setSelectedMember, setSelectedPost, setSelectedGroup, setSearchTerm,
+    addNotification, markNotificationAsRead, addPremiumPage, addVisitor,
+    setAuthenticityScore, setQualifiedViews, setCreatorTier, addAIAssistant,
+    setPayoutRequests, addPayoutRequest, updatePayoutRequestStatus, handleInitiatePayout,
+    handleProcessPayout, setEnrollments, setSeadsInitiatives, showToast, showSuccessToast,
+    showErrorToast, showInfoToast, showWarningToast, toggleTheme, setTheme, theme,
+    isModalOpen, modalType, modalProps, openModal, closeModal, triggerSpecialEffect,
+    toastNotification, toastType, specialEffect, settings, updateSettings, member,
+    isLoading, activeSubProfile, notificationsCount, ficBalance, messages, sendMessage,
+    handleSendMessage, getMessages, createConversation, getConversations, activeSession,
+    startSession, joinSession, leaveSession, handleAiAssist, sidebarOpen, toggleSidebar,
+    handleSecureClaimCoupon, getCampaignDetails, handleUpsertForumCategory,
+    handleDeleteForumCategory, handleApproveGemContent, handleApproveContent,
+    handleRemoveContent, handleSavePolicy, handlePlaceOrder, handlePublishPolicy,
+    getSystemHealth, getSystemMetrics, performSystemMaintenance, getAuditLogs,
+    handleDeletePaylink, handleGenerateAiPlaylist, handleGoLive, handleStopLive,
+    handleStartConference, handlePlayMedia, handleRemoveDownload, fetchPhotoCredits,
+    setMemberCoupons, setAdCampaigns, setSalesAnalytics, setForumCategories,
+    setFranchises, setFlamingoSubmissions, setGemSubmissions, setFlaggedContent,
+    setFeatureToggles, setPolicies, addXP, incrementStreak, handleGlobalAction
   ]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

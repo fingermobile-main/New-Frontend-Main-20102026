@@ -34,11 +34,11 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
 
   const handleSubmitComment = async (parentId: string | null = null) => {
     if (!newComment.trim()) return;
-    
+
     try {
       setSubmitting(true);
       await blogService.createComment(postId, newComment, parentId || undefined);
-      
+
       setNewComment('');
       setReplyTo(null);
       loadComments();
@@ -62,7 +62,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    
+
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -73,7 +73,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
   const renderComment = (comment: BlogComment, depth: number = 0) => {
     const isOwner = currentUserId === comment.author_id;
     const maxDepth = 3; // Limit nesting depth
-    
+
     return (
       <div key={comment.id} className={`mb-4 ${depth > 0 ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
@@ -85,13 +85,13 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
                   src={comment.author_avatar}
                   alt={comment.author_name}
                   className="w-8 h-8 rounded-full"
-                 />
+                />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
                   {comment.author_name?.charAt(0).toUpperCase() || '?'}
                 </div>
               )}
-              
+
               <div>
                 <p className="font-medium text-gray-900 text-sm">
                   {comment.author_name || 'Anonymous'}
@@ -99,7 +99,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
                 <p className="text-xs text-gray-500">{formatDate(comment.created_at || comment.createdAt)}</p>
               </div>
             </div>
-            
+
             {comment.is_edited && (
               <span className="text-xs text-gray-500 italic">edited</span>
             )}
@@ -115,7 +115,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
             <button className="hover:text-blue-600 transition-colors">
               ❤️ {comment.likes_count || 0}
             </button>
-            
+
             {currentUserId && depth < maxDepth && (
               <button
                 onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
@@ -124,7 +124,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
                 💬 Reply
               </button>
             )}
-            
+
             {isOwner && (
               <>
                 <button className="hover:text-blue-600 transition-colors">

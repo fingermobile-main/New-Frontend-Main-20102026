@@ -13,19 +13,19 @@ import {
 
 class RealTimeService extends WebSocketService {
   constructor() {
-    super({prodEndpoint: "wss://api.fingermobile.com/ws", devEndpoint: "ws://localhost:3001/ws"});
+    super({prodEndpoint: 'wss://api.fingermobile.com/ws', devEndpoint: 'ws://localhost:3001/ws'});
   }
 
   // Join a chat room
   joinChatRoom(roomId: string): void {
     const data: JoinRoomData = { roomId };
-    this.sendMessage("join_room", data);
+    this.sendMessage('join_room', data);
   }
 
   // Leave a chat room
   leaveChatRoom(roomId: string): void {
     const data: JoinRoomData = { roomId };
-    this.sendMessage("leave_room", data);
+    this.sendMessage('leave_room', data);
   }
 
   // Send a chat message
@@ -34,7 +34,7 @@ class RealTimeService extends WebSocketService {
       roomId,
       content, timestamp: new Date().toISOString()
     };
-    this.sendMessage("chat_message", data);
+    this.sendMessage('chat_message', data);
   }
 
   // Send a typing indicator
@@ -43,31 +43,31 @@ class RealTimeService extends WebSocketService {
       roomId,
       isTyping, timestamp: new Date().toISOString()
     };
-    this.sendMessage("typing", data);
+    this.sendMessage('typing', data);
   }
 
   // Start a voice call
   startVoiceCall(participants: string[]): void {
     const data: VoiceCallData = { participants };
-    this.sendMessage("start_voice_call", data);
+    this.sendMessage('start_voice_call', data);
   }
 
   // End a voice call
   endVoiceCall(callId: string): void {
     const data: EndCallData = { callId };
-    this.sendMessage("end_voice_call", data);
+    this.sendMessage('end_voice_call', data);
   }
 
   // Start a video call
   startVideoCall(participants: string[]): void {
     const data: VideoCallData = { participants };
-    this.sendMessage("start_video_call", data);
+    this.sendMessage('start_video_call', data);
   }
 
   // End a video call
   endVideoCall(callId: string): void {
     const data: EndCallData = { callId };
-    this.sendMessage("end_video_call", data);
+    this.sendMessage('end_video_call', data);
   }
 }
 

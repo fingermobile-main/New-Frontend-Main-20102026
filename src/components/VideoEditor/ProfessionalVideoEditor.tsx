@@ -86,8 +86,8 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("https://fingermobile.com/share/video-editor-project-link");
-    showToast("Share link copied to clipboard!", "success");
+    navigator.clipboard.writeText('https://fingermobile.com/share/video-editor-project-link');
+    showToast('Share link copied to clipboard!', 'success');
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,16 +143,16 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
         video.play();
         setIsPlaying(true);
       }
-      showToast(`File "${file.name}" uploaded successfully!`, "success");
+      showToast(`File "${file.name}" uploaded successfully!`, 'success');
     }
   };
 
   const handleAddToTimeline = () => {
     if (uploadedFile) {
-      showToast(`"${uploadedFile.name}" added to timeline! (Simulated)`, "info");
+      showToast(`"${uploadedFile.name}" added to timeline! (Simulated)`, 'info');
       // In a real application, you would add the file to a timeline state or editor
     } else {
-      showToast("Please upload a file first.", "warning");
+      showToast('Please upload a file first.', 'warning');
     }
   };
 
@@ -248,7 +248,7 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
             <div className="relative w-full h-full bg-black flex items-center justify-center rounded-lg overflow-hidden">
               <video
                 ref={videoRef}
-                src={uploadedFile ? URL.createObjectURL(uploadedFile) : "https://www.w3schools.com/html/mov_bbb.mp4"} // Default video
+                src={uploadedFile ? URL.createObjectURL(uploadedFile) : 'https://www.w3schools.com/html/mov_bbb.mp4'} // Default video
                 className="max-w-full max-h-full"
                 onEnded={() => setIsPlaying(false)}
               >

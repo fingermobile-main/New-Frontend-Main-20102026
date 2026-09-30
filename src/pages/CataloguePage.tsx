@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import PhotoCreditCard from '../components/PhotoCreditCard';
 import { CatalogueIcon } from '../icons';
 import type { PhotoCreditItem } from '../types/models';
@@ -12,11 +12,11 @@ const CataloguePage: React.FC = () => {
     handleDownloadPhotoCredit,
     showToast
   } = useAppContext();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
-    category: "all",
-    orientation: "all",
-    color: "all"
+    category: 'all',
+    orientation: 'all',
+    color: 'all'
   });
   const [itemToDownload, setItemToDownload] = useState<PhotoCreditItem | null>(
     null,
@@ -37,17 +37,17 @@ const CataloguePage: React.FC = () => {
   const filteredItems = photoCreditItems.filter((item: PhotoCreditItem) => {
     const matchesSearch =
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
       item.tags?.some((tag: string) =>
         tag.toLowerCase().includes(searchTerm.toLowerCase()),
       );
 
     const matchesCategory =
-      filters.category === "all" || item.tags?.includes(filters.category);
+      filters.category === 'all' || item.tags?.includes(filters.category);
     const matchesOrientation =
-      filters.orientation === "all" || (item as any).orientation === filters.orientation;
+      filters.orientation === 'all' || (item as any).orientation === filters.orientation;
     const matchesColor =
-      filters.color === "all" || item.tags?.includes(filters.color);
+      filters.color === 'all' || item.tags?.includes(filters.color);
 
     return (
       matchesSearch && matchesCategory && matchesOrientation && matchesColor
@@ -73,8 +73,8 @@ const CataloguePage: React.FC = () => {
         onClick={() => handleFilterChange(filterKey, value)}
         className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
           filters[filterKey] === value
-            ? "bg-brand-blue text-white border-brand-blue"
-            : "bg-white text-gray-600 border-gray-300 hover:border-gray-500"
+            ? 'bg-brand-blue text-white border-brand-blue'
+            : 'bg-white text-gray-600 border-gray-300 hover:border-gray-500'
         }`}
       >
         {label}
@@ -163,13 +163,13 @@ const CataloguePage: React.FC = () => {
                   key={item.id}
                   item={{
                     id: item.id,
-                    uploader: { 
-                      id: item.uploader?.id || '', 
-                      name: item.uploader?.name || 'Unknown', 
-                      membername: item.uploader?.membername || 'unknown', 
-                      avatarUrl: item.uploader?.avatarUrl || '', 
-                      animatedAvatarUrl: item.uploader?.animatedAvatarUrl || '', 
-                      isVerified: item.uploader?.isVerified || false 
+                    uploader: {
+                      id: item.uploader?.id || '',
+                      name: item.uploader?.name || 'Unknown',
+                      membername: item.uploader?.membername || 'unknown',
+                      avatarUrl: item.uploader?.avatarUrl || '',
+                      animatedAvatarUrl: item.uploader?.animatedAvatarUrl || '',
+                      isVerified: item.uploader?.isVerified || false
                     },
                     imageUrl: item.image || '',
                     title: item.title,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Music, FolderPlus, ListMusic } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+import { Music, FolderPlus, ListMusic } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface CreatePlaylistFolderModalProps {
   isOpen: boolean;
@@ -23,15 +23,15 @@ const CreatePlaylistFolderModal: React.FC<CreatePlaylistFolderModalProps> = ({
   onClose,
   onCreateFolder
 }) => {
-  const [folderName, setFolderName] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [folderName, setFolderName] = React.useState('');
+  const [description, setDescription] = React.useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (folderName.trim()) {
       onCreateFolder?.(folderName.trim(), description.trim());
-      setFolderName("");
-      setDescription("");
+      setFolderName('');
+      setDescription('');
       onClose();
     }
   };

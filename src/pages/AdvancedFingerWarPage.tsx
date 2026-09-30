@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import AdvancedFingerWar from '../components/gaming/AdvancedFingerWar';
 import { useAdvancedFingerWar } from '../hooks/useAdvancedFingerWar';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,7 +9,7 @@ import MainLayout from '../components/layout/MainLayout';
 const AdvancedFingerWarPage: React.FC = () => {
   const { member } = useAuth();
   const memberIdString = member?.id ? (typeof member.id === 'string' ? member.id : String(member.id)) : undefined;
-  
+
   const { data, loading, error, refreshData } = useAdvancedFingerWar(
     memberIdString,
   );
@@ -108,7 +108,7 @@ const AdvancedFingerWarPage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

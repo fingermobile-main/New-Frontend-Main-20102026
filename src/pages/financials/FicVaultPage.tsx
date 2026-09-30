@@ -1,74 +1,82 @@
-import React, { useState } from 'react';
-
-
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
+import { apiService } from '../../services/apiService';
 import { GiftIcon, LinkIcon } from '../../components/icons';
 
 const FicVaultPage: React.FC = () => {
   const { ficBalance = 0, showToast } = useAppContext() || {};
-  const [vaultBalance] = useState(5000.0);
-  const [interestRate] = useState(4.5); // Annual interest rate
-  const [estimatedEarnings] = useState(187.5); // Estimated earnings for the year
-  const [vaultActivity] = useState([
-    {
-      id: 1,
-      date: "2023-06-15",
-      type: "deposit",
-      amount: 1000.0,
-      description: "Deposit from wallet"
-    },
-    {
-      id: 2,
-      date: "2023-05-20",
-      type: "interest",
-      amount: 18.75,
-      description: "Monthly interest"
-    },
-    {
-      id: 3,
-      date: "2023-04-15",
-      type: "deposit",
-      amount: 2000.0,
-      description: "Initial deposit"
-    },
-    {
-      id: 4,
-      date: "2023-03-15",
-      type: "interest",
-      amount: 15.25,
-      description: "Monthly interest"
-    }
-  ]);
+  const [vaultBalance, setVaultBalance] = useState(0);
+  const [interestRate, setInterestRate] = useState(5.0);
+  const [estimatedEarnings, setEstimatedEarnings] = useState(0);
+  const [vaultActivity, setVaultActivity] = useState<Array<{
+    id: number;
+    date: string;
+    type: string;
+    amount: number;
+    description: string;
+  }>>([]);
 
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [depositAmount, setDepositAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
-  const [giftAmount, setGiftAmount] = useState("");
-  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
+
+  const loadVaultData = useCallback(async () => {
+    try {
+      const [statusRes, historyRes] = await Promise.all([
+        apiService.get<any>('/api/fic-vault').catch(() => null),
+        apiService.get<any>('/api/fic-vault/history').catch(() => null)
+      ]);
+
+      if (statusRes?.data) {
+        const bal = Number(statusRes.data.balance || 0);
+        const apy = Number(statusRes.data.apy || 5.0);
+        setVaultBalance(bal);
+        setInterestRate(apy);
+        setEstimatedEarnings(bal * (apy / 100));
+      }
+
+      if (historyRes?.data && Array.isArray(historyRes.data)) {
+        setVaultActivity(historyRes.data.map((tx: any, idx: number) => ({
+          id: tx.id || idx + 1,
+          date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString() : 'Recent',
+          type: (tx.transactionType || 'deposit').toLowerCase(),
+          amount: Number(tx.amount || 0),
+          description: tx.reference || (tx.transactionType === 'DEPOSIT' ? 'Deposit to Vault' : 'Withdrawal from Vault')
+        })));
+      }
+    } catch (err) {
+      console.error('Failed to load FIC Vault data:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadVaultData();
+  }, [loadVaultData]);
 
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
-      return;
-    }
-
-    if (amount > ficBalance) {
-      showToast("Insufficient FIC balance", "error");
+      showToast?.('Please enter a valid amount', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast(`Successfully deposited ${amount} FIC to your vault`, "success");
-      setDepositAmount("");
-    } catch (error) {
-      showToast("Failed to process deposit", "error");
+      const res = await apiService.post<any>('/api/fic-vault/deposit', { amount });
+      if (res?.success) {
+        showToast?.(`Successfully deposited ${amount} FIC to your vault`, 'success');
+        setDepositAmount('');
+        await loadVaultData();
+      } else {
+        showToast?.(res?.message || 'Deposit failed', 'error');
+      }
+    } catch (error: any) {
+      showToast?.(error?.response?.data?.message || error?.message || 'Failed to process deposit', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -78,23 +86,27 @@ const FicVaultPage: React.FC = () => {
     e.preventDefault();
     const amount = parseFloat(withdrawAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast?.('Please enter a valid amount', 'error');
       return;
     }
 
     if (amount > vaultBalance) {
-      showToast("Insufficient vault balance", "error");
+      showToast?.('Insufficient vault balance', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast(`Successfully withdrawn ${amount} FIC from your vault`, "success");
-      setWithdrawAmount("");
-    } catch (error) {
-      showToast("Failed to process withdrawal", "error");
+      const res = await apiService.post<any>('/api/fic-vault/withdraw', { amount });
+      if (res?.success) {
+        showToast?.(`Successfully withdrawn ${amount} FIC from your vault`, 'success');
+        setWithdrawAmount('');
+        await loadVaultData();
+      } else {
+        showToast?.(res?.message || 'Withdrawal failed', 'error');
+      }
+    } catch (error: any) {
+      showToast?.(error?.response?.data?.message || error?.message || 'Failed to process withdrawal', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -102,7 +114,7 @@ const FicVaultPage: React.FC = () => {
 
   const onOpenGiftModal = () => {
     if (vaultBalance <= 0) {
-      showToast("No FIC available in vault to send gift", "error");
+      showToast?.('No FIC available in vault to send gift', 'error');
       return;
     }
     setShowGiftModal(true);
@@ -110,7 +122,7 @@ const FicVaultPage: React.FC = () => {
 
   const onOpenPaylinkModal = () => {
     if (vaultBalance <= 0) {
-      showToast("No FIC available in vault to create paylink", "error");
+      showToast?.('No FIC available in vault to create paylink', 'error');
       return;
     }
     setShowPaylinkModal(true);
@@ -119,24 +131,27 @@ const FicVaultPage: React.FC = () => {
   const handleSendGift = async () => {
     const amount = parseFloat(giftAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast?.('Please enter a valid amount', 'error');
       return;
     }
 
     if (amount > vaultBalance) {
-      showToast("Insufficient vault balance", "error");
+      showToast?.('Insufficient vault balance', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast("Gift sent successfully", "success");
-      setGiftAmount("");
+      await apiService.post('/api/giftcards', {
+        amount,
+        recipientEmail: 'recipient@fingermobile.com',
+        message: 'Gift from FIC Vault'
+      });
+      showToast?.('Gift card created and sent successfully', 'success');
+      setGiftAmount('');
       setShowGiftModal(false);
-    } catch (error) {
-      showToast("Failed to send gift", "error");
+    } catch (error: any) {
+      showToast?.(error?.response?.data?.message || error?.message || 'Failed to send gift', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -145,24 +160,26 @@ const FicVaultPage: React.FC = () => {
   const handleCreatePaylink = async () => {
     const amount = parseFloat(paylinkAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast?.('Please enter a valid amount', 'error');
       return;
     }
 
     if (amount > vaultBalance) {
-      showToast("Insufficient vault balance", "error");
+      showToast?.('Insufficient vault balance', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast("Paylink created successfully", "success");
-      setPaylinkAmount("");
+      await apiService.post('/api/paylinks', {
+        amount,
+        title: 'Payment Request from FIC Vault'
+      });
+      showToast?.('Paylink created successfully', 'success');
+      setPaylinkAmount('');
       setShowPaylinkModal(false);
-    } catch (error) {
-      showToast("Failed to create paylink", "error");
+    } catch (error: any) {
+      showToast?.(error?.response?.data?.message || error?.message || 'Failed to create paylink', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -188,7 +205,7 @@ const FicVaultPage: React.FC = () => {
                     {vaultBalance.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2
-                    })}{" "}
+                    })}{' '}
                     FIC
                   </h2>
                   <p className="mt-2 opacity-90">
@@ -219,7 +236,7 @@ const FicVaultPage: React.FC = () => {
                     {estimatedEarnings.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2
-                    })}{" "}
+                    })}{' '}
                     FIC
                   </p>
                 </div>
@@ -260,12 +277,12 @@ const FicVaultPage: React.FC = () => {
                       <div className="flex items-center">
                         <div
                           className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            activity.type === "deposit"
-                              ? "bg-green-100 text-green-600"
-                              : "bg-blue-100 text-blue-600"
+                            activity.type === 'deposit'
+                              ? 'bg-green-100 text-green-600'
+                              : 'bg-blue-100 text-blue-600'
                           }`}
                         >
-                          {activity.type === "deposit" ? (
+                          {activity.type === 'deposit' ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className="h-6 w-6"
@@ -306,12 +323,12 @@ const FicVaultPage: React.FC = () => {
                       </div>
                       <div
                         className={`font-semibold ${
-                          activity.type === "deposit"
-                            ? "text-green-600"
-                            : "text-blue-600"
+                          activity.type === 'deposit'
+                            ? 'text-green-600'
+                            : 'text-blue-600'
                         }`}
                       >
-                        {activity.type === "deposit" ? "+" : ""}
+                        {activity.type === 'deposit' ? '+' : ''}
                         {activity.amount} FIC
                       </div>
                     </div>
@@ -349,11 +366,11 @@ const FicVaultPage: React.FC = () => {
                     disabled={isProcessing}
                     className={`w-full py-2 rounded-lg font-semibold text-white transition-colors ${
                       isProcessing
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700'
                     }`}
                   >
-                    {isProcessing ? "Processing..." : "Deposit"}
+                    {isProcessing ? 'Processing...' : 'Deposit'}
                   </button>
                 </div>
               </form>
@@ -386,11 +403,11 @@ const FicVaultPage: React.FC = () => {
                     disabled={isProcessing}
                     className={`w-full py-2 rounded-lg font-semibold text-white transition-colors ${
                       isProcessing
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-red-600 hover:bg-red-700"
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-red-600 hover:bg-red-700'
                     }`}
                   >
-                    {isProcessing ? "Processing..." : "Withdraw"}
+                    {isProcessing ? 'Processing...' : 'Withdraw'}
                   </button>
                 </div>
               </form>
@@ -462,11 +479,11 @@ const FicVaultPage: React.FC = () => {
                   disabled={isProcessing}
                   className={`flex-1 px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
                     isProcessing
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                 >
-                  {isProcessing ? "Sending..." : "Send Gift"}
+                  {isProcessing ? 'Sending...' : 'Send Gift'}
                 </button>
               </div>
             </div>
@@ -511,11 +528,11 @@ const FicVaultPage: React.FC = () => {
                   disabled={isProcessing}
                   className={`flex-1 px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
                     isProcessing
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                 >
-                  {isProcessing ? "Creating..." : "Create Paylink"}
+                  {isProcessing ? 'Creating...' : 'Create Paylink'}
                 </button>
               </div>
             </div>

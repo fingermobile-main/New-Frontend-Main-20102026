@@ -36,7 +36,7 @@ LazyLoad.displayName = 'LazyLoad';
 // Debounced callback hook (removed duplicate - keeping only the one with deps parameter)
 export const useDebounceCallback = (callback, deps, delay = 300) => {
   const callbackRef = useRef(callback);
-  
+
   // Update the callback ref when the callback prop changes
   useEffect(() => {
     callbackRef.current = callback;
@@ -62,9 +62,9 @@ const useScrollPosition = () => {
     const updatePosition = () => {
       setScrollPosition(window.scrollY);
     };
-    
+
     window.addEventListener('scroll', updatePosition);
-    
+
     return () => window.removeEventListener('scroll', updatePosition);
   }, []);
 
@@ -153,19 +153,19 @@ export const createVirtualizedList = (Component, itemHeight, overscan = 5) => {
     const offsetY = startIndex * itemHeight;
 
     return React.createElement(
-      "div",
+      'div',
       {
         style: {
           height: containerHeight,
-          overflow: "scroll",
-          position: "relative"
+          overflow: 'scroll',
+          position: 'relative'
         },
         onScroll: (e) => setScrollTop(e.target.scrollTop)
       },
-      React.createElement("div", {
+      React.createElement('div', {
         style: {
           height: totalHeight,
-          position: "relative"
+          position: 'relative'
         }
       }),
       visibleItems.map((item, index) =>
@@ -174,10 +174,10 @@ export const createVirtualizedList = (Component, itemHeight, overscan = 5) => {
           ...props,
           item,
           style: {
-            position: "absolute",
+            position: 'absolute',
             top: offsetY + index * itemHeight,
             left: 0,
-            width: "100%",
+            width: '100%',
             height: itemHeight
           }
         })
@@ -267,13 +267,13 @@ export const measurePerformance = (name, fn) => {
   const start = performance.now();
   const result = fn();
   const end = performance.now();
-  
+
   if (process.env.NODE_ENV === 'development') {
     console.info(`⏱️,
 Performance: ${name} - Execution,
 time: ${(end - start).toFixed(2)} ms`);
   }
-  
+
   return result;
 };
 

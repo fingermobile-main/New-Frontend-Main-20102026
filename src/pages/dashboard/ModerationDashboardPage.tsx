@@ -1,66 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
+import { moderationAdminService, ModerationQueueItem, ModerationStats, UserReportItem } from '../../services/moderationAdminService';
+import { RefreshCw, CheckCircle2, AlertOctagon, XCircle, UserX, Loader2 } from 'lucide-react';
 
 const ModerationDashboardPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = useState("pending");
-  const [filter, setFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState('pending');
+  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
 
-  // Mock data for content requiring moderation
-  const pendingContent = [
-    {
-      id: 1,
-      type: "post",
-      member: "John Doe",
-      content: "This is a potentially inappropriate post that needs review...",
-      timestamp: "2023-06-15 14:30",
-      category: "Violence",
-      priority: "high"
-    },
-    {
-      id: 2,
-      type: "comment",
-      member: "Jane Smith",
-      content: "Offensive comment that violates community guidelines",
-      timestamp: "2023-06-15 13:45",
-      category: "Hate Speech",
-      priority: "medium"
-    },
-    {
-      id: 3,
-      type: "image",
-      member: "Alex Johnson",
-      content: "Image that may violate content policies",
-      timestamp: "2023-06-15 12:15",
-      category: "Nudity",
-      priority: "low"
-    }
-  ];
+  const [queue, setQueue] = useState<ModerationQueueItem[]>([]);
+  const [stats, setStats] = useState<ModerationStats>({
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    highPriorityPending: 0,
+    avgReviewTimeSeconds: 0
+  });
+  const [reports, setReports] = useState<UserReportItem[]>([]);
 
-  const flaggedMembers = [
-    {
-      id: 1,
-      name: "John Doe",
-      membername: "@johndoe",
-      reports: 12,
-      status: "active",
-      lastActivity: "2023-06-15 10:30"
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      membername: "@janesmith",
-      reports: 8,
-      status: "suspended",
-      lastActivity: "2023-06-14 16:45"
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [queueData, statsData, reportsData] = await Promise.all([
+        moderationAdminService.getQueue(),
+        moderationAdminService.getStats(),
+        moderationAdminService.getReports('all')
+      ]);
+      setQueue(queueData);
+      setStats(statsData);
+      setReports(reportsData);
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to fetch moderation dashboard data', 'error');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleApprove = async (id: string) => {
+    try {
+      setActionLoadingId(id);
+      await moderationAdminService.approveItem(id, 'Approved via Moderation Dashboard');
+      showToast?.('Item approved successfully', 'success');
+      setQueue(prev => prev.map(item => String(item.id) === String(id) ? { ...item, status: 'approved' } : item));
+      setStats(prev => ({ ...prev, pending: Math.max(0, prev.pending - 1), approved: prev.approved + 1 }));
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to approve item', 'error');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const handleRemove = async (id: string) => {
+    try {
+      setActionLoadingId(id);
+      await moderationAdminService.rejectItem(id, 'remove_content', 'Rejected and removed via Moderation Dashboard');
+      showToast?.('Content removed and item rejected', 'info');
+      setQueue(prev => prev.map(item => String(item.id) === String(id) ? { ...item, status: 'rejected' } : item));
+      setStats(prev => ({ ...prev, pending: Math.max(0, prev.pending - 1), rejected: prev.rejected + 1 }));
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to remove content', 'error');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const pendingContent = queue
+    .filter(item => item.status === 'pending')
+    .filter(item => filter === 'all' || item.reason?.toLowerCase().includes(filter.toLowerCase()) || item.content_type?.toLowerCase() === filter.toLowerCase());
+
+  const flaggedMembers = reports.map((r, idx) => ({
+    id: idx + 1,
+    name: r.target_id ? `Member #${r.target_id.slice(0, 8)}` : `Member #${idx + 1}`,
+    membername: `@user_${r.target_id ? r.target_id.slice(0, 6) : idx + 1}`,
+    reports: 1,
+    status: r.status === 'resolved' ? 'active' : 'flagged',
+    lastActivity: new Date(r.created_at).toLocaleString()
+  }));
 
   const moderationStats = [
-    { name: "Pending Review", value: "24", change: "+3%" },
-    { name: "Reviewed Today", value: "142", change: "+12%" },
-    { name: "Content Removed", value: "7", change: "-2%" },
-    { name: "Members Warned", value: "3", change: "0%" }
+    { name: 'Pending Review', value: String(stats.pending), change: stats.pending > 0 ? `${stats.highPriorityPending} urgent` : 'Clean' },
+    { name: 'Reviewed / Approved', value: String(stats.approved), change: `${stats.approved} resolved` },
+    { name: 'Content Removed', value: String(stats.rejected), change: `${stats.rejected} rejected` },
+    { name: 'Open User Reports', value: String(reports.filter(r => r.status === 'open' || r.status === 'under_review').length), change: `${reports.length} total` }
   ];
 
   return (
@@ -98,41 +125,41 @@ const ModerationDashboardPage: React.FC = () => {
           <div className="border-b border-gray-200">
             <nav className="flex space-x-8 px-6">
               <button
-                onClick={() => setActiveTab("pending")}
+                onClick={() => setActiveTab('pending')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "pending"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'pending'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Pending Review
               </button>
               <button
-                onClick={() => setActiveTab("flagged")}
+                onClick={() => setActiveTab('flagged')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "flagged"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'flagged'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Flagged Members
               </button>
               <button
-                onClick={() => setActiveTab("reports")}
+                onClick={() => setActiveTab('reports')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "reports"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'reports'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Reports
               </button>
               <button
-                onClick={() => setActiveTab("settings")}
+                onClick={() => setActiveTab('settings')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "settings"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  activeTab === 'settings'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Settings
@@ -142,7 +169,7 @@ const ModerationDashboardPage: React.FC = () => {
 
           <div className="p-6">
             {/* Pending Review Tab */}
-            {activeTab === "pending" && (
+            {activeTab === 'pending' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-medium text-gray-900">
@@ -160,75 +187,93 @@ const ModerationDashboardPage: React.FC = () => {
                       <option value="nudity">Nudity</option>
                       <option value="spam">Spam</option>
                     </select>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                    <button
+                      onClick={loadData}
+                      disabled={loading}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm flex items-center gap-2"
+                    >
+                      <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                       Refresh
                     </button>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  {pendingContent.map((item) => (
-                    <div
-                      key={item.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex justify-between">
-                        <div className="flex items-center">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              item.priority === "high"
-                                ? "bg-red-100 text-red-800"
-                                : item.priority === "medium"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-green-100 text-green-800"
-                            }`}
-                          >
-                            {item.priority.charAt(0).toUpperCase() +
-                              item.priority.slice(1)}{" "}
-                            Priority
-                          </span>
-                          <span className="ml-2 text-sm text-gray-500">
-                            {item.type}
-                          </span>
-                        </div>
-                        <span className="text-sm text-gray-500">
-                          {item.timestamp}
-                        </span>
-                      </div>
-
-                      <div className="mt-3">
-                        <p className="text-sm font-medium text-gray-900">
-                          {item.member}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {item.content}
-                        </p>
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          {item.category}
-                        </span>
-                        <div className="flex space-x-2">
-                          <button className="px-3 py-1 bg-green-600 text-white text-xs rounded-md hover:bg-green-700">
-                            Approve
-                          </button>
-                          <button className="px-3 py-1 bg-yellow-500 text-white text-xs rounded-md hover:bg-yellow-600">
-                            Review
-                          </button>
-                          <button className="px-3 py-1 bg-red-600 text-white text-xs rounded-md hover:bg-red-700">
-                            Remove
-                          </button>
-                        </div>
-                      </div>
+                  {pendingContent.length === 0 ? (
+                    <div className="p-8 text-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                      <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-2" />
+                      <p className="text-gray-700 font-medium">No pending moderation items</p>
+                      <p className="text-sm text-gray-500">The moderation queue is clear for the selected category.</p>
                     </div>
-                  ))}
+                  ) : (
+                    pendingContent.map((item) => (
+                      <div
+                        key={item.id}
+                        className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex justify-between">
+                          <div className="flex items-center">
+                            <span
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                item.priority === 'urgent' || item.priority === 'high'
+                                  ? 'bg-red-100 text-red-800'
+                                  : item.priority === 'medium'
+                                    ? 'bg-yellow-100 text-yellow-800'
+                                    : 'bg-green-100 text-green-800'
+                              }`}
+                            >
+                              {(item.priority || 'normal').toUpperCase()} Priority
+                            </span>
+                            <span className="ml-2 text-sm text-gray-500 uppercase font-semibold">
+                              {item.content_type}
+                            </span>
+                          </div>
+                          <span className="text-sm text-gray-500">
+                            {new Date(item.created_at).toLocaleString()}
+                          </span>
+                        </div>
+
+                        <div className="mt-3">
+                          <p className="text-sm font-medium text-gray-900">
+                            Reported by: {item.reporter_username || item.reported_by || 'Anonymous'}
+                          </p>
+                          <p className="text-sm text-gray-700 mt-1 bg-gray-50 p-2.5 rounded border border-gray-100">
+                            {item.contentPreview || item.description || `Target ID: ${item.content_id}`}
+                          </p>
+                        </div>
+
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Reason: {item.reason}
+                          </span>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleApprove(String(item.id))}
+                              disabled={actionLoadingId === String(item.id)}
+                              className="px-3 py-1 bg-green-600 text-white text-xs rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center gap-1"
+                            >
+                              {actionLoadingId === String(item.id) ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                              Approve
+                            </button>
+                            <button
+                              onClick={() => handleRemove(String(item.id))}
+                              disabled={actionLoadingId === String(item.id)}
+                              className="px-3 py-1 bg-red-600 text-white text-xs rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center gap-1"
+                            >
+                              {actionLoadingId === String(item.id) ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             )}
 
             {/* Flagged Members Tab */}
-            {activeTab === "flagged" && (
+            {activeTab === 'flagged' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-medium text-gray-900">
@@ -292,9 +337,9 @@ const ModerationDashboardPage: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span
                               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                member.status === "active"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-red-100 text-red-800"
+                                member.status === 'active'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-red-100 text-red-800'
                               }`}
                             >
                               {member.status.charAt(0).toUpperCase() +
@@ -333,45 +378,70 @@ const ModerationDashboardPage: React.FC = () => {
             )}
 
             {/* Reports Tab */}
-            {activeTab === "reports" && (
+            {activeTab === 'reports' && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Moderation Reports
-                </h3>
-                <div className="bg-gray-50 rounded-lg p-8 text-center">
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">
-                    No reports available
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    User Infraction Reports ({reports.length})
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Reports will appear here when generated.
-                  </p>
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
-                    >
-                      Generate Report
-                    </button>
-                  </div>
+                  <button
+                    onClick={loadData}
+                    className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium"
+                  >
+                    Refresh Reports
+                  </button>
                 </div>
+                {reports.length === 0 ? (
+                  <div className="bg-gray-50 rounded-lg p-8 text-center">
+                    <CheckCircle2 className="mx-auto h-12 w-12 text-green-500 mb-2" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">
+                      No user reports logged
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      All user reports have been resolved.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto border border-gray-200 rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report ID</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {reports.map((r) => (
+                          <tr key={r.id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-gray-600">{r.id.slice(0, 8)}...</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                              {r.target_type} ({r.target_id.slice(0, 8)})
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">{r.reason}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 py-0.5 text-xs rounded-full font-semibold ${
+                                r.status === 'resolved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {r.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
+                              {new Date(r.created_at).toLocaleDateString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Settings Tab */}
-            {activeTab === "settings" && (
+            {activeTab === 'settings' && (
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Moderation Settings

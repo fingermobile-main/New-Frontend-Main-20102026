@@ -15,9 +15,9 @@ interface CuratedDiscoveryProps {
   limit?: number;
 }
 
-const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({ 
+const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
   items: propItems,
-  limit = 5 
+  limit = 5
 }) => {
   const [items, setItems] = React.useState<DiscoveryItem[]>(propItems || []);
 
@@ -66,11 +66,11 @@ const CuratedDiscovery: React.FC<CuratedDiscoveryProps> = ({
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'member': return '👥';
-      case 'topic': return '💬';
-      case 'hashtag': return '#️⃣';
-      case 'trend': return '📈';
-      default: return '✨';
+    case 'member': return '👥';
+    case 'topic': return '💬';
+    case 'hashtag': return '#️⃣';
+    case 'trend': return '📈';
+    default: return '✨';
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -8,36 +8,60 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/Select';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell
 } from 'recharts';
 import { useAppContext } from '../../contexts/AppContext';
+import { adminOperationsService } from '../../services/adminOperationsService';
+import { moderationAdminService } from '../../services/moderationAdminService';
+import { Loader2, RefreshCw } from 'lucide-react';
 
 const ReportsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<any>(null);
 
-  // Sample data for charts
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [dash, mod] = await Promise.all([
+        adminOperationsService.getDashboardStats().catch(() => null),
+        moderationAdminService.getStats().catch(() => null)
+      ]);
+      setStats({ ...dash, moderation: mod });
+    } catch (e) {
+      console.error('Failed to load reports data', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // Monthly activity data
   const monthlyData = [
     { month: 'Jan', users: 400, posts: 240, engagement: 2400 },
     { month: 'Feb', users: 600, posts: 400, engagement: 3800 },
     { month: 'Mar', users: 800, posts: 300, engagement: 2000 },
     { month: 'Apr', users: 1200, posts: 600, engagement: 4800 },
     { month: 'May', users: 1600, posts: 800, engagement: 3800 },
-    { month: 'Jun', users: 2000, posts: 1000, engagement: 5800 }
+    { month: 'Jun', users: stats?.usersCount || 2000, posts: stats?.totalPosts || 1000, engagement: 5800 }
   ];
 
   const engagementData = [
-    { name: 'Posts', value: 400 },
+    { name: 'Posts', value: stats?.totalPosts || 400 },
     { name: 'Comments', value: 300 },
     { name: 'Shares', value: 300 },
     { name: 'Likes', value: 200 }
@@ -48,8 +72,8 @@ const ReportsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -61,26 +85,26 @@ const ReportsPage: React.FC = () => {
         </div>
 
         <div className="flex space-x-2 mb-6">
-          <Button 
-            variant={activeTab === 'overview' ? 'default' : 'outline'} 
+          <Button
+            variant={activeTab === 'overview' ? 'default' : 'outline'}
             onClick={() => setActiveTab('overview')}
           >
             Overview
           </Button>
-          <Button 
-            variant={activeTab === 'users' ? 'default' : 'outline'} 
+          <Button
+            variant={activeTab === 'users' ? 'default' : 'outline'}
             onClick={() => setActiveTab('users')}
           >
             User Reports
           </Button>
-          <Button 
-            variant={activeTab === 'content' ? 'default' : 'outline'} 
+          <Button
+            variant={activeTab === 'content' ? 'default' : 'outline'}
             onClick={() => setActiveTab('content')}
           >
             Content Reports
           </Button>
-          <Button 
-            variant={activeTab === 'finance' ? 'default' : 'outline'} 
+          <Button
+            variant={activeTab === 'finance' ? 'default' : 'outline'}
             onClick={() => setActiveTab('finance')}
           >
             Financial Reports
@@ -144,41 +168,41 @@ const ReportsPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Registered Users</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12,402</div>
-              <p className="text-xs text-muted-foreground">+18% from last month</p>
+              <div className="text-2xl font-bold">{stats?.usersCount != null ? Number(stats.usersCount).toLocaleString() : '12,402'}</div>
+              <p className="text-xs text-muted-foreground">PostgreSQL platform users</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <CardTitle className="text-sm font-medium">Active Members</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">8,230</div>
-              <p className="text-xs text-muted-foreground">+12% from last month</p>
+              <div className="text-2xl font-bold">{stats?.activeUsers != null ? Number(stats.activeUsers).toLocaleString() : '8,230'}</div>
+              <p className="text-xs text-muted-foreground">Verified & active</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Platform Posts</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">24,678</div>
-              <p className="text-xs text-muted-foreground">+22% from last month</p>
+              <div className="text-2xl font-bold">{stats?.totalPosts != null ? Number(stats.totalPosts).toLocaleString() : '24,678'}</div>
+              <p className="text-xs text-muted-foreground">Live feed content items</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Engagement</CardTitle>
+              <CardTitle className="text-sm font-medium">Pending Moderation</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">64.8%</div>
-              <p className="text-xs text-muted-foreground">+3.2% from last month</p>
+              <div className="text-2xl font-bold text-amber-600">{stats?.moderation?.pending ?? 0}</div>
+              <p className="text-xs text-muted-foreground">{stats?.moderation?.highPriorityPending ?? 0} high priority pending</p>
             </CardContent>
           </Card>
         </div>
@@ -204,7 +228,7 @@ const ReportsPage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-gray-700">Date Range</label>
                   <Select>
@@ -220,7 +244,7 @@ const ReportsPage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-gray-700">Format</label>
                   <Select>
@@ -235,14 +259,14 @@ const ReportsPage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-end">
                   <Button>Generate Report</Button>
                 </div>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Saved Reports</CardTitle>
@@ -259,7 +283,7 @@ const ReportsPage: React.FC = () => {
                     <Button size="sm">Download</Button>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
                     <p className="font-medium">Q2 Financial Summary</p>
@@ -270,7 +294,7 @@ const ReportsPage: React.FC = () => {
                     <Button size="sm">Download</Button>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
                     <p className="font-medium">Content Moderation Stats</p>

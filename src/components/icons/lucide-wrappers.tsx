@@ -1,7 +1,7 @@
 import { Link} from 'react-router-dom';
 // Explicit wrapper components for Lucide icons to help TypeScript resolution
 // NOTE: Icons already in core/ui.tsx are EXCLUDED to avoid duplicate export errors
-import { 
+import {
   Filter, Grid3x3, List, Gamepad2, Play, CirclePlay,
   MessageSquare, MessageCircle, UsersRound, Linkedin, Facebook,
   Instagram, Twitter, Mail, LogIn, DollarSign,

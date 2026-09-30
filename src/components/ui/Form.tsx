@@ -73,8 +73,8 @@ const FormControl: React.FC<FormControlProps> = ({ children, className = '' }) =
   // Clone the child element and add the form control styling
   return React.isValidElement(children)
     ? React.cloneElement(children as React.ReactElement<any>, {
-        className: `${(children as any).props.className || ''} ${className}`
-      })
+      className: `${(children as any).props.className || ''} ${className}`
+    })
     : <>{children}</>;
 };
 

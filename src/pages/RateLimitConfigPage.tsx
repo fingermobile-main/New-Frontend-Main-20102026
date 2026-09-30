@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { 
-  ShieldCheckIcon, 
+import { useAppContext } from '../contexts/AppContext';
+import {
+  ShieldCheckIcon,
   PlusIcon,
   TrashIcon,
   PencilIcon,
@@ -45,48 +45,35 @@ const RateLimitConfigPage: React.FC = () => {
   const fetchConfigs = async () => {
     try {
       setLoading(true);
-      // Simulate API call to /api/admin/rate-limits
-      const simulatedConfigs: RateLimitConfig[] = [
-        {
-          id: '1',
-          name: 'Default API Rate Limit',
-          endpointPattern: '/api/*',
-          maxRequests: 100,
-          windowMs: 900000,
-          isActive: true,
-          createdAt: '2026-01-15T10:00:00Z'
-        },
-        {
-          id: '2',
-          name: 'Authentication Endpoints',
-          endpointPattern: '/api/auth/*',
-          maxRequests: 20,
-          windowMs: 300000,
-          isActive: true,
-          createdAt: '2026-02-20T14:30:00Z'
-        },
-        {
-          id: '3',
-          name: 'Premium Users - Higher Limit',
-          endpointPattern: '/api/*',
-          userRole: 'premium',
-          maxRequests: 500,
-          windowMs: 900000,
-          isActive: true,
-          createdAt: '2026-03-10T09:15:00Z'
-        },
-        {
-          id: '4',
-          name: 'Payment Processing',
-          endpointPattern: '/api/payments/*',
-          maxRequests: 10,
-          windowMs: 60000,
-          isActive: true,
-          createdAt: '2026-04-05T16:45:00Z'
-        }
-      ];
-      
-      setConfigs(simulatedConfigs);
+      const { api } = await import('../services/api');
+      const response = await api.get('/admin/rate-limit');
+
+      const rateLimits = response.data?.limits || response.data?.rateLimits || response.data || [];
+
+      if (Array.isArray(rateLimits) && rateLimits.length > 0) {
+        setConfigs(rateLimits.map((r: any) => ({
+          id: r.id,
+          name: r.name,
+          endpointPattern: r.endpoint_pattern || r.endpointPattern,
+          maxRequests: r.max_requests || r.maxRequests || 100,
+          windowMs: r.window_ms || r.windowMs || 900000,
+          isActive: r.is_active !== undefined ? r.is_active : r.isActive,
+          createdAt: r.created_at || r.createdAt || new Date().toISOString()
+        })));
+      } else {
+        // Fallback simulated configs if none exist in the DB yet
+        setConfigs([
+          {
+            id: '1',
+            name: 'Default API Rate Limit',
+            endpointPattern: '/api/*',
+            maxRequests: 100,
+            windowMs: 900000,
+            isActive: true,
+            createdAt: new Date().toISOString()
+          }
+        ]);
+      }
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch rate limit configs:', error);
@@ -95,38 +82,40 @@ const RateLimitConfigPage: React.FC = () => {
     }
   };
 
-  const handleCreateConfig = () => {
+  const handleCreateConfig = async () => {
     if (!newConfig.name || !newConfig.endpointPattern) {
       showToast('Please fill in all required fields', 'error');
       return;
     }
 
-    const config: RateLimitConfig = {
-      id: Date.now().toString(),
-      name: newConfig.name!,
-      endpointPattern: newConfig.endpointPattern!,
-      userRole: newConfig.userRole,
-      userId: newConfig.userId,
-      maxRequests: newConfig.maxRequests || 100,
-      windowMs: newConfig.windowMs || 900000,
-      isActive: newConfig.isActive !== false,
-      createdAt: new Date().toISOString()
-    };
+    try {
+      const { api } = await import('../services/api');
+      const response = await api.post('/admin/rate-limit', newConfig);
 
-    setConfigs([config, ...configs]);
-    setNewConfig({
-      name: '',
-      endpointPattern: '',
-      maxRequests: 100,
-      windowMs: 900000,
-      isActive: true
-    });
-    setShowCreateModal(false);
-    showToast('Rate limit configuration created', 'success');
+      const config = response.data?.rateLimit || response.data || {
+        ...newConfig,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString()
+      };
+
+      setConfigs([config, ...configs]);
+      setNewConfig({
+        name: '',
+        endpointPattern: '',
+        maxRequests: 100,
+        windowMs: 900000,
+        isActive: true
+      });
+      setShowCreateModal(false);
+      showToast('Rate limit configuration created', 'success');
+    } catch (error) {
+      console.error('Failed to create rate limit config:', error);
+      showToast('Failed to create rate limit configuration', 'error');
+    }
   };
 
   const handleToggleConfig = (configId: string) => {
-    setConfigs(configs.map(config => 
+    setConfigs(configs.map(config =>
       config.id === configId ? { ...config, isActive: !config.isActive } : config
     ));
     showToast('Configuration updated', 'success');
@@ -222,7 +211,7 @@ const RateLimitConfigPage: React.FC = () => {
                         {config.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                       <div>
                         <p className="text-xs text-gray-500 mb-1">Endpoint Pattern</p>
@@ -258,8 +247,8 @@ const RateLimitConfigPage: React.FC = () => {
                     <button
                       onClick={() => handleToggleConfig(config.id)}
                       className={`p-2 rounded-lg transition-colors ${
-                        config.isActive 
-                          ? 'text-green-600 hover:bg-green-50' 
+                        config.isActive
+                          ? 'text-green-600 hover:bg-green-50'
                           : 'text-gray-400 hover:bg-gray-50'
                       }`}
                       title={config.isActive ? 'Disable' : 'Enable'}
@@ -291,7 +280,7 @@ const RateLimitConfigPage: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl shadow-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Create Rate Limit Rule</h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

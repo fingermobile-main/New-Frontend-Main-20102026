@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { BarChart2, TrendingUp, Users, DollarSign } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { BarChart2, TrendingUp, Users, DollarSign } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 
 interface CRMWidgetProps {
   title: string;
@@ -9,27 +9,27 @@ interface CRMWidgetProps {
   change?: number;
   period?: string;
   icon?: React.ReactNode;
-  trend?: "up" | "down" | "stable";
+  trend?: 'up' | 'down' | 'stable';
 }
 
 const CRMWidget: React.FC<CRMWidgetProps> = ({
   title,
   value,
   change,
-  period = "vs last month",
+  period = 'vs last month',
   icon,
   trend
 }) => {
   const getTrendColor = () => {
-    if (trend === "up") return "text-green-600";
-    if (trend === "down") return "text-red-600";
-    return "text-gray-600";
+    if (trend === 'up') return 'text-green-600';
+    if (trend === 'down') return 'text-red-600';
+    return 'text-gray-600';
   };
 
   const getTrendIcon = () => {
-    if (trend === "up") return "↑";
-    if (trend === "down") return "↓";
-    return "→";
+    if (trend === 'up') return '↑';
+    if (trend === 'down') return '↓';
+    return '→';
   };
 
   return (

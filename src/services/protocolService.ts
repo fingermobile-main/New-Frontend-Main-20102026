@@ -19,7 +19,7 @@ export class ProtocolService extends WebSocketService {
   public onMessage: ((message: ProtocolMessage) => void) | null = null;  // Added onMessage handler
 
   private static instance: ProtocolService;
-  private protocolVersion = "1.0.0";
+  private protocolVersion = '1.0.0';
   private clientId: string | null = null;
   private sessionId: string | null = null;
   private serverId: string | null = null;
@@ -45,7 +45,7 @@ export class ProtocolService extends WebSocketService {
 
   // Initialize protocol service
   initialize(
-  clientId: string): void {
+    clientId: string): void {
     this.clientId = clientId;
     console.info(`Protocol service initialized for,
 client: ${clientId}`);
@@ -53,16 +53,16 @@ client: ${clientId}`);
 
   // Overriding handleIncomingMessage to handle protocol-specific messages
   protected handleIncomingMessage(
-  message: WebSocketMessage): void {
+    message: WebSocketMessage): void {
     const data = message.data;
 
     // If the message is a raw protocol message (not wrapped in WebSocketMessage)
     // or if it's the 'data' part of a WebSocketMessage
     if (
       data &&
-      typeof data === "object" &&
-      "messageId" in data &&
-      "messageType" in data
+      typeof data === 'object' &&
+      'messageId' in data &&
+      'messageType' in data
     ) {
       this.processIncomingMessage(data as ProtocolMessage);
     } else {
@@ -74,18 +74,18 @@ client: ${clientId}`);
   // Establish protocol connection with handshake
   async connectToProtocol(): Promise<boolean> {
     if (!this.clientId) {
-      throw new Error("Protocol service not initialized with client ID");
+      throw new Error('Protocol service not initialized with client ID');
     }
 
     try {
       // Connect to WebSocket first if not already connected
-      if (this.getConnectionStatus() !== "connected") {
+      if (this.getConnectionStatus() !== 'connected') {
         await this.connect(this.clientId);
       }
 
       // Create handshake request
       const handshakeRequest: HandshakeRequest = {protocolVersion: this.protocolVersion,
-  clientId: this.clientId, supportedFeatures: ["messaging", "encryption", "acknowledgements"]
+        clientId: this.clientId, supportedFeatures: ['messaging', 'encryption', 'acknowledgements']
       };
 
       // Add public key if encryption is enabled
@@ -95,7 +95,7 @@ client: ${clientId}`);
 
       // Send handshake message
       const response = await this.sendMessageAndWait(
-        "server", "handshake",
+        'server', 'handshake',
         handshakeRequest,
       );
 
@@ -115,12 +115,12 @@ client: ${clientId}`);
           `Protocol connection established. Session,
 ID: ${this.sessionId}`,
         );
-        
+
         // Call onConnect handler if exists
         if (this.onConnect) {
           this.onConnect();
         }
-        
+
         this.flushMessageQueue();
         return true;
       } else {
@@ -130,7 +130,7 @@ Error: ${handshakeResponse.errorCode}` );
         return false;
       }
     } catch (error) {
-      console.error("Protocol connection failed:", error);
+      console.error('Protocol connection failed:', error);
       // Call onError handler if exists
       if (this.onError) {
         this.onError(error as Event);
@@ -144,21 +144,21 @@ Error: ${handshakeResponse.errorCode}` );
     this.isConnectedToProtocol = false;
     this.sessionId = null;
     this.serverId = null;
-    
+
     // Call onDisconnect handler if exists
     if (this.onDisconnect) {
       this.onDisconnect();
     }
-    
+
     this.disconnect();
-    console.info("Protocol service disconnected");
+    console.info('Protocol service disconnected');
   }
 
   // Send a message and wait for response
   private sendMessageAndWait(
-  destination: string,
-messageType: string,
-payload: unknown,
+    destination: string,
+    messageType: string,
+    payload: unknown,
   ): Promise<ProtocolMessage> {
     return new Promise((resolve, reject) => {
       const message = this.createMessage(destination, messageType, payload);
@@ -191,9 +191,9 @@ payload: unknown,
 
   // Create a protocol message
   private createMessage(
-  destination: string,
-messageType: string,
-payload: unknown,
+    destination: string,
+    messageType: string,
+    payload: unknown,
   ): ProtocolMessage {
     this.sequenceNumber++;
 
@@ -207,12 +207,12 @@ payload: unknown,
           payloadString, this.privateKey
         );
       } catch (error) {
-        console.error("Failed to encrypt payload:", error);
+        console.error('Failed to encrypt payload:', error);
       }
     }
 
     const message: ProtocolMessage = {messageId: `${this.clientId}-${Date.now()}-${this.sequenceNumber}`,
-      messageType, source: this.clientId || "unknown",
+      messageType, source: this.clientId || 'unknown',
       destination,
       payload: processedPayload,
       timestamp: Date.now(),
@@ -224,9 +224,9 @@ payload: unknown,
 
   // Send a protocol message
   private async sendProtocolMessage(
-  message: ProtocolMessage): Promise<void> {
-    if (!this.isConnectedToProtocol && message.messageType !== "handshake") {
-      console.warn("Protocol service not connected. Queuing message.");
+    message: ProtocolMessage): Promise<void> {
+    if (!this.isConnectedToProtocol && message.messageType !== 'handshake') {
+      console.warn('Protocol service not connected. Queuing message.');
       this.messageQueue.push(message);
       return;
     }
@@ -245,7 +245,7 @@ payload: unknown,
 
   // Process incoming messages
   processIncomingMessage(
-  message: ProtocolMessage): void {
+    message: ProtocolMessage): void {
     console.info(
       `Processing incoming message: ${message.messageType} (${message.messageId})` );
 
@@ -268,7 +268,7 @@ payload: unknown,
     }
 
     // Handle acknowledgements
-    if (message.messageType === "ack") {
+    if (message.messageType === 'ack') {
       const ack = message.payload as Acknowledgement;
       const callbacks = this.protocolMessageCallbacks.get(ack.messageId);
       if (callbacks) {
@@ -285,37 +285,37 @@ payload: unknown,
 
     // Handle other message types
     switch (message.messageType) {
-      case "notification": {
-        this.handleNotification(message);
-        break;
+    case 'notification': {
+      this.handleNotification(message);
+      break;
+    }
+    case 'data_update': {
+      this.handleDataUpdate(message);
+      break;
+    }
+    case 'handshake_response': {
+      // Handle handshake response if received via handleIncomingMessage
+      const callbacks = this.protocolMessageCallbacks.get(message.messageId);
+      if (callbacks) {
+        callbacks.forEach((callback) => callback(message));
       }
-      case "data_update": {
-        this.handleDataUpdate(message);
-        break;
-      }
-      case "handshake_response": {
-        // Handle handshake response if received via handleIncomingMessage
-        const callbacks = this.protocolMessageCallbacks.get(message.messageId);
-        if (callbacks) {
-          callbacks.forEach((callback) => callback(message));
-        }
-        break;
-      }
-default: {
-        console.warn(`Unknown message type: ${message.messageType}`);
-        break;
-      }
+      break;
+    }
+    default: {
+      console.warn(`Unknown message type: ${message.messageType}`);
+      break;
+    }
     }
 
     // Send acknowledgement for non-handshake messages
-    if (message.messageType !== "handshake" && message.messageType !== "ack") {
-      this.sendAcknowledgement(message.messageId, "success");
+    if (message.messageType !== 'handshake' && message.messageType !== 'ack') {
+      this.sendAcknowledgement(message.messageId, 'success');
     }
   }
 
   // Send an acknowledgement
   private sendAcknowledgement(
-  messageId: string, status: "success" | "failure",
+    messageId: string, status: 'success' | 'failure',
     errorCode?: string,
   ): void {
     const ackPayload: Acknowledgement = {
@@ -324,46 +324,46 @@ default: {
     };
 
     const ackMessage = this.createMessage(
-      this.serverId || "server", "ack",
+      this.serverId || 'server', 'ack',
       ackPayload);
 
     this.sendProtocolMessage(ackMessage).catch((error) => {
-      console.error("Failed to send acknowledgement:", error);
+      console.error('Failed to send acknowledgement:', error);
     });
   }
 
   // Handle notification messages
   private handleNotification(
-  message: ProtocolMessage): void {
-    console.info("Received notification:", message.payload);
+    message: ProtocolMessage): void {
+    console.info('Received notification:', message.payload);
     // In a real implementation, this would trigger UI updates or other actions
   }
 
   // Handle data update messages
   private handleDataUpdate(
-  message: ProtocolMessage): void {
-    console.info("Received data update:", message.payload);
+    message: ProtocolMessage): void {
+    console.info('Received data update:', message.payload);
     // In a real implementation, this would update local data stores
   }
 
   // Send a generic message
   async sendGenericMessage(
-  destination: string,
-messageType: string,
-payload: unknown,
+    destination: string,
+    messageType: string,
+    payload: unknown,
   ): Promise<ProtocolMessage> {
     return this.sendMessageAndWait(destination, messageType, payload);
   }
 
   // Enable encryption with public and private keys
   enableEncryption(
-  publicKey: string,
-privateKey: string): void {
+    publicKey: string,
+    privateKey: string): void {
     this.publicKey = publicKey;
     this.privateKey = privateKey;
     this.encryptionEnabled = true;
     this._enableEncryption = true;
-    console.info("Encryption enabled with provided keys");
+    console.info('Encryption enabled with provided keys');
   }
 
   // Get protocol connection status
@@ -372,8 +372,8 @@ privateKey: string): void {
   serverId: string | null;
   } {
     return {connected: this.isConnectedToProtocol,
-  sessionId: this.sessionId,
-  serverId: this.serverId
+      sessionId: this.sessionId,
+      serverId: this.serverId
     };
   }
 
@@ -399,7 +399,7 @@ privateKey: string): void {
   }
 
   // Additional methods to satisfy type expectations
-  getConnectionStatus(): "connected" | "disconnected" | "connecting" {
+  getConnectionStatus(): 'connected' | 'disconnected' | 'connecting' {
     return super.getConnectionStatus();
   }
 }

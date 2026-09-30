@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight, Home } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;
@@ -16,14 +16,14 @@ interface BreadcrumbProps {
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
   items,
   separator = <ChevronRight className="h-4 w-4" />,
-  className = ""
+  className = ''
 }) => {
   return (
     <nav aria-label="Breadcrumb" className={`flex items-center space-x-2 text-sm ${className}`}>
       <div className="flex items-center">
         <Home className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-pointer" />
       </div>
-      
+
       {items.map((item, index) => (
         <React.Fragment key={index}>
           <div className="flex items-center">{separator}</div>

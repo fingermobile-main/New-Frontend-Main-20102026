@@ -74,12 +74,26 @@ export const GroupProvider: React.FC<GroupProviderProps> = ({ children }) => {
 
   const [groups, setGroups] = useState<any[]>([]);
 
+  React.useEffect(() => {
+    let mounted = true;
+    groupsService.getAllGroups().then((res) => {
+      if (mounted && res.data && Array.isArray(res.data)) {
+        setGroups(res.data);
+      }
+    }).catch((err) => {
+      console.warn('Failed to load initial groups in GroupContext:', err);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const handleJoinGroup = async (groupId: string): Promise<void> => {
     try {
       await groupsService.joinGroup(groupId);
       // Refresh groups list after joining
-      const response = await groupsService.getGroups();
-      setGroups(response.groups);
+      const response = await groupsService.getAllGroups();
+      setGroups(response.data || []);
     } catch (error) {
       console.error('Failed to join group:', error);
       throw error;
@@ -88,12 +102,16 @@ export const GroupProvider: React.FC<GroupProviderProps> = ({ children }) => {
 
   const handleCreateGroup = async (groupName: string, description?: string): Promise<void> => {
     try {
-      const newGroup = await groupsService.createGroup({
+      const response = await groupsService.createGroup({
         name: groupName,
         description,
-        isPrivate: false
+        category: 'general',
+        privacy: 'public',
+        isModerated: true
       });
-      setGroups((prev) => [...prev, newGroup]);
+      if (response.data) {
+        setGroups((prev) => [...prev, response.data]);
+      }
     } catch (error) {
       console.error('Failed to create group:', error);
       throw error;

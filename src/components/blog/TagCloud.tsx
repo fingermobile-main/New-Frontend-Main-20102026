@@ -27,12 +27,12 @@ const TagCloud: React.FC<TagCloudProps> = ({
     try {
       setLoading(true);
       const data = await blogService.getTags();
-      
+
       // Sort by usage count and limit to maxTags
       const sortedTags = (data || [])
         .sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0))
         .slice(0, maxTags);
-      
+
       setTags(sortedTags);
       setError(null);
     } catch (err) {
@@ -45,7 +45,7 @@ const TagCloud: React.FC<TagCloudProps> = ({
 
   const calculateFontSize = (usageCount: number, minCount: number, maxCount: number) => {
     if (maxCount === minCount) return (minFontSize + maxFontSize) / 2;
-    
+
     const ratio = (usageCount - minCount) / (maxCount - minCount);
     return minFontSize + (ratio * (maxFontSize - minFontSize));
   };
@@ -124,7 +124,7 @@ const TagCloud: React.FC<TagCloudProps> = ({
             const fontSize = calculateFontSize(tag.usage_count || 0, minCount, maxCount);
             const color = getTagColor(index, tags.length);
             const isSelected = selectedTag === tag.id;
-            
+
             return (
               <button
                 key={tag.id}

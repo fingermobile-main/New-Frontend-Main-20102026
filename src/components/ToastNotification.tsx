@@ -6,11 +6,11 @@ interface ToastProps {
   onClose: () => void;
 }
 
-const ToastNotification: React.FC<ToastProps> = ({ 
-  message, 
-  type = 'info', 
-  duration = 3000, 
-  onClose 
+const ToastNotification: React.FC<ToastProps> = ({
+  message,
+  type = 'info',
+  duration = 3000,
+  onClose
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -40,14 +40,14 @@ const ToastNotification: React.FC<ToastProps> = ({
   // Determine styling based on toast type
   const getTypeStyles = () => {
     switch (type) {
-      case 'success':
-        return 'bg-green-500 border-green-600';
-      case 'error':
-        return 'bg-red-500 border-red-600';
-      case 'warning':
-        return 'bg-yellow-500 border-yellow-600';
-      default:
-        return 'bg-blue-500 border-blue-600';
+    case 'success':
+      return 'bg-green-500 border-green-600';
+    case 'error':
+      return 'bg-red-500 border-red-600';
+    case 'warning':
+      return 'bg-yellow-500 border-yellow-600';
+    default:
+      return 'bg-blue-500 border-blue-600';
     }
   };
 
@@ -57,7 +57,7 @@ const ToastNotification: React.FC<ToastProps> = ({
     <div className={`fixed top-4 right-4 ${getTypeStyles()} text-white p-4 rounded-lg shadow-lg border z-50 transform transition-opacity duration-300 ease-in-out`}>
       <div className="flex items-center justify-between">
         <span>{message}</span>
-        <button 
+        <button
           onClick={handleClose}
           className="ml-4 text-white hover:text-gray-200 focus:outline-none"
         >

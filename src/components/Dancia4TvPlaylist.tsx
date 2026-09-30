@@ -32,19 +32,19 @@ const Dancia4TvPlaylist: React.FC = () => {
 
       <div className="p-2">
         {mockPlaylist.map((video, index) => (
-          <div 
-            key={video.id} 
+          <div
+            key={video.id}
             className="group flex items-center p-3 rounded-2xl hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5"
           >
             <div className="text-xs font-bold text-gray-600 w-6 group-hover:text-blue-500 transition-colors">
               {String(index + 1).padStart(2, '0')}
             </div>
-            
+
             <div className="w-16 h-10 bg-gray-800 rounded-lg mx-3 relative overflow-hidden flex-shrink-0">
-               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-600/20"></div>
-               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                 <Play size={14} fill="white" className="text-white" />
-               </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-600/20"></div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                <Play size={14} fill="white" className="text-white" />
+              </div>
             </div>
 
             <div className="flex-grow min-w-0 pr-4">

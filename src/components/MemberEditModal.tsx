@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Phone, MapPin, Save, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
+import { User, Mail, Phone, MapPin, Save, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Dialog,
   DialogContent,
@@ -11,14 +11,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface MemberData {
   id: string;
@@ -27,8 +27,8 @@ interface MemberData {
   phone?: string;
   location?: string;
   bio?: string;
-  role: "member" | "admin" | "moderator";
-  status: "active" | "inactive" | "suspended";
+  role: 'member' | 'admin' | 'moderator';
+  status: 'active' | 'inactive' | 'suspended';
 }
 
 interface MemberEditModalProps {
@@ -45,14 +45,14 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
   onSave
 }) => {
   const [formData, setFormData] = React.useState<MemberData>({
-    id: "",
-    name: "",
-    email: "",
-    phone: "",
-    location: "",
-    bio: "",
-    role: "member",
-    status: "active"
+    id: '',
+    name: '',
+    email: '',
+    phone: '',
+    location: '',
+    bio: '',
+    role: 'member',
+    status: 'active'
   });
 
   React.useEffect(() => {

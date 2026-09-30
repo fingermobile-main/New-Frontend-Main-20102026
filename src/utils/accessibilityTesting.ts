@@ -14,39 +14,39 @@ export interface AccessibilityConfig {rules: {
  * WCAG 2.1 AA Compliance Rules
  */
 export const wcag21AAConfig: AccessibilityConfig = {rules: {
-    // Color Contrast
-    'color-contrast': 'error',
-    // ARIA Attributes
-    'aria-valid-attr': 'error',
-    'aria-required-attr': 'error',
-    'aria-allowed-attr': 'error',
-    'aria-hidden-body': 'error',
-    // Forms
-    'label': 'error',
-    'input-image-alt': 'error',
-    'select-name': 'error',
-    // Images
-    'image-alt': 'error',
-    'image-redundant-alt': 'warning',
-    // Keyboard Navigation
-    'keyboard-nav': 'error',
-    'tabindex': 'warning',
-    // Links and Buttons
-    'link-name': 'error',
-    'button-name': 'error',
-    'link-in-text-block': 'error',
-    // Structure
-    'html-has-lang': 'error',
-    'landmark-one-main': 'error',
-    'region': 'warning',
-    // Tables
-    'th-has-data-cells': 'error',
-    // Text
-    'meta-viewport': 'error'
-  }, ignore: [
-    // Ignore certain dynamic content that may have false positives
-    '#root > div:first-child', // Toast notifications
-  ]
+  // Color Contrast
+  'color-contrast': 'error',
+  // ARIA Attributes
+  'aria-valid-attr': 'error',
+  'aria-required-attr': 'error',
+  'aria-allowed-attr': 'error',
+  'aria-hidden-body': 'error',
+  // Forms
+  'label': 'error',
+  'input-image-alt': 'error',
+  'select-name': 'error',
+  // Images
+  'image-alt': 'error',
+  'image-redundant-alt': 'warning',
+  // Keyboard Navigation
+  'keyboard-nav': 'error',
+  'tabindex': 'warning',
+  // Links and Buttons
+  'link-name': 'error',
+  'button-name': 'error',
+  'link-in-text-block': 'error',
+  // Structure
+  'html-has-lang': 'error',
+  'landmark-one-main': 'error',
+  'region': 'warning',
+  // Tables
+  'th-has-data-cells': 'error',
+  // Text
+  'meta-viewport': 'error'
+}, ignore: [
+  // Ignore certain dynamic content that may have false positives
+  '#root > div:first-child', // Toast notifications
+]
 };
 
 /**
@@ -62,9 +62,9 @@ export const runAccessibilityAudit = async (
 }> => {
   // This is a placeholder for actual axe-core integration
   // In production, you would integrate with axe-core or similar tool
-  
+
   console.warn('Accessibility audit not yet implemented. Install axe-core and configure properly.');
-  
+
   return {violations: [], passes: [], incomplete: []
   };
 };
@@ -130,7 +130,7 @@ text: ${el.outerHTML.substring(0, 50)}...`);
   });
 
   return {focusableElements: focusableElements.length,
-  tabOrder,
-  issues
+    tabOrder,
+    issues
   };
 };

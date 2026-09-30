@@ -17,8 +17,8 @@ interface PlaylistProps {
   className?: string;
 }
 
-const Playlist: React.FC<PlaylistProps> = ({ 
-  items = [], 
+const Playlist: React.FC<PlaylistProps> = ({
+  items = [],
   title = 'Playlist',
   onPlay,
   className = ''
@@ -48,7 +48,7 @@ const Playlist: React.FC<PlaylistProps> = ({
       </div>
       <ul className="divide-y divide-gray-200">
         {items.map((item, index) => (
-          <li 
+          <li
             key={item.id}
             className={`flex items-center p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
               currentIndex === index ? 'bg-blue-50' : ''
@@ -56,11 +56,11 @@ const Playlist: React.FC<PlaylistProps> = ({
             onClick={() => handlePlay(item, index)}
           >
             {item.thumbnail && (
-              <img 
-                src={item.thumbnail} 
+              <img
+                src={item.thumbnail}
                 alt={item.title}
                 className="w-12 h-12 rounded-md object-cover mr-4"
-               />
+              />
             )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">{item.title}</p>

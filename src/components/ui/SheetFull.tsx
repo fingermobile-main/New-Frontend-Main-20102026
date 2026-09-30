@@ -41,13 +41,13 @@ const Sheet = ({ children, open, onOpenChange }: SheetProps) => {
   const cloneChildren = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
       if ((child.type as any).name === 'SheetContent') {
-        return React.cloneElement(child as React.ReactElement, { 
+        return React.cloneElement(child as React.ReactElement, {
           open,
           onOpenChange
         });
       }
       if ((child.type as any).name === 'SheetTrigger') {
-        return React.cloneElement(child as React.ReactElement, { 
+        return React.cloneElement(child as React.ReactElement, {
           onOpenChange
         });
       }
@@ -58,27 +58,27 @@ const Sheet = ({ children, open, onOpenChange }: SheetProps) => {
   return <>{cloneChildren}</>;
 };
 
-const SheetTrigger: React.FC<{ children: React.ReactNode; onOpenChange?: (open: boolean) => void }> = ({ 
-  children, 
-  onOpenChange 
+const SheetTrigger: React.FC<{ children: React.ReactNode; onOpenChange?: (open: boolean) => void }> = ({
+  children,
+  onOpenChange
 }) => {
-  const cloneChild = React.isValidElement(children) 
-    ? React.cloneElement(children as React.ReactElement, { 
-        onClick: (e: React.MouseEvent) => {
-          onOpenChange && onOpenChange(true);
-          if ((children as React.ReactElement).props.onClick) {
-            (children as React.ReactElement).props.onClick(e);
-          }
+  const cloneChild = React.isValidElement(children)
+    ? React.cloneElement(children as React.ReactElement, {
+      onClick: (e: React.MouseEvent) => {
+        onOpenChange && onOpenChange(true);
+        if ((children as React.ReactElement).props.onClick) {
+          (children as React.ReactElement).props.onClick(e);
         }
-      })
+      }
+    })
     : children;
 
   return <>{cloneChild}</>;
 };
 
-const SheetContent: React.FC<SheetContentProps> = ({ 
-  children, 
-  side = 'right', 
+const SheetContent: React.FC<SheetContentProps> = ({
+  children,
+  side = 'right',
   className = '',
   open,
   onOpenChange
@@ -93,7 +93,7 @@ const SheetContent: React.FC<SheetContentProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex"
       onClick={(e) => {
         e.stopPropagation();
@@ -104,7 +104,7 @@ const SheetContent: React.FC<SheetContentProps> = ({
       role="button" tabIndex={0}
     >
       <div className="fixed inset-0 z-50 bg-black/50" />
-      <div 
+      <div
         className={`fixed z-50 bg-background ${sideClasses[side]} ${className}`}
         onClick={(e) => e.stopPropagation()}
         role="button" tabIndex={0}
@@ -127,7 +127,7 @@ const SheetHeader: React.FC<SheetHeaderProps> = ({ children, className = '' }) =
 
 const SheetTitle: React.FC<SheetTitleProps> = ({ children, className = '' }) => {
   return (
-    <h2 
+    <h2
       className={`text-lg font-semibold text-foreground ${className}`}
       id="sheet-title"
     >
@@ -138,7 +138,7 @@ const SheetTitle: React.FC<SheetTitleProps> = ({ children, className = '' }) => 
 
 const SheetDescription: React.FC<SheetDescriptionProps> = ({ children, className = '' }) => {
   return (
-    <p 
+    <p
       className={`text-sm text-muted-foreground ${className}`}
       id="sheet-description"
     >

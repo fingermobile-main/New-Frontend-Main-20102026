@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import type { Member, Post, Group } from '../types';
 import { useCommunityMembers } from '../hooks/useCommunityMembers';
 import { useCommunityPosts } from '../hooks/useCommunityPosts';
@@ -7,8 +7,8 @@ import { useCommunityGroups } from '../hooks/useCommunityGroups';
 
 interface CommunityFilters {
   query: string;
-  sortBy: "newest" | "popular" | "active";
-  contentType: "all" | "posts" | "groups" | "members";
+  sortBy: 'newest' | 'popular' | 'active';
+  contentType: 'all' | 'posts' | 'groups' | 'members';
   tags: string[];
 }
 
@@ -31,9 +31,9 @@ const CommunityPageEnhanced: React.FC = () => {
   } = useCommunityGroups();
 
   const [filters, setFilters] = useState<CommunityFilters>({
-    query: "",
-    sortBy: "popular",
-    contentType: "all",
+    query: '',
+    sortBy: 'popular',
+    contentType: 'all',
     tags: []
   });
 
@@ -85,7 +85,7 @@ const CommunityPageEnhanced: React.FC = () => {
     }));
   };
 
-  const handleSortChange = (sortBy: "newest" | "popular" | "active") => {
+  const handleSortChange = (sortBy: 'newest' | 'popular' | 'active') => {
     setFilters((prev) => ({
       ...prev,
       sortBy
@@ -93,7 +93,7 @@ const CommunityPageEnhanced: React.FC = () => {
   };
 
   const handleContentTypeChange = (
-    contentType: "all" | "posts" | "groups" | "members",
+    contentType: 'all' | 'posts' | 'groups' | 'members',
   ) => {
     setFilters((prev) => ({
       ...prev,
@@ -131,7 +131,7 @@ const CommunityPageEnhanced: React.FC = () => {
                 value={filters.sortBy}
                 onChange={(e) =>
                   handleSortChange(
-                    e.target.value as "newest" | "popular" | "active",
+                    e.target.value as 'newest' | 'popular' | 'active',
                   )
                 }
                 className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg"
@@ -144,7 +144,7 @@ const CommunityPageEnhanced: React.FC = () => {
                 value={filters.contentType}
                 onChange={(e) =>
                   handleContentTypeChange(
-                    e.target.value as "all" | "posts" | "groups" | "members",
+                    e.target.value as 'all' | 'posts' | 'groups' | 'members',
                   )
                 }
                 className="p-3 border rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent sm:text-base lg:text-lg"
@@ -169,8 +169,8 @@ const CommunityPageEnhanced: React.FC = () => {
                   onClick={() => toggleTagFilter(tag)}
                   className={`px-3 py-1 rounded-full text-sm sm:text-base lg:text-lg ${
                     filters.tags.includes(tag)
-                      ? "bg-brand-blue text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      ? 'bg-brand-blue text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
                   {tag}
@@ -182,7 +182,7 @@ const CommunityPageEnhanced: React.FC = () => {
 
         {/* Content Display */}
         <div>
-          {filters.contentType === "all" || filters.contentType === "posts" ? (
+          {filters.contentType === 'all' || filters.contentType === 'posts' ? (
             <div className="mb-8">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">
                 Posts
@@ -198,7 +198,7 @@ const CommunityPageEnhanced: React.FC = () => {
                         src={post.author.avatar || '/default-avatar.png'}
                         alt={getAuthorName(post.author)}
                         className="w-12 h-12 rounded-full mr-4"
-                       />
+                      />
                       <div className="flex-1">
                         <div className="flex items-center">
                           <h3 className="font-bold sm:text-lg lg:text-xl">
@@ -213,7 +213,7 @@ const CommunityPageEnhanced: React.FC = () => {
                         </p>
                         {post.tags && (
                           <div className="flex flex-wrap gap-2 mt-3">
-                            {post.tags.map((tag) => (
+                            {post.tags.map((tag: string) => (
                               <span
                                 key={tag}
                                 className="px-2 py-1 bg-gray-100 text-gray-600 text-xs sm:text-sm lg:text-base rounded"
@@ -225,52 +225,52 @@ const CommunityPageEnhanced: React.FC = () => {
                         )}
                         <div className="flex items-center mt-4 text-gray-500 sm:text-base lg:text-lg">
                           <button className="flex items-center mr-4" aria-label="Button"><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-1"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                              />
-                            </svg>
-                            {post.likesCount}
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                            />
+                          </svg>
+                          {post.likesCount}
                           </button>
                           <button className="flex items-center mr-4" aria-label="Button"><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-1"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9 8s9 3.582 9 8z"
-                              />
-                            </svg>
-                            {post.repliesCount}
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9 8s9 3.582 9 8z"
+                            />
+                          </svg>
+                          {post.repliesCount}
                           </button>
                           <button className="flex items-center" aria-label="Button"><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-1"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                              />
-                            </svg>
-                            {post.sharesCount}
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                            />
+                          </svg>
+                          {post.sharesCount}
                           </button>
                         </div>
                       </div>
@@ -281,7 +281,7 @@ const CommunityPageEnhanced: React.FC = () => {
             </div>
           ) : null}
 
-          {filters.contentType === "all" || filters.contentType === "groups" ? (
+          {filters.contentType === 'all' || filters.contentType === 'groups' ? (
             <div className="mb-8">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">
                 Groups
@@ -293,17 +293,17 @@ const CommunityPageEnhanced: React.FC = () => {
                     className="bg-white rounded-xl shadow-sm overflow-hidden"
                   >
                     <img
-                      src={(group as any).coverImageUrl || "https://via.placeholder.com/400x128"}
+                      src={(group as any).coverImageUrl || 'https://via.placeholder.com/400x128'}
                       alt={group.name}
                       className="w-full h-32 object-cover"
-                     />
+                    />
                     <div className="p-4">
                       <div className="flex items-center">
                         <img
-                          src={(group as any).avatarUrl || "https://via.placeholder.com/48"}
+                          src={(group as any).avatarUrl || 'https://via.placeholder.com/48'}
                           alt={group.name}
                           className="w-12 h-12 rounded-full -mt-8 border-2 border-white"
-                         />
+                        />
                         <div className="ml-3">
                           <h3 className="font-bold sm:text-lg lg:text-xl">
                             {group.name}
@@ -326,50 +326,50 @@ const CommunityPageEnhanced: React.FC = () => {
             </div>
           ) : null}
 
-          {filters.contentType === "all" ||
-          filters.contentType === "members" ? (
-            <div>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">
+          {filters.contentType === 'all' ||
+          filters.contentType === 'members' ? (
+              <div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">
                 Members
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="bg-white rounded-xl shadow-sm p-6 flex items-center"
-                  >
-                    <img
-                      src={member.avatarUrl}
-                      alt={member.name}
-                      className="w-16 h-16 rounded-full"
-                     />
-                    <div className="ml-4">
-                      <h3 className="font-bold sm:text-lg lg:text-xl">
-                        {member.name}
-                      </h3>
-                      <p className="text-gray-600 sm:text-base lg:text-lg">
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="bg-white rounded-xl shadow-sm p-6 flex items-center"
+                    >
+                      <img
+                        src={member.avatarUrl}
+                        alt={member.name}
+                        className="w-16 h-16 rounded-full"
+                      />
+                      <div className="ml-4">
+                        <h3 className="font-bold sm:text-lg lg:text-xl">
+                          {member.name}
+                        </h3>
+                        <p className="text-gray-600 sm:text-base lg:text-lg">
                         @{member.name}
-                      </p>
-                      <div className="mt-2">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs sm:text-sm lg:text-base ${
-                            member.role === "Creator Pro"
-                              ? "bg-purple-100 text-purple-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {member.role}
-                        </span>
-                      </div>
-                      <button className="mt-3 px-4 py-1 bg-brand-blue text-white rounded-lg text-sm sm:text-base lg:text-lg font-semibold hover:bg-blue-700 transition-colors">
+                        </p>
+                        <div className="mt-2">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs sm:text-sm lg:text-base ${
+                              member.role === 'Creator Pro'
+                                ? 'bg-purple-100 text-purple-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {member.role}
+                          </span>
+                        </div>
+                        <button className="mt-3 px-4 py-1 bg-brand-blue text-white rounded-lg text-sm sm:text-base lg:text-lg font-semibold hover:bg-blue-700 transition-colors">
                         Follow
-                      </button>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
         </div>
       </div>
     </div>

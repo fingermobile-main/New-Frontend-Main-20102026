@@ -28,58 +28,58 @@ const initialState: NotificationState = {
 
 function notificationReducer(state: NotificationState, action: NotificationAction): NotificationState {
   switch (action.type) {
-    case 'ADD_NOTIFICATION': {
-      const newNotification: Notification = {
-        ...action.payload,
-        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-        timestamp: new Date().toISOString(),
-        read: false
-      };
-      return {
-        ...state,
-        notifications: [newNotification, ...state.notifications],
-        unreadCount: state.unreadCount + 1
-      };
-    }
-    case 'MARK_AS_READ': {
-      const updatedNotifications = state.notifications.map((notif) =>
-        notif.id === action.payload ? { ...notif, read: true } : notif
-      );
-      const unreadCount = updatedNotifications.filter((n) => !n.read).length;
-      return {
-        ...state,
-        notifications: updatedNotifications,
-        unreadCount
-      };
-    }
-    case 'MARK_ALL_AS_READ': {
-      return {
-        ...state,
-        notifications: state.notifications.map((notif) => ({ ...notif, read: true })),
-        unreadCount: 0
-      };
-    }
-    case 'REMOVE_NOTIFICATION': {
-      const removedNotification = state.notifications.find((n) => n.id === action.payload);
-      const updatedNotifications = state.notifications.filter((notif) => notif.id !== action.payload);
-      const unreadCount = removedNotification && !removedNotification.read
-        ? state.unreadCount - 1
-        : state.unreadCount;
-      return {
-        ...state,
-        notifications: updatedNotifications,
-        unreadCount: Math.max(0, unreadCount)
-      };
-    }
-    case 'CLEAR_ALL': {
-      return {
-        ...state,
-        notifications: [],
-        unreadCount: 0
-      };
-    }
-    default:
-      return state;
+  case 'ADD_NOTIFICATION': {
+    const newNotification: Notification = {
+      ...action.payload,
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      timestamp: new Date().toISOString(),
+      read: false
+    };
+    return {
+      ...state,
+      notifications: [newNotification, ...state.notifications],
+      unreadCount: state.unreadCount + 1
+    };
+  }
+  case 'MARK_AS_READ': {
+    const updatedNotifications = state.notifications.map((notif) =>
+      notif.id === action.payload ? { ...notif, read: true } : notif
+    );
+    const unreadCount = updatedNotifications.filter((n) => !n.read).length;
+    return {
+      ...state,
+      notifications: updatedNotifications,
+      unreadCount
+    };
+  }
+  case 'MARK_ALL_AS_READ': {
+    return {
+      ...state,
+      notifications: state.notifications.map((notif) => ({ ...notif, read: true })),
+      unreadCount: 0
+    };
+  }
+  case 'REMOVE_NOTIFICATION': {
+    const removedNotification = state.notifications.find((n) => n.id === action.payload);
+    const updatedNotifications = state.notifications.filter((notif) => notif.id !== action.payload);
+    const unreadCount = removedNotification && !removedNotification.read
+      ? state.unreadCount - 1
+      : state.unreadCount;
+    return {
+      ...state,
+      notifications: updatedNotifications,
+      unreadCount: Math.max(0, unreadCount)
+    };
+  }
+  case 'CLEAR_ALL': {
+    return {
+      ...state,
+      notifications: [],
+      unreadCount: 0
+    };
+  }
+  default:
+    return state;
   }
 }
 

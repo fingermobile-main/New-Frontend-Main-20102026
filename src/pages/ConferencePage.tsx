@@ -1,19 +1,52 @@
-import React, {} from 'react';
+import React, { useState } from 'react';
+import MainLayout from '../components/layout/MainLayout';
 import ConferenceRoom from '../components/ConferenceRoom';
-import PageHeader from '../components/PageHeader';
+import {
+  VideoCameraIcon,
+  PlusIcon,
+  UserGroupIcon
+} from '../icons';
 
 const ConferencePage: React.FC = () => {
-  return (
-    <div className="h-screen flex flex-col p-4 sm:p-6 lg:p-8">
-      <PageHeader
-        title="Conference Room"
-        description="Join your team meeting"
-      />
+  const [isInMeeting, setIsInMeeting] = useState<boolean>(true);
+  const [roomCode, setRoomCode] = useState<string>('STRATEGIC-SYNC-2026');
 
-      <div className="flex-1 overflow-hidden">
-        <ConferenceRoom />
+  return (
+    <MainLayout pageTitle="Conference">
+      <div className="max-w-7xl mx-auto px-4 py-6 h-[calc(100vh-5rem)] flex flex-col">
+        {!isInMeeting ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-xl max-w-md w-full text-center">
+              <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <VideoCameraIcon className="w-8 h-8" />
+              </div>
+              <h2 className="text-2xl font-black text-gray-900 mb-2">FingerMobile Video Meeting</h2>
+              <p className="text-xs text-gray-500 mb-6">Enter a room code or start an instant WebRTC conference call</p>
+
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Enter Meeting Code..."
+                  value={roomCode}
+                  onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm font-mono text-center font-bold tracking-wider"
+                />
+                <button
+                  onClick={() => setIsInMeeting(true)}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-md"
+                >
+                  Join Conference Room
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex-1 overflow-hidden">
+            <ConferenceRoom roomId={roomCode} roomName={`Meeting Room: ${roomCode}`} />
+          </div>
+        )}
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -83,11 +83,11 @@ class AIMonitoringServiceClass {
    */
   private get sensitivityMultiplier(): number {
     switch (this.config.sensitivityLevel) {
-      case 'low': return 0.75;
-      case 'medium': return 1.0;
-      case 'high': return 1.35;
-      case 'critical': return 1.75;
-      default: return 1.0;
+    case 'low': return 0.75;
+    case 'medium': return 1.0;
+    case 'high': return 1.35;
+    case 'critical': return 1.75;
+    default: return 1.0;
     }
   }
 
@@ -124,7 +124,7 @@ class AIMonitoringServiceClass {
 
     const calculatedRisk = this.calculateRiskScore(metadata);
     const detectionFlags = this.detectFlags(metadata);
-    
+
     let recommendation: 'allow' | 'review' | 'block' = 'allow';
     if (calculatedRisk > 70) recommendation = 'block';
     else if (calculatedRisk > 40) recommendation = 'review';
@@ -162,7 +162,7 @@ class AIMonitoringServiceClass {
    */
   private calculateRiskScore(metadata: ContentMetadata): number {
     let score = 0;
-    
+
     if (metadata.ageRating === '18+') score += 35;
     if (metadata.contentWarnings && metadata.contentWarnings.length > 0) {
       score += metadata.contentWarnings.length * 12;
@@ -170,7 +170,7 @@ class AIMonitoringServiceClass {
     if (metadata.userReports && metadata.userReports.length > 5) {
       score += 25;
     }
-    
+
     // Apply sensitivity coefficient weighting parameters dynamically
     return Math.min(100, Math.round(score * this.sensitivityMultiplier));
   }
@@ -185,7 +185,7 @@ class AIMonitoringServiceClass {
   private detectFlags(metadata: ContentMetadata): ContentFlag[] {
     const flags: ContentFlag[] = [];
     const warnings = metadata.contentWarnings || [];
-    
+
     if (warnings.includes('violence')) {
       flags.push({
         type: 'violence',
@@ -195,7 +195,7 @@ class AIMonitoringServiceClass {
         timestamp: new Date()
       });
     }
-    
+
     if (warnings.includes('explicit')) {
       flags.push({
         type: 'explicit',
@@ -205,7 +205,7 @@ class AIMonitoringServiceClass {
         timestamp: new Date()
       });
     }
-    
+
     return flags;
   }
 
@@ -219,7 +219,7 @@ class AIMonitoringServiceClass {
 
     const nowTimestamp = Date.now();
     const dynamicLookbackWindow = 3600000; // 1-hour active checking epoch
-    
+
     const recentActivity = activityLog.filter(activity => {
       const activityTime = activity.timestamp ? new Date(activity.timestamp as string).getTime() : 0;
       return nowTimestamp - activityTime < dynamicLookbackWindow;
@@ -242,7 +242,7 @@ class AIMonitoringServiceClass {
       };
 
       this.behavioralPatterns.push(anomalousPattern);
-      
+
       this.createAlert({
         type: 'behavior',
         severity: anomalousPattern.riskLevel === 'high' ? 'critical' : 'warning',
@@ -266,7 +266,7 @@ class AIMonitoringServiceClass {
       ...alert,
       id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`
     };
-    
+
     this.alerts.push(newAlert);
     return newAlert;
   }

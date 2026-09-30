@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import { 
-  HomeIcon, 
-  VideoCameraIcon, 
-  ShoppingBagIcon, 
-  UsersIcon, 
+import {
+  HomeIcon,
+  VideoCameraIcon,
+  ShoppingBagIcon,
+  UsersIcon,
   StarIcon,
   GemIcon,
   MusicNoteIcon,
@@ -26,10 +26,10 @@ interface ForumHeaderProps {
   onRightMenuToggle?: () => void;
 }
 
-const ForumHeader: React.FC<ForumHeaderProps> = ({ 
-  pageTitle, 
+const ForumHeader: React.FC<ForumHeaderProps> = ({
+  pageTitle,
   onLeftMenuToggle,
-  onRightMenuToggle 
+  onRightMenuToggle
 }) => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,23 +53,20 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#242526] border-b border-gray-700 h-16">
       <div className="h-full px-4 flex items-center justify-between">
-        
+
         {/* COLUMN A: Left Section - Logo */}
         <div className="flex items-center gap-4 flex-shrink-0">
-          <button 
+          <button
             onClick={onLeftMenuToggle}
             className="lg:hidden p-2 hover:bg-gray-700 rounded-lg transition-colors"
           >
             <MenuIcon className="w-6 h-6 text-white" />
           </button>
-          
+
           <Link to="/" className="flex items-center gap-2 group">
             {/* Pulsating FingerMobile Logo */}
             <div className="relative w-10 h-10">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg animate-pulse"></div>
-              <div className="absolute inset-0.5 bg-[#242526] rounded-lg flex items-center justify-center">
-                <span className="text-orange-500 font-bold text-lg">F</span>
-              </div>
+              <img src="/assets/branding/fingermobile/FingerMobile orange logo.webp" alt="FingerMobile Logo" className="w-full h-full object-contain" />
             </div>
             <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
               FingerMobile
@@ -107,8 +104,8 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
                 key={item.path}
                 to={item.path}
                 className={`relative p-2 rounded-lg transition-colors group ${
-                  item.active 
-                    ? 'text-orange-500' 
+                  item.active
+                    ? 'text-orange-500'
                     : 'text-gray-400 hover:text-white hover:bg-gray-700'
                 }`}
                 title={item.label}
@@ -119,7 +116,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
                 )}
               </Link>
             ))}
-            
+
             {/* See More Trigger */}
             <button
               onClick={() => setShowMoreNav(!showMoreNav)}
@@ -137,7 +134,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
 
         {/* COLUMN C: Right Section - HD Media, Earnings & Utilities */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          
+
           {/* HD Media Ad Space (30 seconds) */}
           <div className="hidden lg:block w-32 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
             <div className="w-full h-full flex items-center justify-center text-xs font-semibold text-white">
@@ -147,7 +144,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
 
           {/* Earnings Display */}
           <div className="hidden md:flex items-center gap-2 bg-[#3a3b3c] px-3 py-1.5 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
-               onClick={() => setShowEarnings(!showEarnings)} role="button" tabIndex={0}>
+            onClick={() => setShowEarnings(!showEarnings)} role="button" tabIndex={0}>
             <WalletIcon className="w-5 h-5 text-green-500" />
             <div className="text-xs">
               {showEarnings ? (
@@ -172,8 +169,8 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
               <ChatBubbleIcon className="w-6 h-6 text-gray-400 hover:text-white" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            
-            <button 
+
+            <button
               onClick={onRightMenuToggle}
               className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
             >

@@ -36,16 +36,22 @@ const useRbacData = (): UseRbacDataResult => {
     setLoading(true);
     setError(null);
     try {
-      const [rolesResponse, departmentsResponse, franchiseResponse] =
-        await Promise.all([
-          api.get<Role[]>("/rbac/roles"),
-          api.get<Department[]>("/rbac/departments"),
-          api.get<FranchiseLocation[]>("/rbac/franchise-locations")
-        ]);
+      // Roles are implemented in the backend under /admin/rbac/roles
+      const rolesResponse = await api.get<any>('/admin/rbac/roles').catch(() => ({ data: { roles: [] } }));
 
-      const roles = rolesResponse.data || [];
-      const departments = departmentsResponse.data || [];
-      const franchiseLocations = franchiseResponse.data || [];
+      // Permissions are implemented under /admin/rbac/permissions
+      const permissionsResponse = await api.get<any>('/admin/rbac/permissions').catch(() => ({ data: { permissions: [] } }));
+
+      // The following might not be implemented in the backend yet, fallback to empty arrays
+      const departmentsResponse = await api.get<any>('/admin/rbac/departments').catch(() => ({ data: [] }));
+      const franchiseResponse = await api.get<any>('/admin/rbac/franchise-locations').catch(() => ({ data: [] }));
+
+      // Handle both { roles: [...] } and direct array responses
+      const rolesData = rolesResponse.data?.roles || rolesResponse.data || [];
+      const roles = Array.isArray(rolesData) ? rolesData : [];
+
+      const departments = Array.isArray(departmentsResponse.data) ? departmentsResponse.data : [];
+      const franchiseLocations = Array.isArray(franchiseResponse.data) ? franchiseResponse.data : [];
 
       setData({
         roles,
@@ -53,7 +59,7 @@ const useRbacData = (): UseRbacDataResult => {
         franchiseLocations
       });
     } catch (err: any) {
-      setError(err.message || "Failed to fetch RBAC data");
+      setError(err.message || 'Failed to fetch RBAC data');
     } finally {
       setLoading(false);
     }

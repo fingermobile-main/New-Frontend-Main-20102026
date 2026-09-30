@@ -16,17 +16,21 @@ class PushNotificationService {
    * Request permission and get FCM token
    */
   async requestPermission(): Promise<string | null> {
+    if (!messaging) {
+      console.info('Firebase messaging not initialized');
+      return null;
+    }
     try {
       // Request permission from the user
       const permission = await Notification.requestPermission();
-      
+
       if (permission !== 'granted') {
         console.info('Notification permission denied');
         return null;
       }
 
       // Get FCM token
-      const token = await getToken(messaging, {vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY
+      const token = await getToken(messaging, {vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY || process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY
       });
 
       if (token) {
@@ -48,13 +52,13 @@ class PushNotificationService {
    * Register device token with backend
    */
   async registerToken(
-  token: string): Promise<void> {
+    token: string): Promise<void> {
     try {
       const platform = this.getPlatform();
       const deviceId = this.getDeviceId();
 
       await api.post('/notifications/register-device', {deviceToken: token,
-  platform, deviceId
+        platform, deviceId
       });
 
       console.info('Device token registered successfully');
@@ -67,8 +71,9 @@ class PushNotificationService {
    * Listen for foreground messages
    */
   onMessageReceived(
-  callback: (
+    callback: (
   payload: Record<string, unknown>) => void): void {
+    if (!messaging) return;
     onMessage(messaging, (payload) => {
       console.info('Message received in foreground:', payload);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,6 +85,7 @@ class PushNotificationService {
    * Unregister current device token
    */
   async unregisterToken(): Promise<void> {
+    if (!messaging) return;
     try {
       const token = await getToken(messaging);
       if (token) {

@@ -1,3 +1,4 @@
+import React, {} from 'react';
 // SuperViAPIService - A service for 3D visualization and character rendering
 // This service handles 3D character models animations, and rendering using Three.js
 
@@ -5,19 +6,18 @@
 import * as THREE from 'three';
 
 // We need to dynamically import these ESM modules
-// Define specific types for the constructors to avoid 'any' and satisfy TS compiler
-let GLTFLoaderClass: typeof import('three/examples/jsm/loaders/GLTFLoader').GLTFLoader | undefined;
-let OrbitControlsClass: typeof import('three/examples/jsm/controls/OrbitControls').OrbitControls | undefined;
+let GLTFLoaderClass: any;
+let OrbitControlsClass: any;
 
 // Initialize loaders asynchronously
 async function initializeLoaders() {
   if (!GLTFLoaderClass) {
-    const gltfModule = await import('three/examples/jsm/loaders/GLTFLoader');
-    GLTFLoaderClass = gltfModule.GLTFLoader; // Assignment is now type-safe
+    const gltfModule = await import('three/addons/loaders/GLTFLoader.js');
+    GLTFLoaderClass = gltfModule.GLTFLoader;
   }
   if (!OrbitControlsClass) {
-    const orbitModule = await import('three/examples/jsm/controls/OrbitControls');
-    OrbitControlsClass = orbitModule.OrbitControls; // Assignment is now type-safe
+    const orbitModule = await import('three/addons/controls/OrbitControls.js');
+    OrbitControlsClass = orbitModule.OrbitControls;
   }
 }
 
@@ -77,33 +77,24 @@ class SuperViApiService {
 
   // Initialize the 3D renderer
   public async initialize3DRenderer(
-  options: SuperVi3DRendererOptions,
+    options: SuperVi3DRendererOptions,
   ): Promise<void> {
     await initializeLoaders();
-    
-    // Ensure GLTFLoaderClass is defined after initialization
-    if (!GLTFLoaderClass) {
-      throw new Error("GLTFLoaderClass failed to initialize.");
-    }
-    // Ensure OrbitControlsClass is defined after initialization (for completeness)
-    if (!OrbitControlsClass) {
-      throw new Error("OrbitControlsClass failed to initialize.");
-    }
-    
+
     this.options = {width: window.innerWidth,
-  height: window.innerHeight,
-  enableControls: false, enableShadows: true,
-  backgroundColor: 0x1e1e2e,
-  ...options
+      height: window.innerHeight,
+      enableControls: false, enableShadows: true,
+      backgroundColor: 0x1e1e2e,
+      ...options
     };
     this.clock = new THREE.Clock();
-    this.loader = new GLTFLoaderClass(); // Safe to instantiate now
+    this.loader = new GLTFLoaderClass();
     this.init3DRenderer();
   }
 
   private init3DRenderer(): void {
     if (!this.options) {
-      throw new Error("Options not initialized");
+      throw new Error('Options not initialized');
     }
 
     // Get container element
@@ -156,7 +147,7 @@ class SuperViApiService {
     }
 
     // Handle window resize
-    window.addEventListener("resize", this.onWindowResize.bind(this));
+    window.addEventListener('resize', this.onWindowResize.bind(this));
 
     // Start animation loop
     this.animate();
@@ -193,29 +184,24 @@ class SuperViApiService {
   }
 
   public async loadCharacterModel(
-  character: CharacterModel,
+    character: CharacterModel,
   ): Promise<AnimatedGroup> {
     if (!this.loader) {
-      throw new Error("Loader not initialized");
+      throw new Error('Loader not initialized');
     }
 
     return new Promise((resolve, reject) => {
-      // Check loader exists before using it to satisfy linter
-      if (!this.loader) {
-        reject(new Error("Loader not available in callback"));
-        return;
-      }
-      this.loader.load(
+      this.loader!.load(
         character.modelUrl,
         (
-  gltf: any) => {
+          gltf: any) => {
           if (!this.scene) {
-            reject(new Error("Scene not initialized"));
+            reject(new Error('Scene not initialized'));
             return;
           }
 
           const model = gltf.scene;
-          
+
           // Check if model has the required properties before copying
           if (model && 'position' in model && character.position) {
             model.position.copy(character.position);
@@ -226,12 +212,12 @@ class SuperViApiService {
           if (model && 'scale' in model && character.scale) {
             model.scale.copy(character.scale);
           }
-          
+
           model.name = character.id;
 
           // Enable shadows
           model.traverse((
-  child: any) => {
+            child: any) => {
             if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
@@ -259,7 +245,7 @@ class SuperViApiService {
         },
         undefined,
         (
-  error: any) => {
+          error: any) => {
           reject(error instanceof Error ? error : new Error(String(error)));
         },
       );
@@ -267,12 +253,12 @@ class SuperViApiService {
   }
 
   public getCharacterModel(
-  characterId: string): AnimatedGroup | undefined {
+    characterId: string): AnimatedGroup | undefined {
     return this.characterModels.get(characterId);
   }
 
   public removeCharacterModel(
-  characterId: string): void {
+    characterId: string): void {
     const model = this.characterModels.get(characterId);
     if (model && this.scene) {
       this.scene.remove(model);
@@ -281,7 +267,7 @@ class SuperViApiService {
   }
 
   public updateCharacterPosition(
-  characterId: string, position: THREE.Vector3,
+    characterId: string, position: THREE.Vector3,
   ): void {
     const model = this.characterModels.get(characterId);
     if (model && 'position' in model) {
@@ -290,7 +276,7 @@ class SuperViApiService {
   }
 
   public updateCharacterRotation(
-  characterId: string, rotation: THREE.Euler,
+    characterId: string, rotation: THREE.Euler,
   ): void {
     const model = this.characterModels.get(characterId);
     if (model && 'rotation' in model) {
@@ -299,7 +285,7 @@ class SuperViApiService {
   }
 
   public playCharacterAnimation(
-  characterId: string, animationName: string,
+    characterId: string, animationName: string,
   ): void {
     const model = this.characterModels.get(characterId);
     if (model && model.mixer) {
@@ -308,7 +294,7 @@ class SuperViApiService {
       const animations: any[] = (model as any).userData?.animations || [];
 
       const clip = animations.find((
-  anim: any) => anim.name === animationName);
+        anim: any) => anim.name === animationName);
 
       if (clip) {
         mixer.stopAllAction(); // Stop all current actions
@@ -324,7 +310,7 @@ class SuperViApiService {
   }
 
   public setCharacterVisibility(
-  characterId: string, visible: boolean): void {
+    characterId: string, visible: boolean): void {
     const model = this.characterModels.get(characterId);
     if (model && 'visible' in model) {
       model.visible = visible;
@@ -340,7 +326,7 @@ class SuperViApiService {
 
     // Update animation mixers
     this.animationMixers.forEach((
-  mixer: THREE.AnimationMixer) => {
+      mixer: THREE.AnimationMixer) => {
       mixer.update(delta);
     });
 
@@ -375,7 +361,7 @@ class SuperViApiService {
 
     // Dispose of resources
     this.animationMixers.forEach((
-  mixer: THREE.AnimationMixer) => mixer.stopAllAction());
+      mixer: THREE.AnimationMixer) => mixer.stopAllAction());
     this.animationMixers = [];
 
     // Dispose of renderer
@@ -391,7 +377,7 @@ class SuperViApiService {
     }
 
     // Remove event listeners
-    window.removeEventListener("resize", this.onWindowResize.bind(this));
+    window.removeEventListener('resize', this.onWindowResize.bind(this));
   }
 
   // Add methods for SuperVi API interactions here
@@ -402,66 +388,66 @@ class SuperViApiService {
   }
 
   async createGameSession(
-  memberId: string,
-    gameMode = "classic",
+    memberId: string,
+    gameMode = 'classic',
   ): Promise<unknown> {
     // Simulate API call to create a new game session
     // Removed console.log to comply with no-console rule
     return {sessionId: `session_${Date.now()}`,
       memberId,
       gameMode,
-sessionStart: new Date(),
-isActive: true
+      sessionStart: new Date(),
+      isActive: true
     };
   }
 
   async updateGameSession(
-  sessionId: string, updates: unknown): Promise<unknown> {
+    sessionId: string, updates: unknown): Promise<unknown> {
     // Simulate API call to update an existing game session
     // Removed console.log to comply with no-console rule
     return {success: true,
-  sessionId,
-  updates };
+      sessionId,
+      updates };
   }
 
   async endGameSession(
-  sessionId: string, finalScore: number,
-levelReached: number,
+    sessionId: string, finalScore: number,
+    levelReached: number,
   ): Promise<unknown> {
     // Simulate API call to end a game session and record final stats
     // Removed console.log to comply with no-console rule
     return {success: true,
-  sessionId,
-  finalScore,
-  levelReached };
+      sessionId,
+      finalScore,
+      levelReached };
   }
 
   async getCharacterById(
-  characterId: string): Promise<unknown> {
+    characterId: string): Promise<unknown> {
     // Simulate API call to get character details
-    return {id: characterId, name: "SuperVi Hero",
-  description: "A powerful hero with special abilities",
-  characterClass: "Guardian of Heritage",
-  originCity: "Lagos",
-  abilities: {
-  specialPower: "Energy Shield" },
-  avatarUrl: "/images/character.png"
+    return {id: characterId, name: 'SuperVi Hero',
+      description: 'A powerful hero with special abilities',
+      characterClass: 'Guardian of Heritage',
+      originCity: 'Lagos',
+      abilities: {
+        specialPower: 'Energy Shield' },
+      avatarUrl: '/images/character.png'
     };
   }
 
   async getmemberCharacters(
-  _memberId: string): Promise<unknown[]> {
+    _memberId: string): Promise<unknown[]> {
     // Simulate API call to get all characters owned by a member
     return [
-      {id: "char_1",
-  name: "Guardian of Heritage",
-  level: 5, experiencePoints: 1200,
-  equipped: true
+      {id: 'char_1',
+        name: 'Guardian of Heritage',
+        level: 5, experiencePoints: 1200,
+        equipped: true
       },
-      {id: "char_2",
-  name: "Bridge Builder",
-  level: 3, experiencePoints: 650,
-  equipped: false
+      {id: 'char_2',
+        name: 'Bridge Builder',
+        level: 3, experiencePoints: 650,
+        equipped: false
       }
     ];
   }
@@ -469,96 +455,96 @@ levelReached: number,
   async getAchievements(): Promise<unknown[]> {
     // Simulate API call to get all available achievements
     return [
-      {id: "ach_1",
-  name: "First Combo",
-  description: "Perform your first combo",
-  category: "combo_small",
-  points: 10
+      {id: 'ach_1',
+        name: 'First Combo',
+        description: 'Perform your first combo',
+        category: 'combo_small',
+        points: 10
       },
-      {id: "ach_2",
-  name: "Master Stunner",
-  description: "Stun opponents 10 times",
-  category: "stun",
-  points: 50
+      {id: 'ach_2',
+        name: 'Master Stunner',
+        description: 'Stun opponents 10 times',
+        category: 'stun',
+        points: 50
       }
     ];
   }
 
   async getmemberAchievements(
-  _memberId: string): Promise<unknown[]> {
+    _memberId: string): Promise<unknown[]> {
     // Simulate API call to get achievements unlocked by a member
     return [
-      {id: "ach_1",
-  name: "First Combo",
-  unlockedAt: new Date(),
-  isUnlocked: true
+      {id: 'ach_1',
+        name: 'First Combo',
+        unlockedAt: new Date(),
+        isUnlocked: true
       }
     ];
   }
 
-  async getLeaderboard(_gameMode = 'classic', _region = 'global'): Promise<unknown[]> {
+  async getLeaderboard(gameMode = 'classic', _region = 'global'): Promise<unknown[]> {
     // Simulate API call to get leaderboard data
     // Removed console.log to comply with no-console rule
     return [
       {memberId: 'member1',
-  membername: 'Player1',
-  score: 15000, rank: 1 },
+        membername: 'Player1',
+        score: 15000, rank: 1 },
       {memberId: 'member2',
-  membername: 'Player2',
-  score: 12500, rank: 2 },
+        membername: 'Player2',
+        score: 12500, rank: 2 },
       {memberId: 'member3',
-  membername: 'Player3',
-  score: 10200, rank: 3 },
+        membername: 'Player3',
+        score: 10200, rank: 3 },
       {memberId: 'member4',
-  membername: 'Player4',
-  score: 9800, rank: 4 },
+        membername: 'Player4',
+        score: 9800, rank: 4 },
       {memberId: 'member5',
-  membername: 'Player5',
-  score: 8750, rank: 5 }
+        membername: 'Player5',
+        score: 8750, rank: 5 }
     ];
   }
 
   async getmemberInventory(
-  _memberId: string): Promise<unknown[]> {
+    memberId: string): Promise<unknown[]> {
     // Simulate API call to get member's inventory
     return [
       {itemId: 'pow_1',
-  itemType: 'powerup',
-  quantity: 3 },
+        itemType: 'powerup',
+        quantity: 3 },
       {itemId: 'coin_100',
-  itemType: 'currency',
-  quantity: 1250 }
+        itemType: 'currency',
+        quantity: 1250 }
     ];
   }
 
   async getmemberChallengeProgress(
-  memberId: string, challengeId: string): Promise<unknown> {
+    memberId: string, challengeId: string): Promise<unknown> {
     // Simulate API call to get member's progress on a specific challenge
     return {
       memberId,
       challengeId,
-currentProgress: 3, isCompleted: false
+      currentProgress: 3, isCompleted: false
     };
   }
 
   async createMultiplayerRoom(
-  hostmemberId: string, gameMode: string, maxPlayers = 4): Promise<unknown> {
+    hostmemberId: string, gameMode: string, maxPlayers = 4): Promise<unknown> {
     // Simulate API call to create a multiplayer game room
     return {roomId: `room_${Date.now()}`,
-roomCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
+      roomCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
       hostmemberId,
       gameMode,
       maxPlayers,
-currentPlayers: 1, status: 'waiting'
+      currentPlayers: 1, status: 'waiting'
     };
   }
 
   async joinMultiplayerRoom(
-  roomCode: string, _memberId: string): Promise<unknown> {
+    roomCode: string, _memberId: string): Promise<unknown> {
     // Simulate API call to join a multiplayer game room
     return {success: true, roomId: `room_${Date.now()}`,
       roomCode,
-memberId: _memberId, status: 'joined'
+      memberId: _memberId, status: 'joined'
     };
   }
 
@@ -566,29 +552,29 @@ memberId: _memberId, status: 'joined'
     // Simulate API call to get voice lines
     const allVoiceLines: VoiceLine[] = [
       {id: 'vl_1',
-  text: 'SuperVi!',
-  category: 'supervi',
-  audioUrl: '/audio/supervi.mp3'
+        text: 'SuperVi!',
+        category: 'supervi',
+        audioUrl: '/audio/supervi.mp3'
       },
       {id: 'vl_2',
-  text: 'Small combo!',
-  category: 'combo_small',
-  audioUrl: '/audio/small_combo.mp3'
+        text: 'Small combo!',
+        category: 'combo_small',
+        audioUrl: '/audio/small_combo.mp3'
       },
       {id: 'vl_3',
-  text: 'Great combo!',
-  category: 'combo_large',
-  audioUrl: '/audio/great_combo.mp3'
+        text: 'Great combo!',
+        category: 'combo_large',
+        audioUrl: '/audio/great_combo.mp3'
       },
       {id: 'vl_4',
-  text: 'Colossal combo!',
-  category: 'combo_colossal',
-  audioUrl: '/audio/colossal_combo.mp3'
+        text: 'Colossal combo!',
+        category: 'combo_colossal',
+        audioUrl: '/audio/colossal_combo.mp3'
       },
       {id: 'vl_5',
-  text: 'Stun activated!',
-  category: 'stun',
-  audioUrl: '/audio/stun.mp3'
+        text: 'Stun activated!',
+        category: 'stun',
+        audioUrl: '/audio/stun.mp3'
       }
     ];
 
@@ -599,29 +585,29 @@ memberId: _memberId, status: 'joined'
   }
 
   async getGameAnalytics(
-  memberId: string): Promise<unknown> {
+    memberId: string): Promise<unknown> {
     // Simulate API call to get member's game analytics
     return {
       memberId,
-totalGamesPlayed: 25, totalScore: 45600,
-highestScore: 8500, averageScore: 1824,
-totalPlayTime: 7200, // in seconds, achievementsUnlocked: 12
+      totalGamesPlayed: 25, totalScore: 45600,
+      highestScore: 8500, averageScore: 1824,
+      totalPlayTime: 7200, // in seconds, achievementsUnlocked: 12
     };
   }
-  
+
   // Synthesize speech from text
   async synthesizeSpeech(
-  text: string, options?: { voiceId?: string; pitch?: number }): Promise<string> {
+    text: string, options?: { voiceId?: string; pitch?: number }): Promise<string> {
     // For now return a mock audio URL
     // In production this would integrate with a TTS service like Google Cloud TTS, AWS Polly, etc.
     const voiceId = options?.voiceId || 'default';
     const pitch = options?.pitch || 1.0;
-    
+
     // Mock implementation - return a placeholder audio file
     // In real implementation this would call a TTS API and return the audio URL
     return `/audio/synthesized_${voiceId}_${pitch}.mp3`;
   }
-  
+
 }
 
 export default SuperViApiService.getInstance();

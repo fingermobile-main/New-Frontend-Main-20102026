@@ -154,17 +154,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
             <div className="text-2xl mb-2">👤</div>
             <div className="font-medium text-sm">Manage Users</div>
           </button>
-          
+
           <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all">
             <div className="text-2xl mb-2">📊</div>
             <div className="font-medium text-sm">View Reports</div>
           </button>
-          
+
           <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all">
             <div className="text-2xl mb-2">🚩</div>
             <div className="font-medium text-sm">Moderation Queue</div>
           </button>
-          
+
           <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all">
             <div className="text-2xl mb-2">⚙️</div>
             <div className="font-medium text-sm">System Settings</div>

@@ -1,7 +1,7 @@
 import React, {} from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Button } from './ui/Button';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 const Home: React.FC = () => {
   const { member, theme, setTheme } = useAppContext();
@@ -15,16 +15,16 @@ const Home: React.FC = () => {
         <CardContent>
           <div className="space-y-4">
             <p>Hello {member?.name || 'Guest'}! Welcome to our platform.</p>
-            
+
             <div className="flex items-center space-x-4">
               <span>Current theme: {theme}</span>
-              <Button 
+              <Button
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
               >
                 Toggle Theme
               </Button>
             </div>
-            
+
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
                 <CardHeader>
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
                   </ul>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Resources</CardTitle>
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
                   </ul>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Updates</CardTitle>

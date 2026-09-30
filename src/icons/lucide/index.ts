@@ -9,13 +9,13 @@ export {
   Grid3x3 as ViewGridIcon,
   Grid3x3 as GridIcon,
   List as ViewListIcon,
-  
+
   // Gaming & Entertainment
   Gamepad2 as GamepadIcon,
   Gamepad2 as GameIcon,
   Play as CanaryIcon,
   CirclePlay as LiveIcon,
-  
+
   // Social & Communication
   MessageSquare as ChatIcon,
   MessageCircle as ChatAlt2Icon,
@@ -27,7 +27,7 @@ export {
   Mail as MailIcon,
   Mail as YahooIcon,
   LogIn as GoogleIcon,
-  
+
   // Business & Finance
   DollarSign as CurrencyNairaIcon,
   Wallet as FinancialsIcon,
@@ -35,21 +35,21 @@ export {
   Building2 as BankIcon,
   Package as OrdersIcon,
   Ticket as CouponsIcon,
-  
+
   // Content & Media
   Image as CollectionIcon,
   Download as DownloadIcon,
   MoreHorizontal as DotsHorizontalIcon,
   Music as MusicNoteIcon,
   Youtube as CamusIcon,
-  
+
   // Organization & Management
   Users as MemberGroupIcon,
   User as MemberIcon,
   Scale as PolicyIcon,
   Database as DatabaseIcon,
   FolderDown as MyDownloadsIcon,
-  
+
   // Actions & Tools
   ClipboardCheck as ClipboardCheckIcon,
   ClipboardList as ClipboardListIcon,
@@ -59,32 +59,32 @@ export {
   Shuffle as ShuffleIcon,
   Handshake as HandshakeIcon,
   Coins as TokenIcon,
-  
+
   // Status & Badges
   Trophy as LoyaltyIcon,
   Shield as ShieldIcon,
   Vault as VaultIcon,
-  
+
   // Locations & Stores
   Store as StoreIcon,
   Store as StorefrontIcon,
   Briefcase as MarketplaceIcon,
   Building2 as BuildingOfficeIcon,
-  
+
   // Visual & Design
   Sparkles as OwnitIcon,
   Flame as FlamingoIcon,
   Gem as GemIcon,
   Flower2 as LucideRoseIcon,  // Renamed to avoid conflict
   Smartphone as DeviceMobileIcon,
-  
+
   // Community & Rewards
   Users as ReferralIcon,
-  
+
   // Education
   GraduationCap as GraduationCapIcon,
   GraduationCap as AcademicCapIcon,
-  
+
   // Additional Common Icons
   BookOpen as BookOpenIcon,
   Globe as GlobeAltIcon,

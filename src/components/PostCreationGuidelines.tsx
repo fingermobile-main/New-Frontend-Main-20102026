@@ -52,7 +52,7 @@ const PostCreationGuidelines: React.FC<PostCreationGuidelinesProps> = ({ categor
 
       <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
         <p className="text-xs text-yellow-800">
-          <strong>Note:</strong> Violations may result in content removal or account restrictions. 
+          <strong>Note:</strong> Violations may result in content removal or account restrictions.
           Review our full Community Standards for more details.
         </p>
       </div>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Users, Search, Filter, UserPlus } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
-import { Badge } from "@/components/ui/Badge";
+import { Users, Search, Filter, UserPlus } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
+import { Badge } from '@/components/ui/Badge';
 
 interface Member {
   id: string;
@@ -29,30 +29,30 @@ const MembersList: React.FC<MembersListProps> = ({
   onMemberClick,
   onInvite
 }) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const defaultMembers: Member[] = [
     {
-      id: "1",
-      username: "john_doe",
-      displayName: "John Doe",
-      location: "New York, USA",
+      id: '1',
+      username: 'john_doe',
+      displayName: 'John Doe',
+      location: 'New York, USA',
       isOnline: true,
       verified: true
     },
     {
-      id: "2",
-      username: "jane_smith",
-      displayName: "Jane Smith",
-      location: "London, UK",
+      id: '2',
+      username: 'jane_smith',
+      displayName: 'Jane Smith',
+      location: 'London, UK',
       isOnline: false,
       verified: true
     },
     {
-      id: "3",
-      username: "bob_wilson",
-      displayName: "Bob Wilson",
-      location: "Toronto, Canada",
+      id: '3',
+      username: 'bob_wilson',
+      displayName: 'Bob Wilson',
+      location: 'Toronto, Canada',
       isOnline: true,
       verified: false
     }
@@ -105,8 +105,8 @@ const MembersList: React.FC<MembersListProps> = ({
               onClick={() => onMemberClick?.(member.id)} role="button" tabIndex={0}
             >
               <div className="relative">
-                <Avatar 
-                  src={member.avatar || undefined} 
+                <Avatar
+                  src={member.avatar || undefined}
                   alt={member.displayName}
                   fallback={member.displayName.charAt(0)}
                 />

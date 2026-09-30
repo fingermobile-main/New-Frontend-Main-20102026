@@ -8,7 +8,7 @@ import { api } from '../services/api';
 
 export interface MiiUpdate {
   id: string;
-  type: "image" | "video" | "text" | "voice";
+  type: 'image' | 'video' | 'text' | 'voice';
   content: string;
   author: {
     name: string;
@@ -33,7 +33,7 @@ export interface MiiStats {
 
 export interface CreateMiiUpdatePayload {
   content: string;
-  contentType: "image" | "video" | "text" | "voice";
+  contentType: 'image' | 'video' | 'text' | 'voice';
   isPrivate?: boolean;
   expiresInHours?: number;
 }
@@ -62,11 +62,11 @@ export const useMiiUpdates = () => {
   const coreSynchronizationPipeline = React.useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // Concurrency optimizing using parallel settlement loops
       const [updatesRes, statsRes] = await Promise.allSettled([
-        api.get("/mii/updates"),
-        api.get("/mii/stats")
+        api.get('/mii/updates'),
+        api.get('/mii/stats')
       ]);
 
       // 1. Process Updates Payload
@@ -78,8 +78,8 @@ export const useMiiUpdates = () => {
             type: update.content_type,
             content: update.content,
             author: {
-              name: update.author_membername || "Anonymous Member",
-              avatar: update.author_avatar || ""
+              name: update.author_membername || 'Anonymous Member',
+              avatar: update.author_avatar || ''
             },
             timestamp: update.created_at,
             views: update.view_count || 0,
@@ -96,8 +96,8 @@ export const useMiiUpdates = () => {
         setUpdates(transformedUpdates);
         setError(null);
       } else if (updatesRes.status === 'rejected') {
-        setError("Failed to systematically pull structural feed content.");
-        console.error("Mii Updates Sync pipeline failure:", updatesRes.reason);
+        setError('Failed to systematically pull structural feed content.');
+        console.error('Mii Updates Sync pipeline failure:', updatesRes.reason);
       }
 
       // 2. Process Analytics Stats Metrics
@@ -111,8 +111,8 @@ export const useMiiUpdates = () => {
       }
 
     } catch (globalErr) {
-      setError("An unexpected exception occurred during live ecosystem updates sync.");
-      console.error("Global pipeline failure:", globalErr);
+      setError('An unexpected exception occurred during live ecosystem updates sync.');
+      console.error('Global pipeline failure:', globalErr);
     } finally {
       setLoading(false);
     }
@@ -123,7 +123,7 @@ export const useMiiUpdates = () => {
    */
   const likeUpdate = React.useCallback(async (updateId: string): Promise<ActionResponse> => {
     let rollbackUpdates: MiiUpdate[] = [];
-    
+
     // Step 1: Execute immediate UI mutation before waiting for the database server
     setUpdates((prevUpdates) => {
       rollbackUpdates = [...prevUpdates]; // Cache state snapshot
@@ -147,13 +147,13 @@ export const useMiiUpdates = () => {
             up.id === updateId ? { ...up, likes: response.data.like_count } : up
           )
         );
-        return { success: true, message: response.data.message || "Successfully recorded reaction." };
+        return { success: true, message: response.data.message || 'Successfully recorded reaction.' };
       }
-      throw new Error("Invalid remote response schema structure.");
+      throw new Error('Invalid remote response schema structure.');
     } catch (err) {
-      console.error("Reverting reaction operation. Error:", err);
+      console.error('Reverting reaction operation. Error:', err);
       setUpdates(rollbackUpdates); // Immediate state fallback roll-back safely
-      return { success: false, message: "Server connection failed. Could not register like." };
+      return { success: false, message: 'Server connection failed. Could not register like.' };
     }
   }, []);
 
@@ -164,7 +164,7 @@ export const useMiiUpdates = () => {
     // Only track if it hasn't already been marked as viewed in the current layout context
     const currentTarget = updates.find(u => u.id === updateId);
     if (currentTarget?.isViewed) {
-      return { success: true, message: "Already cataloged." };
+      return { success: true, message: 'Already cataloged.' };
     }
 
     try {
@@ -177,12 +177,12 @@ export const useMiiUpdates = () => {
               : update
           )
         );
-        return { success: true, message: response.data.message || "View metrics registered." };
+        return { success: true, message: response.data.message || 'View metrics registered.' };
       }
-      return { success: false, message: "Payload response resolution failed." };
+      return { success: false, message: 'Payload response resolution failed.' };
     } catch (err) {
-      console.error("Error logging client tracking impressions:", err);
-      return { success: false, message: "Analytics logging failed." };
+      console.error('Error logging client tracking impressions:', err);
+      return { success: false, message: 'Analytics logging failed.' };
     }
   }, [updates]);
 
@@ -191,12 +191,12 @@ export const useMiiUpdates = () => {
    */
   const createUpdate = React.useCallback(async (updateData: CreateMiiUpdatePayload): Promise<ActionResponse> => {
     // Security Content Sanitization Baseline
-    if (!updateData.content || updateData.content.trim() === "") {
-      return { success: false, message: "Invalid payload input data. Content text cannot be empty." };
+    if (!updateData.content || updateData.content.trim() === '') {
+      return { success: false, message: 'Invalid payload input data. Content text cannot be empty.' };
     }
 
     try {
-      const response = await api.post("/mii/updates", {
+      const response = await api.post('/mii/updates', {
         content: updateData.content,
         content_type: updateData.contentType,
         is_private: updateData.isPrivate || false,
@@ -205,12 +205,12 @@ export const useMiiUpdates = () => {
 
       if (response.data) {
         await coreSynchronizationPipeline(); // Full rehydration sweep
-        return { success: true, message: response.data.message || "Feed entry created successfully." };
+        return { success: true, message: response.data.message || 'Feed entry created successfully.' };
       }
-      return { success: false, message: "No data payload returned from asset compilation." };
+      return { success: false, message: 'No data payload returned from asset compilation.' };
     } catch (err) {
-      console.error("Critical error while pushing fresh content asset updates:", err);
-      return { success: false, message: "Failed to broadcast content stream update." };
+      console.error('Critical error while pushing fresh content asset updates:', err);
+      return { success: false, message: 'Failed to broadcast content stream update.' };
     }
   }, [coreSynchronizationPipeline]);
 

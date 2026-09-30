@@ -7,8 +7,8 @@ interface ImageUploadModalProps {
   onUpload?: (file: File) => void;
 }
 
-const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ 
-  isOpen = false, 
+const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
+  isOpen = false,
   onClose,
   onUpload
 }) => {

@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { TrendingUp, Flame, Activity } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { TrendingUp, Flame, Activity } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface TrendItem {
   id: string;
@@ -26,23 +26,23 @@ const PubliciteeFeed: React.FC<PubliciteeFeedProps> = ({
 }) => {
   const defaultTrends: TrendItem[] = [
     {
-      id: "1",
-      title: "#TechInnovation2026",
-      category: "Technology",
+      id: '1',
+      title: '#TechInnovation2026',
+      category: 'Technology',
       engagement: 45230,
       growth: 23.5
     },
     {
-      id: "2",
-      title: "AI Revolution",
-      category: "Business",
+      id: '2',
+      title: 'AI Revolution',
+      category: 'Business',
       engagement: 38920,
       growth: 18.2
     },
     {
-      id: "3",
-      title: "Sustainable Living",
-      category: "Lifestyle",
+      id: '3',
+      title: 'Sustainable Living',
+      category: 'Lifestyle',
       engagement: 29450,
       growth: 15.7
     }
@@ -80,9 +80,9 @@ const PubliciteeFeed: React.FC<PubliciteeFeedProps> = ({
               {/* Rank Badge */}
               <div className="flex-shrink-0">
                 <Badge
-                  variant={index === 0 ? "default" : "secondary"}
+                  variant={index === 0 ? 'default' : 'secondary'}
                   className={`w-8 h-8 flex items-center justify-center ${
-                    index === 0 ? "bg-red-500" : ""
+                    index === 0 ? 'bg-red-500' : ''
                   }`}
                 >
                   {index + 1}

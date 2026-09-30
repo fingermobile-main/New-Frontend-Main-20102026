@@ -1,14 +1,14 @@
 import React, {} from 'react';
-import { Calendar, Clock, CheckCircle2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { Calendar, Clock, CheckCircle2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 
 interface Task {
   id: string;
   title: string;
   dueDate: string;
-  priority: "high" | "medium" | "low";
-  status: "pending" | "in_progress" | "completed";
+  priority: 'high' | 'medium' | 'low';
+  status: 'pending' | 'in_progress' | 'completed';
   assignee?: string;
 }
 
@@ -25,26 +25,26 @@ const TaskList: React.FC<TaskListProps> = ({
 }) => {
   const defaultTasks: Task[] = [
     {
-      id: "1",
-      title: "Review quarterly reports",
-      dueDate: "2026-06-10",
-      priority: "high",
-      status: "pending",
-      assignee: "John Doe"
+      id: '1',
+      title: 'Review quarterly reports',
+      dueDate: '2026-06-10',
+      priority: 'high',
+      status: 'pending',
+      assignee: 'John Doe'
     },
     {
-      id: "2",
-      title: "Update product documentation",
-      dueDate: "2026-06-12",
-      priority: "medium",
-      status: "in_progress"
+      id: '2',
+      title: 'Update product documentation',
+      dueDate: '2026-06-12',
+      priority: 'medium',
+      status: 'in_progress'
     },
     {
-      id: "3",
-      title: "Team meeting preparation",
-      dueDate: "2026-06-09",
-      priority: "low",
-      status: "completed"
+      id: '3',
+      title: 'Team meeting preparation',
+      dueDate: '2026-06-09',
+      priority: 'low',
+      status: 'completed'
     }
   ];
 
@@ -52,19 +52,19 @@ const TaskList: React.FC<TaskListProps> = ({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high":
-        return "bg-red-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "low":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
+    case 'high':
+      return 'bg-red-500';
+    case 'medium':
+      return 'bg-yellow-500';
+    case 'low':
+      return 'bg-green-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 
   const getStatusIcon = (status: string) => {
-    if (status === "completed") {
+    if (status === 'completed') {
       return <CheckCircle2 className="h-5 w-5 text-green-600" />;
     }
     return <div className="h-5 w-5 border-2 border-muted-foreground rounded-full" />;
@@ -72,7 +72,7 @@ const TaskList: React.FC<TaskListProps> = ({
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   return (
@@ -101,7 +101,7 @@ const TaskList: React.FC<TaskListProps> = ({
                 {getStatusIcon(task.status)}
               </button>
               <div className="flex-1 min-w-0">
-                <p className={`font-medium ${task.status === "completed" ? "line-through text-muted-foreground" : ""}`}>
+                <p className={`font-medium ${task.status === 'completed' ? 'line-through text-muted-foreground' : ''}`}>
                   {task.title}
                 </p>
                 <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">

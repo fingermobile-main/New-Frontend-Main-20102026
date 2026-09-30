@@ -25,9 +25,9 @@ interface CommentSectionProps {
   onTriggerSpecialEffect?: () => void;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ 
+const CommentSection: React.FC<CommentSectionProps> = ({
   postId,  // Extract postId from props
-  comments, 
+  comments,
   newComment,
   setNewComment,
   onSubmitComment,

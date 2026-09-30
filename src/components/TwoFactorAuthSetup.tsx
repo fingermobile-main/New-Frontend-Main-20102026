@@ -24,16 +24,16 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Simulate API call to enable 2FA
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Generate mock secret key and backup codes (DEMO ONLY - replace with real TOTP generation in production)
-      const mockSecret = process.env.TOTP_SECRET || "JBSWY3DPEHPK3PXP"; // TODO: Replace with actual TOTP secret generation using speakeasy or otplib
-      const mockBackupCodes = Array.from({ length: 8 }, (_, i) => 
+      const mockSecret = process.env.TOTP_SECRET || 'JBSWY3DPEHPK3PXP'; // TODO: Replace with actual TOTP secret generation using speakeasy or otplib
+      const mockBackupCodes = Array.from({ length: 8 }, (_, i) =>
         Math.random().toString(36).substring(2, 10).toUpperCase()
       );
-      
+
       setSecretKey(mockSecret);
       setBackupCodes(mockBackupCodes);
       setStep('qr');
@@ -53,13 +53,13 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Get auth token
       const token = localStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required. Please log in.');
       }
-      
+
       // Verify TOTP code with backend
       const response = await axios.post(
         `${API_BASE_URL}/two-factor-auth/verify`,
@@ -70,7 +70,7 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
           }
         }
       );
-      
+
       if (response.data && response.data.success) {
         // Generate backup codes
         const backupResponse = await axios.post(
@@ -82,11 +82,11 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
             }
           }
         );
-        
+
         if (backupResponse.data && backupResponse.data.backupCodes) {
           setBackupCodes(backupResponse.data.backupCodes);
         }
-        
+
         setStep('success');
         if (onComplete) {
           onComplete(true);
@@ -154,7 +154,7 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
                   <p className="text-sm text-gray-600">Google Authenticator, Authy, or Microsoft Authenticator</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <span className="text-2xl">📷</span>
                 <div>
@@ -162,7 +162,7 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
                   <p className="text-sm text-gray-600">Use your authenticator app to scan the QR code we'll provide</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <span className="text-2xl">✅</span>
                 <div>
@@ -195,11 +195,11 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
             <div className="text-center">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Scan QR Code</h3>
               <p className="text-sm text-gray-600 mb-4">Open your authenticator app and scan this QR code</p>
-              
+
               <div className="inline-block bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm mb-4">
                 <img src={qrCodeUrl} alt="QR Code" width={200} height={200} className="rounded"  />
               </div>
-              
+
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600 mb-2">Can't scan? Enter this code manually:</p>
                 <code className="block bg-white border border-gray-300 rounded p-2 text-sm font-mono break-all">
@@ -263,10 +263,10 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
                 ⚠️ Important: Save Your Backup Codes
               </h4>
               <p className="text-sm text-yellow-800 mb-3">
-                These backup codes can be used to access your account if you lose your authenticator device. 
+                These backup codes can be used to access your account if you lose your authenticator device.
                 Store them in a safe place. Each code can only be used once.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-2 mb-4">
                 {backupCodes.map((code, idx) => (
                   <code key={idx} className="bg-white border border-yellow-300 rounded px-3 py-2 text-sm font-mono">

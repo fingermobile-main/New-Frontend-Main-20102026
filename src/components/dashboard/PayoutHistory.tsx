@@ -114,7 +114,7 @@ const PayoutHistory: React.FC = () => {
             <option value="failed">Failed</option>
           </select>
         </div>
-        
+
         <div className="flex items-center">
           <FiCalendar className="mr-2 text-gray-500" />
           <input
@@ -149,9 +149,9 @@ const PayoutHistory: React.FC = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
                     ${payout.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      payout.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                      payout.status === 'failed' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'}`}>
+                payout.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                  payout.status === 'failed' ? 'bg-red-100 text-red-800' :
+                    'bg-gray-100 text-gray-800'}`}>
                     {payout.status.charAt(0).toUpperCase() + payout.status.slice(1)}
                   </span>
                 </td>
@@ -170,7 +170,7 @@ const PayoutHistory: React.FC = () => {
       <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-5">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">Payout Information</h3>
         <p className="text-gray-600 mb-4">
-          Payouts are processed automatically based on your earnings and payout schedule. 
+          Payouts are processed automatically based on your earnings and payout schedule.
           Standard processing time is 3-5 business days for bank transfers and 1-2 business days for PayPal.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

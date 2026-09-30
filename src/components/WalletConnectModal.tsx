@@ -57,11 +57,11 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
       setConnecting(walletId);
       // Simulate connection delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       if (onConnect) {
         onConnect(walletId);
       }
-      
+
       onClose();
     } catch (err) {
       console.error('Failed to connect wallet:', err);

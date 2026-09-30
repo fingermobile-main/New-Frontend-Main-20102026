@@ -12,20 +12,20 @@ const EditCourse: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     price: 0,
-    category: "",
-    level: "beginner",
-    thumbnail: "",
+    category: '',
+    level: 'beginner',
+    thumbnail: '',
     modules: [
       {
-        title: "",
+        title: '',
         lessons: [
           {
-            title: "",
-            content: "",
-            videoUrl: "",
+            title: '',
+            content: '',
+            videoUrl: '',
             duration: 0
           }
         ]
@@ -37,25 +37,35 @@ const EditCourse: React.FC = () => {
   const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
-    if (courseId && courses.length > 0) {
-      const course = courses.find((c) => c.id === courseId);
+    const loadCourse = async () => {
+      if (!courseId) return;
+      let course = courses.find((c) => String(c.id) === String(courseId));
+      if (!course) {
+        try {
+          const { elearningService } = await import('../../services/elearningService');
+          const fetched = await elearningService.getCourseById(courseId);
+          if (fetched) course = fetched as any;
+        } catch (e) {
+          console.error('Failed to load course for editing:', e);
+        }
+      }
       if (course) {
         setFormData({
           title: course.title || '',
           description: course.description || '',
           price: course.price ?? 0,
           category: course.category || '',
-          level: course.level || '',
-          thumbnail: course.thumbnail || "",
+          level: (course.level || 'beginner').toLowerCase(),
+          thumbnail: (course as any).thumbnail || (course as any).thumbnail_url || '',
           modules: (course as any).modules || [
             {
-              title: "",
+              title: 'Module 1',
               lessons: [
                 {
-                  title: "",
-                  content: "",
-                  videoUrl: "",
-                  duration: 0
+                  title: 'Lesson 1',
+                  content: '',
+                  videoUrl: '',
+                  duration: 20
                 }
               ]
             }
@@ -63,7 +73,8 @@ const EditCourse: React.FC = () => {
         });
         setInitialLoad(false);
       }
-    }
+    };
+    loadCourse();
   }, [courseId, courses]);
 
   const handleChange = (
@@ -74,7 +85,7 @@ const EditCourse: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "duration" ? Number(value) : value
+      [name]: name === 'price' || name === 'duration' ? Number(value) : value
     }));
   };
 
@@ -108,7 +119,7 @@ const EditCourse: React.FC = () => {
       const lessons = [...modules[moduleIndex].lessons];
       lessons[lessonIndex] = {
         ...lessons[lessonIndex],
-        [field]: field === "duration" ? Number(value) : value
+        [field]: field === 'duration' ? Number(value) : value
       };
 
       modules[moduleIndex] = {
@@ -129,12 +140,12 @@ const EditCourse: React.FC = () => {
       modules: [
         ...prev.modules,
         {
-          title: "",
+          title: '',
           lessons: [
             {
-              title: "",
-              content: "",
-              videoUrl: "",
+              title: '',
+              content: '',
+              videoUrl: '',
               duration: 0
             }
           ]
@@ -151,9 +162,9 @@ const EditCourse: React.FC = () => {
         lessons: [
           ...modules[moduleIndex].lessons,
           {
-            title: "",
-            content: "",
-            videoUrl: "",
+            title: '',
+            content: '',
+            videoUrl: '',
             duration: 0
           }
         ]
@@ -168,7 +179,7 @@ const EditCourse: React.FC = () => {
 
   const removeModule = (moduleIndex: number) => {
     if (formData.modules.length <= 1) {
-      showToast("Course must have at least one module", "error");
+      showToast('Course must have at least one module', 'error');
       return;
     }
 
@@ -203,19 +214,19 @@ const EditCourse: React.FC = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
+      newErrors.title = 'Title is required';
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
+      newErrors.description = 'Description is required';
     }
 
     if (formData.price < 0) {
-      newErrors.price = "Price must be a positive number";
+      newErrors.price = 'Price must be a positive number';
     }
 
     if (!formData.category.trim()) {
-      newErrors.category = "Category is required";
+      newErrors.category = 'Category is required';
     }
 
     formData.modules.forEach((module, moduleIndex) => {
@@ -240,7 +251,7 @@ const EditCourse: React.FC = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      showToast("Please fix the errors in the form", "error");
+      showToast('Please fix the errors in the form', 'error');
       return;
     }
 
@@ -248,11 +259,11 @@ const EditCourse: React.FC = () => {
 
     try {
       await updateCourse(courseId, formData);
-      showToast("Course updated successfully!", "success");
+      showToast('Course updated successfully!', 'success');
       navigate(`/courses/${courseId}`);
     } catch (error) {
-      showToast("Failed to update course", "error");
-      console.error("Error updating course:", error);
+      showToast('Failed to update course', 'error');
+      console.error('Error updating course:', error);
     }
   };
 
@@ -293,8 +304,8 @@ const EditCourse: React.FC = () => {
                 onChange={handleChange}
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.title
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="Enter course title" />
               {errors.title && (
@@ -317,8 +328,8 @@ const EditCourse: React.FC = () => {
                 onChange={handleChange}
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.category
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="e.g., Music Production, Design, etc." />
               {errors.category && (
@@ -343,8 +354,8 @@ const EditCourse: React.FC = () => {
                 step="0.01"
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.price
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="0.00"
               />
@@ -389,8 +400,8 @@ const EditCourse: React.FC = () => {
               rows={4}
               className={`w-full px-3 py-2 border rounded-lg ${
                 errors.description
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
+                  ? 'border-red-500'
+                  : 'border-gray-300 dark:border-gray-600'
               } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
               placeholder="Describe what students will learn in this course"
             />
@@ -426,12 +437,12 @@ const EditCourse: React.FC = () => {
                     <input
                       type="text"
                       value={module.title}
-                      onChange={(e) => handleModuleChange(moduleIndex, "title", e.target.value)
+                      onChange={(e) => handleModuleChange(moduleIndex, 'title', e.target.value)
                       }
                       className={`w-full px-3 py-2 border rounded-lg ${
                         errors[`module_${moduleIndex}_title`]
-                          ? "border-red-500"
-                          : "border-gray-300 dark:border-gray-600"
+                          ? 'border-red-500'
+                          : 'border-gray-300 dark:border-gray-600'
                       } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                       placeholder="e.g., Introduction"
                     />
@@ -481,18 +492,18 @@ const EditCourse: React.FC = () => {
                             type="text"
                             value={lesson.title}
                             onChange={(e) => handleLessonChange(
-                                moduleIndex,
-                                lessonIndex,
-                                "title",
-                                e.target.value,
-                              )
+                              moduleIndex,
+                              lessonIndex,
+                              'title',
+                              e.target.value,
+                            )
                             }
                             className={`w-full px-2 py-1 text-sm border rounded ${
                               errors[
                                 `module_${moduleIndex}_lesson_${lessonIndex}_title`
                               ]
-                                ? "border-red-500"
-                                : "border-gray-300 dark:border-gray-600"
+                                ? 'border-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
                             } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                             placeholder="Lesson title"
                           />
@@ -508,7 +519,7 @@ const EditCourse: React.FC = () => {
                               handleLessonChange(
                                 moduleIndex,
                                 lessonIndex,
-                                "content",
+                                'content',
                                 e.target.value,
                               )
                             }
@@ -527,11 +538,11 @@ const EditCourse: React.FC = () => {
                               type="text"
                               value={lesson.videoUrl}
                               onChange={(e) => handleLessonChange(
-                                  moduleIndex,
-                                  lessonIndex,
-                                  "videoUrl",
-                                  e.target.value,
-                                )
+                                moduleIndex,
+                                lessonIndex,
+                                'videoUrl',
+                                e.target.value,
+                              )
                               }
                               className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                               placeholder="https://example.com/video"
@@ -549,7 +560,7 @@ const EditCourse: React.FC = () => {
                                 handleLessonChange(
                                   moduleIndex,
                                   lessonIndex,
-                                  "duration",
+                                  'duration',
                                   e.target.value,
                                 )
                               }
@@ -580,7 +591,7 @@ const EditCourse: React.FC = () => {
               disabled={loading}
               className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium"
             >
-              {loading ? "Saving..." : "Save Changes"}
+              {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

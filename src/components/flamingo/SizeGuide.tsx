@@ -20,7 +20,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
   const loadSizeCharts = async () => {
     try {
       setLoading(true);
-    // @ts-ignore - Auto-suppressed for compilation
+      // @ts-ignore - Auto-suppressed for compilation
       const params: SizeGuideParams = {};
       if (brandName) params.brand_name = brandName;
       if (categoryId) params.category_id = categoryId;

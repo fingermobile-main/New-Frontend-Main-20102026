@@ -5,9 +5,10 @@
 /* FingerMobile Global Styles */
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Crystalline White Background - Default theme */
+    --background: 240 2% 98%;  /* Crystalline white (very slight blue tint for warmth) */
     --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
+    --card: 0 0% 100%;         /* Pure white cards on crystalline background */
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
@@ -28,7 +29,8 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Black/Dark theme */
+    --background: 222.2 84% 4.9%;     /* Dark background */
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -48,21 +50,41 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 24 96% 53%;
   }
+
+  /* Black theme variant */
+  .black-theme {
+    --background: 0 0% 0%;           /* Pure black */
+    --foreground: 0 0% 100%;         /* Pure white text */
+    --card: 15 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 15 0% 10%;
+    --popover-foreground: 0 0% 100%;
+  }
+
+  /* System preference theme - respects user's OS setting */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 240 2% 98%;      /* Force crystalline white even when system is dark */
+      --foreground: 222.2 84% 4.9%;
+    }
+  }
 }
 
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+/* Ensure crystalline white background is applied to body by default */
 body {
-  @apply bg-background text-foreground;
+  background-color: hsl(var(--background)) !important; /* Uses the crystalline white CSS variable */
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Explicitly set background for root div to ensure crystalline white */
+#root {
+  background-color: hsl(var(--background)); /* Crystalline white background */
+  min-height: 100vh;
 }
 
 code {
@@ -109,4 +131,58 @@ code {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(253, 89, 0, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(253, 89, 0, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth gradients */
+.gradient-bg {
+  background: linear-gradient(135deg, #FF7B00 0%, #FD5900 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FF7B00 0%, #FFB067 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

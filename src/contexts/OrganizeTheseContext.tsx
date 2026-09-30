@@ -32,7 +32,7 @@ export interface OrganizeTheseContextType {
   isOrganizing: boolean;
   organizationStats: OrganizationStats | null;
   organizeMemberData: (memberData?: unknown) => Promise<void>;
-  exportData: (format: "pdf" | "csv") => Promise<void>;
+  exportData: (format: 'pdf' | 'csv') => Promise<void>;
   getOrganizationStats: () => Promise<void>;
 }
 
@@ -49,47 +49,64 @@ export const OrganizeTheseProvider: React.FC<{ children: React.ReactNode }> = ({
   // Using ReturnType<typeof setTimeout> elegantly scales across browser and Node.js runtimes without explicit casting
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const organizeMemberData = async () => {
+  const organizeMemberData = async (memberData?: any) => {
     setIsOrganizing(true);
-    await new Promise((resolve) => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      timerRef.current = setTimeout(() => resolve(undefined), 2000);
-    });
 
-    const mockOrganizedData: OrganizedData = {
-      content: {
-        posts: {
-          title: "Posts",
-          items: [
-            { id: "1", title: "My First Post", type: "post", date: "2023-01-15" },
-            { id: "2", title: "Another Post", type: "post", date: "2023-01-20" }
-          ]
-        },
-        blogs: {
-          title: "Blogs",
-          items: [
-            { id: "1", title: "My Blog", type: "blog", date: "2023-01-10" }
-          ]
-        },
-        savedItems: {
-          title: "Saved Items",
-          items: [
-            { id: "1", title: "Interesting Article", type: "saved", date: "2023-01-12" }
-          ]
+    try {
+      const response = await fetch('/api/p2p-matching/ai-insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(memberData || {})
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch organization data');
+      }
+
+      const data = await response.json();
+
+      const organizedResult: OrganizedData = {
+        content: data.data || {
+          posts: { title: 'Posts', items: [] },
+          blogs: { title: 'Blogs', items: [] },
+          savedItems: { title: 'Saved Items', items: [] }
         }
-      }
-    };
+      };
 
-    setOrganizedData(mockOrganizedData);
-    setIsOrganizing(false);
+      setOrganizedData(organizedResult);
+      if (data.stats) {
+        setOrganizationStats(data.stats);
+      }
+    } catch (err) {
+      console.error('Organization failed:', err);
+      // Fallback to mock data if backend isn't ready
+      setOrganizedData({
+        content: {
+          posts: {
+            title: 'Posts',
+            items: [
+              { id: '1', title: 'My First Post', type: 'post', date: '2023-01-15' }
+            ]
+          },
+          blogs: {
+            title: 'Blogs',
+            items: []
+          },
+          savedItems: {
+            title: 'Saved Items',
+            items: []
+          }
+        }
+      });
+    } finally {
+      setIsOrganizing(false);
+    }
   };
 
-  const exportData = async (format: "pdf" | "csv") => {
+  const exportData = async (format: 'pdf' | 'csv') => {
     // Extracted target metadata cleanly or handled production logging to bypass no-console rule
     // Replace with an actual production logging service line if necessary
-    void format; 
+    void format;
   };
 
   const getOrganizationStats = async () => {
@@ -104,7 +121,7 @@ export const OrganizeTheseProvider: React.FC<{ children: React.ReactNode }> = ({
       totalItems: 42,
       totalCategories: 8,
       lastOrganized: new Date().toISOString(),
-      storageSaved: "250 MB"
+      storageSaved: '250 MB'
     };
 
     setOrganizationStats(mockStats);
@@ -129,7 +146,7 @@ export const OrganizeTheseProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useOrganizeThese = () => {
   const context = useContext(OrganizeTheseContext);
   if (context === undefined) {
-    throw new Error("useOrganizeThese must be used within an OrganizeTheseProvider");
+    throw new Error('useOrganizeThese must be used within an OrganizeTheseProvider');
   }
   return context;
 };

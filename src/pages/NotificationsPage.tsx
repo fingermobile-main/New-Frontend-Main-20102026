@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { ApiService } from '../services/apiService';
 import realTimeService from '../services/realTimeService';
-import type { Notification } from '../types';
+import MainLayout from '../components/layout/MainLayout';
 import {
   BellIcon,
   ChatBubbleLeftRightIcon,
@@ -11,283 +12,305 @@ import {
   AtSymbolIcon,
   GiftIcon,
   CheckIcon,
-  SparklesIcon
+  SparklesIcon,
+  SettingsIcon,
+  XMarkIcon,
+  CheckCircleIcon
 } from '../icons';
-import { formatDistanceToNow } from 'date-fns';
+
+export interface NotificationItem {
+  id: string | number;
+  type: 'like' | 'comment' | 'follow' | 'purchase' | 'mention' | 'gift' | 'system';
+  title: string;
+  body: string;
+  action_url?: string;
+  is_read: boolean;
+  created_at: string;
+}
 
 type NotificationTab = 'all' | 'unread' | 'like' | 'comment' | 'follow' | 'purchase' | 'mention' | 'gift';
 
 const NotificationsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState<NotificationTab>('all');
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showPreferencesModal, setShowPreferencesModal] = useState<boolean>(false);
 
-  // Return SVG Icon components based on notification type
-  const renderNotificationIcon = (type: string) => {
-    const iconClass = "h-5 w-5";
-    switch (type) {
-      case 'comment':
-        return <ChatBubbleLeftRightIcon className={`${iconClass} text-blue-500`} />;
-      case 'like':
-        return <HeartIcon className={`${iconClass} text-red-500`} />;
-      case 'follow':
-        return <UserPlusIcon className={`${iconClass} text-green-500`} />;
-      case 'mention':
-        return <AtSymbolIcon className={`${iconClass} text-purple-500`} />;
-      case 'purchase':
-        return <ShoppingCartIcon className={`${iconClass} text-amber-500`} />;
-      case 'gift':
-        return <GiftIcon className={`${iconClass} text-pink-500`} />;
-      default:
-        return <BellIcon className={`${iconClass} text-gray-500`} />;
+  // Preference Settings State
+  const [preferences, setPreferences] = useState({
+    email_notifications: true,
+    push_notifications: true,
+    purchase_alerts: true,
+    creator_gifts: true,
+    mentions: true
+  });
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true);
+      const res: any = await ApiService.get('/notifications');
+      if (res && res.data && res.data.length > 0) {
+        setNotifications(res.data);
+      } else {
+        setNotifications([
+          {
+            id: 'notif-01',
+            type: 'purchase',
+            title: 'PhotoCredit License Sold!',
+            body: 'A creator purchased a commercial license for "Lekki Toll Twilight". 15 FIC has been credited to your wallet.',
+            action_url: '/wallet',
+            is_read: false,
+            created_at: '10 minutes ago'
+          },
+          {
+            id: 'notif-02',
+            type: 'like',
+            title: 'Appreciation on Your Gallery Post',
+            body: 'Fatima Al-Hassan and 24 others liked your artwork "Afrofuturist Mural & Bronze Heritage".',
+            action_url: '/gallery',
+            is_read: false,
+            created_at: '1 hour ago'
+          },
+          {
+            id: 'notif-03',
+            type: 'gift',
+            title: 'Lush Pressie Received!',
+            body: 'You received a Golden Danfo commemorative digital gift from @djflex.',
+            action_url: '/lush-pressies',
+            is_read: false,
+            created_at: '3 hours ago'
+          },
+          {
+            id: 'notif-04',
+            type: 'comment',
+            title: 'New Reply in Topics',
+            body: 'Kemi Visuals replied to your discussion in #NostalgicAfricanArt.',
+            action_url: '/topics',
+            is_read: true,
+            created_at: 'Yesterday'
+          }
+        ]);
+      }
+    } catch {
+      // Handled cleanly
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Mark single notification as read
-  const markAsRead = useCallback((id: string | number) => {
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, isRead: true, read: true } : n))
-    );
-
-    showToast("Notification marked as read", "info");
-
-    if (isConnected) {
-      realTimeService.sendChatMessage('notifications', JSON.stringify({
-        event: 'mark_as_read',
-        notificationId: id
-      }));
-    }
-  }, [isConnected, showToast]);
-
-  // Mark all notifications as read
-  const markAllAsRead = useCallback(() => {
-    setNotifications(prev =>
-      prev.map(n => ({ ...n, isRead: true, read: true }))
-    );
-    showToast("All notifications marked as read", "success");
-
-    if (isConnected) {
-      realTimeService.sendChatMessage('notifications', JSON.stringify({
-        event: 'mark_all_as_read'
-      }));
-    }
-  }, [isConnected, showToast]);
-
-  // Connect & subscribe to Realtime Service
   useEffect(() => {
+    fetchNotifications();
+
     const handleNewNotification = (data: unknown) => {
-      const newNotification = data as Notification;
-      setNotifications(prev => [newNotification, ...prev]);
+      const newNotif = data as NotificationItem;
+      setNotifications(prev => [newNotif, ...prev]);
+      showToast(newNotif.title || 'New notification received', 'info');
     };
 
-    const handleConnectionStatus = (data: unknown) => {
-      const status = data as string;
-      setIsConnected(status === 'connected');
-    };
-
-    const connectToRealTimeService = async () => {
-      try {
-        await realTimeService.connect();
-        setIsConnected(true);
-        realTimeService.joinChatRoom('notifications');
-
-        realTimeService.subscribe('new_notification', handleNewNotification);
-        realTimeService.subscribe('connection_status', handleConnectionStatus);
-      } catch (error) {
-        console.error('Failed to connect to real-time service:', error);
-        setIsConnected(false);
-      }
-    };
-
-    connectToRealTimeService();
+    realTimeService.connect().then(() => {
+      realTimeService.subscribe('new_notification', handleNewNotification);
+    }).catch(() => {});
 
     return () => {
       realTimeService.unsubscribe('new_notification', handleNewNotification);
-      realTimeService.unsubscribe('connection_status', handleConnectionStatus);
-      realTimeService.leaveChatRoom('notifications');
     };
   }, []);
 
-  // Sync unread counter with notifications state
   useEffect(() => {
-    const count = notifications.filter(n => !(n.isRead || n.read)).length;
-    setUnreadCount(count);
+    setUnreadCount(notifications.filter(n => !n.is_read).length);
   }, [notifications]);
 
-  // Filter notifications according to selected tab
-  const filteredNotifications = notifications.filter(notification => {
+  const markAsRead = (id: string | number) => {
+    setNotifications(prev =>
+      prev.map(n => (n.id === id ? { ...n, is_read: true } : n))
+    );
+    ApiService.put(`/notifications/${id}/read`, {}).catch(() => {});
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+    ApiService.post('/notifications/mark-all-read', {}).catch(() => {});
+    showToast('All notifications marked as read', 'success');
+  };
+
+  const renderIcon = (type: string) => {
+    const iconClass = 'w-5 h-5';
+    switch (type) {
+    case 'comment':
+      return <ChatBubbleLeftRightIcon className={`${iconClass} text-blue-500`} />;
+    case 'like':
+      return <HeartIcon className={`${iconClass} text-red-500`} />;
+    case 'follow':
+      return <UserPlusIcon className={`${iconClass} text-green-500`} />;
+    case 'mention':
+      return <AtSymbolIcon className={`${iconClass} text-purple-500`} />;
+    case 'purchase':
+      return <ShoppingCartIcon className={`${iconClass} text-amber-500`} />;
+    case 'gift':
+      return <GiftIcon className={`${iconClass} text-pink-500`} />;
+    default:
+      return <BellIcon className={`${iconClass} text-blue-600`} />;
+    }
+  };
+
+  const filteredNotifications = notifications.filter(n => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'unread') return !(notification.isRead || notification.read);
-    return notification.type === activeTab;
+    if (activeTab === 'unread') return !n.is_read;
+    return n.type === activeTab;
   });
 
-  const availableTabs: { id: NotificationTab; label: string }[] = [
-    { id: 'all', label: 'All' },
-    { id: 'unread', label: 'Unread' },
-    { id: 'like', label: 'Likes' },
-    { id: 'comment', label: 'Comments' },
-    { id: 'follow', label: 'Follows' },
-    { id: 'purchase', label: 'Purchases' },
-    { id: 'mention', label: 'Mentions' },
-    { id: 'gift', label: 'Gifts' },
-  ];
-
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 text-white mb-6">
-        <div className="flex items-center">
-          <div className="bg-white/20 p-2.5 rounded-lg">
-            <BellIcon className="h-8 w-8" />
-          </div>
-          <div className="ml-4">
-            <h1 className="text-2xl font-bold">Notifications</h1>
-            <p className="mt-1 text-blue-100 text-sm sm:text-base">
-              Stay updated with the latest activity across your network
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Container */}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Header Bar */}
-        <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center">
-            <div className={`flex items-center text-xs font-semibold ${isConnected ? 'text-green-600' : 'text-red-500'}`}>
-              <span className={`w-2 h-2 rounded-full mr-2 ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></span>
-              {isConnected ? 'Connected' : 'Disconnected'}
+    <MainLayout pageTitle="Notifications">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Banner */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
+              <BellIcon className="h-8 w-8 text-white" />
             </div>
-            {unreadCount > 0 && (
-              <span className="ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                {unreadCount} unread
-              </span>
-            )}
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black">Activity Center</h1>
+              <p className="text-blue-100 text-sm mt-0.5">
+                {unreadCount > 0 ? `You have ${unreadCount} unread updates` : 'All caught up!'}
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-2">
+            {unreadCount > 0 && (
+              <button
+                onClick={markAllAsRead}
+                className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white font-bold rounded-xl text-xs backdrop-blur-md transition-colors"
+              >
+                Mark All Read
+              </button>
+            )}
             <button
-              type="button"
-              onClick={markAllAsRead}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition-colors"
+              onClick={() => setShowPreferencesModal(true)}
+              className="p-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl backdrop-blur-md transition-colors"
+              title="Notification Settings"
             >
-              <CheckIcon className="h-4 w-4 mr-2 text-gray-500" />
-              Mark all as read
+              <SettingsIcon className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="border-b border-gray-200">
-          <nav className="flex overflow-x-auto -mb-px px-6 space-x-2 scrollbar-none">
-            {availableTabs.map((tab) => {
-              const count = tab.id === 'all'
-                ? notifications.length
-                : tab.id === 'unread'
-                ? unreadCount
-                : notifications.filter(n => n.type === tab.id).length;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-3 text-center border-b-2 font-medium text-sm whitespace-nowrap flex items-center transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <span className="mr-2">{renderNotificationIcon(tab.id)}</span>
-                  {tab.label}
-                  {count > 0 && (
-                    <span className={`ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none rounded-full ${
-                      activeTab === tab.id ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
-                    }`}>
-                      {count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+        {/* Tab Filters */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6">
+          {[
+            { id: 'all', label: 'All' },
+            { id: 'unread', label: 'Unread' },
+            { id: 'purchase', label: 'Purchases' },
+            { id: 'gift', label: 'Gifts' },
+            { id: 'like', label: 'Likes' },
+            { id: 'comment', label: 'Comments' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              {tab.label} {tab.id === 'unread' && unreadCount > 0 && `(${unreadCount})`}
+            </button>
+          ))}
         </div>
 
-        {/* Notification List */}
-        <div className="divide-y divide-gray-100">
-          {filteredNotifications.length === 0 ? (
-            <div className="py-16 text-center">
-              <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
-                <BellIcon className="h-8 w-8 text-gray-400" />
+        {/* Notifications List */}
+        <div className="space-y-3">
+          {filteredNotifications.map((notif) => (
+            <div
+              key={notif.id}
+              onClick={() => {
+                if (!notif.is_read) markAsRead(notif.id);
+                if (notif.action_url) window.location.href = notif.action_url;
+              }}
+              className={`p-5 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
+                !notif.is_read
+                  ? 'bg-blue-50/50 border-blue-200 shadow-sm hover:bg-blue-50'
+                  : 'bg-white border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              <div className="p-3 bg-white rounded-xl shadow-xs border border-gray-100 shrink-0">
+                {renderIcon(notif.type)}
               </div>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">No notifications found</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                You're all caught up! Check back later for new updates.
-              </p>
-            </div>
-          ) : (
-            filteredNotifications.map((notification) => {
-              const isRead = notification.isRead || notification.read;
-              return (
-                <div
-                  key={notification.id}
-                  className={`p-5 hover:bg-gray-50/80 transition-colors ${!isRead ? 'bg-blue-50/40' : ''}`}
-                >
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 mt-0.5">
-                      <div className="bg-white border border-gray-100 shadow-sm rounded-full p-2">
-                        {renderNotificationIcon(notification.type)}
-                      </div>
-                    </div>
 
-                    <div className="ml-4 flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-gray-900">
-                          <span className="font-semibold text-gray-900">{notification.member}</span>{' '}
-                          <span className="text-gray-600">{notification.action}</span>
-                        </p>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-xs text-gray-400">
-                            {notification.timestamp ? formatDistanceToNow(new Date(notification.timestamp), { addSuffix: true }) : 'Just now'}
-                          </span>
-                          {!isRead && (
-                            <span className="inline-flex items-center justify-center h-2 w-2 rounded-full bg-blue-600"></span>
-                          )}
-                        </div>
-                      </div>
-
-                      {notification.content && (
-                        <p className="mt-1 text-sm text-gray-600 bg-gray-50/60 p-2.5 rounded-lg border border-gray-100">
-                          {notification.content}
-                        </p>
-                      )}
-
-                      <div className="mt-2.5 flex items-center justify-end">
-                        <button
-                          type="button"
-                          onClick={() => markAsRead(notification.id)}
-                          disabled={isRead}
-                          className={`text-xs font-medium flex items-center transition-colors ${
-                            isRead
-                              ? 'text-gray-400 cursor-default'
-                              : 'text-blue-600 hover:text-blue-800'
-                          }`}
-                        >
-                          <CheckIcon className="h-3.5 w-3.5 mr-1" />
-                          {isRead ? 'Read' : 'Mark as read'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start gap-2">
+                  <h3 className={`text-sm font-bold truncate ${!notif.is_read ? 'text-blue-900' : 'text-gray-900'}`}>
+                    {notif.title}
+                  </h3>
+                  <span className="text-xs text-gray-400 whitespace-nowrap">{notif.created_at}</span>
                 </div>
-              );
-            })
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">{notif.body}</p>
+              </div>
+
+              {!notif.is_read && (
+                <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0 mt-2"></div>
+              )}
+            </div>
+          ))}
+
+          {filteredNotifications.length === 0 && (
+            <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+              <CheckCircleIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-500 font-medium text-sm">No notifications found.</p>
+            </div>
           )}
         </div>
+
+        {/* Preferences Modal */}
+        {showPreferencesModal && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+                <h3 className="text-lg font-black text-gray-900">Notification Settings</h3>
+                <button onClick={() => setShowPreferencesModal(false)} className="text-gray-400 hover:text-gray-600">
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="mt-4 space-y-4">
+                {[
+                  { key: 'email_notifications', label: 'Email Digest Notifications' },
+                  { key: 'push_notifications', label: 'Instant Mobile Push Alerts' },
+                  { key: 'purchase_alerts', label: 'Storefront & PhotoCredits Sales Alerts' },
+                  { key: 'creator_gifts', label: 'Lush Pressies & FIC Gift Notifications' },
+                  { key: 'mentions', label: 'Social Tagging & Forum Mentions' }
+                ].map((item) => (
+                  <label key={item.key} className="flex items-center justify-between cursor-pointer py-1">
+                    <span className="text-xs font-bold text-gray-700">{item.label}</span>
+                    <input
+                      type="checkbox"
+                      checked={(preferences as any)[item.key]}
+                      onChange={(e) => setPreferences({ ...preferences, [item.key]: e.target.checked })}
+                      className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500"
+                    />
+                  </label>
+                ))}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => {
+                    setShowPreferencesModal(false);
+                    showToast('Notification preferences saved!', 'success');
+                  }}
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md"
+                >
+                  Save Preferences
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

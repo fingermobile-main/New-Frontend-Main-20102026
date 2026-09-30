@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useEditor } from '../contexts/EditorContext';
 import { EyeIcon, PencilIcon, TrashIcon } from '../icons';
 import PageHeader from '../components/PageHeader';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 const MyPages: React.FC = () => {
   const { publishedPages, handleDeletePage } = useEditor();
@@ -15,20 +15,20 @@ const MyPages: React.FC = () => {
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
   const [selectedPage, setSelectedPage] = useState<any>(null);
-  const [giftAmount, setGiftAmount] = useState("");
-  const [paylinkAmount, setPaylinkAmount] = useState("");
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSendGift = async () => {
     if (!selectedPage) return;
     const amount = parseFloat(giftAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast('Please enter a valid amount', 'error');
       return;
     }
 
     if (amount > ficBalance) {
-      showToast("Insufficient FIC balance", "error");
+      showToast('Insufficient FIC balance', 'error');
       return;
     }
 
@@ -36,12 +36,12 @@ const MyPages: React.FC = () => {
     try {
       // In a real app, this would call an API
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast("Gift sent successfully");
-      setGiftAmount("");
+      showToast('Gift sent successfully');
+      setGiftAmount('');
       setShowGiftModal(false);
       setSelectedPage(null);
     } catch (error) {
-      showToast("Failed to send gift", "error");
+      showToast('Failed to send gift', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -51,12 +51,12 @@ const MyPages: React.FC = () => {
     if (!selectedPage) return;
     const amount = parseFloat(paylinkAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast('Please enter a valid amount', 'error');
       return;
     }
 
     if (amount > ficBalance) {
-      showToast("Insufficient FIC balance", "error");
+      showToast('Insufficient FIC balance', 'error');
       return;
     }
 
@@ -64,12 +64,12 @@ const MyPages: React.FC = () => {
     try {
       // In a real app, this would call an API
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      showToast("Paylink created successfully");
-      setPaylinkAmount("");
+      showToast('Paylink created successfully');
+      setPaylinkAmount('');
       setShowPaylinkModal(false);
       setSelectedPage(null);
     } catch (error) {
-      showToast("Failed to create paylink", "error");
+      showToast('Failed to create paylink', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -80,7 +80,7 @@ const MyPages: React.FC = () => {
       window.confirm(`Are you sure you want to delete the page "${pageName}"?`)
     ) {
       handleDeletePage(pageId);
-      showToast("Page deleted successfully");
+      showToast('Page deleted successfully');
     }
   };
 
@@ -90,7 +90,7 @@ const MyPages: React.FC = () => {
         title="My Pages"
         description="Manage all the pages you've created."
         actionText="+ Create New Page"
-        onAction={() => navigate("/editor")}
+        onAction={() => navigate('/editor')}
       />
       <div className="p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
@@ -110,7 +110,7 @@ const MyPages: React.FC = () => {
                           {page.name}
                         </p>
                         <p className="text-xs text-gray-500">
-                          Last updated:{" "}
+                          Last updated:{' '}
                           {new Date(page.lastEdited).toLocaleString()}
                         </p>
                       </div>
@@ -150,7 +150,7 @@ const MyPages: React.FC = () => {
                 You haven't published any pages yet.
               </p>
               <button
-                onClick={() => navigate("/editor")}
+                onClick={() => navigate('/editor')}
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Create Your First Page
@@ -158,7 +158,7 @@ const MyPages: React.FC = () => {
             </div>
           )}
         </div>
-      </div>{" "}
+      </div>{' '}
       {/* Gift Modal */}
       {showGiftModal && selectedPage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -189,7 +189,7 @@ const MyPages: React.FC = () => {
                   onClick={() => {
                     setShowGiftModal(false);
                     setSelectedPage(null);
-                    setGiftAmount("");
+                    setGiftAmount('');
                   }}
                   className="flex-1 px-4 py-2 bg-gray-100 rounded-lg"
                   disabled={isProcessing}
@@ -201,7 +201,7 @@ const MyPages: React.FC = () => {
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg"
                   disabled={isProcessing}
                 >
-                  {isProcessing ? "Processing..." : "Send Gift"}
+                  {isProcessing ? 'Processing...' : 'Send Gift'}
                 </button>
               </div>
             </div>
@@ -242,7 +242,7 @@ const MyPages: React.FC = () => {
                   onClick={() => {
                     setShowPaylinkModal(false);
                     setSelectedPage(null);
-                    setPaylinkAmount("");
+                    setPaylinkAmount('');
                   }}
                   className="flex-1 px-4 py-2 bg-gray-100 rounded-lg"
                   disabled={isProcessing}
@@ -254,7 +254,7 @@ const MyPages: React.FC = () => {
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg"
                   disabled={isProcessing}
                 >
-                  {isProcessing ? "Processing..." : "Create Paylink"}
+                  {isProcessing ? 'Processing...' : 'Create Paylink'}
                 </button>
               </div>
             </div>

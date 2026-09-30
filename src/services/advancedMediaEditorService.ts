@@ -45,12 +45,12 @@ export class AdvancedMediaEditorService {
   public async loadVideo(file: File): Promise<VideoData> {
     try {
       return new Promise((resolve, reject) => {
-        const video = document.createElement("video");
-        video.preload = "auto";
-        video.crossOrigin = "anonymous";
+        const video = document.createElement('video');
+        video.preload = 'auto';
+        video.crossOrigin = 'anonymous';
         video.src = this.createManagedUrl(file);
 
-        video.addEventListener("loadedmetadata", () => {
+        video.addEventListener('loadedmetadata', () => {
           this.videoElements.set(file.name, video);
           resolve({
             id: file.name,
@@ -59,10 +59,10 @@ export class AdvancedMediaEditorService {
             height: video.videoHeight
           });
         });
-        video.addEventListener("error", (err) => reject(err));
+        video.addEventListener('error', (err) => reject(err));
       });
     } catch (e) {
-      console.error("Critical failure initializing structural video tracking element:", e);
+      console.error('Critical failure initializing structural video tracking element:', e);
       throw e;
     }
   }
@@ -74,12 +74,12 @@ export class AdvancedMediaEditorService {
     try {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = "Anonymous";
+        img.crossOrigin = 'Anonymous';
         const imageUrl = this.createManagedUrl(file);
         img.src = imageUrl;
 
         img.onload = () => {
-          // Structural optimization: Verify potential profile dynamic metadata tags 
+          // Structural optimization: Verify potential profile dynamic metadata tags
           const baseMetaData = {
             width: img.width,
             height: img.height,
@@ -92,7 +92,7 @@ export class AdvancedMediaEditorService {
         img.onerror = (error) => reject(error);
       });
     } catch (e) {
-      console.error("Critical image pipeline failure:", e);
+      console.error('Critical image pipeline failure:', e);
       throw e;
     }
   }
@@ -103,21 +103,21 @@ export class AdvancedMediaEditorService {
   public async loadAudio(file: File): Promise<AudioData> {
     try {
       return new Promise((resolve, reject) => {
-        const audio = document.createElement("audio");
-        audio.preload = "auto";
+        const audio = document.createElement('audio');
+        audio.preload = 'auto';
         audio.src = this.createManagedUrl(file);
 
-        audio.addEventListener("loadedmetadata", () => {
+        audio.addEventListener('loadedmetadata', () => {
           this.audioElements.set(file.name, audio);
           resolve({
             id: file.name,
             duration: audio.duration
           });
         });
-        audio.addEventListener("error", (err) => reject(err));
+        audio.addEventListener('error', (err) => reject(err));
       });
     } catch (e) {
-      console.error("Critical audio resource loading failure:", e);
+      console.error('Critical audio resource loading failure:', e);
       throw e;
     }
   }
@@ -132,18 +132,18 @@ export class AdvancedMediaEditorService {
 
       return new Promise((resolve, reject) => {
         img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return reject(new Error("Failed to initialize system rendering engine core."));
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('Failed to initialize system rendering engine core.'));
 
           canvas.width = img.width;
           canvas.height = img.height;
 
           // Native algorithmic mapping assignments
-          if (filterType === "grayscale") ctx.filter = "grayscale(100%)";
-          else if (filterType === "sepia") ctx.filter = "sepia(100%)";
-          else if (filterType === "invert") ctx.filter = "invert(100%)";
-          else ctx.filter = "none";
+          if (filterType === 'grayscale') ctx.filter = 'grayscale(100%)';
+          else if (filterType === 'sepia') ctx.filter = 'sepia(100%)';
+          else if (filterType === 'invert') ctx.filter = 'invert(100%)';
+          else ctx.filter = 'none';
 
           ctx.drawImage(img, 0, 0);
           resolve({
@@ -154,7 +154,7 @@ export class AdvancedMediaEditorService {
         img.onerror = reject;
       });
     } catch (e) {
-      console.error("Filter modification application error context:", e);
+      console.error('Filter modification application error context:', e);
       throw e;
     }
   }
@@ -166,16 +166,16 @@ export class AdvancedMediaEditorService {
     try {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = "anonymous";
+        img.crossOrigin = 'anonymous';
         img.src = srcUrl;
 
         img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return reject(new Error("Render canvas exception context error."));
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('Render canvas exception context error.'));
 
           const angleRadians = (degrees * Math.PI) / 180;
-          
+
           // Calculate bounding box metrics safely
           const sin = Math.abs(Math.sin(angleRadians));
           const cos = Math.abs(Math.cos(angleRadians));
@@ -192,13 +192,13 @@ export class AdvancedMediaEditorService {
           resolve({
             width: canvas.width,
             height: canvas.height,
-            src: canvas.toDataURL("image/png")
+            src: canvas.toDataURL('image/png')
           });
         };
         img.onerror = reject;
       });
     } catch (e) {
-      console.error("Error executing spatial rotation algorithm matrix calculation:", e);
+      console.error('Error executing spatial rotation algorithm matrix calculation:', e);
       throw e;
     }
   }
@@ -210,31 +210,31 @@ export class AdvancedMediaEditorService {
     try {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = "anonymous";
+        img.crossOrigin = 'anonymous';
         img.src = srcUrl;
 
         img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return reject(new Error("Context build canvas failure."));
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('Context build canvas failure.'));
 
           canvas.width = width;
           canvas.height = height;
-          
+
           ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
+          ctx.imageSmoothingQuality = 'high';
           ctx.drawImage(img, 0, 0, width, height);
 
           resolve({
             width,
             height,
-            src: canvas.toDataURL("image/jpeg", 0.92)
+            src: canvas.toDataURL('image/jpeg', 0.92)
           });
         };
         img.onerror = reject;
       });
     } catch (e) {
-      console.error("Failure resizing target resolution boundaries:", e);
+      console.error('Failure resizing target resolution boundaries:', e);
       throw e;
     }
   }
@@ -245,7 +245,7 @@ export class AdvancedMediaEditorService {
   public async amplifyAudio(audioId: string, gainValue: number): Promise<unknown> {
     try {
       const audio = this.audioElements.get(audioId);
-      if (!audio) throw new Error("Referenced audio tracking item index unavailable.");
+      if (!audio) throw new Error('Referenced audio tracking item index unavailable.');
 
       const context = this.getAudioContext();
       const sourceNode = context.createMediaElementSource(audio);
@@ -261,7 +261,7 @@ export class AdvancedMediaEditorService {
         appliedGainValue: gainValue
       };
     } catch (e) {
-      console.error("DSP processing failure during gain node routing sequence:", e);
+      console.error('DSP processing failure during gain node routing sequence:', e);
       throw e;
     }
   }
@@ -271,7 +271,7 @@ export class AdvancedMediaEditorService {
    */
   public async trimVideo(videoId: string, startTime: number, endTime: number): Promise<VideoData> {
     const video = this.videoElements.get(videoId);
-    if (!video) throw new Error("Video context key invalid or missing memory map targets.");
+    if (!video) throw new Error('Video context key invalid or missing memory map targets.');
 
     return {
       id: videoId,
@@ -285,12 +285,12 @@ export class AdvancedMediaEditorService {
 
   public async trimAudio(audioId: string, startTime: number, endTime: number): Promise<MediaFile> {
     const audio = this.audioElements.get(audioId);
-    if (!audio) throw new Error("Audio context instance map value not resolved.");
+    if (!audio) throw new Error('Audio context instance map value not resolved.');
 
     return {
       id: audioId,
       name: audioId,
-      type: "audio",
+      type: 'audio',
       size: 0,
       url: audio.src,
       startTime,
@@ -313,7 +313,7 @@ export class AdvancedMediaEditorService {
         format: options.format
       };
     } catch (e) {
-      console.error("Encoding export operation failed:", e);
+      console.error('Encoding export operation failed:', e);
       throw e;
     }
   }
@@ -331,7 +331,7 @@ export class AdvancedMediaEditorService {
       this.audioCtx.close();
       this.audioCtx = null;
     }
-    console.info("System storage arrays and buffer pointers flushed successfully.");
+    console.info('System storage arrays and buffer pointers flushed successfully.');
   }
 }
 

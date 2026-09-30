@@ -9,7 +9,7 @@ import {
   RefreshCw, Clock, HeadphonesIcon, Music, Video, Image,
   Heart
 } from 'lucide-react';
-import { useAppContext } from "../contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../contexts/AppContext';  // Using absolute path from src
 import { ProtocolSettings } from '../types/dancia4tv';
 import ParentalControlService from '../services/ParentalControlService';
 
@@ -106,36 +106,36 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     {mediaFolders.map(loc => (
                       <div key={loc} className="flex items-center justify-between p-5 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all">
                         <div className="flex items-center space-x-4">
-                           <Folder className="text-blue-500" size={20} />
-                           <span className="text-sm font-bold text-white">{loc}</span>
+                          <Folder className="text-blue-500" size={20} />
+                          <span className="text-sm font-bold text-white">{loc}</span>
                         </div>
-                        <input 
+                        <input
                           id={`storage-${loc}`}
-                          type="checkbox" 
-                          checked={settings.mediaFolders?.includes(loc) || false} 
+                          type="checkbox"
+                          checked={settings.mediaFolders?.includes(loc) || false}
                           onChange={(e) => {
-                            const folders = e.target.checked 
+                            const folders = e.target.checked
                               ? [...(settings.mediaFolders || []), loc]
                               : (settings.mediaFolders || []).filter(f => f !== loc);
                             handleSelect('mediaFolders', folders);
                           }}
-                          className="w-5 h-5 rounded-lg bg-gray-800 border-white/10 text-blue-600 focus:ring-blue-500/50" 
+                          className="w-5 h-5 rounded-lg bg-gray-800 border-white/10 text-blue-600 focus:ring-blue-500/50"
                         />
                       </div>
                     ))}
                   </div>
                 </section>
                 <div className="flex items-center justify-between group cursor-pointer" onClick={() => toggle('autoRefreshEnabled')} role="button" tabIndex={0}>
-                   <div className="flex items-center space-x-4">
-                     <RefreshCw className={`w-5 h-5 ${settings.autoRefreshEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
-                     <div>
-                       <p className="text-sm font-bold text-white uppercase tracking-tight">Auto Refresh/Rescan</p>
-                       <p className="text-xs text-gray-400 mt-1">Automatically detect new media on startup</p>
-                     </div>
-                   </div>
-                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.autoRefreshEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
-                      <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.autoRefreshEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
-                   </div>
+                  <div className="flex items-center space-x-4">
+                    <RefreshCw className={`w-5 h-5 ${settings.autoRefreshEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <div>
+                      <p className="text-sm font-bold text-white uppercase tracking-tight">Auto Refresh/Rescan</p>
+                      <p className="text-xs text-gray-400 mt-1">Automatically detect new media on startup</p>
+                    </div>
+                  </div>
+                  <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.autoRefreshEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
+                    <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.autoRefreshEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                  </div>
                 </div>
               </div>
             )}
@@ -195,16 +195,16 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </section>
 
                 <div className="flex items-center justify-between" onClick={() => toggle('savePlaybackHistory')} role="button" tabIndex={0}>
-                   <div className="flex items-center space-x-4">
-                     <History className={`w-5 h-5 ${settings.savePlaybackHistory ? 'text-blue-500' : 'text-gray-500'}`} />
-                     <div>
-                       <p className="text-sm font-bold text-white uppercase tracking-tight">Save Playback History</p>
-                       <p className="text-xs text-gray-400 mt-1">Keep track of your watched media</p>
-                     </div>
-                   </div>
-                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.savePlaybackHistory ? 'bg-blue-600' : 'bg-gray-800'}`}>
-                      <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.savePlaybackHistory ? 'translate-x-6' : 'translate-x-0'}`} />
-                   </div>
+                  <div className="flex items-center space-x-4">
+                    <History className={`w-5 h-5 ${settings.savePlaybackHistory ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <div>
+                      <p className="text-sm font-bold text-white uppercase tracking-tight">Save Playback History</p>
+                      <p className="text-xs text-gray-400 mt-1">Keep track of your watched media</p>
+                    </div>
+                  </div>
+                  <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.savePlaybackHistory ? 'bg-blue-600' : 'bg-gray-800'}`}>
+                    <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.savePlaybackHistory ? 'translate-x-6' : 'translate-x-0'}`} />
+                  </div>
                 </div>
               </div>
             )}
@@ -217,17 +217,17 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <span>Subtitle Opacity</span>
                   </label>
                   <div className="flex items-center space-x-6">
-                      <input
-                        id="subtitleOpacity"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={settings.subtitleOpacity}
-                        onChange={(e) => handleSelect('subtitleOpacity', Number(e.target.value))}
-                        className="flex-grow accent-blue-600"
-                      />
-                      <span className="text-lg font-black text-white w-12">{settings.subtitleOpacity}%</span>
-                   </div>
+                    <input
+                      id="subtitleOpacity"
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={settings.subtitleOpacity}
+                      onChange={(e) => handleSelect('subtitleOpacity', Number(e.target.value))}
+                      className="flex-grow accent-blue-600"
+                    />
+                    <span className="text-lg font-black text-white w-12">{settings.subtitleOpacity}%</span>
+                  </div>
                 </section>
 
                 <section className="space-y-6">
@@ -244,8 +244,8 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             key={color}
                             onClick={() => handleSelect('subtitleBackgroundColor', color)}
                             className={`w-10 h-10 rounded-lg border-2 transition-all ${
-                              settings.subtitleBackgroundColor === color 
-                                ? 'border-blue-500 scale-110' 
+                              settings.subtitleBackgroundColor === color
+                                ? 'border-blue-500 scale-110'
                                 : 'border-white/10 hover:border-white/30'
                             }`}
                             style={{ backgroundColor: color }}
@@ -261,8 +261,8 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             key={color}
                             onClick={() => handleSelect('subtitleOutlineColor', color)}
                             className={`w-10 h-10 rounded-lg border-2 transition-all ${
-                              settings.subtitleOutlineColor === color 
-                                ? 'border-blue-500 scale-110' 
+                              settings.subtitleOutlineColor === color
+                                ? 'border-blue-500 scale-110'
                                 : 'border-white/10 hover:border-white/30'
                             }`}
                             style={{ backgroundColor: color }}
@@ -274,33 +274,33 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </section>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   <div className="flex items-center justify-between" onClick={() => toggle('autoLoadSubtitles')} role="button" tabIndex={0}>
-                      <div className="flex items-center space-x-3">
-                        <Subtitles className={`w-5 h-5 ${settings.autoLoadSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
-                        <span id="autoLoadSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Load Subtitles</span>
-                      </div>
-                      <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoLoadSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoLoadSubtitles} aria-labelledby="autoLoadSubtitlesLabel">
-                        <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.autoLoadSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
-                      </div>
-                   </div>
-                   <div className="flex items-center justify-between" onClick={() => toggle('boldSubtitles')} role="button" tabIndex={0}>
-                      <div className="flex items-center space-x-3">
-                        <Type className={`w-5 h-5 ${settings.boldSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
-                        <span id="boldSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Bold Subtitles</span>
-                      </div>
-                      <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.boldSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.boldSubtitles} aria-labelledby="boldSubtitlesLabel">
-                        <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.boldSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
-                      </div>
-                   </div>
-                   <div className="flex items-center justify-between" onClick={() => toggle('autoColorSubtitles')} role="button" tabIndex={0}>
-                      <div className="flex items-center space-x-3">
-                        <Palette className={`w-5 h-5 ${settings.autoColorSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
-                        <span id="autoColorSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Color Subtitles</span>
-                      </div>
-                      <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoColorSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoColorSubtitles} aria-labelledby="autoColorSubtitlesLabel">
-                        <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.autoColorSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
-                      </div>
-                   </div>
+                  <div className="flex items-center justify-between" onClick={() => toggle('autoLoadSubtitles')} role="button" tabIndex={0}>
+                    <div className="flex items-center space-x-3">
+                      <Subtitles className={`w-5 h-5 ${settings.autoLoadSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <span id="autoLoadSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Load Subtitles</span>
+                    </div>
+                    <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoLoadSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoLoadSubtitles} aria-labelledby="autoLoadSubtitlesLabel">
+                      <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.autoLoadSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between" onClick={() => toggle('boldSubtitles')} role="button" tabIndex={0}>
+                    <div className="flex items-center space-x-3">
+                      <Type className={`w-5 h-5 ${settings.boldSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <span id="boldSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Bold Subtitles</span>
+                    </div>
+                    <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.boldSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.boldSubtitles} aria-labelledby="boldSubtitlesLabel">
+                      <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.boldSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between" onClick={() => toggle('autoColorSubtitles')} role="button" tabIndex={0}>
+                    <div className="flex items-center space-x-3">
+                      <Palette className={`w-5 h-5 ${settings.autoColorSubtitles ? 'text-blue-500' : 'text-gray-500'}`} />
+                      <span id="autoColorSubtitlesLabel" className="text-sm font-bold text-white uppercase tracking-tight">Auto Color Subtitles</span>
+                    </div>
+                    <div className={`w-10 h-6 rounded-full p-1 transition-colors ${settings.autoColorSubtitles ? 'bg-blue-600' : 'bg-gray-800'}`} role="switch" aria-checked={settings.autoColorSubtitles} aria-labelledby="autoColorSubtitlesLabel">
+                      <div className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.autoColorSubtitles ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
                 </div>
 
                 <section className="space-y-6">
@@ -329,38 +329,38 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             {activeTab === 'interface' && (
               <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-                 <div className="grid grid-cols-1 gap-6">
-                   {[
-                     { id: 'singleLineTitleEllipsize', label: 'Single Line Title Ellipsis', desc: 'Shorten long titles with (...)', icon: <FileText size={18} /> },
-                     { id: 'showHeaders', label: 'Show UI Headers', desc: 'Display navigation and category headers', icon: <Type size={18} /> },
-                     { id: 'showMissingMedia', label: 'Show Missing Media', desc: 'Display placeholders for offline files', icon: <Image size={18} /> },
-                     { id: 'downloadAlbumThumbnails', label: 'Download Album Thumbnails', desc: 'Auto-download cover art for albums', icon: <Image size={18} /> },
-                     { id: 'downloadInfo', label: 'Download Metadata', desc: 'Auto-download track info and details', icon: <FileText size={18} /> },
-                     { id: 'downloadSubtitlesLyrics', label: 'Download Subtitles & Lyrics', desc: 'Auto-download lyrics and subtitles', icon: <Subtitles size={18} /> },
-                     { id: 'showSeenVideoMarker', label: 'Show Seen Marker', desc: 'Mark videos you have already watched', icon: <Eye size={18} /> },
-                     { id: 'showMediumThumbnailsOnClick', label: 'Show Medium Thumbnails', desc: 'Display medium-sized preview images', icon: <Image size={18} /> },
-                     { id: 'mediaCoverOnLockScreen', label: 'Media Cover on Lock Screen', desc: 'Show album art on lock screen', icon: <Image size={18} /> },
-                     { id: 'seekButtonsOnNotification', label: 'Seek Buttons in Notifications', desc: 'Add forward/backward buttons to lockscreen', icon: <Clock size={18} /> },
-                     { id: 'showWatchingOnNewsFeed', label: 'Broadcasting Status', desc: 'Show what I am listening/watching on news feed', icon: <Bell size={18} /> },
-                     { id: 'resumePlaybackOnLogin', label: 'Resume Playback on Login', desc: 'Continue where you left off on startup', icon: <Play size={18} /> },
-                     { id: 'headsetDetection', label: 'Headset Detection', desc: 'Auto-switch audio output on headset connect', icon: <HeadphonesIcon size={18} /> }
-                   ].map(item => (
-                      <div key={item.id} className="flex items-center justify-between group cursor-pointer p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all" onClick={() => toggle(item.id as any)} role="button" tabIndex={0}>
-                        <div className="flex items-center space-x-4">
-                          <div className={`${settings[item.id as keyof ProtocolSettings] ? 'text-blue-500' : 'text-gray-500'}`}>
-                            {item.icon}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-white uppercase tracking-tight">{item.label}</p>
-                            <p className="text-xs text-gray-400 mt-1">{item.desc}</p>
-                          </div>
+                <div className="grid grid-cols-1 gap-6">
+                  {[
+                    { id: 'singleLineTitleEllipsize', label: 'Single Line Title Ellipsis', desc: 'Shorten long titles with (...)', icon: <FileText size={18} /> },
+                    { id: 'showHeaders', label: 'Show UI Headers', desc: 'Display navigation and category headers', icon: <Type size={18} /> },
+                    { id: 'showMissingMedia', label: 'Show Missing Media', desc: 'Display placeholders for offline files', icon: <Image size={18} /> },
+                    { id: 'downloadAlbumThumbnails', label: 'Download Album Thumbnails', desc: 'Auto-download cover art for albums', icon: <Image size={18} /> },
+                    { id: 'downloadInfo', label: 'Download Metadata', desc: 'Auto-download track info and details', icon: <FileText size={18} /> },
+                    { id: 'downloadSubtitlesLyrics', label: 'Download Subtitles & Lyrics', desc: 'Auto-download lyrics and subtitles', icon: <Subtitles size={18} /> },
+                    { id: 'showSeenVideoMarker', label: 'Show Seen Marker', desc: 'Mark videos you have already watched', icon: <Eye size={18} /> },
+                    { id: 'showMediumThumbnailsOnClick', label: 'Show Medium Thumbnails', desc: 'Display medium-sized preview images', icon: <Image size={18} /> },
+                    { id: 'mediaCoverOnLockScreen', label: 'Media Cover on Lock Screen', desc: 'Show album art on lock screen', icon: <Image size={18} /> },
+                    { id: 'seekButtonsOnNotification', label: 'Seek Buttons in Notifications', desc: 'Add forward/backward buttons to lockscreen', icon: <Clock size={18} /> },
+                    { id: 'showWatchingOnNewsFeed', label: 'Broadcasting Status', desc: 'Show what I am listening/watching on news feed', icon: <Bell size={18} /> },
+                    { id: 'resumePlaybackOnLogin', label: 'Resume Playback on Login', desc: 'Continue where you left off on startup', icon: <Play size={18} /> },
+                    { id: 'headsetDetection', label: 'Headset Detection', desc: 'Auto-switch audio output on headset connect', icon: <HeadphonesIcon size={18} /> }
+                  ].map(item => (
+                    <div key={item.id} className="flex items-center justify-between group cursor-pointer p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/[0.07] transition-all" onClick={() => toggle(item.id as any)} role="button" tabIndex={0}>
+                      <div className="flex items-center space-x-4">
+                        <div className={`${settings[item.id as keyof ProtocolSettings] ? 'text-blue-500' : 'text-gray-500'}`}>
+                          {item.icon}
                         </div>
-                        <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings[item.id as keyof ProtocolSettings] ? 'bg-blue-600' : 'bg-gray-800'}`}>
-                          <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings[item.id as keyof ProtocolSettings] ? 'translate-x-6' : 'translate-x-0'}`} />
+                        <div>
+                          <p className="text-sm font-bold text-white uppercase tracking-tight">{item.label}</p>
+                          <p className="text-xs text-gray-400 mt-1">{item.desc}</p>
                         </div>
                       </div>
-                   ))}
-                 </div>
+                      <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings[item.id as keyof ProtocolSettings] ? 'bg-blue-600' : 'bg-gray-800'}`}>
+                        <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings[item.id as keyof ProtocolSettings] ? 'translate-x-6' : 'translate-x-0'}`} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -455,8 +455,8 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               <div className="space-y-10 animate-in slide-in-from-bottom-4 duration-500">
                 <div className="p-8 bg-amber-500/10 border border-amber-500/20 rounded-[2rem] space-y-4">
                   <div className="flex items-center space-x-3 text-amber-500">
-                     <Shield size={24} />
-                     <h3 className="text-lg font-black uppercase tracking-tight">AI Guardian Active</h3>
+                    <Shield size={24} />
+                    <h3 className="text-lg font-black uppercase tracking-tight">AI Guardian Active</h3>
                   </div>
                   <p className="text-sm text-gray-400 leading-relaxed">
                     AI Face Seek scanning is enabled by default to ensure content matches IARC classifications for the active profile.
@@ -464,16 +464,16 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </div>
 
                 <div className="flex items-center justify-between" onClick={() => toggle('aiFaceSeekEnabled')} role="button" tabIndex={0}>
-                   <div className="flex items-center space-x-4">
-                     <Eye className={`w-5 h-5 ${settings.aiFaceSeekEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
-                     <div>
-                       <p className="text-sm font-bold text-white uppercase tracking-tight">AI Face Seek/Scan</p>
-                       <p className="text-xs text-gray-400 mt-1">Deep analysis of video frames for age-restricted content</p>
-                     </div>
-                   </div>
-                   <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.aiFaceSeekEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
-                      <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.aiFaceSeekEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
-                   </div>
+                  <div className="flex items-center space-x-4">
+                    <Eye className={`w-5 h-5 ${settings.aiFaceSeekEnabled ? 'text-blue-500' : 'text-gray-500'}`} />
+                    <div>
+                      <p className="text-sm font-bold text-white uppercase tracking-tight">AI Face Seek/Scan</p>
+                      <p className="text-xs text-gray-400 mt-1">Deep analysis of video frames for age-restricted content</p>
+                    </div>
+                  </div>
+                  <div className={`w-14 h-8 rounded-full p-1 transition-colors ${settings.aiFaceSeekEnabled ? 'bg-blue-600' : 'bg-gray-800'}`}>
+                    <div className={`w-6 h-6 bg-white rounded-full transition-transform ${settings.aiFaceSeekEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -506,15 +506,15 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   </div>
                 </div>
 
-                <button 
+                <button
                   onClick={() => setShowPinDialog(true)}
                   className="w-full flex items-center justify-between p-6 bg-white/5 border border-white/5 rounded-3xl group hover:bg-white/10 transition-all"
                 >
                   <div className="flex items-center space-x-4">
                     <Lock className="text-blue-500" size={24} />
                     <div className="text-left">
-                       <p className="text-md font-bold text-white uppercase tracking-tight">Parental Lock PIN</p>
-                       <p className="text-xs text-gray-500">{settings.appLockPin ? 'Change your security PIN' : 'Set your security PIN'}</p>
+                      <p className="text-md font-bold text-white uppercase tracking-tight">Parental Lock PIN</p>
+                      <p className="text-xs text-gray-500">{settings.appLockPin ? 'Change your security PIN' : 'Set your security PIN'}</p>
                     </div>
                   </div>
                   <span className="text-xs font-black text-blue-500 uppercase tracking-widest">{settings.appLockPin ? 'Update' : 'Set'} PIN</span>
@@ -567,30 +567,30 @@ const DanciaAppSettings: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <div className="space-y-4">
                   <span id="dataManagementLabel" className="text-xs font-black text-gray-500 uppercase tracking-widest block">Data Management</span>
                   <div aria-labelledby="dataManagementLabel">
-                  {[
-                    { label: 'Clear Cache', desc: 'Remove temporary files', icon: <Trash2 size={18} />, action: () => { showToast('Cache cleared', 'success'); }, variant: 'default' },
-                    { label: 'Wipe Data', desc: 'Delete all app data and settings', icon: <AlertTriangle size={18} />, action: () => { showToast('Data wiped', 'warning'); }, variant: 'danger' },
-                    { label: 'Restore Saved Data', desc: 'Import previously exported data', icon: <RotateCcw size={18} />, action: () => { showToast('Data restored', 'success'); }, variant: 'default' },
-                    { label: 'Export Data', desc: 'Backup all settings and data', icon: <Database size={18} />, action: () => { showToast('Data exported', 'success'); }, variant: 'success' }
-                  ].map(adv => (
-                    <button
-                      key={adv.label}
-                      onClick={adv.action}
-                      className={`w-full flex items-center justify-between p-6 rounded-3xl border transition-all ${
-                        adv.variant === 'danger' ? 'bg-red-500/10 border-red-500/20 text-red-500 hover:bg-red-500/20' :
-                        adv.variant === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-500 hover:bg-green-500/20' :
-                        'bg-white/5 border-white/5 text-white hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-4">
-                        {adv.icon}
-                        <div className="text-left">
-                          <span className="text-sm font-bold uppercase tracking-widest block">{adv.label}</span>
-                          <span className="text-xs text-gray-400">{adv.desc}</span>
+                    {[
+                      { label: 'Clear Cache', desc: 'Remove temporary files', icon: <Trash2 size={18} />, action: () => { showToast('Cache cleared', 'success'); }, variant: 'default' },
+                      { label: 'Wipe Data', desc: 'Delete all app data and settings', icon: <AlertTriangle size={18} />, action: () => { showToast('Data wiped', 'warning'); }, variant: 'danger' },
+                      { label: 'Restore Saved Data', desc: 'Import previously exported data', icon: <RotateCcw size={18} />, action: () => { showToast('Data restored', 'success'); }, variant: 'default' },
+                      { label: 'Export Data', desc: 'Backup all settings and data', icon: <Database size={18} />, action: () => { showToast('Data exported', 'success'); }, variant: 'success' }
+                    ].map(adv => (
+                      <button
+                        key={adv.label}
+                        onClick={adv.action}
+                        className={`w-full flex items-center justify-between p-6 rounded-3xl border transition-all ${
+                          adv.variant === 'danger' ? 'bg-red-500/10 border-red-500/20 text-red-500 hover:bg-red-500/20' :
+                            adv.variant === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-500 hover:bg-green-500/20' :
+                              'bg-white/5 border-white/5 text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-4">
+                          {adv.icon}
+                          <div className="text-left">
+                            <span className="text-sm font-bold uppercase tracking-widest block">{adv.label}</span>
+                            <span className="text-xs text-gray-400">{adv.desc}</span>
+                          </div>
                         </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>

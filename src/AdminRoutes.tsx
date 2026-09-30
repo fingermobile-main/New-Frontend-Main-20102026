@@ -6,34 +6,34 @@ import LoadingSpinner from './components/LoadingSpinner';
 
 // Lazy load admin pages with proper typing using unknown intermediate cast
 const AdminDashboardPage = lazy(
-  () => import("./pages/admin/AdminDashboardPage.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./pages/admin/AdminDashboardPage.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const MemberManagementPage = lazy(
-  () => import("./pages/admin/MemberManagementPage.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./pages/admin/MemberManagementPage.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const SuperAdminDashboard = lazy(
-  () => import("./components/dashboard/SuperAdminDashboard.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/SuperAdminDashboard.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const UGCDashboard = lazy(
-  () => import("./components/dashboard/UGCDashboard.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/UGCDashboard.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const AdsDashboard = lazy(
-  () => import("./components/dashboard/AdsDashboard.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/AdsDashboard.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const CreatorDashboard = lazy(
-  () => import("./components/dashboard/CreatorDashboard.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/CreatorDashboard.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const BlogsManagement = lazy(
-  () => import("./components/dashboard/BlogsManagement.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/BlogsManagement.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const EventsCalendar = lazy(
-  () => import("./components/dashboard/EventsCalendar.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/EventsCalendar.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const Messaging = lazy(
-  () => import("./components/dashboard/Messaging.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/Messaging.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 const PublishingTools = lazy(
-  () => import("./components/dashboard/PublishingTools.js").then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
+  () => import('./components/dashboard/PublishingTools.js').then(module => ({ default: module.default as unknown as React.ComponentType<any> })),
 );
 // constContentManagementPage = lazy(() => import(/* @vite-ignore */ './pages/admin/ContentManagementPage'));
 // constFinancialsPage = lazy(() => import(/* @vite-ignore */ './pages/admin/FinancialsPage'));

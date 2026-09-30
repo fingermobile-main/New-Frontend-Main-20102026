@@ -31,7 +31,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ component, onUpdate }
   return (
     <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4 text-gray-800">Properties</h2>
-      
+
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -62,7 +62,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ component, onUpdate }
             </label>
             <input
               type="text"
-    // @ts-ignore - Auto-suppressed for compilation
+              // @ts-ignore - Auto-suppressed for compilation
               value={component.props[key] || ''}
               onChange={(e) => handlePropChange(key, e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"

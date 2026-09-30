@@ -21,7 +21,7 @@ const PortfolioHeader: React.FC<PortfolioHeaderProps> = ({
           src={member.avatarUrl}
           alt={member.name}
           className="w-24 h-24 rounded-full object-cover"
-         />
+        />
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900">{member.name}</h1>
           <p className="text-sm text-gray-500">@{member.membername}</p>

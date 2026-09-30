@@ -55,8 +55,8 @@ class MonetizationService {
   private static instance: MonetizationService;
 
   private readonly eligibleCountries: Set<string> = new Set([
-    'NG', 'IN', 'CN', 'US', 'GB', 'RU', 'BR', 'JP', 'DE', 'FR', 'MX', 'ID', 'KR', 'TR', 
-    'SA', 'IR', 'EG', 'TH', 'TZ', 'ZA', 'IT', 'ES', 'UA', 'KE', 'UG', 'SD', 'PL', 'CA', 
+    'NG', 'IN', 'CN', 'US', 'GB', 'RU', 'BR', 'JP', 'DE', 'FR', 'MX', 'ID', 'KR', 'TR',
+    'SA', 'IR', 'EG', 'TH', 'TZ', 'ZA', 'IT', 'ES', 'UA', 'KE', 'UG', 'SD', 'PL', 'CA',
     'AU', 'MY', 'MM', 'GH', 'NP', 'YE', 'MZ', 'KP', 'CM', 'NL', 'PE', 'RO', 'ZW'
   ]);
 
@@ -219,15 +219,15 @@ class MonetizationService {
    */
   public calculateGemEarnings(gemType: string, quantity: number): number {
     if (quantity <= 0) return 0;
-    
+
     let ratePerFiveUnits = 0;
     switch (gemType.toLowerCase()) {
-      case 'marble': ratePerFiveUnits = 0.03; break;
-      case 'emerald': ratePerFiveUnits = 0.06; break;
-      case 'sapphire': ratePerFiveUnits = 0.09; break;
-      case 'ruby': ratePerFiveUnits = 0.12; break;
-      case 'diamond': ratePerFiveUnits = 0.15; break;
-      default: return 0;
+    case 'marble': ratePerFiveUnits = 0.03; break;
+    case 'emerald': ratePerFiveUnits = 0.06; break;
+    case 'sapphire': ratePerFiveUnits = 0.09; break;
+    case 'ruby': ratePerFiveUnits = 0.12; break;
+    case 'diamond': ratePerFiveUnits = 0.15; break;
+    default: return 0;
     }
 
     return Math.round((quantity / 5) * ratePerFiveUnits * 100) / 100;
@@ -327,9 +327,9 @@ class MonetizationService {
   public async processCommunitySubscriptionPayment(
     subscription: CommunitySubscription
   ): Promise<CommunitySubscription> {
-    return { 
-      ...subscription, 
-      status: 'active' 
+    return {
+      ...subscription,
+      status: 'active'
     };
   }
 

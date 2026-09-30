@@ -22,10 +22,10 @@ interface EnhancedFilterBarProps {
   initialFilters?: FilterOptions;
 }
 
-const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({ 
-  filterOptions, 
+const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
+  filterOptions,
   onFiltersChange,
-  initialFilters 
+  initialFilters
 }) => {
   const [query, setQuery] = React.useState(initialFilters?.query || '');
   const [category, setCategory] = React.useState(initialFilters?.category || '');
@@ -50,10 +50,10 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
           <FunnelIcon className="w-5 h-5 text-gray-600" />
           <span className="font-medium text-gray-900">Filters</span>
         </div>
-        
+
         <input
           type="text"
-          placeholder={filterOptions?.searchPlaceholder || "Search..."}
+          placeholder={filterOptions?.searchPlaceholder || 'Search...'}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-48"
@@ -63,7 +63,7 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
             }
           }}
         />
-        
+
         {filterOptions?.categories && (
           <select
             value={category}
@@ -78,7 +78,7 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
             ))}
           </select>
         )}
-        
+
         {filterOptions?.sortByOptions && (
           <select
             value={sortBy}
@@ -93,9 +93,9 @@ const EnhancedFilterBar: React.FC<EnhancedFilterBarProps> = ({
             ))}
           </select>
         )}
-        
-        <button 
-          onClick={handleApplyFilters} 
+
+        <button
+          onClick={handleApplyFilters}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           Apply

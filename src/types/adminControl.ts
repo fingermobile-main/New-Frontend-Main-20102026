@@ -13,12 +13,12 @@ export interface AdminActionItem {id: string;
   requiresBiometric: boolean;
   requiresOTP: boolean;
   executionTime: Date | null;
-  status: "pending" | "executing" | "completed" | "cancelled" | "failed";
+  status: 'pending' | 'executing' | 'completed' | 'cancelled' | 'failed';
 }
 
 export interface AdminMemberItem {id: string;
   name: string;
-  role: "OWNER" | "ADMIN" | "MODERATOR" | "AUDITOR";
+  role: 'OWNER' | 'ADMIN' | 'MODERATOR' | 'AUDITOR';
   permissions: string[];
   lastLogin: Date;
   isActive: boolean;
@@ -32,7 +32,7 @@ export interface AuditLogItem {id: string;
   details: string;
   ipAddress: string;
   memberAgent: string;
-  status: "success" | "failed" | "cancelled";
+  status: 'success' | 'failed' | 'cancelled';
 }
-  
-export {};  
+
+export {};

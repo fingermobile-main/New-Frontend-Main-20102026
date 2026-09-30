@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import TierDisplayComponent from '../components/CreatorInfluence/TierDisplayComponent';
 import SubscriptionDashboard from '../components/CreatorInfluence/SubscriptionDashboard';
 import SubscriptionRecommendationForm from '../components/CreatorInfluence/SubscriptionRecommendationForm';
+import PerksAndRosterComponent from '../components/CreatorInfluence/PerksAndRosterComponent';
+import apiService from '../services/apiService';
+import { useAppContext } from '../contexts/AppContext';
 
 interface RecommendationData {
   recommended_tier: string;
@@ -33,21 +36,43 @@ interface RecommendationData {
 }
 
 const CreatorInfluencePage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'plans' | 'recommend'>('dashboard');
+  const { member: user, showToast } = useAppContext();
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'plans' | 'recommend' | 'perks_roster'>('dashboard');
   const [recommendation, setRecommendation] = useState<RecommendationData | null>(null);
-  
-  // Mock user data - in a real app this would come from context or props
+
+  // User metrics
   const followers = 15000;
   const engagementRate = 3.2;
 
-  const handleSubscribe = (level: string) => {
-    // In a real app, this would trigger the subscription flow
-    alert(`Ready to subscribe to ${level} plan! This would initiate the payment flow.`);
+  const handleSubscribe = async (level: string) => {
+    try {
+      const memberId = user?.id || '4';
+      await apiService.post('/creator-influence', {
+        member_id: memberId,
+        subscription_level: level,
+        subscription_type: 'monthly',
+        auto_renew: true
+      });
+      showToast(`Successfully enrolled in ${level} plan!`, 'success');
+      setActiveTab('dashboard');
+    } catch (err: any) {
+      const msg = err?.response?.data?.details || err?.message || 'Failed to enroll in subscription';
+      showToast(msg, 'error');
+    }
   };
 
-  const handleUpgrade = (level: string) => {
-    // In a real app, this would trigger the upgrade flow
-    alert(`Ready to upgrade to ${level} plan! This would initiate the upgrade flow.`);
+  const handleUpgrade = async (level: string) => {
+    try {
+      const memberId = user?.id || '4';
+      await apiService.patch(`/creator-influence/upgrade/${memberId}`, {
+        new_level: level
+      });
+      showToast(`Successfully upgraded subscription to ${level}!`, 'success');
+      setActiveTab('dashboard');
+    } catch (err: any) {
+      const msg = err?.response?.data?.details || err?.message || 'Failed to upgrade plan';
+      showToast(msg, 'error');
+    }
   };
 
   const handleRecommendationReceived = (rec: RecommendationData) => {
@@ -86,31 +111,42 @@ const CreatorInfluencePage: React.FC = () => {
                 activeTab === 'dashboard'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`
-            }>
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
               My Subscription
             </button>
-            
+
             <button
               onClick={() => setActiveTab('plans')}
               className={`${
                 activeTab === 'plans'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`
-            }>
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
               Plans &amp; Pricing
             </button>
-            
+
             <button
               onClick={() => setActiveTab('recommend')}
               className={`${
                 activeTab === 'recommend'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`
-            }>
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
               Get Recommendation
+            </button>
+
+            <button
+              onClick={() => setActiveTab('perks_roster')}
+              className={`${
+                activeTab === 'perks_roster'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
+              Perks &amp; Subscriber Roster
             </button>
           </nav>
         </div>
@@ -118,15 +154,15 @@ const CreatorInfluencePage: React.FC = () => {
 
       <main className="py-6">
         {activeTab === 'dashboard' && (
-          <SubscriptionDashboard 
-            _followers={followers} 
-            _engagementRate={engagementRate} 
+          <SubscriptionDashboard
+            _followers={followers}
+            _engagementRate={engagementRate}
           />
         )}
-        
+
         {activeTab === 'plans' && (
           <div>
-            <TierDisplayComponent 
+            <TierDisplayComponent
               onSubscribe={handleSubscribe}
               onUpgrade={handleUpgrade}
               showRecommendations={!!recommendation}
@@ -135,13 +171,13 @@ const CreatorInfluencePage: React.FC = () => {
             />
           </div>
         )}
-        
+
         {activeTab === 'recommend' && (
           <div className="py-6">
-            <SubscriptionRecommendationForm 
-              onRecommendationReceived={handleRecommendationReceived} 
+            <SubscriptionRecommendationForm
+              onRecommendationReceived={handleRecommendationReceived}
             />
-            
+
             {recommendation && (
               <div className="mt-8 bg-blue-50 rounded-lg p-6 max-w-3xl mx-auto">
                 <h3 className="text-xl font-bold text-blue-800 mb-4">Your Recent Recommendation</h3>
@@ -171,6 +207,12 @@ const CreatorInfluencePage: React.FC = () => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'perks_roster' && (
+          <div className="py-6">
+            <PerksAndRosterComponent />
           </div>
         )}
       </main>

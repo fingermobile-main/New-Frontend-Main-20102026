@@ -72,7 +72,7 @@ class PubliciteeService {
   }
 
   async updateCampaign(campaignId: string,
-updates: Partial<AdCampaign>): Promise<AdCampaign> {
+    updates: Partial<AdCampaign>): Promise<AdCampaign> {
     const response = await api.put(`${this.baseUrl}/campaigns/${campaignId}`, updates);
     return response.data;
   }
@@ -91,7 +91,7 @@ updates: Partial<AdCampaign>): Promise<AdCampaign> {
   }
 
   async addCreative(campaignId: string,
-creative: Partial<AdCreative>): Promise<AdCreative> {
+    creative: Partial<AdCreative>): Promise<AdCreative> {
     const response = await api.post(`${this.baseUrl}/campaigns/${campaignId}/creatives`, creative);
     return response.data;
   }
@@ -102,7 +102,7 @@ creative: Partial<AdCreative>): Promise<AdCreative> {
   }
 
   async getAnalytics(campaignId: string,
-period: '7d' | '30d' | '90d' = '30d'): Promise<CampaignAnalytics> {
+    period: '7d' | '30d' | '90d' = '30d'): Promise<CampaignAnalytics> {
     const response = await api.get(`${this.baseUrl}/campaigns/${campaignId}/analytics`, {params: { period }
     });
     return response.data;

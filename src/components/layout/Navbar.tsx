@@ -1,12 +1,26 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isLogoMenuOpen, setIsLogoMenuOpen] = useState(false);
+  const [isProfileManagementOpen, setIsProfileManagementOpen] = useState(false);
+  const [isLogoPulsing, setIsLogoPulsing] = useState(false);
+  const logoPulseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleLogoHover = () => {
+    if (!isLogoPulsing) {
+      setIsLogoPulsing(true);
+      if (logoPulseTimer.current) clearTimeout(logoPulseTimer.current);
+      logoPulseTimer.current = setTimeout(() => {
+        setIsLogoPulsing(false);
+      }, 5000);
+    }
+  };
+
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -24,9 +38,53 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center" aria-label="FingerMobile Home">
-              <span className="text-xl font-bold text-indigo-600">FingerMobile</span>
-            </Link>
+            <div className="relative">
+              <button
+                onClick={() => setIsLogoMenuOpen(!isLogoMenuOpen)}
+                onMouseEnter={handleLogoHover}
+                className="flex-shrink-0 flex items-center focus:outline-none"
+                aria-label="FingerMobile Home Menu"
+              >
+                <span className={`text-xl font-bold text-indigo-600 ${isLogoPulsing ? 'animate-pulse' : ''}`}>
+                  FingerMobile
+                </span>
+              </button>
+
+              {isLogoMenuOpen && (
+                <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
+                  <Link
+                    to="/"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsLogoMenuOpen(false)}
+                  >
+                    HomePage
+                  </Link>
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsProfileManagementOpen(!isProfileManagementOpen)}
+                      className="w-full text-left flex justify-between items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                    >
+                      Profile Management and Layout
+                      <ChevronDownIcon className="h-4 w-4" />
+                    </button>
+                    {isProfileManagementOpen && (
+                      <div className="bg-gray-50 pl-4 py-1">
+                        <Link
+                          to="/settings"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md"
+                          onClick={() => {
+                            setIsProfileManagementOpen(false);
+                            setIsLogoMenuOpen(false);
+                          }}
+                        >
+                          Settings
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               <Link
                 to="/"
@@ -45,12 +103,6 @@ const Navbar: React.FC = () => {
                 className={`${isActive('/marketplace') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Marketplace
-              </Link>
-              <Link
-                to="/protocol-communication/service-providers"
-                className={`${isActive('/protocol-communication/service-providers') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
-              >
-                Protocol Communication
               </Link>
               <Link
                 to="/profile-enhancement"
@@ -72,7 +124,7 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
           </div>
-          
+
           <div className="hidden md:ml-4 md:flex md:items-center">
             {user ? (
               // Logged in - Show Profile Dropdown
@@ -82,11 +134,11 @@ const Navbar: React.FC = () => {
                   className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
                 >
                   <img
-                    src={user.avatar || "https://via.placeholder.com/32"}
-                    alt={user.name}
+                    src={user.avatar || 'https://via.placeholder.com/32'}
+                    alt={user.username || 'User'}
                     className="h-8 w-8 rounded-full"
                   />
-                  <span>{user.name}</span>
+                  <span>{user.username}</span>
                   <ChevronDownIcon className="h-4 w-4" />
                 </button>
 
@@ -119,6 +171,13 @@ const Navbar: React.FC = () => {
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Settings
+                    </Link>
+                    <Link
+                      to="/creators-center"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      Creators Center & Services
                     </Link>
                     <hr className="my-1" />
                     <button
@@ -184,13 +243,6 @@ const Navbar: React.FC = () => {
               Marketplace
             </Link>
             <Link
-              to="/protocol-communication/service-providers"
-              className={`${isActive('/protocol-communication/service-providers') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Protocol Communication
-            </Link>
-            <Link
               to="/profile"
               className={`${isActive('/profile') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
               onClick={() => setIsMenuOpen(false)}
@@ -212,6 +264,13 @@ const Navbar: React.FC = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Wallet
+                </Link>
+                <Link
+                  to="/creators-center"
+                  className={`${isActive('/creators-center') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Creators Center & Services
                 </Link>
                 <button
                   onClick={handleLogout}

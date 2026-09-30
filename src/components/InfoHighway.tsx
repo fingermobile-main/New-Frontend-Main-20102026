@@ -1,15 +1,15 @@
 import React, {} from 'react';
-import { Info, ChevronRight } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Info, ChevronRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface HighwayItem {
   id: string;
   title: string;
   description?: string;
   category: string;
-  priority: "high" | "medium" | "low";
+  priority: 'high' | 'medium' | 'low';
   timestamp: string;
 }
 
@@ -24,28 +24,28 @@ const InfoHighway: React.FC<InfoHighwayProps> = ({
 }) => {
   const defaultItems: HighwayItem[] = [
     {
-      id: "1",
-      title: "Platform Update: New Features Released",
-      description: "We've added exciting new features including enhanced video editing and improved collaboration tools.",
-      category: "Updates",
-      priority: "high",
-      timestamp: "1 hour ago"
+      id: '1',
+      title: 'Platform Update: New Features Released',
+      description: 'We\'ve added exciting new features including enhanced video editing and improved collaboration tools.',
+      category: 'Updates',
+      priority: 'high',
+      timestamp: '1 hour ago'
     },
     {
-      id: "2",
-      title: "Community Guidelines Updated",
-      description: "Please review our updated community guidelines to ensure a safe and welcoming environment.",
-      category: "Policy",
-      priority: "medium",
-      timestamp: "3 hours ago"
+      id: '2',
+      title: 'Community Guidelines Updated',
+      description: 'Please review our updated community guidelines to ensure a safe and welcoming environment.',
+      category: 'Policy',
+      priority: 'medium',
+      timestamp: '3 hours ago'
     },
     {
-      id: "3",
-      title: "Maintenance Scheduled",
-      description: "Scheduled maintenance will occur tonight from 2-4 AM EST. Services may be temporarily unavailable.",
-      category: "Maintenance",
-      priority: "high",
-      timestamp: "5 hours ago"
+      id: '3',
+      title: 'Maintenance Scheduled',
+      description: 'Scheduled maintenance will occur tonight from 2-4 AM EST. Services may be temporarily unavailable.',
+      category: 'Maintenance',
+      priority: 'high',
+      timestamp: '5 hours ago'
     }
   ];
 
@@ -53,14 +53,14 @@ const InfoHighway: React.FC<InfoHighwayProps> = ({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high":
-        return "bg-red-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "low":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
+    case 'high':
+      return 'bg-red-500';
+    case 'medium':
+      return 'bg-yellow-500';
+    case 'low':
+      return 'bg-green-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 

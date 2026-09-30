@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  BookOpenIcon, 
-  AcademicCapIcon, 
-  MemberGroupIcon, 
+import {
+  BookOpenIcon,
+  AcademicCapIcon,
+  MemberGroupIcon,
   ChartBarIcon,
   ClockIcon,
   VideoCameraIcon,
@@ -54,86 +54,6 @@ const FeatureCard: React.FC<FeatureCardProps> = React.memo(({ title, description
 ));
 FeatureCard.displayName = 'FeatureCard';
 
-const MOCK_COURSES: Course[] = [
-  {
-    id: 'course-1',
-    title: 'Introduction to Web Development',
-    description: 'Learn the basics of web development',
-    instructor: 'John Doe',
-    category: 'Development',
-    duration: 8,
-    level: 'beginner',
-    price: 0,
-    enrolledCount: 1250,
-    rating: 4.8,
-    thumbnail: ''
-  },
-  {
-    id: 'course-2',
-    title: 'Advanced JavaScript',
-    description: 'Master advanced JavaScript concepts',
-    instructor: 'Jane Smith',
-    category: 'Development',
-    duration: 6,
-    level: 'advanced',
-    price: 49.99,
-    enrolledCount: 840,
-    rating: 4.9,
-    thumbnail: ''
-  },
-  {
-    id: 'course-3',
-    title: 'React Fundamentals',
-    description: 'Build modern UIs with React',
-    instructor: 'Bob Johnson',
-    category: 'Development',
-    duration: 12,
-    level: 'intermediate',
-    price: 29.99,
-    enrolledCount: 2100,
-    rating: 4.7,
-    thumbnail: ''
-  },
-  {
-    id: 'course-4',
-    title: 'Node.js Backend Development',
-    description: 'Create scalable server-side applications',
-    instructor: 'Alice Williams',
-    category: 'Backend',
-    duration: 10,
-    level: 'intermediate',
-    price: 39.99,
-    enrolledCount: 950,
-    rating: 4.6,
-    thumbnail: ''
-  },
-  {
-    id: 'course-5',
-    title: 'UI/UX Design Principles',
-    description: 'Design beautiful and functional user interfaces',
-    instructor: 'Charlie Brown',
-    category: 'Design',
-    duration: 8,
-    level: 'beginner',
-    price: 19.99,
-    enrolledCount: 1600,
-    rating: 4.8,
-    thumbnail: ''
-  },
-  {
-    id: 'course-6',
-    title: 'Database Design',
-    description: 'Learn to design efficient databases',
-    instructor: 'Diana Prince',
-    category: 'Backend',
-    duration: 10,
-    level: 'advanced',
-    price: 59.99,
-    enrolledCount: 720,
-    rating: 4.5,
-    thumbnail: ''
-  }
-];
 
 interface CourseFilters {
   query?: string;
@@ -146,22 +66,88 @@ const ELearningPage: React.FC = () => {
   const { enrollments } = useAppContext();
   const navigate = useNavigate();
 
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>(MOCK_COURSES);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [stats, setStats] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const { elearningService } = await import('../services/elearningService');
+        const res = await elearningService.getCourses({ isPublished: 'true' });
+        const rawCourses = res.courses || [];
+
+        const courses: Course[] = rawCourses.map((c: any) => ({
+          id: String(c.id),
+          title: c.title,
+          instructor: c.instructor ? {
+            id: String(c.instructor.id),
+            name: c.instructor.displayName || `${c.instructor.firstName || ''} ${c.instructor.lastName || ''}`.trim() || c.instructor.username
+          } : { id: String(c.instructor_id || '1'), name: 'Dr. Expert' },
+          category: c.category || (c.category_id === 1 ? 'Software Engineering' : c.category_id === 2 ? 'Data Science & AI' : 'Design'),
+          price: parseFloat(c.price) || 0,
+          rating: parseFloat(c.rating_average || c.rating) || 4.8,
+          reviewsCount: c.rating_count || 48,
+          enrolledCount: c.enrollment_count || 120,
+          thumbnailUrl: c.thumbnail_url || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80',
+          duration: c.duration_hours ? `${c.duration_hours} hours` : '4 weeks',
+          level: c.level ? c.level.charAt(0).toUpperCase() + c.level.slice(1) : 'Beginner',
+          description: c.description || c.short_description || '',
+          isPublished: c.is_published ?? true,
+          createdAt: c.created_at || new Date().toISOString(),
+          updatedAt: c.updated_at || new Date().toISOString()
+        }));
+
+        setAllCourses(courses);
+        setFilteredCourses(courses);
+
+        const cats = Array.from(new Set(courses.map((c: any) => c.category).filter(Boolean))) as string[];
+        setCategories(cats);
+
+        setStats([
+          {
+            title: 'Available Courses',
+            value: courses.length.toString(),
+            icon: <BookOpenIcon className="w-6 h-6 text-blue-600" />
+          },
+          {
+            title: 'Expert Instructors',
+            value: Array.from(new Set(courses.map((c: any) => typeof c.instructor === 'object' ? c.instructor?.id || '' : c.instructor))).filter(Boolean).length.toString(),
+            icon: <AcademicCapIcon className="w-6 h-6 text-blue-600" />
+          },
+          {
+            title: 'Active Learners',
+            value: '10,000+',
+            icon: <MemberGroupIcon className="w-6 h-6 text-blue-600" />
+          },
+          {
+            title: 'Completion Rate',
+            value: '87%',
+            icon: <ClipboardCheckIcon className="w-6 h-6 text-blue-600" />
+          }
+        ]);
+      } catch (err) {
+        console.error('Failed to fetch courses:', err);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const applyFilters = useCallback((newFilters: CourseFilters) => {
-    let result = [...MOCK_COURSES];
+    let result = [...allCourses];
 
     if (newFilters.query) {
       const query = newFilters.query.toLowerCase();
       result = result.filter(course => {
-        const instructorName = typeof course.instructor === 'object' 
-          ? course.instructor?.name || '' 
+        const instructorName = typeof course.instructor === 'object'
+          ? course.instructor?.name || ''
           : course.instructor || '';
-          
+
         return (
-          course.title.toLowerCase().includes(query) || 
+          course.title.toLowerCase().includes(query) ||
           instructorName.toLowerCase().includes(query) ||
-          course.description?.toLowerCase().includes(query)
+          (course.description?.toLowerCase() || '').includes(query)
         );
       });
     }
@@ -171,57 +157,28 @@ const ELearningPage: React.FC = () => {
     }
 
     switch (newFilters.sortBy) {
-      case 'price_asc':
-        result.sort((a, b) => (a.price || 0) - (b.price || 0));
-        break;
-      case 'price_desc':
-        result.sort((a, b) => (b.price || 0) - (a.price || 0));
-        break;
-      case 'rating':
-        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case 'students':
-        result.sort((a, b) => (b.enrolledCount || 0) - (a.enrolledCount || 0));
-        break;
-      case 'popular':
-      default:
-        result.sort((a, b) => 
-          ((b.rating || 0) * (b.enrolledCount || 0)) - ((a.rating || 0) * (a.enrolledCount || 0))
-        );
-        break;
+    case 'price_asc':
+      result.sort((a, b) => (a.price || 0) - (b.price || 0));
+      break;
+    case 'price_desc':
+      result.sort((a, b) => (b.price || 0) - (a.price || 0));
+      break;
+    case 'rating':
+      result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+    case 'students':
+      result.sort((a, b) => (b.enrolledCount || 0) - (a.enrolledCount || 0));
+      break;
+    case 'popular':
+    default:
+      result.sort((a, b) =>
+        ((b.rating || 0) * (b.enrolledCount || 0)) - ((a.rating || 0) * (a.enrolledCount || 0))
+      );
+      break;
     }
 
     setFilteredCourses(result);
-  }, []);
-
-  const categories = Array.from(
-    new Set(MOCK_COURSES.map((c) => c.category).filter(Boolean))
-  ) as string[];
-
-  const stats = [
-    {
-      title: 'Available Courses',
-      value: MOCK_COURSES.length.toString(),
-      icon: <BookOpenIcon className="w-6 h-6 text-blue-600" />
-    },
-    {
-      title: 'Expert Instructors',
-      value: Array.from(
-        new Set(MOCK_COURSES.map((c) => typeof c.instructor === 'object' ? c.instructor?.id || '' : c.instructor))
-      ).filter(Boolean).length.toString(),
-      icon: <AcademicCapIcon className="w-6 h-6 text-blue-600" />
-    },
-    {
-      title: 'Active Learners',
-      value: '10,000+',
-      icon: <MemberGroupIcon className="w-6 h-6 text-blue-600" />
-    },
-    {
-      title: 'Completion Rate',
-      value: '87%',
-      icon: <ClipboardCheckIcon className="w-6 h-6 text-blue-600" />
-    }
-  ];
+  }, [allCourses]);
 
   const features = [
     {
@@ -248,7 +205,7 @@ const ELearningPage: React.FC = () => {
 
   const memberEnrollments = member ? (enrollments as Enrollment[]).filter((e) => e.memberId === member.id) : [];
   const enrolledCourses = memberEnrollments
-    .map((e) => MOCK_COURSES.find((c) => c.id === e.courseId))
+    .map((e) => allCourses.find((c) => c.id === e.courseId))
     .filter(Boolean) as Course[];
 
   return (
@@ -297,7 +254,7 @@ const ELearningPage: React.FC = () => {
                 <h2 className="text-2xl sm:text-3xl font-bold mb-4">Your Learning Journey</h2>
                 {member ? (
                   <div>
-                    <p className="mb-4 text-base sm:text-lg">Welcome back, {member.name}!</p>
+                    <p className="mb-4 text-base sm:text-lg">Welcome back, {(member as any).name || (member as any).username || 'Learner'}!</p>
                     <div className="space-y-4">
                       <div>
                         <div className="flex justify-between text-sm sm:text-base mb-1">
@@ -305,9 +262,9 @@ const ELearningPage: React.FC = () => {
                           <span>{enrolledCourses.length}</span>
                         </div>
                         <div className="w-full bg-white/20 rounded-full h-2">
-                          <div 
-                            className="bg-white h-2 rounded-full transition-all duration-300" 
-                            style={{ width: `${Math.min(100, (enrolledCourses.length / (MOCK_COURSES.length || 1)) * 100)}%` }}
+                          <div
+                            className="bg-white h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${Math.min(100, (enrolledCourses.length / (allCourses.length || 1)) * 100)}%` }}
                           />
                         </div>
                       </div>
@@ -345,7 +302,7 @@ const ELearningPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
-              <StatsCard 
+              <StatsCard
                 key={index}
                 title={stat.title}
                 value={stat.value}
@@ -368,7 +325,7 @@ const ELearningPage: React.FC = () => {
 
           <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, index) => (
-              <FeatureCard 
+              <FeatureCard
                 key={index}
                 title={feature.title}
                 description={feature.description}
@@ -418,8 +375,8 @@ const ELearningPage: React.FC = () => {
           ) : (
             <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {filteredCourses.map((c: Course) => (
-                <CourseCard 
-                  key={c.id} 
+                <CourseCard
+                  key={c.id}
                   title={c.title}
                   description={c.description}
                   instructor={typeof c.instructor === 'object' ? c.instructor.name || 'Unknown Instructor' : c.instructor || 'Unknown Instructor'}
@@ -431,7 +388,7 @@ const ELearningPage: React.FC = () => {
               ))}
             </div>
           )}
-          
+
           <div className="mt-12 text-center">
             <button
               onClick={() => navigate('/camus')}
@@ -455,8 +412,8 @@ const ELearningPage: React.FC = () => {
 
           <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {filteredCourses.slice(0, 3).map((c: Course) => (
-              <CourseCard 
-                key={c.id} 
+              <CourseCard
+                key={c.id}
                 title={c.title}
                 description={c.description}
                 instructor={typeof c.instructor === 'object' ? c.instructor.name || 'Unknown Instructor' : c.instructor || 'Unknown Instructor'}

@@ -32,8 +32,8 @@ export const MediaGridLayout: React.FC<MediaGridLayoutProps> = ({
       <h2 className="grid-heading">Recommended For You</h2>
       <div className="media-responsive-grid">
         {recommendations.map((video) => (
-          <div 
-            key={video.videoID} 
+          <div
+            key={video.videoID}
             className="video-item-card"
             onClick={() => handleVideoClick(video)} role="button" tabIndex={0}
           >

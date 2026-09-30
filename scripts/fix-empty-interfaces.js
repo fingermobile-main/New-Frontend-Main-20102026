@@ -30,8 +30,7 @@ filesToFix.forEach((filePath) => {
   
   try {
     if (!fs.existsSync(fullPath)) {
-      console.log(`⚠️  File not,
-found: ${filePath}`);
+      console.log(`⚠️  File not found: ${filePath}`);
       return;
     }
     
@@ -56,11 +55,9 @@ found: ${filePath}`);
     if (content !== originalContent) {
       fs.writeFileSync(fullPath, content, 'utf8');
       filesFixed++;
-      console.log(`✓,
-Fixed: ${filePath}`);
+      console.log(`✓ Fixed: ${filePath}`);
     } else {
-      console.log(`- No changes,
-needed: ${filePath}`);
+      console.log(`- No changes needed: ${filePath}`);
     }
   } catch (error) {
     console.error(`✗ Error fixing ${filePath}:`, error.message);

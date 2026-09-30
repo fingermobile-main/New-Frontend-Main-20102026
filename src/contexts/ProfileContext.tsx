@@ -43,70 +43,70 @@ const REMOVE_COVER_PHOTO = 'REMOVE_COVER_PHOTO';
 
 const profileReducer = (state: ProfileState, action: ProfileAction): ProfileState => {
   switch (action.type) {
-    case SET_PROFILE:
-      return {
-        ...state,
-        profile: action.payload,
-        isLoading: false,
-        error: null
-      };
-    case SET_LOADING:
-      return {
-        ...state,
-        isLoading: action.payload
-      };
-    case SET_ERROR:
-      return {
-        ...state,
-        error: action.payload,
-        isLoading: false
-      };
-    case UPDATE_PROFILE:
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          ...action.payload
-        }
-      };
-    case ADD_SKILL:
-      if (state.skills.includes(action.payload)) return state;
-      return {
-        ...state,
-        skills: [...state.skills, action.payload]
-      };
-    case REMOVE_SKILL:
-      return {
-        ...state,
-        skills: state.skills.filter(skill => skill !== action.payload)
-      };
-    case SET_AI_OPTIMIZED:
-      return {
-        ...state,
-        aiOptimized: action.payload
-      };
-    case UPDATE_AUTHENTICITY_SCORE:
-      return {
-        ...state,
-        authenticityScore: action.payload
-      };
-    case ADD_PROFILE_VIDEO:
-      return {
-        ...state,
-        profileVideos: [...state.profileVideos, action.payload]
-      };
-    case ADD_COVER_PHOTO:
-      return {
-        ...state,
-        coverPhotos: [...state.coverPhotos, action.payload]
-      };
-    case REMOVE_COVER_PHOTO:
-      return {
-        ...state,
-        coverPhotos: state.coverPhotos.filter(photo => photo !== action.payload)
-      };
-    default:
-      return state;
+  case SET_PROFILE:
+    return {
+      ...state,
+      profile: action.payload,
+      isLoading: false,
+      error: null
+    };
+  case SET_LOADING:
+    return {
+      ...state,
+      isLoading: action.payload
+    };
+  case SET_ERROR:
+    return {
+      ...state,
+      error: action.payload,
+      isLoading: false
+    };
+  case UPDATE_PROFILE:
+    return {
+      ...state,
+      profile: {
+        ...state.profile,
+        ...action.payload
+      }
+    };
+  case ADD_SKILL:
+    if (state.skills.includes(action.payload)) return state;
+    return {
+      ...state,
+      skills: [...state.skills, action.payload]
+    };
+  case REMOVE_SKILL:
+    return {
+      ...state,
+      skills: state.skills.filter(skill => skill !== action.payload)
+    };
+  case SET_AI_OPTIMIZED:
+    return {
+      ...state,
+      aiOptimized: action.payload
+    };
+  case UPDATE_AUTHENTICITY_SCORE:
+    return {
+      ...state,
+      authenticityScore: action.payload
+    };
+  case ADD_PROFILE_VIDEO:
+    return {
+      ...state,
+      profileVideos: [...state.profileVideos, action.payload]
+    };
+  case ADD_COVER_PHOTO:
+    return {
+      ...state,
+      coverPhotos: [...state.coverPhotos, action.payload]
+    };
+  case REMOVE_COVER_PHOTO:
+    return {
+      ...state,
+      coverPhotos: state.coverPhotos.filter(photo => photo !== action.payload)
+    };
+  default:
+    return state;
   }
 };
 

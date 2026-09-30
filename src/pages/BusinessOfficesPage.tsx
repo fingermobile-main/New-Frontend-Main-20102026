@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { BUSINESS_OFFICES_DATA } from '../constants/dashboardConstants';
 import type { BusinessOffice } from '../types/dashboard';
 import PageHeader from '../components/PageHeader';
@@ -8,10 +8,10 @@ import MainLayout from '../components/layout/MainLayout';
 
 const BusinessOfficesPage: React.FC = () => {
   const { ficBalance } = useAppContext();
-  
+
   const OfficeCard: React.FC<{ office: BusinessOffice }> = ({ office }) => {
-    const contactLink = office.contact 
-      ? (office.contact.includes("@")
+    const contactLink = office.contact
+      ? (office.contact.includes('@')
         ? `mailto:${office.contact}`
         : `tel:${office.contact}`)
       : '#';
@@ -21,9 +21,9 @@ const BusinessOfficesPage: React.FC = () => {
         <div className="flex justify-between items-start">
           <h3 className="font-bold text-lg text-gray-800">{office.name}</h3>
           <span
-            className={`px-2 py-1 text-xs font-semibold rounded-full ${office.isVirtual ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}
+            className={`px-2 py-1 text-xs font-semibold rounded-full ${office.isVirtual ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}
           >
-            {office.isVirtual ? "Virtual" : "Physical"}
+            {office.isVirtual ? 'Virtual' : 'Physical'}
           </span>
         </div>
         <div className="mt-4 border-t border-gray-100 pt-4 text-sm text-gray-600 space-y-2">
@@ -31,7 +31,7 @@ const BusinessOfficesPage: React.FC = () => {
             <strong>Address:</strong> {office.address}
           </p>
           <p>
-            <strong>Contact:</strong>{" "}
+            <strong>Contact:</strong>{' '}
             <a href={contactLink} className="text-blue-600 hover:underline">
               {office.contact}
             </a>
@@ -68,7 +68,7 @@ const BusinessOfficesPage: React.FC = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

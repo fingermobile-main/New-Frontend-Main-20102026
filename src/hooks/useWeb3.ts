@@ -7,7 +7,7 @@ import { Web3Context, Web3ContextType } from '../contexts/Web3Context';
  */
 export const useWeb3 = (): Web3ContextType => {
   const context = useContext(Web3Context);
-  
+
   if (context === undefined || context === null) {
     throw new Error('useWeb3 must be used within a Web3Provider');
   }

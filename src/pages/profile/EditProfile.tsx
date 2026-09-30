@@ -23,7 +23,7 @@ interface MemberData {
 const EditProfile: React.FC = () => {
   const { member, setMember, showToast } = useAppContext();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState<MemberData>({
     name: '',
     membername: '',
@@ -33,7 +33,7 @@ const EditProfile: React.FC = () => {
     location: { country: '', city: '' }, // Initialize with the proper structure
     avatarUrl: null
   });
-  
+
   const [avatar, setAvatar] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const EditProfile: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     // Handle nested location field separately
     if (name.startsWith('location.')) {
       const locationField = name.split('.')[1];
@@ -121,9 +121,9 @@ const EditProfile: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     if (!member) {
       showToast('No member logged in', 'error');
       return;
@@ -136,16 +136,15 @@ const EditProfile: React.FC = () => {
         ...formData,
         avatarUrl: avatar || undefined
       }) as Member;
-      
+
       if (setMember) {
         setMember(updatedMember);
       }
-      
+
       showToast('Profile updated successfully!', 'success');
       navigate('/profile');
-    } catch (error) {
+    } catch {
       showToast('Failed to update profile', 'error');
-      console.error('Error updating profile:', error);
     } finally {
       setLoading(false);
     }
@@ -166,19 +165,19 @@ const EditProfile: React.FC = () => {
             <div className="relative">
               <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
                 {avatar ? (
-                  <img 
-                    src={avatar} 
-                    alt="Profile" 
+                  <img
+                    src={avatar}
+                    alt="Profile"
                     className="w-full h-full object-cover"
-                   />
+                  />
                 ) : (
                   <span className="text-4xl font-bold text-gray-500">
                     {formData.name.charAt(0)}
                   </span>
                 )}
               </div>
-              <label 
-                htmlFor="avatar-upload" 
+              <label
+                htmlFor="avatar-upload"
                 className="absolute bottom-0 right-0 bg-purple-600 rounded-full p-2 cursor-pointer hover:bg-purple-700 transition-colors"
               >
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,7 +274,7 @@ const EditProfile: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Enter your country" />
             </div>
-            
+
             <div>
               <label htmlFor="location.city" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
               <input

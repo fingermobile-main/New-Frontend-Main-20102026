@@ -18,30 +18,30 @@ class ProtocolBridge {
    * @returns Promise resolving to connection success status
    */
   async connect(
-  url: string): Promise<{success: boolean; error?: string }> {
+    url: string): Promise<{success: boolean; error?: string }> {
     try {
       // Configure WebSocket with the provided URL
       this.protocolService.initialize(`client_${Date.now()}`);
-      
+
       // Connect to protocol
       const connected = await this.protocolService.connectToProtocol();
-      
+
       if (!connected) {
         return {success: false,
-  error: "Failed to establish protocol connection" };
+          error: 'Failed to establish protocol connection' };
       }
-      
+
       // Set up message listener to forward messages to listeners
       this.protocolService.onMessage = (
-  message: ProtocolMessage) => {
+        message: ProtocolMessage) => {
         this.forwardMessage(message);
       };
-      
+
       return {success: true };
     } catch (
-  error: any) {
-      console.error("Protocol connection, error:", error);
-      return { success: false, error: error instanceof Error ? error.message : "Unknown error occurred" };
+      error: any) {
+      console.error('Protocol connection, error:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' };
     }
   }
 
@@ -64,9 +64,9 @@ class ProtocolBridge {
    * Send a message via the protocol service
    */
   async sendGenericMessage(
-  destination: string,
-messageType: string,
-payload: unknown
+    destination: string,
+    messageType: string,
+    payload: unknown
   ): Promise<unknown> {
     try {
       const response = await this.protocolService.sendGenericMessage(
@@ -74,7 +74,7 @@ payload: unknown
       );
       return response;
     } catch (error) {
-      console.error("Failed to send message:", error);
+      console.error('Failed to send message:', error);
       throw error;
     }
   }
@@ -83,7 +83,7 @@ payload: unknown
    * Process an incoming message (used for simulating incoming messages)
    */
   processIncomingMessage(
-  message: ProtocolMessage): void {
+    message: ProtocolMessage): void {
     this.protocolService.processIncomingMessage(message);
   }
 
@@ -91,7 +91,7 @@ payload: unknown
    * Add a listener for incoming messages
    */
   addMessageListener(
-  listener: (
+    listener: (
   message: ProtocolMessage) => void): void {
     this.messageListeners.push(listener);
   }
@@ -100,7 +100,7 @@ payload: unknown
    * Remove a message listener
    */
   removeMessageListener(
-  listener: (
+    listener: (
   message: ProtocolMessage) => void): void {
     const index = this.messageListeners.indexOf(listener);
     if (index !== -1) {
@@ -112,12 +112,12 @@ payload: unknown
    * Forward a message to all registered listeners
    */
   private forwardMessage(
-  message: ProtocolMessage): void {
+    message: ProtocolMessage): void {
     this.messageListeners.forEach((listener) => {
       try {
         listener(message);
       } catch (error) {
-        console.error("Error in message, listener:", error);
+        console.error('Error in message, listener:', error);
       }
     });
   }
@@ -133,7 +133,7 @@ payload: unknown
    * Initialize the protocol service with a client ID
    */
   initialize(
-  clientId: string): void {
+    clientId: string): void {
     this.protocolService.initialize(clientId);
   }
 }

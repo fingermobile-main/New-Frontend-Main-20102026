@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 /*
  * FingerMobile Protocol™ - Content Moderation Page Component
  * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
@@ -8,14 +8,15 @@ import React, { useState } from 'react';
  * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Eye } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Eye, RefreshCw, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Input } from '../../components/ui/Input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../components/ui/Select';
+import { moderationAdminService, ModerationQueueItem } from '../../services/moderationAdminService';
+import { useAppContext } from '../../contexts/AppContext';
 
 interface ModerationItem {
   id: string;
-  type: 'post' | 'comment' | 'user';
+  type: string;
   content: string;
   status: 'pending' | 'approved' | 'rejected';
   reportedBy: string;
@@ -24,55 +25,88 @@ interface ModerationItem {
 }
 
 const ContentModerationPage: React.FC = () => {
-  const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([
-    {
-      id: '1',
-      type: 'post',
-      content: 'Sample post content for moderation',
-      status: 'pending',
-      reportedBy: 'user123',
-      reason: 'Inappropriate content',
-      timestamp: '2025-04-09T10:00:00Z'
-    },
-    {
-      id: '2',
-      type: 'comment',
-      content: 'Sample comment for moderation',
-      status: 'pending',
-      reportedBy: 'user456',
-      reason: 'Spam',
-      timestamp: '2025-04-09T09:30:00Z'
-    }
-  ]);
-
-  const handleApprove = (id: string) => {
-    setModerationQueue(prev =>
-      prev.map(item => item.id === id ? { ...item, status: 'approved' } : item)
-    );
-  };
-
-  const handleReject = (id: string) => {
-    setModerationQueue(prev =>
-      prev.map(item => item.id === id ? { ...item, status: 'rejected' } : item)
-    );
-  };
-
-  const pendingItems = moderationQueue.filter(item => item.status === 'pending');
-
+  const { showToast } = useAppContext();
+  const [moderationQueue, setModerationQueue] = useState<ModerationItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<ModerationItem | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredItems = moderationQueue.filter(item => 
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const items = await moderationAdminService.getQueue();
+      const mapped: ModerationItem[] = items.map((i: ModerationQueueItem) => ({
+        id: String(i.id),
+        type: i.content_type || 'post',
+        content: i.contentPreview || i.description || `Reported ${i.content_type} item #${i.content_id}`,
+        status: (i.status === 'approved' ? 'approved' : i.status === 'rejected' ? 'rejected' : 'pending') as 'pending' | 'approved' | 'rejected',
+        reportedBy: i.reporter_username || i.reported_by || 'system',
+        reason: i.reason || 'Flagged for moderation',
+        timestamp: i.created_at || new Date().toISOString()
+      }));
+      setModerationQueue(mapped);
+      if (mapped.length > 0 && !selectedItem) {
+        setSelectedItem(mapped[0]);
+      }
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to load moderation queue', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleApprove = async (id: string) => {
+    try {
+      setProcessingId(id);
+      await moderationAdminService.approveItem(id, 'Approved via Content Moderation Console');
+      showToast?.('Item approved successfully', 'success');
+      setModerationQueue(prev =>
+        prev.map(item => item.id === id ? { ...item, status: 'approved' } : item)
+      );
+      if (selectedItem?.id === id) {
+        setSelectedItem(prev => prev ? { ...prev, status: 'approved' } : null);
+      }
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to approve item', 'error');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      setProcessingId(id);
+      await moderationAdminService.rejectItem(id, 'remove_content', 'Rejected via Content Moderation Console');
+      showToast?.('Item rejected and content removed', 'info');
+      setModerationQueue(prev =>
+        prev.map(item => item.id === id ? { ...item, status: 'rejected' } : item)
+      );
+      if (selectedItem?.id === id) {
+        setSelectedItem(prev => prev ? { ...prev, status: 'rejected' } : null);
+      }
+    } catch (err: any) {
+      showToast?.(err.message || 'Failed to reject item', 'error');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const pendingItems = moderationQueue.filter(item => item.status === 'pending');
+  const approvedCount = moderationQueue.filter(i => i.status === 'approved').length;
+  const rejectedCount = moderationQueue.filter(i => i.status === 'rejected').length;
+
+  const filteredItems = moderationQueue.filter(item =>
     item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.id.includes(searchTerm)
   );
 
-  const pendingCount = moderationQueue.filter(i => i.status === 'pending').length;
-  const approvedCount = moderationQueue.filter(i => i.status === 'approved').length;
-  const rejectedCount = moderationQueue.filter(i => i.status === 'rejected').length;
-
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -84,17 +118,27 @@ const ContentModerationPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Content Moderation</h1>
             <p className="text-gray-600 mt-2">Review and moderate reported content</p>
           </div>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search by content or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-full"
-            />
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-3 top-3" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-            </svg>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={loadData}
+              disabled={loading}
+              className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-blue-600' : ''}`} />
+              Refresh
+            </button>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search by content or ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -149,7 +193,7 @@ const ContentModerationPage: React.FC = () => {
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Moderation Queue</h2>
             </div>
-            
+
             <div className="p-4 border-b border-gray-200">
               <Select
                 value={selectedItem?.id || 'all'}
@@ -183,11 +227,11 @@ const ContentModerationPage: React.FC = () => {
                 </div>
               ) : (
                 filteredItems.map((item) => (
-                  <div 
-                    key={item.id} 
+                  <div
+                    key={item.id}
                     className={`p-4 cursor-pointer transition-colors ${
-                      selectedItem?.id === item.id 
-                        ? 'bg-blue-50 border-l-4 border-blue-500' 
+                      selectedItem?.id === item.id
+                        ? 'bg-blue-50 border-l-4 border-blue-500'
                         : 'hover:bg-gray-50'
                     }`}
                     onClick={() => setSelectedItem(item)} role="button" tabIndex={0}
@@ -195,11 +239,11 @@ const ContentModerationPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-1 text-xs font-medium rounded ${
-                          item.type === 'post' 
-                            ? 'bg-purple-100 text-purple-800' 
-                            : item.type === 'comment' 
-                            ? 'bg-blue-100 text-blue-800' 
-                            : 'bg-orange-100 text-orange-800'
+                          item.type === 'post'
+                            ? 'bg-purple-100 text-purple-800'
+                            : item.type === 'comment'
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-orange-100 text-orange-800'
                         }`}>
                           {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
                         </span>
@@ -207,8 +251,8 @@ const ContentModerationPage: React.FC = () => {
                           item.status === 'pending'
                             ? 'bg-yellow-100 text-yellow-800'
                             : item.status === 'approved'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
                         }`}>
                           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                         </span>
@@ -220,7 +264,7 @@ const ContentModerationPage: React.FC = () => {
                     <p className="text-gray-900 my-2 truncate">{item.content}</p>
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-gray-600">Reporter: {item.reportedBy}</p>
-                      <button 
+                      <button
                         onClick={() => setSelectedItem(item)}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                       >
@@ -249,8 +293,8 @@ const ContentModerationPage: React.FC = () => {
                     selectedItem.status === 'pending'
                       ? 'bg-yellow-100 text-yellow-800'
                       : selectedItem.status === 'approved'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
                   }`}>
                     {selectedItem.status.charAt(0).toUpperCase() + selectedItem.status.slice(1)}
                   </span>
@@ -300,24 +344,26 @@ const ContentModerationPage: React.FC = () => {
                 <div className="flex space-x-3 pt-4">
                   <button
                     onClick={() => handleApprove(selectedItem.id)}
-                    disabled={selectedItem.status !== 'pending'}
-                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium
+                    disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
+                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium flex items-center justify-center gap-2
                       ${selectedItem.status === 'pending'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-300 cursor-not-allowed'
-                      }`}
+              ? 'bg-green-600 hover:bg-green-700'
+              : 'bg-green-300 cursor-not-allowed'
+            }`}
                   >
+                    {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     Mark as Approved
                   </button>
                   <button
                     onClick={() => handleReject(selectedItem.id)}
-                    disabled={selectedItem.status !== 'pending'}
-                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium
+                    disabled={selectedItem.status !== 'pending' || processingId === selectedItem.id}
+                    className={`flex-1 py-2 px-4 rounded-md text-white font-medium flex items-center justify-center gap-2
                       ${selectedItem.status === 'pending'
-                        ? 'bg-red-600 hover:bg-red-700'
-                        : 'bg-red-300 cursor-not-allowed'
-                      }`}
+              ? 'bg-red-600 hover:bg-red-700'
+              : 'bg-red-300 cursor-not-allowed'
+            }`}
                   >
+                    {processingId === selectedItem.id ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     Mark as Rejected
                   </button>
                 </div>

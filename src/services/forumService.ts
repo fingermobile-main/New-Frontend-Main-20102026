@@ -1,130 +1,470 @@
-import React, {} from 'react';
-import axios from 'axios';
+import ApiService from './api';
+import { ForumPost, ForumCategory, ForumThread } from '../types/forum';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-
-export interface Forum {id: string; name: string;
-  description?: string; category: string;
-  topics: number;
-  posts: number;
-  lastActivity?: string; isLocked: boolean;
+interface CreateForumPostData {
+  content: string;
+  threadId: string;
+  parentId?: string;
 }
 
-export interface ForumTopic {id: string; forumId: string;
-  title: string;
-  authorId: string;
-  authorName: string;
+interface UpdateForumPostData {
+  title?: string;
+  content?: string;
+  categoryId?: string;
+  tags?: string[];
+  isPinned?: boolean;
+  isLocked?: boolean;
+}
+
+interface CreateForumPostData {
   content: string;
-  views: number;
-  replies: number;
-  likes: number;
-  isPinned: boolean;
-  isLocked: boolean;
-  createdAt: string;
-  updatedAt: string;
+  threadId: string;
+  parentId?: string;
+}
+
+interface CreateForumThreadData {
+  title: string;
+  content: string;
+  categoryId: string;
+  tags?: string[];
+  isSticky?: boolean;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  message: string;
+  error?: string;
 }
 
 class ForumService {
-  private api = axios.create({baseURL: `${API_BASE_URL}/forums`,
-headers: {
-      'Content-Type': 'application/json'
+  // Get forum categories
+  static async getCategories(): Promise<ApiResponse<{ categories: ForumCategory[]; total: number }>> {
+    try {
+      const response = await ApiService.get('/forums/categories');
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Categories retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve categories',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching categories',
+      };
     }
-  });
-
-  async getForums(category?: string): Promise<Forum[]> {
-    const response = await this.api.get('/', {params: { category } });
-    return response.data;
   }
 
-  async getForumById(forumId: string): Promise<Forum> {
-    const response = await this.api.get(`/${forumId}`);
-    return response.data;
+  // Get forum threads by category
+  static async getThreadsByCategory(
+    categoryId: string,
+    limit: number = 20,
+    offset: number = 0,
+    sortBy: 'latest' | 'popular' | 'sticky' = 'latest'
+  ): Promise<ApiResponse<{ threads: ForumThread[]; total: number; hasNext: boolean }>> {
+    try {
+      const response = await ApiService.get(`/forums/${categoryId}/threads`, {
+        params: {
+          limit,
+          offset,
+          sortBy,
+        },
+      });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Threads retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve threads',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching threads',
+      };
+    }
   }
 
-  async createForum(name: string,
-    category: string,
-    description?: string): Promise<Forum> {
-    const response = await this.api.post('/', { name, description, category });
-    return response.data;
+  // Get forum posts by thread
+  static async getPostsByThread(
+    threadId: string,
+    limit: number = 20,
+    offset: number = 0,
+    sortBy: 'oldest' | 'latest' = 'oldest'
+  ): Promise<ApiResponse<{ posts: ForumPost[]; total: number; hasNext: boolean }>> {
+    try {
+      const response = await ApiService.get(`/forums/threads/${threadId}/posts`, {
+        params: {
+          limit,
+          offset,
+          sortBy,
+        },
+      });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Posts retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve posts',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching posts',
+      };
+    }
   }
 
-  async getTopics(forumId: string,
-sortBy: string = 'recent',
-limit: number = 20): Promise<ForumTopic[]> {
-    const response = await this.api.get(`/${forumId}/topics`, {params: { sortBy,
-  limit } });
-    return response.data;
+  // Create a new forum thread
+  static async createThread(threadData: CreateForumThreadData): Promise<ApiResponse<ForumThread>> {
+    try {
+      const response = await ApiService.post(`/forums/${threadData.categoryId}/threads`, threadData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Thread created successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while creating thread',
+      };
+    }
   }
 
-  async getTopicById(topicId: string): Promise<ForumTopic> {
-    const response = await this.api.get(`/topics/${topicId}`);
-    return response.data;
+  // Censor text using the backend content filter
+  static async censorText(content: string): Promise<ApiResponse<{ original: string; censored: string; isCensored: boolean }>> {
+    try {
+      const response = await ApiService.post('/forums/censor', { content });
+      return {
+        success: true,
+        data: response.data,
+        message: 'Content censored successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to censor content',
+        error: error.response?.data?.message || error.message || 'Error occurred while censoring',
+      };
+    }
   }
 
-  async createTopic(forumId: string,
-title: string,
-content: string): Promise<ForumTopic> {
-    const response = await this.api.post(`/${forumId}/topics`, { title, content });
-    return response.data;
+  // Create a new forum post/reply
+  static async createPost(postData: CreateForumPostData): Promise<ApiResponse<ForumPost>> {
+    try {
+      const response = await ApiService.post('/forums/posts', postData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Post created successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create post',
+        error: error.response?.data?.message || error.message || 'An error occurred while creating post',
+      };
+    }
   }
 
-  async updateTopic(topicId: string,
-updates: Partial<ForumTopic>): Promise<ForumTopic> {
-    const response = await this.api.put(`/topics/${topicId}`, updates);
-    return response.data;
+  // Get a specific forum thread
+  static async getThreadById(threadId: string): Promise<ApiResponse<ForumThread>> {
+    try {
+      const response = await ApiService.get(`/forums/threads/${threadId}`);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Thread retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching thread',
+      };
+    }
   }
 
-  async deleteTopic(topicId: string): Promise<void> {
-    await this.api.delete(`/topics/${topicId}`);
+  // Get a specific forum post
+  static async getPostById(postId: string): Promise<ApiResponse<ForumPost>> {
+    try {
+      const response = await ApiService.get(`/forums/posts/${postId}`);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Post retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve post',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching post',
+      };
+    }
   }
 
-  async pinTopic(topicId: string): Promise<void> {
-    await this.api.post(`/topics/${topicId}/pin`);
+  // Update a forum thread
+  static async updateThread(threadId: string, threadData: Partial<CreateForumThreadData>): Promise<ApiResponse<ForumThread>> {
+    try {
+      const response = await ApiService.put(`/forums/threads/${threadId}`, threadData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Thread updated successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to update thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while updating thread',
+      };
+    }
   }
 
-  async unpinTopic(topicId: string): Promise<void> {
-    await this.api.post(`/topics/${topicId}/unpin`);
+  // Update a forum post
+  static async updatePost(postId: string, postData: Partial<CreateForumPostData>): Promise<ApiResponse<ForumPost>> {
+    try {
+      const response = await ApiService.put(`/forums/posts/${postId}`, postData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Post updated successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to update post',
+        error: error.response?.data?.message || error.message || 'An error occurred while updating post',
+      };
+    }
   }
 
-  async lockTopic(topicId: string): Promise<void> {
-    await this.api.post(`/topics/${topicId}/lock`);
+  // Delete a forum thread
+  static async deleteThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/forums/threads/${threadId}`);
+      return {
+        success: true,
+        message: 'Thread deleted successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to delete thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while deleting thread',
+      };
+    }
   }
 
-  async unlockTopic(topicId: string): Promise<void> {
-    await this.api.post(`/topics/${topicId}/unlock`);
+  // Delete a forum post
+  static async deletePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/forums/posts/${postId}`);
+      return {
+        success: true,
+        message: 'Post deleted successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to delete post',
+        error: error.response?.data?.message || error.message || 'An error occurred while deleting post',
+      };
+    }
   }
 
-  async likeTopic(topicId: string): Promise<void> {
-    await this.api.post(`/topics/${topicId}/like`);
+  // Pin a forum thread
+  static async pinThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/forums/threads/${threadId}/pin`);
+      return {
+        success: true,
+        message: 'Thread pinned successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to pin thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while pinning thread',
+      };
+    }
   }
 
-  async unlikeTopic(topicId: string): Promise<void> {
-    await this.api.delete(`/topics/${topicId}/like`);
+  // Unpin a forum thread
+  static async unpinThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/forums/threads/${threadId}/pin`);
+      return {
+        success: true,
+        message: 'Thread unpinned successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unpin thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while unpinning thread',
+      };
+    }
   }
 
-  async getTopicReplies(topicId: string,
-limit: number = 20): Promise<any[]> {
-    const response = await this.api.get(`/topics/${topicId}/replies`, {params: { limit } });
-    return response.data;
+  // Lock a forum thread
+  static async lockThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/forums/threads/${threadId}/lock`);
+      return {
+        success: true,
+        message: 'Thread locked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to lock thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while locking thread',
+      };
+    }
   }
 
-  async addReply(topicId: string,
-content: string): Promise<unknown> {
-    const response = await this.api.post(`/topics/${topicId}/replies`, { content });
-    return response.data;
+  // Unlock a forum thread
+  static async unlockThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/forums/threads/${threadId}/lock`);
+      return {
+        success: true,
+        message: 'Thread unlocked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unlock thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while unlocking thread',
+      };
+    }
   }
 
-  async searchTopics(query: string, forumId?: string): Promise<ForumTopic[]> {
-    const response = await this.api.get('/topics/search', {params: { query,
-  forumId } });
-    return response.data;
+  // Subscribe to a forum thread
+  static async subscribeToThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/forums/threads/${threadId}/subscribe`);
+      return {
+        success: true,
+        message: 'Subscribed to thread successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to subscribe to thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while subscribing to thread',
+      };
+    }
   }
 
-  async getTrendingTopics(limit: number = 10): Promise<ForumTopic[]> {
-    const response = await this.api.get('/topics/trending', {params: { limit } });
-    return response.data;
+  // Unsubscribe from a forum thread
+  static async unsubscribeFromThread(threadId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete(`/forums/threads/${threadId}/unsubscribe`);
+      return {
+        success: true,
+        message: 'Unsubscribed from thread successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unsubscribe from thread',
+        error: error.response?.data?.message || error.message || 'An error occurred while unsubscribing from thread',
+      };
+    }
+  }
+
+  // Report a forum post
+  static async reportPost(postId: string, reason: string, description?: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/forums/posts/${postId}/report`, { reason, description });
+      return {
+        success: true,
+        message: 'Post reported successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to report post',
+        error: error.response?.data?.message || error.message || 'An error occurred while reporting post',
+      };
+    }
+  }
+
+  // Search forum posts
+  static async searchPosts(
+    query: string,
+    limit: number = 10,
+    offset: number = 0,
+    filters?: {
+      categoryId?: string;
+      tags?: string[];
+      authorId?: string;
+      dateFrom?: string;
+      dateTo?: string;
+    }
+  ): Promise<ApiResponse<{ posts: ForumPost[]; total: number; hasNext: boolean }>> {
+    try {
+      let url = `/forums/search?q=${encodeURIComponent(query)}&limit=${limit}&offset=${offset}`;
+
+      if (filters) {
+        if (filters.categoryId) url += `&categoryId=${filters.categoryId}`;
+        if (filters.tags) url += `&tags=${filters.tags.join(',')}`;
+        if (filters.authorId) url += `&authorId=${filters.authorId}`;
+        if (filters.dateFrom) url += `&dateFrom=${filters.dateFrom}`;
+        if (filters.dateTo) url += `&dateTo=${filters.dateTo}`;
+      }
+
+      const response = await ApiService.get(url);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Search results retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to search posts',
+        error: error.response?.data?.message || error.message || 'An error occurred while searching posts',
+      };
+    }
+  }
+
+  // Like a forum post
+  static async likePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post('/likes', { targetType: 'forum_post', targetId: postId });
+      return {
+        success: true,
+        message: 'Post liked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to like post',
+        error: error.response?.data?.message || error.message || 'An error occurred while liking post',
+      };
+    }
+  }
+
+  // Unlike a forum post
+  static async unlikePost(postId: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.delete('/likes', { data: { targetType: 'forum_post', targetId: postId } });
+      return {
+        success: true,
+        message: 'Post unliked successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unlike post',
+        error: error.response?.data?.message || error.message || 'An error occurred while unliking post',
+      };
+    }
   }
 }
 
-export const forumService = new ForumService();
-export default forumService;
+export default ForumService;

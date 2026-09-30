@@ -11,46 +11,46 @@ import MainLayout from '../../components/layout/MainLayout';
 
 const BusinessHubPage: React.FC = () => {
   const { openModal, ficBalance } = useAppContext();
-  const [selectedDepartment, setSelectedDepartment] = useState<string>("Finance");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('Finance');
 
   const onLike = async (id: string) => {
     // Placeholder for like functionality
-    console.info("Like clicked for:", id);
+    console.info('Like clicked for:', id);
   };
 
   const onAddComment = async (id: string, comment: string) => {
     // Placeholder for comment functionality
-    console.info("Comment added to:", id, comment);
+    console.info('Comment added to:', id, comment);
   };
 
   const onOpenGiftModal = (id: string) => {
     // Placeholder for gift modal
-    console.info("Opening gift modal for:", id);
+    console.info('Opening gift modal for:', id);
   };
 
   const onOpenPaylinkModal = (id: string) => {
     // Placeholder for paylink modal
-    console.info("Opening paylink modal for:", id);
+    console.info('Opening paylink modal for:', id);
   };
 
-  const onVote = async (id: string, vote: "up" | "down") => {
+  const onVote = async (id: string, vote: 'up' | 'down') => {
     // Placeholder for voting functionality
-    console.info("Vote:", vote, "for:", id);
+    console.info('Vote:', vote, 'for:', id);
   };
 
   const handleDeletePost = async (id: string) => {
     // Placeholder for post deletion
-    console.info("Deleting post:", id);
+    console.info('Deleting post:', id);
   };
 
   const handleTokenizePost = async (id: string) => {
     // Placeholder for post tokenization
-    console.info("Tokenizing post:", id);
+    console.info('Tokenizing post:', id);
   };
 
   const handleAiAssist = async (id: string) => {
     // Placeholder for AI assistance
-    console.info("AI assist for:", id);
+    console.info('AI assist for:', id);
   };
 
   return (
@@ -84,7 +84,7 @@ const BusinessHubPage: React.FC = () => {
                 </p>
               </div>
               <button
-                onClick={() => openModal("aiAssistant")}
+                onClick={() => openModal('aiAssistant')}
                 className="flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors"
               >
                 <MagicWandIcon className="w-5 h-5 mr-2" />
@@ -93,7 +93,7 @@ const BusinessHubPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {selectedDepartment === "Finance" && (
+              {selectedDepartment === 'Finance' && (
                 <>
                   <div className="lg:col-span-2">
                     <ErpFinanceWidget />
@@ -103,14 +103,14 @@ const BusinessHubPage: React.FC = () => {
                   </div>
                 </>
               )}
-              {selectedDepartment === "HR" && (
+              {selectedDepartment === 'HR' && (
                 <>
                   <div className="lg:col-span-3">
                     <ErpHRWidget />
                   </div>
                 </>
               )}
-              {selectedDepartment === "Marketing" && (
+              {selectedDepartment === 'Marketing' && (
                 <>
                   <div className="lg:col-span-1">
                     <CrmIntegrationsWidget />
@@ -122,7 +122,7 @@ const BusinessHubPage: React.FC = () => {
               )}
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

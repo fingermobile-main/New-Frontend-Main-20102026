@@ -27,11 +27,11 @@ interface AccordionContentProps {
   isActive?: boolean;
 }
 
-const Accordion = ({ 
-  children, 
-  type = 'single', 
-  collapsible = true, 
-  className = '' 
+const Accordion = ({
+  children,
+  type = 'single',
+  collapsible = true,
+  className = ''
 }: AccordionProps) => {
   const [activeItems, setActiveItems] = useState<string[]>([]);
 
@@ -54,7 +54,7 @@ const Accordion = ({
   // Pass down the state and toggle function to child components
   const cloneChildren = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child as React.ReactElement, { 
+      return React.cloneElement(child as React.ReactElement, {
         activeItems,
         toggleItem
       });
@@ -69,24 +69,24 @@ const Accordion = ({
   );
 };
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ 
-  children, 
-  value, 
+const AccordionItem: React.FC<AccordionItemProps> = ({
+  children,
+  value,
   className = '',
   activeItems = [],
   toggleItem = () => {}
 }) => {
   const isActive = activeItems.includes(value);
-  
+
   const cloneChildren = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
       if ((child.type as any).name === 'AccordionTrigger') {
-        return React.cloneElement(child as React.ReactElement, { 
+        return React.cloneElement(child as React.ReactElement, {
           isActive,
           onClick: () => toggleItem(value)
         });
       } else if ((child.type as any).name === 'AccordionContent') {
-        return React.cloneElement(child as React.ReactElement, { 
+        return React.cloneElement(child as React.ReactElement, {
           isActive
         });
       }
@@ -101,14 +101,14 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   );
 };
 
-const AccordionTrigger: React.FC<AccordionTriggerProps> = ({ 
-  children, 
+const AccordionTrigger: React.FC<AccordionTriggerProps> = ({
+  children,
   className = '',
   isActive,
   onClick
 }) => {
   return (
-    <div 
+    <div
       className={`flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline ${className}`}
       onClick={onClick}
       role="button"
@@ -139,13 +139,13 @@ const AccordionTrigger: React.FC<AccordionTriggerProps> = ({
   );
 };
 
-const AccordionContent: React.FC<AccordionContentProps> = ({ 
-  children, 
+const AccordionContent: React.FC<AccordionContentProps> = ({
+  children,
   className = '',
-  isActive 
+  isActive
 }) => {
   if (!isActive) return null;
-  
+
   return (
     <div className={`pb-4 pt-0 ${className}`}>
       {children}

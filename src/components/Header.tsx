@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               className="h-9 w-64 rounded-md border bg-transparent pl-8 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon">
             <BellIcon className="h-5 w-5" />

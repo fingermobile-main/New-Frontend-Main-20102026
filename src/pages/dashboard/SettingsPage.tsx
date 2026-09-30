@@ -44,8 +44,8 @@ const SettingsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -63,7 +63,7 @@ const SettingsPage: React.FC = () => {
             <TabsTrigger value="privacy">Privacy</TabsTrigger>
             <TabsTrigger value="security">Security</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="general" className="mt-6">
             <Card>
               <CardHeader>
@@ -80,34 +80,34 @@ const SettingsPage: React.FC = () => {
                     <Input id="lastName" defaultValue="Doe" />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <input id="email" type="email" defaultValue="john.doe@example.com" />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea id="bio" placeholder="Tell us about yourself..." />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="location">Location</Label>
                   <Input id="location" defaultValue="San Francisco, CA" />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="website">Website</Label>
                   <Input id="website" placeholder="https://yoursite.com" />
                 </div>
-                
+
                 <div className="pt-4">
                   <Button>Save Changes</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="notifications" className="mt-6">
             <Card>
               <CardHeader>
@@ -119,44 +119,44 @@ const SettingsPage: React.FC = () => {
                     <Label htmlFor="email-notifications" className="font-normal">Email Notifications</Label>
                     <p className="text-sm text-gray-500">Receive notifications via email</p>
                   </div>
-                  <Switch 
-                    id="email-notifications" 
+                  <Switch
+                    id="email-notifications"
                     checked={notifications.email}
                     onCheckedChange={() => handleNotificationChange('email')}
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="push-notifications" className="font-normal">Push Notifications</Label>
                     <p className="text-sm text-gray-500">Receive push notifications on your devices</p>
                   </div>
-                  <Switch 
-                    id="push-notifications" 
+                  <Switch
+                    id="push-notifications"
                     checked={notifications.push}
                     onCheckedChange={() => handleNotificationChange('push')}
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="sms-notifications" className="font-normal">SMS Notifications</Label>
                     <p className="text-sm text-gray-500">Receive notifications via SMS</p>
                   </div>
-                  <Switch 
-                    id="sms-notifications" 
+                  <Switch
+                    id="sms-notifications"
                     checked={notifications.sms}
                     onCheckedChange={() => handleNotificationChange('sms')}
                   />
                 </div>
-                
+
                 <div className="pt-4">
                   <Button>Save Notification Settings</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="privacy" className="mt-6">
             <Card>
               <CardHeader>
@@ -168,44 +168,44 @@ const SettingsPage: React.FC = () => {
                     <Label htmlFor="profile-public" className="font-normal">Public Profile</Label>
                     <p className="text-sm text-gray-500">Allow anyone to view your profile</p>
                   </div>
-                  <Switch 
-                    id="profile-public" 
+                  <Switch
+                    id="profile-public"
                     checked={privacy.profilePublic}
                     onCheckedChange={() => handlePrivacyChange('profilePublic')}
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="show-email" className="font-normal">Show Email</Label>
                     <p className="text-sm text-gray-500">Display your email on your profile</p>
                   </div>
-                  <Switch 
-                    id="show-email" 
+                  <Switch
+                    id="show-email"
                     checked={privacy.showEmail}
                     onCheckedChange={() => handlePrivacyChange('showEmail')}
                   />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="allow-messaging" className="font-normal">Allow Messaging</Label>
                     <p className="text-sm text-gray-500">Allow other users to send you messages</p>
                   </div>
-                  <Switch 
-                    id="allow-messaging" 
+                  <Switch
+                    id="allow-messaging"
                     checked={privacy.allowMessaging}
                     onCheckedChange={() => handlePrivacyChange('allowMessaging')}
                   />
                 </div>
-                
+
                 <div className="pt-4">
                   <Button>Save Privacy Settings</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="security" className="mt-6">
             <Card>
               <CardHeader>
@@ -221,21 +221,21 @@ const SettingsPage: React.FC = () => {
                       <Label htmlFor="current-password">Current Password</Label>
                       <input id="current-password" type="password" />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="new-password">New Password</Label>
                       <input id="new-password" type="password" />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="confirm-password">Confirm New Password</Label>
                       <input id="confirm-password" type="password" />
                     </div>
-                    
+
                     <Button>Update Password</Button>
                   </CardContent>
                 </Card>
-                
+
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Two-Factor Authentication</CardTitle>
@@ -246,15 +246,15 @@ const SettingsPage: React.FC = () => {
                         <p className="font-medium">Enable 2FA</p>
                         <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
                       </div>
-                      <Switch 
-                        id="two-factor" 
+                      <Switch
+                        id="two-factor"
                         checked={twoFactorEnabled}
                         onCheckedChange={setTwoFactorEnabled}
                       />
                     </div>
                   </CardContent>
                 </Card>
-                
+
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Active Sessions</CardTitle>
@@ -268,7 +268,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                         <Badge variant="secondary">Active</Badge>
                       </div>
-                      
+
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">Chrome on Mac</p>
@@ -276,7 +276,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                         <Button variant="outline" size="sm">End Session</Button>
                       </div>
-                      
+
                       <div className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">Firefox on Windows</p>

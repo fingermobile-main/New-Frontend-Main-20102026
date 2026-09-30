@@ -6,7 +6,7 @@ export interface CreatorMetric {name: string;
 }
 
 export interface CreatorContentPerformance {id: string;
-  type: "post" | "video" | "image";
+  type: 'post' | 'video' | 'image';
   title: string;
   likes: number;
   comments: number;
@@ -19,7 +19,7 @@ export interface CreatorContentPerformance {id: string;
 export interface CreatorScheduledContent {id: string;
   title: string;
   date: string;
-  type: "post" | "video" | "image";
+  type: 'post' | 'video' | 'image';
 }
 
 export interface CreatorDetailedMetric {id: string;
@@ -70,7 +70,7 @@ topPerforming: {content: string;
 
 export interface CreatorBestPostingTime {day: string;
   time: string;
-  engagement: "Low" | "Medium" | "High" | "Very High";
+  engagement: 'Low' | 'Medium' | 'High' | 'Very High';
   hour?: number; // Added for compatibility
 }
 

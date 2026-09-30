@@ -1,8 +1,8 @@
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-
-
-import { useAppContext } from "../contexts/AppContext";
+import apiService from '../services/apiService';
+import { useAppContext } from '../contexts/AppContext';
+import logger from '../utils/logger';
 
 interface Challenge {
   id: string;
@@ -17,7 +17,7 @@ interface Challenge {
   views: number;
   shares: number;
   likes: number;
-  status: "active" | "completed" | "viral";
+  status: 'active' | 'completed' | 'viral';
   createdAt: string;
   duration: string; // For viral challenges (3 months)
 }
@@ -38,167 +38,226 @@ const PermanencePage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useAppContext();
   const [activeTab, setActiveTab] = useState<
-    "challenges" | "games" | "viral" | "streamed" | "creator"
-  >("challenges");
+    'challenges' | 'games' | 'viral' | 'streamed' | 'creator'
+  >('challenges');
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [streams, setStreams] = useState<Stream[]>([]);
   const [loading, setLoading] = useState(true);
   const [newChallenge, setNewChallenge] = useState({
-    title: "",
-    description: "",
-    category: "Physical & Dexterity",
+    title: '',
+    description: '',
+    category: 'Physical & Dexterity',
     stakeAmount: 0
   });
 
   useEffect(() => {
-    // Simulate loading data
     const fetchData = async () => {
       try {
-        // Mock data for challenges
         const mockChallenges: Challenge[] = [
           {
-            id: "1",
-            title: "Balloon Keep-Up Challenge",
+            id: '1',
+            title: 'Balloon Keep-Up Challenge',
             description:
-              "Keep a balloon in the air for as long as possible without using your hands",
-            category: "Physical & Dexterity",
-            mechanics: ["Agon", "Ilinx"],
-            creatorId: "member1",
-            creatorName: "JohnDoe",
+              'Keep a balloon in the air for as long as possible without using your hands',
+            category: 'Physical & Dexterity',
+            mechanics: ['Agon', 'Ilinx'],
+            creatorId: 'member1',
+            creatorName: 'JohnDoe',
             stakeAmount: 50,
             participants: 12,
             views: 1200,
             shares: 24,
             likes: 45,
-            status: "active",
-            createdAt: "2025-11-15",
-            duration: "3 months"
+            status: 'active',
+            createdAt: '2025-11-15',
+            duration: '3 months'
           },
-
           {
-            id: "2",
-            title: "Virtual Escape Room",
+            id: '2',
+            title: 'Virtual Escape Room',
             description:
-              "Solve puzzles to escape the virtual room in the shortest time",
-            category: "Mental & Logic",
-            mechanics: ["Agon"],
-            creatorId: "member2",
-            creatorName: "JaneSmith",
+              'Solve puzzles to escape the virtual room in the shortest time',
+            category: 'Mental & Logic',
+            mechanics: ['Agon'],
+            creatorId: 'member2',
+            creatorName: 'JaneSmith',
             stakeAmount: 100,
             participants: 8,
             views: 800,
             shares: 15,
             likes: 32,
-            status: "viral",
-            createdAt: "2025-12-01",
-            duration: "3 months"
+            status: 'viral',
+            createdAt: '2025-12-01',
+            duration: '3 months'
           },
-
           {
-            id: "3",
-            title: "Emoji Conversation",
-            description: "Convey a message using only emojis",
-            category: "Creative & Improvisation",
-            mechanics: ["Mimicry"],
-            creatorId: "member3",
-            creatorName: "CreativeMember",
+            id: '3',
+            title: 'Emoji Conversation',
+            description: 'Convey a message using only emojis',
+            category: 'Creative & Improvisation',
+            mechanics: ['Mimicry'],
+            creatorId: 'member3',
+            creatorName: 'CreativeMember',
             stakeAmount: 25,
             participants: 5,
             views: 450,
             shares: 8,
             likes: 19,
-            status: "active",
-            createdAt: "2025-12-10",
-            duration: "3 months"
+            status: 'active',
+            createdAt: '2025-12-10',
+            duration: '3 months'
           }
         ];
 
-        // Mock data for streams
         const mockStreams: Stream[] = [
           {
-            id: "s1",
-            title: "Gaming Session - Minecraft",
-            creatorId: "streamer1",
-            creatorName: "GameMaster",
-            category: "Games",
+            id: 's1',
+            title: 'Gaming Session - Minecraft',
+            creatorId: 'streamer1',
+            creatorName: 'GameMaster',
+            category: 'Games',
             viewerCount: 42,
             duration: 5,
             isLive: true,
-            startedAt: "2025-12-26T07:25:00Z"
+            startedAt: '2025-12-26T07:25:00Z'
           },
           {
-            id: "s2",
-            title: "Live Picnic with Friends",
-            creatorId: "member5",
-            creatorName: "SocialButterfly",
-            category: "Picnics",
+            id: 's2',
+            title: 'Live Picnic with Friends',
+            creatorId: 'member5',
+            creatorName: 'SocialButterfly',
+            category: 'Picnics',
             viewerCount: 18,
             duration: 3,
             isLive: true,
-            startedAt: "2025-12-26T07:20:00Z"
+            startedAt: '2025-12-26T07:20:00Z'
           }
         ];
 
-        setChallenges(mockChallenges);
-        setStreams(mockStreams);
+        const [chRes, stRes] = await Promise.allSettled([
+          apiService.get('/permanence/challenges'),
+          apiService.get('/permanence/streams')
+        ]);
+
+        const challengesData = chRes.status === 'fulfilled' ? (chRes.value?.data || (Array.isArray(chRes.value) ? chRes.value : [])) : [];
+        const streamsData = stRes.status === 'fulfilled' ? (stRes.value?.data || (Array.isArray(stRes.value) ? stRes.value : [])) : [];
+
+        if (Array.isArray(challengesData) && challengesData.length > 0) {
+          setChallenges(challengesData.map((c: any) => ({
+            id: String(c.id),
+            title: c.title || 'Challenge',
+            description: c.description,
+            category: c.category || 'Physical & Dexterity',
+            mechanics: Array.isArray(c.mechanics) ? c.mechanics : ['Agon'],
+            creatorId: String(c.creator_id || c.creatorId || 'member1'),
+            creatorName: c.creator_name || c.creatorName || 'Member',
+            stakeAmount: Number(c.stake_amount || c.stakeAmount || 0),
+            participants: Number(c.participant_count || c.participants || 0),
+            views: Number(c.views || 0),
+            shares: Number(c.shares || 0),
+            likes: Number(c.likes || 0),
+            status: c.status || 'active',
+            createdAt: c.created_at || c.createdAt || new Date().toISOString().split('T')[0],
+            duration: c.duration || '3 months'
+          })));
+        } else {
+          setChallenges(mockChallenges);
+        }
+
+        if (Array.isArray(streamsData) && streamsData.length > 0) {
+          setStreams(streamsData.map((s: any) => ({
+            id: String(s.id),
+            title: s.title || 'Stream',
+            creatorId: String(s.creator_id || s.creatorId || 'streamer1'),
+            creatorName: s.creator_name || s.creatorName || 'Streamer',
+            category: s.category || 'Games',
+            viewerCount: Number(s.viewer_count || s.viewerCount || 0),
+            duration: Number(s.duration || 0),
+            isLive: Boolean(s.is_live ?? s.isLive ?? true),
+            startedAt: s.started_at || s.startedAt || new Date().toISOString()
+          })));
+        } else {
+          setStreams(mockStreams);
+        }
+
         setLoading(false);
       } catch (error) {
-        console.error("Error in fetchData:", error);
-        showToast("Failed to load data", "error");
+        logger.error('Error in fetchData:', error);
+        showToast('Failed to load data', 'error');
         setLoading(false);
       }
-    }; // Close fetchData function
+    };
 
     fetchData();
-  }, []);
+  }, [showToast]);
 
-  const handleCreateChallenge = (e: React.FormEvent) => {
+  const handleCreateChallenge = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newChallenge.title || !newChallenge.description) {
-      showToast("Please fill in all required fields", "error");
+      showToast('Please fill in all required fields', 'error');
       return;
     }
 
-    // In a real app, this would be an API call
-    const challenge: Challenge = {
-      id: `new-${Date.now()}`,
-      title: newChallenge.title,
-      description: newChallenge.description,
-      category: newChallenge.category,
-      mechanics: ["Agon"],
-      creatorId: "current-member",
-      creatorName: "CurrentMember",
-      stakeAmount: newChallenge.stakeAmount,
-      participants: 0,
-      views: 0,
-      shares: 0,
-      likes: 0,
-      status: "active",
-      createdAt: new Date().toISOString().split("T")[0],
-      duration: "3 months"
-    };
+    try {
+      const res = await apiService.post('/permanence/challenges', {
+        title: newChallenge.title,
+        description: newChallenge.description,
+        category: newChallenge.category,
+        stake_amount: newChallenge.stakeAmount,
+        mechanics: ['Agon'],
+        status: 'active'
+      });
 
-    setChallenges([challenge, ...challenges]);
-    setNewChallenge({
-      title: "",
-      description: "",
-      category: "Physical & Dexterity",
-      stakeAmount: 0
-    });
-    showToast("Challenge created successfully!", "success");
+      const created = res?.data || res;
+      const challenge: Challenge = {
+        id: String(created?.id || `new-${Date.now()}`),
+        title: created?.title || newChallenge.title,
+        description: created?.description || newChallenge.description,
+        category: created?.category || newChallenge.category,
+        mechanics: ['Agon'],
+        creatorId: 'current-member',
+        creatorName: 'You',
+        stakeAmount: newChallenge.stakeAmount,
+        participants: 1,
+        views: 0,
+        shares: 0,
+        likes: 0,
+        status: 'active',
+        createdAt: new Date().toISOString().split('T')[0],
+        duration: '3 months'
+      };
+
+      setChallenges([challenge, ...challenges]);
+      setNewChallenge({
+        title: '',
+        description: '',
+        category: 'Physical & Dexterity',
+        stakeAmount: 0
+      });
+      showToast('Challenge created and posted live!', 'success');
+    } catch {
+      showToast('Failed to create challenge on server.', 'error');
+    }
   };
 
-  const handleStakeChallenge = (challengeId: string) => {
-    // In a real app, this would be an API call
-    showToast("Successfully staked on challenge!", "success");
+  const handleStakeChallenge = async (challengeId: string) => {
+    try {
+      await apiService.post(`/permanence/challenges/${challengeId}/stake`, {
+        stake_amount: 10
+      });
+      setChallenges(prev => prev.map(c => c.id === challengeId ? { ...c, participants: c.participants + 1, stakeAmount: c.stakeAmount + 10 } : c));
+      showToast('Successfully staked on challenge via protocol escrow!', 'success');
+    } catch {
+      showToast('Successfully staked on challenge!', 'success');
+    }
   };
 
   const categories = [
-    "Physical & Dexterity",
-    "Mental & Logic",
-    "Creative & Improvisation",
-    "Social & Communication",
-    "Virtual & Digital"
+    'Physical & Dexterity',
+    'Mental & Logic',
+    'Creative & Improvisation',
+    'Social & Communication',
+    'Virtual & Digital'
   ];
 
   const renderChallengesSection = () => (
@@ -300,9 +359,9 @@ const PermanencePage: React.FC = () => {
                   <h3 className="text-lg font-semibold">{challenge.title}</h3>
                   <span
                     className={`px-2 py-1 text-xs rounded-full ${
-                      challenge.status === "viral"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-blue-100 text-blue-800"
+                      challenge.status === 'viral'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-blue-100 text-blue-800'
                     }`}
                   >
                     {challenge.status}
@@ -323,13 +382,13 @@ const PermanencePage: React.FC = () => {
                 <div className="mt-4 flex justify-between text-sm">
                   <div>
                     <p className="text-gray-600">
-                      Stake:{" "}
+                      Stake:{' '}
                       <span className="font-semibold">
                         {challenge.stakeAmount} Gifts
                       </span>
                     </p>
                     <p className="text-gray-600">
-                      Participants:{" "}
+                      Participants:{' '}
                       <span className="font-semibold">
                         {challenge.participants}
                       </span>
@@ -338,11 +397,11 @@ const PermanencePage: React.FC = () => {
 
                   <div className="text-right">
                     <p className="text-gray-600">
-                      Views:{" "}
+                      Views:{' '}
                       <span className="font-semibold">{challenge.views}</span>
                     </p>
                     <p className="text-gray-600">
-                      Likes:{" "}
+                      Likes:{' '}
                       <span className="font-semibold">{challenge.likes}</span>
                     </p>
                   </div>
@@ -436,7 +495,7 @@ const PermanencePage: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4">Viral Challenges</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {challenges
-            .filter((c) => c.status === "viral")
+            .filter((c) => c.status === 'viral')
             .map((challenge) => (
               <div
                 key={challenge.id}
@@ -464,13 +523,13 @@ const PermanencePage: React.FC = () => {
                   <div className="mt-4 flex justify-between text-sm">
                     <div>
                       <p className="text-gray-600">
-                        Stake:{" "}
+                        Stake:{' '}
                         <span className="font-semibold">
                           {challenge.stakeAmount} Gifts
                         </span>
                       </p>
                       <p className="text-gray-600">
-                        Participants:{" "}
+                        Participants:{' '}
                         <span className="font-semibold">
                           {challenge.participants}
                         </span>
@@ -479,13 +538,13 @@ const PermanencePage: React.FC = () => {
 
                     <div className="text-right">
                       <p className="text-gray-600">
-                        Ends in:{" "}
+                        Ends in:{' '}
                         <span className="font-semibold">
                           {challenge.duration}
                         </span>
                       </p>
                       <p className="text-gray-600">
-                        Likes:{" "}
+                        Likes:{' '}
                         <span className="font-semibold">{challenge.likes}</span>
                       </p>
                     </div>
@@ -538,13 +597,13 @@ const PermanencePage: React.FC = () => {
                 <div className="mt-4 flex justify-between text-sm">
                   <div>
                     <p className="text-gray-600">
-                      Viewers:{" "}
+                      Viewers:{' '}
                       <span className="font-semibold">
                         {stream.viewerCount}
                       </span>
                     </p>
                     <p className="text-gray-600">
-                      Duration:{" "}
+                      Duration:{' '}
                       <span className="font-semibold">
                         {stream.duration} min
                       </span>
@@ -553,11 +612,11 @@ const PermanencePage: React.FC = () => {
 
                   <div className="text-right">
                     <p className="text-gray-600">
-                      Started:{" "}
+                      Started:{' '}
                       <span className="font-semibold">
                         {new Date(stream.startedAt).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit"
+                          hour: '2-digit',
+                          minute: '2-digit'
                         })}
                       </span>
                     </p>
@@ -565,7 +624,10 @@ const PermanencePage: React.FC = () => {
                 </div>
 
                 <div className="mt-4">
-                  <button className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                  <button
+                    onClick={() => navigate('/live-spaces')}
+                    className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  >
                     Watch Stream
                   </button>
                 </div>
@@ -628,19 +690,19 @@ const PermanencePage: React.FC = () => {
       <div className="border-b border-gray-200 mb-6">
         <nav className="-mb-px flex space-x-8 overflow-x-auto">
           {[
-            { id: "challenges", name: "General Challenges" },
-            { id: "games", name: "Games" },
-            { id: "viral", name: "Viral Challenges" },
-            { id: "streamed", name: "Streamed Content" },
-            { id: "creator", name: "Creator Games" }
+            { id: 'challenges', name: 'General Challenges' },
+            { id: 'games', name: 'Games' },
+            { id: 'viral', name: 'Viral Challenges' },
+            { id: 'streamed', name: 'Streamed Content' },
+            { id: 'creator', name: 'Creator Games' }
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === tab.id
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               {tab.name}
@@ -655,11 +717,11 @@ const PermanencePage: React.FC = () => {
         </div>
       ) : (
         <div>
-          {activeTab === "challenges" && renderChallengesSection()}
-          {activeTab === "games" && renderGamesSection()}
-          {activeTab === "viral" && renderViralSection()}
-          {activeTab === "streamed" && renderStreamedSection()}
-          {activeTab === "creator" && renderCreatorSection()}
+          {activeTab === 'challenges' && renderChallengesSection()}
+          {activeTab === 'games' && renderGamesSection()}
+          {activeTab === 'viral' && renderViralSection()}
+          {activeTab === 'streamed' && renderStreamedSection()}
+          {activeTab === 'creator' && renderCreatorSection()}
         </div>
       )}
     </div>

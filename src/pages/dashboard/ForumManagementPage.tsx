@@ -3,7 +3,7 @@ import { useAppContext } from '../../contexts/AppContext';
 import type { ForumCategory } from '../../types';
 
 // Define a simple ID generator function
-const generateUniqueId = (prefix = "id"): string => {
+const generateUniqueId = (prefix = 'id'): string => {
   return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
@@ -29,19 +29,19 @@ const ForumManagementPage: React.FC = () => {
   };
 
   const CategoryEditorModal: React.FC = () => {
-    const [name, setName] = useState(editingCategory?.name || "");
+    const [name, setName] = useState(editingCategory?.name || '');
     const [description, setDescription] = useState(
-      editingCategory?.description || "",
+      editingCategory?.description || '',
     );
-    const [slug, setSlug] = useState(editingCategory?.slug || "");
+    const [slug, setSlug] = useState(editingCategory?.slug || '');
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       const newCategory: ForumCategory = {
-        id: editingCategory?.id || generateUniqueId("cat"),
+        id: editingCategory?.id || generateUniqueId('cat'),
         name,
         description,
-        slug: slug || name.toLowerCase().replace(/\s+/g, "-"),
+        slug: slug || name.toLowerCase().replace(/\s+/g, '-'),
         postCount: editingCategory?.postCount || 0,
         viewCount: editingCategory?.viewCount, // Allow undefined as per interface
         headerImage:
@@ -64,7 +64,7 @@ const ForumManagementPage: React.FC = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <h3 className="font-bold text-lg mb-4">
-            {editingCategory ? "Edit" : "Create"} Category
+            {editingCategory ? 'Edit' : 'Create'} Category
           </h3>
           <div className="space-y-4">
             <input
@@ -103,7 +103,7 @@ const ForumManagementPage: React.FC = () => {
               type="submit"
               className="px-4 py-2 text-sm font-semibold bg-brand-blue text-white rounded-lg"
             >
-              {editingCategory ? "Update" : "Create"}
+              {editingCategory ? 'Update' : 'Create'}
             </button>
           </div>
         </form>

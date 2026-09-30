@@ -6,21 +6,21 @@ import React, {} from 'react';
 
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ' http:// localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_BLOGS_API_URL || 'http://localhost:5035/api';
 
 export interface BlogPost {id: string;
   title: string;
   slug: string;
   excerpt?: string;
   content: string;
-  content_format?: "markdown" | "html" | "rich-text";
+  content_format?: 'markdown' | 'html' | 'rich-text';
   featuredImage?: string;
   featured_image_url?: string; authorId: string;
   author?: { id: string;
   name: string;
     avatar?: string;
   }; authorName: string;
-status: "draft" | "published" | "scheduled" | "archived";
+status: 'draft' | 'published' | 'scheduled' | 'archived';
 tags: string[];
   category?: string;
   category_id?: string;
@@ -86,14 +86,14 @@ export interface BlogTag {id: string;
 
 class BlogService {
   private api = axios.create({baseURL: `${API_BASE_URL}/blogs`,
-headers: {
+    headers: {
       'Content-Type': 'application/json'
     }
   });
 
   async getPosts(authorId?: string, status?: string, limit: number = 20): Promise<BlogPost[]> {
     const response = await this.api.get('/posts', {params: { authorId,
-  status, limit } });
+      status, limit } });
     return response.data;
   }
 
@@ -108,32 +108,32 @@ headers: {
   }
 
   async updatePost(
-postId: string,
-updates: Partial<BlogPost>): Promise<BlogPost> {
+    postId: string,
+    updates: Partial<BlogPost>): Promise<BlogPost> {
     const response = await this.api.put(`/posts/${postId}`, updates);
     return response.data;
   }
 
   async deletePost(
-postId: string): Promise<void> {
+    postId: string): Promise<void> {
     await this.api.delete(`/posts/${postId}`);
   }
 
   async publishPost(
-postId: string): Promise<BlogPost> {
+    postId: string): Promise<BlogPost> {
     const response = await this.api.post(`/posts/${postId}/publish`);
     return response.data;
   }
 
   async getComments(
-postId: string, parentId?: string): Promise<BlogComment[]> {
+    postId: string, parentId?: string): Promise<BlogComment[]> {
     const response = await this.api.get(`/posts/${postId}/comments`, {params: { parentId } });
     return response.data;
   }
 
   async addComment(
-postId: string,
-content: string, parentId?: string): Promise<BlogComment> {
+    postId: string,
+    content: string, parentId?: string): Promise<BlogComment> {
     const response = await this.api.post(`/posts/${postId}/comments`, { content, parentId });
     return response.data;
   }
@@ -162,7 +162,7 @@ content: string, parentId?: string): Promise<BlogComment> {
   }
 
   async getReadingListItems(
-listId: string): Promise<any[]> {
+    listId: string): Promise<any[]> {
     const response = await this.api.get(`/reading-lists/${listId}/items`);
     return response.data;
   }

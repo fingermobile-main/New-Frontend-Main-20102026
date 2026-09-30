@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Pencil, Eraser, Square, Circle, Type, Download, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Pencil, Eraser, Square, Circle, Type, Download, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface WhiteboardProps {
   roomId?: string;
@@ -12,8 +12,8 @@ interface WhiteboardProps {
 const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = React.useState(false);
-  const [tool, setTool] = React.useState<"pen" | "eraser" | "rectangle" | "circle" | "text">("pen");
-  const [color, setColor] = React.useState("#000000");
+  const [tool, setTool] = React.useState<'pen' | 'eraser' | 'rectangle' | 'circle' | 'text'>('pen');
+  const [color, setColor] = React.useState('#000000');
   const [lineWidth, setLineWidth] = React.useState(3);
   const [startPos, setStartPos] = React.useState<{ x: number; y: number } | null>(null);
 
@@ -21,7 +21,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     // Set canvas size
@@ -31,14 +31,14 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     // Set initial styles
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
-    ctx.lineCap = "round";
+    ctx.lineCap = 'round';
   }, []);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     ctx.strokeStyle = color;
@@ -64,10 +64,10 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    if (tool === "pen" || tool === "eraser") {
+    if (tool === 'pen' || tool === 'eraser') {
       ctx.beginPath();
       ctx.moveTo(coords.x, coords.y);
     }
@@ -80,15 +80,15 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    if (tool === "pen") {
-      ctx.globalCompositeOperation = "source-over";
+    if (tool === 'pen') {
+      ctx.globalCompositeOperation = 'source-over';
       ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
-    } else if (tool === "eraser") {
-      ctx.globalCompositeOperation = "destination-out";
+    } else if (tool === 'eraser') {
+      ctx.globalCompositeOperation = 'destination-out';
       ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
     }
@@ -101,14 +101,14 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    if (tool === "rectangle") {
-      ctx.globalCompositeOperation = "source-over";
+    if (tool === 'rectangle') {
+      ctx.globalCompositeOperation = 'source-over';
       ctx.strokeRect(startPos.x, startPos.y, coords.x - startPos.x, coords.y - startPos.y);
-    } else if (tool === "circle") {
-      ctx.globalCompositeOperation = "source-over";
+    } else if (tool === 'circle') {
+      ctx.globalCompositeOperation = 'source-over';
       const radius = Math.sqrt(
         Math.pow(coords.x - startPos.x, 2) + Math.pow(coords.y - startPos.y, 2)
       );
@@ -125,7 +125,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -136,7 +136,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const imageData = canvas.toDataURL("image/png");
+    const imageData = canvas.toDataURL('image/png');
     onSave?.(imageData);
   };
 
@@ -144,9 +144,9 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.download = `whiteboard-${Date.now()}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.href = canvas.toDataURL('image/png');
     link.click();
   };
 
@@ -170,37 +170,37 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ roomId, onSave, onClear }) => {
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2 p-2 border rounded-lg bg-muted/30">
             <Button
-              variant={tool === "pen" ? "default" : "outline"}
+              variant={tool === 'pen' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setTool("pen")}
+              onClick={() => setTool('pen')}
             >
               <Pencil className="h-4 w-4" />
             </Button>
             <Button
-              variant={tool === "eraser" ? "default" : "outline"}
+              variant={tool === 'eraser' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setTool("eraser")}
+              onClick={() => setTool('eraser')}
             >
               <Eraser className="h-4 w-4" />
             </Button>
             <Button
-              variant={tool === "rectangle" ? "default" : "outline"}
+              variant={tool === 'rectangle' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setTool("rectangle")}
+              onClick={() => setTool('rectangle')}
             >
               <Square className="h-4 w-4" />
             </Button>
             <Button
-              variant={tool === "circle" ? "default" : "outline"}
+              variant={tool === 'circle' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setTool("circle")}
+              onClick={() => setTool('circle')}
             >
               <Circle className="h-4 w-4" />
             </Button>
             <Button
-              variant={tool === "text" ? "default" : "outline"}
+              variant={tool === 'text' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setTool("text")}
+              onClick={() => setTool('text')}
             >
               <Type className="h-4 w-4" />
             </Button>

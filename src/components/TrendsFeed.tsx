@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Flame, TrendingUp, Eye, MessageCircle, Share2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Flame, TrendingUp, Eye, MessageCircle, Share2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface TrendItem {
   id: string;
@@ -28,54 +28,54 @@ const TrendsFeed: React.FC<TrendsFeedProps> = ({
 }) => {
   const defaultTrends: TrendItem[] = [
     {
-      id: "1",
-      title: "AI-Powered Content Creation Tools Revolutionize Digital Marketing",
-      category: "Technology",
+      id: '1',
+      title: 'AI-Powered Content Creation Tools Revolutionize Digital Marketing',
+      category: 'Technology',
       views: 125000,
       comments: 342,
       shares: 1200,
       热度: 98,
-      timestamp: "2 hours ago"
+      timestamp: '2 hours ago'
     },
     {
-      id: "2",
-      title: "Sustainable Fashion: Top Eco-Friendly Brands of 2026",
-      category: "Fashion",
+      id: '2',
+      title: 'Sustainable Fashion: Top Eco-Friendly Brands of 2026',
+      category: 'Fashion',
       views: 98000,
       comments: 256,
       shares: 890,
       热度: 95,
-      timestamp: "4 hours ago"
+      timestamp: '4 hours ago'
     },
     {
-      id: "3",
-      title: "Cryptocurrency Market Shows Strong Recovery Signs",
-      category: "Finance",
+      id: '3',
+      title: 'Cryptocurrency Market Shows Strong Recovery Signs',
+      category: 'Finance',
       views: 87000,
       comments: 198,
       shares: 670,
       热度: 92,
-      timestamp: "6 hours ago"
+      timestamp: '6 hours ago'
     },
     {
-      id: "4",
-      title: "Healthy Meal Prep Ideas for Busy Professionals",
-      category: "Health",
+      id: '4',
+      title: 'Healthy Meal Prep Ideas for Busy Professionals',
+      category: 'Health',
       views: 76000,
       comments: 145,
       shares: 520,
       热度: 89,
-      timestamp: "8 hours ago"
+      timestamp: '8 hours ago'
     },
     {
-      id: "5",
-      title: "Top 10 Travel Destinations for Summer 2026",
-      category: "Travel",
+      id: '5',
+      title: 'Top 10 Travel Destinations for Summer 2026',
+      category: 'Travel',
       views: 65000,
       comments: 123,
       shares: 450,
       热度: 86,
-      timestamp: "10 hours ago"
+      timestamp: '10 hours ago'
     }
   ];
 

@@ -78,7 +78,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
                 <span className="text-3xl">🎁</span>
                 <span className="text-sm opacity-80">Gift Card</span>
               </div>
-              
+
               <div className="mb-4">
                 <p className="text-sm opacity-80 mb-1">Amount</p>
                 <p className="text-4xl font-bold">{formatCurrency(mockGiftCard.amount)}</p>
@@ -130,7 +130,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
                       width={200}
                       height={200}
                       className="rounded"
-                     />
+                    />
                   </div>
                 </div>
               )}
@@ -158,7 +158,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
             >
               Copy Code
             </button>
-            
+
             <button
               onClick={onClose}
               className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"

@@ -1,6 +1,5 @@
-import React, {} from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any, no-unused-vars */
 import logger from '../utils/logger';
-
 import axios from 'axios';
 
 export class ApiServiceClass {
@@ -16,6 +15,14 @@ export class ApiServiceClass {
 
     this.axiosInstance.interceptors.request.use(
       (config: any) => {
+        // Automatically normalize redundant leading /api if present
+        if (config.url && typeof config.url === 'string') {
+          if (config.url.startsWith('/api/')) {
+            config.url = config.url.substring(4);
+          } else if (config.url === '/api') {
+            config.url = '/';
+          }
+        }
         const token = localStorage.getItem('token');
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
@@ -26,32 +33,37 @@ export class ApiServiceClass {
     );
   }
 
-  async get(url: string, params?: unknown) {
+  async get<T = any>(url: string, params?: unknown): Promise<T> {
     try {
-    const response = await this.axiosInstance.get(url, { params });
-    return response.data;
+      const response = await this.axiosInstance.get(url, { params });
+      return response.data;
     } catch (error) {
       logger.error('get error:', error);
       throw error;
     }
   }
 
-  async post(url: string, data?: unknown) {
+  async post<T = any>(url: string, data?: unknown): Promise<T> {
     const response = await this.axiosInstance.post(url, data);
     return response.data;
   }
 
-  async put(url: string, data?: unknown) {
-    try {
-    const response = await this.axiosInstance.put(url, data);
+  async patch<T = any>(url: string, data?: unknown): Promise<T> {
+    const response = await this.axiosInstance.patch(url, data);
     return response.data;
+  }
+
+  async put<T = any>(url: string, data?: unknown): Promise<T> {
+    try {
+      const response = await this.axiosInstance.put(url, data);
+      return response.data;
     } catch (error) {
       logger.error('put error:', error);
       throw error;
     }
   }
 
-  async delete(url: string) {
+  async delete<T = any>(url: string): Promise<T> {
     const response = await this.axiosInstance.delete(url);
     return response.data;
   }
@@ -68,7 +80,7 @@ export class ApiServiceClass {
       });
       return response.data as T;
     } catch (error) {
-      console.error(`API request error for ${url}:`, error);
+      logger.error(`API request error for ${url}:`, error);
       throw error;
     }
   }
@@ -84,11 +96,11 @@ export class ApiServiceClass {
    * @param onError - Optional callback for errors
    * @returns EventSource instance (call .close() to disconnect)
    */
-  connectSSE(url: string, onMessage: (data: unknown, event?: string) => void, onOpen?: () => void, onError?: (error?: Event) => void): EventSource {
+  connectSSE(url: string, onMessage: (_data: unknown, _event?: string) => void, onOpen?: () => void, onError?: (_error?: Event) => void): EventSource {
     const eventSource = new EventSource(url);
 
     eventSource.onopen = () => {
-      console.info(`SSE connected to ${url}`);
+      logger.info(`SSE connected to ${url}`);
       onOpen?.();
     };
 
@@ -97,13 +109,13 @@ export class ApiServiceClass {
         const data = JSON.parse(event.data);
         onMessage(data, (event as any).event || undefined);
       } catch (error) {
-        console.error('SSE parse error:', error);
+        logger.error('SSE parse error:', error);
         onMessage(event.data, (event as any).event || undefined);
       }
     };
 
     eventSource.onerror = (error) => {
-      console.error('SSE error:', error);
+      logger.error('SSE error:', error);
       onError?.(error);
     };
 
@@ -117,7 +129,7 @@ export class ApiServiceClass {
    * @param options - Optional fetch options (method, headers, body, etc.)
    * @returns AbortController (call .abort() to cancel)
    */
-  async streamResponse(url: string, onChunk: (chunk: string) => void, options: RequestInit = {}): Promise<AbortController> {
+  async streamResponse(url: string, onChunk: (_chunk: string) => void, options: RequestInit = {}): Promise<AbortController> {
     const controller = new AbortController();
     const token = localStorage.getItem('token');
 
@@ -127,8 +139,10 @@ export class ApiServiceClass {
       headers.set('Authorization', `Bearer ${token}`);
     }
 
+    const cleanUrl = url.startsWith('/api/') ? url.substring(4) : (url === '/api' ? '/' : url);
+
     try {
-      const response = await fetch(`${this.axiosInstance.defaults.baseURL}${url}`, {
+      const response = await fetch(`${this.axiosInstance.defaults.baseURL}${cleanUrl}`, {
         ...options,
         headers,
         signal: controller.signal
@@ -147,15 +161,15 @@ export class ApiServiceClass {
 
       const read = async () => {
         try {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.info('Stream complete');
-          return;
-        }
+          const { done, value } = await reader.read();
+          if (done) {
+            logger.info('Stream complete');
+            return;
+          }
 
-        const chunk = decoder.decode(value, { stream: true });
-        onChunk(chunk);
-        await read();
+          const chunk = decoder.decode(value, { stream: true });
+          onChunk(chunk);
+          await read();
         } catch (error) {
           logger.error('anonymous error:', error);
           throw error;
@@ -165,9 +179,9 @@ export class ApiServiceClass {
       await read();
     } catch (error: any) {
       if (error.name === 'AbortError') {
-        console.info('Stream aborted');
+        logger.info('Stream aborted');
       } else {
-        console.error('Stream error:', error);
+        logger.error('Stream error:', error);
         throw error;
       }
     }
@@ -184,11 +198,11 @@ export class ApiServiceClass {
    * @param onError - Optional callback for errors
    * @returns WebSocket instance
    */
-  connectWebSocket(url: string, onMessage: (data: any) => void, onOpen?: () => void, onClose?: () => void, onError?: (error: Event) => void): WebSocket {
+  connectWebSocket(url: string, onMessage: (_data: any) => void, onOpen?: () => void, onClose?: () => void, onError?: (_error: Event) => void): WebSocket {
     const ws = new WebSocket(url);
 
     ws.onopen = () => {
-      console.info(`WebSocket connected to ${url}`);
+      logger.info(`WebSocket connected to ${url}`);
       onOpen?.();
     };
 
@@ -197,18 +211,18 @@ export class ApiServiceClass {
         const data = JSON.parse(event.data);
         onMessage(data);
       } catch (error) {
-        console.error('WebSocket parse error:', error);
+        logger.error('WebSocket parse error:', error);
         onMessage(event.data);
       }
     };
 
     ws.onclose = () => {
-      console.info('WebSocket closed');
+      logger.info('WebSocket closed');
       onClose?.();
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      logger.error('WebSocket error:', error);
       onError?.(error);
     };
 
@@ -218,37 +232,37 @@ export class ApiServiceClass {
   async getPosts() {
     return this.get('/posts');
   }
-  
+
   // Static method wrapper for convenience
   private static instance?: ApiServiceClass;
-  
+
   static getInstance(): ApiServiceClass {
     if (!ApiServiceClass.instance) {
       ApiServiceClass.instance = new ApiServiceClass();
     }
     return ApiServiceClass.instance;
   }
-  
+
   static async request<T>(url: string, config: any = {}): Promise<T> {
     return ApiServiceClass.getInstance().request<T>(url, config);
   }
-  
+
   static async get<T>(url: string, params?: unknown): Promise<T> {
     return ApiServiceClass.getInstance().get(url, params);
   }
-  
+
   static async post<T>(url: string, data?: unknown): Promise<T> {
     return ApiServiceClass.getInstance().post(url, data);
   }
-  
+
   static async put<T>(url: string, data?: unknown): Promise<T> {
     return ApiServiceClass.getInstance().put(url, data);
   }
-  
+
   static async delete<T>(url: string): Promise<T> {
     return ApiServiceClass.getInstance().delete(url);
   }
-  
+
   static async getGames<T>(): Promise<T> {
     return ApiServiceClass.getInstance().get('/games');
   }
@@ -258,4 +272,4 @@ const apiService = new ApiServiceClass();
 export default apiService;
 
 // Named export alias for pages using the service
-export { ApiServiceClass as ApiService };
+export { apiService, ApiServiceClass as ApiService };

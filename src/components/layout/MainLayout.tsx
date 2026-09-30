@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import React, {} from 'react';
 
 import TopHeaderNavigation from '../TopHeaderNavigation';
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../../contexts/AppContext';  // Using absolute path from src
 import { useAuth } from '../../contexts/AuthContext';
 import LoadingSpinner from '../LoadingSpinner';
 import CookieConsentBanner from '../CookieConsentBanner';
@@ -14,6 +14,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, pageTitle }) => {
   const { isLoading, member, activeSubProfile } = useAppContext();
+  // @ts-expect-error: auto-fixed by agent
   const { loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();

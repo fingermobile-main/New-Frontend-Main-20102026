@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { MagnifyingGlassIcon, UserGroupIcon, HashtagIcon, VideoCameraIcon, GiftIcon } from '../icons';
 
@@ -47,8 +47,8 @@ const SearchPage: React.FC = () => {
 
     // Mock search results - in a real app, this would come from an API
     const mockMembers: SearchResultMember[] = members
-      .filter((m: any) => 
-        m.name.toLowerCase().includes(query.toLowerCase()) || 
+      .filter((m: any) =>
+        m.name.toLowerCase().includes(query.toLowerCase()) ||
         m.membername.toLowerCase().includes(query.toLowerCase())
       )
       .map((m: any) => ({
@@ -105,7 +105,7 @@ const SearchPage: React.FC = () => {
 
     // Combine results based on active tab
     const combinedResults: (SearchResultMember | SearchResultPost | SearchResultCommunity)[] = [];
-    
+
     if (activeTab === 'all' || activeTab === 'members') {
       combinedResults.push(...mockMembers);
     }
@@ -145,7 +145,7 @@ const SearchPage: React.FC = () => {
               onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
-          
+
           <div className="mt-6 flex space-x-2 overflow-x-auto pb-2">
             {[
               { id: 'all', label: 'All', icon: MagnifyingGlassIcon },
@@ -183,7 +183,7 @@ const SearchPage: React.FC = () => {
                 Sorted by relevance
               </div>
             </div>
-            
+
             <div className="space-y-4">
               {filteredResults.map((result) => {
                 if (result.type === 'member') {
@@ -260,7 +260,7 @@ const SearchPage: React.FC = () => {
                 return null;
               })}
             </div>
-            
+
             {filteredResults.length === 0 && (
               <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                 <div className="mx-auto w-24 h-24 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
@@ -284,7 +284,7 @@ const SearchPage: React.FC = () => {
             <p className="text-gray-500 max-w-sm mx-auto">
               Find people you know, discover new communities, and explore trending content.
             </p>
-            
+
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               {[
                 { label: 'Trending Topics', icon: HashtagIcon, count: 12 },

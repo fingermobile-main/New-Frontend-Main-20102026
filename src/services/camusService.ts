@@ -35,7 +35,7 @@ class CamusService {
   }
 
   async sendMessage(conversationId: string,
-message: string): Promise<CamusResponse> {
+    message: string): Promise<CamusResponse> {
     const response = await api.post(`${this.baseUrl}/conversations/${conversationId}/messages`, {content: message
     });
     return response.data;
@@ -49,7 +49,7 @@ message: string): Promise<CamusResponse> {
   async listConversations(page = 1, limit = 20): Promise<{conversations: CamusConversation[],
   total: number }> {
     const response = await api.get(`${this.baseUrl}/conversations`, {params: { page,
-  limit }
+      limit }
     });
     return response.data;
   }

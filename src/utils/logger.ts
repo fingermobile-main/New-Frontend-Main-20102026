@@ -39,25 +39,25 @@ if (isBrowser) {
         console.error(`[ERROR] ${message}`, ...meta);
       }
     },
-    
+
     warn: (message: string, ...meta: any[]) => {
       if (LOG_LEVELS.warn <= LOG_LEVELS[currentLevel]) {
         console.warn(`[WARN] ${message}`, ...meta);
       }
     },
-    
+
     info: (message: string, ...meta: any[]) => {
       if (LOG_LEVELS.info <= LOG_LEVELS[currentLevel]) {
         console.info(`[INFO] ${message}`, ...meta);
       }
     },
-    
+
     http: (message: string, ...meta: any[]) => {
       if (LOG_LEVELS.http <= LOG_LEVELS[currentLevel]) {
         console.log(`[HTTP] ${message}`, ...meta);
       }
     },
-    
+
     debug: (message: string, ...meta: any[]) => {
       if (LOG_LEVELS.debug <= LOG_LEVELS[currentLevel]) {
         console.debug(`[DEBUG] ${message}`, ...meta);
@@ -73,23 +73,23 @@ if (isBrowser) {
   /* eslint-enable @typescript-eslint/no-var-requires */
 
   const colors = {
-    error: "red",
-    warn: "yellow",
-    info: "green",
-    http: "magenta",
-    debug: "white"
+    error: 'red',
+    warn: 'yellow',
+    info: 'green',
+    http: 'magenta',
+    debug: 'white'
   };
 
   winston.addColors(colors);
 
   const format = winston.format.combine(
-    winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     winston.format.colorize({ all: true }),
     winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
   );
 
   // Safely evaluate directory pathways relative to modern monorepos/build layers
-  const logsDir = path.join(__dirname, "../../logs");
+  const logsDir = path.join(__dirname, '../../logs');
   if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
   }
@@ -102,15 +102,15 @@ if (isBrowser) {
       )
     }),
     new winston.transports.File({
-      filename: path.join(logsDir, "error.log"),
-      level: "error",
+      filename: path.join(logsDir, 'error.log'),
+      level: 'error',
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json()
       )
     }),
     new winston.transports.File({
-      filename: path.join(logsDir, "all.log"),
+      filename: path.join(logsDir, 'all.log'),
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json()

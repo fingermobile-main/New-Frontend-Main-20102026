@@ -1,12 +1,12 @@
 import React, {} from 'react';
-import { Image, Video, Music, FileText } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Image, Video, Music, FileText } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface MediaItem {
   id: string;
-  type: "image" | "video" | "audio" | "document";
+  type: 'image' | 'video' | 'audio' | 'document';
   filename: string;
   url: string;
   thumbnail?: string;
@@ -50,16 +50,16 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
 
   const getMediaIcon = (type: string) => {
     switch (type) {
-      case "image":
-        return <Image className="h-5 w-5" />;
-      case "video":
-        return <Video className="h-5 w-5" />;
-      case "audio":
-        return <Music className="h-5 w-5" />;
-      case "document":
-        return <FileText className="h-5 w-5" />;
-      default:
-        return <FileText className="h-5 w-5" />;
+    case 'image':
+      return <Image className="h-5 w-5" />;
+    case 'video':
+      return <Video className="h-5 w-5" />;
+    case 'audio':
+      return <Music className="h-5 w-5" />;
+    case 'document':
+      return <FileText className="h-5 w-5" />;
+    default:
+      return <FileText className="h-5 w-5" />;
     }
   };
 
@@ -87,18 +87,18 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
       <CardContent className="space-y-3">
         {/* Preview */}
         <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-          {currentMedia.type === "image" && (
+          {currentMedia.type === 'image' && (
             <img src={currentMedia.url} alt={currentMedia.filename} className="w-full h-full object-contain"  />
           )}
-          {currentMedia.type === "video" && (
+          {currentMedia.type === 'video' && (
             <video src={currentMedia.url} controls className="w-full h-full" />
           )}
-          {currentMedia.type === "audio" && (
+          {currentMedia.type === 'audio' && (
             <div className="w-full h-full flex items-center justify-center">
               <Music className="h-16 w-16 text-muted-foreground opacity-20" />
             </div>
           )}
-          {currentMedia.type === "document" && (
+          {currentMedia.type === 'document' && (
             <div className="w-full h-full flex items-center justify-center">
               <FileText className="h-16 w-16 text-muted-foreground opacity-20" />
             </div>
@@ -106,7 +106,7 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
         </div>
 
         {/* Progress Bar */}
-        {(currentMedia.type === "video" || currentMedia.type === "audio") && (
+        {(currentMedia.type === 'video' || currentMedia.type === 'audio') && (
           <div className="space-y-2">
             <input
               type="range"
@@ -124,13 +124,13 @@ const MediaPlaybackBar: React.FC<MediaPlaybackBarProps> = ({
         )}
 
         {/* Controls */}
-        {(currentMedia.type === "video" || currentMedia.type === "audio") && (
+        {(currentMedia.type === 'video' || currentMedia.type === 'audio') && (
           <div className="flex items-center justify-center gap-2">
             <Button variant="ghost" size="icon" onClick={onPrevious}>
               Previous
             </Button>
             <Button size="sm" onClick={onPlayPause}>
-              {isPlaying ? "Pause" : "Play"}
+              {isPlaying ? 'Pause' : 'Play'}
             </Button>
             <Button variant="ghost" size="icon" onClick={onNext}>
               Next

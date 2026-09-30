@@ -18,7 +18,7 @@ const WidgetContextMenu: React.FC<WidgetContextMenuProps> = ({ onEdit, onDelete,
       >
         <EllipsisVerticalIcon className="w-5 h-5 text-gray-600" />
       </button>
-      
+
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
           <button onClick={() => { onEdit?.(); setIsOpen(false); }} className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50">

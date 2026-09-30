@@ -46,7 +46,7 @@ class AdsService {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching metrics:", error);
+      console.error('Error fetching metrics:', error);
       // Return mock data in case of error
       return adsMetricsData;
     }
@@ -64,7 +64,7 @@ class AdsService {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching performance data:", error);
+      console.error('Error fetching performance data:', error);
       // Return mock data in case of error
       return adsPerformanceData;
     }
@@ -77,11 +77,11 @@ class AdsService {
         throw new Error('No authentication token');
       }
 
-      const response = await api.get("/ads/dashboard/top-campaigns", {headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/ads/dashboard/top-campaigns', {headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching top performing campaigns:", error);
+      console.error('Error fetching top performing campaigns:', error);
       // Return mock data in case of error
       return topPerformingCampaignsData;
     }
@@ -94,11 +94,11 @@ class AdsService {
         throw new Error('No authentication token');
       }
 
-      const response = await api.get("/ads/dashboard/performance-metrics", {headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/ads/dashboard/performance-metrics', {headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching performance metrics:", error);
+      console.error('Error fetching performance metrics:', error);
       // Return mock data in case of error
       return performanceMetricsData;
     }
@@ -111,11 +111,11 @@ class AdsService {
         throw new Error('No authentication token');
       }
 
-      const response = await api.get("/ads/dashboard/demographics", {headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/ads/dashboard/demographics', {headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching demographics:", error);
+      console.error('Error fetching demographics:', error);
       // Return mock data in case of error
       return demographicsData;
     }
@@ -128,11 +128,11 @@ class AdsService {
         throw new Error('No authentication token');
       }
 
-      const response = await api.get("/ads/dashboard/interests", {headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/ads/dashboard/interests', {headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching interests:", error);
+      console.error('Error fetching interests:', error);
       // Return mock data in case of error
       return interestsData;
     }
@@ -145,11 +145,11 @@ class AdsService {
         throw new Error('No authentication token');
       }
 
-      const response = await api.get("/ads/dashboard/geographic", {headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get('/ads/dashboard/geographic', {headers: { Authorization: `Bearer ${token}` }
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching geographic data:", error);
+      console.error('Error fetching geographic data:', error);
       // Return mock data in case of error
       return geographicData;
     }

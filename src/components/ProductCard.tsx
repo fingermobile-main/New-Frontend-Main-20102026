@@ -1,65 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Product, ProductVariant } from '../types';
+import React, {} from 'react';
+import { Product } from '../types';
 
+/* eslint-disable no-unused-vars */
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (productId: string, variantId?: string) => void;
+  onAddToCart?: (_productId: string) => void;
   onGiftClick?: () => void;
   onPaylinkClick?: () => void;
   onBuyClick?: () => void;
-  selectedVariantId?: string; // ID of the variant currently selected in the parent context
-  onVariantChange?: (variantId: string) => void; // Callback to notify parent of selection change
+  onEmbedClick?: (_product: Product) => void;
   [key: string]: any;
 }
+/* eslint-enable no-unused-vars */
 
-const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  onAddToCart, 
-  selectedVariantId, 
-  onVariantChange 
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+  onEmbedClick
 }) => {
-  // Internal state for selected variant, defaults to prop or first variant
-  const [currentVariantId, setCurrentVariantId] = useState<string | undefined>(selectedVariantId || product.variants?.[0]?.id);
-
-  // Sync internal state with prop changes
-  useEffect(() => {
-    if (selectedVariantId !== currentVariantId) {
-      setCurrentVariantId(selectedVariantId);
-    }
-  }, [selectedVariantId]);
-
-  // Find the currently selected variant object
-  const selectedVariant = product.variants?.find(v => v.id === currentVariantId);
-
-  // Determine the price and image to display
-  const displayPrice = selectedVariant ? selectedVariant.price : product.price;
-  // Fixed image access: variants.images is string[], not {url: string}[]
-  const displayImage = selectedVariant && selectedVariant.images && selectedVariant.images[0] 
-    ? selectedVariant.images[0] // Access the string directly
-    : (product.images?.[0] || product.imageUrl || 'https://placehold.co/400x300');
-
-  // Handle variant selection change
-  const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newVariantId = e.target.value;
-    setCurrentVariantId(newVariantId);
-    if (onVariantChange) {
-      onVariantChange(newVariantId);
-    }
-  };
-
-  // Function to render star ratings - Fixed to handle union type
+  // Function to render star ratings
   const renderRating = () => {
-    let averageRating = 0;
-    if (typeof product.rating === 'object' && product.rating !== null) {
-        averageRating = product.rating.average;
-    } else if (typeof product.rating === 'number') {
-        averageRating = product.rating;
-    }
+    const rating = product.rating ?? 0;
 
     return Array.from({ length: 5 }, (_, i) => (
       <svg
         key={i + 1}
-        className={`w-4 h-4 ${i + 1 <= averageRating ? "text-yellow-400" : "text-gray-300"}`}
+        className={`w-4 h-4 ${i + 1 <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -70,56 +36,67 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="h-48 bg-gray-200">
+    <div className="glass rounded-2xl border border-white/40 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group hover:-translate-y-1">
+      <div className="h-48 bg-gray-100 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
         <img
-          src={displayImage}
+          src={product.images?.[0] || product.imageUrl || 'https://placehold.co/400x300'}
           alt={product.name}
-          className="w-full h-full object-cover"
-         />
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
+          <span className="inline-flex px-2.5 py-1 text-xs font-bold text-white bg-black/40 backdrop-blur-md rounded-full shadow-sm">
+            {product.category}
+          </span>
+          {onEmbedClick && (
+            <button
+              onClick={() => onEmbedClick(product)}
+              title="Embed into Postcard, Forum, or Social"
+              aria-label="Embed into Postcard, Forum, or Social"
+              className="p-1.5 bg-black/50 hover:bg-indigo-600 text-white rounded-full backdrop-blur-md transition shadow"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
-      <div className="p-4">
-        <span className="inline-block px-2 py-1 text-xs font-semibold text-brand-blue bg-blue-100 rounded-full">
-          {product.category}
-        </span>
-        <h3 className="mt-2 font-medium text-gray-900 line-clamp-2">
+      <div className="p-5">
+        <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-brand-blue transition-colors text-lg leading-tight">
           {product.name}
         </h3>
-        
-        {/* Variant Selector */}
-        {product.variants && product.variants.length > 0 && (
-          <div className="mt-2">
-            <select 
-              value={currentVariantId || ''} 
-              onChange={handleVariantChange}
-              className="w-full text-sm border border-gray-300 rounded-md p-1"
-            >
-              {product.variants.map(variant => (
-                <option key={variant.id} value={variant.id}>
-                  {variant.name} ({variant.options ? Object.values(variant.options).join(', ') : ''}) - {variant.price} FIC
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        <div className="mt-2 flex items-center">
-          <div className="flex">{renderRating()}</div>
-          {/* Fixed rating count access - handle union type */}
-          <span className="ml-1 text-sm text-gray-500">
-            ({typeof product.rating === 'object' && product.rating !== null ? product.rating.count : product.reviewCount || 0})
+        <div className="mt-3 flex items-center">
+          <div className="flex drop-shadow-sm">{renderRating()}</div>
+          <span className="ml-2 text-sm font-medium text-gray-500">
+            ({product.reviewCount || 0})
           </span>
         </div>
-        <div className="mt-3 flex items-center justify-between">
-          <span className="text-lg font-bold text-gray-900">
-            {displayPrice} FIC
+        <div className="mt-4 flex items-center justify-between gap-2">
+          <span className="text-xl font-extrabold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+            {product.price} FIC
           </span>
-          <button
-            className="px-3 py-1 bg-brand-blue text-white text-sm rounded-md hover:bg-blue-700"
-            onClick={() => onAddToCart && onAddToCart(product.id, currentVariantId)}
-          >
-            Add to Cart
-          </button>
+          <div className="flex items-center gap-1.5">
+            {onEmbedClick && (
+              <button
+                type="button"
+                className="p-2 border border-gray-300 text-gray-700 hover:text-indigo-600 hover:border-indigo-500 rounded-xl transition"
+                onClick={() => onEmbedClick(product)}
+                title="Embed into Postcards/Forum"
+                aria-label="Embed into Postcards/Forum"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+            )}
+            <button
+              className="px-3.5 py-2 bg-gradient-to-r from-brand-blue to-blue-600 text-white text-sm font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg transform transition-all active:scale-95"
+              onClick={() => onAddToCart && onAddToCart(typeof product.id === 'string' ? product.id : String(product.id))}
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
     </div>

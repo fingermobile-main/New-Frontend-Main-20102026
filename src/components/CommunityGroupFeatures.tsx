@@ -106,7 +106,7 @@ const CommunityGroupFeatures: React.FC = () => {
   const handleToggleAutoInvitations = () => setAutoInvitations(!autoInvitations);
 
   const toggleMemberOnlineStatus = (id: number) => {
-    setMembers(members.map(member => 
+    setMembers(members.map(member =>
       member.id === id ? { ...member, online: !member.online } : member
     ));
   };
@@ -114,13 +114,13 @@ const CommunityGroupFeatures: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Community & Group Features</h2>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Group Information</h3>
-            
+
             <div className="mb-4">
               <label htmlFor="groupName" className="block text-sm font-medium text-gray-700 mb-1">Group Name</label>
               <input
@@ -132,7 +132,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="groupDescription" className="block text-sm font-medium text-gray-700 mb-1">Group Description</label>
               <textarea
@@ -145,10 +145,10 @@ const CommunityGroupFeatures: React.FC = () => {
               />
             </div>
           </div>
-          
+
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Group Members</h3>
-            
+
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
@@ -176,8 +176,8 @@ const CommunityGroupFeatures: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           member.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                          member.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
-                          'bg-green-100 text-green-800'
+                            member.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
+                              'bg-green-100 text-green-800'
                         }`}>
                           {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                         </span>
@@ -193,8 +193,8 @@ const CommunityGroupFeatures: React.FC = () => {
                         <button
                           onClick={() => toggleMemberOnlineStatus(member.id)}
                           className={`text-xs px-2 py-1 rounded ${
-                            member.online 
-                              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                            member.online
+                              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                               : 'bg-green-200 text-green-700 hover:bg-green-300'
                           }`}
                         >
@@ -208,13 +208,13 @@ const CommunityGroupFeatures: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Right Column */}
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Event Planning</h3>
             <p className="text-sm text-gray-600 mb-3">Plan events in group chats with RSVPs and +1 options</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="eventTitle" className="block text-sm font-medium text-gray-700 mb-1">Event Title *</label>
@@ -227,7 +227,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
                 <input
@@ -238,7 +238,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="eventTime" className="block text-sm font-medium text-gray-700 mb-1">Time *</label>
                 <input
@@ -249,7 +249,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="eventLocation" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <input
@@ -261,7 +261,7 @@ const CommunityGroupFeatures: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div className="md:col-span-2">
                 <label htmlFor="eventMaxCapacity" className="block text-sm font-medium text-gray-700 mb-1">Max Capacity</label>
                 <input
@@ -274,7 +274,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="eventDescription" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
@@ -286,14 +286,14 @@ const CommunityGroupFeatures: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <button
               onClick={handleAddEvent}
               className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Create Event
             </button>
-            
+
             <div className="mt-4">
               <h4 className="text-md font-medium text-gray-700 mb-2">Upcoming Events ({events.length})</h4>
               <div className="space-y-3 max-h-60 overflow-y-auto">
@@ -322,11 +322,11 @@ const CommunityGroupFeatures: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-700 mb-3">File Sharing (up to 200MB)</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label htmlFor="fileName" className="block text-sm font-medium text-gray-700 mb-1">File Name</label>
@@ -339,7 +339,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div>
               <label htmlFor="fileSize" className="block text-sm font-medium text-gray-700 mb-1">File Size</label>
               <input
@@ -351,7 +351,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div>
               <label htmlFor="uploadedBy" className="block text-sm font-medium text-gray-700 mb-1">Uploaded By</label>
               <input
@@ -363,7 +363,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            
+
             <div>
               <label htmlFor="uploadDate" className="block text-sm font-medium text-gray-700 mb-1">Upload Date</label>
               <input
@@ -375,14 +375,14 @@ const CommunityGroupFeatures: React.FC = () => {
               />
             </div>
           </div>
-          
+
           <button
             onClick={handleAddFile}
             className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             Upload File
           </button>
-          
+
           <div className="mt-4">
             <h4 className="text-md font-medium text-gray-700 mb-2">Shared Files ({files.length})</h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -403,10 +403,10 @@ const CommunityGroupFeatures: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-700 mb-3">Group Features</h3>
-          
+
           <div className="space-y-4">
             <div className="flex items-start">
               <input
@@ -425,7 +425,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start">
               <input
                 type="checkbox"
@@ -443,7 +443,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start">
               <input
                 type="checkbox"
@@ -461,7 +461,7 @@ const CommunityGroupFeatures: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start">
               <input
                 type="checkbox"
@@ -480,7 +480,7 @@ const CommunityGroupFeatures: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-4 p-3 bg-blue-50 rounded-md">
             <p className="text-sm text-blue-800">
               <strong>Live Online Status:</strong> Enabled by default for all members
@@ -491,7 +491,7 @@ const CommunityGroupFeatures: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="mt-6 flex justify-end">
         <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           Save Group Settings

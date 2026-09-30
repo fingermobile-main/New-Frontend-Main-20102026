@@ -58,7 +58,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               </p>
             </div>
           </div>
-          
+
           <button
             onClick={onClose}
             className="text-white hover:bg-white/20 rounded-full p-2 transition-colors"
@@ -88,7 +88,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
                 <span className="text-white text-lg">Remote video stream</span>
               </div>
-              
+
               {/* Local Video Preview */}
               <div className="absolute bottom-4 right-4 w-32 h-48 bg-gray-800 rounded-lg border-2 border-white overflow-hidden">
                 {!isVideoOff ? (

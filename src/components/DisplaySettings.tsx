@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { 
-  Grid, List, LayoutGrid, Heart, SortAsc, 
-  Layers, Music, Video as VideoIcon 
+import {
+  Grid, List, LayoutGrid, Heart, SortAsc,
+  Layers, Music, Video as VideoIcon
 } from 'lucide-react';
 
 export type DisplayMode = 'grid' | 'list' | 'mosaic';
@@ -20,8 +20,8 @@ interface DisplaySettingsProps {
   onSortChange?: (criteria: SortCriteria) => void;
 }
 
-const DisplaySettings: React.FC<DisplaySettingsProps> = ({ 
-  currentMode, 
+const DisplaySettings: React.FC<DisplaySettingsProps> = ({
+  currentMode,
   onModeChange,
   showFavoritesOnly = false,
   onToggleFavorites,
@@ -63,7 +63,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
         >
           <Heart size={16} fill={showFavoritesOnly ? 'currentColor' : 'none'} />
         </button>
-        
+
         <button
           onClick={onToggleGroupVideos}
           className={`p-2.5 rounded-xl transition-all ${groupVideos ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'text-gray-500 hover:text-white bg-white/5 border border-transparent'}`}
@@ -86,7 +86,7 @@ const DisplaySettings: React.FC<DisplaySettingsProps> = ({
       {/* Sort Select */}
       <div className="flex items-center space-x-2 bg-white/5 px-3 py-1 rounded-xl group hover:bg-white/10 transition-all cursor-pointer">
         <SortAsc size={14} className="text-gray-500" />
-        <select 
+        <select
           value={sortCriteria}
           onChange={(e) => onSortChange?.(e.target.value as SortCriteria)}
           className="bg-transparent border-none text-[10px] font-black text-white focus:ring-0 uppercase tracking-widest cursor-pointer"

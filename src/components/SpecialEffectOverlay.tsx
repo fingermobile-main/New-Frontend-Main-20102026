@@ -7,7 +7,7 @@ interface SpecialEffect {
 
 const SpecialEffectOverlay: React.FC<SpecialEffect> = ({ effect, onComplete }) => {
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  
+
   React.useEffect(() => {
     // Simulate effect completion after some time
     timerRef.current = setTimeout(() => {
@@ -23,7 +23,7 @@ const SpecialEffectOverlay: React.FC<SpecialEffect> = ({ effect, onComplete }) =
 
   return (
     <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50">
-      {effect === "confetti" && (
+      {effect === 'confetti' && (
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-500/10 to-transparent animate-pulse">
           {/* Confetti effect would go here */}
           <div className="absolute inset-0 overflow-hidden">
@@ -45,7 +45,7 @@ const SpecialEffectOverlay: React.FC<SpecialEffect> = ({ effect, onComplete }) =
           </div>
         </div>
       )}
-      {effect !== "confetti" && (
+      {effect !== 'confetti' && (
         <div className="bg-gray-800/80 text-white p-4 rounded-lg">
           <p>Special effect: {effect}</p>
         </div>

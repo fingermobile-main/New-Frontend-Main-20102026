@@ -22,7 +22,7 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
   // Handle input change for each digit
   const handleChange = (index: number, value: string) => {
     if (/[^0-9]/.test(value)) return; // Only allow numbers
-    
+
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
@@ -62,7 +62,7 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     const verificationCode = code.join('');
     if (verificationCode.length !== 6) {
       setError('Please enter the complete 6-digit code');
@@ -82,28 +82,13 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
 
   // Countdown timer for resend button
   useEffect(() => {
-    // Cleanup any existing timer first
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    
+    let timer: ReturnType<typeof setTimeout>;
     if (resendDisabled && countdown > 0) {
-      const timerRefTemp = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-      
-      // Store the timeout ID in the ref
-      timerRef.current = timerRefTemp;
+      timer = timerRef.current = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       setResendDisabled(false);
     }
-    
-    // Cleanup function
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
+    return () => clearTimeout(timerRef.current);
   }, [resendDisabled, countdown]);
 
   // Send initial verification code
@@ -119,7 +104,7 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
     if (phone) {
       sendInitialCode();
     }
-  
+
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);

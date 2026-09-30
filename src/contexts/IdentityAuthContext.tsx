@@ -36,56 +36,56 @@ const initialState: AuthState = {
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
-    case 'SET_USER':
-      return {
-        ...state,
-        currentUser: action.payload,
-        isAuthenticated: !!action.payload,
-        isLoading: false,
-        error: null
-      };
-    case 'SET_LOADING':
-      return {
-        ...state,
-        isLoading: action.payload
-      };
-    case 'SET_ERROR':
-      return {
-        ...state,
-        error: action.payload,
-        isLoading: false
-      };
-    case 'UPDATE_PREFERENCES':
-      if (!state.currentUser) return state;
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          preferences: {
-            ...state.currentUser.preferences,
-            ...action.payload
-          }
-        }
-      };
-    case 'UPDATE_VERIFICATION_STATUS':
-      return {
-        ...state,
-        verificationStatus: {
-          ...state.verificationStatus,
+  case 'SET_USER':
+    return {
+      ...state,
+      currentUser: action.payload,
+      isAuthenticated: !!action.payload,
+      isLoading: false,
+      error: null
+    };
+  case 'SET_LOADING':
+    return {
+      ...state,
+      isLoading: action.payload
+    };
+  case 'SET_ERROR':
+    return {
+      ...state,
+      error: action.payload,
+      isLoading: false
+    };
+  case 'UPDATE_PREFERENCES':
+    if (!state.currentUser) return state;
+    return {
+      ...state,
+      currentUser: {
+        ...state.currentUser,
+        preferences: {
+          ...state.currentUser.preferences,
           ...action.payload
         }
-      };
-    case 'LOGOUT':
-      return {
-        ...initialState,
-        verificationStatus: {
-          email: false,
-          phone: false,
-          identity: false
-        }
-      };
-    default:
-      return state;
+      }
+    };
+  case 'UPDATE_VERIFICATION_STATUS':
+    return {
+      ...state,
+      verificationStatus: {
+        ...state.verificationStatus,
+        ...action.payload
+      }
+    };
+  case 'LOGOUT':
+    return {
+      ...initialState,
+      verificationStatus: {
+        email: false,
+        phone: false,
+        identity: false
+      }
+    };
+  default:
+    return state;
   }
 };
 
@@ -183,7 +183,7 @@ export const IdentityAuthProvider: React.FC<Props> = ({ children }) => {
       }
 
       const result = await response.json();
-      
+
       dispatch({ type: 'SET_USER', payload: result.user });
       localStorage.setItem('accessToken', result.accessToken);
     } catch (error: unknown) {
@@ -250,9 +250,9 @@ export const IdentityAuthProvider: React.FC<Props> = ({ children }) => {
 
   const updatePreferences = (prefs: Partial<UserPreferences>) => {
     if (!state.currentUser) return;
-    
-    dispatch({ 
-      type: 'UPDATE_PREFERENCES', 
+
+    dispatch({
+      type: 'UPDATE_PREFERENCES',
       payload: prefs
     });
   };

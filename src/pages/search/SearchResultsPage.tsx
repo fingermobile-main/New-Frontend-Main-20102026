@@ -17,9 +17,9 @@ const SearchResultsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const type = searchParams.get('type') || 'all';
-  
+
   const { handleAiAssist } = useAppContext();
-  
+
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +32,7 @@ const SearchResultsPage: React.FC = () => {
           query,
           type === 'all' ? undefined : { type: [type] }
         );
-    // @ts-ignore - Auto-suppressed for compilation
+        // @ts-ignore - Auto-suppressed for compilation
         setResults(response.results || []);
       } catch (err) {
         setError('Failed to perform search. Please try again.');
@@ -85,7 +85,7 @@ const SearchResultsPage: React.FC = () => {
       </div>
 
       <div className="mb-6">
-        <button 
+        <button
           onClick={handleAiAssistAction}
           className="flex items-center text-brand-blue hover:text-blue-700"
         >
@@ -96,8 +96,8 @@ const SearchResultsPage: React.FC = () => {
       {results.length > 0 ? (
         <div className="space-y-4">
           {results.map(result => (
-            <a 
-              key={result.id} 
+            <a
+              key={result.id}
               href={result.url}
               className="block bg-white dark:bg-gray-800 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
             >

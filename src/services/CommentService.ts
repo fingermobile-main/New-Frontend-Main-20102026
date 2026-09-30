@@ -18,14 +18,14 @@ export interface CreateCommentData {postId: string; content: string;
 
 class CommentService {
   private api = axios.create({baseURL: `${API_BASE_URL}/discover`, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async getComments(postId: string, parentId?: string,
-limit: number = 20): Promise<Comment[]> {
+    limit: number = 20): Promise<Comment[]> {
     const response = await this.api.get(`/post/${postId}`, {params: { parentId,
-  limit } });
+      limit } });
     return response.data;
   }
 
@@ -40,7 +40,7 @@ limit: number = 20): Promise<Comment[]> {
   }
 
   async updateComment(commentId: string,
-content: string): Promise<Comment> {
+    content: string): Promise<Comment> {
     const response = await this.api.put(`/${commentId}`, { content });
     return response.data;
   }
@@ -58,13 +58,13 @@ content: string): Promise<Comment> {
   }
 
   async getReplies(commentId: string,
-limit: number = 10): Promise<Comment[]> {
+    limit: number = 10): Promise<Comment[]> {
     const response = await this.api.get(`/${commentId}/replies`, {params: { limit } });
     return response.data;
   }
 
   async getUserComments(userId: string,
-limit: number = 20): Promise<Comment[]> {
+    limit: number = 20): Promise<Comment[]> {
     const response = await this.api.get(`/user/${userId}`, {params: { limit } });
     return response.data;
   }

@@ -1,12 +1,12 @@
 import React, {} from 'react';
 import DatabaseIntegrationReport from '../components/DatabaseIntegrationReport';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { ServerIcon, DatabaseIcon, UserCircleIcon, ChartBarIcon, CheckCircleIcon, ClockIcon } from '../icons';
 
 const DatabaseIntegrationDashboard: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
-  
+
   return (
     <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -21,11 +21,11 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             <DatabaseIntegrationReport />
-            
+
             <div className="mt-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
               <h2 className="text-xl font-semibold mb-4">Integration Status Overview</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -47,7 +47,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
               <h2 className="text-xl font-semibold mb-4">Component Integration Status</h2>
               <div className="space-y-4">
@@ -61,7 +61,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     Integrated
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                   <div>
                     <h3 className="font-medium text-gray-900">Dancia-4Tv</h3>
@@ -72,7 +72,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     Integrated
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                   <div>
                     <h3 className="font-medium text-gray-900">FingerWars</h3>
@@ -83,7 +83,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     Integrated
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                   <div>
                     <h3 className="font-medium text-gray-900">FingerLux</h3>
@@ -94,7 +94,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     Integrated
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                   <div>
                     <h3 className="font-medium text-gray-900">Community Pages</h3>
@@ -105,7 +105,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
                     Integrated
                   </span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                   <div>
                     <h3 className="font-medium text-gray-900">Marketplace Components</h3>

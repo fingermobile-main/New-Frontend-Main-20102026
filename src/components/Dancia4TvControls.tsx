@@ -13,7 +13,7 @@ const Dancia4TvControls: React.FC = () => {
       showToast('Please enter a stream URL', 'error');
       return;
     }
-    
+
     // Simulate starting a stream
     console.info(`Starting stream with URL: ${streamUrl}`);
     showToast('Stream started successfully', 'success');
@@ -40,7 +40,7 @@ const Dancia4TvControls: React.FC = () => {
             onChange={(e) => setStreamUrl(e.target.value)}
           />
         </div>
-        
+
         <div className="flex space-x-2">
           <Button onClick={handleStartStream}>Start Stream</Button>
           <Button onClick={handleStopStream} variant="secondary">Stop Stream</Button>

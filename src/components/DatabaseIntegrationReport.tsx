@@ -33,11 +33,11 @@ const DatabaseIntegrationReport: React.FC<DatabaseIntegrationReportProps> = ({ r
             <p className="text-sm text-gray-500">Last checked: {new Date(report.lastCheck).toLocaleString()}</p>
           </div>
         </div>
-        
+
         <span className={`px-4 py-2 rounded-full text-sm font-medium ${
           report.status === 'healthy' ? 'bg-green-100 text-green-800' :
-          report.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-          'bg-red-100 text-red-800'
+            report.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+              'bg-red-100 text-red-800'
         }`}>
           {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
         </span>

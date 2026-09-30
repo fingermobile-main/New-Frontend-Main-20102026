@@ -26,8 +26,8 @@ const PlatformTaskManager: React.FC<PlatformTaskManagerProps> = () => {
               </div>
               <span className={`px-2 py-1 rounded text-xs font-medium ${
                 task.priority === 'critical' ? 'bg-red-100 text-red-800' :
-                task.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                'bg-blue-100 text-blue-800'
+                  task.priority === 'high' ? 'bg-orange-100 text-orange-800' :
+                    'bg-blue-100 text-blue-800'
               }`}>
                 {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
               </span>

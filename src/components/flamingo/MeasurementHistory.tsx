@@ -166,11 +166,11 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
           <h3 className="font-semibold text-gray-900">Previous Measurements</h3>
           {measurements.slice(1).map((measurement, idx) => {
             const currentValue = getMetricValue(measurement, selectedMetric);
-            const previousValue = idx < measurements.length - 2 
+            const previousValue = idx < measurements.length - 2
               ? getMetricValue(measurements[idx + 2], selectedMetric)
               : currentValue;
             const change = calculateChange(currentValue, previousValue);
-            
+
             return (
               <div
                 key={measurement.id || idx}
@@ -185,7 +185,7 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
                       {formatDate((measurement as any).updated_at || (measurement as any).created_at || new Date().toISOString())}
                     </p>
                   </div>
-                  
+
                   {idx < measurements.length - 1 && (
                     <div className="text-right">
                       <span className={`text-sm font-medium ${parseFloat(change.diff) > 0 ? 'text-red-600' : 'text-green-600'}`}>

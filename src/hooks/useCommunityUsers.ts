@@ -18,10 +18,10 @@ export const useCommunityUsers = (): UseCommunityUsersResult => {
     setError(null);
     try {
       // Simulate API call
-      const response = await ApiService.get<Member[]>("/community/users");
+      const response = await ApiService.get<Member[]>('/community/users');
       setMembers(response.data || []);
     } catch (err) {
-      setError("Failed to fetch community members.");
+      setError('Failed to fetch community members.');
       console.error(err);
     } finally {
       setLoading(false);

@@ -19,11 +19,11 @@ const CreatorMode: React.FC = () => {
         // In a real app, this would come from an API
         const creatorStatus = profile.profile?.role === 'creator' || profile.profile?.currentPlan === 'creator';
         setIsCreatorMode(creatorStatus || false);
-        
+
         // Fetch top voice badges
         const badges = ['Thought Leader', 'Industry Expert', 'Innovation Pioneer'];
         setTopVoiceBadges(badges);
-        
+
         // Fetch collaborative articles
         const articles = [
           { id: '1', title: 'The Future of Social Media', contributors: 5, status: 'active' },
@@ -45,7 +45,7 @@ const CreatorMode: React.FC = () => {
   const toggleCreatorMode = async () => {
     try {
       setLoading(true);
-      
+
       // In a real app, this would update the user's profile
       if (profile.profile) {
         await profile.updateProfile({
@@ -53,7 +53,7 @@ const CreatorMode: React.FC = () => {
           currentPlan: isCreatorMode ? 'standard' : 'creator',
           role: isCreatorMode ? 'user' : 'creator'
         });
-        
+
         setIsCreatorMode(!isCreatorMode);
       }
     } catch (err) {
@@ -84,7 +84,7 @@ const CreatorMode: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Creator Mode</h1>
-      
+
       <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
         <div className="flex items-center justify-between">
           <div>
@@ -96,15 +96,15 @@ const CreatorMode: React.FC = () => {
           <button
             onClick={toggleCreatorMode}
             className={`px-6 py-3 rounded-md text-white font-medium ${
-              isCreatorMode 
-                ? 'bg-red-500 hover:bg-red-600' 
+              isCreatorMode
+                ? 'bg-red-500 hover:bg-red-600'
                 : 'bg-green-500 hover:bg-green-600'
             }`}
           >
             {isCreatorMode ? 'Disable Creator Mode' : 'Enable Creator Mode'}
           </button>
         </div>
-        
+
         {isCreatorMode && (
           <div className="mt-4 p-4 bg-white rounded border border-green-200">
             <p className="text-green-700 font-medium">Creator Mode is Active!</p>
@@ -115,7 +115,7 @@ const CreatorMode: React.FC = () => {
 
       <div className="mb-10">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Top Voice Badges</h2>
-        
+
         {topVoiceBadges.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {topVoiceBadges.map((badge, index) => (
@@ -139,7 +139,7 @@ const CreatorMode: React.FC = () => {
 
       <div className="mb-10">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Collaborative Articles</h2>
-        
+
         {collaborativeArticles.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -170,10 +170,10 @@ const CreatorMode: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        article.status === 'published' 
-                          ? 'bg-green-100 text-green-800' 
-                          : article.status === 'draft' 
-                            ? 'bg-yellow-100 text-yellow-800' 
+                        article.status === 'published'
+                          ? 'bg-green-100 text-green-800'
+                          : article.status === 'draft'
+                            ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-blue-100 text-blue-800'
                       }`}>
                         {article.status.charAt(0).toUpperCase() + article.status.slice(1)}

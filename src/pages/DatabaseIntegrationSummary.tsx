@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import React from 'react';
+import { useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import DatabaseIntegrationReportCard from '../components/DatabaseIntegrationReportCard';
 import MainLayout from '../layouts/MainLayout';
 import apiService, { ApiService } from '../services/apiService';
@@ -107,7 +108,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
                   This ensures consistent data flow between frontend components and the database.
                 </p>
               </div>
-              
+
               <div>
                 <h3 className="font-medium text-gray-900">Datasynchronization</h3>
                 <p className="text-gray-600 mt-1">
@@ -115,7 +116,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
                   are immediately reflected in the database and vice versa.
                 </p>
               </div>
-              
+
               <div>
                 <h3 className="font-medium text-gray-900">Error Handling</h3>
                 <p className="text-gray-600 mt-1">
@@ -123,7 +124,7 @@ const DatabaseIntegrationSummary: React.FC = () => {
                   fallback mechanisms to ensure a smooth member experience even during connectivity issues.
                 </p>
               </div>
-              
+
               <div>
                 <h3 className="font-medium text-gray-900">Security</h3>
                 <p className="text-gray-600 mt-1">

@@ -1,265 +1,304 @@
-import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { User, SubProfile } from '../types';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { User } from '../types/user';
+import UserService from '../services/UserService';  // Corrected import path
 
-// Define mockUser for demonstration purposes
-const mockUser = {
-  id: 'mock-user-id',
-  email: 'mock@example.com',
-  username: 'mockuser',
-  name: 'Mock User',
-  avatar: '/images/mock-avatar.png',
-  role: 'user',
-  permissions: ['read', 'write'],
-  isVerified: false,
-  isActive: true,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-  subProfiles: [{
-    id: 'mock-subprofile-id',
-    name: 'Mock Profile',
-    avatar: '/images/mock-profile.png',
-    memberId: 'mock-user-id',
-    createdAt: new Date().toISOString(),
-    isDefault: true,
-    blockedContentIds: [],
-    permissions: ['read'],
-    isKid: false
-  }],
-  isSubscribed: false,
-  loyaltyTier: 'bronze'
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface AuthAction {
+  type: string;
+  payload?: any;
+}
+
+const initialState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  isLoading: true,
+  error: null,
 };
 
-interface AuthContextType {
-  user: User | null;
-  member: User | null; // Adding member property for backward compatibility
-  activeSubProfile: SubProfile | null;
-  login: (email: string, password: string) => Promise<void>;
+/* eslint-disable no-unused-vars */
+const AuthContext = createContext<{
+  state: AuthState;
+  dispatch: React.Dispatch<AuthAction>;
+  login: (username: string, password: string) => Promise<boolean>;
+  register: (userData: { email: string; username: string; password: string }) => Promise<boolean>;
   logout: () => void;
-  register: (userData: { email: string; password: string; name: string }) => Promise<void>;
-  switchActiveSubProfile: (subProfile: SubProfile) => void;
-  addSubProfile: (subProfileData: Partial<SubProfile>) => void;
-  hasPermission: (permission: string) => boolean; // Adding hasPermission method
-  getToken: () => string | null; // Adding getToken method
-  loading: boolean;
-  mustChangePassword?: boolean; // Added based on error log
-}
+  getCurrentUser: () => Promise<void>;
+  updateProfile: (profileData: any) => Promise<boolean>;
+    }>({
+      /* eslint-enable no-unused-vars */
+      state: initialState,
+      dispatch: () => {},
+      login: async () => false,
+      register: async () => false,
+      logout: () => {},
+      getCurrentUser: async () => {},
+      updateProfile: async () => false,
+    });
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+  switch (action.type) {
+  case 'LOGIN_START':
+    return {
+      ...state,
+      isLoading: true,
+      error: null,
+    };
+  case 'LOGIN_SUCCESS':
+    return {
+      ...state,
+      user: action.payload.user,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    };
+  case 'LOGIN_FAILURE':
+    return {
+      ...state,
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: action.payload.error,
+    };
+  case 'REGISTER_START':
+    return {
+      ...state,
+      isLoading: true,
+      error: null,
+    };
+  case 'REGISTER_SUCCESS':
+    return {
+      ...state,
+      user: action.payload.user,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    };
+  case 'REGISTER_FAILURE':
+    return {
+      ...state,
+      isLoading: false,
+      error: action.payload.error,
+    };
+  case 'LOGOUT':
+    return {
+      ...state,
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+    };
+  case 'SET_USER':
+    return {
+      ...state,
+      user: action.payload.user,
+      isAuthenticated: !!action.payload.user,
+      isLoading: false,
+      error: null,
+    };
+  case 'SET_ERROR':
+    return {
+      ...state,
+      error: action.payload.error,
+    };
+  case 'CLEAR_ERROR':
+    return {
+      ...state,
+      error: null,
+    };
+  default:
+    return state;
+  }
+};
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [activeSubProfile, setActiveSubProfile] = useState<SubProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [_error, setError] = useState<string | null>(null); // Adding underscore to unused variable
+  const login = async (username: string, password: string) => {
+    dispatch({ type: 'LOGIN_START' });
 
-  useEffect(() => {
-    // Check if user is logged in on initial load
-    const token = localStorage.getItem('token');
-    if (token) {
-      // In a real app, you would verify the token with the backend
-      // For now, we'll just assume the user data is stored locally
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        setUser(JSON.parse(userData));
-      }
-    }
-    setLoading(false);
-  }, []);
-
-  const login = async (email: string, _password: string) => {
-    setLoading(true);
-    setError(null);
-    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Create a base user object with all required properties
-      const userData: User = {
-        id: 'demo-user',
-        email,
-        username: email.split('@')[0],
-        name: email.split('@')[0],
-        avatar: '/placeholder-avatar.jpg',
-        role: 'user',
-        permissions: ['read', 'write'],
-        isVerified: false,
-        isActive: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        subProfiles: [],
-        isSubscribed: false,
-        loyaltyTier: 'bronze'
-      };
-      
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newUser: User = {
-        id: Date.now().toString(),
-        email: userData.email,
-        name: userData.name,
-        username: userData.username,
-        avatar: userData.avatar || '',
-        role: userData.role || 'user',
-        isVerified: userData.isVerified || false,
-        isActive: userData.isActive || true,
-        createdAt: userData.createdAt || new Date().toISOString(),
-        updatedAt: userData.updatedAt || new Date().toISOString(),
-        permissions: userData.permissions || [],
-        subProfiles: userData.subProfiles || [],
-        isSubscribed: userData.isSubscribed || false,
-        loyaltyTier: userData.loyaltyTier || 'bronze'
-      };
-      
-      setUser(newUser);
-      if (mockUser.subProfiles && mockUser.subProfiles[0]) {
-        setActiveSubProfile(mockUser.subProfiles[0]);
-        localStorage.setItem('activeSubProfile', JSON.stringify(mockUser.subProfiles[0]));
+      const result = await UserService.login({ username, password });
+
+      if (result.success && result.data) {
+        const { user, accessToken, refreshToken } = result.data;
+
+        // Extract user data properly
+        const userData = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          bio: user.bio,
+          avatar: user.avatar,
+          coverImage: user.coverImage,
+          role: user.role,
+          isVerified: user.isVerified,
+          isOnline: user.isOnline,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          lastSeenAt: user.lastSeenAt,
+          followersCount: user.followersCount,
+          followingCount: user.followingCount,
+          postsCount: user.postsCount,
+          badges: user.badges,
+          location: user.location,
+          website: user.website,
+          birthDate: user.birthDate,
+          privacySettings: user.privacySettings,
+          notificationSettings: user.notificationSettings,
+        };
+
+        // Store tokens in localStorage
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload: { user: userData },
+        });
+
+        return true;
+      } else {
+        dispatch({
+          type: 'LOGIN_FAILURE',
+          payload: { error: result.error || 'Login failed' },
+        });
+        return false;
       }
-      localStorage.setItem('user', JSON.stringify(mockUser));
-    } catch (err) {
-      setError('Login failed. Please try again.');
-      throw err;
-    } finally {
-      setLoading(false);
+    } catch (error: any) {
+      dispatch({
+        type: 'LOGIN_FAILURE',
+        payload: { error: error.message || 'An unexpected error occurred' },
+      });
+      return false;
     }
   };
 
-  // Define a proper type for registration data
-  interface RegistrationData {
-    email: string;
-    password: string;
-    name: string;
-    username?: string;
-    avatar?: string;
-    role?: string;
-    isVerified?: boolean;
-    isActive?: boolean;
-    createdAt?: string;
-    updatedAt?: string;
-    permissions?: string[];
-    // Add other properties as needed
-  }
+  const register = async (userData: { email: string; username: string; password: string }) => {
+    dispatch({ type: 'REGISTER_START' });
 
-  const register = async (userData: RegistrationData) => {
-    setLoading(true);
-    setError(null);
-    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newUser: User = {
-        id: `user_${Date.now()}`,
-        email: userData.email,
-        username: userData.username || `user_${Date.now()}`,
-        name: userData.name,
-        avatar: userData.avatar || '',
-        role: userData.role || 'user',
-        isVerified: userData.isVerified || false,
-        isActive: userData.isActive || true,
-        createdAt: userData.createdAt || new Date().toISOString(),
-        updatedAt: userData.updatedAt || new Date().toISOString(),
-        permissions: userData.permissions || [],
-        // Add other required properties
-      };
-      
-      setUser(newUser);
-      if (newUser.subProfiles && newUser.subProfiles[0]) {
-        setActiveSubProfile(newUser.subProfiles[0]);
-        localStorage.setItem('activeSubProfile', JSON.stringify(newUser.subProfiles[0]));
+      const result = await UserService.register(userData);
+
+      if (result.success && result.data) {
+        // For registration, the API only returns the user object, not tokens
+        // We'll need to login after registration to get tokens
+        const loginResult = await UserService.login({
+          username: userData.username,
+          password: userData.password
+        });
+
+        if (loginResult.success && loginResult.data) {
+          const { user, accessToken, refreshToken } = loginResult.data;
+
+          // Store tokens in localStorage
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+
+          dispatch({
+            type: 'REGISTER_SUCCESS',
+            payload: { user }
+          });
+          return true;
+        } else {
+          dispatch({
+            type: 'REGISTER_FAILURE',
+            payload: { error: loginResult.error || 'Login after registration failed' }
+          });
+          return false;
+        }
+      } else {
+        dispatch({
+          type: 'REGISTER_FAILURE',
+          payload: { error: result.error || 'Registration failed' }
+        });
+        return false;
       }
-      localStorage.setItem('user', JSON.stringify(newUser));
-    } catch (err) {
-      setError('Registration failed. Please try again.');
-      throw err;
-    } finally {
-      setLoading(false);
+    } catch (error: any) {
+      dispatch({
+        type: 'REGISTER_FAILURE',
+        payload: { error: error.message || 'An unexpected error occurred' },
+      });
+      return false;
     }
   };
 
   const logout = () => {
+    // Remove tokens from localStorage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('fingermobile_token');
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
-    localStorage.removeItem('activeSubProfile');
-    setUser(null);
-    setActiveSubProfile(null);
+
+    dispatch({ type: 'LOGOUT' });
   };
 
-  const switchActiveSubProfile = (subProfile: SubProfile) => {
-    setActiveSubProfile(subProfile);
-    // Save the active sub-profile to local storage
-    localStorage.setItem('activeSubProfile', JSON.stringify(subProfile));
+  const getCurrentUser = async () => {
+    try {
+      const result = await UserService.getCurrentUser();
+
+      if (result.success && result.data) {
+        dispatch({
+          type: 'SET_USER',
+          payload: { user: result.data },
+        });
+      } else {
+        // If getting user fails, clear auth state
+        logout();
+      }
+    } catch (error) {
+      // If getting user fails, clear auth state
+      logout();
+    }
   };
 
-  const addSubProfile = (_subProfileData: Partial<SubProfile>) => {
-    if (!user) return;
+  const updateProfile = async (profileData: any) => {
+    try {
+      const result = await UserService.updateUserProfile(profileData);
 
-    const newSubProfile: SubProfile = {
-      id: `sub_${Date.now()}`,
-      name: _subProfileData.name || 'New Profile',
-      avatar: _subProfileData.avatar || '',
-      memberId: user.id,
-      createdAt: new Date().toISOString(),
-      isDefault: false,
-      blockedContentIds: [],
-      permissions: _subProfileData.permissions || [],
-      isKid: _subProfileData.isKid || false
-    };
-
-    const updatedUser = {
-      ...user,
-      subProfiles: [...(user.subProfiles || []), newSubProfile]
-    };
-    
-    setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-  };
-
-  // Check if user has a specific permission
-  const hasPermission = (permission: string): boolean => {
-    // Simple permission check - in a real app, this would be more complex
-    if (!user || !user.permissions) return false;
-    return user.permissions.includes(permission);
-  };
-
-  // Get authentication token
-  const getToken = (): string | null => {
-    return localStorage.getItem('token');
+      if (result.success && result.data) {
+        dispatch({
+          type: 'SET_USER',
+          payload: { user: result.data },
+        });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   };
 
   useEffect(() => {
-    if (!loading && user) {
-      const savedSubProfile = localStorage.getItem('activeSubProfile');
-      if (savedSubProfile) {
-        try {
-          const parsedSubProfile = JSON.parse(savedSubProfile);
-          setActiveSubProfile(parsedSubProfile);
-        } catch {
-          // Silently handle parse errors - sub-profile will remain null
-        }
-      }
+    // Check if user is already logged in
+    const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+
+    if (accessToken) {
+      getCurrentUser();
+    } else {
+      // If no token, set loading to false
+      dispatch({ type: 'SET_USER', payload: { user: null } });
     }
-  }, [user, loading]);
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        member: user, // Providing member property for backward compatibility
-        activeSubProfile,
+        state,
+        dispatch,
         login,
-        logout,
         register,
-        switchActiveSubProfile,
-        addSubProfile,
-        hasPermission, // Adding hasPermission method
-        getToken, // Adding getToken method
-        loading
+        logout,
+        getCurrentUser,
+        updateProfile,
       }}
     >
       {children}
@@ -269,10 +308,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context;
+  return {
+    ...context,
+    user: context.state.user,
+    member: context.state.user, // Alias member to user
+    isAuthenticated: context.state.isAuthenticated,
+    isLoading: context.state.isLoading,
+  };
 };
 
-export default AuthContext;
+// Export default for the provider component
+export default AuthProvider;

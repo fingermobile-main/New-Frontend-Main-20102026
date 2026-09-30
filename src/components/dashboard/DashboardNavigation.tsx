@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
 // Import only the exact icons used in this file
-import { 
+import {
   HomeIcon,
   UserGroupIcon,
   Cog6ToothIcon,
@@ -42,9 +42,9 @@ const NAV_ITEMS = [
   { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon, badge: 0 }
 ];
 
-const DashboardNavigation: React.FC<DashboardNavigationProps> = ({ 
-  sidebarOpen, 
-  toggleSidebar 
+const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
+  sidebarOpen,
+  toggleSidebar
 }) => {
   const location = useLocation();
 
@@ -56,7 +56,7 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
   };
 
   return (
-    <aside 
+    <aside
       className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white transition-transform duration-300 ease-in-out transform flex flex-col ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 lg:static lg:inset-0`}
@@ -67,7 +67,7 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
           <div className="w-8 h-8 bg-blue-500 rounded-md"></div>
           <span className="text-xl font-bold">FingerMobile</span>
         </div>
-        <button 
+        <button
           onClick={toggleSidebar}
           className="lg:hidden text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           aria-label="Close sidebar"
@@ -81,8 +81,8 @@ const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           // Matches exact home link or starts with deeper sub-routes for others
-          const isActive = item.href === '/dashboard' 
-            ? location.pathname === item.href 
+          const isActive = item.href === '/dashboard'
+            ? location.pathname === item.href
             : location.pathname.startsWith(item.href);
 
           return (

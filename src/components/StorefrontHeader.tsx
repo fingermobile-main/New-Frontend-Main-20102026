@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Search, Filter, ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Search, Filter, ShoppingCart } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 
 interface StorefrontHeaderProps {
   storeName?: string;
@@ -12,13 +12,13 @@ interface StorefrontHeaderProps {
 }
 
 const StorefrontHeader: React.FC<StorefrontHeaderProps> = ({
-  storeName = "My Store",
+  storeName = 'My Store',
   cartCount = 0,
   onSearch,
   onCartClick,
   onFilterClick
 }) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);

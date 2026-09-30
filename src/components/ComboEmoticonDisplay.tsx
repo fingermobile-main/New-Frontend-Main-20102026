@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  EmojiHappyIcon, 
-  EmojiSadIcon, 
-  EmojiAngryIcon, 
-  EmojiWinkIcon, 
+import {
+  EmojiHappyIcon,
+  EmojiSadIcon,
+  EmojiAngryIcon,
+  EmojiWinkIcon,
   EmojiGrinningIcon,
   EmojiCoolIcon,
   EmojiMoneyMouthIcon
@@ -135,7 +135,7 @@ const EmojiAntIcon = createPlaceholderEmoji('A');
 
 const ComboEmoticonDisplay: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  
+
   // Group emojis by categories
   const emojiCategories = {
     all: [
@@ -299,14 +299,14 @@ const ComboEmoticonDisplay: React.FC = () => {
     // Add more categories as needed
   };
 
-  const filteredEmojis = selectedCategory === 'all' 
-    ? emojiCategories.all 
+  const filteredEmojis = selectedCategory === 'all'
+    ? emojiCategories.all
     : emojiCategories[selectedCategory as keyof typeof emojiCategories] || [];
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Emoji Collection</h2>
-      
+
       <div className="mb-6">
         <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
           Filter by Category:
@@ -347,8 +347,8 @@ const ComboEmoticonDisplay: React.FC = () => {
         {filteredEmojis.map((emoji, index) => {
           const IconComponent = emoji.icon;
           return (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
             >
               <div className="w-12 h-12 flex items-center justify-center">

@@ -8,8 +8,8 @@ interface FontSelectionModalProps {
   currentFont?: string;
 }
 
-const FontSelectionModal: React.FC<FontSelectionModalProps> = ({ 
-  isOpen, 
+const FontSelectionModal: React.FC<FontSelectionModalProps> = ({
+  isOpen,
   onClose,
   onSelect,
   currentFont = 'Inter'

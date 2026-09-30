@@ -7,11 +7,11 @@ interface CourseEnrollmentProps {
   onEnroll?: (courseId: string) => void;
 }
 
-const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({ 
+const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
   courseId = '',
   courseTitle = 'Course',
   price = 0,
-  onEnroll 
+  onEnroll
 }) => {
   const [isEnrolling, setIsEnrolling] = React.useState(false);
   const [enrolled, setEnrolled] = React.useState(false);
@@ -39,7 +39,7 @@ const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <h3 className="text-lg font-bold text-gray-900 mb-2">{courseTitle}</h3>
-      
+
       <div className="mb-4">
         <p className="text-3xl font-bold text-blue-600">{price.toLocaleString()} FIC</p>
         <p className="text-sm text-gray-500 mt-1">One-time payment • Lifetime access</p>

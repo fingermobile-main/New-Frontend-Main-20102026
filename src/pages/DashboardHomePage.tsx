@@ -1,12 +1,12 @@
 import React, {} from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import RoleBasedDashboard from '../components/dashboard/RoleBasedDashboard';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { HomeIcon, UserCircleIcon } from '../icons';
 
 const DashboardHomePage: React.FC = () => {
   const { ficBalance } = useAppContext();
-  
+
   return (
     <MainLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">

@@ -181,7 +181,7 @@ const CartModal: React.FC<CartModalProps> = ({
                   'Proceed to Checkout'
                 )}
               </button>
-              
+
               <button
                 onClick={onClose}
                 className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"

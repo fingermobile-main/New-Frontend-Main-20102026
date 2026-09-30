@@ -5,7 +5,7 @@ interface MainContentProps {
   className?: string;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ 
+const MainContent: React.FC<MainContentProps> = ({
   children,
   className = ''
 }) => {

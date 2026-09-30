@@ -1,13 +1,13 @@
 import React, {} from 'react';
-import { File, Folder, Image } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { File, Folder, Image } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface StorageItem {
   id: string;
   name: string;
-  type: "file" | "folder" | "image";
+  type: 'file' | 'folder' | 'image';
   size?: string;
   modified: string;
 }
@@ -26,22 +26,22 @@ const FileManager: React.FC<FileManagerProps> = ({
   onItemSelect
 }) => {
   const defaultItems: StorageItem[] = [
-    { id: "1", name: "Documents", type: "folder", modified: "2 hours ago" },
-    { id: "2", name: "Images", type: "folder", modified: "5 hours ago" },
-    { id: "3", name: "profile-photo.jpg", type: "image", size: "2.4 MB", modified: "1 day ago" },
-    { id: "4", name: "report.pdf", type: "file", size: "1.8 MB", modified: "2 days ago" }
+    { id: '1', name: 'Documents', type: 'folder', modified: '2 hours ago' },
+    { id: '2', name: 'Images', type: 'folder', modified: '5 hours ago' },
+    { id: '3', name: 'profile-photo.jpg', type: 'image', size: '2.4 MB', modified: '1 day ago' },
+    { id: '4', name: 'report.pdf', type: 'file', size: '1.8 MB', modified: '2 days ago' }
   ];
 
   const items = propItems || defaultItems;
 
   const getIcon = (type: string) => {
     switch (type) {
-      case "folder":
-        return <Folder className="h-8 w-8 text-blue-500" />;
-      case "image":
-        return <Image className="h-8 w-8 text-green-500" />;
-      default:
-        return <File className="h-8 w-8 text-gray-500" />;
+    case 'folder':
+      return <Folder className="h-8 w-8 text-blue-500" />;
+    case 'image':
+      return <Image className="h-8 w-8 text-green-500" />;
+    default:
+      return <File className="h-8 w-8 text-gray-500" />;
     }
   };
 
@@ -72,7 +72,7 @@ const FileManager: React.FC<FileManagerProps> = ({
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{item.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {item.size ? `${item.size} • ` : ""}Modified {item.modified}
+                  {item.size ? `${item.size} • ` : ''}Modified {item.modified}
                 </p>
               </div>
               <Badge variant="secondary">{item.type}</Badge>

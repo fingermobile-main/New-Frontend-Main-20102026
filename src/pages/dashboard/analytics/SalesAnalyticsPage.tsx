@@ -65,7 +65,7 @@ const SalesAnalyticsPage: React.FC = () => {
         <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
           <h2 className="text-xl font-bold mb-4">Top Selling Products</h2>
           <div className="space-y-3">
-            {topProducts.map((product) => (
+            {topProducts.map((product: any) => (
               <div key={product.id} className="bg-white p-4 rounded-lg shadow">
                 <h3 className="font-semibold">{product.name}</h3>
                 {/* Remove sales and unitsSold if they don't exist on Product type */}

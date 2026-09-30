@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 /**
  * A custom hook that provides helper functions for showing toast notifications
@@ -13,7 +13,7 @@ export const useToastHelper = () => {
    */
   const executeAsyncOperation = React.useCallback(
     async (operation: () => Promise<void>,
-successMessage: string, errorMessage = "An error occurred during the operation."
+      successMessage: string, errorMessage = 'An error occurred during the operation.'
     ) => {
       try {
         await operation();
@@ -31,7 +31,7 @@ successMessage: string, errorMessage = "An error occurred during the operation."
    */
   const showTemporaryMessage = React.useCallback(
     (message: string,
-type: 'success' | 'error' | 'info' | 'warning' = 'info', duration = 3000) => {
+      type: 'success' | 'error' | 'info' | 'warning' = 'info', duration = 3000) => {
       showToast(message, type);
       // Note: Currently, the AppContext hardcodes the duration to 5000ms
       // This is just for documentation purposes

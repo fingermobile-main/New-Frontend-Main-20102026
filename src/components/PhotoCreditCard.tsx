@@ -25,7 +25,7 @@ const PhotoCreditCard: React.FC<PhotoCreditCardProps> = ({
           src={item.imageUrl || 'https://placehold.co/400x300'}
           alt={item.title}
           className="w-full h-48 object-cover"
-         />
+        />
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>

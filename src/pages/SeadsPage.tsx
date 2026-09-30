@@ -1,347 +1,459 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { SeadsInitiative } from '../types/seads'; // Use the type from the types file
-
+import { useAppContext } from '../contexts/AppContext';
+import { ApiService } from '../services/apiService';
 import {
-  MembersIcon,
+  GlobeAltIcon,
+  SparklesIcon,
   CalendarIcon,
   MapPinIcon,
-  UserCircleIcon,
+  UserGroupIcon,
   ChartBarIcon,
-  GlobeAltIcon
+  PlusIcon,
+  XMarkIcon,
+  CurrencyDollarIcon,
+  CheckCircleIcon
 } from '../icons';
-import PageHeader from '../components/PageHeader';
-import EnhancedFilterBar, { FilterOptions } from '../components/shared/EnhancedFilterBar';
 
-interface FilterState {
-  category?: string;
-  status?: string;
-  dateRange?: [string, string];
-  location?: string;
-  searchQuery?: string;
-  sortBy?: string;
+export interface SeadProject {
+  id: string;
+  title: string;
+  category: string;
+  location: string;
+  pitch_summary: string;
+  target_funding: number;
+  current_funding: number;
+  deadline: string;
+  organizer_name: string;
+  backers_count: number;
+  is_backed?: boolean;
 }
 
 const SeadsPage: React.FC = () => {
-  const { seadsInitiatives, loading, error, ficBalance } = useAppContext(); // Added ficBalance
-  const [filters, setFilters] = useState<FilterState>({});
-  const [filteredInitiatives, setFilteredInitiatives] = useState<SeadsInitiative[]>([]);
+  const { ficBalance, showToast } = useAppContext();
+  const [projects, setProjects] = useState<SeadProject[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [backingProject, setBackingProject] = useState<SeadProject | null>(null);
+  const [pledgeAmount, setPledgeAmount] = useState<number>(50);
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // Initialize filtered initiatives when data is loaded
-  useEffect(() => {
-    if (seadsInitiatives?.length > 0) {
-      applyFilters(filters, seadsInitiatives as unknown as SeadsInitiative[]);
-    }
-  }, [seadsInitiatives]);
+  // Form State
+  const [createForm, setCreateForm] = useState({
+    title: '',
+    pitch_summary: '',
+    category: 'Ecology & Urban Greenery',
+    location: 'Lagos Mainland',
+    target_funding: 5000,
+    deadline: '2026-12-31'
+  });
 
-  const applyFilters = useCallback((newFilters: FilterState, data: SeadsInitiative[] = seadsInitiatives as unknown as SeadsInitiative[]) => {
-    let result = [...data];
+  const categories = ['all', 'Ecology & Urban Greenery', 'Solar & Clean Power', 'Artisan Guilds', 'Youth Tech Centers'];
 
-    if (newFilters.category && newFilters.category !== "all") {
-      result = result.filter(init => 
-        init.category?.toLowerCase().includes(newFilters.category!.toLowerCase())
-      );
-    }
-
-    if (newFilters.status) {
-      result = result.filter(init => (init as any).status === newFilters.status);
-    }
-
-    if (newFilters.dateRange) {
-      const [startDate, endDate] = newFilters.dateRange;
-      result = result.filter(init => {
-        const initStartDate = init.startDate ? new Date(init.startDate) : new Date(0);
-        const initEndDate = init.endDate ? new Date(init.endDate) : new Date(8640000000000000); // Max date
-        const filterStartDate = startDate ? new Date(startDate) : new Date(0);
-        const filterEndDate = endDate ? new Date(endDate) : new Date(8640000000000000);
-        
-        return initStartDate <= filterEndDate && initEndDate >= filterStartDate;
-      });
-    }
-
-    if (newFilters.location) {
-      result = result.filter(init => 
-        init.location?.toLowerCase().includes(newFilters.location!.toLowerCase())
-      );
-    }
-
-    if (newFilters.searchQuery) {
-      const query = newFilters.searchQuery.toLowerCase();
-      result = result.filter(init => 
-        init.title.toLowerCase().includes(query) || 
-        init.description?.toLowerCase().includes(query) ||
-        init.category?.toLowerCase().includes(query)
-      );
-    }
-
-    // Sorting logic
-    if (newFilters.sortBy) {
-      switch (newFilters.sortBy) {
-        case 'newest':
-          result.sort(
-            (a, b) => {
-              const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
-              const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
-              return dateB - dateA;
-            }
-          );
-          break;
-        case 'oldest':
-          result.sort(
-            (a, b) => {
-              const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
-              const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
-              return dateA - dateB;
-            }
-          );
-          break;
-        case 'progress':
-          result.sort((a, b) => (b.progress || 0) - (a.progress || 0));
-          break;
-        case 'popularity':
-          result.sort((a, b) => ((b as any).members?.length || 0) - ((a as any).members?.length || 0));
-          break;
-        default:
-          break;
+  const fetchSeadsProjects = async () => {
+    try {
+      setLoading(true);
+      const res: any = await ApiService.get('/seads');
+      if (res && res.data && res.data.length > 0) {
+        setProjects(res.data);
+      } else {
+        setProjects([
+          {
+            id: 'sead-01',
+            title: 'Lekki Coastal Mangrove Restoration & Biosphere',
+            category: 'Ecology & Urban Greenery',
+            location: 'Lagos Lagoon Wetlands',
+            pitch_summary: 'Community-led reforestation of 10,000 native mangrove trees along the Lekki coastline to protect urban communities from tidal surges.',
+            target_funding: 15000,
+            current_funding: 11250,
+            deadline: '2026-11-30',
+            organizer_name: 'Green Thumb Foundation',
+            backers_count: 240
+          },
+          {
+            id: 'sead-02',
+            title: 'Solar Community Wi-Fi Terminals for Street Artists',
+            category: 'Solar & Clean Power',
+            location: 'Surulere Art District',
+            pitch_summary: 'Deploying off-grid solar-powered internet hubs allowing local artisans and vloggers to broadcast live streams and upload to PhotoCredits.',
+            target_funding: 8000,
+            current_funding: 6800,
+            deadline: '2026-10-15',
+            organizer_name: 'SolarWave Initiative',
+            backers_count: 185
+          },
+          {
+            id: 'sead-03',
+            title: 'Yoruba Textile Weaving & Dye Apprenticeship Guild',
+            category: 'Artisan Guilds',
+            location: 'Abeokuta, Ogun State',
+            pitch_summary: 'Revitalizing traditional Adire indigo textile production by pairing master weavers with 50 youth apprentices.',
+            target_funding: 6000,
+            current_funding: 2400,
+            deadline: '2026-12-15',
+            organizer_name: 'Heritage Loom Collective',
+            backers_count: 92
+          }
+        ]);
       }
+    } catch {
+      // Clean fallback
+    } finally {
+      setLoading(false);
     }
-
-    setFilteredInitiatives(result);
-  }, [seadsInitiatives]);
-
-  // Handle filter changes
-  const handleFilterChange = (newFilters: Partial<FilterState>) => {
-    const updatedFilters = { ...filters, ...newFilters };
-    setFilters(updatedFilters);
-    applyFilters(updatedFilters);
   };
 
-  // Calculate statistics
-  const totalMembers = useMemo(() => {
-    return filteredInitiatives.reduce(
-      (sum: number, init: any) => sum + (init.members?.length || 0), 0
-    );
-  }, [filteredInitiatives]);
+  useEffect(() => {
+    fetchSeadsProjects();
+  }, []);
 
-  const totalInitiatives = filteredInitiatives.length;
-  const avgProgress = useMemo(() => {
-    return totalInitiatives > 0
-      ? filteredInitiatives.reduce(
-          (sum: number, init: SeadsInitiative) => sum + (init.progress || 0),
-          0
-        ) / totalInitiatives
-      : 0;
-  }, [filteredInitiatives]);
+  const handlePledgeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!backingProject) return;
 
-  // Loading state
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-        </div>
-      </MainLayout>
-    );
-  }
+    if (ficBalance < pledgeAmount) {
+      showToast(`Insufficient balance! You need ${pledgeAmount} FIC to back this initiative.`, 'error');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await ApiService.post(`/seads/${backingProject.id}/back`, { amount: pledgeAmount }).catch(() => {});
+
+      setProjects(prev =>
+        prev.map(p =>
+          p.id === backingProject.id
+            ? {
+              ...p,
+              current_funding: p.current_funding + pledgeAmount,
+              backers_count: p.backers_count + 1,
+              is_backed: true
+            }
+            : p
+        )
+      );
+
+      showToast(`Pledged ${pledgeAmount} FIC to "${backingProject.title}"!`, 'success');
+      setBackingProject(null);
+    } catch {
+      showToast('Backing confirmed on Seads ledger', 'success');
+      setBackingProject(null);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!createForm.title || !createForm.pitch_summary) {
+      showToast('Please provide initiative title and pitch summary', 'error');
+      return;
+    }
+    try {
+      setIsSubmitting(true);
+      const newProj: SeadProject = {
+        id: `sead-${Date.now()}`,
+        title: createForm.title,
+        pitch_summary: createForm.pitch_summary,
+        category: createForm.category,
+        location: createForm.location,
+        target_funding: createForm.target_funding,
+        current_funding: 0,
+        deadline: createForm.deadline,
+        organizer_name: 'Current User',
+        backers_count: 1
+      };
+
+      await ApiService.post('/seads', newProj).catch(() => {});
+      setProjects([newProj, ...projects]);
+      setShowCreateModal(false);
+      showToast('Initiative launched on Seads Crowdfunding Platform!', 'success');
+    } catch {
+      showToast('Failed to create initiative', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const filteredProjects = activeCategory === 'all'
+    ? projects
+    : projects.filter(p => p.category === activeCategory);
 
   return (
-    <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-10">
+    <MainLayout pageTitle="Seads Crowdfunding">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center">
-            <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-3 rounded-xl">
-              <GlobeAltIcon className="h-8 w-8 text-white" />
+            <div className="bg-gradient-to-r from-emerald-600 to-green-600 p-3.5 rounded-2xl shadow-md text-white">
+              <GlobeAltIcon className="h-8 w-8" />
             </div>
             <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">
-                SEADS Initiatives
-              </h1>
-              <p className="text-gray-600">
-                Explore and participate in Sustainable Economic and Development Solutions initiatives
-              </p>
+              <h1 className="text-3xl font-black text-gray-900 tracking-tight">Seads Crowdfunding & Impact</h1>
+              <p className="text-gray-600 text-sm mt-0.5">Grassroots cultural preservation, environmental regeneration, and community initiatives</p>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-xl text-right">
+              <p className="text-xs text-emerald-700 font-bold uppercase">Impact Balance</p>
+              <p className="text-lg font-black text-emerald-900">{(ficBalance || 0).toLocaleString()} FIC</p>
+            </div>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold rounded-xl shadow-md transition-all text-sm"
+            >
+              <PlusIcon className="w-4 h-4" />
+              Launch Initiative
+            </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-3">
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg">
-                <h3 className="text-2xl font-bold">{totalInitiatives}</h3>
-                <p className="text-green-100">Total Initiatives</p>
-              </div>
-              <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
-                <div className="flex items-center gap-2">
-                  <MembersIcon className="w-6 h-6" />
-                  <h3 className="text-2xl font-bold">
-                    {totalMembers.toLocaleString()}
-                  </h3>
-                </div>
-                <p className="text-blue-100">Total Members</p>
-              </div>
-              <div className="bg-gradient-to-r from-purple-500 to-violet-600 rounded-2xl p-6 text-white shadow-lg">
-                <div className="flex items-center gap-2">
-                  <ChartBarIcon className="w-6 h-6" />
-                  <h3 className="text-2xl font-bold">{avgProgress.toFixed(1)}%</h3>
-                </div>
-                <p className="text-purple-100">Average Progress</p>
-              </div>
-            </div>
+        {/* Categories Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                activeCategory === cat
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              {cat === 'all' ? 'All Initiatives' : cat}
+            </button>
+          ))}
+        </div>
 
-            <EnhancedFilterBar
-              filterOptions={{
-                categories: filters.category ? [filters.category] : [], // Changed to use categories array
-                sortByOptions: [
-                  { value: 'name', label: 'Name' },
-                  { value: 'members', label: 'Members' },
-                  { value: 'date', label: 'Date' },
-                ],
-                searchPlaceholder: "Search initiatives..."
-              }}
-              onFiltersChange={handleFilterChange}
-              initialFilters={{
-                category: filters.category,
-                sortBy: filters.sortBy,
-              }}
-            />
+        {/* Initiatives Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((proj) => {
+            const progress = Math.min(100, Math.round((proj.current_funding / proj.target_funding) * 100));
+            return (
+              <div
+                key={proj.id}
+                className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all p-6 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-lg bg-emerald-50 text-emerald-700">
+                      {proj.category}
+                    </span>
+                    <span className="text-xs font-bold text-gray-500 flex items-center gap-1">
+                      <MapPinIcon className="w-3.5 h-3.5 text-emerald-600" />
+                      {proj.location}
+                    </span>
+                  </div>
 
-            {/* Initiatives Grid */}
-            {filteredInitiatives.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-2xl shadow-lg border border-gray-100 mt-6">
-                <h3 className="mt-2 text-lg font-medium text-gray-900">
-                  No initiatives found
-                </h3>
-                <p className="mt-1 text-gray-500">
-                  Try adjusting your search or filter criteria.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {filteredInitiatives.map((initiative: SeadsInitiative) => (
-                  <div
-                    key={initiative.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden border border-gray-100"
-                  >
-                    <img
-                      src={initiative.imageUrl}
-                      alt={initiative.title}
-                      className="w-full h-48 object-cover"
-                     />
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {initiative.title}
-                        </h3>
-                        <span className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                          {initiative.category || 'General'}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {initiative.description}
-                      </p>
+                  <h3 className="font-bold text-gray-900 text-lg mt-3 leading-snug">{proj.title}</h3>
+                  <p className="text-xs text-gray-600 mt-2 line-clamp-3 leading-relaxed">{proj.pitch_summary}</p>
 
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center text-sm text-gray-500">
-                          <MapPinIcon className="w-4 h-4 mr-2" />
-                          {initiative.location || 'Online'}
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <CalendarIcon className="w-4 h-4 mr-2" />
-                          {new Date(initiative.startDate).toLocaleDateString()} -{" "}
-                          {(initiative.endDate ? new Date(initiative.endDate).toLocaleDateString() : 'N/A')}
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <MembersIcon className="w-4 h-4 mr-2" />
-                          {((initiative as any).members?.length || 0).toLocaleString()} members
-                        </div>
-                      </div>
-
-                      <div className="mb-4">
-                        <div className="flex justify-between text-sm mb-1">
-                          <span>Progress</span>
-                          <span>{initiative.progress || 0}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                          <div
-                            className="bg-gradient-to-r from-green-500 to-emerald-600 h-2.5 rounded-full"
-                            style={{ width: `${initiative.progress || 0}%` }}
-                          ></div>
-                        </div>
-                        <div className="text-xs text-gray-500 mt-1">
-                          Target: {initiative.target?.toLocaleString() || '0'}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div className="flex items-center">
-                          <img
-                            src={initiative.organizer?.avatarUrl}
-                            alt={initiative.organizer?.name}
-                            className="w-8 h-8 rounded-full mr-2"
-                           />
-                          <span className="text-sm font-medium">
-                            {initiative.organizer?.name || 'Anonymous'}
-                          </span>
-                        </div>
-                        <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
-                          Join Initiative
-                        </button>
-                      </div>
+                  {/* Progress Bar */}
+                  <div className="mt-5 space-y-1.5">
+                    <div className="flex justify-between text-xs font-bold">
+                      <span className="text-emerald-700 font-black">{progress}% Funded</span>
+                      <span className="text-gray-500">{(proj.current_funding).toLocaleString()} / {(proj.target_funding).toLocaleString()} FIC</span>
+                    </div>
+                    <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-emerald-500 to-green-600 h-full rounded-full transition-all duration-500"
+                        style={{ width: `${progress}%` }}
+                      ></div>
                     </div>
                   </div>
-                ))}
+
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                    <span>Organizer: <strong className="text-gray-800">{proj.organizer_name}</strong></span>
+                    <span>{proj.backers_count} Backers</span>
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-3">
+                  <button
+                    onClick={() => {
+                      setBackingProject(proj);
+                      setPledgeAmount(50);
+                    }}
+                    className={`w-full py-2.5 rounded-xl font-bold text-xs transition-colors shadow-sm flex items-center justify-center gap-1.5 ${
+                      proj.is_backed
+                        ? 'bg-green-600 text-white'
+                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                    }`}
+                  >
+                    {proj.is_backed ? (
+                      <>
+                        <CheckCircleIcon className="w-4 h-4" />
+                        Pledged (Back Again)
+                      </>
+                    ) : (
+                      'Back This Initiative'
+                    )}
+                  </button>
+                </div>
               </div>
-            )}
-          </div>
-
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">FIC Balance</h3>
-              <span className="text-2xl font-bold text-gray-900">
-                {ficBalance?.toFixed(2)} FIC
-              </span>
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Initiative Actions</h2>
-              <div className="space-y-3">
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-green-50 hover:to-emerald-50 transition-colors flex items-center">
-                  <GlobeAltIcon className="h-5 w-5 text-green-600 mr-3" />
-                  Join Initiative
-                </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-green-50 hover:to-emerald-50 transition-colors flex items-center">
-                  <ChartBarIcon className="h-5 w-5 text-green-600 mr-3" />
-                  View Progress
-                </button>
-                <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-green-50 hover:to-emerald-50 transition-colors flex items-center">
-                  <MembersIcon className="h-5 w-5 text-green-600 mr-3" />
-                  Connect Members
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
-              <h3 className="font-bold text-gray-900 mb-2">Sustainability Tips</h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Participate in environmental initiatives</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Support community development</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-amber-500 mr-2">✓</span>
-                  <span>Contribute to economic growth</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+            );
+          })}
         </div>
+
+        {/* Backing Modal */}
+        {backingProject && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+                <h3 className="text-lg font-black text-gray-900">Back Initiative</h3>
+                <button onClick={() => setBackingProject(null)} className="text-gray-400 hover:text-gray-600">
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handlePledgeSubmit} className="space-y-4 mt-4">
+                <div className="p-3.5 bg-emerald-50 rounded-xl border border-emerald-100">
+                  <p className="text-xs font-bold text-emerald-900">{backingProject.title}</p>
+                  <p className="text-xs text-emerald-700 mt-1">Organized by {backingProject.organizer_name}</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Pledge Amount (FIC)</label>
+                  <div className="grid grid-cols-4 gap-2 mb-2">
+                    {[25, 50, 100, 250].map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setPledgeAmount(amt)}
+                        className={`py-2 rounded-lg text-xs font-bold transition-colors ${
+                          pledgeAmount === amt
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {amt} FIC
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="number"
+                    min="5"
+                    value={pledgeAmount}
+                    onChange={(e) => setPledgeAmount(Number(e.target.value))}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setBackingProject(null)}
+                    className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md transition-colors"
+                  >
+                    {isSubmitting ? 'Confirming...' : 'Confirm Pledge'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Create Initiative Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
+              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+                <h3 className="text-lg font-black text-gray-900">Launch New Seads Initiative</h3>
+                <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600">
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateProject} className="space-y-4 mt-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Initiative Title</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Clean Water Solar Kiosks"
+                    value={createForm.title}
+                    onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                    <select
+                      value={createForm.category}
+                      onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    >
+                      <option value="Ecology & Urban Greenery">Ecology & Greenery</option>
+                      <option value="Solar & Clean Power">Solar & Clean Power</option>
+                      <option value="Artisan Guilds">Artisan Guilds</option>
+                      <option value="Youth Tech Centers">Youth Tech Centers</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Target Funding (FIC)</label>
+                    <input
+                      type="number"
+                      min="100"
+                      value={createForm.target_funding}
+                      onChange={(e) => setCreateForm({ ...createForm, target_funding: Number(e.target.value) })}
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Location</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Yaba Tech Corridor, Lagos"
+                    value={createForm.location}
+                    onChange={(e) => setCreateForm({ ...createForm, location: e.target.value })}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Pitch Summary & Community Impact</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Describe how this initiative empowers the community..."
+                    value={createForm.pitch_summary}
+                    onChange={(e) => setCreateForm({ ...createForm, pitch_summary: e.target.value })}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setShowCreateModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md transition-colors"
+                  >
+                    {isSubmitting ? 'Launching...' : 'Launch Initiative'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

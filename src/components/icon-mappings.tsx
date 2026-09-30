@@ -1,7 +1,7 @@
 /**
  * Icon Mappings - Comprehensive re-export of all Heroicons v2
  * This file ensures all icon names used throughout the app are available
- * 
+ *
  * DEPRECATED: This file is no longer used. Import directly from @heroicons/react instead.
  * Example: import { HomeIcon } from '@heroicons/react/24/outline'
  */
@@ -15,10 +15,10 @@ const createSimpleIcon = (path: string) => {
       <path d={path} />
     </svg>
   ));
-  
+
   // Add display name for ESLint compliance
-  Component.displayName = `SimpleIcon`;
-  
+  Component.displayName = 'SimpleIcon';
+
   return Component;
 };
 

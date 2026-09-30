@@ -1,9 +1,9 @@
 import React, {} from 'react';
-import { Music, Play, Heart, Share2, MoreHorizontal } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Music, Play, Heart, Share2, MoreHorizontal } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 
 interface Track {
   id: string;
@@ -31,29 +31,29 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
 }) => {
   const defaultTracks: Track[] = [
     {
-      id: "1",
-      title: "Summer Vibes",
-      artist: "DJ Cool",
-      album: "Beach Party",
-      duration: "3:45",
+      id: '1',
+      title: 'Summer Vibes',
+      artist: 'DJ Cool',
+      album: 'Beach Party',
+      duration: '3:45',
       likes: 1234,
       isLiked: false
     },
     {
-      id: "2",
-      title: "Night Drive",
-      artist: "Synthwave Master",
-      album: "Neon Dreams",
-      duration: "4:20",
+      id: '2',
+      title: 'Night Drive',
+      artist: 'Synthwave Master',
+      album: 'Neon Dreams',
+      duration: '4:20',
       likes: 2456,
       isLiked: true
     },
     {
-      id: "3",
-      title: "Ocean Waves",
-      artist: "Chill Beats",
-      album: "Relaxation",
-      duration: "3:15",
+      id: '3',
+      title: 'Ocean Waves',
+      artist: 'Chill Beats',
+      album: 'Relaxation',
+      duration: '3:15',
       likes: 890,
       isLiked: false
     }
@@ -84,7 +84,7 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                       src={track.coverArt}
                       alt={track.title}
                       className="w-full h-full object-cover"
-                     />
+                    />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <Music className="h-8 w-8 text-muted-foreground" />
@@ -113,9 +113,9 @@ const MusicFeed: React.FC<MusicFeedProps> = ({
                     variant="ghost"
                     size="icon"
                     onClick={() => onLikeTrack?.(track.id)}
-                    className={track.isLiked ? "text-red-500" : ""}
+                    className={track.isLiked ? 'text-red-500' : ''}
                   >
-                    <Heart className={`h-5 w-5 ${track.isLiked ? "fill-current" : ""}`} />
+                    <Heart className={`h-5 w-5 ${track.isLiked ? 'fill-current' : ''}`} />
                   </Button>
                   <Button variant="ghost" size="icon" onClick={() => onShareTrack?.(track.id)}>
                     <Share2 className="h-5 w-5" />

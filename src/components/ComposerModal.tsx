@@ -20,7 +20,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
 
   const handleSubmit = async () => {
     if (!content.trim()) return;
-    
+
     try {
       setIsSubmitting(true);
       if (onSubmit) {
@@ -113,7 +113,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                       src={URL.createObjectURL(file)}
                       alt={`Preview ${index + 1}`}
                       className="w-full h-32 object-cover rounded-lg"
-                     />
+                    />
                     <button
                       onClick={() => removeMedia(index)}
                       className="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"

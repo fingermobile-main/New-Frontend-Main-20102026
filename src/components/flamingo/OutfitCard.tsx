@@ -48,7 +48,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
         <div className="text-6xl">
           {outfit.occasion && occasionIcons[outfit.occasion as keyof typeof occasionIcons]}
         </div>
-        
+
         {/* Favorite Badge */}
         {outfit.is_favorite && (
           <div className="absolute top-3 right-3">
@@ -64,7 +64,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
         {/* Title and Metadata */}
         <div className="mb-3">
           <h3 className="font-bold text-gray-900 text-lg mb-1">{outfit.name}</h3>
-          
+
           <div className="flex items-center gap-2 text-sm text-gray-600">
             {outfit.creator_name && (
               <span>by {outfit.creator_name}</span>
@@ -92,7 +92,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
               {occasionIcons[outfit.occasion as keyof typeof occasionIcons]} {outfit.occasion}
             </span>
           )}
-          
+
           {outfit.season && (
             <span className={`px-2 py-1 text-xs rounded-full ${
               seasonColors[outfit.season as keyof typeof seasonColors] || 'bg-gray-100 text-gray-700'
@@ -163,7 +163,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
               ❤️ Like
             </button>
           )}
-          
+
           {onSave && (
             <button
               onClick={() => onSave(outfit.id)}
@@ -172,7 +172,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
               🔖 Save
             </button>
           )}
-          
+
           {onViewDetails && (
             <button
               onClick={() => onViewDetails(outfit.id)}

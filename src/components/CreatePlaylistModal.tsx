@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Plus, Music, ListMusic, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
+import { Plus, Music, ListMusic, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
 interface CreatePlaylistModalProps {
   isOpen: boolean;
@@ -24,8 +24,8 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   onClose,
   onCreatePlaylist
 }) => {
-  const [name, setName] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [name, setName] = React.useState('');
+  const [description, setDescription] = React.useState('');
   const [isPublic, setIsPublic] = React.useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -36,8 +36,8 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
         description: description.trim(),
         isPublic
       });
-      setName("");
-      setDescription("");
+      setName('');
+      setDescription('');
       setIsPublic(true);
       onClose();
     }

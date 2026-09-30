@@ -5,16 +5,17 @@ import {
   FingerPrintIcon,
   BuildingOfficeIcon
 } from '../../../components/icons';
+import { api } from '../../../services/api';
 
 const StercsControlPage: React.FC = () => {
   const { seadsInitiatives, showToast, handleStercsLogin, handleStercsAction } = useAppContext();
 
   const [authStep, setAuthStep] = useState(0); // 0: Start, 1: PIN1, 2: PIN2, 3: Biometrics, 4: Authenticated
-  const [pin1, setPin1] = useState("");
-  const [pin2, setPin2] = useState("");
-  const [error, setError] = useState("");
-  const [systemMode, setSystemMode] = useState<"enterprise" | "threat">(
-    "threat",
+  const [pin1, setPin1] = useState('');
+  const [pin2, setPin2] = useState('');
+  const [error, setError] = useState('');
+  const [systemMode, setSystemMode] = useState<'enterprise' | 'threat'>(
+    'threat',
   );
 
   // Countdown state for wipe action
@@ -23,13 +24,35 @@ const StercsControlPage: React.FC = () => {
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleSystemWipe = useCallback(() => {
+  const handleSystemWipe = useCallback(async () => {
+    try {
+      await api.post('/sentient/toggle-kill-switch', { engage: true, reason: 'STERCS system wipe initiated' }).catch(() => null);
+    } catch (e) {
+      console.error(e);
+    }
     showToast(
-      `STERCS™©®: System wipe initiated. All ${systemMode === "enterprise" ? "enterprise resources" : "threat data"} will be erased in 24 hours.`,
+      `STERCS™©®: System wipe initiated. All ${systemMode === 'enterprise' ? 'enterprise resources' : 'threat data'} will be erased in 24 hours. Protocol lock active.`,
     );
     setIsWipeConfirm(false);
     setCountdown(25 * 60 * 60);
   }, [showToast, systemMode]);
+
+  const executeAction = async (action: string) => {
+    try {
+      await api.post('/guardian/rules', {
+        name: `STERCS_${action.toUpperCase()}`,
+        category: 'stercs',
+        description: `STERCS action triggered: ${action} in ${systemMode} mode`,
+        severity: action.includes('wipe') || action.includes('lockdown') ? 'critical' : 'medium',
+        threshold_value: 1,
+        action: 'flag',
+        is_active: true
+      }).catch(() => null);
+    } catch (e) {
+      console.error(e);
+    }
+    handleStercsAction(action);
+  };
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -54,21 +77,21 @@ const StercsControlPage: React.FC = () => {
         videoRef.current.srcObject = stream;
         // Simulate biometric scan
         setTimeout(async () => {
-          const success = await handleStercsLogin(pin1, pin2, "biometric_data");
+          const success = await handleStercsLogin(pin1, pin2, 'biometric_data');
           if (success) {
             setAuthStep(4);
             showToast(
-              `PRO-MPTS™©®: Authentication successful. STERCS™©® (${systemMode === "enterprise" ? "Enterprise" : "Threat"}) engaged.`,
+              `PRO-MPTS™©®: Authentication successful. STERCS™©® (${systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}) engaged.`,
             );
             stream.getTracks().forEach((track) => track.stop());
           } else {
-            setError("Biometric verification failed.");
+            setError('Biometric verification failed.');
             resetAuth();
             stream.getTracks().forEach((track) => track.stop());
           }
         }, 3000);
       } catch {
-        setError("Camera access denied. Please enable camera permissions.");
+        setError('Camera access denied. Please enable camera permissions.');
       }
     }
   };
@@ -77,9 +100,9 @@ const StercsControlPage: React.FC = () => {
     e.preventDefault();
     if (pin1.length === 6) {
       setAuthStep(2);
-      setError("");
+      setError('');
     } else {
-      setError("PIN 1 must be 6 digits");
+      setError('PIN 1 must be 6 digits');
     }
   };
 
@@ -87,25 +110,25 @@ const StercsControlPage: React.FC = () => {
     e.preventDefault();
     if (pin2.length === 8) {
       setAuthStep(3);
-      setError("");
+      setError('');
       startBiometrics();
     } else {
-      setError("PIN 2 must be 8 digits");
+      setError('PIN 2 must be 8 digits');
     }
   };
 
   const resetAuth = () => {
     setAuthStep(0);
-    setPin1("");
-    setPin2("");
-    setError("");
+    setPin1('');
+    setPin2('');
+    setError('');
   };
 
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -123,20 +146,20 @@ const StercsControlPage: React.FC = () => {
               </h1>
               <div className="flex items-center gap-2 mt-1">
                 <p className="text-sm text-gray-400">
-                  {systemMode === "enterprise"
-                    ? "Enterprise Resource Management"
-                    : "Sentient Threat Evaluation & Response"}
+                  {systemMode === 'enterprise'
+                    ? 'Enterprise Resource Management'
+                    : 'Sentient Threat Evaluation & Response'}
                 </p>
                 <button
                   onClick={() =>
                     setSystemMode((mode) =>
-                      mode === "enterprise" ? "threat" : "enterprise",
+                      mode === 'enterprise' ? 'threat' : 'enterprise',
                     )
                   }
                   className="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded"
                 >
-                  Switch to{" "}
-                  {systemMode === "enterprise" ? "Threat" : "Enterprise"}
+                  Switch to{' '}
+                  {systemMode === 'enterprise' ? 'Threat' : 'Enterprise'}
                 </button>
               </div>
             </div>
@@ -147,7 +170,7 @@ const StercsControlPage: React.FC = () => {
           {authStep === 0 && (
             <div className="text-center py-12">
               <div className="mx-auto bg-gray-800 p-4 rounded-full w-24 h-24 flex items-center justify-center mb-6">
-                {systemMode === "enterprise" ? (
+                {systemMode === 'enterprise' ? (
                   <BuildingOfficeIcon className="w-12 h-12 text-blue-400" />
                 ) : (
                   <FingerPrintIcon className="w-12 h-12 text-red-400" />
@@ -157,9 +180,9 @@ const StercsControlPage: React.FC = () => {
                 STERCS™©® Access Required
               </h2>
               <p className="text-gray-400 mb-2">
-                {systemMode === "enterprise"
-                  ? "Strategic Tactical Enterprise Resource Control Systems"
-                  : "Sentient Threat Evaluation & Response Control System"}
+                {systemMode === 'enterprise'
+                  ? 'Strategic Tactical Enterprise Resource Control Systems'
+                  : 'Sentient Threat Evaluation & Response Control System'}
               </p>
               <p className="text-gray-400 mb-8">
                 Multi-factor authentication required for system access
@@ -179,12 +202,12 @@ const StercsControlPage: React.FC = () => {
                 <h2 className="text-2xl font-bold">STERCS™©® Control Panel</h2>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                    systemMode === "enterprise"
-                      ? "bg-blue-500/20 text-blue-300"
-                      : "bg-red-500/20 text-red-300"
+                    systemMode === 'enterprise'
+                      ? 'bg-blue-500/20 text-blue-300'
+                      : 'bg-red-500/20 text-red-300'
                   }`}
                 >
-                  {systemMode === "enterprise" ? "Enterprise" : "Threat"}
+                  {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
               <p className="text-gray-400 mb-6">Enter 6-digit PIN 1</p>
@@ -194,7 +217,7 @@ const StercsControlPage: React.FC = () => {
                   <input
                     type="password"
                     value={pin1}
-                    onChange={(e) => setPin1(e.target.value.replace(/\D/g, "").slice(0, 6))
+                    onChange={(e) => setPin1(e.target.value.replace(/\D/g, '').slice(0, 6))
                     }
                     placeholder="••••••"
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -221,8 +244,8 @@ const StercsControlPage: React.FC = () => {
                     disabled={pin1.length !== 6}
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
                       pin1.length === 6
-                        ? "bg-brand-blue hover:bg-blue-700 text-white"
-                        : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                        ? 'bg-brand-blue hover:bg-blue-700 text-white'
+                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -238,12 +261,12 @@ const StercsControlPage: React.FC = () => {
                 <h2 className="text-2xl font-bold">STERCS™©® Control Panel</h2>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                    systemMode === "enterprise"
-                      ? "bg-blue-500/20 text-blue-300"
-                      : "bg-red-500/20 text-red-300"
+                    systemMode === 'enterprise'
+                      ? 'bg-blue-500/20 text-blue-300'
+                      : 'bg-red-500/20 text-red-300'
                   }`}
                 >
-                  {systemMode === "enterprise" ? "Enterprise" : "Threat"}
+                  {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
               <p className="text-gray-400 mb-6">Enter 8-digit PIN 2</p>
@@ -253,7 +276,7 @@ const StercsControlPage: React.FC = () => {
                   <input
                     type="password"
                     value={pin2}
-                    onChange={(e) => setPin2(e.target.value.replace(/\D/g, "").slice(0, 8))
+                    onChange={(e) => setPin2(e.target.value.replace(/\D/g, '').slice(0, 8))
                     }
                     placeholder="••••••••"
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -280,8 +303,8 @@ const StercsControlPage: React.FC = () => {
                     disabled={pin2.length !== 8}
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
                       pin2.length === 8
-                        ? "bg-brand-blue hover:bg-blue-700 text-white"
-                        : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                        ? 'bg-brand-blue hover:bg-blue-700 text-white'
+                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                     }`}
                   >
                     Continue
@@ -297,12 +320,12 @@ const StercsControlPage: React.FC = () => {
                 <h2 className="text-2xl font-bold">Biometric Authentication</h2>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                    systemMode === "enterprise"
-                      ? "bg-blue-500/20 text-blue-300"
-                      : "bg-red-500/20 text-red-300"
+                    systemMode === 'enterprise'
+                      ? 'bg-blue-500/20 text-blue-300'
+                      : 'bg-red-500/20 text-red-300'
                   }`}
                 >
-                  {systemMode === "enterprise" ? "Enterprise" : "Threat"}
+                  {systemMode === 'enterprise' ? 'Enterprise' : 'Threat'}
                 </span>
               </div>
               <p className="text-gray-400 mb-6 sm:text-base lg:text-lg">
@@ -347,22 +370,22 @@ const StercsControlPage: React.FC = () => {
                     STERCS™©® Command Center
                   </h2>
                   <p className="text-gray-400">
-                    {systemMode === "enterprise"
-                      ? "Strategic Tactical Enterprise Resource Control Systems"
-                      : "Sentient Threat Evaluation & Response Control System"}
+                    {systemMode === 'enterprise'
+                      ? 'Strategic Tactical Enterprise Resource Control Systems'
+                      : 'Sentient Threat Evaluation & Response Control System'}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
-                      systemMode === "enterprise"
-                        ? "bg-blue-500/20 text-blue-300"
-                        : "bg-red-500/20 text-red-300"
+                      systemMode === 'enterprise'
+                        ? 'bg-blue-500/20 text-blue-300'
+                        : 'bg-red-500/20 text-red-300'
                     }`}
                   >
-                    {systemMode === "enterprise"
-                      ? "Enterprise Mode"
-                      : "Threat Mode"}
+                    {systemMode === 'enterprise'
+                      ? 'Enterprise Mode'
+                      : 'Threat Mode'}
                   </span>
                   <button
                     onClick={resetAuth}
@@ -374,11 +397,11 @@ const StercsControlPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {systemMode === "enterprise" ? (
+                {systemMode === 'enterprise' ? (
                   <>
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("resource_allocation")} role="button" tabIndex={0}
+                      onClick={() => executeAction('resource_allocation')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <BuildingOfficeIcon className="w-6 h-6 text-blue-400" />
@@ -393,7 +416,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("strategic_planning")} role="button" tabIndex={0}
+                      onClick={() => executeAction('strategic_planning')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -421,7 +444,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("enterprise_backup")} role="button" tabIndex={0}
+                      onClick={() => executeAction('enterprise_backup')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -449,7 +472,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("performance_optimize")} role="button" tabIndex={0}
+                      onClick={() => executeAction('performance_optimize')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -477,7 +500,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("resource_monitoring")} role="button" tabIndex={0}
+                      onClick={() => executeAction('resource_monitoring')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -535,7 +558,7 @@ const StercsControlPage: React.FC = () => {
                   <>
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("threat_scan")} role="button" tabIndex={0}
+                      onClick={() => executeAction('threat_scan')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <ShieldExclamationIcon className="w-6 h-6 text-red-400" />
@@ -549,7 +572,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("ai_analysis")} role="button" tabIndex={0}
+                      onClick={() => executeAction('ai_analysis')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -576,7 +599,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("security_lockdown")} role="button" tabIndex={0}
+                      onClick={() => executeAction('security_lockdown')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -604,7 +627,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("system_backup")} role="button" tabIndex={0}
+                      onClick={() => executeAction('system_backup')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -632,7 +655,7 @@ const StercsControlPage: React.FC = () => {
 
                     <div
                       className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-red-500 transition-colors cursor-pointer"
-                      onClick={() => handleStercsAction("performance_optimize")} role="button" tabIndex={0}
+                      onClick={() => executeAction('performance_optimize')} role="button" tabIndex={0}
                     >
                       <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
                         <svg
@@ -694,10 +717,10 @@ const StercsControlPage: React.FC = () => {
                       CONFIRM SYSTEM WIPE
                     </h3>
                     <p className="text-gray-300 mb-4">
-                      This action will permanently erase all{" "}
-                      {systemMode === "enterprise"
-                        ? "enterprise resource"
-                        : "threat evaluation"}{" "}
+                      This action will permanently erase all{' '}
+                      {systemMode === 'enterprise'
+                        ? 'enterprise resource'
+                        : 'threat evaluation'}{' '}
                       data from the platform. The wipe will begin in 24 hours
                       and cannot be stopped once initiated.
                     </p>

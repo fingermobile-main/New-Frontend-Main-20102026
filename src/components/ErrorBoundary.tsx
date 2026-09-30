@@ -1,14 +1,8 @@
-/*
- * FingerMobile Protocol™ - Error Boundary Component
- * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
- */
-
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface State {
@@ -17,87 +11,63 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
 
-  public static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): State {
+    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
-    
-    // Call optional error handler
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
-    }
-    
-    // Log to error reporting service in production
-    if (process.env.NODE_ENV === 'production') {
-      // TODO: Integrate with error tracking service (e.g., Sentry)
-      // Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
-    }
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // You can also log the error to an error reporting service
+    console.error('Error caught by boundary:', error, errorInfo);
+
+    // In a real application, you might want to send this error to a logging service
+    // Example: logErrorToService(error, errorInfo);
   }
 
-  private handleReset = () => {
-    this.setState({ hasError: false, error: null });
-  };
-
-  public render() {
+  render() {
     if (this.state.hasError) {
-      // Use custom fallback if provided
+      // You can render any custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default error UI
       return (
-        <div style={{
-          padding: '2rem',
-          margin: '2rem',
-          border: '1px solid #ff4444',
-          borderRadius: '8px',
-          backgroundColor: '#fff5f5',
-          fontFamily: 'system-ui, -apple-system, sans-serif'
-        }}>
-          <h2 style={{ color: '#cc0000', marginTop: 0 }}>Something went wrong</h2>
-          <p style={{ color: '#666' }}>
-            An unexpected error occurred. Please try refreshing the page.
-          </p>
-          {this.state.error && process.env.NODE_ENV === 'development' && (
-            <details style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#ffe6e6', borderRadius: '4px' }}>
-              <summary style={{ cursor: 'pointer', fontWeight: 'bold', color: '#cc0000' }}>
-                Error Details (Development Mode)
-              </summary>
-              <pre style={{ 
-                marginTop: '0.5rem', 
-                overflow: 'auto',
-                fontSize: '0.875rem',
-                color: '#333'
-              }}>
-                {this.state.error.toString()}
-                {'\n\n'}
-                {this.state.error.stack}
-              </pre>
-            </details>
-          )}
-          <button
-            onClick={this.handleReset}
-            style={{
-              marginTop: '1rem',
-              padding: '0.5rem 1rem',
-              backgroundColor: '#cc0000',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '0.875rem'
-            }}
-          >
-            Try Again
-          </button>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100 p-4">
+          <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl text-center">
+            <div className="mx-auto h-12 w-12 text-red-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
+                Something went wrong
+              </h2>
+              <p className="mt-2 text-center text-sm text-gray-600">
+                An error occurred while loading this page. Please try refreshing or contact support.
+              </p>
+              {this.state.error && (
+                <div className="mt-4 p-4 bg-red-50 rounded-md text-left">
+                  <p className="text-sm text-red-700 font-mono break-words">
+                    {this.state.error.toString()}
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="mt-6">
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Refresh Page
+              </button>
+            </div>
+          </div>
         </div>
       );
     }

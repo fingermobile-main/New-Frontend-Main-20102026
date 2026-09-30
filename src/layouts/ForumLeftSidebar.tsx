@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import { 
+import {
   HomeIcon,
   UsersIcon,
   WalletIcon,
@@ -29,9 +29,9 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
 
   const mainNavItems = [
     { icon: HomeIcon, label: 'Dashboard', path: '/dashboard' },
-    { 
-      icon: UsersIcon, 
-      label: 'Communities', 
+    {
+      icon: UsersIcon,
+      label: 'Communities',
       path: '/communities',
       hasDropdown: true,
       dropdownOpen: showCommunities,
@@ -45,9 +45,9 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
     },
     { icon: WalletIcon, label: 'Wallet', path: '/wallet', badge: 'Live' },
     { icon: ShoppingBagIcon, label: 'Marketplace', path: '/marketplace' },
-    { 
-      icon: SparklesIcon, 
-      label: 'AI Studio', 
+    {
+      icon: SparklesIcon,
+      label: 'AI Studio',
       path: '/ai-studio',
       hasDropdown: true,
       dropdownOpen: showAIStudio,
@@ -72,7 +72,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
 
   return (
     <div className="h-full flex flex-col bg-[#242526]">
-      
+
       {/* Mobile Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Navigation</span>
@@ -102,20 +102,20 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
               >
                 <item.icon className="w-6 h-6 flex-shrink-0" />
                 <span className="flex-1 text-sm font-medium">{item.label}</span>
-                
+
                 {/* Badge */}
                 {item.badge && (
                   <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
                     {item.badge}
                   </span>
                 )}
-                
+
                 {/* Dropdown Arrow */}
                 {item.hasDropdown && (
-                  <ChevronDownIcon 
+                  <ChevronDownIcon
                     className={`w-4 h-4 transition-transform ${
                       item.dropdownOpen ? 'rotate-180' : ''
-                    }`} 
+                    }`}
                   />
                 )}
               </Link>

@@ -8,7 +8,7 @@ interface EnhancedBeatwaveNGPlayerProps {
   coverImage?: string;
 }
 
-const EnhancedBeatwaveNGPlayer: React.FC<EnhancedBeatwaveNGPlayerProps> = ({ 
+const EnhancedBeatwaveNGPlayer: React.FC<EnhancedBeatwaveNGPlayerProps> = ({
   audioUrl,
   title = 'Unknown Track',
   artist = 'Unknown Artist',

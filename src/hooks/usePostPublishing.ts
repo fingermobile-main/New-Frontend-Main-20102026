@@ -39,6 +39,15 @@ export interface PublishingSettings {
     region: string;
     continent: string;
   };
+  demographics?: {
+    allowedLocations?: string[];
+    excludedLocations?: string[];
+    genderTarget?: 'all' | 'male' | 'female' | 'custom';
+    allowedGenders?: string[];
+    ageRangeMin?: number;
+    ageRangeMax?: number;
+    geofencePolygon?: Array<{ lat: number; lng: number }>;
+  };
 }
 
 interface UsePostPublishingReturn {
@@ -93,6 +102,15 @@ const DEFAULT_SETTINGS: PublishingSettings = {
     amount: 0,
     region: '',
     continent: ''
+  },
+  demographics: {
+    allowedLocations: [],
+    excludedLocations: [],
+    genderTarget: 'all',
+    allowedGenders: ['all'],
+    ageRangeMin: 22,
+    ageRangeMax: 60,
+    geofencePolygon: []
   }
 };
 
@@ -113,7 +131,7 @@ export const usePostPublishing = (): UsePostPublishingReturn => {
       setOriginalSettings({ ...settings });
       return true;
     } catch (err) {
-      console.error("Failed to save settings:", err);
+      console.error('Failed to save settings:', err);
       return false;
     }
   }, [settings]);
@@ -143,8 +161,8 @@ export const usePostPublishing = (): UsePostPublishingReturn => {
         );
         return suggestions as Partial<PublishingSettings>;
       } catch (err) {
-        setError("Failed to generate AI suggestions. Please try again.");
-        console.error("Error generating AI suggestions:", err);
+        setError('Failed to generate AI suggestions. Please try again.');
+        console.error('Error generating AI suggestions:', err);
         return null;
       } finally {
         setIsGeneratingSuggestions(false);

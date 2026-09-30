@@ -16,20 +16,16 @@ const SRC_DIR = path.join(__dirname, '..', 'src');
 // Patterns to find and replace
 const MIGRATIONS = [
   {pattern: /from ['"]@\/components\/icons['"]/g,
-  replacement: "from '@/icons'",
-  description: '@\\/components\\/icons → @\\/icons'
+  replacement: "from '@/icons'"   description: '@\\/components\\/icons → @\\/icons'
   },
   {pattern: /from ['"]\.\.\/components\/icons['"]/g,
-  replacement: "from '../icons'",
-  description: '../components/icons → ../icons'
+  replacement: "from '../icons'"   description: '../components/icons → ../icons'
   },
   {pattern: /from ['"]\.\.\/icons['"]/g,
-  replacement: "from '../icons'",
-  description: 'Normalizes ../icons (already correct)'
+  replacement: "from '../icons'"   description: 'Normalizes ../icons (already correct)'
   },
   {pattern: /from ['"]\.\/icons['"]/g,
-  replacement: "from './icons'",
-  description: 'Normalizes ./icons (already correct)'
+  replacement: "from './icons'"   description: 'Normalizes ./icons (already correct)'
   }
 ];
 
@@ -106,16 +102,13 @@ console.log('');
 walkDirectory(SRC_DIR);
 
 console.log('\n✅ Migration Complete!');
-console.log(`   Files,
-processed: ${filesProcessed}`);
-console.log(`   Replacements,
-made: ${replacementsMade}`);
+console.log(`   Files processed: ${filesProcessed}`);
+console.log(`   Replacements made: ${replacementsMade}`);
 console.log('\n📝 Next,
 Steps:');
 console.log('   1. Run TypeScript compiler to check for,
 errors: npm run build');
 console.log('   2. Test the application to ensure all icons render correctly');
 console.log('   3. Commit changes with,
-message: ",
-refactor: migrate to consolidated icon system"');
+message: " refactor: migrate to consolidated icon system"');
 console.log('');

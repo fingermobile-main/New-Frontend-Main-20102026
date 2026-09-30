@@ -13,7 +13,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
 
   const handleSearch = async () => {
     if (!query.trim()) return;
-    
+
     setIsSearching(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 800));

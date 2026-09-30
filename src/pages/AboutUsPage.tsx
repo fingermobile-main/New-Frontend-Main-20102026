@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import { logError } from '../utils/errorLogger';
 import GiftModal from '../components/GiftModal';
 import CreatePaylinkModal from '../components/CreatePaylinkModal';
 import { GiftIcon, LinkIcon, InformationCircleIcon } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
 
+import { sendGift, createPaylink } from '../services/api';
+
 const AboutUsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
-  const [giftAmount, setGiftAmount] = useState("");
-  const [paylinkAmount, setPaylinkAmount] = useState("");
-  const [paylinkDescription, setPaylinkDescription] = useState("");
+  const [giftAmount, setGiftAmount] = useState('');
+  const [paylinkAmount, setPaylinkAmount] = useState('');
+  const [paylinkDescription, setPaylinkDescription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const onOpenGiftModal = () => {
     if (ficBalance <= 0) {
       showToast(
-        "Your FIC balance is 0. Please fund your wallet to send a gift.",
-        "error",
+        'Your FIC balance is 0. Please fund your wallet to send a gift.',
+        'error',
       );
       return;
     }
@@ -32,8 +34,8 @@ const AboutUsPage: React.FC = () => {
   const onOpenPaylinkModal = () => {
     if (ficBalance <= 0) {
       showToast(
-        "Your FIC balance is 0. Please fund your wallet to create a paylink.",
-        "error",
+        'Your FIC balance is 0. Please fund your wallet to create a paylink.',
+        'error',
       );
       return;
     }
@@ -43,26 +45,26 @@ const AboutUsPage: React.FC = () => {
 
   const handleSendGift = async () => {
     if (!giftAmount || parseFloat(giftAmount) <= 0) {
-      showToast("Please enter a valid gift amount.", "error");
+      showToast('Please enter a valid gift amount.', 'error');
       return;
     }
 
     if (parseFloat(giftAmount) > ficBalance) {
-      showToast("Insufficient FIC balance to send this gift.", "error");
+      showToast('Insufficient FIC balance to send this gift.', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // Simulate gift sending
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      showToast(`Successfully sent a gift of ${giftAmount} FIC!`, "success");
-      setGiftAmount("");
+      if (sendGift) {
+        await sendGift({ amount: parseFloat(giftAmount) });
+      }
+      showToast(`Successfully sent a gift of ${giftAmount} FIC!`, 'success');
+      setGiftAmount('');
       setShowGiftModal(false);
-      // In a real app, you'd update the ficBalance here after a successful transaction
     } catch (error) {
-      logError(error as unknown, { context: "AboutUsPage - Sending gift" });
-      showToast("Failed to send gift. Please try again.", "error");
+      logError(error as unknown, { context: 'AboutUsPage - Sending gift' });
+      showToast('Failed to send gift. Please try again.', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -70,34 +72,38 @@ const AboutUsPage: React.FC = () => {
 
   const handleCreatePaylink = async () => {
     if (!paylinkAmount || parseFloat(paylinkAmount) <= 0) {
-      showToast("Please enter a valid paylink amount.", "error");
+      showToast('Please enter a valid paylink amount.', 'error');
       return;
     }
 
     if (parseFloat(paylinkAmount) > ficBalance) {
-      showToast("Insufficient FIC balance to create this paylink.", "error");
+      showToast('Insufficient FIC balance to create this paylink.', 'error');
       return;
     }
 
     if (!paylinkDescription.trim()) {
-      showToast("Please add a description for the paylink.", "error");
+      showToast('Please add a description for the paylink.', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      // Simulate paylink creation
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (createPaylink) {
+        await createPaylink({
+          amount: parseFloat(paylinkAmount),
+          description: paylinkDescription
+        });
+      }
       showToast(
         `Successfully created a paylink for ${paylinkAmount} FIC!`,
-        "success",
+        'success',
       );
-      setPaylinkAmount("");
-      setPaylinkDescription("");
+      setPaylinkAmount('');
+      setPaylinkDescription('');
       setShowPaylinkModal(false);
     } catch (error) {
-      logError(error as unknown, { context: "AboutUsPage - Creating paylink" });
-      showToast("Failed to create paylink. Please try again.", "error");
+      logError(error as unknown, { context: 'AboutUsPage - Creating paylink' });
+      showToast('Failed to create paylink. Please try again.', 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -128,17 +134,17 @@ const AboutUsPage: React.FC = () => {
               <div className="prose max-w-none">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Story</h2>
                 <p className="text-gray-700 mb-6">
-                  The FingerMobile Protocol is a revolutionary platform that combines social networking, commerce, and entertainment. 
-                  We've built a comprehensive ecosystem that empowers individuals and businesses to connect, create, and transact 
+                  The FingerMobile Protocol is a revolutionary platform that combines social networking, commerce, and entertainment.
+                  We've built a comprehensive ecosystem that empowers individuals and businesses to connect, create, and transact
                   seamlessly across multiple domains.
                 </p>
-                
+
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
                 <p className="text-gray-700 mb-6">
-                  To create an inclusive digital ecosystem that enables seamless interactions between people, businesses, 
+                  To create an inclusive digital ecosystem that enables seamless interactions between people, businesses,
                   and technology. We believe in fostering genuine connections while providing powerful tools for economic empowerment.
                 </p>
-                
+
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Core Values</h3>
                 <ul className="list-disc pl-6 text-gray-700 mb-6 space-y-2">
                   <li><strong>Inclusivity:</strong> Making our platform accessible to all, regardless of economic background</li>
@@ -147,14 +153,14 @@ const AboutUsPage: React.FC = () => {
                   <li><strong>Community:</strong> Building meaningful relationships and connections</li>
                   <li><strong>Empowerment:</strong> Giving users the tools they need to succeed</li>
                 </ul>
-                
+
                 <h3 className="text-xl font-bold text-gray-900 mb-3">What Makes Us Different</h3>
                 <p className="text-gray-700 mb-6">
-                  Unlike traditional platforms, FingerMobile Protocol integrates multiple services under one roof. From social networking 
+                  Unlike traditional platforms, FingerMobile Protocol integrates multiple services under one roof. From social networking
                   to e-commerce, gaming to education, financial services to content creation, our platform offers a holistic digital experience.
                 </p>
               </div>
-              
+
               <div className="flex gap-4 mt-8">
                 <button
                   type="button"
@@ -175,7 +181,7 @@ const AboutUsPage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
@@ -184,7 +190,7 @@ const AboutUsPage: React.FC = () => {
               </h2>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button 
+                <button
                   type="button"
                   className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
@@ -196,20 +202,20 @@ const AboutUsPage: React.FC = () => {
             <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Platform Actions</h2>
               <div className="space-y-3">
-                <button 
+                <button
                   type="button"
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <InformationCircleIcon className="h-5 w-5 text-blue-600 mr-3" />
                   Company Overview
                 </button>
-                <button 
+                <button
                   type="button"
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Leadership Team
                 </button>
-                <button 
+                <button
                   type="button"
                   className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -238,7 +244,7 @@ const AboutUsPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <GiftModal
         isOpen={showGiftModal}
         onClose={() => setShowGiftModal(false)}

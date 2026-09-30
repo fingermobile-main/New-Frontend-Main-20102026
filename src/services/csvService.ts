@@ -26,14 +26,14 @@ class CsvService {
    * Parse CSV data from file
    */
   parseCsvFile(
-  file: File): Promise<CsvParseResult> {
+    file: File): Promise<CsvParseResult> {
     return new Promise((resolve, reject) => {
       Papa.parse(file, {header: true,
-  skipEmptyLines: true,
-  complete: (results) => {
+        skipEmptyLines: true,
+        complete: (results) => {
           resolve(results as CsvParseResult);
         },
-error: (error) => {
+        error: (error) => {
           reject(error);
         }
       });
@@ -44,9 +44,9 @@ error: (error) => {
    * Parse CSV data from string
    */
   parseCsvString(
-  csvString: string): CsvParseResult {
+    csvString: string): CsvParseResult {
     return Papa.parse(csvString, {header: true,
-  skipEmptyLines: true
+      skipEmptyLines: true
     }) as CsvParseResult;
   }
 
@@ -54,7 +54,7 @@ error: (error) => {
    * Transform raw CSV data to MemberData array
    */
   transformMembersData(
-  rawData: unknown[]): MemberData[] {
+    rawData: unknown[]): MemberData[] {
     if (!rawData || rawData.length === 0) return [] as MemberData[];
     return rawData.map(item => ({
       email: (item as any)['Login Email'] || (item as any).email || '',
@@ -93,11 +93,11 @@ error: (error) => {
    * Generate a slug from first and last name
    */
   private generateSlug(
-  firstName: string, lastName: string): string {
+    firstName: string, lastName: string): string {
     if (!firstName && !lastName) {
       return this.generateId().substring(0, 8);
     }
-    
+
     const name = `${firstName || ''} ${lastName || ''}`.trim();
     return name
       .toLowerCase()
@@ -113,16 +113,16 @@ error: (error) => {
   async importAllCsvData(): Promise<boolean> {
     try {
       const response = await fetch('/api/csv-import/import-all', {method: 'POST', headers: {
-          'Content-Type': 'application/json'
-        }
+        'Content-Type': 'application/json'
+      }
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(result.message || 'Import failed');
       }
-      
+
       return result.success;
     } catch (error) {
       console.error('Error importing all CSV, data:', error);
@@ -136,16 +136,16 @@ error: (error) => {
   async importMembersData(): Promise<boolean> {
     try {
       const response = await fetch('/api/csv-import/import-members', {method: 'POST', headers: {
-          'Content-Type': 'application/json'
-        }
+        'Content-Type': 'application/json'
+      }
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(result.message || 'Import failed');
       }
-      
+
       return result.success;
     } catch (error) {
       console.error('Error importing members, data:', error);
@@ -159,16 +159,16 @@ error: (error) => {
   async importBlogPostsData(): Promise<boolean> {
     try {
       const response = await fetch('/api/csv-import/import-blog-posts', {method: 'POST', headers: {
-          'Content-Type': 'application/json'
-        }
+        'Content-Type': 'application/json'
+      }
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(result.message || 'Import failed');
       }
-      
+
       return result.success;
     } catch (error) {
       console.error('Error importing blog posts, data:', error);
@@ -182,16 +182,16 @@ error: (error) => {
   async importForumCategoriesData(): Promise<boolean> {
     try {
       const response = await fetch('/api/csv-import/import-forum-categories', {method: 'POST', headers: {
-          'Content-Type': 'application/json'
-        }
+        'Content-Type': 'application/json'
+      }
       });
-      
+
       const result = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(result.message || 'Import failed');
       }
-      
+
       return result.success;
     } catch (error) {
       console.error('Error importing forum categories, data:', error);
@@ -203,15 +203,15 @@ error: (error) => {
    * Process CSV file and upload to database via backend
    */
   async processAndUploadCsv(
-  file: File): Promise<void> {
+    file: File): Promise<void> {
     try {
       // Parse the CSV file
       const result = await this.parseCsvFile(file);
-      
+
       if (result.errors && result.errors.length > 0) {
         console.warn('CSV parsing, errors:', result.errors);
       }
-      
+
       // Determine which type of data this is based on headers
       const headers = Object.keys(result.data[0] || {});
       if (headers.includes('Login Email') && headers.includes('First Name')) {
@@ -237,10 +237,10 @@ error: (error) => {
    * Validate members data
    */
   private validateMembers(
-  members: MemberData[]): MemberData[] {
+    members: MemberData[]): MemberData[] {
     return members.filter((member) => {
       // Basic, validation: email and names should exist
-      return member.email && member.email.length > 0 && 
+      return member.email && member.email.length > 0 &&
              (member.firstName || member.lastName);
     });
   }
@@ -249,12 +249,12 @@ error: (error) => {
    * Import blog data from CSV
    */
   async importBlogData(
-  csvString: string) {
+    csvString: string) {
     try {
-    const result = this.parseCsvString(csvString);
-    // Process blog data similar to members
-    console.info('Processing blog, data:', result.data);
-    return result.data;
+      const result = this.parseCsvString(csvString);
+      // Process blog data similar to members
+      console.info('Processing blog, data:', result.data);
+      return result.data;
     } catch (error) {
       logger.error('importBlogData, error:', error);
       throw error;
@@ -265,7 +265,7 @@ error: (error) => {
    * Import forum categories data from CSV
    */
   async importForumCategories(
-  csvString: string) {
+    csvString: string) {
     const result = this.parseCsvString(csvString);
     // Process forum categories data
     console.info('Processing forum, categories:', result.data);

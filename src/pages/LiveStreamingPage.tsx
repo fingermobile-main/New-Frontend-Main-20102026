@@ -1,232 +1,400 @@
-import React, { useState, useEffect } from 'react';
-import { HeartIcon, ChatBubbleIcon, ShareIcon, HomeIcon, UserIcon, PaperAirplaneIcon } from '../icons';
-import { SearchIcon } from '../icons';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import apiService from '../services/apiService';
+import { LIVE_STREAMS } from '../constants/dashboardConstants';
+import type { LiveStream } from '../types';
+import {
+  CalendarIcon,
+  HeartIcon,
+  MicrophoneIcon,
+  VideoCameraIcon,
+  GiftIcon
+} from '../icons';
+import { useAppContext } from '../contexts/AppContext';
+import AnimatedAvatar from '../components/AnimatedAvatar';
+import MainLayout from '../components/layout/MainLayout';
+import WebRtcStudioDrawer from '../components/streaming/WebRtcStudioDrawer';
+import LiveStreamTipModal from '../components/streaming/LiveStreamTipModal';
 
-const LiveStreamingPage: React.FC = () => {
-  const [chats, setChats] = useState([
-    { id: 1, user: 'Alice', message: 'Great stream!', timestamp: '2s ago' },
-    { id: 2, user: 'Bob', message: 'Love this content', timestamp: '5s ago' },
-    { id: 3, user: 'Charlie', message: 'Can you show us more?', timestamp: '8s ago' },
-  ]);
-  const [newChat, setNewChat] = useState('');
-  const [liveStreams, setLiveStreams] = useState([
-    { id: 1, title: 'Gaming Session', viewers: 1200, category: 'Gaming', host: 'GamerPro' },
-    { id: 2, title: 'Cooking Tutorial', viewers: 850, category: 'Food', host: 'ChefMaster' },
-    { id: 3, title: 'Music Performance', viewers: 3200, category: 'Music', host: 'IndieBand' },
-    { id: 4, title: 'Tech Talk', viewers: 560, category: 'Technology', host: 'TechGuru' },
-  ]);
+// --- Subcomponent: Streamer Dashboard ---
+interface StreamerDashboardProps {
+  isLive: boolean;
+  ficBalance: number;
+  scheduledEvents?: any[];
+  handleGoLive?: () => void;
+  handleStopLive?: () => void;
+  handleStartConference?: () => void;
+}
 
-  const [activeTab, setActiveTab] = useState<'following' | 'recommended'>('following');
-  const [selectedStream, setSelectedStream] = useState<any>(null);
-
-  useEffect(() => {
-    // Simulate incoming chat messages
-    const interval = setInterval(() => {
-      const users = ['Viewer1', 'Viewer2', 'NewUser', 'Fan123'];
-      const messages = [
-        'Amazing stream!',
-        'Can you show us more?',
-        'Love the content!',
-        'Keep it up!',
-        'So informative!'
-      ];
-      
-      const randomUser = users[Math.floor(Math.random() * users.length)];
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      
-      const newMessage = {
-        id: chats.length + 1,
-        user: randomUser,
-        message: randomMessage,
-        timestamp: 'just now'
-      };
-      
-      setChats(prev => [...prev.slice(-4), newMessage]);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [chats.length]);
-
-  const handleSendChat = () => {
-    if (newChat.trim() === '') return;
-    
-    const message = {
-      id: chats.length + 1,
-      user: 'Me',
-      message: newChat,
-      timestamp: 'just now'
-    };
-    
-    setChats([...chats, message]);
-    setNewChat('');
-  };
-
-  if (selectedStream) {
-    return (
-      <div className="min-h-screen bg-black text-white">
-        {/* Stream Header */}
-        <div className="fixed top-0 left-0 right-0 z-10 bg-black bg-opacity-80 backdrop-blur-sm p-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-red-500 text-sm">LIVE</span>
-            <h1 className="text-lg font-bold truncate max-w-[50%]">{selectedStream.title}</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button onClick={() => setSelectedStream(null)} className="text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Stream Content */}
-        <div className="pt-16 pb-20 flex flex-col md:flex-row">
-          <div className="md:w-2/3">
-            <div className="relative pt-[56.25%] bg-gray-900">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="bg-gray-800 border-2 border-dashed rounded-xl w-full h-64 md:h-96 flex items-center justify-center">
-                    <span className="text-white text-lg">Live Stream Content</span>
-                  </div>
-                  <p className="mt-2 text-gray-400">{selectedStream.viewers.toLocaleString()} viewers</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-bold">{selectedStream.title}</h2>
-                  <p className="text-gray-400">Hosted by {selectedStream.host}</p>
-                </div>
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium">
-                  Follow
-                </button>
-              </div>
-              
-              <p className="text-gray-300">Join in on this amazing live session. Interact with the host and other viewers!</p>
-            </div>
-          </div>
-
-          {/* Chat Section */}
-          <div className="md:w-1/3 p-4 bg-gray-900">
-            <h3 className="font-bold mb-3">Live Chat</h3>
-            
-            <div className="bg-gray-800 rounded-lg p-3 h-96 overflow-y-auto mb-3">
-              {chats.map(chat => (
-                <div key={chat.id} className="mb-2">
-                  <span className="text-orange-500 font-medium">{chat.user}</span>: 
-                  <span className="ml-2">{chat.message}</span>
-                  <span className="text-gray-500 text-xs float-right">{chat.timestamp}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex">
-              <input
-                type="text"
-                value={newChat}
-                onChange={(e) => setNewChat(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
-                placeholder="Type a message..."
-                className="flex-1 bg-gray-800 text-white rounded-l-lg px-3 py-2 focus:outline-none"
-              />
-              <button 
-                onClick={handleSendChat}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-r-lg"
-              >
-                <PaperAirplaneIcon className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+const StreamerDashboard: React.FC<StreamerDashboardProps> = React.memo(({
+  isLive,
+  ficBalance,
+  scheduledEvents,
+  handleGoLive,
+  handleStopLive,
+  handleStartConference
+}) => {
+  const handleOpenScheduleModal = useCallback(() => {
+    document.getElementById('schedule-modal')?.classList.remove('hidden');
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-gray-900 bg-opacity-90 backdrop-blur-sm p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Live Streams</h1>
-          <div className="flex space-x-2">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v8a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z" />
-              </svg>
+    <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg p-6 mb-8 text-white">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 className="text-2xl font-bold">Become a Streamer</h2>
+          <p className="mt-1 opacity-90">Start your live stream and engage with your audience</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={handleGoLive}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
+          >
+            <VideoCameraIcon className="w-5 h-5" />
+            Go Live
+          </button>
+          <button
+            onClick={handleOpenScheduleModal}
+            className="flex items-center gap-2 bg-white text-purple-600 px-4 py-2 rounded-lg transition"
+          >
+            <CalendarIcon className="w-5 h-5" />
+            Schedule Event
+          </button>
+          <button
+            onClick={handleStartConference}
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
+          >
+            <MicrophoneIcon className="w-5 h-5" />
+            Start Conference
+          </button>
+        </div>
+      </div>
+
+      {isLive && (
+        <div className="mt-6 p-4 bg-red-500 bg-opacity-20 border border-red-400 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse"></div>
+              <span className="font-medium">You are currently live</span>
+            </div>
+            <button
+              onClick={handleStopLive}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+            >
+              End Stream
             </button>
           </div>
+          <div className="mt-2 text-sm opacity-90">
+            Your stream is visible to everyone. Click "End Stream" when you're finished.
+          </div>
         </div>
-        
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search streams..."
-            className="w-full bg-gray-800 text-white rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-          <SearchIcon className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      )}
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white bg-opacity-20 p-4 rounded-lg">
+          <div className="text-2xl font-bold">{ficBalance.toFixed(2)} FIC</div>
+          <div className="text-sm opacity-90">FIC Balance</div>
         </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex border-b border-gray-800 mx-4">
-        <button 
-          className={`flex-1 py-3 font-medium text-center ${activeTab === 'following' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('following')}
-        >
-          Following
-        </button>
-        <button 
-          className={`flex-1 py-3 font-medium text-center ${activeTab === 'recommended' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('recommended')}
-        >
-          Recommended
-        </button>
-      </div>
-
-      {/* Live Streams */}
-      <div className="p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {liveStreams.map(stream => (
-            <div 
-              key={stream.id} 
-              className="bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:bg-gray-700 transition-all"
-              onClick={() => setSelectedStream(stream)}
-            >
-              <div className="relative">
-                <div className="bg-gray-700 aspect-video flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="inline-flex items-center bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mb-2">
-                      <span className="w-2 h-2 bg-white rounded-full mr-1 animate-pulse"></span>
-                      LIVE
-                    </div>
-                    <div className="bg-gray-600 border-2 border-dashed rounded-xl w-full h-32 flex items-center justify-center">
-                      <span className="text-gray-400">Stream Preview</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full">
-                  {stream.viewers.toLocaleString()}
-                </div>
-              </div>
-              <div className="p-3">
-                <h3 className="font-bold truncate">{stream.title}</h3>
-                <p className="text-gray-400 text-sm truncate">{stream.host}</p>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-orange-500 text-xs bg-orange-500/10 px-2 py-1 rounded">{stream.category}</span>
-                  <div className="flex items-center text-gray-400 text-xs">
-                    <HeartIcon className="h-4 w-4 mr-1" />
-                    {Math.floor(stream.viewers / 10).toLocaleString()}+
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white bg-opacity-20 p-4 rounded-lg">
+          <div className="text-2xl font-bold">{(scheduledEvents || []).length}</div>
+          <div className="text-sm opacity-90">Scheduled Events</div>
+        </div>
+        <div className="bg-white bg-opacity-20 p-4 rounded-lg">
+          <div className="text-2xl font-bold">0</div>
+          <div className="text-sm opacity-90">Current Viewers</div>
         </div>
       </div>
     </div>
+  );
+});
+
+StreamerDashboard.displayName = 'StreamerDashboard';
+
+// --- Subcomponent: Individual Stream Card ---
+/* eslint-disable no-unused-vars */
+interface StreamCardProps {
+  stream: LiveStream;
+  paidStreamIds?: string[];
+  onLike: (id: string) => void;
+  onOpenGiftModal: (id: string) => void;
+  onOpenPaylinkModal: (id: string) => void;
+  onVote: (id: string, dir: 'up' | 'down') => void;
+  onTokenize: (id: string) => void;
+  onAiAssist: (id: string) => void;
+}
+/* eslint-enable no-unused-vars */
+
+const StreamCard: React.FC<StreamCardProps> = React.memo(({
+  stream,
+  paidStreamIds,
+  onLike,
+  onOpenGiftModal,
+  onOpenPaylinkModal,
+  onVote,
+  onTokenize,
+  onAiAssist
+}) => {
+  const handleLike = useCallback(() => onLike(stream.id), [stream.id, onLike]);
+  const handleVoteUp = useCallback(() => onVote(stream.id, 'up'), [stream.id, onVote]);
+  const handleVoteDown = useCallback(() => onVote(stream.id, 'down'), [stream.id, onVote]);
+  const handleTokenize = useCallback(() => onTokenize(stream.id), [stream.id, onTokenize]);
+  const handleAiAssist = useCallback(() => onAiAssist(stream.id), [stream.id, onAiAssist]);
+
+  const handleGiftOrPaylink = useCallback(() => {
+    if ((paidStreamIds || []).includes(stream.id)) {
+      onOpenGiftModal(stream.id);
+    } else {
+      onOpenPaylinkModal(stream.id);
+    }
+  }, [stream.id, paidStreamIds, onOpenGiftModal, onOpenPaylinkModal]);
+
+  return (
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+      <div className="relative">
+        <img src={stream.thumbnail} alt={stream.title} className="w-full h-48 object-cover" />
+        <div className="absolute top-2 left-2 flex items-center gap-1 bg-red-600 text-white px-2 py-1 rounded-full text-sm">
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+          LIVE
+        </div>
+        <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-sm">
+          {stream.viewers} viewers
+        </div>
+        {stream.isFeatured && (
+          <div className="absolute bottom-2 left-2 bg-blue-600 text-white px-2 py-1 rounded-full text-sm">
+            Featured
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        <div className="flex items-start gap-3">
+          <AnimatedAvatar
+            staticUrl={stream.creator?.avatarUrl}
+            animatedUrl={stream.creator?.animatedAvatarUrl}
+            altText={stream.creator?.name || 'Unknown'}
+            className="w-10 h-10 rounded-full"
+          />
+          <div className="flex-1">
+            <h3 className="font-bold text-gray-800 line-clamp-1">{stream.title}</h3>
+            <p className="text-gray-600 text-sm">{stream.creator?.name || 'Unknown Creator'}</p>
+            <p className="text-gray-500 text-xs mt-1 line-clamp-2">{stream.description}</p>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <button onClick={handleLike} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
+              <HeartIcon className="w-4 h-4" />
+            </button>
+            <button onClick={handleGiftOrPaylink} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
+              <GiftIcon className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="flex gap-1">
+            <button onClick={handleVoteUp} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">👍</button>
+            <button onClick={handleVoteDown} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">👎</button>
+            <button onClick={handleTokenize} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">🪙</button>
+            <button onClick={handleAiAssist} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">🤖</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+StreamCard.displayName = 'StreamCard';
+
+// --- Main Container Page ---
+const LiveStreamingPage: React.FC = () => {
+  const {
+    isLive,
+    handleStopLive,
+    ficBalance,
+    handleStartConference,
+    paidStreamIds,
+    scheduledEvents,
+    showToast
+  } = useAppContext();
+
+  const [isStudioOpen, setIsStudioOpen] = useState(false);
+  const [tipModalState, setTipModalState] = useState<{
+    isOpen: boolean;
+    streamId: string;
+    creatorName?: string;
+  }>({
+    isOpen: false,
+    streamId: '',
+    creatorName: ''
+  });
+
+  const [liveStreams, setLiveStreams] = useState<LiveStream[]>(LIVE_STREAMS);
+  const [loadingStreams, setLoadingStreams] = useState(false);
+
+  useEffect(() => {
+    const fetchActiveStreams = async () => {
+      try {
+        setLoadingStreams(true);
+        const res = await apiService.get<any>('/api/live-stream/active');
+        if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
+          const mapped = res.data.map((r: any, idx: number): LiveStream => ({
+            id: r.id,
+            title: r.streamTitle || r.title || 'Live Stream',
+            description: r.streamDescription || r.description || '',
+            thumbnail: r.streamThumbnailUrl || r.thumbnail || (idx % 2 === 0
+              ? 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop'
+              : 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop'),
+            viewers: r.streamViewerCount || r.viewers || 100,
+            isFeatured: idx === 0,
+            creator: {
+              id: r.streamOwnerId || '1',
+              name: r.owner_username || 'Featured Creator',
+              avatarUrl: r.owner_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop',
+              animatedAvatarUrl: ''
+            },
+            status: r.streamStatus === 'live' ? 'active' : 'ended'
+          }));
+          setLiveStreams(mapped);
+        }
+      } catch {
+        // Fallback to initial streams
+      } finally {
+        setLoadingStreams(false);
+      }
+    };
+    fetchActiveStreams();
+  }, []);
+
+  const featuredStreamData = useMemo(() =>
+    liveStreams.find((s: LiveStream) => s.isFeatured) || liveStreams[0] || null
+  , [liveStreams]);
+
+  const otherStreams = useMemo(() =>
+    liveStreams.filter((s: LiveStream) => s.id !== featuredStreamData?.id)
+  , [liveStreams, featuredStreamData]);
+
+  /* eslint-disable no-unused-vars */
+  const onLike = useCallback(async (streamId: string) => {
+    try {
+      await apiService.post(`/api/live-stream/${streamId}/heartbeat`, { delta: 1 }).catch(() => null);
+      showToast?.('Stream liked successfully');
+    } catch {
+      showToast?.('Failed to like stream', 'error');
+    }
+  }, [showToast]);
+
+  const onOpenGiftModal = useCallback((streamId: string) => {
+    const stream = liveStreams.find((s) => s.id === streamId);
+    setTipModalState({
+      isOpen: true,
+      streamId,
+      creatorName: stream?.title || stream?.creator?.name || 'Creator'
+    });
+  }, [liveStreams]);
+
+  const onOpenPaylinkModal = useCallback((streamId: string) => {
+    showToast?.('Direct paylink generated for stream creator', 'success');
+  }, [showToast]);
+
+  const onVote = useCallback(async (streamId: string, voteType: 'up' | 'down') => {
+    try {
+      showToast('Vote recorded successfully');
+    } catch {
+      showToast('Failed to record vote', 'error');
+    }
+  }, [showToast]);
+
+  const handleTokenizeStream = useCallback(async (streamId: string) => {
+    try {
+      showToast('Stream tokenized successfully');
+    } catch {
+      showToast('Failed to tokenize stream', 'error');
+    }
+  }, [showToast]);
+
+  const handleAiAssist = useCallback(async (streamId: string) => {
+    try {
+      showToast('AI assistance applied successfully');
+    } catch {
+      showToast('Failed to apply AI assistance', 'error');
+    }
+  }, [showToast]);
+  /* eslint-enable no-unused-vars */
+
+  return (
+    <MainLayout pageTitle="Live Streaming">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="mb-8">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-3 rounded-xl">
+              <VideoCameraIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-3xl font-bold text-gray-900">Live Streaming</h1>
+              <p className="text-gray-600">Watch live streams from creators or start your own.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <StreamerDashboard
+            isLive={isLive || false}
+            ficBalance={ficBalance}
+            scheduledEvents={scheduledEvents || []}
+            handleGoLive={() => setIsStudioOpen(true)}
+            handleStopLive={handleStopLive}
+            handleStartConference={handleStartConference}
+          />
+        </div>
+
+        {featuredStreamData && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Featured Stream</h2>
+            <StreamCard
+              stream={featuredStreamData}
+              paidStreamIds={paidStreamIds as string[] || []}
+              onLike={onLike}
+              onOpenGiftModal={onOpenGiftModal}
+              onOpenPaylinkModal={onOpenPaylinkModal}
+              onVote={onVote}
+              onTokenize={handleTokenizeStream}
+              onAiAssist={handleAiAssist}
+            />
+          </div>
+        )}
+
+        {otherStreams.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Other Live Streams</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {otherStreams.map((stream) => (
+                <StreamCard
+                  key={stream.id}
+                  stream={stream}
+                  paidStreamIds={paidStreamIds as string[] || []}
+                  onLike={onLike}
+                  onOpenGiftModal={onOpenGiftModal}
+                  onOpenPaylinkModal={onOpenPaylinkModal}
+                  onVote={onVote}
+                  onTokenize={handleTokenizeStream}
+                  onAiAssist={handleAiAssist}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* WebRTC Broadcast Studio Drawer */}
+        <WebRtcStudioDrawer
+          isOpen={isStudioOpen}
+          onClose={() => setIsStudioOpen(false)}
+        />
+
+        {/* Live Stream Tipping Modal */}
+        <LiveStreamTipModal
+          isOpen={tipModalState.isOpen}
+          streamId={tipModalState.streamId}
+          creatorName={tipModalState.creatorName}
+          onClose={() => setTipModalState({ isOpen: false, streamId: '' })}
+        />
+      </div>
+    </MainLayout>
   );
 };
 

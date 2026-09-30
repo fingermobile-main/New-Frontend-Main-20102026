@@ -1,5 +1,5 @@
 import React, {} from 'react';
-import { Shield, FileText, Scale } from "lucide-react";
+import { Shield, FileText, Scale } from 'lucide-react';
 
 interface LegalLayoutProps {
   children: React.ReactNode;

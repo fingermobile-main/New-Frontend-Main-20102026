@@ -1,48 +1,34 @@
-import { Member } from './models';
-
-export interface AuthResponse {success: boolean;
-  message: string;
-  token?: string;
-  member?: Member;
-  csrfToken?: string;
+export enum UserRole {
+  GUEST = 'GUEST',
+  VERIFIED_USER = 'VERIFIED_USER',
+  CREATOR = 'CREATOR',
+  MERCHANT = 'MERCHANT',
+  MODERATOR = 'MODERATOR',
+  PLATFORM_ADMIN = 'PLATFORM_ADMIN',
+  SYSTEM_ENGINEER = 'SYSTEM_ENGINEER',
 }
 
-export type LoginResponse = AuthResponse
-
-// Updated LoginResponseExtended to match what the API actually returns
-export interface LoginResponseExtended extends LoginResponse {
-  accessToken?: string;
-  refreshToken?: string;
-  expiresIn?: number;
-  user?: {id: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  onboardingComplete: boolean;
-    email?: string;
-    avatar?: string;
-  };
-}
-
-export type RegisterResponse = AuthResponse
-
-// Updated RegisterData to match what the API expects
-export interface RegisterData {phone: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  id?: string;
+export interface SessionUser {
+  id: string;
+  username: string;
+  roles: UserRole[];
+  mfaEnrolled: boolean;
   email?: string;
-  username?: string;
-  confirmPassword?: string;
-  name?: string; // For backward compatibility
-  membername?: string; // For tests
+  name?: string;
+  avatar?: string;
+  role?: string;
+  permissions?: string[];
+  isVerified?: boolean;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  subProfiles?: unknown[];
+  isSubscribed?: boolean;
+  loyaltyTier?: string;
 }
 
-export interface ChangePasswordData {currentPassword: string;
-  newPassword: string;
-}
-
-export interface ResetPasswordData {token: string;
-  newPassword: string;
+export interface SessionContextType {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: SessionUser | null;
 }

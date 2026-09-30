@@ -12,7 +12,7 @@ const Button: React.FC<{
   return (
     <button
       {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-      className={`ant-btn ${props.type ? `ant-btn-${props.type}` : ""} ${props.className || ""}`}
+      className={`ant-btn ${props.type ? `ant-btn-${props.type}` : ''} ${props.className || ''}`}
     >
       {children}
     </button>
@@ -28,7 +28,7 @@ const Input: React.FC<{
   return (
     <input
       {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
-      className={`ant-input ${props.className || ""}`}
+      className={`ant-input ${props.className || ''}`}
     />
   );
 };
@@ -44,7 +44,7 @@ const Select: React.FC<{
   return (
     <select
       {...(props as React.SelectHTMLAttributes<HTMLSelectElement>)}
-      className={`ant-select ${props.className || ""}`}
+      className={`ant-select ${props.className || ''}`}
     >
       {children}
     </select>

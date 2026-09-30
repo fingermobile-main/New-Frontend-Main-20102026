@@ -13,7 +13,7 @@ const AICourseBuilder: React.FC<AICourseBuilderProps> = ({ onBuild }) => {
 
   const handleBuild = async () => {
     if (!topic.trim()) return;
-    
+
     setIsBuilding(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));

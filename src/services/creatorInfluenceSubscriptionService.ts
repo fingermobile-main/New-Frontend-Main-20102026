@@ -84,9 +84,9 @@ class CreatorInfluenceSubscriptionService {
    * Get subscription recommendations for a user
    */
   async getRecommendations(
-  memberId: string,
-followers: number,
-engagementRate: number,
+    memberId: string,
+    followers: number,
+    engagementRate: number,
     bandwidthUsage?: number,
     monetizationEarnings?: number
   ): Promise<SubscriptionRecommendation> {
@@ -94,9 +94,9 @@ engagementRate: number,
       `${this.baseUrl}/creator-influence-subscriptions/recommend/${memberId}`,
       {
         followers,
-engagement_rate: engagementRate,
-bandwidth_usage: bandwidthUsage || 0,
-monetization_earnings: monetizationEarnings || 0
+        engagement_rate: engagementRate,
+        bandwidth_usage: bandwidthUsage || 0,
+        monetization_earnings: monetizationEarnings || 0
       }
     );
     return response.data.data;
@@ -106,7 +106,7 @@ monetization_earnings: monetizationEarnings || 0
    * Get current subscription for a member
    */
   async getCurrentSubscription(
-  memberId: string): Promise<Subscription | null> {
+    memberId: string): Promise<Subscription | null> {
     try {
       const response = await axios.get(
         `${this.baseUrl}/creator-influence-subscriptions/member/${memberId}`
@@ -124,7 +124,7 @@ monetization_earnings: monetizationEarnings || 0
    * Get subscription benefits for a specific tier
    */
   async getSubscriptionBenefits(
-  level: string): Promise<SubscriptionBenefits> {
+    level: string): Promise<SubscriptionBenefits> {
     const response = await axios.get(
       `${this.baseUrl}/creator-influence-subscriptions/benefits/${level}`
     );
@@ -135,7 +135,7 @@ monetization_earnings: monetizationEarnings || 0
    * Create a new subscription
    */
   async createSubscription(
-  data: {
+    data: {
   member_id: string;
   subscription_level: string;
     subscription_type?: string;
@@ -153,8 +153,8 @@ monetization_earnings: monetizationEarnings || 0
    * Upgrade subscription
    */
   async upgradeSubscription(
-  memberId: string,
-newLevel: string
+    memberId: string,
+    newLevel: string
   ): Promise<Subscription> {
     const response = await axios.patch(
       `${this.baseUrl}/creator-influence-subscriptions/upgrade/${memberId}`,
@@ -167,8 +167,8 @@ newLevel: string
    * Downgrade subscription
    */
   async downgradeSubscription(
-  memberId: string,
-newLevel: string
+    memberId: string,
+    newLevel: string
   ): Promise<Subscription> {
     const response = await axios.patch(
       `${this.baseUrl}/creator-influence-subscriptions/downgrade/${memberId}`,
@@ -181,7 +181,7 @@ newLevel: string
    * Cancel subscription
    */
   async cancelSubscription(
-  subscriptionId: string,
+    subscriptionId: string,
     reason?: string
   ): Promise<{
   success: boolean;
@@ -198,7 +198,7 @@ newLevel: string
    * Process subscription payment
    */
   async processPayment(
-  data: {
+    data: {
   member_id: string;
   subscription_level: string;
   amount: number;
@@ -218,7 +218,7 @@ newLevel: string
    * Get subscription usage
    */
   async getSubscriptionUsage(
-  memberId: string): Promise<{
+    memberId: string): Promise<{
   subscription_level: string;
   features_used: number;
   features_available: number;
@@ -235,7 +235,7 @@ newLevel: string
    * Get billing history
    */
   async getBillingHistory(
-  memberId: string): Promise<Record<string, unknown>[]> {
+    memberId: string): Promise<Record<string, unknown>[]> {
     const response = await axios.get(
       `${this.baseUrl}/creator-influence-subscriptions/billing/${memberId}`
     );
@@ -246,7 +246,7 @@ newLevel: string
    * Generate invoice for a subscription
    */
   async generateInvoice(
-  subscriptionId: string): Promise<Record<string, unknown>> {
+    subscriptionId: string): Promise<Record<string, unknown>> {
     const response = await axios.get(
       `${this.baseUrl}/creator-influence-subscriptions/invoice/${subscriptionId}`
     );

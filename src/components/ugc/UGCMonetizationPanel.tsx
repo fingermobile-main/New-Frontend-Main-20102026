@@ -14,20 +14,20 @@ interface Earning {
   amount: number;
   currency: string;
   date: string;
-  status: "paid" | "pending" | "processing";
+  status: 'paid' | 'pending' | 'processing';
 }
 
 interface WithdrawalMethod {
   id: string;
   name: string;
-  type: "bank" | "paypal" | "crypto";
+  type: 'bank' | 'paypal' | 'crypto';
   details: string;
 }
 
 const UGCMonetizationPanel = () => {
-  const { showToast } = useAppContext(); 
-  
-  const [activeTab, setActiveTab] = React.useState<"earnings" | "withdraw">("earnings");
+  const { showToast } = useAppContext();
+
+  const [activeTab, setActiveTab] = React.useState<'earnings' | 'withdraw'>('earnings');
   const [formData, setFormData] = React.useState({
     amount: '',
     method: ''
@@ -40,70 +40,70 @@ const UGCMonetizationPanel = () => {
   // Mock earnings data
   const earnings: Earning[] = [
     {
-      id: "1",
-      contentTitle: "Summer Vacation Photos",
-      contentType: "Image",
+      id: '1',
+      contentTitle: 'Summer Vacation Photos',
+      contentType: 'Image',
       amount: 12.5,
-      currency: "FIC",
-      date: "2023-06-15",
-      status: "paid"
+      currency: 'FIC',
+      date: '2023-06-15',
+      status: 'paid'
     },
     {
-      id: "2",
-      contentTitle: "New Music Release",
-      contentType: "Audio",
+      id: '2',
+      contentTitle: 'New Music Release',
+      contentType: 'Audio',
       amount: 25.0,
-      currency: "FIC",
-      date: "2023-06-18",
-      status: "pending"
+      currency: 'FIC',
+      date: '2023-06-18',
+      status: 'pending'
     },
     {
-      id: "3",
-      contentTitle: "Trending Video",
-      contentType: "Video",
+      id: '3',
+      contentTitle: 'Trending Video',
+      contentType: 'Video',
       amount: 50.0,
-      currency: "FIC",
-      date: "2023-06-20",
-      status: "processing"
+      currency: 'FIC',
+      date: '2023-06-20',
+      status: 'processing'
     }
   ];
 
   // Mock withdrawal methods
   const withdrawalMethods: WithdrawalMethod[] = [
     {
-      id: "1",
-      name: "Bank Account",
-      type: "bank",
-      details: "****1234"
+      id: '1',
+      name: 'Bank Account',
+      type: 'bank',
+      details: '****1234'
     },
     {
-      id: "2",
-      name: "PayPal",
-      type: "paypal",
-      details: "user@example.com"
+      id: '2',
+      name: 'PayPal',
+      type: 'paypal',
+      details: 'user@example.com'
     },
     {
-      id: "3",
-      name: "Crypto Wallet",
-      type: "crypto",
-      details: "0x...abcd"
+      id: '3',
+      name: 'Crypto Wallet',
+      type: 'crypto',
+      details: '0x...abcd'
     }
   ];
 
   const handleWithdraw = () => {
     if (!formData.amount || !formData.method) {
-      showToast("Please enter amount and select method", "error");
+      showToast('Please enter amount and select method', 'error');
       return;
     }
 
     const amount = parseFloat(formData.amount);
     if (isNaN(amount) || amount <= 0) {
-      showToast("Please enter a valid amount", "error");
+      showToast('Please enter a valid amount', 'error');
       return;
     }
 
     if (walletInfo && amount > walletInfo.fic_balance) {
-      showToast("Insufficient balance", "error");
+      showToast('Insufficient balance', 'error');
       return;
     }
 
@@ -111,9 +111,9 @@ const UGCMonetizationPanel = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    
+
     timerRef.current = setTimeout(() => {
-      showToast(`Withdrawal of ${amount} ${formData.method} initiated`, "success");
+      showToast(`Withdrawal of ${amount} ${formData.method} initiated`, 'success');
       setFormData({ amount: '', method: '' });
     }, 1000);
   };
@@ -140,7 +140,7 @@ const UGCMonetizationPanel = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">UGC Monetization</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">Available Balance</h3>
@@ -160,22 +160,22 @@ const UGCMonetizationPanel = () => {
         <nav className="-mb-px flex space-x-8">
           <button
             type="button"
-            onClick={() => setActiveTab("earnings")}
+            onClick={() => setActiveTab('earnings')}
             className={`${
-              activeTab === "earnings"
-                ? "border-indigo-500 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              activeTab === 'earnings'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Earnings
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab("withdraw")}
+            onClick={() => setActiveTab('withdraw')}
             className={`${
-              activeTab === "withdraw"
-                ? "border-indigo-500 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              activeTab === 'withdraw'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Withdraw
@@ -183,7 +183,7 @@ const UGCMonetizationPanel = () => {
         </nav>
       </div>
 
-      {activeTab === "earnings" && (
+      {activeTab === 'earnings' && (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -223,11 +223,11 @@ const UGCMonetizationPanel = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        earning.status === "paid"
-                          ? "bg-green-100 text-green-800"
-                          : earning.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-blue-100 text-blue-800"
+                        earning.status === 'paid'
+                          ? 'bg-green-100 text-green-800'
+                          : earning.status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-blue-100 text-blue-800'
                       }`}
                     >
                       {earning.status}
@@ -240,7 +240,7 @@ const UGCMonetizationPanel = () => {
         </div>
       )}
 
-      {activeTab === "withdraw" && (
+      {activeTab === 'withdraw' && (
         <div className="space-y-6">
           <div>
             <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">

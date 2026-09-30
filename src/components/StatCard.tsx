@@ -19,7 +19,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, color = 'bl
     }
     return icon;
   };
-  
+
   return (
     <div className={`bg-white rounded-lg shadow p-4 border-l-4 border-${color}-500`}>
       <div className="flex items-center">

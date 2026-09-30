@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React, {} from 'react';
 
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../../contexts/AppContext';  // Using absolute path from src
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();

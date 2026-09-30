@@ -1,6 +1,6 @@
 import React, {} from 'react';
-import { Megaphone, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Megaphone, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 interface AdBannerProps {
   adSlot?: string;
@@ -10,22 +10,22 @@ interface AdBannerProps {
   ctaText?: string;
   onCtaClick?: () => void;
   onClose?: () => void;
-  variant?: "small" | "medium" | "large";
+  variant?: 'small' | 'medium' | 'large';
 }
 
 const AdBanner: React.FC<AdBannerProps> = ({
-  title = "Special Offer",
-  description = "Check out our latest deals and promotions!",
+  title = 'Special Offer',
+  description = 'Check out our latest deals and promotions!',
   imageUrl,
-  ctaText = "Learn More",
+  ctaText = 'Learn More',
   onCtaClick,
   onClose,
-  variant = "medium"
+  variant = 'medium'
 }) => {
   const sizeClasses = {
-    small: "h-16 px-4",
-    medium: "h-24 px-6",
-    large: "h-32 px-8"
+    small: 'h-16 px-4',
+    medium: 'h-24 px-6',
+    large: 'h-32 px-8'
   };
 
   return (

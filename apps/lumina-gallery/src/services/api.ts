@@ -78,8 +78,7 @@ baseUrl: string = API_BASE_URL) {
       const artworks = await response.json();
       return artworks.data || artworks;
     } catch (error) {
-      console.error('Error fetching,
-artworks:', error);
+      console.error('Error fetching artworks:', error);
       return [];
     }
   }
@@ -117,8 +116,7 @@ createdAt: new Date(),
 updatedAt: new Date()
       };
     } catch (error) {
-      console.error('Error uploading,
-media:', error);
+      console.error('Error uploading media:', error);
       throw error;
     }
   }
@@ -144,8 +142,7 @@ limit: number = 10): Promise<MediaAsset[]> {
       const result = await response.json();
       return result.data?.assets || [];
     } catch (error) {
-      console.error('Error fetching user,
-assets:', error);
+      console.error('Error fetching user assets:', error);
       return [];
     }
   }
@@ -163,8 +160,7 @@ fileId: string): Promise<MediaAsset | null> {
       const result = await response.json();
       return result.data;
     } catch (error) {
-      console.error('Error fetching media,
-file:', error);
+      console.error('Error fetching media file:', error);
       return null;
     }
   }
@@ -194,8 +190,7 @@ request: TranscodeRequest): Promise<{jobId: string;,
       const result = await response.json();
       return result.data;
     } catch (error) {
-      console.error('Error transcoding,
-media:', error);
+      console.error('Error transcoding media:', error);
       throw error;
     }
   }
@@ -222,8 +217,7 @@ intensity: number = 1.0): Promise<any> {
 
       return await response.json();
     } catch (error) {
-      console.error('Error applying,
-filter:', error);
+      console.error('Error applying filter:', error);
       throw error;
     }
   }
@@ -246,8 +240,7 @@ fileId: string): Promise<string> {
       const result = await response.json();
       return result.data.url;
     } catch (error) {
-      console.error('Error generating,
-thumbnail:', error);
+      console.error('Error generating thumbnail:', error);
       return `/uploads/lumina/thumbs/${fileId}.jpg`;
     }
   }
@@ -269,8 +262,7 @@ fileId: string): Promise<boolean> {
 
       return true;
     } catch (error) {
-      console.error('Error deleting,
-asset:', error);
+      console.error('Error deleting asset:', error);
       return false;
     }
   }
@@ -291,8 +283,7 @@ jobId: string): Promise<any> {
 
       return await response.json();
     } catch (error) {
-      console.error('Error checking job,
-status:', error);
+      console.error('Error checking job status:', error);
       return null;
     }
   }
@@ -314,8 +305,7 @@ artworkId: number): Promise<any> {
 status: ${response.status}`);
       return await response.json();
     } catch (error) {
-      console.error('Error claiming,
-reward:', error);
+      console.error('Error claiming reward:', error);
       throw error;
     }
   }
@@ -334,8 +324,7 @@ userId: string): Promise<{userId: string;,
 status: ${response.status}`);
       return await response.json();
     } catch (error) {
-      console.error('Error fetching,
-balance:', error);
+      console.error('Error fetching balance:', error);
       throw error;
     }
   }

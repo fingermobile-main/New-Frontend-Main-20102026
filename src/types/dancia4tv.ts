@@ -5,7 +5,7 @@ import React, {} from 'react';
 // --- 1. Identity, Profiles & Security Controls ---
 
 export interface SecurityAccessMetadata {
-  clearanceLevel: "guest" | "user" | "verified_creator" | "moderator" | "administrator";
+  clearanceLevel: 'guest' | 'user' | 'verified_creator' | 'moderator' | 'administrator';
   ipWhitelisted?: string[];
   lastPasswordChange: string; // ISO Timestamp
   complianceFlags: string[];
@@ -34,7 +34,7 @@ export interface DanciaMember {
   permissions: string[];
   loyaltyTier: string;
   currentPlan: string;
-  verificationTier: "unverified" | "tier_1_basic" | "tier_2_kyc" | "tier_3_biometric";
+  verificationTier: 'unverified' | 'tier_1_basic' | 'tier_2_kyc' | 'tier_3_biometric';
   subscriptionPlanID?: string;
   avatar?: string;
   securityProfile: SecurityAccessMetadata;
@@ -44,13 +44,13 @@ export interface DanciaMember {
 
 export interface DanciaIARCClassification {
   classificationID: string;
-  rating: "18+" | "PG-13" | "PG" | "G";
+  rating: '18+' | 'PG-13' | 'PG' | 'G';
   description?: string;
 }
 
 export interface DanciaMonetizationModel {
   modelID: string;
-  name: "Starter Pack" | "Gem Pack" | "Hallmarks Pack" | "UGC Upload";
+  name: 'Starter Pack' | 'Gem Pack' | 'Hallmarks Pack' | 'UGC Upload';
   description?: string;
   revenueShare: number; // Split multiplier percentage (e.g. 70 for 70%)
   currency: string;
@@ -71,7 +71,7 @@ export interface DanciaVideo {
   monetizationModel: DanciaMonetizationModel;
   uploadFee: number;
   length: number; // Cumulative duration metrics in seconds
-  resolution: "4K" | "1440p" | "1080p" | "720p" | "adaptive"; 
+  resolution: '4K' | '1440p' | '1080p' | '720p' | 'adaptive';
   contentTags: string[];
   uploadDate: Date;
   uploaderID: string;
@@ -104,8 +104,8 @@ export interface DanciaVideoMetadata {
 
 export interface DanciaSubscriptionPlan {
   planID: string;
-  name: "Pay-Tv & Live Broadcast" | "SVOD" | "TVOD" | "AVOD" | "HVOD";
-  type: "Pay-Tv" | "SVOD" | "TVOD" | "AVOD" | "HVOD";
+  name: 'Pay-Tv & Live Broadcast' | 'SVOD' | 'TVOD' | 'AVOD' | 'HVOD';
+  type: 'Pay-Tv' | 'SVOD' | 'TVOD' | 'AVOD' | 'HVOD';
   features: string[];
   pricing: {
     monthly?: number;
@@ -177,12 +177,12 @@ export interface DanciaMemberEngagementFeedback {
 
 export interface DanciaAlgorithm {
   algorithmID: string;
-  name: "AIPlaylist Engine" | "member Context Algorithm" | "Video Recognition Algorithm";
-  type: "recommendation" | "context" | "recognition";
+  name: 'AIPlaylist Engine' | 'member Context Algorithm' | 'Video Recognition Algorithm';
+  type: 'recommendation' | 'context' | 'recognition';
   description?: string;
   inputParameters: {
     paramKey: string;
-    dataType: "string" | "number" | "boolean" | "tensor";
+    dataType: 'string' | 'number' | 'boolean' | 'tensor';
     weightBias?: number; // Multiplier variable applied inside logic engines
   }[];
   output: string;
@@ -201,7 +201,7 @@ export interface DanciaVideoRecognitionResult {
 
 export interface DanciaUIComponent {
   componentID: string;
-  name: "Mnvuna" | "Canary" | "DNA" | "River Stream";
+  name: 'Mnvuna' | 'Canary' | 'DNA' | 'River Stream';
   description?: string;
   structure: Record<string, unknown>; // Type-safe abstract configuration tree schema replacement
 }
@@ -212,7 +212,7 @@ export interface ProtocolSettings {
   // Media Library Configuration
   mediaFolders: string[];
   autoRefreshEnabled: boolean;
-  
+
   // Video & Playback Engine Options
   pipBehavior: 'background' | 'foreground' | 'disabled';
   hardwareUse: 'acceleration' | 'disabled' | 'enabled' | 'full';

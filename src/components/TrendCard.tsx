@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import { TrendingUp, Flame, Eye } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { TrendingUp, Flame, Eye } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 
 interface TrendData {
   id: string;

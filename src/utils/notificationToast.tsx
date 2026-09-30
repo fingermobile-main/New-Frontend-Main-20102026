@@ -18,7 +18,7 @@ export const showNotification = (data: NotificationData): void => {
   const { title, body, icon, url, type = 'info' } = data;
 
   const notificationContent = (
-    <div 
+    <div
       onClick={() => url && window.open(url, '_blank', 'noopener,noreferrer')}
       onKeyDown={(e) => {
         if ((e.key === 'Enter' || e.key === ' ') && url) {
@@ -47,17 +47,17 @@ export const showNotification = (data: NotificationData): void => {
   };
 
   switch (type) {
-    case 'success':
-      toast.success(notificationContent, toastOptions);
-      break;
-    case 'warning':
-      toast.warning(notificationContent, toastOptions);
-      break;
-    case 'error':
-      toast.error(notificationContent, toastOptions);
-      break;
-    default:
-      toast.info(notificationContent, toastOptions);
+  case 'success':
+    toast.success(notificationContent, toastOptions);
+    break;
+  case 'warning':
+    toast.warning(notificationContent, toastOptions);
+    break;
+  case 'error':
+    toast.error(notificationContent, toastOptions);
+    break;
+  default:
+    toast.info(notificationContent, toastOptions);
   }
 };
 

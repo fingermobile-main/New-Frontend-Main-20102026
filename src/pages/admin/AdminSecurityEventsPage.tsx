@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { guardianService, GuardianLog } from '../../services/guardianService';
+import { RefreshCw } from 'lucide-react';
 
 interface SecurityEvent {
   id: string;
@@ -16,27 +17,33 @@ const AdminSecurityEventsPage: React.FC = () => {
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { getToken } = useAuth();
+
+  const fetchSecurityEvents = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const logs = await guardianService.getLogs(50);
+      const mapped: SecurityEvent[] = logs.map((log: GuardianLog) => ({
+        id: String(log.id),
+        timestamp: log.created_at || new Date().toISOString(),
+        eventType: log.action_taken || log.rule_name || 'SECURITY_TRIGGER',
+        source: log.target_user_id ? `User #${log.target_user_id.slice(0, 8)}` : 'Guardian Protocol',
+        description: (log.details as any)?.description || `Security rule violation (${log.rule_name})`,
+        severity: (log.severity || 'medium').toLowerCase()
+      }));
+      setSecurityEvents(mapped);
+    } catch (err: any) {
+      setError('Failed to fetch security events.');
+      console.error('Error fetching security events:', err);
+      showToast?.('Failed to fetch security events from database', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSecurityEvents = async () => {
-      try {
-        const token = getToken();
-        // Simulate API call or replace with actual endpoint
-        // const response = await axios.get("/api/admin/security-events", { ... });
-        // setSecurityEvents(response.data);
-        setSecurityEvents([]); // Placeholder
-      } catch (err) {
-        setError("Failed to fetch security events.");
-        console.error("Error fetching security events:", err);
-        showToast("Failed to fetch security events", "error");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchSecurityEvents();
-  }, [getToken, showToast]);
+  }, []);
 
   if (loading) {
     return <div className="text-center py-8">Loading security events...</div>;
@@ -47,8 +54,20 @@ const AdminSecurityEventsPage: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Security Events</h1>
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Security Events</h1>
+          <p className="text-sm text-gray-500 mt-1">Live Sentinel & Guardian Event Log</p>
+        </div>
+        <button
+          onClick={fetchSecurityEvents}
+          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm"
+        >
+          <RefreshCw className="w-4 h-4 text-blue-600" />
+          Refresh
+        </button>
+      </div>
       {securityEvents.length === 0 ? (
         <p className="text-gray-600">No security events to display.</p>
       ) : (
@@ -91,12 +110,12 @@ const AdminSecurityEventsPage: React.FC = () => {
                   <td
                     className={`px-6 py-4 whitespace-nowrap text-sm font-medium 
                     ${
-                      event.severity === "high"
-                        ? "text-red-600"
-                        : event.severity === "medium"
-                          ? "text-yellow-600"
-                          : "text-green-600"
-                    }
+                event.severity === 'high'
+                  ? 'text-red-600'
+                  : event.severity === 'medium'
+                    ? 'text-yellow-600'
+                    : 'text-green-600'
+                }
                   `}
                   >
                     {event.severity}

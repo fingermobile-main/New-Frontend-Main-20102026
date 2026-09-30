@@ -9,12 +9,12 @@ interface MediaEditorModalProps {
   onSave?: (editedMedia: any) => void;
 }
 
-const MediaEditorModal: React.FC<MediaEditorModalProps> = ({ 
-  isOpen, 
+const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
+  isOpen,
   onClose,
   mediaUrl,
   mediaType = 'image',
-  onSave 
+  onSave
 }) => {
   const [brightness, setBrightness] = React.useState(100);
   const [contrast, setContrast] = React.useState(100);
@@ -51,7 +51,7 @@ const MediaEditorModal: React.FC<MediaEditorModalProps> = ({
                   style={{
                     filter: `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`
                   }}
-                 />
+                />
               ) : (
                 <div className="text-gray-500">{mediaType} preview not available</div>
               )

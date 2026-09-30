@@ -12,7 +12,7 @@ import adminControlService, {
   AuditLogItem
 } from '../services/adminControlService';
 import { useAuth } from '../contexts/AuthContext';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import {
   LockClosedIcon,
   UsersIcon as UserGroupIcon,
@@ -33,12 +33,12 @@ const AdminControlDashboard: React.FC = () => {
   const [actions, setActions] = useState<AdminActionItem[]>([]);
   const [members, setMembers] = useState<AdminMemberItem[]>([]);
   const [auditLogs, setAuditLogItems] = useState<AuditLogItem[]>([]);
-  const [activeTab, setActiveTab] = useState<"actions" | "members" | "audit">(
-    "actions",
+  const [activeTab, setActiveTab] = useState<'actions' | 'members' | 'audit'>(
+    'actions',
   );
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState('');
   const [biometricVerified, setBiometricVerified] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState('');
   const [selectedAction, setSelectedAction] = useState<AdminActionItem | null>(
     null,
   );
@@ -47,26 +47,34 @@ const AdminControlDashboard: React.FC = () => {
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [showEditMemberModal, setShowEditMemberModal] = useState(false);
   const [editingMember, setEditingMember] = useState<AdminMemberItem | null>(null);
-  const [newMember, setNewMember] = useState<Omit<AdminMemberItem, "id">>({
-    name: "",
-    role: "ADMIN",
+  const [newMember, setNewMember] = useState<Omit<AdminMemberItem, 'id'>>({
+    name: '',
+    role: 'ADMIN',
     permissions: [],
     lastLogin: new Date(),
     isActive: true
   });
 
   useEffect(() => {
-    // Load initial data
-    setActions(adminControlService.getActions());
-    setMembers(adminControlService.getMembers());
-    setAuditLogItems(adminControlService.getAuditLogItems());
-
-    // Set up interval to refresh data
-    const interval = setInterval(() => {
+    // Load initial data and trigger live backend sync
+    adminControlService.loadRealData().then(() => {
       setActions(adminControlService.getActions());
       setMembers(adminControlService.getMembers());
       setAuditLogItems(adminControlService.getAuditLogItems());
-    }, 5000);
+    }).catch(() => {
+      setActions(adminControlService.getActions());
+      setMembers(adminControlService.getMembers());
+      setAuditLogItems(adminControlService.getAuditLogItems());
+    });
+
+    // Set up interval to refresh data
+    const interval = setInterval(() => {
+      adminControlService.loadRealData().then(() => {
+        setActions(adminControlService.getActions());
+        setMembers(adminControlService.getMembers());
+        setAuditLogItems(adminControlService.getAuditLogItems());
+      });
+    }, 15000);
 
     return () => clearInterval(interval);
   }, []);
@@ -75,20 +83,20 @@ const AdminControlDashboard: React.FC = () => {
     if (!selectedAction || !user) return;
 
     if (!pin) {
-      logError(new Error("PIN not entered"), ErrorType.UNKNOWN_ERROR);
-      showToast("Please enter your PIN", "error");
+      logError(new Error('PIN not entered'), ErrorType.UNKNOWN_ERROR);
+      showToast('Please enter your PIN', 'error');
       return;
     }
 
     if (selectedAction.requiresBiometric && !biometricVerified) {
-      logError(new Error("Biometric verification required"), ErrorType.UNKNOWN_ERROR);
-      showToast("Biometric verification required", "error");
+      logError(new Error('Biometric verification required'), ErrorType.UNKNOWN_ERROR);
+      showToast('Biometric verification required', 'error');
       return;
     }
 
     if (selectedAction.requiresOTP && !otp) {
-      logError(new Error("OTP not entered"), ErrorType.UNKNOWN_ERROR);
-      showToast("Please enter OTP", "error");
+      logError(new Error('OTP not entered'), ErrorType.UNKNOWN_ERROR);
+      showToast('Please enter OTP', 'error');
       return;
     }
 
@@ -99,13 +107,13 @@ const AdminControlDashboard: React.FC = () => {
         selectedAction.id,
         typeof user.id === 'string' ? user.id : String(user.id),
         pin,
-        biometricVerified ? "verified" : undefined,
+        biometricVerified ? 'verified' : undefined,
         otp || undefined,
-        "NG", // Default to Nigeria for demo
+        'NG', // Default to Nigeria for demo
       );
 
       if (result.success) {
-        showToast(result.message, "success");
+        showToast(result.message, 'success');
 
         // If action requires confirmation, start countdown
         if (selectedAction.requiresConfirmation) {
@@ -121,11 +129,11 @@ const AdminControlDashboard: React.FC = () => {
           }, 1000);
         }
       } else {
-        showToast(result.message || "Action failed", "error");
+        showToast(result.message || 'Action failed', 'error');
       }
     } catch (error) {
       logError(error as Error, ErrorType.UNKNOWN_ERROR);
-      showToast("An error occurred while executing the action", "error");
+      showToast('An error occurred while executing the action', 'error');
     } finally {
       setIsExecuting(false);
     }
@@ -139,22 +147,22 @@ const AdminControlDashboard: React.FC = () => {
       });
 
       if (result.success) {
-        showToast("Member added successfully", "success");
+        showToast('Member added successfully', 'success');
         setMembers([...members, { ...newMember, id: result.memberId || `member_${Date.now()}` }]);
         setShowAddMemberModal(false);
         setNewMember({
-          name: "",
-          role: "ADMIN",
+          name: '',
+          role: 'ADMIN',
           permissions: [],
           lastLogin: new Date(),
           isActive: true
         });
       } else {
-        showToast(result.message || "Failed to add member", "error");
+        showToast(result.message || 'Failed to add member', 'error');
       }
     } catch (error) {
       logError(error as Error, ErrorType.UNKNOWN_ERROR);
-      showToast("An error occurred while adding the member", "error");
+      showToast('An error occurred while adding the member', 'error');
     }
   };
 
@@ -168,36 +176,36 @@ const AdminControlDashboard: React.FC = () => {
       );
 
       if (result.success) {
-        showToast("Member updated successfully", "success");
+        showToast('Member updated successfully', 'success');
         setMembers(
           members.map((m) => (m.id === editingMember.id ? editingMember : m)),
         );
         setShowEditMemberModal(false);
         setEditingMember(null);
       } else {
-        showToast(result.message || "Failed to update member", "error");
+        showToast(result.message || 'Failed to update member', 'error');
       }
     } catch (error) {
       logError(error as Error, ErrorType.UNKNOWN_ERROR);
-      showToast("An error occurred while updating the member", "error");
+      showToast('An error occurred while updating the member', 'error');
     }
   };
 
   const handleDeleteMember = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this member?")) return;
+    if (!window.confirm('Are you sure you want to delete this member?')) return;
     if (!user) return;
     try {
       const result = await adminControlService.removeMember(typeof user.id === 'string' ? user.id : String(user.id), typeof id === 'string' ? id : String(id));
 
       if (result.success) {
-        showToast("Member deleted successfully", "success");
+        showToast('Member deleted successfully', 'success');
         setMembers(members.filter((m) => m.id !== id));
       } else {
-        showToast(result.message || "Failed to delete member", "error");
+        showToast(result.message || 'Failed to delete member', 'error');
       }
     } catch (error) {
       logError(error as Error, ErrorType.UNKNOWN_ERROR);
-      showToast("An error occurred while deleting the member", "error");
+      showToast('An error occurred while deleting the member', 'error');
     }
   };
 
@@ -214,20 +222,20 @@ const AdminControlDashboard: React.FC = () => {
 
       if (result.success) {
         showToast(
-          `Member ${updatedMember.isActive ? "activated" : "deactivated"} successfully`,
-          "success",
+          `Member ${updatedMember.isActive ? 'activated' : 'deactivated'} successfully`,
+          'success',
         );
         setMembers(members.map((m) => (m.id === id ? updatedMember : m)));
       } else {
         showToast(
           result.message ||
-            `Failed to ${updatedMember.isActive ? "activate" : "deactivate"} member`,
-          "error",
+            `Failed to ${updatedMember.isActive ? 'activate' : 'deactivate'} member`,
+          'error',
         );
       }
     } catch (error) {
       logError(error as Error, ErrorType.UNKNOWN_ERROR);
-      showToast("An error occurred while updating member status", "error");
+      showToast('An error occurred while updating member status', 'error');
     }
   };
 
@@ -310,28 +318,28 @@ const AdminControlDashboard: React.FC = () => {
               <nav className="-mb-px flex space-x-8">
                 {[
                   {
-                    id: "actions",
-                    label: "Admin Actions",
+                    id: 'actions',
+                    label: 'Admin Actions',
                     icon: <LockClosedIcon className="w-5 h-5" />
                   },
                   {
-                    id: "members",
-                    label: "Members",
+                    id: 'members',
+                    label: 'Members',
                     icon: <MemberIcon className="w-5 h-5" />
                   },
                   {
-                    id: "audit",
-                    label: "Audit Logs",
+                    id: 'audit',
+                    label: 'Audit Logs',
                     icon: <ClipboardListIcon className="w-5 h-5" />
                   }
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as "actions" | "members" | "audit")}
+                    onClick={() => setActiveTab(tab.id as 'actions' | 'members' | 'audit')}
                     className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                       activeTab === tab.id
-                        ? "border-red-500 text-red-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                        ? 'border-red-500 text-red-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                   >
                     {tab.icon}
@@ -342,7 +350,7 @@ const AdminControlDashboard: React.FC = () => {
             </div>
 
             {/* Tab Content */}
-            {activeTab === "actions" && (
+            {activeTab === 'actions' && (
               <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
                 <div className="px-6 py-5 border-b border-gray-200">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -412,7 +420,7 @@ const AdminControlDashboard: React.FC = () => {
                               disabled={isExecuting}
                               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
                             >
-                              {isExecuting ? "Executing..." : "Execute Action"}
+                              {isExecuting ? 'Executing...' : 'Execute Action'}
                             </button>
                           </div>
                         </div>
@@ -423,7 +431,7 @@ const AdminControlDashboard: React.FC = () => {
               </div>
             )}
 
-            {activeTab === "members" && (
+            {activeTab === 'members' && (
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -452,7 +460,7 @@ const AdminControlDashboard: React.FC = () => {
                                 {member.name}
                               </p>
                               <p className="text-sm text-gray-500">
-                                {member.role} • Last login:{" "}
+                                {member.role} • Last login:{' '}
                                 {member.lastLogin.toLocaleDateString()}
                               </p>
                             </div>
@@ -461,21 +469,21 @@ const AdminControlDashboard: React.FC = () => {
                             <span
                               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 member.isActive
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-red-100 text-red-800"
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-red-100 text-red-800'
                               }`}
                             >
-                              {member.isActive ? "Active" : "Inactive"}
+                              {member.isActive ? 'Active' : 'Inactive'}
                             </span>
                             <button
                               onClick={() => toggleMemberStatus(member.id)}
                               className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${
                                 member.isActive
-                                  ? "bg-red-100 text-red-800 hover:bg-red-200"
-                                  : "bg-green-100 text-green-800 hover:bg-green-200"
+                                  ? 'bg-red-100 text-red-800 hover:bg-red-200'
+                                  : 'bg-green-100 text-green-800 hover:bg-green-200'
                               }`}
                             >
-                              {member.isActive ? "Deactivate" : "Activate"}
+                              {member.isActive ? 'Deactivate' : 'Activate'}
                             </button>
                             <button
                               onClick={() => {
@@ -501,7 +509,7 @@ const AdminControlDashboard: React.FC = () => {
               </div>
             )}
 
-            {activeTab === "audit" && (
+            {activeTab === 'audit' && (
               <div className="bg-white shadow overflow-hidden sm:rounded-md rounded-2xl border border-gray-100">
                 <div className="px-6 py-5 border-b border-gray-200">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -521,9 +529,9 @@ const AdminControlDashboard: React.FC = () => {
                         <div className="flex items-center space-x-2">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              log.status === "success"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
+                              log.status === 'success'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
                             }`}
                           >
                             {log.status}
@@ -607,7 +615,7 @@ const AdminControlDashboard: React.FC = () => {
                 <h3 className="text-lg font-medium text-gray-900">
                   Add New Member
                 </h3>
-                <button 
+                <button
                   onClick={() => setShowAddMemberModal(false)}
                   className="text-gray-500 hover:text-gray-700"
                 >
@@ -637,7 +645,7 @@ const AdminControlDashboard: React.FC = () => {
                     onChange={(e) =>
                       setNewMember({
                         ...newMember,
-                        role: e.target.value as AdminMemberItem["role"]
+                        role: e.target.value as AdminMemberItem['role']
                       })
                     }
                     className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
@@ -676,7 +684,7 @@ const AdminControlDashboard: React.FC = () => {
                 <h3 className="text-lg font-medium text-gray-900">
                   Edit Member
                 </h3>
-                <button 
+                <button
                   onClick={() => setShowEditMemberModal(false)}
                   className="text-gray-500 hover:text-gray-700"
                 >
@@ -693,9 +701,9 @@ const AdminControlDashboard: React.FC = () => {
                     type="text"
                     value={editingMember.name}
                     onChange={(e) => setEditingMember({
-                        ...editingMember,
-                        name: e.target.value
-                      })
+                      ...editingMember,
+                      name: e.target.value
+                    })
                     }
                     className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"
                   />
@@ -710,7 +718,7 @@ const AdminControlDashboard: React.FC = () => {
                     onChange={(e) =>
                       setEditingMember({
                         ...editingMember,
-                        role: e.target.value as AdminMemberItem["role"]
+                        role: e.target.value as AdminMemberItem['role']
                       })
                     }
                     className="mt-1 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-lg px-4 py-2"

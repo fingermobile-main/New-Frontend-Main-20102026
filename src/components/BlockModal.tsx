@@ -41,8 +41,8 @@ const BlockModal = ({
 
   return (
     <Dialog open={internalIsOpen} onOpenChange={handleClose}>
-      <DialogContent 
-        className="sm:max-w-md" 
+      <DialogContent
+        className="sm:max-w-md"
         onKeyDown={handleKeyDown}
         role="dialog"
         tabIndex={-1}
@@ -50,21 +50,21 @@ const BlockModal = ({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="py-2">
-            {description.replace(/'/g, "'")}
+            {description.replace(/'/g, '\'')}
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2 pt-2">
-          <Button 
-            type="button" 
-            variant="outline" 
+          <Button
+            type="button"
+            variant="outline"
             onClick={handleClose}
             className="w-full"
           >
             Cancel
           </Button>
-          <Button 
-            type="button" 
-            variant="destructive" 
+          <Button
+            type="button"
+            variant="destructive"
             onClick={handleConfirm}
             className="w-full"
           >

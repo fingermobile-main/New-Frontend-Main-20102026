@@ -5,7 +5,7 @@ interface TimeSeriesChartProps {
   data?: Array<{ time: string; value: number }>;
 }
 
-const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ 
+const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
   data = [
     { time: '00:00', value: 10 },
     { time: '04:00', value: 25 },

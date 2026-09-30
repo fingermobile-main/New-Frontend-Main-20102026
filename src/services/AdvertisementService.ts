@@ -6,11 +6,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/a
 export interface Advertisement {
   id: string; title: string; description?: string;
   imageUrl?: string;
-  ctaText: string; ctaUrl: string; type: "banner" | "sponsored" | "inline"; status: "active" | "paused" | "completed"; impressions: number; clicks: number; budget: number; startDate: string; endDate: string;
+  ctaText: string; ctaUrl: string; type: 'banner' | 'sponsored' | 'inline'; status: 'active' | 'paused' | 'completed'; impressions: number; clicks: number; budget: number; startDate: string; endDate: string;
 }
 
 export interface Campaign {
-  id: string; name: string; advertiserId: string; ads: Advertisement[]; totalBudget: number; spentBudget: number; startDate: string; endDate: string; status: "active" | "paused" | "completed"; metrics: { impressions: number; clicks: number; conversions: number; ctr: number; revenue: number;
+  id: string; name: string; advertiserId: string; ads: Advertisement[]; totalBudget: number; spentBudget: number; startDate: string; endDate: string; status: 'active' | 'paused' | 'completed'; metrics: { impressions: number; clicks: number; conversions: number; ctr: number; revenue: number;
   };
 }
 
@@ -20,14 +20,14 @@ export interface AdAnalytics {
 
 class AdvertisementService {
   private api = axios.create({baseURL: `${API_BASE_URL}/advertisements`,
-headers: {
+    headers: {
       'Content-Type': 'application/json'
     }
   });
 
   async getCampaigns(advertiserId?: string): Promise<Campaign[]> {
     const response = await this.api.get('/campaigns', {
-  params: { advertiserId } });
+      params: { advertiserId } });
     return response.data;
   }
 
@@ -53,7 +53,7 @@ headers: {
 
   async getAds(campaignId?: string): Promise<Advertisement[]> {
     const response = await this.api.get('/ads', {
-  params: { campaignId } });
+      params: { campaignId } });
     return response.data;
   }
 
@@ -72,19 +72,19 @@ headers: {
 
   async getCampaignAnalytics(campaignId: string, period: string = '7d'): Promise<AdAnalytics> {
     const response = await this.api.get(`/campaigns/${campaignId}/analytics`, {
-  params: { period } });
+      params: { period } });
     return response.data;
   }
 
   async getActiveAds(limit: number = 5): Promise<Advertisement[]> {
     const response = await this.api.get('/ads/active', {
-  params: { limit } });
+      params: { limit } });
     return response.data;
   }
 
   async getSponsoredContent(category?: string): Promise<Advertisement[]> {
     const response = await this.api.get('/ads/sponsored', {
-  params: { category } });
+      params: { category } });
     return response.data;
   }
 }

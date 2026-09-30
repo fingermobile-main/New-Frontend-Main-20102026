@@ -72,12 +72,12 @@ class LendSqrService {
   }
 
   async makePayment(loanId: string,
-amount: number): Promise<void> {
+    amount: number): Promise<void> {
     await api.post(`${this.baseUrl}/loans/${loanId}/payments`, { amount });
   }
 
   async calculateEligibility(amount: number,
-duration: number): Promise<{ eligible: boolean; max_amount: number;
+    duration: number): Promise<{ eligible: boolean; max_amount: number;
   estimated_rate: number }> {
     const response = await api.post(`${this.baseUrl}/eligibility`, { amount, duration });
     return response.data;

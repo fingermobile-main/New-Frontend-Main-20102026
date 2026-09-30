@@ -27,7 +27,7 @@ export const useImportedDataContext = () => {
   const context = React.useContext(ImportedDataContext);
   if (context === undefined) {
     throw new Error(
-      "useImportedDataContext must be used within an ImportedDataProvider",
+      'useImportedDataContext must be used within an ImportedDataProvider',
     );
   }
   return context;
@@ -41,7 +41,7 @@ export const ImportedDataProvider: React.FC<{ children: React.ReactNode }> = ({
 
   React.useEffect(() => {
     if (error) {
-      showToast(error, "error");
+      showToast(error, 'error');
     }
   }, [error, showToast]);
 

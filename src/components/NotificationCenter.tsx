@@ -1,14 +1,14 @@
 import React, {} from 'react';
-import { Bell, Check, X } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Bell, Check, X } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface Notification {
   id: string;
   title: string;
   message: string;
-  type: "info" | "success" | "warning" | "error";
+  type: 'info' | 'success' | 'warning' | 'error';
   read: boolean;
   timestamp: string;
 }
@@ -28,28 +28,28 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
 }) => {
   const defaultNotifications: Notification[] = [
     {
-      id: "1",
-      title: "New Order Received",
-      message: "Order #1234 has been placed successfully",
-      type: "success",
+      id: '1',
+      title: 'New Order Received',
+      message: 'Order #1234 has been placed successfully',
+      type: 'success',
       read: false,
-      timestamp: "5 minutes ago"
+      timestamp: '5 minutes ago'
     },
     {
-      id: "2",
-      title: "Payment Failed",
-      message: "Payment for order #1230 could not be processed",
-      type: "error",
+      id: '2',
+      title: 'Payment Failed',
+      message: 'Payment for order #1230 could not be processed',
+      type: 'error',
       read: false,
-      timestamp: "1 hour ago"
+      timestamp: '1 hour ago'
     },
     {
-      id: "3",
-      title: "Low Stock Alert",
-      message: "Product XYZ is running low on inventory",
-      type: "warning",
+      id: '3',
+      title: 'Low Stock Alert',
+      message: 'Product XYZ is running low on inventory',
+      type: 'warning',
       read: true,
-      timestamp: "3 hours ago"
+      timestamp: '3 hours ago'
     }
   ];
 
@@ -58,16 +58,16 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "success":
-        return "bg-green-500";
-      case "error":
-        return "bg-red-500";
-      case "warning":
-        return "bg-yellow-500";
-      case "info":
-        return "bg-blue-500";
-      default:
-        return "bg-gray-500";
+    case 'success':
+      return 'bg-green-500';
+    case 'error':
+      return 'bg-red-500';
+    case 'warning':
+      return 'bg-yellow-500';
+    case 'info':
+      return 'bg-blue-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 
@@ -93,14 +93,14 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
             <div
               key={notification.id}
               className={`p-3 border rounded-lg transition-colors ${
-                notification.read ? "bg-muted/30" : "bg-background hover:bg-muted/50"
+                notification.read ? 'bg-muted/30' : 'bg-background hover:bg-muted/50'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-2 h-2 rounded-full mt-2 ${getTypeColor(notification.type)}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h4 className={`font-medium text-sm ${!notification.read ? "" : "text-muted-foreground"}`}>
+                    <h4 className={`font-medium text-sm ${!notification.read ? '' : 'text-muted-foreground'}`}>
                       {notification.title}
                     </h4>
                     {!notification.read && (

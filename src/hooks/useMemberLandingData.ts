@@ -36,18 +36,18 @@ export const useMemberLandingData = (memberId: string | undefined,
         api.get(`/members/${memberId}/notifications/count`),
         api.get(`/members/${memberId}/groups/count`),
         api.get(`/members/${memberId}/posts/count`),
-        api.get("/forum/categories")
+        api.get('/forum/categories')
       ]);
 
       setData({walletBalance: walletResponse.data?.balance || 0,
-  notificationsCount: notificationsResponse.data?.count || 0,
-  groupsCount: groupsResponse.data?.count || 0,
-  postsCount: postsResponse.data?.count || 0,
-  forumCategories: forumCategoriesResponse.data || []
+        notificationsCount: notificationsResponse.data?.count || 0,
+        groupsCount: groupsResponse.data?.count || 0,
+        postsCount: postsResponse.data?.count || 0,
+        forumCategories: forumCategoriesResponse.data || []
       });
     } catch (err) {
-      setError("Failed to fetch member landing data.");
-      console.error("Error fetching member landing data:", err);
+      setError('Failed to fetch member landing data.');
+      console.error('Error fetching member landing data:', err);
     } finally {
       setLoading(false);
     }

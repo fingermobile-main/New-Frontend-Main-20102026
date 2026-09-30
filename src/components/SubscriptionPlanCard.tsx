@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Check, Star, Crown, Zap } from "lucide-react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Check, Star, Crown, Zap } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface PlanFeature {
   text: string;
@@ -34,7 +34,7 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   const isCurrentPlan = currentPlan === plan.id;
 
   return (
-    <Card className={`relative ${plan.popular ? "border-primary shadow-lg" : ""}`}>
+    <Card className={`relative ${plan.popular ? 'border-primary shadow-lg' : ''}`}>
       {plan.popular && (
         <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Star className="h-3 w-3 mr-1" />
@@ -62,12 +62,12 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
             <div key={index} className="flex items-start gap-2">
               <Check
                 className={`h-5 w-5 flex-shrink-0 ${
-                  feature.included ? "text-green-500" : "text-muted-foreground"
+                  feature.included ? 'text-green-500' : 'text-muted-foreground'
                 }`}
               />
               <span
                 className={`text-sm ${
-                  !feature.included && "text-muted-foreground line-through"
+                  !feature.included && 'text-muted-foreground line-through'
                 }`}
               >
                 {feature.text}
@@ -79,11 +79,11 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
       <CardFooter>
         <Button
           className="w-full"
-          variant={isCurrentPlan ? "outline" : plan.popular ? "default" : "outline"}
+          variant={isCurrentPlan ? 'outline' : plan.popular ? 'default' : 'outline'}
           onClick={() => onSelect?.(plan.id)}
           disabled={isCurrentPlan}
         >
-          {isCurrentPlan ? "Current Plan" : "Select Plan"}
+          {isCurrentPlan ? 'Current Plan' : 'Select Plan'}
         </Button>
       </CardFooter>
     </Card>

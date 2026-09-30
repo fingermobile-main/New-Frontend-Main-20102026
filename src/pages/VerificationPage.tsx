@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import React, { useState, useEffect } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { ShieldCheckIcon, PhoneIcon, MailIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
+import identityService from '../services/identityService';
 
 const VerificationPage: React.FC = () => {
   const { showToast, ficBalance } = useAppContext();
@@ -11,37 +12,60 @@ const VerificationPage: React.FC = () => {
   const [verificationValue, setVerificationValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendCode = () => {
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const res = await identityService.getVerificationStatus();
+        if (res.status === 'verified' || res.kycCompleted) {
+          setIsVerified(true);
+        }
+      } catch (err) {
+        // ignore initial fetch error
+      }
+    };
+    checkStatus();
+  }, []);
+
+  const handleSendCode = async () => {
     if (!verificationValue) {
       showToast(`Please enter your ${verificationMethod}`, 'error');
       return;
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const res = await identityService.sendVerificationCode(verificationMethod, verificationValue);
+      showToast(res.message || `Verification code dispatched to your ${verificationMethod}`, 'success');
+      if (res.testCode) {
+        setVerificationCode(res.testCode);
+      }
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to dispatch verification code', 'error');
+    } finally {
       setIsLoading(false);
-      showToast(`Verification code sent to your ${verificationMethod}: ${verificationValue}`, 'success');
-    }, 1000);
+    }
   };
 
-  const handleSubmitCode = () => {
+  const handleSubmitCode = async () => {
     if (!verificationCode || verificationCode.length < 6) {
       showToast('Please enter a valid 6-digit code', 'error');
       return;
     }
 
     setIsLoading(true);
-    // Simulate verification API call
-    setTimeout(() => {
-      setIsLoading(false);
-      if (verificationCode === '123456') { // Example valid code
+    try {
+      const res = await identityService.verifyCode(verificationCode, verificationMethod);
+      if (res.success) {
         setIsVerified(true);
-        showToast('Account verified successfully! You now have full platform access.', 'success');
+        showToast(res.message || 'Account verified successfully! You now have full platform access.', 'success');
       } else {
-        showToast('Invalid verification code. Please try again.', 'error');
+        showToast(res.message || 'Invalid verification code. Please try again.', 'error');
       }
-    }, 1500);
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || err?.message || 'Invalid verification code. Please try again.', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetVerification = () => {
@@ -65,12 +89,12 @@ const VerificationPage: React.FC = () => {
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           <div className="p-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-          
+
           <div className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/2">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Secure Verification</h2>
-                
+
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Choose Method</h3>
@@ -122,7 +146,7 @@ const VerificationPage: React.FC = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={handleSendCode}
                       disabled={isLoading}
@@ -143,7 +167,7 @@ const VerificationPage: React.FC = () => {
 
               <div className="md:w-1/2">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Verification Code</h2>
-                
+
                 {!isVerified ? (
                   <div className="space-y-6">
                     <div className="bg-gray-50 rounded-xl p-6">
@@ -158,7 +182,7 @@ const VerificationPage: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Verification Code
@@ -178,7 +202,7 @@ const VerificationPage: React.FC = () => {
                         >
                           {isLoading ? 'Verifying...' : 'Verify Account'}
                         </button>
-                        
+
                         <div className="mt-4 text-center">
                           <button className="text-sm text-blue-600 hover:text-blue-800">
                             Resend Code
@@ -186,7 +210,7 @@ const VerificationPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 border border-amber-100">
                       <h3 className="font-bold text-gray-900 mb-2">Why Verify?</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
@@ -235,7 +259,7 @@ const VerificationPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
           <div className="flex items-start">
             <div className="bg-blue-100 p-2 rounded-lg mr-4">

@@ -50,14 +50,14 @@ const ProductList: React.FC<ProductListProps> = ({
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'rating':
-          return (b.avg_rating || 0) - (a.avg_rating || 0);
-        default:
-          return 0; // newest (default order)
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'rating':
+        return (b.avg_rating || 0) - (a.avg_rating || 0);
+      default:
+        return 0; // newest (default order)
       }
     });
 
@@ -119,7 +119,7 @@ const ProductList: React.FC<ProductListProps> = ({
           onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         />
-        
+
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -159,7 +159,7 @@ const ProductList: React.FC<ProductListProps> = ({
                   src={product.image_url}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                 />
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
                   <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -167,7 +167,7 @@ const ProductList: React.FC<ProductListProps> = ({
                   </svg>
                 </div>
               )}
-              
+
               {/* Stock Badge */}
               {product.stock_quantity !== undefined && product.stock_quantity <= 0 && (
                 <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -180,7 +180,7 @@ const ProductList: React.FC<ProductListProps> = ({
             <div className="p-4">
               <h3 className="font-semibold text-gray-900 mb-1 truncate">{product.name}</h3>
               <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
-              
+
               {product.seller_name && (
                 <p className="text-xs text-gray-500 mb-2">by {product.seller_name}</p>
               )}
@@ -198,7 +198,7 @@ const ProductList: React.FC<ProductListProps> = ({
                 <span className="text-xl font-bold text-purple-600">
                   {product.currency || '$'}{product.price.toFixed(2)}
                 </span>
-                
+
                 {product.stock_quantity !== undefined && product.stock_quantity > 0 && (
                   <button
                     onClick={(e) => {

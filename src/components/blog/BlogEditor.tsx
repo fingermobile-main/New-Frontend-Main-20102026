@@ -33,8 +33,8 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
     featured_image_url: editingPost?.featured_image_url || '',
     seo_title: editingPost?.seo_title || '',
     seo_description: editingPost?.seo_description || '',
-    tags: Array.isArray(editingPost?.tags) 
-      ? editingPost.tags.map(t => typeof t === 'string' ? t : (t as any).name || t) 
+    tags: Array.isArray(editingPost?.tags)
+      ? editingPost.tags.map(t => typeof t === 'string' ? t : (t as any).name || t)
       : [],
     allow_comments: editingPost?.allow_comments !== false,
     is_featured: editingPost?.is_featured || false,
@@ -48,7 +48,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.content || !formData.blog_id) {
       setError('Please fill in all required fields');
       return;
@@ -57,14 +57,14 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
     try {
       setSubmitting(true);
       setError(null);
-      
+
       let post: BlogPost;
       if (editingPost) {
         post = await blogService.updatePost(editingPost.id, formData);
       } else {
         post = await blogService.createPost(formData);
       }
-      
+
       if (onSave && post) {
         onSave(post);
       }
@@ -272,7 +272,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
           {/* SEO Fields */}
           <div className="border-t border-gray-200 pt-4">
             <h4 className="text-sm font-semibold text-gray-900 mb-3">SEO Settings</h4>
-            
+
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -305,7 +305,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
           {/* Settings */}
           <div className="border-t border-gray-200 pt-4">
             <h4 className="text-sm font-semibold text-gray-900 mb-3">Post Settings</h4>
-            
+
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2">
@@ -317,7 +317,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                   />
                   <span className="text-sm text-gray-700">Allow Comments</span>
                 </label>
-                
+
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -327,7 +327,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                   />
                   <span className="text-sm text-gray-700">Featured Post</span>
                 </label>
-                
+
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"

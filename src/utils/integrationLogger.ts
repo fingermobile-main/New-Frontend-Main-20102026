@@ -17,7 +17,7 @@ export interface IntegrationLog {
   meta?: Record<string, unknown>;
   duration?: number;
   component?: string;
-  status?: "success" | "error" | "pending";
+  status?: 'success' | 'error' | 'pending';
   details?: unknown;
   error?: Error | string | null;
   action?: string;
@@ -52,11 +52,11 @@ export const clearIntegrationLogs = (): void => {
 };
 
 export const getIntegrationLogsByService = (
-  service: string): Array<IntegrationLog> => 
+  service: string): Array<IntegrationLog> =>
   integrationLogs.filter(log => log.service === service);
 
 export const getIntegrationLogsByLevel = (
-  level: IntegrationLogLevel): Array<IntegrationLog> => 
+  level: IntegrationLogLevel): Array<IntegrationLog> =>
   integrationLogs.filter(log => log.level === level);
 
 class IntegrationLogger {
@@ -67,12 +67,12 @@ class IntegrationLogger {
   public log(
     component: string,
     action: string,
-    status: "success" | "error" | "pending",
+    status: 'success' | 'error' | 'pending',
     details?: unknown,
     error?: string | null
   ): IntegrationLog {
     const startTime = Date.now();
-    
+
     const logEntry: IntegrationLog = {
       component,
       action,
@@ -80,7 +80,7 @@ class IntegrationLogger {
       timestamp: new Date(),
       details: details ?? null,
       error: error || undefined,
-      duration: status === "pending" ? 0 : Date.now() - startTime,
+      duration: status === 'pending' ? 0 : Date.now() - startTime,
       level: IntegrationLogLevel.INFO,
       message: `${component} - ${action}`,
       service: component
@@ -99,10 +99,10 @@ class IntegrationLogger {
     }
 
     // Optionally send to server
-    if (this.logToServer && status !== "pending") {
+    if (this.logToServer && status !== 'pending') {
       void this.sendLogToServer(logEntry);
     }
-    
+
     return logEntry;
   }
 
@@ -116,7 +116,7 @@ class IntegrationLogger {
       // If you want to actually store logs in your database, you could
       // implement:
       // await apiService.logIntegrationEvent(logEntry);
-      
+
       // Actual implementation to send log to server
       // This is a placeholder implementation that uses fetch to send the log data
       const response = await fetch('/api/logs', {
@@ -156,7 +156,7 @@ class IntegrationLogger {
 
   // Get logs by status
   public getLogsByStatus(
-    status: "success" | "error" | "pending"): IntegrationLog[] {
+    status: 'success' | 'error' | 'pending'): IntegrationLog[] {
     return this.logs.filter(log => log.status === status);
   }
 
@@ -180,76 +180,76 @@ class IntegrationLogger {
       success?: boolean;
       [key: string]: unknown; // Changed from 'any' to 'unknown'
     };
-    
+
     const startTime = Date.now();
     const logEntry = this.log(
       component,
-      "database_integration_check",
-      "pending",
+      'database_integration_check',
+      'pending',
       { testData }
     );
 
     try {
       // Perform a test operation to verify database connectivity
       // Using the generic request method since testDatabaseConnection doesn't exist
-      const result = await apiService.request("/health", {
-        method: "GET"
+      const result = await apiService.request('/health', {
+        method: 'GET'
       }) as HealthCheckResponse;
 
       if (result.success) {
         // Update the log entry with actual duration
         logEntry.duration = Date.now() - startTime;
-        logEntry.status = "success";
+        logEntry.status = 'success';
         // Ensure logEntry.details is an object before spreading
-        logEntry.details = { 
-          ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}), 
-          result 
+        logEntry.details = {
+          ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}),
+          result
         };
-        
+
         // Update log to server
         if (this.logToServer) {
           void this.sendLogToServer(logEntry);
         }
-        
+
         return true;
       } else {
         // Update the log entry
         logEntry.duration = Date.now() - startTime;
-        logEntry.status = "error";
-        logEntry.error = "Database connection test failed";
+        logEntry.status = 'error';
+        logEntry.error = 'Database connection test failed';
         // Ensure logEntry.details is an object before spreading
-        logEntry.details = { 
-          ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}), 
-          result 
+        logEntry.details = {
+          ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}),
+          result
         };
-        
+
         // Update log to server
         if (this.logToServer) {
           void this.sendLogToServer(logEntry);
         }
-        
+
         return false;
       }
     } catch (error) {
       // Update error log entry
       logEntry.duration = Date.now() - startTime;
-      logEntry.status = "error";
+      logEntry.status = 'error';
       logEntry.error = error instanceof Error ?
         error : new Error(String(error));
       // Ensure logEntry.details is an object before spreading
-      logEntry.details = { 
-        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}), 
-        error 
+      logEntry.details = {
+        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}),
+        error
       };
-      
+
       // Add to logs
       this.logs.push(logEntry);
-      
+
       // Update log to server
       if (this.logToServer) {
         void this.sendLogToServer(logEntry);
       }
-      
+
       return false;
     }
   }
@@ -263,13 +263,13 @@ class IntegrationLogger {
       id: uuidv4(),
       timestamp: new Date(), // Fixed: use Date object instead of string
       level: IntegrationLogLevel.INFO, // Fixed: use enum instead of string
-      service: "integration-logger",
-      operation: "self-health-check",
-      status: "pending",
+      service: 'integration-logger',
+      operation: 'self-health-check',
+      status: 'pending',
       duration: 0,
       details: {},
       error: undefined,
-      message: "Self health check" // Added missing property
+      message: 'Self health check' // Added missing property
     };
 
     // Add to logs
@@ -278,37 +278,37 @@ class IntegrationLogger {
     try {
       // Simple health check - verify we can write to logs array
       const testWrite = this.logs.length;
-      
+
       // Update the log entry
       logEntry.duration = Date.now() - startTime;
-      logEntry.status = "success";
-      logEntry.details = { 
-        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}), 
-        testWrite 
+      logEntry.status = 'success';
+      logEntry.details = {
+        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}),
+        testWrite
       };
-      
+
       // Update log to server
       if (this.logToServer) {
         void this.sendLogToServer(logEntry);
       }
-      
+
       return true;
     } catch (error) {
       // Update error log entry
       logEntry.duration = Date.now() - startTime;
-      logEntry.status = "error";
+      logEntry.status = 'error';
       logEntry.error = error instanceof Error ?
         error : new Error(String(error));
-      logEntry.details = { 
-        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}), 
-        error 
+      logEntry.details = {
+        ...(typeof logEntry.details === 'object' && logEntry.details !== null ? logEntry.details : {}),
+        error
       };
-      
+
       // Update log to server
       if (this.logToServer) {
         void this.sendLogToServer(logEntry);
       }
-      
+
       return false;
     }
   }
@@ -317,32 +317,32 @@ class IntegrationLogger {
   public getAverageResponseTime(
     component: string): number {
     const componentLogs = this.logs.filter(
-      (log): log is IntegrationLog => 
-        log.component === component && 
-        typeof log.duration === 'number' && 
+      (log): log is IntegrationLog =>
+        log.component === component &&
+        typeof log.duration === 'number' &&
         log.duration > 0
     );
-    
+
     if (componentLogs.length === 0) {
       return 0;
     }
-    
+
     const totalDuration = componentLogs.reduce((sum, log) => sum + (log.duration || 0), 0); // Fixed: handle potentially undefined duration
     return totalDuration / componentLogs.length;
   }
-  
+
   // Get error rate for a component
   public getErrorRate(
     component: string): number {
     const componentLogs = this.logs.filter(
       (log): log is IntegrationLog => log.component === component
     );
-    
+
     if (componentLogs.length === 0) {
       return 0;
     }
-    
-    const errorCount = componentLogs.filter(log => log.status === "error").length;
+
+    const errorCount = componentLogs.filter(log => log.status === 'error').length;
     return (errorCount / componentLogs.length) * 100;
   }
 }

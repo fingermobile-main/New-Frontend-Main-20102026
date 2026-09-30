@@ -24,7 +24,7 @@ interface SubscriptionDashboardProps {
   _engagementRate: number; // Renamed to indicate intentional unused prop
 }
 
-const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({ 
+const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
   _followers,
   _engagementRate
 }) => {
@@ -55,7 +55,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       if (!memberIdString) return;
-      
+
       try {
         // Fetch usage data
         const usageData = await getSubscriptionUsage(); // This function now exists in the hook
@@ -170,8 +170,8 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       <span>{usage.features_available}</span>
                     </div>
                     <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full" 
+                      <div
+                        className="bg-blue-600 h-2 rounded-full"
                         style={{ width: `${Math.min(100, usage.usage_percentage)}%` }}
                       ></div>
                     </div>
@@ -204,8 +204,8 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 <h4 className="text-lg font-medium text-gray-900">Auto Renewal</h4>
                 <div className="mt-4">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                    subscription.auto_renew 
-                      ? 'bg-green-100 text-green-800' 
+                    subscription.auto_renew
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {subscription.auto_renew ? 'Enabled' : 'Disabled'}
@@ -224,14 +224,14 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
               >
                 Cancel Subscription
               </button>
-              
+
               <button
                 disabled
                 className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
               >
                 Update Payment Method
               </button>
-              
+
               <button
                 disabled
                 className="px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
@@ -340,7 +340,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       <p className="text-sm text-gray-500">
                         Are you sure you want to cancel your subscription? Your access to premium features will end at the end of the current billing period.
                       </p>
-                      
+
                       <div className="mt-4">
                         <label htmlFor="cancel-reason" className="block text-sm font-medium text-gray-700">
                           Reason for cancellation (optional)

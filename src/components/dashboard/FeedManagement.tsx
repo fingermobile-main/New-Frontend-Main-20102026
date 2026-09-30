@@ -177,7 +177,7 @@ const FeedManagement: React.FC = () => {
               Feed Type Preferences
             </h2>
             <p className="text-gray-600 mb-6">Select which types of content you'd like to see in your feed</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Object.entries(preferences.personal.feedTypes).map(([type, enabled]) => (
                 <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
@@ -202,7 +202,7 @@ const FeedManagement: React.FC = () => {
               Notification Preferences
             </h2>
             <p className="text-gray-600 mb-6">Choose which activities trigger notifications for you</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.personal.notificationPreferences).map(([activity, enabled]) => (
                 <div key={activity} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
@@ -230,7 +230,7 @@ const FeedManagement: React.FC = () => {
               Content Frequency
             </h2>
             <p className="text-gray-600 mb-6">How often you'd like to see content from this feed type</p>
-            
+
             <div className="flex flex-wrap gap-4">
               {['low', 'moderate', 'high'].map((level) => (
                 <button
@@ -259,14 +259,14 @@ const FeedManagement: React.FC = () => {
               Allowed Content Types
             </h2>
             <p className="text-gray-600 mb-6">Select which types of platform content you'd like to see</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.platform.allowedContent).map(([type, enabled]) => (
                 <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
                   <span className="capitalize text-gray-700">
-                    {type === 'sponsored' ? 'Sponsored Content' : 
-                     type === 'promoted' ? 'Promoted Content' : 
-                     type.charAt(0).toUpperCase() + type.slice(1)}
+                    {type === 'sponsored' ? 'Sponsored Content' :
+                      type === 'promoted' ? 'Promoted Content' :
+                        type.charAt(0).toUpperCase() + type.slice(1)}
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -291,14 +291,14 @@ const FeedManagement: React.FC = () => {
               Content Filters
             </h2>
             <p className="text-gray-600 mb-6">Enable filters to control what content appears in your feed</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.platform.contentFilters).map(([filter, enabled]) => (
                 <div key={filter} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
                   <span className="capitalize text-gray-700">
-                    {filter === 'explicit' ? 'Explicit Content Filter' : 
-                     filter === 'political' ? 'Political Content Filter' : 
-                     filter.charAt(0).toUpperCase() + filter.slice(1) + ' Filter'}
+                    {filter === 'explicit' ? 'Explicit Content Filter' :
+                      filter === 'political' ? 'Political Content Filter' :
+                        filter.charAt(0).toUpperCase() + filter.slice(1) + ' Filter'}
                   </span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -320,7 +320,7 @@ const FeedManagement: React.FC = () => {
               Content Frequency
             </h2>
             <p className="text-gray-600 mb-6">How often you'd like to see platform content mixed into your feed</p>
-            
+
             <div className="flex flex-wrap gap-4">
               {['low', 'normal', 'high'].map((level) => (
                 <button
@@ -349,7 +349,7 @@ const FeedManagement: React.FC = () => {
               Blocked Keywords
             </h2>
             <p className="text-gray-600 mb-6">Add keywords to hide content containing them</p>
-            
+
             <div className="flex mb-4">
               <input
                 type="text"
@@ -365,12 +365,12 @@ const FeedManagement: React.FC = () => {
                 Add
               </button>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {preferences.content.blockedKeywords.map((keyword: string) => (
                 <div key={keyword} className="flex items-center bg-red-100 text-red-800 px-3 py-1 rounded-full">
                   <span className="mr-2">{keyword}</span>
-                  <button 
+                  <button
                     onClick={() => handleRemoveKeyword(keyword)}
                     className="text-red-600 hover:text-red-800"
                   >
@@ -387,7 +387,7 @@ const FeedManagement: React.FC = () => {
               Favorite Topics
             </h2>
             <p className="text-gray-600 mb-6">Add topics you're interested in to see more related content</p>
-            
+
             <div className="flex mb-4">
               <input
                 type="text"
@@ -403,12 +403,12 @@ const FeedManagement: React.FC = () => {
                 Add
               </button>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {preferences.content.favoriteTopics.map((topic: string) => (
                 <div key={topic} className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full">
                   <span className="mr-2">{topic}</span>
-                  <button 
+                  <button
                     onClick={() => handleRemoveTopic(topic)}
                     className="text-green-600 hover:text-green-800"
                   >
@@ -425,7 +425,7 @@ const FeedManagement: React.FC = () => {
               Muted Accounts
             </h2>
             <p className="text-gray-600 mb-6">Accounts whose content will be hidden from your feed</p>
-            
+
             <div className="space-y-3">
               {preferences.content.mutedAccounts.length > 0 ? (
                 preferences.content.mutedAccounts.map((account: any) => (

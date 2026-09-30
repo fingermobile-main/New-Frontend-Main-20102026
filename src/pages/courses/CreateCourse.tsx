@@ -12,20 +12,20 @@ const CreateCourse: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     price: 0,
-    category: "",
-    level: "beginner",
-    thumbnail: "",
+    category: '',
+    level: 'beginner',
+    thumbnail: '',
     modules: [
       {
-        title: "",
+        title: '',
         lessons: [
           {
-            title: "",
-            content: "",
-            videoUrl: "",
+            title: '',
+            content: '',
+            videoUrl: '',
             duration: 0
           }
         ]
@@ -43,7 +43,7 @@ const CreateCourse: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "duration" ? Number(value) : value
+      [name]: name === 'price' || name === 'duration' ? Number(value) : value
     }));
   };
 
@@ -77,7 +77,7 @@ const CreateCourse: React.FC = () => {
       const lessons = [...modules[moduleIndex].lessons];
       lessons[lessonIndex] = {
         ...lessons[lessonIndex],
-        [field]: field === "duration" ? Number(value) : value
+        [field]: field === 'duration' ? Number(value) : value
       };
 
       modules[moduleIndex] = {
@@ -98,12 +98,12 @@ const CreateCourse: React.FC = () => {
       modules: [
         ...prev.modules,
         {
-          title: "",
+          title: '',
           lessons: [
             {
-              title: "",
-              content: "",
-              videoUrl: "",
+              title: '',
+              content: '',
+              videoUrl: '',
               duration: 0
             }
           ]
@@ -120,9 +120,9 @@ const CreateCourse: React.FC = () => {
         lessons: [
           ...modules[moduleIndex].lessons,
           {
-            title: "",
-            content: "",
-            videoUrl: "",
+            title: '',
+            content: '',
+            videoUrl: '',
             duration: 0
           }
         ]
@@ -137,7 +137,7 @@ const CreateCourse: React.FC = () => {
 
   const removeModule = (moduleIndex: number) => {
     if (formData.modules.length <= 1) {
-      showToast("Course must have at least one module", "error");
+      showToast('Course must have at least one module', 'error');
       return;
     }
 
@@ -172,19 +172,19 @@ const CreateCourse: React.FC = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
+      newErrors.title = 'Title is required';
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
+      newErrors.description = 'Description is required';
     }
 
     if (formData.price < 0) {
-      newErrors.price = "Price must be a positive number";
+      newErrors.price = 'Price must be a positive number';
     }
 
     if (!formData.category.trim()) {
-      newErrors.category = "Category is required";
+      newErrors.category = 'Category is required';
     }
 
     formData.modules.forEach((module, moduleIndex) => {
@@ -209,17 +209,17 @@ const CreateCourse: React.FC = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      showToast("Please fix the errors in the form", "error");
+      showToast('Please fix the errors in the form', 'error');
       return;
     }
 
     try {
       await createCourse(formData);
-      showToast("Course created successfully!", "success");
+      showToast('Course created successfully!', 'success');
       navigate(`/courses/${formData.title.toLowerCase().replace(/\s+/g, '-')}`);
     } catch (error) {
-      showToast("Failed to create course", "error");
-      console.error("Error creating course:", error);
+      showToast('Failed to create course', 'error');
+      console.error('Error creating course:', error);
     }
   };
 
@@ -252,8 +252,8 @@ const CreateCourse: React.FC = () => {
                 onChange={handleChange}
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.title
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="Enter course title" />
               {errors.title && (
@@ -276,8 +276,8 @@ const CreateCourse: React.FC = () => {
                 onChange={handleChange}
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.category
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="e.g., Music Production, Design, etc." />
               {errors.category && (
@@ -302,8 +302,8 @@ const CreateCourse: React.FC = () => {
                 step="0.01"
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.price
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                 placeholder="0.00"
               />
@@ -348,8 +348,8 @@ const CreateCourse: React.FC = () => {
               rows={4}
               className={`w-full px-3 py-2 border rounded-lg ${
                 errors.description
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
+                  ? 'border-red-500'
+                  : 'border-gray-300 dark:border-gray-600'
               } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
               placeholder="Describe what students will learn in this course"
             />
@@ -385,12 +385,12 @@ const CreateCourse: React.FC = () => {
                     <input
                       type="text"
                       value={module.title}
-                      onChange={(e) => handleModuleChange(moduleIndex, "title", e.target.value)
+                      onChange={(e) => handleModuleChange(moduleIndex, 'title', e.target.value)
                       }
                       className={`w-full px-3 py-2 border rounded-lg ${
                         errors[`module_${moduleIndex}_title`]
-                          ? "border-red-500"
-                          : "border-gray-300 dark:border-gray-600"
+                          ? 'border-red-500'
+                          : 'border-gray-300 dark:border-gray-600'
                       } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                       placeholder="e.g., Introduction"
                     />
@@ -440,18 +440,18 @@ const CreateCourse: React.FC = () => {
                             type="text"
                             value={lesson.title}
                             onChange={(e) => handleLessonChange(
-                                moduleIndex,
-                                lessonIndex,
-                                "title",
-                                e.target.value,
-                              )
+                              moduleIndex,
+                              lessonIndex,
+                              'title',
+                              e.target.value,
+                            )
                             }
                             className={`w-full px-2 py-1 text-sm border rounded ${
                               errors[
                                 `module_${moduleIndex}_lesson_${lessonIndex}_title`
                               ]
-                                ? "border-red-500"
-                                : "border-gray-300 dark:border-gray-600"
+                                ? 'border-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
                             } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
                             placeholder="Lesson title"
                           />
@@ -467,7 +467,7 @@ const CreateCourse: React.FC = () => {
                               handleLessonChange(
                                 moduleIndex,
                                 lessonIndex,
-                                "content",
+                                'content',
                                 e.target.value,
                               )
                             }
@@ -486,11 +486,11 @@ const CreateCourse: React.FC = () => {
                               type="text"
                               value={lesson.videoUrl}
                               onChange={(e) => handleLessonChange(
-                                  moduleIndex,
-                                  lessonIndex,
-                                  "videoUrl",
-                                  e.target.value,
-                                )
+                                moduleIndex,
+                                lessonIndex,
+                                'videoUrl',
+                                e.target.value,
+                              )
                               }
                               className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                               placeholder="https://example.com/video"
@@ -508,7 +508,7 @@ const CreateCourse: React.FC = () => {
                                 handleLessonChange(
                                   moduleIndex,
                                   lessonIndex,
-                                  "duration",
+                                  'duration',
                                   e.target.value,
                                 )
                               }
@@ -539,7 +539,7 @@ const CreateCourse: React.FC = () => {
               disabled={loading}
               className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium"
             >
-              {loading ? "Creating..." : "Create Course"}
+              {loading ? 'Creating...' : 'Create Course'}
             </button>
           </div>
         </form>

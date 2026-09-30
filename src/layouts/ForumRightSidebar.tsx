@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import { 
+import {
   SparklesIcon,
   BellIcon,
   TrendingUpIcon,
@@ -68,7 +68,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
 
   return (
     <div className="h-full flex flex-col bg-[#242526]">
-      
+
       {/* Mobile Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Sidebar</span>
@@ -79,7 +79,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto py-4 px-4 space-y-6">
-        
+
         {/* AI Assistant Widget */}
         <div className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 rounded-xl p-4 border border-purple-700/50">
           <div className="flex items-center gap-2 mb-3">
@@ -123,14 +123,14 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
               <TrendingUpIcon className="w-5 h-5 text-green-400" />
               <h3 className="text-sm font-semibold text-gray-300">Earnings</h3>
             </div>
-            <button 
+            <button
               onClick={() => setShowEarnings(!showEarnings)}
               className="text-xs text-gray-400 hover:text-white"
             >
               {showEarnings ? 'Hide' : 'Show'}
             </button>
           </div>
-          
+
           {showEarnings ? (
             <div className="space-y-2">
               <div className="flex justify-between items-center">

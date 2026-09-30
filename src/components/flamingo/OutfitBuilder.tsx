@@ -52,7 +52,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.occasion) {
       setError('Please fill in required fields');
       return;
@@ -61,16 +61,16 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
     try {
       setSubmitting(true);
       setError(null);
-      
+
       // Filter out empty strings to match FlamingoOutfit interface
       const outfitData = {
         ...formData,
         occasion: formData.occasion || undefined,
         season: formData.season || undefined
       };
-      
+
       const outfit = await flamingoService.createOutfit(outfitData);
-      
+
       if (onSave && outfit) {
         onSave(outfit);
       }
@@ -302,7 +302,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
             />
             <span className="text-sm text-gray-700">Make Public</span>
           </label>
-          
+
           <label className="flex items-center gap-2">
             <input
               type="checkbox"

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Wallet, TrendingUp, TrendingDown, DollarSign, CreditCard } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Wallet, TrendingUp, TrendingDown, DollarSign, CreditCard } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface WalletProps {
   userId?: string;
@@ -18,17 +18,17 @@ const WalletComponent: React.FC<WalletProps> = ({
   onWithdraw
 }) => {
   const [transactions, setTransactions] = React.useState([
-    { id: "1", type: "deposit", amount: 100, date: "2026-06-08", description: "Bank Transfer" },
-    { id: "2", type: "withdrawal", amount: 50, date: "2026-06-07", description: "ATM Withdrawal" },
-    { id: "3", type: "deposit", amount: 200, date: "2026-06-06", description: "Salary Deposit" }
+    { id: '1', type: 'deposit', amount: 100, date: '2026-06-08', description: 'Bank Transfer' },
+    { id: '2', type: 'withdrawal', amount: 50, date: '2026-06-07', description: 'ATM Withdrawal' },
+    { id: '3', type: 'deposit', amount: 200, date: '2026-06-06', description: 'Salary Deposit' }
   ]);
 
   const totalDeposits = transactions
-    .filter((t) => t.type === "deposit")
+    .filter((t) => t.type === 'deposit')
     .reduce((sum, t) => sum + t.amount, 0);
 
   const totalWithdrawals = transactions
-    .filter((t) => t.type === "withdrawal")
+    .filter((t) => t.type === 'withdrawal')
     .reduce((sum, t) => sum + t.amount, 0);
 
   return (
@@ -44,7 +44,7 @@ const WalletComponent: React.FC<WalletProps> = ({
         <CardContent>
           <div className="text-center py-8">
             <div className="text-5xl font-bold mb-2">
-              ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+              ${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </div>
             <p className="text-muted-foreground">Available Balance</p>
           </div>
@@ -120,12 +120,12 @@ const WalletComponent: React.FC<WalletProps> = ({
                 <div className="flex items-center gap-3">
                   <div
                     className={`p-2 rounded-full ${
-                      transaction.type === "deposit"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
+                      transaction.type === 'deposit'
+                        ? 'bg-green-100 text-green-600'
+                        : 'bg-red-100 text-red-600'
                     }`}
                   >
-                    {transaction.type === "deposit" ? (
+                    {transaction.type === 'deposit' ? (
                       <TrendingUp className="h-5 w-5" />
                     ) : (
                       <TrendingDown className="h-5 w-5" />
@@ -137,14 +137,14 @@ const WalletComponent: React.FC<WalletProps> = ({
                   </div>
                 </div>
                 <Badge
-                  variant={transaction.type === "deposit" ? "default" : "destructive"}
+                  variant={transaction.type === 'deposit' ? 'default' : 'destructive'}
                   className={
-                    transaction.type === "deposit"
-                      ? "bg-green-500"
-                      : "bg-red-500"
+                    transaction.type === 'deposit'
+                      ? 'bg-green-500'
+                      : 'bg-red-500'
                   }
                 >
-                  {transaction.type === "deposit" ? "+" : "-"}$
+                  {transaction.type === 'deposit' ? '+' : '-'}$
                   {transaction.amount.toFixed(2)}
                 </Badge>
               </div>

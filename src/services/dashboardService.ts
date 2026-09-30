@@ -80,11 +80,11 @@ export interface ContentFilterParams {
 // Core Dashboard Service Class
 // ==========================================
 export class DashboardService {
-  
+
   // ----------------------------------------
   // Super Admin Dashboard API Functions
   // ----------------------------------------
-  
+
   async getAdminDashboardData(timeRange: string): Promise<SystemMetric[]> {
     try {
       const response = await api.get<SystemMetric[]>('/admin/dashboard/metrics', {
@@ -208,7 +208,7 @@ export class DashboardService {
   // ----------------------------------------
   // UGC Dashboard API Functions
   // ----------------------------------------
-  
+
   async getUGCMetrics(timeRange: string): Promise<UGCMetric[]> {
     try {
       const response = await api.get<UGCMetric[]>('/ugc/dashboard/metrics', {

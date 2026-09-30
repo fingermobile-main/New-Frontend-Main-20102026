@@ -21,7 +21,7 @@ const CourseContext = React.createContext<CourseContextType | undefined>(undefin
 export const useCourseContext = (): CourseContextType => {
   const context = React.useContext(CourseContext);
   if (context === undefined) {
-    throw new Error("useCourseContext must be used within a CourseProvider");
+    throw new Error('useCourseContext must be used within a CourseProvider');
   }
   return context;
 };
@@ -39,12 +39,14 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.get("/courses");
-      setCourses(response.data as Course[]);
+      const response: any = await ApiService.get('/elearning/courses');
+      const data = response?.data || response;
+      const coursesList = (data?.courses || data) as Course[];
+      setCourses(Array.isArray(coursesList) ? coursesList : []);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to fetch courses";
+      const message = err instanceof Error ? err.message : 'Failed to fetch courses';
       setError(message);
-      showToast(message, "error");
+      showToast(message, 'error');
     } finally {
       setLoading(false);
     }
@@ -52,22 +54,22 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const enrollInCourse = React.useCallback(async (courseId: string): Promise<void> => {
     try {
-      const response = await ApiService.post(`/courses/${courseId}/enroll`);
-      const newEnrollment = response.data as Enrollment;
+      const response: any = await ApiService.post(`/mylearning/courses/${courseId}/enroll`, {});
+      const newEnrollment = (response?.data || response) as Enrollment;
       setEnrollments((prev) => [...prev, newEnrollment]);
-      
+
       setCourses((prev) =>
         prev.map((course) =>
-          course.id === courseId
+          String(course.id) === String(courseId)
             ? { ...course, enrolledCount: (course.enrolledCount || 0) + 1 }
             : course
         )
       );
-      showToast("Successfully enrolled in course", "success");
+      showToast('Successfully enrolled in course', 'success');
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to enroll in course";
+      const message = err instanceof Error ? err.message : 'Failed to enroll in course';
       setError(message);
-      showToast(message, "error");
+      showToast(message, 'error');
     }
   }, [showToast]);
 
@@ -75,8 +77,17 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.post('/courses', courseData);
-      const newCourse = response.data as Course;
+      const payload = {
+        categoryId: (courseData as any).category_id || 1,
+        title: courseData.title,
+        description: courseData.description,
+        level: (courseData.level || 'beginner').toLowerCase(),
+        language: courseData.language || 'English',
+        price: Number(courseData.price || 0)
+      };
+      const response: any = await ApiService.post('/elearning/courses', payload);
+      const data = response?.data || response;
+      const newCourse = (data?.course || data) as Course;
       setCourses((prev) => [newCourse, ...prev]);
       showToast('Course created successfully', 'success');
     } catch (err) {
@@ -93,9 +104,10 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.put(`/courses/${courseId}`, courseData);
-      const updatedCourse = response.data as Course;
-      setCourses((prev) => prev.map((course) => course.id === courseId ? updatedCourse : course));
+      const response: any = await ApiService.put(`/elearning/courses/${courseId}`, courseData);
+      const data = response?.data || response;
+      const updatedCourse = (data?.course || data) as Course;
+      setCourses((prev) => prev.map((course) => String(course.id) === String(courseId) ? updatedCourse : course));
       showToast('Course updated successfully', 'success');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update course';
@@ -134,7 +146,7 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({
   React.useEffect(() => {
     fetchCourses();
   }, [fetchCourses]);
-  
+
   const contextValue = React.useMemo(
     () => ({
       courses,

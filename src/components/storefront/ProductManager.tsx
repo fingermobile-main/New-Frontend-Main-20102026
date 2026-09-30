@@ -44,20 +44,20 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       // Convert formData to match StorefrontProduct interface
       const productData = {
         ...formData,
         price: parseFloat(formData.price) || 0
       };
-      
+
       if (editingProduct) {
         await storefrontService.updateProduct(editingProduct.id, productData);
       } else {
         await storefrontService.createProduct(storeId, productData);
       }
-      
+
       setShowForm(false);
       setEditingProduct(null);
       resetForm();
@@ -85,7 +85,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
 
   const handleDelete = async (productId: string) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
-    
+
     try {
       await storefrontService.deleteProduct(productId);
       loadProducts();
@@ -108,8 +108,8 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
     });
   };
 
-  const filteredProducts = filterStatus === 'all' 
-    ? products 
+  const filteredProducts = filterStatus === 'all'
+    ? products
     : products.filter(p => p.status === filterStatus);
 
   const formatCurrency = (amount: number) => {
@@ -157,7 +157,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
             <h3 className="text-xl font-bold mb-4">
               {editingProduct ? 'Edit Product' : 'Add New Product'}
             </h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -279,8 +279,8 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   product.status === 'active' ? 'bg-green-100 text-green-800' :
-                  product.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-gray-100 text-gray-800'
+                    product.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-800'
                 }`}>
                   {product.status}
                 </span>

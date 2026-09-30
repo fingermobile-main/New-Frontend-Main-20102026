@@ -1,184 +1,292 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  MicrophoneIcon,
+  VideoCameraIcon,
+  XCircleIcon,
+  ChatBubbleLeftRightIcon,
+  UserGroupIcon,
+  ComputerDesktopIcon,
+  CheckCircleIcon
+} from '../icons';
+
+export interface Participant {
+  id: string;
+  name: string;
+  avatar?: string;
+  isSpeaking: boolean;
+  isMuted: boolean;
+  hasVideo: boolean;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: string;
+  text: string;
+  timestamp: string;
+}
+
 interface ConferenceRoomProps {
   roomId?: string;
   roomName?: string;
-  participants?: Array<{
-    id: string;
-    name: string;
-    avatar?: string;
-    isSpeaking?: boolean;
-    isMuted?: boolean;
-    hasVideo?: boolean;
-  }>;
 }
 
 const ConferenceRoom: React.FC<ConferenceRoomProps> = ({
-  roomId = 'room123',
-  roomName = 'Team Meeting',
-  participants = [
-    { id: 'p1', name: 'You', avatar: null, isSpeaking: false, isMuted: false, hasVideo: true },
-    { id: 'p2', name: 'Alice Johnson', avatar: null, isSpeaking: true, isMuted: false, hasVideo: true },
-    { id: 'p3', name: 'Bob Smith', avatar: null, isSpeaking: false, isMuted: true, hasVideo: true },
-    { id: 'p4', name: 'Charlie Brown', avatar: null, isSpeaking: false, isMuted: false, hasVideo: false }
-  ]
+  roomId = 'conf-main-room',
+  roomName = 'FingerMobile Protocol Strategic Sync'
 }) => {
-  const [isMuted, setIsMuted] = useState(false);
-  const [isVideoOff, setIsVideoOff] = useState(false);
-  const [isScreenSharing, setIsScreenSharing] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [showParticipants, setShowParticipants] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isVideoOff, setIsVideoOff] = useState<boolean>(false);
+  const [isScreenSharing, setIsScreenSharing] = useState<boolean>(false);
+  const [showChat, setShowChat] = useState<boolean>(false);
+  const [showParticipants, setShowParticipants] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
+  const [mediaStreamActive, setMediaStreamActive] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setDuration(prev => prev + 1);
-    }, 1000);
-    
+  // Chat State
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    { id: 'm1', sender: 'GraceLink Moderator', text: 'Welcome to the FingerMobile Protocol conference room.', timestamp: '14:00' },
+    { id: 'm2', sender: 'Tobi Bakare', text: 'Audio and video stream look crystal clear from Lagos.', timestamp: '14:01' }
+  ]);
+  const [chatInput, setChatInput] = useState<string>('');
+
+  // Participants State
+  const [participants, setParticipants] = useState<Participant[]>([
+    { id: 'p1', name: 'You (Host)', isSpeaking: false, isMuted: false, hasVideo: true },
+    { id: 'p2', name: 'Amina Bello (Abuja Hub)', isSpeaking: true, isMuted: false, hasVideo: true },
+    { id: 'p3', name: 'Chukwudi Nwosu (Port Harcourt)', isSpeaking: false, isMuted: true, hasVideo: true }
+  ]);
+
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  // Timer
+  useEffect(() => {
+    const timer = setInterval(() => setDuration(prev => prev + 1), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    
-    if (hrs > 0) {
-      return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  // Initialize WebRTC Media Stream
+  useEffect(() => {
+    let isMounted = true;
+    const initCamera = async () => {
+      try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+          if (isMounted) {
+            streamRef.current = stream;
+            if (localVideoRef.current) {
+              localVideoRef.current.srcObject = stream;
+            }
+            setMediaStreamActive(true);
+          }
+        }
+      } catch {
+        // Fallback gracefully if camera is blocked/denied
+        setMediaStreamActive(false);
+      }
+    };
+
+    initCamera();
+
+    return () => {
+      isMounted = false;
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  const toggleMute = () => {
+    if (streamRef.current) {
+      streamRef.current.getAudioTracks().forEach(track => {
+        track.enabled = isMuted;
+      });
     }
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    setIsMuted(!isMuted);
+    setParticipants(prev =>
+      prev.map(p => (p.id === 'p1' ? { ...p, isMuted: !isMuted } : p))
+    );
+  };
+
+  const toggleVideo = () => {
+    if (streamRef.current) {
+      streamRef.current.getVideoTracks().forEach(track => {
+        track.enabled = isVideoOff;
+      });
+    }
+    setIsVideoOff(!isVideoOff);
+    setParticipants(prev =>
+      prev.map(p => (p.id === 'p1' ? { ...p, hasVideo: isVideoOff } : p))
+    );
+  };
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const newMsg: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      sender: 'You',
+      text: chatInput.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setChatMessages([...chatMessages, newMsg]);
+    setChatInput('');
   };
 
   const handleLeave = () => {
-    if (confirm('Are you sure you want to leave the meeting?')) {
-      window.location.href = '/meetings';
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
     }
+    window.location.href = '/dashboard';
+  };
+
+  const formatTime = (secs: number) => {
+    const mins = Math.floor(secs / 60);
+    const s = secs % 60;
+    return `${mins.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
   return (
-    <div className="h-screen bg-gray-900 flex flex-col">
-      {/* Header */}
-      <div className="bg-gray-800 px-6 py-3 flex items-center justify-between border-b border-gray-700">
-        <div className="flex items-center gap-4">
-          <h2 className="text-white font-semibold text-lg">{roomName}</h2>
-          <span className="px-3 py-1 bg-green-600 text-white rounded-full text-sm">
-            ● Live
-          </span>
-          <span className="text-gray-400 text-sm">{formatTime(duration)}</span>
-        </div>
-        
+    <div className="h-full bg-gray-950 rounded-2xl overflow-hidden flex flex-col border border-gray-800 shadow-2xl">
+      {/* Room Header */}
+      <div className="bg-gray-900 px-6 py-4 flex items-center justify-between border-b border-gray-800">
         <div className="flex items-center gap-3">
+          <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
+          <h2 className="text-white font-bold text-base">{roomName}</h2>
+          <span className="text-xs text-gray-400 font-mono bg-gray-800 px-2.5 py-1 rounded-lg">
+            {formatTime(duration)}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setShowParticipants(!showParticipants)}
-            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            onClick={() => {
+              setShowParticipants(!showParticipants);
+              setShowChat(false);
+            }}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+              showParticipants ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            }`}
           >
-            👥 Participants ({participants.length})
+            <UserGroupIcon className="w-4 h-4" />
+            Participants ({participants.length})
           </button>
-          
           <button
-            onClick={() => setShowChat(!showChat)}
-            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            onClick={() => {
+              setShowChat(!showChat);
+              setShowParticipants(false);
+            }}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+              showChat ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            }`}
           >
-            💬 Chat
+            <ChatBubbleLeftRightIcon className="w-4 h-4" />
+            Chat
           </button>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Video & Grid Container */}
       <div className="flex-1 flex overflow-hidden">
         {/* Video Grid */}
-        <div className={`flex-1 p-4 ${showChat || showParticipants ? 'w-2/3' : 'w-full'}`}>
-          <div className="grid grid-cols-2 gap-4 h-full">
-            {participants.map((participant) => (
-              <div
-                key={participant.id}
-                className={`relative bg-gray-800 rounded-lg overflow-hidden border-2 transition-all ${
-                  participant.isSpeaking ? 'border-green-500 shadow-lg shadow-green-500/50' : 'border-gray-700'
-                }`}
-              >
-                {/* Video Placeholder */}
-                {participant.hasVideo ? (
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                    <div className="text-center">
-                      {participant.avatar ? (
-                        <img src={participant.avatar} alt={participant.name} className="w-32 h-32 rounded-full mx-auto mb-2"  />
-                      ) : (
-                        <div className="w-32 h-32 rounded-full bg-gray-700 flex items-center justify-center text-4xl font-bold text-white mx-auto mb-2">
-                          {participant.name.charAt(0)}
-                        </div>
-                      )}
-                      <p className="text-white font-medium">{participant.name}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-32 h-32 rounded-full bg-gray-700 flex items-center justify-center text-4xl font-bold text-white mx-auto mb-2">
-                        {participant.name.charAt(0)}
-                      </div>
-                      <p className="text-white font-medium">{participant.name}</p>
-                      <p className="text-gray-400 text-sm mt-1">Camera off</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Status Indicators */}
-                <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                  {participant.isMuted && (
-                    <span className="px-2 py-1 bg-red-600 text-white rounded text-xs">🔇 Muted</span>
-                  )}
-                  {participant.isSpeaking && (
-                    <span className="px-2 py-1 bg-green-600 text-white rounded text-xs animate-pulse">
-                      🎤 Speaking
-                    </span>
-                  )}
+        <div className="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr overflow-y-auto">
+          {/* Local Camera Tile */}
+          <div className="relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-lg flex items-center justify-center">
+            {mediaStreamActive && !isVideoOff ? (
+              <video
+                ref={localVideoRef}
+                autoPlay
+                muted
+                playsInline
+                className="w-full h-full object-cover transform -scale-x-100"
+              />
+            ) : (
+              <div className="text-center p-6">
+                <div className="w-20 h-20 rounded-full bg-blue-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                  YOU
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Side Panel - Chat or Participants */}
-        {(showChat || showParticipants) && (
-          <div className="w-1/3 bg-gray-800 border-l border-gray-700 overflow-y-auto">
-            {showChat && (
-              <div className="p-4">
-                <h3 className="text-white font-semibold mb-4">Meeting Chat</h3>
-                <div className="space-y-3">
-                  <div className="bg-gray-700 rounded-lg p-3">
-                    <p className="text-sm text-gray-300"><strong>Alice:</strong> Hey everyone!</p>
-                  </div>
-                  <div className="bg-gray-700 rounded-lg p-3">
-                    <p className="text-sm text-gray-300"><strong>Bob:</strong> Ready when you are</p>
-                  </div>
-                </div>
-                
-                <div className="mt-4 flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Type a message..."
-                    className="flex-1 px-3 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500" />
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Send
-                  </button>
-                </div>
+                <p className="text-sm font-bold text-white">Camera is Off</p>
+                <p className="text-xs text-gray-500 mt-1">Tap camera toggle below to stream live video</p>
               </div>
             )}
+            <div className="absolute bottom-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-lg text-xs font-bold text-white flex items-center gap-2">
+              <span>You (Host)</span>
+              {isMuted && <span className="text-red-400">🔇 Muted</span>}
+            </div>
+          </div>
 
+          {/* Remote Participants Tiles */}
+          {participants.filter(p => p.id !== 'p1').map((p) => (
+            <div key={p.id} className="relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 shadow-lg flex items-center justify-center">
+              <div className="text-center p-6">
+                <div className={`w-20 h-20 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-lg ${
+                  p.isSpeaking ? 'ring-4 ring-green-500 animate-pulse' : ''
+                }`}>
+                  {p.name.charAt(0)}
+                </div>
+                <p className="text-sm font-bold text-white">{p.name}</p>
+                {p.isSpeaking && (
+                  <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-400">
+                    🎤 Speaking
+                  </span>
+                )}
+              </div>
+              <div className="absolute bottom-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-lg text-xs font-bold text-white flex items-center gap-2">
+                <span>{p.name}</span>
+                {p.isMuted && <span className="text-red-400">🔇 Muted</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Side Drawer: Chat or Participants */}
+        {(showChat || showParticipants) && (
+          <div className="w-80 bg-gray-900 border-l border-gray-800 flex flex-col justify-between">
+            {/* Chat View */}
+            {showChat && (
+              <>
+                <div className="p-4 border-b border-gray-800">
+                  <h3 className="text-sm font-black text-white">Conference Chat</h3>
+                </div>
+
+                <div className="flex-1 p-4 space-y-3 overflow-y-auto">
+                  {chatMessages.map((msg) => (
+                    <div key={msg.id} className="bg-gray-800/80 p-3 rounded-xl border border-gray-700/50">
+                      <div className="flex justify-between items-baseline mb-1">
+                        <span className="text-xs font-bold text-blue-400">{msg.sender}</span>
+                        <span className="text-[10px] text-gray-500">{msg.timestamp}</span>
+                      </div>
+                      <p className="text-xs text-gray-200 leading-relaxed">{msg.text}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <form onSubmit={handleSendMessage} className="p-3 border-t border-gray-800 flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Type message..."
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  <button type="submit" className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold">
+                    Send
+                  </button>
+                </form>
+              </>
+            )}
+
+            {/* Participants View */}
             {showParticipants && (
               <div className="p-4">
-                <h3 className="text-white font-semibold mb-4">Participants</h3>
-                <div className="space-y-2">
+                <h3 className="text-sm font-black text-white mb-4">Participants ({participants.length})</h3>
+                <div className="space-y-3">
                   {participants.map((p) => (
-                    <div key={p.id} className="flex items-center gap-3 p-2 bg-gray-700 rounded-lg">
-                      <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">
-                        {p.name.charAt(0)}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-white text-sm font-medium">{p.name}</p>
-                        <p className="text-xs text-gray-400">
-                          {p.isMuted ? '🔇 Muted' : '🎤 Unmuted'} • {p.hasVideo ? '📹 Video on' : '📹 Video off'}
-                        </p>
-                      </div>
+                    <div key={p.id} className="flex justify-between items-center py-2 border-b border-gray-800 text-xs">
+                      <span className="text-gray-200 font-medium">{p.name}</span>
+                      <span className="text-gray-500">{p.isMuted ? '🔇' : '🎤'}</span>
                     </div>
                   ))}
                 </div>
@@ -188,52 +296,45 @@ const ConferenceRoom: React.FC<ConferenceRoomProps> = ({
         )}
       </div>
 
-      {/* Control Bar */}
-      <div className="bg-gray-800 px-6 py-4 border-t border-gray-700">
-        <div className="flex items-center justify-center gap-4">
-          {/* Mute Button */}
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-              isMuted ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-          >
-            <span className="text-white text-2xl">{isMuted ? '🔇' : '🎤'}</span>
-          </button>
+      {/* Conference Bottom Action Toolbar */}
+      <div className="bg-gray-900 px-6 py-4 border-t border-gray-800 flex items-center justify-center gap-4">
+        <button
+          onClick={toggleMute}
+          className={`p-3.5 rounded-2xl transition-colors shadow-md ${
+            isMuted ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-white'
+          }`}
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
+          <MicrophoneIcon className="w-5 h-5" />
+        </button>
 
-          {/* Video Toggle */}
-          <button
-            onClick={() => setIsVideoOff(!isVideoOff)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-              isVideoOff ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-          >
-            <span className="text-white text-2xl">{isVideoOff ? '📹' : '🎥'}</span>
-          </button>
+        <button
+          onClick={toggleVideo}
+          className={`p-3.5 rounded-2xl transition-colors shadow-md ${
+            isVideoOff ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-white'
+          }`}
+          title={isVideoOff ? 'Start Video' : 'Stop Video'}
+        >
+          <VideoCameraIcon className="w-5 h-5" />
+        </button>
 
-          {/* Screen Share */}
-          <button
-            onClick={() => setIsScreenSharing(!isScreenSharing)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-              isScreenSharing ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-          >
-            <span className="text-white text-2xl">🖥️</span>
-          </button>
+        <button
+          onClick={() => setIsScreenSharing(!isScreenSharing)}
+          className={`p-3.5 rounded-2xl transition-colors shadow-md ${
+            isScreenSharing ? 'bg-blue-600 text-white' : 'bg-gray-800 hover:bg-gray-700 text-white'
+          }`}
+          title="Share Screen"
+        >
+          <ComputerDesktopIcon className="w-5 h-5" />
+        </button>
 
-          {/* End Call */}
-          <button
-            onClick={handleLeave}
-            className="w-16 h-16 rounded-full bg-red-600 hover:bg-red-700 flex items-center justify-center transition-all transform hover:scale-110"
-          >
-            <span className="text-white text-3xl">📞</span>
-          </button>
-
-          {/* More Options */}
-          <button className="w-14 h-14 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-all">
-            <span className="text-white text-2xl">⋯</span>
-          </button>
-        </div>
+        <button
+          onClick={handleLeave}
+          className="px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-2xl shadow-lg transition-colors flex items-center gap-2"
+        >
+          <XCircleIcon className="w-5 h-5" />
+          End / Leave Call
+        </button>
       </div>
     </div>
   );

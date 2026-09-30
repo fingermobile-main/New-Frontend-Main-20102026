@@ -37,8 +37,8 @@ const HoverCard = ({ children, open, onOpenChange }: HoverCardProps) => {
   );
 };
 
-const HoverCardContent: React.FC<HoverCardContentProps> = ({ 
-  children, 
+const HoverCardContent: React.FC<HoverCardContentProps> = ({
+  children,
   className = '',
   align = 'center',
   open
@@ -60,7 +60,7 @@ const HoverCardContent: React.FC<HoverCardContentProps> = ({
 
 const HoverCardTrigger: React.FC<HoverCardTriggerProps> = ({ children, className = '', onOpenChange }) => {
   return (
-    <div 
+    <div
       className={className}
       onMouseEnter={() => onOpenChange && onOpenChange(true)}
       onMouseLeave={() => onOpenChange && onOpenChange(false)}

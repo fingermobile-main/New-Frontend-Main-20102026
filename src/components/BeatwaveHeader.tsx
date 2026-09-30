@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Music, Search, Bell, User } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Music, Search, Bell, User } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 
 interface BeatwaveHeaderProps {
   onSearch?: (query: string) => void;
@@ -16,7 +16,7 @@ const BeatwaveHeader: React.FC<BeatwaveHeaderProps> = ({
   onProfile,
   notificationCount = 0
 }) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Image, Type, Move, RotateCw, Download, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Slider } from "@/components/ui/Slider";
+import { Image, Type, Move, RotateCw, Download, X } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Slider } from '@/components/ui/Slider';
 import {
   Dialog,
   DialogContent,
@@ -11,14 +11,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface WatermarkPreviewModalProps {
   isOpen: boolean;
@@ -33,11 +33,11 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
   imageUrl,
   onApply
 }) => {
-  const [watermarkText, setWatermarkText] = React.useState("© 2026");
+  const [watermarkText, setWatermarkText] = React.useState('© 2026');
   const [opacity, setOpacity] = React.useState(50);
-  const [position, setPosition] = React.useState("bottom-right");
+  const [position, setPosition] = React.useState('bottom-right');
   const [fontSize, setFontSize] = React.useState(24);
-  const [color, setColor] = React.useState("#ffffff");
+  const [color, setColor] = React.useState('#ffffff');
 
   const handleApply = () => {
     onApply?.({
@@ -149,15 +149,15 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
                   opacity: opacity / 100,
                   fontSize: `${fontSize}px`,
                   color: color,
-                  ...(position === "top-left" && { top: "10px", left: "10px" }),
-                  ...(position === "top-right" && { top: "10px", right: "10px" }),
-                  ...(position === "center" && {
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)"
+                  ...(position === 'top-left' && { top: '10px', left: '10px' }),
+                  ...(position === 'top-right' && { top: '10px', right: '10px' }),
+                  ...(position === 'center' && {
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
                   }),
-                  ...(position === "bottom-left" && { bottom: "10px", left: "10px" }),
-                  ...(position === "bottom-right" && { bottom: "10px", right: "10px" })
+                  ...(position === 'bottom-left' && { bottom: '10px', left: '10px' }),
+                  ...(position === 'bottom-right' && { bottom: '10px', right: '10px' })
                 }}
               >
                 {watermarkText}

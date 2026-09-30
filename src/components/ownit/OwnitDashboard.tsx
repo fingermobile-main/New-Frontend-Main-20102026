@@ -129,15 +129,15 @@ const OwnitDashboard: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active':
-        return 'bg-green-500';
-      case 'sold':
-        return 'bg-blue-500';
-      case 'lost':
-      case 'stolen':
-        return 'bg-red-500';
-      default:
-        return 'bg-gray-500';
+    case 'active':
+      return 'bg-green-500';
+    case 'sold':
+      return 'bg-blue-500';
+    case 'lost':
+    case 'stolen':
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
     }
   };
 

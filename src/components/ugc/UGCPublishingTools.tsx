@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAppContext } from "contexts/AppContext";
+import { useAppContext } from '../../contexts/AppContext';
 
 interface PublishingSettings {
-  visibility: "public" | "followers" | "private";
+  visibility: 'public' | 'followers' | 'private';
   communities: string[];
   scheduleDate?: string;
   scheduleTime?: string;
@@ -16,24 +16,24 @@ interface PublishingSettings {
 const UGCPublishingTools: React.FC = () => {
   const { showToast } = useAppContext();
   const [settings, setSettings] = React.useState<PublishingSettings>({
-    visibility: "public",
+    visibility: 'public',
     communities: [],
     monetization: {
       enablePaywall: false,
       price: 0,
-      currency: "FIC"
+      currency: 'FIC'
     }
   });
 
   const [availableCommunities] = React.useState([
-    { id: "1", name: "Photography Enthusiasts" },
-    { id: "2", name: "Music Creators" },
-    { id: "3", name: "Travel Bloggers" },
-    { id: "4", name: "Food Lovers" }
+    { id: '1', name: 'Photography Enthusiasts' },
+    { id: '2', name: 'Music Creators' },
+    { id: '3', name: 'Travel Bloggers' },
+    { id: '4', name: 'Food Lovers' }
   ]);
 
   const handleVisibilityChange = (
-    visibility: "public" | "followers" | "private",
+    visibility: 'public' | 'followers' | 'private',
   ) => {
     setSettings((prev) => ({ ...prev, visibility }));
   };
@@ -48,7 +48,7 @@ const UGCPublishingTools: React.FC = () => {
     });
   };
 
-  const handleScheduleChange = (field: "date" | "time", value: string) => {
+  const handleScheduleChange = (field: 'date' | 'time', value: string) => {
     setSettings((prev) => ({
       ...prev,
       [`schedule${field.charAt(0).toUpperCase() + field.slice(1)}`]: value
@@ -77,8 +77,8 @@ const UGCPublishingTools: React.FC = () => {
 
   const handleSubmit = () => {
     // Logic to publish content with these settings
-    console.info("Publishing with settings:", settings);
-    showToast("Content published successfully!", "success");
+    console.info('Publishing with settings:', settings);
+    showToast('Content published successfully!', 'success');
   };
 
   return (
@@ -92,8 +92,8 @@ const UGCPublishingTools: React.FC = () => {
             <input
               type="radio"
               name="visibility"
-              checked={settings.visibility === "public"}
-              onChange={() => handleVisibilityChange("public")}
+              checked={settings.visibility === 'public'}
+              onChange={() => handleVisibilityChange('public')}
             />
             <span>Public</span>
             <p className="option-description">Visible to everyone</p>
@@ -103,8 +103,8 @@ const UGCPublishingTools: React.FC = () => {
             <input
               type="radio"
               name="visibility"
-              checked={settings.visibility === "followers"}
-              onChange={() => handleVisibilityChange("followers")}
+              checked={settings.visibility === 'followers'}
+              onChange={() => handleVisibilityChange('followers')}
             />
             <span>Followers Only</span>
             <p className="option-description">Visible only to your followers</p>
@@ -114,8 +114,8 @@ const UGCPublishingTools: React.FC = () => {
             <input
               type="radio"
               name="visibility"
-              checked={settings.visibility === "private"}
-              onChange={() => handleVisibilityChange("private")}
+              checked={settings.visibility === 'private'}
+              onChange={() => handleVisibilityChange('private')}
             />
             <span>Private</span>
             <p className="option-description">Visible only to you</p>
@@ -146,16 +146,16 @@ const UGCPublishingTools: React.FC = () => {
             <label>Date</label>
             <input
               type="date"
-              value={settings.scheduleDate || ""}
-              onChange={(e) => handleScheduleChange("date", e.target.value)}
+              value={settings.scheduleDate || ''}
+              onChange={(e) => handleScheduleChange('date', e.target.value)}
             />
           </div>
           <div className="form-group">
             <label>Time</label>
             <input
               type="time"
-              value={settings.scheduleTime || ""}
-              onChange={(e) => handleScheduleChange("time", e.target.value)}
+              value={settings.scheduleTime || ''}
+              onChange={(e) => handleScheduleChange('time', e.target.value)}
             />
           </div>
         </div>

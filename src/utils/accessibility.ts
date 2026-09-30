@@ -10,13 +10,13 @@ import React, {} from 'react';
 export const trapFocus = (
   containerRef: React.RefObject<HTMLElement>) => {
   const handleKeyDown = (
-  e: KeyboardEvent) => {
+    e: KeyboardEvent) => {
     if (!containerRef.current || e.key !== 'Tab') return;
 
     const focusableElements = containerRef.current.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     if (focusableElements.length === 0) return;
 
     const firstElement = focusableElements[0] as HTMLElement;
@@ -63,7 +63,7 @@ export const focusFirstElement = (
   const focusableElements = containerRef.current.querySelectorAll(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
   );
-  
+
   if (focusableElements.length > 0) {
     (focusableElements[0] as HTMLElement).focus();
   }
@@ -111,7 +111,7 @@ export const getFocusableElements = (
  */
 export const announceToScreenReader = (
   message: string,
-priority: 'polite' | 'assertive' = 'polite'
+  priority: 'polite' | 'assertive' = 'polite'
 ) => {
   const announcement = document.createElement('div');
   announcement.setAttribute('aria-live', priority);

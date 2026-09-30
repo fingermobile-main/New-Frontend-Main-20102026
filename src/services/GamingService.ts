@@ -28,8 +28,8 @@ export interface FingerWarResult {tapsPerSecond: number; totalTaps: number;
 
 class GamingService {
   private api = axios.create({baseURL: API_BASE_URL, headers: {
-      'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   });
 
   async getGames(category?: string): Promise<Game[]> {

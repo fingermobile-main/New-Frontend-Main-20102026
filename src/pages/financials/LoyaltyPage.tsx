@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { LOYALTY_TIERS } from '../../constants';
 import MainLayout from '../../components/layout/MainLayout';
 import { GiftIcon, SparklesIcon, CheckCircleIcon } from '../../icons';
+import { apiService } from '../../services/apiService';
 
 export interface LocalLoyaltyReward {
   id: string;
@@ -30,13 +31,72 @@ interface HistoryReward {
 
 const LoyaltyPage: React.FC = () => {
   const { member } = useAuth();
-  const { loyaltyRewards, showToast } = useAppContext();
+  const { showToast } = useAppContext();
+  const [userPoints, setUserPoints] = useState(0);
+  const [tierName, setTierName] = useState('Bronze');
+  const [availableRewards, setAvailableRewards] = useState<LocalLoyaltyReward[]>([
+    {
+      id: '1',
+      tierId: 'bronze',
+      name: '10% Discount',
+      description: 'Get 10% off your next purchase in the storefront.',
+      redemptionCost: 100
+    },
+    {
+      id: '2',
+      tierId: 'silver',
+      name: 'Free Express Shipping',
+      description: 'Enjoy free express shipping on your next order.',
+      redemptionCost: 200
+    },
+    {
+      id: '3',
+      tierId: 'gold',
+      name: '$10 Store Voucher',
+      description: 'Redeem $10 credit towards any orders over $50.',
+      redemptionCost: 300
+    }
+  ]);
+  const [historyList, setHistoryList] = useState<HistoryReward[]>([]);
 
-  const userPoints = member?.loyaltyPoints || 0;
+  const loadLoyaltyData = useCallback(async () => {
+    try {
+      const res = await apiService.get<any>('/api/loyalty');
+      if (res?.data) {
+        setUserPoints(Number(res.data.points || 0));
+        if (res.data.tier) setTierName(res.data.tier);
+        if (res.data.rewards && Array.isArray(res.data.rewards) && res.data.rewards.length > 0) {
+          setAvailableRewards(res.data.rewards.map((r: any) => ({
+            id: String(r.id),
+            tierId: (r.tier_required || 'bronze').toLowerCase(),
+            name: r.title || r.name,
+            description: r.description,
+            redemptionCost: Number(r.points_cost || r.redemptionCost || 100)
+          })));
+        }
+        if (res.data.history && Array.isArray(res.data.history)) {
+          setHistoryList(res.data.history.map((h: any) => ({
+            id: String(h.id),
+            description: h.reward_title ? `Redeemed ${h.reward_title}` : (h.description || 'Loyalty activity'),
+            date: h.redeemed_at ? new Date(h.redeemed_at).toLocaleDateString() : 'Recent',
+            amount: Number(h.points_spent || h.amount || 0)
+          })));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load loyalty data:', err);
+      // @ts-expect-error fallback
+      if (member?.loyaltyPoints) setUserPoints(member.loyaltyPoints);
+    }
+  }, [member]);
+
+  useEffect(() => {
+    loadLoyaltyData();
+  }, [loadLoyaltyData]);
 
   // Tier calculations with safety fallbacks
   const currentTier: TierType =
-    (LOYALTY_TIERS as TierType[]).find((t) => t.name === (member?.loyaltyTier || 'Bronze')) ||
+    (LOYALTY_TIERS as TierType[]).find((t) => t.name.toLowerCase() === tierName.toLowerCase()) ||
     (LOYALTY_TIERS[0] as TierType);
 
   const nextTier: TierType | undefined = (LOYALTY_TIERS as TierType[]).find(
@@ -50,36 +110,22 @@ const LoyaltyPage: React.FC = () => {
     ? Math.min(Math.max(((userPoints - currentThreshold) / (nextThreshold - currentThreshold)) * 100, 0), 100)
     : 100;
 
-  const [availableRewards] = useState<LocalLoyaltyReward[]>([
-    {
-      id: 'r1',
-      tierId: 'bronze',
-      name: '10% Discount',
-      description: 'Get 10% off your next purchase in the storefront.',
-      redemptionCost: 100
-    },
-    {
-      id: 'r2',
-      tierId: 'silver',
-      name: 'Free Express Shipping',
-      description: 'Enjoy free express shipping on your next order.',
-      redemptionCost: 200
-    },
-    {
-      id: 'r3',
-      tierId: 'gold',
-      name: '$10 Store Voucher',
-      description: 'Redeem $10 credit towards any orders over $50.',
-      redemptionCost: 300
-    }
-  ]);
-
-  const handleRedeemReward = (reward: LocalLoyaltyReward) => {
+  const handleRedeemReward = async (reward: LocalLoyaltyReward) => {
     if (userPoints < reward.redemptionCost) {
-      showToast(`You need ${reward.redemptionCost - userPoints} more points to redeem this reward.`, 'warning');
+      showToast?.(`You need ${reward.redemptionCost - userPoints} more points to redeem this reward.`, 'warning');
       return;
     }
-    showToast(`Successfully redeemed ${reward.name}! Check your email for details.`, 'success');
+    try {
+      const res = await apiService.post<any>('/api/loyalty/redeem', { rewardId: reward.id });
+      if (res?.success) {
+        showToast?.(`Successfully redeemed ${reward.name}!`, 'success');
+        await loadLoyaltyData();
+      } else {
+        showToast?.(res?.message || 'Failed to redeem reward', 'error');
+      }
+    } catch (err: any) {
+      showToast?.(err?.response?.data?.message || err?.message || 'Redemption failed', 'error');
+    }
   };
 
   const RewardRow: React.FC<{ reward: HistoryReward }> = ({ reward }) => (
@@ -139,7 +185,7 @@ const LoyaltyPage: React.FC = () => {
     <MainLayout>
       <div className="p-6 lg:p-8 bg-gray-50/50 min-h-screen">
         <div className="max-w-4xl mx-auto space-y-8">
-          
+
           {/* Main Tier Overview Banner */}
           <div className="bg-white p-8 rounded-2xl border border-gray-200/80 shadow-sm text-center relative overflow-hidden">
             <div className="text-6xl mb-3">{currentTier.icon || '🥉'}</div>
@@ -223,8 +269,8 @@ const LoyaltyPage: React.FC = () => {
           <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Points History</h3>
             <div>
-              {(loyaltyRewards || []).length > 0 ? (
-                (loyaltyRewards as unknown as HistoryReward[]).map((reward) => (
+              {historyList.length > 0 ? (
+                historyList.map((reward) => (
                   <RewardRow key={reward.id} reward={reward} />
                 ))
               ) : (

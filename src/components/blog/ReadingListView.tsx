@@ -45,12 +45,12 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
       setLoading(true);
       const data = await blogService.getReadingLists();
       setReadingLists(data || []);
-      
+
       // Auto-select first list if none selected
       if (!selectedList && data && data.length > 0) {
         setSelectedList(data[0].id);
       }
-      
+
       setError(null);
     } catch (err) {
       setError('Failed to load reading lists');
@@ -194,7 +194,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
         <div className="space-y-3">
           {listItems.map((item) => {
             const post = item.post;
-            
+
             return (
               <div
                 key={item.id}
@@ -211,7 +211,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
                       </p>
                     )}
                   </div>
-                  
+
                   <button
                     onClick={() => handleRemoveItem(item.id)}
                     className="text-gray-400 hover:text-red-600 transition-colors ml-2"
@@ -232,7 +232,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
                     <option value="reading">Reading</option>
                     <option value="completed">Completed</option>
                   </select>
-                  
+
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     progressColors[item.progress as keyof typeof progressColors]
                   }`}>
@@ -246,7 +246,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
                   <div>
                     Saved on {formatDate(item.created_at)}
                   </div>
-                  
+
                   {item.completed_at && (
                     <div>
                       Completed on {formatDate(item.completed_at)}

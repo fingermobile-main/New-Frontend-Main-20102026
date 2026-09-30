@@ -15,7 +15,7 @@ const ResponseDisplay: React.FC<AiGeneratedComponentProps> = ({ response }) => {
       <p className="text-gray-300 whitespace-pre-wrap">{response.plan}</p>
 
       <h3 className="text-lg font-semibold text-white mt-4">Proposed Changes:</h3>
-      {(response.changes || []).map((change, index) => (
+      {(response.changes || []).map((change: any, index: number) => (
         <div key={index} className="mt-2 p-3 bg-gray-600 rounded-md">
           <p className="text-gray-200">File: {change.file}</p>
           {change.lineNumber && <p className="text-gray-200">Line: {change.lineNumber}</p>}
@@ -79,29 +79,29 @@ const CodeAgentPage: React.FC = () => {
         timestamp: new Date().toISOString(),
         query: sanitizedPrompt ?? currentPrompt,
         rawResponse: JSON.stringify(result),
-    // @ts-ignore - Auto-suppressed for compilation
+        // @ts-ignore - Auto-suppressed for compilation
         plan: result.plan || [], // Ensure plan is an array
-    // @ts-ignore - Auto-suppressed for compilation
+        // @ts-ignore - Auto-suppressed for compilation
         changes: result.changes || [] // Ensure changes is an array
       };
 
       setResponse(processedResult);
       setHistory(prev => [...prev, { prompt: sanitizedPrompt ?? currentPrompt, response: processedResult }]);
-      showToast("Code generated successfully", "success");
+      showToast('Code generated successfully', 'success');
     } catch (error) {
-      console.error("Error generating code with AI:", error);
+      console.error('Error generating code with AI:', error);
       const errorResponse: AgenticAiResponse = {
         id: 'error-response',
         agentId: 'system',
         timestamp: new Date().toISOString(),
         query: currentPrompt,
-        rawResponse: `Error: Failed to generate code. Please try again.`,
-        plan: [`Error: Failed to generate code. Please try again.`],
+        rawResponse: 'Error: Failed to generate code. Please try again.',
+        plan: ['Error: Failed to generate code. Please try again.'],
         changes: []
       };
 
       setResponse(errorResponse);
-      showToast("Failed to generate code", "error");
+      showToast('Failed to generate code', 'error');
     } finally {
       setIsLoading(false);
       setPrompt('');

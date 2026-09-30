@@ -4,19 +4,19 @@ import { api } from './api';
 // Create a simple cache class since we need to access its properties
 class DataCache {
   private cache = new Map<string, any>();
-  
+
   set(key: string, value: unknown) {
     this.cache.set(key, value);
   }
-  
+
   get(key: string) {
     return this.cache.get(key);
   }
-  
+
   has(key: string) {
     return this.cache.has(key);
   }
-  
+
   delete(key: string) {
     return this.cache.delete(key);
   }
@@ -24,7 +24,7 @@ class DataCache {
   clear() {
     this.cache.clear();
   }
-  
+
   keys() {
     return this.cache.keys();
   }
@@ -42,7 +42,7 @@ class EnhancedWalletService {
         return cached.data;
       }
 
-      const response = await api.get("/enhanced-wallet");
+      const response = await api.get('/enhanced-wallet');
       const data = response.data;
 
       // Cache the result
@@ -52,64 +52,64 @@ class EnhancedWalletService {
 
       return data;
     } catch (error) {
-      console.error("Error fetching wallet, details:", error);
+      console.error('Error fetching wallet, details:', error);
       return null;
     }
   }
 
   async distributeEarnings(
-distributionData: any) {
+    distributionData: any) {
     try {
-      const response = await api.post("/enhanced-wallet/distribute-earnings", distributionData);
+      const response = await api.post('/enhanced-wallet/distribute-earnings', distributionData);
       // Invalidate cache after update
       this.cache.delete('wallet-details');
       return response.data;
     } catch (error) {
-      console.error("Error distributing, earnings:", error);
+      console.error('Error distributing, earnings:', error);
       return null;
     }
   }
 
   async stakeTokens( amount: number) {
     try {
-      const response = await api.post("/enhanced-wallet/stake", { amount });
+      const response = await api.post('/enhanced-wallet/stake', { amount });
       // Invalidate cache after update
       this.cache.delete('wallet-details');
       return response.data;
     } catch (error) {
-      console.error("Error staking, tokens:", error);
+      console.error('Error staking, tokens:', error);
       return null;
     }
   }
 
   async getStakes() {
     try {
-      const response = await api.get("/enhanced-wallet/stakes");
+      const response = await api.get('/enhanced-wallet/stakes');
       return response.data;
     } catch (error) {
-      console.error("Error fetching, stakes:", error);
+      console.error('Error fetching, stakes:', error);
       return [];
     }
   }
 
   async getDistributionHistory() {
     try {
-      const response = await api.get("/enhanced-wallet/distribution-history");
+      const response = await api.get('/enhanced-wallet/distribution-history');
       return response.data;
     } catch (error) {
-      console.error("Error fetching distribution, history:", error);
+      console.error('Error fetching distribution, history:', error);
       return [];
     }
   }
 
   async processPayment( paymentData: any) {
     try {
-      const response = await api.post("/enhanced-wallet/process-payment", paymentData);
+      const response = await api.post('/enhanced-wallet/process-payment', paymentData);
       // Invalidate cache after update
       this.cache.delete('wallet-details');
       return response.data;
     } catch (error) {
-      console.error("Error processing, payment:", error);
+      console.error('Error processing, payment:', error);
       return null;
     }
   }

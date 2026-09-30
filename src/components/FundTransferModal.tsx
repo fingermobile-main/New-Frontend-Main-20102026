@@ -24,19 +24,19 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const transferAmount = parseFloat(amount);
-    
+
     if (!transferAmount || transferAmount <= 0) {
       setError('Please enter a valid amount');
       return;
     }
-    
+
     if (!recipient.trim()) {
       setError('Please enter a recipient');
       return;
     }
-    
+
     if (transferType === 'send' && transferAmount > currentBalance) {
       setError('Insufficient balance');
       return;
@@ -45,16 +45,16 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
     try {
       setIsProcessing(true);
       setError(null);
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       if (onTransfer) {
         await onTransfer(transferAmount, recipient, note);
       }
-      
+
       setSuccess(`Successfully ${transferType === 'send' ? 'sent' : 'requested'} ${formatCurrency(transferAmount)}`);
-      
+
       // Reset form after success
       setTimeout(() => {
         setAmount('');
@@ -63,7 +63,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
         setSuccess(null);
         onClose();
       }, 2000);
-      
+
     } catch (err: any) {
       setError(err.message || 'Transfer failed. Please try again.');
     } finally {
@@ -175,7 +175,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
                   required
                 />
               </div>
-              
+
               {/* Quick Amounts */}
               <div className="mt-3 flex flex-wrap gap-2">
                 {quickAmounts.map((quickAmt) => (

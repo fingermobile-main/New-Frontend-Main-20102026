@@ -1,42 +1,71 @@
-import React, {} from 'react';
-import axios, { AxiosInstance } from "axios";
-import * as _db from '../constants';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-// API configuration
-const API_URL =
-  typeof process !== "undefined" && process.env?.NODE_ENV === "production"
-    ? "https://fingerprotocol.com" : "http://localhost:3001";
+// Base API configuration
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
-// Create axios instance
-export const api: AxiosInstance = axios.create({baseURL: API_URL, headers: {
-    "Content-Type": "application/json"
-  }
+// Create axios instance with defaults
+const api: AxiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 30000, // 30 second timeout
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Request interceptor for adding auth token
+// Request interceptor to add auth token
 api.interceptors.request.use(
-  (config) => {
-    // Try both possible token keys for compatibility
-    const token = localStorage.getItem("fingermobile_token") || localStorage.getItem("token");
+  (config: AxiosRequestConfig) => {
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error));
-
-// Response interceptor for handling errors
-api.interceptors.response.use(
-  (response) => response, (error) => {
-    // Handle token expiration
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem("fingermobile_token");
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
+  (error) => {
     return Promise.reject(error);
-  },
+  }
 );
+
+// Response interceptor to handle token refresh
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If unauthorized and not a refresh request, try to refresh token
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (refreshToken) {
+          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+            refreshToken,
+          });
+
+          const { accessToken } = response.data;
+          localStorage.setItem('accessToken', accessToken);
+
+          // Retry original request with new token
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        // Token refresh failed, redirect to login
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('fingermobile_token');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export { api, API_BASE_URL };
 
 // Define custom methods on the api instance
 api.register = async (userData) => {
@@ -105,108 +134,108 @@ api.getAnalyticsData = async (
 
 api.getEngagementMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/engagement-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/engagement-metrics', {
+    params: { timeRange } });
 };
 
 api.getTrafficMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/traffic-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/traffic-metrics', {
+    params: { timeRange } });
 };
 
 api.getRevenueMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/revenue-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/revenue-metrics', {
+    params: { timeRange } });
 };
 
 api.getUgcMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/ugc-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/ugc-metrics', {
+    params: { timeRange } });
 };
 
 api.getContentMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/content-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/content-metrics', {
+    params: { timeRange } });
 };
 
 api.getMemberGrowth = async (
   timeRange: string) => {
-  return api.get(`/analytics/member-growth`, {
-  params: { timeRange } });
+  return api.get('/analytics/member-growth', {
+    params: { timeRange } });
 };
 
 api.getConversionRate = async (
   timeRange: string) => {
-  return api.get(`/analytics/conversion-rate`, {
-  params: { timeRange } });
+  return api.get('/analytics/conversion-rate', {
+    params: { timeRange } });
 };
 
 api.getRetentionRate = async (
   timeRange: string) => {
-  return api.get(`/analytics/retention-rate`, {
-  params: { timeRange } });
+  return api.get('/analytics/retention-rate', {
+    params: { timeRange } });
 };
 
 api.getTopPerformingContent = async (
   limit: number) => {
-  return api.get(`/analytics/top-content`, {
-  params: { limit } });
+  return api.get('/analytics/top-content', {
+    params: { limit } });
 };
 
 api.getDemographicData = async () => {
-  return api.get(`/analytics/demographics`);
+  return api.get('/analytics/demographics');
 };
 
 api.getSalesMetrics = async (
   timeRange: string) => {
-  return api.get(`/analytics/sales-metrics`, {
-  params: { timeRange } });
+  return api.get('/analytics/sales-metrics', {
+    params: { timeRange } });
 };
 
 api.getRevenueBySource = async (
   timeRange: string) => {
-  return api.get(`/analytics/revenue-by-source`, {
-  params: { timeRange } });
+  return api.get('/analytics/revenue-by-source', {
+    params: { timeRange } });
 };
 
 api.getCustomerAcquisitionCost = async (
   timeRange: string) => {
-  return api.get(`/analytics/cac`, {
-  params: { timeRange } });
+  return api.get('/analytics/cac', {
+    params: { timeRange } });
 };
 
 api.getLifetimeValue = async (
   timeRange: string) => {
-  return api.get(`/analytics/lifetime-value`, {
-  params: { timeRange } });
+  return api.get('/analytics/lifetime-value', {
+    params: { timeRange } });
 };
 
 api.getChurnRate = async (
   timeRange: string) => {
-  return api.get(`/analytics/churn-rate`, {
-  params: { timeRange } });
+  return api.get('/analytics/churn-rate', {
+    params: { timeRange } });
 };
 
 api.getAvgOrderValue = async (
   timeRange: string) => {
-  return api.get(`/analytics/avg-order-value`, {
-  params: { timeRange } });
+  return api.get('/analytics/avg-order-value', {
+    params: { timeRange } });
 };
 
 api.getCartAbandonmentRate = async (
   timeRange: string) => {
-  return api.get(`/analytics/cart-abandonment`, {
-  params: { timeRange } });
+  return api.get('/analytics/cart-abandonment', {
+    params: { timeRange } });
 };
 
 api.getConversionFunnel = async (
   timeRange: string) => {
-  return api.get(`/analytics/conversion-funnel`, {
-  params: { timeRange } });
+  return api.get('/analytics/conversion-funnel', {
+    params: { timeRange } });
 };
 
 // Adding a generic request method to handle the pattern used in the hooks
@@ -214,31 +243,33 @@ api.request = async <T>(url: string, config?: unknown): Promise<T> => {
   try {
     let response;
     // @ts-ignore - Auto-suppressed for compilation
-    if (config && config.method === "GET") {
+    if (config && config.method === 'GET') {
       response = await api.get(url, config);
     // @ts-ignore - Auto-suppressed for compilation
-    } else if (config && config.method === "POST") {
+    } else if (config && config.method === 'POST') {
       response = await api.post(url, config);
     // @ts-ignore - Auto-suppressed for compilation
-    } else if (config && config.method === "PUT") {
+    } else if (config && config.method === 'PUT') {
       response = await api.put(url, config);
     // @ts-ignore - Auto-suppressed for compilation
-    } else if (config && config.method === "DELETE") {
+    } else if (config && config.method === 'DELETE') {
       response = await api.delete(url, config);
     } else {
       // Default to GET if no method specified
       response = await api.get(url);
     }
-    
+
     // Return the data property from the response
     return response.data as T;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`API request error for ${url}:`, error);
     throw error;
   }
 };
 
 // Extend the AxiosInstance interface to include our custom methods
+/* eslint-disable no-unused-vars */
 declare module 'axios' {
   interface AxiosInstance {
   register: (userData: any) => Promise<unknown>; loginmember: (credentials: any) => Promise<unknown>; changePassword: (passwordData: any) => Promise<unknown>; requestPasswordReset: (email: string) => Promise<unknown>; resetPassword: (resetData: any) => Promise<unknown>; sendGift: (data: any) => Promise<unknown>; createPaylink: (data: any) => Promise<unknown>; submitFeedback: (data: any) => Promise<unknown>; reportBug: (data: any) => Promise<unknown>; savePage: (pageId: string, pageName: string,
@@ -247,6 +278,7 @@ declare module 'axios' {
   config?: unknown) => Promise<T>;
   }
 }
+/* eslint-enable no-unused-vars */
 
 // Export ApiService as the extended axios instance
 export const ApiService = api;

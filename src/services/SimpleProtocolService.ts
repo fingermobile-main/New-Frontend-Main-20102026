@@ -11,10 +11,10 @@ export const initializeProtocolNotifications = () => {
     console.info('Protocol notifications already initialized');
     return;
   }
-  
+
   // Set up the protocol notifications integration
   setupProtocolNotifications();
-  
+
   console.info('Protocol notifications initialized');
   initialized = true;
 };

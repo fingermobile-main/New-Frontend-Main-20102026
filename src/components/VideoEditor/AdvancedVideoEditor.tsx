@@ -6,9 +6,9 @@ interface AdvancedVideoEditorProps {
   onSave?: (editedVideo: any) => void;
 }
 
-const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({ 
+const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
   videoUrl,
-  onSave 
+  onSave
 }) => {
   const [trimStart, setTrimStart] = React.useState(0);
   const [trimEnd, setTrimEnd] = React.useState(100);

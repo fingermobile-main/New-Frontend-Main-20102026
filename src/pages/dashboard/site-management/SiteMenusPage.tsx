@@ -1,80 +1,250 @@
-import React, { useState } from 'react';
-
-
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../../contexts/AppContext';
-import type { NavigationSection } from '../../../types';
+import adminOperationsService, { SiteMenu } from '../../../services/adminOperationsService';
 
-// Define NavLinkData if it's not already defined in types
-interface NavLinkData {
-  id?: string;
-  title?: string;
-  name?: string;
-  path: string;
-  icon?: any;
+interface MenuItem {
+  label: string;
+  url: string;
 }
 
 const SiteMenusPage: React.FC = () => {
-    const { navStructure, handleUpdateNavStructure } = useAppContext();
-    const { showToast } = useAppContext();
-    // Note: Without DnD, editing order is currently disabled. 
-    // Structure is just displayed.
-    const [structure] = useState<NavigationSection[]>(JSON.parse(JSON.stringify(navStructure)));
-    const [isSaving, setIsSaving] = useState(false);
-    
-    const handleSave = () => {
-        setIsSaving(true);
-        try {
-            // In a real scenario with editing, we would save the modified structure.
-            // Currently just saving the initial structure as no edits are possible without DnD or other inputs.
-            if (handleUpdateNavStructure) {
-                handleUpdateNavStructure(structure);
-            }
-            showToast('Navigation structure saved!', 'success');
-        } catch (err) {
-            console.error('Error saving nav structure:', err);
-            showToast('Failed to save navigation structure', 'error');
-        } finally {
-            setIsSaving(false);
-        }
-    };
+  const { showToast } = useAppContext();
+  const [menus, setMenus] = useState<SiteMenu[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [newMenuTitle, setNewMenuTitle] = useState('');
+  const [newMenuSlug, setNewMenuSlug] = useState('');
+  const [newMenuLocation, setNewMenuLocation] = useState('header');
+  const [showAddMenuModal, setShowAddMenuModal] = useState(false);
 
-    const NavLinkItem: React.FC<{ link: NavLinkData }> = ({ link }) => {
-        return (
-            <div className="p-2 bg-gray-100 rounded flex items-center gap-2">
-                {link.icon && React.createElement(link.icon as any, { className: "w-4 h-4 text-gray-500" })}
-                <span className="text-sm font-medium">{link.name}</span>
-            </div>
-        );
-    };
+  const fetchMenus = async () => {
+    try {
+      setLoading(true);
+      const data = await adminOperationsService.getSiteMenus();
+      setMenus(data);
+    } catch (err: any) {
+      console.error('Failed to fetch site menus:', err);
+      showToast('Failed to load site menus', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const Section: React.FC<{ section: NavigationSection }> = ({ section }) => {
-        return (
-             <div className="bg-gray-50 p-4 rounded-lg border">
-                <h3 className="font-bold text-gray-700 mb-3">{section.title}</h3>
-                <div className="space-y-2 min-h-[50px]">
-                    {(section.links || []).map((link, linkIdx) => (
-                        <NavLinkItem key={link.path} link={link} />
-                    ))}
-                </div>
-            </div>
-        );
-    };
+  useEffect(() => {
+    fetchMenus();
+  }, []);
 
-    return (
+  const handleAddItem = (menuId: string) => {
+    const label = prompt('Enter link label (e.g. Documentation):');
+    if (!label) return;
+    const url = prompt('Enter link URL (e.g. /docs):', '/');
+    if (!url) return;
+
+    setMenus(prev => prev.map(m => {
+      if (m.id !== menuId) return m;
+      const currentItems = Array.isArray(m.items) ? m.items : [];
+      return {
+        ...m,
+        items: [...currentItems, { label, url }]
+      };
+    }));
+  };
+
+  const handleRemoveItem = (menuId: string, itemIdx: number) => {
+    setMenus(prev => prev.map(m => {
+      if (m.id !== menuId) return m;
+      const currentItems = Array.isArray(m.items) ? m.items : [];
+      return {
+        ...m,
+        items: currentItems.filter((_, idx) => idx !== itemIdx)
+      };
+    }));
+  };
+
+  const handleSaveMenu = async (menu: SiteMenu) => {
+    try {
+      setIsSaving(true);
+      await adminOperationsService.updateSiteMenu(menu.id, {
+        title: menu.title,
+        location: menu.location,
+        items: menu.items,
+        is_active: menu.is_active
+      });
+      showToast(`Menu "${menu.title}" saved successfully!`, 'success');
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to save menu', 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCreateMenu = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMenuTitle.trim() || !newMenuSlug.trim()) return;
+
+    try {
+      await adminOperationsService.createSiteMenu({
+        title: newMenuTitle,
+        slug: newMenuSlug.toLowerCase().replace(/\s+/g, '-'),
+        location: newMenuLocation,
+        items: [{ label: 'Home', url: '/' }],
+        is_active: true
+      });
+      showToast('New menu created successfully!', 'success');
+      setShowAddMenuModal(false);
+      setNewMenuTitle('');
+      setNewMenuSlug('');
+      fetchMenus();
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to create menu', 'error');
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
         <div>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Menu Management</h1>
-                <button onClick={handleSave} disabled={isSaving} className="px-4 py-2 text-sm font-semibold bg-brand-blue text-white rounded-full disabled:bg-gray-400">
-                    {isSaving ? 'Saving...' : 'Save Changes'}
-                </button>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {structure.map((section, sectionIdx) => (
-                    <Section key={section.title} section={section} />
-                ))}
-            </div>
+          <h1 className="text-2xl font-bold text-gray-900">Site Menu Management</h1>
+          <p className="text-sm text-gray-500 mt-1">Configure headers, navigation bars, and footer links</p>
         </div>
-    );
+        <button
+          onClick={() => setShowAddMenuModal(true)}
+          className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm"
+        >
+          + Add Menu
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">
+          Loading site menus from protocol database...
+        </div>
+      ) : menus.length === 0 ? (
+        <div className="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">
+          No menus configured yet.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {menus.map((menu) => (
+            <div key={menu.id} className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-lg">{menu.title}</h3>
+                    <p className="text-xs text-gray-500 font-mono">Location: {menu.location}</p>
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                    menu.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                  }`}>
+                    {menu.is_active ? 'Active' : 'Disabled'}
+                  </span>
+                </div>
+
+                <div className="space-y-2 my-4 min-h-[100px]">
+                  {Array.isArray(menu.items) && menu.items.length > 0 ? (
+                    menu.items.map((link: MenuItem, linkIdx: number) => (
+                      <div key={linkIdx} className="p-2 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-between text-xs">
+                        <div>
+                          <span className="font-semibold text-gray-800">{link.label}</span>
+                          <span className="text-gray-400 font-mono ml-2">{link.url}</span>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveItem(menu.id, linkIdx)}
+                          className="text-red-500 hover:text-red-700 font-bold px-1"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-gray-400 italic py-2">No links in this menu.</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleAddItem(menu.id)}
+                  className="flex-1 py-1.5 text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg"
+                >
+                  + Add Item
+                </button>
+                <button
+                  type="button"
+                  disabled={isSaving}
+                  onClick={() => handleSaveMenu(menu)}
+                  className="flex-1 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showAddMenuModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Create Site Menu</h3>
+            <form onSubmit={handleCreateMenu} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Menu Title</label>
+                <input
+                  type="text"
+                  required
+                  value={newMenuTitle}
+                  onChange={(e) => setNewMenuTitle(e.target.value)}
+                  placeholder="e.g. Header Nav"
+                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Slug</label>
+                <input
+                  type="text"
+                  required
+                  value={newMenuSlug}
+                  onChange={(e) => setNewMenuSlug(e.target.value)}
+                  placeholder="e.g. header-nav"
+                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
+                <select
+                  value={newMenuLocation}
+                  onChange={(e) => setNewMenuLocation(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                >
+                  <option value="header">Header</option>
+                  <option value="footer">Footer</option>
+                  <option value="sidebar">Sidebar</option>
+                  <option value="admin_nav">Admin Nav</option>
+                </select>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddMenuModal(false)}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Create Menu
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default SiteMenusPage;

@@ -1,393 +1,227 @@
-import React, { useState } from 'react';
-import { Users, MessageSquare, Bell, Settings, MoreHorizontal, Heart, Share2, Send, Image, Smile, Calendar, MapPin } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import MainLayout from '../components/layout/MainLayout';
+import { useSuperViAuth } from '../contexts/SuperViAuthContext';
+import api from '../services/api';
+
+interface Community {
+  id: string;
+  name: string;
+  description?: string;
+  memberCount: number;
+  isJoined: boolean;
+  category: string;
+}
 
 const CommunityPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'feed' | 'members' | 'events' | 'settings'>('feed');
-  
-  // Mock data for the community
-  const community = {
-    name: 'Tech Innovators',
-    members: '12.4k',
-    description: 'Discussing the latest in tech and innovation. Join us to share ideas, projects, and insights about technology.',
-    category: 'Technology',
-    coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&q=60',
-    avatar: 'https://i.pravatar.cc/150?img=7',
-    isMember: true,
-    isModerator: false
+  const { authState } = useSuperViAuth();
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [activeTab, setActiveTab] = useState<'my' | 'discover'>('my');
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchCommunities = async () => {
+      try {
+        const res = await api.get('/communities');
+        const raw = res.data?.data || res.data?.communities || (Array.isArray(res.data) ? res.data : []);
+        if (mounted && Array.isArray(raw) && raw.length > 0) {
+          setCommunities(raw.map((c: any, index: number) => ({
+            id: String(c.id),
+            name: c.name,
+            description: c.description,
+            memberCount: c.members_count || 100,
+            isJoined: index % 2 === 0,
+            category: c.category || 'General'
+          })));
+          return;
+        }
+      } catch (err) {
+        console.warn('Failed to load communities, using default list:', err);
+      }
+      if (mounted) {
+        setCommunities([
+          { id: '1', name: 'Tech Innovators', description: 'Community for technology enthusiasts and innovators', memberCount: 1250, isJoined: true, category: 'Technology' },
+          { id: '2', name: 'Creative Minds', description: 'Artists, designers, and creative professionals', memberCount: 850, isJoined: true, category: 'Arts' },
+          { id: '3', name: 'Business Network', description: 'Entrepreneurs and business leaders', memberCount: 2100, isJoined: false, category: 'Business' },
+          { id: '4', name: 'Health & Wellness', description: 'Promoting healthy lifestyles and wellbeing', memberCount: 750, isJoined: false, category: 'Health' }
+        ]);
+      }
+    };
+    fetchCommunities();
+    return () => { mounted = false; };
+  }, []);
+
+  const joinCommunity = async (id: string) => {
+    try {
+      await api.post(`/communities/${id}/join`);
+    } catch (err) {
+      console.warn('Failed to persist join community:', err);
+    }
+    setCommunities(
+      communities.map((comm) =>
+        comm.id === id
+          ? { ...comm, isJoined: true, memberCount: comm.memberCount + 1 }
+          : comm,
+      ),
+    );
   };
-  
-  // Mock data for posts
-  const posts = [
-    {
-      id: 1,
-      user: 'Alex Johnson',
-      username: '@alexj',
-      content: 'Just released a new open-source project for decentralized identity verification. Would love feedback!',
-      likes: 42,
-      comments: 8,
-      timestamp: '2 hours ago',
-      avatar: 'https://i.pravatar.cc/150?img=1'
-    },
-    {
-      id: 2,
-      user: 'Maria Garcia',
-      username: '@mariag',
-      content: 'Interesting article about the future of blockchain technology. What are your thoughts on this?',
-      likes: 28,
-      comments: 5,
-      timestamp: '5 hours ago',
-      avatar: 'https://i.pravatar.cc/150?img=2'
-    },
-    {
-      id: 3,
-      user: 'Samuel Chen',
-      username: '@samc',
-      content: 'Our Q3 roadmap for the platform is coming together nicely. Excited to share updates soon!',
-      likes: 67,
-      comments: 12,
-      timestamp: '1 day ago',
-      avatar: 'https://i.pravatar.cc/150?img=3'
+
+  const leaveCommunity = async (id: string) => {
+    try {
+      await api.post(`/communities/${id}/leave`);
+    } catch (err) {
+      console.warn('Failed to persist leave community:', err);
     }
-  ];
-  
-  // Mock data for members
-  const members = [
-    { id: 1, name: 'Alex Johnson', username: '@alexj', role: 'Admin', avatar: 'https://i.pravatar.cc/150?img=1' },
-    { id: 2, name: 'Maria Garcia', username: '@mariag', role: 'Moderator', avatar: 'https://i.pravatar.cc/150?img=2' },
-    { id: 3, name: 'Samuel Chen', username: '@samc', role: 'Member', avatar: 'https://i.pravatar.cc/150?img=3' },
-    { id: 4, name: 'Emma Wilson', username: '@emmaw', role: 'Member', avatar: 'https://i.pravatar.cc/150?img=4' },
-    { id: 5, name: 'David Kim', username: '@davidk', role: 'Member', avatar: 'https://i.pravatar.cc/150?img=5' },
-    { id: 6, name: 'Sophia Lee', username: '@sophial', role: 'Member', avatar: 'https://i.pravatar.cc/150?img=6' }
-  ];
-  
-  // Mock data for events
-  const events = [
-    {
-      id: 1,
-      title: 'Monthly Tech Meetup',
-      date: 'Oct 15, 2023',
-      time: '6:00 PM',
-      location: 'Online',
-      attendees: '42',
-      image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=60'
-    },
-    {
-      id: 2,
-      title: 'Hackathon: Future of Web3',
-      date: 'Nov 5-6, 2023',
-      time: 'All day',
-      location: 'Lagos, Nigeria',
-      attendees: '128',
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=60'
-    }
-  ];
+    setCommunities(
+      communities.map((comm) =>
+        comm.id === id && comm.isJoined
+          ? {
+            ...comm,
+            isJoined: false,
+            memberCount: Math.max(0, comm.memberCount - 1)
+          }
+          : comm,
+      ),
+    );
+  };
+
+  const filteredCommunities =
+    activeTab === 'my'
+      ? communities.filter((comm) => comm.isJoined)
+      : communities.filter((comm) => !comm.isJoined);
 
   return (
-    <div className="flex w-full">
-      {/* Left Sidebar - Community Info */}
-      <aside className="col-left hidden md:flex flex-col w-1/5 p-4 space-y-6">
-        <div className="bg-gray-800 rounded-xl overflow-hidden">
-          <div className="h-32 bg-gradient-to-r from-orange-500 to-purple-600"></div>
-          <div className="p-4">
-            <div className="flex justify-center -mt-10 mb-3">
-              <img 
-                src={community.avatar} 
-                alt={community.name} 
-                className="w-20 h-20 rounded-full border-4 border-gray-800"
-              />
-            </div>
-            <h2 className="text-lg font-bold text-center">{community.name}</h2>
-            <p className="text-gray-400 text-sm text-center mb-3">{community.members} members</p>
-            <p className="text-gray-300 text-sm text-center mb-4">{community.description}</p>
-            <div className="flex justify-center">
-              {community.isMember ? (
-                <button className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg text-sm font-semibold">
-                  Joined
-                </button>
-              ) : (
-                <button className="px-4 py-2 bg-orange-500 text-gray-900 rounded-lg text-sm font-semibold">
-                  Join Community
-                </button>
-              )}
-            </div>
+    <MainLayout pageTitle="Community">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-[1920px] mx-auto px-4 py-6">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Communities</h1>
+            <p className="text-gray-600 mt-2">Connect, share, and grow with like-minded individuals</p>
           </div>
-        </div>
-        
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-3">Quick Actions</h3>
-          <div className="space-y-2">
-            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
-            </button>
-            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
-              <Settings className="h-4 w-4 mr-2" />
-              Community Settings
-            </button>
-            <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700">
-              <MoreHorizontal className="h-4 w-4 mr-2" />
-              Report Community
-            </button>
-          </div>
-        </div>
-      </aside>
 
-      {/* Main Content - Community Feed */}
-      <main className="col-center w-3/5 p-4">
-        {/* Community Header */}
-        <div className="bg-gray-800 rounded-xl p-4 mb-4">
-          <div className="flex items-center">
-            <img 
-              src={community.avatar} 
-              alt={community.name} 
-              className="w-16 h-16 rounded-full mr-4"
-            />
-            <div>
-              <h1 className="text-xl font-bold">{community.name}</h1>
-              <p className="text-gray-400">{community.members} members · {community.category}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left Sidebar */}
+            <div className="hidden lg:block lg:col-span-3 space-y-6">
+              <div className="sticky top-20 space-y-6">
+                <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                  <h3 className="font-bold text-gray-900 mb-4">Navigation</h3>
+                  <ul className="space-y-3">
+                    <li><button className="w-full text-left font-medium text-blue-600 hover:underline">All Communities</button></li>
+                    <li><button className="w-full text-left text-gray-600 hover:text-blue-600">My Groups</button></li>
+                    <li><button className="w-full text-left text-gray-600 hover:text-blue-600">Events</button></li>
+                  </ul>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                  <h3 className="font-bold text-gray-900 mb-4">Your Stats</h3>
+                  <div className="space-y-4 text-sm">
+                    <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                      <span className="text-gray-500">Communities Joined</span>
+                      <span className="font-bold text-gray-900">{communities.filter(c => c.isJoined).length}</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-gray-50 pb-2">
+                      <span className="text-gray-500">Posts Created</span>
+                      <span className="font-bold text-gray-900">12</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-500">Connections</span>
+                      <span className="font-bold text-gray-900">48</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="ml-auto flex space-x-2">
-              {community.isModerator && (
-                <button className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600">
-                  <Settings className="h-5 w-5" />
+
+            {/* Main Content */}
+            <div className="lg:col-span-6 space-y-6">
+              <div className="flex space-x-4 mb-6 border-b border-gray-200">
+                <button
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'my'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                  onClick={() => setActiveTab('my')}
+                >
+            My Communities ({communities.filter((c) => c.isJoined).length})
                 </button>
-              )}
-              <button className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600">
-                <MoreHorizontal className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Tab Navigation */}
-        <div className="bg-gray-800 rounded-xl p-1 mb-4 flex">
-          <button 
-            className={`flex-1 py-2 px-4 rounded-lg text-center ${
-              activeTab === 'feed' ? 'bg-orange-500/20 text-orange-500' : 'hover:bg-gray-700'
-            }`}
-            onClick={() => setActiveTab('feed')}
-          >
-            Feed
-          </button>
-          <button 
-            className={`flex-1 py-2 px-4 rounded-lg text-center ${
-              activeTab === 'members' ? 'bg-orange-500/20 text-orange-500' : 'hover:bg-gray-700'
-            }`}
-            onClick={() => setActiveTab('members')}
-          >
-            Members
-          </button>
-          <button 
-            className={`flex-1 py-2 px-4 rounded-lg text-center ${
-              activeTab === 'events' ? 'bg-orange-500/20 text-orange-500' : 'hover:bg-gray-700'
-            }`}
-            onClick={() => setActiveTab('events')}
-          >
-            Events
-          </button>
-        </div>
-        
-        {/* Tab Content */}
-        {activeTab === 'feed' && (
-          <div className="space-y-4">
-            {/* Post Composer */}
-            <div className="bg-gray-800 rounded-xl p-4">
-              <div className="flex items-start">
-                <img 
-                  src="https://i.pravatar.cc/150?img=8" 
-                  alt="Your avatar" 
-                  className="w-10 h-10 rounded-full mr-3"
-                />
-                <div className="flex-1">
-                  <textarea 
-                    placeholder="Share something with the community..."
-                    className="w-full bg-gray-700 text-gray-100 rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    rows={3}
-                  ></textarea>
-                  <div className="flex justify-between items-center mt-3">
-                    <div className="flex space-x-3 text-gray-400">
-                      <button className="p-1 rounded hover:bg-gray-700">
-                        <Image className="h-5 w-5" />
-                      </button>
-                      <button className="p-1 rounded hover:bg-gray-700">
-                        <Smile className="h-5 w-5" />
-                      </button>
+                <button
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'discover'
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                  onClick={() => setActiveTab('discover')}
+                >
+            Discover Communities ({communities.filter((c) => !c.isJoined).length})
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredCommunities.map((community) => (
+                  <div key={community.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-xl font-semibold text-gray-900">{community.name}</h3>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {community.category}
+                      </span>
                     </div>
-                    <button className="px-4 py-2 bg-orange-500 text-gray-900 rounded-lg text-sm font-semibold">
-                      Post
-                    </button>
+                    <p className="text-gray-600 text-sm mb-4">{community.description}</p>
+                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                      </svg>
+                      {community.memberCount.toLocaleString()} members
+                    </div>
+                    <div className="mt-4">
+                      {community.isJoined ? (
+                        <button
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          onClick={() => leaveCommunity(community.id)}
+                        >
+                    Joined
+                        </button>
+                      ) : (
+                        <button
+                          className="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          onClick={() => joinCommunity(community.id)}
+                        >
+                    Join Community
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
-            
-            {/* Posts */}
-            {posts.map(post => (
-              <div key={post.id} className="bg-gray-800 rounded-xl p-4">
-                <div className="flex items-start">
-                  <img 
-                    src={post.avatar} 
-                    alt={post.user} 
-                    className="w-10 h-10 rounded-full mr-3"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center">
-                      <h3 className="font-bold">{post.user}</h3>
-                      <span className="text-gray-400 text-sm ml-2">{post.username}</span>
-                      <span className="text-gray-500 text-sm ml-2">· {post.timestamp}</span>
-                    </div>
-                    <p className="text-gray-300 mt-2">{post.content}</p>
-                    <div className="flex items-center mt-3 space-x-4 text-gray-400">
-                      <button className="flex items-center space-x-1 hover:text-orange-500">
-                        <Heart className="h-4 w-4" />
-                        <span>{post.likes}</span>
-                      </button>
-                      <button className="flex items-center space-x-1 hover:text-blue-500">
-                        <MessageSquare className="h-4 w-4" />
-                        <span>{post.comments}</span>
-                      </button>
-                      <button className="flex items-center space-x-1 hover:text-green-500">
-                        <Share2 className="h-4 w-4" />
-                      </button>
-                    </div>
+
+            {/* Right Sidebar */}
+            <div className="hidden lg:block lg:col-span-3 space-y-6">
+              <div className="sticky top-20 space-y-6">
+                <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                  <h3 className="font-bold text-gray-900 mb-4">Trending Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {['#React', '#Design', '#Startup', '#Health', '#AI', '#WebDev'].map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-600 cursor-pointer transition-colors">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-        
-        {activeTab === 'members' && (
-          <div>
-            <h2 className="text-lg font-bold mb-4">Community Members ({members.length})</h2>
-            <div className="space-y-3">
-              {members.map(member => (
-                <div key={member.id} className="bg-gray-800 rounded-xl p-4 flex items-center justify-between">
-                  <div className="flex items-center">
-                    <img 
-                      src={member.avatar} 
-                      alt={member.name} 
-                      className="w-12 h-12 rounded-full mr-4"
-                    />
-                    <div>
-                      <div className="flex items-center">
-                        <h3 className="font-bold">{member.name}</h3>
-                        <span className="text-gray-400 text-sm ml-2">{member.username}</span>
-                      </div>
-                      <p className="text-gray-400 text-sm">{member.role}</p>
-                    </div>
-                  </div>
-                  <button className="px-3 py-1 rounded-lg bg-gray-700 text-gray-300 text-sm">
-                    Message
+
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100">
+                  <h3 className="font-bold text-gray-900 mb-2">Create a Community</h3>
+                  <p className="text-sm text-gray-600 mb-4">Can't find what you're looking for? Start your own space!</p>
+                  <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">
+                  Create New
                   </button>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
-        )}
-        
-        {activeTab === 'events' && (
-          <div>
-            <h2 className="text-lg font-bold mb-4">Upcoming Events</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {events.map(event => (
-                <div key={event.id} className="bg-gray-800 rounded-xl overflow-hidden">
-                  <img 
-                    src={event.image} 
-                    alt={event.title} 
-                    className="w-full h-32 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="font-bold">{event.title}</h3>
-                    <div className="flex items-center text-gray-400 text-sm mt-2">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      <span>{event.date} · {event.time}</span>
-                    </div>
-                    <div className="flex items-center text-gray-400 text-sm mt-1">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span>{event.location}</span>
-                    </div>
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center text-gray-400 text-sm">
-                        <Users className="h-4 w-4 mr-1" />
-                        <span>{event.attendees} attending</span>
-                      </div>
-                      <button className="px-3 py-1 rounded-lg bg-orange-500 text-gray-900 text-sm">
-                        RSVP
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </main>
+        </div>
+      </div>
 
-      {/* Right Sidebar - Community Activity */}
-      <aside className="col-right hidden lg:flex flex-col w-1/5 p-4 space-y-4">
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-3">Recent Activity</h3>
-          <div className="space-y-3">
-            <div className="flex items-start">
-              <img 
-                src="https://i.pravatar.cc/150?img=9" 
-                alt="User" 
-                className="w-8 h-8 rounded-full mr-2"
-              />
-              <div>
-                <p className="text-sm"><span className="font-semibold">New member</span> joined</p>
-                <p className="text-xs text-gray-400">2 minutes ago</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <img 
-                src="https://i.pravatar.cc/150?img=10" 
-                alt="User" 
-                className="w-8 h-8 rounded-full mr-2"
-              />
-              <div>
-                <p className="text-sm"><span className="font-semibold">New post</span> shared</p>
-                <p className="text-xs text-gray-400">1 hour ago</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <img 
-                src="https://i.pravatar.cc/150?img=11" 
-                alt="User" 
-                className="w-8 h-8 rounded-full mr-2"
-              />
-              <div>
-                <p className="text-sm"><span className="font-semibold">Event</span> scheduled</p>
-                <p className="text-xs text-gray-400">3 hours ago</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-gray-800 rounded-xl p-4">
-          <h3 className="font-bold mb-3">Community Rules</h3>
-          <ul className="text-xs text-gray-300 space-y-2">
-            <li className="flex items-start">
-              <span className="text-orange-500 mr-2">•</span>
-              Be respectful to all community members
-            </li>
-            <li className="flex items-start">
-              <span className="text-orange-500 mr-2">•</span>
-              No spam or promotional content without permission
-            </li>
-            <li className="flex items-start">
-              <span className="text-orange-500 mr-2">•</span>
-              Keep discussions relevant to the community topic
-            </li>
-            <li className="flex items-start">
-              <span className="text-orange-500 mr-2">•</span>
-              Report inappropriate content to moderators
-            </li>
-          </ul>
-        </div>
-      </aside>
-    </div>
+    </MainLayout>
   );
 };
 

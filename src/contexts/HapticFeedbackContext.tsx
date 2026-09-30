@@ -1,10 +1,10 @@
 import React, { createContext, useContext } from 'react';
 export type HapticFeedbackType =
-  | "selection"
-  | "impact"
-  | "notification"
-  | "medium"
-  | "heavy";
+  | 'selection'
+  | 'impact'
+  | 'notification'
+  | 'medium'
+  | 'heavy';
 
 export interface HapticFeedbackContextType {
   triggerHaptic: (type?: HapticFeedbackType) => void;
@@ -18,7 +18,7 @@ export const useHapticFeedback = () => {
   const context = React.useContext(HapticFeedbackContext);
   if (context === undefined) {
     throw new Error(
-      "useHapticFeedback must be used within a HapticFeedbackProvider",
+      'useHapticFeedback must be used within a HapticFeedbackProvider',
     );
   }
   return context;

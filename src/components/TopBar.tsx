@@ -7,10 +7,10 @@ interface TopBarProps {
   actions?: React.ReactNode;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ 
-  title = 'FingerMobile', 
+const TopBar: React.FC<TopBarProps> = ({
+  title = 'FingerMobile',
   showBackButton = false,
-  actions 
+  actions
 }) => {
   const goBack = () => {
     window.history.back();
@@ -22,7 +22,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <div className="flex justify-between items-center h-14">
           <div className="flex items-center">
             {showBackButton && (
-              <button 
+              <button
                 onClick={goBack}
                 className="mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
               >

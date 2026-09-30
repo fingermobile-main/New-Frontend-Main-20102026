@@ -6,7 +6,7 @@ interface AreaChartProps {
   color?: string;
 }
 
-const AreaChart: React.FC<AreaChartProps> = ({ 
+const AreaChart: React.FC<AreaChartProps> = ({
   data = [10, 25, 40, 35, 50, 65, 80],
   title = 'Chart',
   color = 'blue'

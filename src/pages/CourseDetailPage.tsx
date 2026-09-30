@@ -1,8 +1,9 @@
 import { useParams, NavLink } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
+import { ApiService } from '../services/api';
 
 
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 import { PostContext } from '../contexts/PostContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -18,31 +19,42 @@ const CourseDetailPage: React.FC = () => {
   const handleAddNewComment = postContext?.handleAddNewComment;
 
   const memberIdString = member?.id ? (typeof member.id === 'string' ? member.id : String(member.id)) : undefined;
-  
-  const { 
-    course, 
-    enrollments, 
-    loading, 
-    error 
+
+  const {
+    course,
+    enrollments,
+    loading,
+    error
   } = useCourseDetail(courseId || '');
 
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const [activeTab, setActiveTab] = useState('curriculum');
 
   const currentUserId = localStorage.getItem('userId');
-  const enrollment = enrollments?.find((enrollment) => 
-    enrollment.memberId === currentUserId && 
+  const enrollment = enrollments?.find((enrollment) =>
+    enrollment.memberId === currentUserId &&
     enrollment.courseId === courseId
   );
   const isEnrolled = !!enrollment;
 
-  const updateLessonProgress = (courseId: string, lessonId: string, completed: boolean) => {
-    // Placeholder action until course progress is wired into backend
-    console.log('Update lesson progress', { courseId, lessonId, completed });
+  const updateLessonProgress = async (cId: string, lessonId: string, completed: boolean) => {
+    try {
+      const { elearningService } = await import('../services/elearningService');
+      await elearningService.updateProgress(cId, completed ? 100 : 0);
+    } catch (err) {
+      console.error('Failed to update progress:', err);
+    }
   };
 
-  const enrollInCourse = (courseId: string) => {
-    // Placeholder action until course enrollment is wired into backend
-    console.log('Enroll in course', courseId);
+  const enrollInCourse = async (cId: string) => {
+    try {
+      const { elearningService } = await import('../services/elearningService');
+      await elearningService.enrollInCourse(cId);
+      alert('Enrolled successfully!');
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to enroll:', err);
+      alert('Failed to enroll');
+    }
   };
 
   if (loading) {
@@ -76,7 +88,7 @@ const CourseDetailPage: React.FC = () => {
     (acc: number, mod: unknown) => acc + (mod.lessons?.length || 0),
     0,
   ) || 0;
-  
+
   const completedLessonsCount = enrollment?.completedLessons?.length || 0;
   const progress = totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0;
 
@@ -100,7 +112,7 @@ const CourseDetailPage: React.FC = () => {
             className="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue disabled:opacity-50"
           />
           <span
-            className={`font-medium text-base sm:text-lg lg:text-xl ${isCompleted ? "line-through text-gray-400" : "text-gray-700"}`}
+            className={`font-medium text-base sm:text-lg lg:text-xl ${isCompleted ? 'line-through text-gray-400' : 'text-gray-700'}`}
           >
             {lesson.title}
           </span>
@@ -143,7 +155,7 @@ const CourseDetailPage: React.FC = () => {
                       src={course.instructor.avatarUrl || ''}
                       alt={typeof course.instructor === 'object' ? course.instructor.name || 'Instructor' : 'Instructor'}
                       className="w-8 h-auto max-w-full rounded-full"
-                     />
+                    />
                     <span className="text-sm sm:text-base lg:text-lg font-semibold">
                       {typeof course.instructor === 'object' ? course.instructor.name || 'Unknown' : 'Unknown'}
                     </span>
@@ -155,7 +167,7 @@ const CourseDetailPage: React.FC = () => {
               <div className="flex items-center gap-1 text-yellow-500">
                 <span className="font-bold text-sm sm:text-base lg:text-lg">
                   {course.rating?.toFixed(1) || 'N/A'}
-                </span>{" "}
+                </span>{' '}
                 ★
               </div>
             </div>
@@ -166,7 +178,7 @@ const CourseDetailPage: React.FC = () => {
                 src={(course as any).thumbnailUrl || course.thumbnail || ''}
                 alt={course.title}
                 className="w-full max-w-full h-auto object-cover"
-               />
+              />
               <div className="p-4">
                 {isEnrolled ? (
                   <div>
@@ -204,14 +216,14 @@ const CourseDetailPage: React.FC = () => {
 
       {/* Tabs */}
       <div className="max-w-5xl mx-auto mt-6 bg-white rounded-lg shadow-sm p-2 flex">
-        <TabButton {...({ active: activeTab === "curriculum", onClick: () => setActiveTab("curriculum"), children: "Curriculum" } as any)} />
-        <TabButton {...({ active: activeTab === "comments", onClick: () => setActiveTab("comments"), children: "Comments" } as any)} />
-        <TabButton {...({ active: activeTab === "reviews", onClick: () => setActiveTab("reviews"), children: "Reviews" } as any)} />
+        <TabButton {...({ active: activeTab === 'curriculum', onClick: () => setActiveTab('curriculum'), children: 'Curriculum' } as any)} />
+        <TabButton {...({ active: activeTab === 'comments', onClick: () => setActiveTab('comments'), children: 'Comments' } as any)} />
+        <TabButton {...({ active: activeTab === 'reviews', onClick: () => setActiveTab('reviews'), children: 'Reviews' } as any)} />
       </div>
 
       {/* Content */}
       <div className="max-w-5xl mx-auto mt-6 mb-12">
-        {activeTab === "curriculum" && (
+        {activeTab === 'curriculum' && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-xl font-bold mb-4">Course Modules</h2>
             {(course as any).modules && (course as any).modules.length > 0 ? (
@@ -241,14 +253,14 @@ const CourseDetailPage: React.FC = () => {
             )}
           </div>
         )}
-        {activeTab === "comments" && (
+        {activeTab === 'comments' && (
           <CommentSection
-            postId={courseId || ""}
+            postId={courseId || ''}
             comments={[]}
             onAddComment={handleAddNewComment}
           />
         )}
-        {activeTab === "reviews" && (
+        {activeTab === 'reviews' && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-xl font-bold mb-4">Reviews</h2>
             <p className="text-gray-500 text-center">Reviews coming soon.</p>

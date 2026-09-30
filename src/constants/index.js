@@ -269,31 +269,23 @@ export const DASHBOARD_NAVIGATION = [
 export const FAQ_DATA = [
   {question: "How do I reset my password?",
   answer:
-      "You can reset your password by going to Settings > Security > Change Password. Alternatively,
-  on the login screen,
-  click 'Forgot Password' and follow the instructions sent to your email."
+      "You can reset your password by going to Settings > Security > Change Password. Alternatively, on the login screen, click 'Forgot Password' and follow the instructions sent to your email."
   },
   {question: "How do I update my payment method?",
   answer:
-      "Navigate to Settings > Billing > Payment Methods. You can add,
-  remove,
-  or set a default payment method from this screen."
+      "Navigate to Settings > Billing > Payment Methods. You can add, remove, or set a default payment method from this screen."
   },
   {question: "Can I cancel my subscription?",
   answer:
-      "Yes,
-  you can cancel your subscription at any time. Go to Settings > Billing > Subscription and click 'Cancel Subscription'. Your subscription will remain active until the end of the current billing period."
+      "Yes, you can cancel your subscription at any time. Go to Settings > Billing > Subscription and click 'Cancel Subscription'. Your subscription will remain active until the end of the current billing period."
   },
   {question: "How do I contact customer support?",
   answer:
-      "You can reach our support team by submitting a ticket through this page,
-  or by emailing support@fingerprotocol.com. Our team typically responds within 24 hours."
+      "You can reach our support team by submitting a ticket through this page, or by emailing support@fingerprotocol.com. Our team typically responds within 24 hours."
   },
   {question: "What are Gems and how do I earn them?",
   answer:
-      "Gems are our platform's virtual currency. You can earn them by creating content,
-  engaging with others,
-  and participating in special events. They can be used to unlock premium features and exclusive content."
+      "Gems are our platform's virtual currency. You can earn them by creating content, engaging with others, and participating in special events. They can be used to unlock premium features and exclusive content."
   }
 ];
 export const NORSE_GOD_GIFT_CARDS = [
@@ -345,8 +337,7 @@ export const BOOKING_CATEGORIES = [
       "Five-star accommodations with premium amenities and concierge service.",
   icon: "🏨",
   image:
-      ",
-  https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80&auto=format&fit=crop",
   type: "Accommodation"
   },
   {id: "lux-2",
@@ -354,29 +345,21 @@ export const BOOKING_CATEGORIES = [
   description:
       "Exclusive private air travel with personalized flight experiences.",
   icon: "✈️",
-  image:
-      ",
-  https://images.unsplash.com/photo-1516466723877-1d3d66f3a8d7?w=1200&q=80&auto=format&fit=crop",
+  image: "https://images.unsplash.com/photo-1516466723877-1d3d66f3a8d7?w=1200&q=80&auto=format&fit=crop",
   type: "Transport"
   },
   {id: "lux-3",
   name: "Yachts & Cruises",
   description: "Premium yacht charters and luxury cruise experiences.",
   icon: "🛥️",
-  image:
-      ",
-  https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1200&q=80&auto=format&fit=crop",
+  image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1200&q=80&auto=format&fit=crop",
   type: "Leisure"
   },
   {id: "lux-4",
   name: "Exclusive Events",
-  description: "VIP access to concerts,
-  galas,
-  and high-end social events.",
+  description: "VIP access to concerts, galas, and high-end social events.",
   icon: "🎟️",
-  image:
-      ",
-  https://images.unsplash.com/photo-1515165562835-c4c73a044ffd?w=1200&q=80&auto=format&fit=crop",
+  image: "https://images.unsplash.com/photo-1515165562835-c4c73a044ffd?w=1200&q=80&auto=format&fit=crop",
   type: "Events"
   }
 ];

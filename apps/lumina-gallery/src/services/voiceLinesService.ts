@@ -347,8 +347,7 @@ category: string): Promise<void> {
       try {
         await this.playVoiceLine(voiceLine.text);
       } catch (error) {
-        console.error('Error playing voice,
-line:', error);
+        console.error('Error playing voice line:', error);
       }
     }
   }

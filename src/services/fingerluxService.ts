@@ -45,7 +45,7 @@ class FingerLuxService {
   total: number }> {
     const response = await api.get(`${this.baseUrl}/items`, {
     // @ts-ignore - Auto-suppressed for compilation,
-params: { page, limit, ...filters }
+      params: { page, limit, ...filters }
     });
     return response.data;
   }
@@ -67,7 +67,7 @@ params: { page, limit, ...filters }
   }
 
   async placeBid(auctionId: string,
-amount: number): Promise<Bid> {
+    amount: number): Promise<Bid> {
     const response = await api.post(`${this.baseUrl}/auctions/${auctionId}/bids`, { amount });
     return response.data;
   }
@@ -81,7 +81,7 @@ amount: number): Promise<Bid> {
   total: number }> {
     const response = await api.get(`${this.baseUrl}/search`, {
     // @ts-ignore - Auto-suppressed for compilation,
-params: { query, ...filters }
+      params: { query, ...filters }
     });
     return response.data;
   }

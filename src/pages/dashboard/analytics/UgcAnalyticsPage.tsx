@@ -22,26 +22,26 @@ const MOCK_ANALYTICS: any = {
   },
   communities: [
     {
-      id: "hm-1",
-      name: "Jane's Art Hub",
-      type: "Hallmark",
+      id: 'hm-1',
+      name: 'Jane\'s Art Hub',
+      type: 'Hallmark',
       memberGrowth: [
-        { month: "Jan", members: 500 },
-        { month: "Feb", members: 800 },
-        { month: "Mar", members: 1200 },
-        { month: "Apr", members: 1500 }
+        { month: 'Jan', members: 500 },
+        { month: 'Feb', members: 800 },
+        { month: 'Mar', members: 1200 },
+        { month: 'Apr', members: 1500 }
       ],
       engagementRate: 12.5
     },
     {
-      id: "gem-1",
-      name: "Tech Talks",
-      type: "Gem",
+      id: 'gem-1',
+      name: 'Tech Talks',
+      type: 'Gem',
       memberGrowth: [
-        { month: "Jan", members: 100 },
-        { month: "Feb", members: 300 },
-        { month: "Mar", members: 450 },
-        { month: "Apr", members: 600 }
+        { month: 'Jan', members: 100 },
+        { month: 'Feb', members: 300 },
+        { month: 'Mar', members: 450 },
+        { month: 'Apr', members: 600 }
       ],
       engagementRate: 8.2
     }

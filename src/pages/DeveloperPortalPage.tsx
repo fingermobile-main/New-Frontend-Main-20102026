@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from "../contexts/AppContext";
-import { 
-  CodeBracketIcon, 
+import { useAppContext } from '../contexts/AppContext';
+import {
+  CodeBracketIcon,
   KeyIcon,
   ChartBarIcon,
   PlusIcon,
@@ -68,7 +68,7 @@ const DeveloperPortalPage: React.FC = () => {
           status: 'revoked'
         }
       ];
-      
+
       setApiKeys(simulatedKeys);
       setLoading(false);
     } catch (error) {
@@ -101,7 +101,7 @@ const DeveloperPortalPage: React.FC = () => {
   };
 
   const handleRevokeKey = (keyId: string) => {
-    setApiKeys(apiKeys.map(key => 
+    setApiKeys(apiKeys.map(key =>
       key.id === keyId ? { ...key, status: 'revoked' as const } : key
     ));
     showToast('API key revoked', 'success');
@@ -181,8 +181,8 @@ const DeveloperPortalPage: React.FC = () => {
                               <h3 className="text-lg font-semibold text-gray-900">{apiKey.name}</h3>
                               <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                                 apiKey.status === 'active' ? 'bg-green-100 text-green-800' :
-                                apiKey.status === 'revoked' ? 'bg-red-100 text-red-800' :
-                                'bg-yellow-100 text-yellow-800'
+                                  apiKey.status === 'revoked' ? 'bg-red-100 text-red-800' :
+                                    'bg-yellow-100 text-yellow-800'
                               }`}>
                                 {apiKey.status}
                               </span>

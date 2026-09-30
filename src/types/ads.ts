@@ -17,7 +17,7 @@ export interface AdsPerformanceData {id: string;
   cpm: string;
   conversions: string;
   convRate: string;
-  status: "Active" | "Paused" | "Completed" | "Draft";
+  status: 'Active' | 'Paused' | 'Completed' | 'Draft';
 }
 
 export interface TopPerformingCampaign {name: string;
@@ -46,5 +46,5 @@ export interface GeographicData {country: string;
   percentage: number;
   members: string;
 }
-  
-export {};  
+
+export {};

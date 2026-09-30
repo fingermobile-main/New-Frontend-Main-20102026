@@ -1,9 +1,9 @@
 import React, {} from 'react';
-import { Users, UserPlus, MapPin, Briefcase } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Users, UserPlus, MapPin, Briefcase } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 
 interface Member {
   id: string;
@@ -28,34 +28,34 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
 }) => {
   const defaultMembers: Member[] = [
     {
-      id: "1",
-      name: "Sarah Johnson",
-      location: "New York, USA",
-      profession: "Product Designer",
+      id: '1',
+      name: 'Sarah Johnson',
+      location: 'New York, USA',
+      profession: 'Product Designer',
       mutualConnections: 12,
       isFollowing: false
     },
     {
-      id: "2",
-      name: "Michael Chen",
-      location: "San Francisco, USA",
-      profession: "Software Engineer",
+      id: '2',
+      name: 'Michael Chen',
+      location: 'San Francisco, USA',
+      profession: 'Software Engineer',
       mutualConnections: 8,
       isFollowing: true
     },
     {
-      id: "3",
-      name: "Emma Williams",
-      location: "London, UK",
-      profession: "Marketing Director",
+      id: '3',
+      name: 'Emma Williams',
+      location: 'London, UK',
+      profession: 'Marketing Director',
       mutualConnections: 15,
       isFollowing: false
     },
     {
-      id: "4",
-      name: "James Brown",
-      location: "Toronto, Canada",
-      profession: "Data Scientist",
+      id: '4',
+      name: 'James Brown',
+      location: 'Toronto, Canada',
+      profession: 'Data Scientist',
       mutualConnections: 6,
       isFollowing: false
     }
@@ -80,15 +80,15 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
           <Card key={member.id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <button 
+                <button
                   type="button"
                   onClick={() => onViewProfile?.(member.id)}
                   className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
                   aria-label={`View ${member.name}'s profile`}
                 >
-                  <Avatar 
-                    src={member.avatar} 
-                    alt={member.name} 
+                  <Avatar
+                    src={member.avatar}
+                    alt={member.name}
                     fallback={member.name.charAt(0)}
                     className="h-12 w-12 cursor-pointer"
                     size="lg"
@@ -123,11 +123,11 @@ const DiscoveredMembers: React.FC<DiscoveredMembersProps> = ({
                 </div>
                 <Button
                   size="sm"
-                  variant={member.isFollowing ? "outline" : "default"}
+                  variant={member.isFollowing ? 'outline' : 'default'}
                   onClick={() => onFollow?.(member.id)}
                 >
                   <UserPlus className="h-4 w-4 mr-1" />
-                  {member.isFollowing ? "Following" : "Follow"}
+                  {member.isFollowing ? 'Following' : 'Follow'}
                 </Button>
               </div>
             </CardContent>

@@ -79,12 +79,12 @@ export class DataCache {
       yield [key, value];
     }
   }
-  
+
   // Alternative implementation if the above doesn't work
   getAllEntries(): [string, CacheEntry<any>][] {
     return Array.from(this.cache.entries());
   }
-  
+
   // Method to get all keys in the cache
   getKeys(): IterableIterator<string> {
     return this.cache.keys();

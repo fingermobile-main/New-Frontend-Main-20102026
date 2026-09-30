@@ -1,29 +1,14 @@
-import React from 'react';
-import * as React from 'react';
+import React, { lazy, Suspense } from 'react';
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-// Lazy load heavy components used in GemPublicPage
-const PostCard = lazy(() => import("../../components/PostCard"));
-const PageHeader = lazy(() => import("../../components/PageHeader"));
-const LiveIcon = lazy(() => import("../../components/icons"));
+// Lazy load GemPublicPage
+const GemPublicPage = lazy(() => import('./GemPublicPage'));
 
 const LazyGemPublicPage = (props) => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <GemPublicPageContent {...props} />
+      <GemPublicPage {...props} />
     </Suspense>
-  );
-};
-
-const GemPublicPageContent = (props) => {
-  // Since we can't easily split the existing component, we'll create a simplified version
-  // that loads heavy components lazily
-
-  return (
-    <div>
-      {/* The actual implementation would mirror GemPublicPage.js but with lazy-loaded components */}
-      <p>Gem page with lazy-loaded components</p>
-    </div>
   );
 };
 

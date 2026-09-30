@@ -33,17 +33,17 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const insertFormatting = (format: string) => {
     // Simple formatting simulation - in production, use a proper rich text library
     let formatted = content;
-    
+
     switch (format) {
-      case 'bold':
-        setIsBold(!isBold);
-        break;
-      case 'italic':
-        setIsItalic(!isItalic);
-        break;
-      case 'underline':
-        setIsUnderline(!isUnderline);
-        break;
+    case 'bold':
+      setIsBold(!isBold);
+      break;
+    case 'italic':
+      setIsItalic(!isItalic);
+      break;
+    case 'underline':
+      setIsUnderline(!isUnderline);
+      break;
     }
   };
 

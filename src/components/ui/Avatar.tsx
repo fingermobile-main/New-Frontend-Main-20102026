@@ -9,11 +9,11 @@ interface AvatarProps {
   children?: React.ReactNode;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ 
-  src, 
-  alt = 'Avatar', 
-  fallback, 
-  className = '', 
+const Avatar: React.FC<AvatarProps> = ({
+  src,
+  alt = 'Avatar',
+  fallback,
+  className = '',
   size = 'md',
   children
 }) => {
@@ -27,7 +27,7 @@ const Avatar: React.FC<AvatarProps> = ({
   // If children are provided, use them (for compound component pattern)
   if (children) {
     return (
-      <div 
+      <div
         className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden ${sizeClasses[size]} ${className}`}
       >
         {children}
@@ -37,15 +37,15 @@ const Avatar: React.FC<AvatarProps> = ({
 
   // Otherwise use simple pattern with src/fallback props
   return (
-    <div 
+    <div
       className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden ${sizeClasses[size]} ${className}`}
     >
       {src ? (
-        <img 
-          src={src} 
-          alt={alt} 
+        <img
+          src={src}
+          alt={alt}
           className="w-full h-full object-cover"
-         />
+        />
       ) : (
         <span className="font-medium text-gray-700">
           {fallback || (alt ? alt.charAt(0).toUpperCase() : '?')}

@@ -19,7 +19,7 @@ const Web3Context = React.createContext<Web3ContextType | undefined>(undefined);
 const useWeb3 = () => {
   const context = React.useContext(Web3Context);
   if (context === undefined) {
-    throw new Error("useWeb3 must be used within a Web3Provider");
+    throw new Error('useWeb3 must be used within a Web3Provider');
   }
   return context;
 };
@@ -42,14 +42,14 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     try {
       // Implementation to connect wallet
       setIsConnected(true);
-      const addr = "0x1234567890abcdef";
+      const addr = '0x1234567890abcdef';
       setWalletAddress(addr);
       setAccount(addr);
       setBalance(1000); // Set a default balance for testing
-      showToast("Wallet connected successfully", "success");
+      showToast('Wallet connected successfully', 'success');
     } catch (error) {
-      console.error("Error connecting wallet:", error);
-      showToast("Failed to connect wallet", "error");
+      console.error('Error connecting wallet:', error);
+      showToast('Failed to connect wallet', 'error');
     }
   };
 
@@ -58,7 +58,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     setWalletAddress(null);
     setAccount(null);
     setBalance(0);
-    showToast("Wallet disconnected", "info");
+    showToast('Wallet disconnected', 'info');
   };
 
   const sendFIC = async (recipient: string, amount: number) => {
@@ -67,10 +67,10 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       console.info(`Sending ${amount} FIC to ${recipient}`);
       // Update balance
       setBalance((prevBalance) => prevBalance - amount);
-      showToast(`Successfully sent ${amount} FIC`, "success");
+      showToast(`Successfully sent ${amount} FIC`, 'success');
     } catch (error) {
-      console.error("Error sending FIC:", error);
-      showToast("Failed to send FIC", "error");
+      console.error('Error sending FIC:', error);
+      showToast('Failed to send FIC', 'error');
     }
   };
 

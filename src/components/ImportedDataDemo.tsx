@@ -6,9 +6,9 @@ interface ImportedDataDemoProps {
   data?: any[];
 }
 
-const ImportedDataDemo: React.FC<ImportedDataDemoProps> = ({ 
+const ImportedDataDemo: React.FC<ImportedDataDemoProps> = ({
   dataType = 'CSV',
-  data 
+  data
 }) => {
   const [demoData, setDemoData] = React.useState<any[]>(data || []);
 

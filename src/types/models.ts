@@ -121,7 +121,7 @@ export interface Member {
   followerCount?: number;
   followingCount?: number;
   posts?: number;
-  status?: "active" | "suspended" | "pending" | "inactive";
+  status?: 'active' | 'suspended' | 'pending' | 'inactive';
   lastActive?: string;
   joinDate?: string;
   phoneNumber?: string;
@@ -212,14 +212,10 @@ export interface Warranty {
 
 export interface ProductVariant {
   id: string;
-  name: string; // e.g., "Red, Large"
-  sku?: string; // Stock Keeping Unit
-  ean?: string; // European Article Number
-  options: Record<string, string>; // e.g., { "color": "red", "size": "large" }
+  name: string;
+  options: Record<string, string>;
   price: number;
   stock: number;
-  images?: MediaAsset[]; // Variant-specific images
-  isActive?: boolean;
 }
 
 export interface BundleItem {
@@ -325,7 +321,7 @@ export interface ProductInterface {
   };
   salesCount?: number;
   ownitExclusive?: boolean;
-  isLiked?: boolean;
+  isLiked: boolean;
   likesCount?: number;
   tags?: string[];
   [key: string]: any;
@@ -475,7 +471,7 @@ export interface OrderWithCartItemsFields {
   items: CartItem[];
   totalAmount: number;
   currency: string;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   shippingAddress: string;
   billingAddress: string;
   paymentMethod: string;
@@ -649,13 +645,17 @@ export interface Post extends ContentItem {
   status: ContentStatus;
   publishedAt?: Date;
   views?: number;
-  likes: number;
+  likes: number; // legacy prop
+  dislikesCount?: number;
   shares: number;
   commentsEnabled?: boolean;
   featured?: boolean;
   relatedPosts?: string[];
   metadata?: Record<string, unknown>;
   author?: User;
+  isLiked: boolean;
+  isDisliked?: boolean;
+  censorship?: unknown;
 }
 
 export interface SocialMediaPost {
@@ -685,8 +685,6 @@ export interface Comment {
   content: string;
   timestamp: Date;
   likes: number;
-  depth?: number;
-  edited?: boolean;
   replies?: Comment[];
   author?: User;
 }
@@ -694,7 +692,7 @@ export interface Comment {
 export interface Media {
   id: string;
   url: string;
-  type: "image" | "video" | "audio";
+  type: 'image' | 'video' | 'audio';
   title: string;
   [key: string]: any;
 }
@@ -1018,7 +1016,7 @@ export interface VoiceLine {
   category: string;
   tags?: string[];
   keywords?: string[];
-  emotion?: "happy" | "sad" | "angry" | "excited" | "neutral";
+  emotion?: 'happy' | 'sad' | 'angry' | 'excited' | 'neutral';
   language?: string;
   duration?: number;
   isPremium?: boolean;
@@ -1076,7 +1074,7 @@ export interface GameSession {
   players: string[];
   startTime: string;
   endTime?: string;
-  status: "pending" | "active" | "completed" | "cancelled";
+  status: 'pending' | 'active' | 'completed' | 'cancelled';
   score?: number;
   winnerId?: string;
   [key: string]: any;
@@ -1308,7 +1306,7 @@ export interface RegisterData {
 }
 
 export interface Settings {
-  theme: "light" | "dark";
+  theme: 'light' | 'dark';
   notificationsEnabled: boolean;
   language: string;
   [key: string]: any;

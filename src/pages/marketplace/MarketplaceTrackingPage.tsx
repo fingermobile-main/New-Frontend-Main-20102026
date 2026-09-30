@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import apiService from '../../services/apiService';
 // --- Domain Type Definitions ---
 interface LocationDetails {
   country: string;
@@ -37,8 +38,8 @@ const ShipmentListItem: React.FC<ShipmentListItemProps> = React.memo(({ item, is
     <button
       onClick={handleSelect}
       className={`p-4 border-2 rounded-xl text-left min-w-[180px] transition duration-200 shadow-sm ${
-        isSelected 
-          ? 'border-orange-500 bg-orange-50 text-orange-900' 
+        isSelected
+          ? 'border-orange-500 bg-orange-50 text-orange-900'
           : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
       }`}
     >
@@ -59,7 +60,7 @@ interface ShipmentDetailsPanelProps {
 }
 
 const ShipmentDetailsPanel: React.FC<ShipmentDetailsPanelProps> = React.memo(({ shipment, onContactCarrier }) => {
-  const structuralWarnings = useMemo(() => 
+  const structuralWarnings = useMemo(() =>
     shipment.status_updates.filter(u => u.alert_level === 'warning' || u.alert_level === 'critical')
   , [shipment.status_updates]);
 
@@ -74,7 +75,7 @@ const ShipmentDetailsPanel: React.FC<ShipmentDetailsPanelProps> = React.memo(({ 
         <p className="text-sm text-gray-600">
           Estimated Arrival: <span className="font-semibold">{new Date(shipment.estimated_arrival).toLocaleDateString()}</span>
         </p>
-        
+
         {structuralWarnings.map((update) => (
           <div key={update.id} className="mt-3 p-3 bg-red-50 border border-red-100 rounded-lg text-red-700 text-sm flex items-start gap-2">
             <span>⚠️</span>
@@ -112,60 +113,11 @@ const MarketplaceTrackingPage: React.FC = () => {
 
   const loadShipments = useCallback(async () => {
     try {
-      // Production fallback tracking mocks
-      const mockShipments: Shipment[] = [
-        {
-          id: 1,
-          tracking_number: "MP-123456789",
-          status: "in-transit",
-          current_location: { country: "NG", state: "Lagos", area: "VI" },
-          estimated_arrival: "2026-07-15T10:00:00Z",
-          status_updates: [
-            { id: 1, status: "processing", description: "Order is being processed", alert_level: "info", created_at: "2026-07-08T09:00:00Z" },
-            { id: 2, status: "shipped", description: "Package has been dispatched from source warehouse", alert_level: "info", created_at: "2026-07-09T14:30:00Z" },
-            { id: 3, status: "in-transit", description: "Package is in route across distribution lines", alert_level: "info", created_at: "2026-07-10T08:00:00Z" }
-          ]
-        },
-        {
-          id: 2,
-          tracking_number: "MP-987654321",
-          status: "delivered",
-          current_location: { country: "NG", state: "Lagos", area: "Ikoyi" },
-          estimated_arrival: "2026-06-25T15:00:00Z",
-          status_updates: [
-            { id: 1, status: "processing", description: "Order is being processed", alert_level: "info", created_at: "2026-06-23T09:00:00Z" },
-            { id: 2, status: "shipped", description: "Package has been shipped", alert_level: "info", created_at: "2026-06-24T14:30:00Z" },
-            { id: 3, status: "delivered", description: "Package delivered successfully to residential hub", alert_level: "info", created_at: "2026-06-25T14:45:00Z" }
-          ]
-        },
-        {
-          id: 3,
-          tracking_number: "MP-456789123",
-          status: "shipped",
-          current_location: { country: "NG", state: "Lagos", area: "Lekki" },
-          estimated_arrival: "2026-07-17T10:00:00Z",
-          status_updates: [
-            { id: 1, status: "processing", description: "Order is being processed", alert_level: "info", created_at: "2026-07-08T09:00:00Z" },
-            { id: 2, status: "shipped", description: "Package has been signed to primary carrier line", alert_level: "info", created_at: "2026-07-10T14:30:00Z" }
-          ]
-        },
-        {
-          id: 4,
-          tracking_number: "MP-789123456",
-          status: "delayed",
-          current_location: { country: "NG", state: "Ogun", area: "Abeokuta" },
-          estimated_arrival: "2026-07-20T10:00:00Z",
-          status_updates: [
-            { id: 1, status: "processing", description: "Order is being processed", alert_level: "info", created_at: "2026-07-07T09:00:00Z" },
-            { id: 2, status: "shipped", description: "Package has been shipped", alert_level: "info", created_at: "2026-07-08T14:30:00Z" },
-            { id: 3, status: "delayed", description: "Heavy delay due to local road route updates", alert_level: "warning", created_at: "2026-07-09T15:00:00Z" }
-          ]
-        }
-      ];
-
-      setShipments(mockShipments);
-      if (mockShipments.length > 0) {
-        setSelectedShipment(mockShipments[0]);
+      const res = await apiService.get('/api/marketplace/tracking');
+      const liveShipments: Shipment[] = res.shipments || res.data || [];
+      setShipments(liveShipments);
+      if (liveShipments.length > 0) {
+        setSelectedShipment(liveShipments[0]);
       }
     } catch {
       // Graceful structural handler fallback

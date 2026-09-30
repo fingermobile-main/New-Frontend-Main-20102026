@@ -3,17 +3,17 @@ import '@testing-library/jest-dom';
 // Mock axios for all tests
 jest.mock('axios', () => {
   const mockAxios = {create: jest.fn(() => ({
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+    patch: jest.fn()
+  })),
   get: jest.fn(),
   post: jest.fn(),
   put: jest.fn(),
   delete: jest.fn(),
   patch: jest.fn()
-    })),
-get: jest.fn(),
-post: jest.fn(),
-put: jest.fn(),
-delete: jest.fn(),
-patch: jest.fn()
   };
   return mockAxios;
 });

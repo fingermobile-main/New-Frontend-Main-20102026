@@ -1,6 +1,6 @@
 import React, {} from 'react';
-import { api } from "./api";
-import { logError, ErrorType } from "../utils/errorLogger";
+import { api } from './api';
+import { logError, ErrorType } from '../utils/errorLogger';
 
 // promptsService.ts
 // Service for PROMPTS Threat Analyzer: AI-powered prompt threat detection
@@ -41,14 +41,14 @@ export class PromptsService {
         promptData,
         context
       });
-      
+
       if (!response.data.success) {
         throw new Error(response.data.error || 'Analysis failed');
       }
-      
+
       return response.data.data;
     } catch (error: any) {
-      logError(error, ErrorType.AUTH_ERROR, {context: "PromptsService.analyzePrompt"});
+      logError(error, ErrorType.AUTH_ERROR, {context: 'PromptsService.analyzePrompt'});
       throw error;
     }
   }
@@ -59,14 +59,14 @@ export class PromptsService {
   async getThreatPatterns(): Promise<ThreatPattern[]> {
     try {
       const response = await api.get('/prompts/threat-patterns');
-      
+
       if (!response.data.success) {
         throw new Error(response.data.error || 'Failed to get threat patterns');
       }
-      
+
       return response.data.data;
     } catch (error: any) {
-      logError(error, ErrorType.AUTH_ERROR, {context: "PromptsService.getThreatPatterns"});
+      logError(error, ErrorType.AUTH_ERROR, {context: 'PromptsService.getThreatPatterns'});
       throw error;
     }
   }
@@ -77,14 +77,14 @@ export class PromptsService {
   async getCountermeasures(threatType: string): Promise<Countermeasure> {
     try {
       const response = await api.get(`/prompts/countermeasures/${threatType}`);
-      
+
       if (!response.data.success) {
         throw new Error(response.data.error || 'Failed to get countermeasures');
       }
-      
+
       return response.data.data;
     } catch (error: any) {
-      logError(error, ErrorType.AUTH_ERROR, {context: "PromptsService.getCountermeasures"});
+      logError(error, ErrorType.AUTH_ERROR, {context: 'PromptsService.getCountermeasures'});
       throw error;
     }
   }
@@ -95,14 +95,14 @@ export class PromptsService {
   async getAnalyzedThreats(limit: number = 50): Promise<any[]> {
     try {
       const response = await api.get(`/prompts/analyzed-threats?limit=${limit}`);
-      
+
       if (!response.data.success) {
         throw new Error(response.data.error || 'Failed to get analyzed threats');
       }
-      
+
       return response.data.data;
     } catch (error: any) {
-      logError(error, ErrorType.AUTH_ERROR, {context: "PromptsService.getAnalyzedThreats"});
+      logError(error, ErrorType.AUTH_ERROR, {context: 'PromptsService.getAnalyzedThreats'});
       throw error;
     }
   }
@@ -115,7 +115,7 @@ export class PromptsService {
       const response = await api.post(`/prompts/mitigate/${threatId}`, { action });
       return response.data;
     } catch (error: any) {
-      logError(error, ErrorType.AUTH_ERROR, {context: "PromptsService.mitigateThreat"});
+      logError(error, ErrorType.AUTH_ERROR, {context: 'PromptsService.mitigateThreat'});
       throw error;
     }
   }

@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import type { PayoutRequest, PayoutData } from '../../types';
 import { NIGERIAN_BANKS } from '../../constants';
 import AnimatedAvatar from '../../components/AnimatedAvatar';
+import { apiService } from '../../services/apiService';
 
 const PayoutsPage: React.FC = () => {
-  const { payoutRequests, handleInitiatePayout, handleProcessPayout } =
+  const { payoutRequests, handleInitiatePayout, handleProcessPayout, showToast } =
     useAppContext();
 
   // State for the form
-  const [memberId, setmemberId] = useState("");
-  const [amount, setAmount] = useState("");
+  const [memberId, setmemberId] = useState('');
+  const [amount, setAmount] = useState('');
   const [bankName, setBankName] = useState(NIGERIAN_BANKS[0].name);
-  const [accountNumber, setAccountNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState('');
+  const [livePayouts, setLivePayouts] = useState<PayoutRequest[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const loadPayouts = useCallback(async () => {
+    try {
+      const res = await apiService.get<any>('/api/payouts');
+      if (res?.data && Array.isArray(res.data)) {
+        setLivePayouts(res.data.map((p: any) => ({
+          id: String(p.id),
+          memberId: p.memberId || '4',
+          amount: Number(p.amount || 0),
+          status: (p.status || 'pending').toLowerCase() as any,
+          bankName: p.bankName || 'Bank',
+          accountNumber: p.accountNumber || '0000000000',
+          date: p.date || (p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'Recent'),
+          member: {
+            id: p.memberId || '4',
+            name: p.memberId ? `Member ${p.memberId}` : 'User',
+            avatarUrl: ''
+          }
+        })));
+      }
+    } catch (err) {
+      console.error('Failed to load payouts:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadPayouts();
+  }, [loadPayouts]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payoutData: PayoutData = {
       memberId,
@@ -29,31 +60,64 @@ const PayoutsPage: React.FC = () => {
       !payoutData.bankName ||
       !payoutData.accountNumber
     ) {
-      // Add more robust validation/error handling as needed
+      showToast?.('Please fill in all payout fields with valid data', 'error');
       return;
     }
 
-    handleInitiatePayout(payoutData.amount, payoutData.bankName);
+    try {
+      const res = await apiService.post<any>('/api/payouts', payoutData);
+      if (res?.success) {
+        showToast?.('Manual payout created successfully', 'success');
+        await loadPayouts();
+      } else {
+        handleInitiatePayout(payoutData.amount, payoutData.bankName);
+      }
+    } catch {
+      handleInitiatePayout(payoutData.amount, payoutData.bankName);
+    }
+
     // Reset form
-    setmemberId("");
-    setAmount("");
+    setmemberId('');
+    setAmount('');
     setBankName(NIGERIAN_BANKS[0].name);
-    setAccountNumber("");
+    setAccountNumber('');
   };
 
-  const pendingRequests = payoutRequests.filter((p: PayoutRequest) => p.status === "pending");
-  const processedRequests = payoutRequests.filter(
-    (p: PayoutRequest) => p.status !== "pending",
+  const handleUpdateStatus = async (id: string, action: 'approve' | 'reject') => {
+    const status = action === 'approve' ? 'approved' : 'rejected';
+    setIsProcessing(true);
+    try {
+      const res = await apiService.patch<any>(`/api/payouts/${id}`, { status });
+      if (res?.success) {
+        showToast?.(`Payout ${action}d successfully`, 'success');
+        await loadPayouts();
+      } else {
+        handleProcessPayout(id, action);
+      }
+    } catch {
+      handleProcessPayout(id, action);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const allRequests = livePayouts.length > 0 ? livePayouts : (payoutRequests || []);
+  const pendingRequests = allRequests.filter((p: PayoutRequest) => String(p.status).toLowerCase() === 'pending');
+  const processedRequests = allRequests.filter(
+    (p: PayoutRequest) => String(p.status).toLowerCase() !== 'pending',
   );
 
   const PayoutRequestCard: React.FC<{
     request: PayoutRequest;
     isPending: boolean;
   }> = ({ request, isPending }) => {
+    const statusLower = String(request.status).toLowerCase();
     const statusStyles: Record<string, string> = {
-      Pending: "bg-yellow-100 text-yellow-800",
-      Completed: "bg-green-100 text-green-800",
-      Failed: "bg-red-100 text-red-800"
+      pending: 'bg-yellow-100 text-yellow-800',
+      approved: 'bg-green-100 text-green-800',
+      completed: 'bg-green-100 text-green-800',
+      rejected: 'bg-red-100 text-red-800',
+      failed: 'bg-red-100 text-red-800'
     };
 
     return (
@@ -71,7 +135,7 @@ const PayoutsPage: React.FC = () => {
             </div>
           </div>
           <span
-            className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[request.status]}`}
+            className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${statusStyles[statusLower] || 'bg-gray-100 text-gray-800'}`}
           >
             {request.status}
           </span>
@@ -90,14 +154,16 @@ const PayoutsPage: React.FC = () => {
         {isPending && (
           <div className="flex justify-end gap-2 mt-3">
             <button
-              onClick={() => handleProcessPayout(request.id, "reject")}
-              className="px-3 py-1 text-sm font-semibold bg-red-100 text-red-800 rounded-full hover:bg-red-200"
+              onClick={() => handleUpdateStatus(request.id, 'reject')}
+              disabled={isProcessing}
+              className="px-3 py-1 text-sm font-semibold bg-red-100 text-red-800 rounded-full hover:bg-red-200 disabled:opacity-50"
             >
               Deny
             </button>
             <button
-              onClick={() => handleProcessPayout(request.id, "approve")}
-              className="px-3 py-1 text-sm font-semibold bg-green-100 text-green-800 rounded-full hover:bg-green-200"
+              onClick={() => handleUpdateStatus(request.id, 'approve')}
+              disabled={isProcessing}
+              className="px-3 py-1 text-sm font-semibold bg-green-100 text-green-800 rounded-full hover:bg-green-200 disabled:opacity-50"
             >
               Approve
             </button>

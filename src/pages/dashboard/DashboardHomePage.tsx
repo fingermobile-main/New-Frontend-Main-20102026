@@ -7,46 +7,46 @@ import { useWeb3 } from '../../contexts/Web3Context';
 
 // Mock data for dashboard
 const mockStats = [
-  { title: "Total Earnings", value: "2,450", subtitle: "FIC", color: "green" },
+  { title: 'Total Earnings', value: '2,450', subtitle: 'FIC', color: 'green' },
   {
-    title: "Content Views",
-    value: "12.4K",
-    subtitle: "This month",
-    color: "blue"
+    title: 'Content Views',
+    value: '12.4K',
+    subtitle: 'This month',
+    color: 'blue'
   },
   {
-    title: "New Followers",
-    value: "342",
-    subtitle: "This month",
-    color: "purple"
+    title: 'New Followers',
+    value: '342',
+    subtitle: 'This month',
+    color: 'purple'
   },
   {
-    title: "Tokenized Items",
-    value: "24",
-    subtitle: "Active tokens",
-    color: "indigo"
+    title: 'Tokenized Items',
+    value: '24',
+    subtitle: 'Active tokens',
+    color: 'indigo'
   }
 ];
 
 const mockTrends = [
   {
-    id: "1",
-    title: "Your content is performing 15% above average",
-    category: "Performance",
+    id: '1',
+    title: 'Your content is performing 15% above average',
+    category: 'Performance',
     热度: 85,
     views: 1250
   },
   {
-    id: "2",
-    title: "New followers milestone reached",
-    category: "Growth",
+    id: '2',
+    title: 'New followers milestone reached',
+    category: 'Growth',
     热度: 92,
     views: 2100
   },
   {
-    id: "3",
-    title: "Top performing post this week",
-    category: "Content",
+    id: '3',
+    title: 'Top performing post this week',
+    category: 'Content',
     热度: 78,
     views: 3400
   }
@@ -54,22 +54,22 @@ const mockTrends = [
 
 const mockPosts = [
   {
-    id: "101",
-    type: "text" as const,
+    id: '101',
+    type: 'text' as const,
     author: {
-      id: "1",
-      name: "You",
-      membername: "creator",
+      id: '1',
+      name: 'You',
+      membername: 'creator',
       avatarUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
     },
-    timestamp: "2023-06-15T14:30:00Z",
-    createdAt: "2023-06-15T14:30:00Z",
-    title: "New Album Release!",
+    timestamp: '2023-06-15T14:30:00Z',
+    createdAt: '2023-06-15T14:30:00Z',
+    title: 'New Album Release!',
     content:
       'Excited to announce my new album "Digital Dreams" is now available on all platforms! This project represents months of work blending electronic sounds with organic instruments.',
     contentImageUrl:
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+      'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
     likesCount: 245,
     repliesCount: 32,
     repostsCount: 18,
@@ -80,21 +80,21 @@ const mockPosts = [
     pollOptions: null
   },
   {
-    id: "102",
-    type: "text" as const,
+    id: '102',
+    type: 'text' as const,
     author: {
-      id: "1",
-      name: "You",
-      membername: "creator",
+      id: '1',
+      name: 'You',
+      membername: 'creator',
       avatarUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
     },
-    timestamp: "2023-06-10T09:15:00Z",
-    createdAt: "2023-06-10T09:15:00Z",
-    title: "",
+    timestamp: '2023-06-10T09:15:00Z',
+    createdAt: '2023-06-10T09:15:00Z',
+    title: '',
     content:
-      "Working on some new tracks today. The creative process is so therapeutic. What helps you get into a creative flow?",
-    contentImageUrl: "",
+      'Working on some new tracks today. The creative process is so therapeutic. What helps you get into a creative flow?',
+    contentImageUrl: '',
     likesCount: 178,
     repliesCount: 42,
     repostsCount: 9,
@@ -112,7 +112,7 @@ const DashboardHomePage: React.FC = () => {
   const [stats] = useState(mockStats);
   const [trends] = useState(mockTrends);
   const [posts] = useState(mockPosts);
-  const [timeRange, setTimeRange] = useState("7d");
+  const [timeRange, setTimeRange] = useState('7d');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -145,14 +145,14 @@ const DashboardHomePage: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold">Trends & Insights</h2>
               <div className="flex gap-2">
-                {["7d", "30d", "90d"].map((range) => (
+                {['7d', '30d', '90d'].map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1 text-sm rounded-full ${
                       timeRange === range
-                        ? "bg-blue-100 text-blue-800 font-medium"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? 'bg-blue-100 text-blue-800 font-medium'
+                        : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     {range}
@@ -172,7 +172,7 @@ const DashboardHomePage: React.FC = () => {
             <h2 className="text-lg font-bold mb-6">Wallet Balance</h2>
             <div className="text-center">
               <p className="text-3xl font-bold text-gray-900">
-                {balance.toLocaleString()}{" "}
+                {balance.toLocaleString()}{' '}
                 <span className="text-lg text-gray-500">FIC</span>
               </p>
               <p className="text-gray-500 mt-2">
@@ -180,7 +180,7 @@ const DashboardHomePage: React.FC = () => {
                 {(balance * 0.1).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2
-                })}{" "}
+                })}{' '}
                 USD
               </p>
 
@@ -213,11 +213,11 @@ const DashboardHomePage: React.FC = () => {
                   ...post,
                   pollOptions: post.pollOptions || [] // Ensure pollOptions is an array, not null
                 }}
-                onLike={(postId) => console.info("Like post", postId)}
-                _onAddComment={() => console.info("Add comment")}
-                onOpenGiftModal={(post) => console.info("Open gift modal", post)}
+                onLike={(postId) => console.info('Like post', postId)}
+                _onAddComment={() => console.info('Add comment')}
+                onOpenGiftModal={(post) => console.info('Open gift modal', post)}
                 onVote={(postId, voteType) =>
-                  console.info("Vote", postId, voteType)
+                  console.info('Vote', postId, voteType)
                 }
               />
             ))}

@@ -94,19 +94,19 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
             {analytics.followerGrowth >= 0 ? '↑' : '↓'} {Math.abs(analytics.followerGrowth)}% this period
           </p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Engagement Rate</p>
           <p className="text-3xl font-bold text-blue-600">{analytics.engagement.engagementRate}%</p>
           <p className="text-sm text-gray-500 mt-2">Avg. across all posts</p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Likes</p>
           <p className="text-3xl font-bold text-purple-600">{analytics.engagement.averageLikes}</p>
           <p className="text-sm text-gray-500 mt-2">Per post</p>
         </div>
-        
+
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Comments</p>
           <p className="text-3xl font-bold text-orange-600">{analytics.engagement.averageComments}</p>
@@ -151,7 +151,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
                   <div
                     className={`h-2 rounded-full transition-all ${
                       gender === 'male' ? 'bg-blue-500' :
-                      gender === 'female' ? 'bg-pink-500' : 'bg-purple-500'
+                        gender === 'female' ? 'bg-pink-500' : 'bg-purple-500'
                     }`}
                     style={{ width: `${percentage}%` }}
                   />

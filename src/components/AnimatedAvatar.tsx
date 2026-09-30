@@ -11,15 +11,15 @@ interface AnimatedAvatarProps {
   className?: string;
 }
 
-const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({ 
-  src, 
+const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
+  src,
   staticUrl,
   animatedUrl,
   alt = 'Avatar',
   altText,
-  size = 'md', 
+  size = 'md',
   animateOnHover = true,
-  className = '' 
+  className = ''
 }) => {
   const finalSrc = src || staticUrl || animatedUrl;
   const finalAlt = altText || alt;
@@ -35,11 +35,11 @@ const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
   return (
     <div className={`${sizeClasses[size]} ${animationClass} ${className}`}>
       {finalSrc ? (
-        <img 
-          src={finalSrc} 
-          alt={finalAlt} 
-          className="w-full h-full rounded-full object-cover border-2 border-transparent" 
-         />
+        <img
+          src={finalSrc}
+          alt={finalAlt}
+          className="w-full h-full rounded-full object-cover border-2 border-transparent"
+        />
       ) : (
         <div className="w-full h-full rounded-full bg-gradient-to-br from-fm-orange to-fm-gray-300 flex items-center justify-center text-white font-bold border-2 border-transparent">
           {finalAlt.charAt(0).toUpperCase()}

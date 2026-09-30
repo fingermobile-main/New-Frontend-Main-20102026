@@ -58,9 +58,9 @@ const ContentCalendarPage: React.FC = () => {
             <ChevronLeftIcon className="w-5 h-5" />
           </button>
           <h2 className="text-xl font-bold sm:text-2xl">
-            {currentDate.toLocaleString("default", {
-              month: "long",
-              year: "numeric"
+            {currentDate.toLocaleString('default', {
+              month: 'long',
+              year: 'numeric'
             })}
           </h2>
           <button
@@ -72,7 +72,7 @@ const ContentCalendarPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-7 gap-1 text-center text-sm font-semibold text-gray-500 mb-2 sm:text-base">
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day}>{day}</div>
           ))}
         </div>
@@ -99,7 +99,7 @@ const ContentCalendarPage: React.FC = () => {
                 className="border rounded-lg h-32 p-1.5 flex flex-col"
               >
                 <span
-                  className={`font-semibold text-xs self-start ${isToday ? "bg-brand-blue text-white rounded-full w-5 h-5 flex items-center justify-center" : ""} sm:text-sm`}
+                  className={`font-semibold text-xs self-start ${isToday ? 'bg-brand-blue text-white rounded-full w-5 h-5 flex items-center justify-center' : ''} sm:text-sm`}
                 >
                   {date.getDate()}
                 </span>
@@ -110,7 +110,7 @@ const ContentCalendarPage: React.FC = () => {
                       className="text-xs bg-blue-100 text-blue-800 p-1 rounded cursor-pointer hover:bg-blue-200 sm:text-sm"
                     >
                       <p className="truncate font-medium">
-                        {post.title || post.content?.replace(/<[^>]*>?/gm, "").substring(0, 30) + '...'}
+                        {post.title || post.content?.replace(/<[^>]*>?/gm, '').substring(0, 30) + '...'}
                       </p>
                     </div>
                   ))}
@@ -121,7 +121,7 @@ const ContentCalendarPage: React.FC = () => {
         </div>
         <div className="mt-4 text-right">
           <button
-            onClick={() => openModal("composer")}
+            onClick={() => openModal('composer')}
             className="px-4 py-2 text-sm font-semibold bg-brand-blue text-white rounded-full hover:bg-blue-700 sm:text-base"
           >
             Schedule a Post

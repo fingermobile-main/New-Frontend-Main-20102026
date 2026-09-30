@@ -49,83 +49,83 @@ const SET_AI_DISCLOSED = 'SET_AI_DISCLOSED';
 
 const contentReducer = (state: ContentState, action: ContentAction): ContentState => {
   switch (action.type) {
-    case SET_CONTENT:
-      return {
-        ...state,
-        posts: action.payload.posts || state.posts,
-        videos: action.payload.videos || state.videos,
-        loading: false,
-        error: null
-      };
-    case ADD_POST:
-      return {
-        ...state,
-        posts: [...state.posts, action.payload],
-        loading: false
-      };
-    case ADD_VIDEO:
-      return {
-        ...state,
-        videos: [...state.videos, action.payload],
-        loading: false
-      };
-    case UPDATE_POST:
-      return {
-        ...state,
-        posts: state.posts.map(post => 
-          post.id === action.payload.id ? { ...post, ...action.payload } : post
-        ),
-        loading: false
-      };
-    case DELETE_POST:
-      return {
-        ...state,
-        posts: state.posts.filter(post => post.id !== action.payload),
-        loading: false
-      };
-    case DELETE_VIDEO:
-      return {
-        ...state,
-        videos: state.videos.filter(video => video.id !== action.payload),
-        loading: false
-      };
-    case SET_LOADING:
-      return {
-        ...state,
-        loading: action.payload
-      };
-    case SET_ERROR:
-      return {
-        ...state,
-        error: action.payload,
-        loading: false
-      };
-    case SET_ORIGINALITY_SCORE:
-      return {
-        ...state,
-        originalityScores: {
-          ...state.originalityScores,
-          [action.payload.contentId]: action.payload.score
-        }
-      };
-    case SET_DWELL_TIME:
-      return {
-        ...state,
-        dwellTimes: {
-          ...state.dwellTimes,
-          [action.payload.contentId]: action.payload.dwellTimeMs
-        }
-      };
-    case SET_AI_DISCLOSED:
-      return {
-        ...state,
-        aiDisclosed: {
-          ...state.aiDisclosed,
-          [action.payload.contentId]: action.payload.disclosed
-        }
-      };
-    default:
-      return state;
+  case SET_CONTENT:
+    return {
+      ...state,
+      posts: action.payload.posts || state.posts,
+      videos: action.payload.videos || state.videos,
+      loading: false,
+      error: null
+    };
+  case ADD_POST:
+    return {
+      ...state,
+      posts: [...state.posts, action.payload],
+      loading: false
+    };
+  case ADD_VIDEO:
+    return {
+      ...state,
+      videos: [...state.videos, action.payload],
+      loading: false
+    };
+  case UPDATE_POST:
+    return {
+      ...state,
+      posts: state.posts.map(post =>
+        post.id === action.payload.id ? { ...post, ...action.payload } : post
+      ),
+      loading: false
+    };
+  case DELETE_POST:
+    return {
+      ...state,
+      posts: state.posts.filter(post => post.id !== action.payload),
+      loading: false
+    };
+  case DELETE_VIDEO:
+    return {
+      ...state,
+      videos: state.videos.filter(video => video.id !== action.payload),
+      loading: false
+    };
+  case SET_LOADING:
+    return {
+      ...state,
+      loading: action.payload
+    };
+  case SET_ERROR:
+    return {
+      ...state,
+      error: action.payload,
+      loading: false
+    };
+  case SET_ORIGINALITY_SCORE:
+    return {
+      ...state,
+      originalityScores: {
+        ...state.originalityScores,
+        [action.payload.contentId]: action.payload.score
+      }
+    };
+  case SET_DWELL_TIME:
+    return {
+      ...state,
+      dwellTimes: {
+        ...state.dwellTimes,
+        [action.payload.contentId]: action.payload.dwellTimeMs
+      }
+    };
+  case SET_AI_DISCLOSED:
+    return {
+      ...state,
+      aiDisclosed: {
+        ...state.aiDisclosed,
+        [action.payload.contentId]: action.payload.disclosed
+      }
+    };
+  default:
+    return state;
   }
 };
 
@@ -331,7 +331,7 @@ export const ContentProvider: React.FC<Props> = ({ children }) => {
 
       // Mark as AI disclosed if this is for an AI-generated asset
       const aiDisclosed = file.name.includes('_ai_gen') || file.name.includes('_aigen');
-      
+
       const response = await fetch('/api/content/upload', {
         method: 'POST',
         body: formData,
@@ -345,12 +345,12 @@ export const ContentProvider: React.FC<Props> = ({ children }) => {
       }
 
       const result = await response.json();
-      
+
       // Record if this was AI disclosed
       if (result.id && aiDisclosed) {
-        dispatch({ 
-          type: SET_AI_DISCLOSED, 
-          payload: { contentId: result.id, disclosed: true } 
+        dispatch({
+          type: SET_AI_DISCLOSED,
+          payload: { contentId: result.id, disclosed: true }
         });
       }
 
@@ -366,23 +366,23 @@ export const ContentProvider: React.FC<Props> = ({ children }) => {
   }, [state.originalityScores]);
 
   const setOriginalityScore = useCallback((contentId: string, score: number) => {
-    dispatch({ 
-      type: SET_ORIGINALITY_SCORE, 
-      payload: { contentId, score } 
+    dispatch({
+      type: SET_ORIGINALITY_SCORE,
+      payload: { contentId, score }
     });
   }, []);
 
   const recordDwellTime = useCallback((contentId: string, dwellTimeMs: number) => {
-    dispatch({ 
-      type: SET_DWELL_TIME, 
-      payload: { contentId, dwellTimeMs } 
+    dispatch({
+      type: SET_DWELL_TIME,
+      payload: { contentId, dwellTimeMs }
     });
   }, []);
 
   const markAsAIDisclosed = useCallback((contentId: string, disclosed: boolean) => {
-    dispatch({ 
-      type: SET_AI_DISCLOSED, 
-      payload: { contentId, disclosed } 
+    dispatch({
+      type: SET_AI_DISCLOSED,
+      payload: { contentId, disclosed }
     });
   }, []);
 
@@ -433,9 +433,9 @@ export const ContentProvider: React.FC<Props> = ({ children }) => {
       const videoData: Omit<Video, 'id' | 'uploadDate'> = {
         title: 'New Reel',
         description: 'A newly created reel',
-        url: urls[0], 
-        thumbnail: '', 
-        duration: 0, 
+        url: urls[0],
+        thumbnail: '',
+        duration: 0,
         uploader: 'current-user',
         views: 0,
         likes: 0,

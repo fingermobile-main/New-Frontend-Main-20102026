@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../../contexts/AppContext';  // Using absolute path from src
 import adsService from '../../services/adsService';
 import monetizationService from '../../services/monetizationService';
 
@@ -14,7 +14,7 @@ interface AnalyticsData {
 
 interface TimeRange {
   label: string;
-  value: "day" | "week" | "month" | "year";
+  value: 'day' | 'week' | 'month' | 'year';
 }
 
 interface ChartData {
@@ -33,8 +33,8 @@ interface TopContent {
 
 const UGCAnalyticsDashboard = () => {
   const { showToast} = useAppContext(); // Removed unused showToast
-  const [timeRange, setTimeRange] = React.useState<"day" | "week" | "month" | "year">(
-    "week",
+  const [timeRange, setTimeRange] = React.useState<'day' | 'week' | 'month' | 'year'>(
+    'week',
   );
   const [analyticsData, setAnalyticsData] = React.useState<
     Record<string, AnalyticsData>
@@ -46,16 +46,16 @@ const UGCAnalyticsDashboard = () => {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const timeRanges: TimeRange[] = [
-    { label: "Today", value: "day" },
-    { label: "This Week", value: "week" },
-    { label: "This Month", value: "month" },
-    { label: "This Year", value: "year" }
+    { label: 'Today', value: 'day' },
+    { label: 'This Week', value: 'week' },
+    { label: 'This Month', value: 'month' },
+    { label: 'This Year', value: 'year' }
   ];
 
   React.useEffect(() => {
     // Simulate fetching analytics data
     fetchAnalyticsData();
-  
+
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -72,7 +72,7 @@ const UGCAnalyticsDashboard = () => {
 
       // If we have ads metrics, we could potentially update analytics data
       // For now, we'll keep the mock logic but demonstrate service usage
-      console.info("Fetched ads metrics:", adsMetrics);
+      console.info('Fetched ads metrics:', adsMetrics);
 
       // Calculate potential earnings using MonetizationService
       const estimatedViews = 100000;
@@ -129,83 +129,83 @@ const UGCAnalyticsDashboard = () => {
       // Mock chart data for views over time
       const mockViewChartData: Record<string, ChartData[]> = {
         day: [
-          { label: "12AM", value: 50 },
-          { label: "4AM", value: 32 },
-          { label: "8AM", value: 87 },
-          { label: "12PM", value: 120 },
-          { label: "4PM", value: 95 },
-          { label: "8PM", value: 142 },
-          { label: "11PM", value: 78 }
+          { label: '12AM', value: 50 },
+          { label: '4AM', value: 32 },
+          { label: '8AM', value: 87 },
+          { label: '12PM', value: 120 },
+          { label: '4PM', value: 95 },
+          { label: '8PM', value: 142 },
+          { label: '11PM', value: 78 }
         ],
         week: [
-          { label: "Mon", value: 1200 },
-          { label: "Tue", value: 1900 },
-          { label: "Wed", value: 1500 },
-          { label: "Thu", value: 2100 },
-          { label: "Fri", value: 1800 },
-          { label: "Sat", value: 2400 },
-          { label: "Sun", value: 2200 }
+          { label: 'Mon', value: 1200 },
+          { label: 'Tue', value: 1900 },
+          { label: 'Wed', value: 1500 },
+          { label: 'Thu', value: 2100 },
+          { label: 'Fri', value: 1800 },
+          { label: 'Sat', value: 2400 },
+          { label: 'Sun', value: 2200 }
         ],
         month: [
-          { label: "Week 1", value: 7800 },
-          { label: "Week 2", value: 8200 },
-          { label: "Week 3", value: 9100 },
-          { label: "Week 4", value: 9200 }
+          { label: 'Week 1', value: 7800 },
+          { label: 'Week 2', value: 8200 },
+          { label: 'Week 3', value: 9100 },
+          { label: 'Week 4', value: 9200 }
         ],
         year: [
-          { label: "Jan", value: 32000 },
-          { label: "Feb", value: 28000 },
-          { label: "Mar", value: 35000 },
-          { label: "Apr", value: 31000 },
-          { label: "May", value: 38000 },
-          { label: "Jun", value: 42000 },
-          { label: "Jul", value: 39000 },
-          { label: "Aug", value: 41000 },
-          { label: "Sep", value: 37000 },
-          { label: "Oct", value: 34000 },
-          { label: "Nov", value: 45000 },
-          { label: "Dec", value: 52000 }
+          { label: 'Jan', value: 32000 },
+          { label: 'Feb', value: 28000 },
+          { label: 'Mar', value: 35000 },
+          { label: 'Apr', value: 31000 },
+          { label: 'May', value: 38000 },
+          { label: 'Jun', value: 42000 },
+          { label: 'Jul', value: 39000 },
+          { label: 'Aug', value: 41000 },
+          { label: 'Sep', value: 37000 },
+          { label: 'Oct', value: 34000 },
+          { label: 'Nov', value: 45000 },
+          { label: 'Dec', value: 52000 }
         ]
       };
 
       // Mock top content data
       const mockTopContent: TopContent[] = [
         {
-          id: "1",
-          title: "Summer Vacation Photos",
-          type: "Image",
+          id: '1',
+          title: 'Summer Vacation Photos',
+          type: 'Image',
           views: 1200,
           likes: 87,
           comments: 24
         },
         {
-          id: "2",
-          title: "New Music Release",
-          type: "Audio",
+          id: '2',
+          title: 'New Music Release',
+          type: 'Audio',
           views: 985,
           likes: 142,
           comments: 31
         },
         {
-          id: "3",
-          title: "Cooking Tutorial",
-          type: "Video",
+          id: '3',
+          title: 'Cooking Tutorial',
+          type: 'Video',
           views: 876,
           likes: 76,
           comments: 18
         },
         {
-          id: "4",
-          title: "Travel Guide",
-          type: "Post",
+          id: '4',
+          title: 'Travel Guide',
+          type: 'Post',
           views: 624,
           likes: 52,
           comments: 14
         },
         {
-          id: "5",
-          title: "Artwork Collection",
-          type: "Image",
+          id: '5',
+          title: 'Artwork Collection',
+          type: 'Image',
           views: 542,
           likes: 68,
           comments: 9
@@ -217,7 +217,7 @@ const UGCAnalyticsDashboard = () => {
       setTopContent(mockTopContent);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching analytics data:", error);
+      console.error('Error fetching analytics data:', error);
       setLoading(false);
     }
   };
@@ -239,7 +239,7 @@ const UGCAnalyticsDashboard = () => {
           {timeRanges.map((range) => (
             <button
               key={range.value}
-              className={`time-range-btn ${timeRange === range.value ? "active" : ""}`}
+              className={`time-range-btn ${timeRange === range.value ? 'active' : ''}`}
               onClick={() => setTimeRange(range.value)}
             >
               {range.label}

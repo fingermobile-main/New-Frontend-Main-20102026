@@ -32,9 +32,9 @@ https://lh3.googlemembercontent.com/a/ACg8ocLS7L5phiSgg_iYhteBV6jK_UggWoZuFUJHNa
 24T17:,
 31:57Z","","APPROVED","0120b016-28c4-4d38-8025-3cf0ea1ae835","","","","amal abbakar"`;
 
-const MOCK_POSTS_CSV = `"Best Answer Comment ID","Category ID","View Count","Edited Date","ID","Page URL","Created date","Owner ID","Slug","Plain Content","Commenting Disabled","Last Activity Date","Comment Count","Pinned","Title","Comment Interaction","Like Count"`;
+const MOCK_POSTS_CSV = '"Best Answer Comment ID","Category ID","View Count","Edited Date","ID","Page URL","Created date","Owner ID","Slug","Plain Content","Commenting Disabled","Last Activity Date","Comment Count","Pinned","Title","Comment Interaction","Like Count"';
 
-const MOCK_COMMENTS_CSV = `"Downvote Count","Edited Date","ID","Reply Count","Page URL","Created date","Owner ID","Score","Plain Content","Last Activity Date","Upvote Count","Post ID","Parent ID","Like Count"`;
+const MOCK_COMMENTS_CSV = '"Downvote Count","Edited Date","ID","Reply Count","Page URL","Created date","Owner ID","Score","Plain Content","Last Activity Date","Upvote Count","Post ID","Parent ID","Like Count"';
 
 const MOCK_BLOG_CATEGORIES_CSV = `"Post Count","Category Page URL","Posts","Description","ID","Label","Translation ID","Slug","Category Page Slug","Cover Image","Language"
 1,"/blog/categories/lifestyles","[""65b2320d02dcae0b2123d51e""]","","65b2328df5cebb7ba4c6b77f","Lifestyles","","lifestyles","/categories/lifestyles","","en"
@@ -96,9 +96,9 @@ export const useImportedData = () => {
 
         setLoading(false);
       } catch (err) {
-        setError("Failed to load data");
+        setError('Failed to load data');
         setLoading(false);
-        console.error("Error loading data:", err);
+        console.error('Error loading data:', err);
       }
     };
 

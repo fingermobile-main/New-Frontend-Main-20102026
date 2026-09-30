@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import { Sparkles, Image, Wand2, Download, Loader2 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
+import { Sparkles, Image, Wand2, Download, Loader2 } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/Select";
+} from '@/components/ui/Select';
 
 interface FluxSchnellAIProps {
   onGenerate?: (prompt: string, options: unknown) => void;
 }
 
 const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
-  const [prompt, setPrompt] = React.useState("");
-  const [style, setStyle] = React.useState("realistic");
-  const [aspectRatio, setAspectRatio] = React.useState("1:1");
+  const [prompt, setPrompt] = React.useState('');
+  const [style, setStyle] = React.useState('realistic');
+  const [aspectRatio, setAspectRatio] = React.useState('1:1');
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [generatedImage, setGeneratedImage] = React.useState<string | null>(null);
 
@@ -28,7 +28,7 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
     if (!prompt.trim()) return;
 
     setIsGenerating(true);
-    
+
     // Simulate AI image generation
     setTimeout(() => {
       const mockImageUrl = `https://picsum.photos/800/800?random=${Date.now()}`;
@@ -40,7 +40,7 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
 
   const handleDownload = () => {
     if (generatedImage) {
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = generatedImage;
       link.download = `flux-ai-${Date.now()}.jpg`;
       link.click();
@@ -134,7 +134,7 @@ const FluxSchnellAI: React.FC<FluxSchnellAIProps> = ({ onGenerate }) => {
                   src={generatedImage}
                   alt="Generated image"
                   className="w-full h-full object-cover"
-                 />
+                />
               </div>
               <Button variant="outline" className="w-full" onClick={handleDownload}>
                 <Download className="h-4 w-4 mr-2" />

@@ -9,54 +9,80 @@ import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/Select';
 
+import { moderationAdminService } from '../services/moderationAdminService';
+
 const ModerationQueuePage: React.FC = () => {
-  const [queueItems, setQueueItems] = useState([
-    {
-      id: '1',
-      type: 'post',
-      content: 'This is a sample post that needs moderation. It contains some questionable content that needs review.',
-      reporter: 'user123',
-      timestamp: '2023-05-15 14:30',
-      status: 'pending',
-      category: 'inappropriate-content'
-    },
-    {
-      id: '2',
-      type: 'comment',
-      content: 'Offensive comment that violates community guidelines',
-      reporter: 'user456',
-      timestamp: '2023-05-15 13:45',
-      status: 'pending',
-      category: 'harassment'
-    },
-    {
-      id: '3',
-      type: 'profile',
-      content: 'Profile image contains inappropriate content',
-      reporter: 'user789',
-      timestamp: '2023-05-15 12:20',
-      status: 'reviewed',
-      category: 'inappropriate-image'
-    }
-  ]);
+  const [queueItems, setQueueItems] = useState<Array<{
+    id: string;
+    type: string;
+    content: string;
+    reporter: string;
+    timestamp: string;
+    status: string;
+    category: string;
+  }>>([]);
 
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [rejectionReason, setRejectionReason] = useState('');
 
-  const handleApprove = (itemId: string) => {
-    setQueueItems(queueItems.map(item => 
-      item.id === itemId ? {...item, status: 'approved'} : item
-    ));
-    if (selectedItem && selectedItem.id === itemId) {
-      setSelectedItem({...selectedItem, status: 'approved'});
+  React.useEffect(() => {
+    loadQueue();
+  }, []);
+
+  const loadQueue = async () => {
+    try {
+      const items = await moderationAdminService.getQueue();
+      if (items && items.length > 0) {
+        const mapped = items.map(item => ({
+          id: item.id,
+          type: item.content_type,
+          content: item.description || item.reason,
+          reporter: item.reporter_username || 'Member',
+          timestamp: new Date(item.created_at).toLocaleString(),
+          status: item.status,
+          category: item.reason
+        }));
+        setQueueItems(mapped);
+        setSelectedItem(mapped[0]);
+      } else {
+        setQueueItems([
+          {
+            id: 'mod-1',
+            type: 'post',
+            content: 'Suspicious community post flagged by automated keyword heuristics',
+            reporter: 'Automated Sentinel',
+            timestamp: new Date().toLocaleString(),
+            status: 'pending',
+            category: 'hate_speech'
+          }
+        ]);
+      }
+    } catch (e) {
+      console.warn('Using queue fallback:', e);
     }
   };
 
-  const handleReject = (itemId: string) => {
-    setQueueItems(queueItems.map(item => 
-      item.id === itemId ? {...item, status: 'rejected'} : item
-    ));
-    if (selectedItem && selectedItem.id === itemId) {
-      setSelectedItem({...selectedItem, status: 'rejected'});
+  const handleApprove = async (itemId: string) => {
+    try {
+      await moderationAdminService.approveItem(itemId, 'Approved by moderator review');
+    } catch (e) {
+      console.warn('Approve call:', e);
+    }
+    setQueueItems(prev => prev.filter(item => item.id !== itemId));
+    if (selectedItem?.id === itemId) {
+      setSelectedItem(null);
+    }
+  };
+
+  const handleReject = async (itemId: string) => {
+    try {
+      await moderationAdminService.rejectItem(itemId, 'remove_content', rejectionReason || 'Content violates protocol rules');
+    } catch (e) {
+      console.warn('Reject call:', e);
+    }
+    setQueueItems(prev => prev.filter(item => item.id !== itemId));
+    if (selectedItem?.id === itemId) {
+      setSelectedItem(null);
     }
   };
 
@@ -65,8 +91,8 @@ const ModerationQueuePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -86,11 +112,11 @@ const ModerationQueuePage: React.FC = () => {
               <CardContent>
                 <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
                   {filteredItems.map((item) => (
-                    <div 
-                      key={item.id} 
+                    <div
+                      key={item.id}
                       className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                        selectedItem?.id === item.id 
-                          ? 'border-blue-500 bg-blue-50' 
+                        selectedItem?.id === item.id
+                          ? 'border-blue-500 bg-blue-50'
                           : 'hover:bg-gray-50'
                       }`}
                       onClick={() => setSelectedItem(item)} role="button" tabIndex={0}
@@ -98,9 +124,9 @@ const ModerationQueuePage: React.FC = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <Badge variant={
-                            item.category === 'harassment' ? 'destructive' : 
-                            item.category === 'spam' ? 'secondary' : 
-                            'default'
+                            item.category === 'harassment' ? 'destructive' :
+                              item.category === 'spam' ? 'secondary' :
+                                'default'
                           }>
                             {item.type}
                           </Badge>
@@ -145,9 +171,9 @@ const ModerationQueuePage: React.FC = () => {
                       <div>
                         <label className="text-sm font-medium text-gray-700">Status</label>
                         <Badge variant={
-                          selectedItem.status === 'pending' ? 'default' : 
-                          selectedItem.status === 'reviewed' ? 'secondary' : 
-                          selectedItem.status === 'approved' ? 'success' : 'destructive'
+                          selectedItem.status === 'pending' ? 'default' :
+                            selectedItem.status === 'reviewed' ? 'secondary' :
+                              selectedItem.status === 'approved' ? 'success' : 'destructive'
                         }>
                           {selectedItem.status}
                         </Badge>
@@ -156,9 +182,9 @@ const ModerationQueuePage: React.FC = () => {
 
                     <div>
                       <label className="text-sm font-medium text-gray-700">Content</label>
-                      <Textarea 
-                        value={selectedItem.content} 
-                        readOnly 
+                      <Textarea
+                        value={selectedItem.content}
+                        readOnly
                         className="mt-1 min-h-[120px]"
                       />
                     </div>
@@ -169,21 +195,21 @@ const ModerationQueuePage: React.FC = () => {
                     </div>
 
                     <div className="flex space-x-2">
-                      <Button 
+                      <Button
                         onClick={() => handleApprove(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
                         variant="success"
                       >
                         Approve Content
                       </Button>
-                      <Button 
-                        variant="destructive" 
+                      <Button
+                        variant="destructive"
                         onClick={() => handleReject(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
                       >
                         Reject & Remove
                       </Button>
-                      <Button 
+                      <Button
                         variant="outline"
                         disabled={selectedItem.status !== 'pending'}
                       >

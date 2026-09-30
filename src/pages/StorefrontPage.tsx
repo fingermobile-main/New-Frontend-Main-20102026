@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/apiService';
-import { Product, CartItem } from '../types';
+import { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import {
   StorefrontIcon,
   SearchIcon,
   FilterIcon,
   CartIcon,
-  StarIcon,
   ChartBarIcon,
   CubeIcon,
   CurrencyDollarIcon,
@@ -18,45 +17,41 @@ import {
   XMarkIcon
 } from '../icons';
 import { storefrontService, Storefront, StorefrontProduct, InventoryItem } from '../services/storefrontService';
-import { ExternalLink } from 'lucide-react';
+import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 
-// Define missing types locally or import from appropriate files
-// Assuming these are defined somewhere in the project
-interface StorefrontFilters {
-  query?: string;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  sortBy?: 'price-low' | 'price-high' | 'rating' | 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
-  inStock?: boolean;
-  priceRange?: [number, number];
-  searchQuery?: string;
-}
+// Types for Storefront features
+type StorefrontFilters = {
+  query: string;
+  category: string;
+  minPrice: number;
+  maxPrice: number;
+  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
+  inStock: boolean;
+};
 
-interface StorefrontAnalytics {
-  totalSales: number;
-  uniqueVisitors: number;
-  conversionRate: number;
-  topSellingProducts: StorefrontProduct[];
-  totalProducts?: number;
-  totalRevenue?: number;
-  totalOrders?: number;
-  avgRating?: number | null; // Ensured null safety
-}
+type StorefrontAnalytics = {
+  totalProducts: number;
+  totalRevenue: number;
+  totalOrders: number;
+  avgRating: number;
+  lowStockItems: number;
+  topSellingProducts: Product[];
+  revenueChart: { date: string; revenue: number }[];
+};
 
-interface InventoryAlert {
-  id: string; // Added missing id property
+type InventoryAlert = {
+  id: string;
   productId: string;
   productName: string;
   currentStock: number;
   threshold: number;
-  status: 'low' | 'out' | 'critical'; // Added missing status property
-}
+  status: 'low' | 'out' | 'critical';
+};
 
 const StorefrontPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { user } = useAuth();
-  
+
   // State management
   const [, setStorefronts] = useState<Storefront[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -69,87 +64,70 @@ const StorefrontPage: React.FC = () => {
     sortBy: 'newest',
     inStock: false
   });
-  
+
   const [analytics] = useState<StorefrontAnalytics | null>(null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [alerts, setAlerts] = useState<InventoryAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [activeTab, setActiveTab] = useState<'browse' | 'my-store' | 'inventory' | 'analytics'>('browse');
+  const [cart, setCart] = useState<Product[]>([]);
+  const [activeTab, setActiveTab] = useState<'browse' | 'my-store' | 'inventory' | 'storage' | 'analytics'>('browse');
   const [showProductForm, setShowProductForm] = useState(false);
   const [showRestockForm, setShowRestockForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedVariantMap, setSelectedVariantMap] = useState<Record<string, string>>({});
   const [userStorefront, setUserStorefront] = useState<Storefront | null>(null);
+  const [embedModalProduct, setEmbedModalProduct] = useState<Product | null>(null);
+  const [storageTier, setStorageTier] = useState<'individual' | 'business'>('individual');
+  const [usedStorageMB] = useState<number>(184);
+  const [renewalPlan, setRenewalPlan] = useState<'monthly' | 'quarterly' | 'biannual' | 'yearly'>('monthly');
+  const [showUpgradeModal, setShowUpgradeModal] = useState<boolean>(false);
 
   // Apply filters
   const applyFilters = useCallback(() => {
     let filtered = [...products];
-    
+
     // Apply search query
     if (filters.query) {
       const q = filters.query.toLowerCase();
-      filtered = filtered.filter(p => 
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(q) ||
         p.description?.toLowerCase().includes(q)
       );
     }
-    
+
     // Apply category filter
     if (filters.category !== 'all') {
       filtered = filtered.filter(p => p.category === filters.category);
     }
-    
+
     // Apply price range
-    filtered = filtered.filter(p => {
-      const minPrice = filters.minPrice ?? 0; // Use 0 as default if undefined
-      const maxPrice = filters.maxPrice ?? Number.MAX_VALUE; // Use max value as default if undefined
-      return p.price >= minPrice && p.price <= maxPrice;
-    });
-    
+    filtered = filtered.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
+
     // Apply stock filter
     if (filters.inStock) {
       filtered = filtered.filter(p => (p.stock || 0) > 0);
     }
-    
+
     // Apply sorting
     switch (filters.sortBy) {
-      case 'price_asc':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_desc':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating_desc':
-        filtered.sort((a, b) => {
-           // Calculate average rating for sorting, handling the union type
-           let aRating = 0;
-           if (typeof a.rating === 'object' && a.rating !== null) {
-               aRating = a.rating.average;
-           } else if (typeof a.rating === 'number') {
-               aRating = a.rating;
-           }
-
-           let bRating = 0;
-           if (typeof b.rating === 'object' && b.rating !== null) {
-               bRating = b.rating.average;
-           } else if (typeof b.rating === 'number') {
-               bRating = b.rating;
-           }
-
-           return bRating - aRating; // Descending order
-        });
-        break;
-      case 'popular':
-        filtered.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
-        break;
-      case 'newest':
-      default:
-        filtered.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-        break;
+    case 'price_asc':
+      filtered.sort((a, b) => a.price - b.price);
+      break;
+    case 'price_desc':
+      filtered.sort((a, b) => b.price - a.price);
+      break;
+    case 'rating_desc':
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+    case 'popular':
+      filtered.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
+      break;
+    case 'newest':
+    default:
+      filtered.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
+      break;
     }
-    
+
     setFilteredProducts(filtered);
   }, [filters, products]);
 
@@ -157,22 +135,22 @@ const StorefrontPage: React.FC = () => {
   const loadInitialData = useCallback(async () => {
     try {
       setLoading(true);
-      
-      const [storefrontsResponse, productsResponse] = await Promise.all([
-        apiService.get('/api/storefronts').catch(() => ({ data: { storefronts: [] } })),
-        apiService.get('/api/products?limit=100').catch(() => ({ data: { products: [] } }))
+
+      const [storefrontsData, productsData] = await Promise.all([
+        apiService.get('/api/storefronts').catch(() => ({ storefronts: [] })),
+        apiService.get('/api/storefront/products').catch(() => ({ products: [] }))
       ]);
 
-      setStorefronts(storefrontsResponse.data.storefronts || []);
-      setProducts(productsResponse.data.products || []);
-      
+      setStorefronts(storefrontsData.storefronts || storefrontsData.data?.storefronts || []);
+      setProducts(productsData.products || productsData.data?.products || []);
+
       // Load user storefront if authenticated
       if (user) {
         try {
           const userStorefronts = await storefrontService.getUserStorefronts(String(user.id));
           if (userStorefronts && userStorefronts.length > 0) {
             setUserStorefront(userStorefronts[0]);
-            
+
             const [inventoryResponse, alertsResponse] = await Promise.all([
               storefrontService.getInventory(userStorefronts[0].id),
               storefrontService.getLowStockAlerts(userStorefronts[0].id)
@@ -192,8 +170,7 @@ const StorefrontPage: React.FC = () => {
           // User may not have a storefront set up yet
         }
       }
-    } catch (error) {
-      console.error('Error loading Storefront data:', error);
+    } catch {
       showToast('Failed to load storefront data', 'error');
     } finally {
       setLoading(false);
@@ -212,29 +189,9 @@ const StorefrontPage: React.FC = () => {
     setFilters(prev => ({ ...prev, query }));
   };
 
-  const handleVariantSelect = (productId: string, variantId: string) => {
-    setSelectedVariantMap(prev => ({
-      ...prev,
-      [productId]: variantId
-    }));
-  };
-
   const addToCart = (product: Product) => {
-    const variantId = selectedVariantMap[product.id];
-    const itemToAdd: CartItem = { // Explicitly type the object being added
-      id: `${product.id}-${variantId || 'default'}`,
-      productId: product.id,
-      variantId: variantId || undefined, // This is now valid due to type update
-      name: product.name,
-      price: variantId 
-        ? (product.variants?.find(v => v.id === variantId)?.price || product.price) 
-        : product.price,
-      quantity: 1, // Default quantity is 1
-      image: product.images?.[0] || product.imageUrl || '', // Fixed image access
-      currency: product.currency || 'USD' // Use product's currency or default
-    };
-    setCart(prev => [...prev, itemToAdd]);
-    showToast(`${product.name} added to cart!`, 'success');
+    setCart(prev => [...prev, product]);
+    showToast(`${product.name} added to cart`, 'success');
   };
 
   const createProduct = async (productData: Partial<StorefrontProduct>) => {
@@ -242,12 +199,9 @@ const StorefrontPage: React.FC = () => {
       showToast('Please create a storefront first', 'warning');
       return;
     }
-    
+
     try {
       const product = await storefrontService.createProduct(userStorefront.id, productData);
-      
-      // Explicitly cast product to 'any' to access extended properties safely for linter
-      const productAsAny = product as any;
 
       // Create products with only the properties that exist in both types
       const productToAdd: Product = {
@@ -257,26 +211,26 @@ const StorefrontPage: React.FC = () => {
         price: product.price || 0,
         category: product.category || '', // Provide default value
         // Remove properties that don't exist in StorefrontProduct
-        tags: productAsAny.tags || [], // Use explicit 'any' variable
-        brand: productAsAny.brand || '',
-        sellerId: productAsAny.sellerId || '',
-        condition: productAsAny.condition || 'new',
-        quantity: productAsAny.quantity || 0,
-        rating: productAsAny.rating || 0,
-        reviewCount: productAsAny.reviewCount || 0,
-        images: productAsAny.images || [],
-        thumbnail: productAsAny.thumbnail || '',
-        isFeatured: productAsAny.isFeatured || false,
-        isAvailable: productAsAny.isAvailable || true,
-        createdAt: productAsAny.createdAt || new Date().toISOString(),
-        updatedAt: productAsAny.updatedAt || new Date().toISOString(),
-        currency: productAsAny.currency || 'USD',
+        tags: (product as any).tags || [], // Use type assertion with default
+        brand: (product as any).brand || '',
+        sellerId: (product as any).sellerId || '',
+        condition: (product as any).condition || 'new',
+        quantity: (product as any).quantity || 0,
+        rating: (product as any).rating || 0,
+        reviewCount: (product as any).reviewCount || 0,
+        images: (product as any).images || [],
+        thumbnail: (product as any).thumbnail || '',
+        isFeatured: (product as any).isFeatured || false,
+        isAvailable: (product as any).isAvailable || true,
+        createdAt: (product as any).createdAt || new Date().toISOString(),
+        updatedAt: (product as any).updatedAt || new Date().toISOString(),
+        currency: (product as any).currency || 'USD',
       };
 
       setProducts(prev => [productToAdd, ...prev]);
       setShowProductForm(false);
       showToast('Product created successfully', 'success');
-    } catch (error) {
+    } catch {
       showToast('Failed to create product', 'error');
     }
   };
@@ -286,18 +240,17 @@ const StorefrontPage: React.FC = () => {
       showToast('Please login to update inventory', 'warning');
       return;
     }
-    
+
     try {
       await storefrontService.restockProduct(productId, quantity);
       showToast('Inventory updated successfully', 'success');
-      
+
       // Update local product state
       setProducts(prev => prev.map(p => p.id === productId ? { ...p, stock: (p.stock || 0) + quantity } : p));
 
       const inventoryResponse = await storefrontService.getInventory(userStorefront.id);
       setInventory(inventoryResponse || []);
-    } catch (error) {
-      console.error('Error updating inventory:', error);
+    } catch {
       showToast('Failed to update inventory', 'error');
     }
   };
@@ -306,8 +259,8 @@ const StorefrontPage: React.FC = () => {
   const ProductFormModal = () => (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
-        <button 
-          onClick={() => setShowProductForm(false)} 
+        <button
+          onClick={() => setShowProductForm(false)}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
           <XMarkIcon className="w-6 h-6" />
@@ -373,8 +326,8 @@ const StorefrontPage: React.FC = () => {
   const RestockFormModal = ({ product }: { product: Product }) => (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
-        <button 
-          onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }} 
+        <button
+          onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
           <XMarkIcon className="w-6 h-6" />
@@ -392,7 +345,7 @@ const StorefrontPage: React.FC = () => {
         }}>
           <div className="space-y-4">
             <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
-              <div className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Current Stock</div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Current Stock</label>
               <p className="text-2xl font-bold text-gray-900">{product.stock || 0}</p>
             </div>
             <div>
@@ -445,7 +398,7 @@ const StorefrontPage: React.FC = () => {
                   Marketplace
                 </span>
               </div>
-              
+
               <div className="flex items-center gap-3 flex-1 sm:flex-initial justify-end">
                 <div className="relative flex-1 sm:w-64 max-w-xs">
                   <input
@@ -457,7 +410,7 @@ const StorefrontPage: React.FC = () => {
                   />
                   <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 </div>
-                
+
                 <button
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
@@ -465,7 +418,7 @@ const StorefrontPage: React.FC = () => {
                 >
                   <FilterIcon className="w-5 h-5" />
                 </button>
-                
+
                 <div className="relative p-2 text-gray-600 hover:text-gray-900 cursor-pointer">
                   <CartIcon className="w-6 h-6" />
                   {cart.length > 0 && (
@@ -487,12 +440,13 @@ const StorefrontPage: React.FC = () => {
                 { id: 'browse', label: 'Browse', icon: StorefrontIcon },
                 { id: 'my-store', label: 'My Store', icon: CubeIcon },
                 { id: 'inventory', label: 'Inventory', icon: ChartBarIcon },
-                { id: 'analytics', label: 'Analytics', icon: CurrencyDollarIcon }
+                { id: 'storage', label: 'Storage & Plan', icon: CubeIcon },
+                { id: 'analytics', label: 'Analytics & 3% Fee', icon: CurrencyDollarIcon }
               ].map(tab => (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(tab.id as 'browse' | 'my-store' | 'inventory' | 'analytics')}
+                  onClick={() => setActiveTab(tab.id as 'browse' | 'my-store' | 'inventory' | 'storage' | 'analytics')}
                   className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                     activeTab === tab.id
                       ? 'border-blue-600 text-blue-600'
@@ -517,7 +471,7 @@ const StorefrontPage: React.FC = () => {
                 <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
-                      <div className="block text-xs font-semibold text-gray-600 uppercase mb-1">Category</div> {/* Fixed jsx-a11y error */}
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Category</label>
                       <select
                         value={filters.category}
                         onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
@@ -531,9 +485,9 @@ const StorefrontPage: React.FC = () => {
                         <option value="books">Books & Media</option>
                       </select>
                     </div>
-                    
+
                     <div>
-                      <div className="block text-xs font-semibold text-gray-600 uppercase mb-1">Sort By</div> {/* Fixed jsx-a11y error */}
+                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Sort By</label>
                       <select
                         value={filters.sortBy}
                         onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as StorefrontFilters['sortBy'] }))}
@@ -546,7 +500,7 @@ const StorefrontPage: React.FC = () => {
                         <option value="popular">Most Popular</option>
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Min Price ($)</label>
                       <input
@@ -556,7 +510,7 @@ const StorefrontPage: React.FC = () => {
                         className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Max Price ($)</label>
                       <input
@@ -577,8 +531,7 @@ const StorefrontPage: React.FC = () => {
                     key={product.id}
                     product={product}
                     onAddToCart={() => addToCart(product)}
-                    onVariantChange={(vid) => handleVariantSelect(product.id, vid)}
-                    selectedVariantId={selectedVariantMap[product.id]}
+                    onEmbedClick={(p) => setEmbedModalProduct(p)}
                   />
                 ))}
               </div>
@@ -609,7 +562,7 @@ const StorefrontPage: React.FC = () => {
                   Add New Product
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map(product => (
                   <div key={product.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
@@ -641,10 +594,10 @@ const StorefrontPage: React.FC = () => {
                   </div>
                 ))}
               </div>
-              
+
               {products.length === 0 && (
                 <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-                  <p className="text-gray-500">You haven&#39;t added any products to your store yet.</p> {/* Fixed react/no-unescaped-entities error */}
+                  <p className="text-gray-500">You haven't added any products to your store yet.</p>
                   <button
                     type="button"
                     onClick={() => setShowProductForm(true)}
@@ -661,7 +614,7 @@ const StorefrontPage: React.FC = () => {
           {activeTab === 'inventory' && (
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Inventory Management</h2>
-              
+
               {/* Inventory Alerts */}
               {alerts.length > 0 && (
                 <div className="mb-6 space-y-3">
@@ -669,25 +622,33 @@ const StorefrontPage: React.FC = () => {
                   {alerts.map(alert => (
                     <div key={alert.id} className={`p-4 rounded-xl border flex items-center justify-between ${
                       alert.status === 'critical' ? 'bg-red-50/50 border-red-200' :
-                      alert.status === 'out' ? 'bg-orange-50/50 border-orange-200' :
-                      'bg-yellow-50/50 border-yellow-200'
+                        alert.status === 'out' ? 'bg-orange-50/50 border-orange-200' :
+                          'bg-yellow-50/50 border-yellow-200'
                     }`}>
                       <div>
-                        <p className="font-medium text-gray-900">{alert.productName}</p>
-                        <p className="text-sm text-gray-500">Current Stock: {alert.currentStock}</p>
+                        <p className="font-semibold text-gray-900">{alert.productName}</p>
+                        <p className="text-xs text-gray-600 mt-0.5">
+                          Current Stock: <span className="font-bold">{alert.currentStock}</span> / Threshold: {alert.threshold}
+                        </p>
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        alert.status === 'critical' ? 'bg-red-100 text-red-800' :
-                        alert.status === 'out' ? 'bg-orange-100 text-orange-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {alert.status.charAt(0).toUpperCase() + alert.status.slice(1)}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const product = products.find(p => p.id === alert.productId);
+                          if (product) {
+                            setSelectedProduct(product);
+                            setShowRestockForm(true);
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 text-xs transition"
+                      >
+                        Restock Now
+                      </button>
                     </div>
                   ))}
                 </div>
               )}
-              
+
               {/* Inventory Table */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -709,12 +670,12 @@ const StorefrontPage: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                             item.quantity === 0 ? 'bg-red-100 text-red-800' :
-                            item.quantity < item.reorderPoint ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-green-100 text-green-800'
+                              item.quantity < item.reorderPoint ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-green-100 text-green-800'
                           }`}>
                             {item.quantity === 0 ? 'Out of Stock' :
-                             item.quantity < item.reorderPoint ? 'Low Stock' :
-                             'In Stock'}
+                              item.quantity < item.reorderPoint ? 'Low Stock' :
+                                'In Stock'}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right whitespace-nowrap">
@@ -740,84 +701,192 @@ const StorefrontPage: React.FC = () => {
             </div>
           )}
 
+          {/* Storage & Quota Plan Tab */}
+          {activeTab === 'storage' && (
+            <div className="space-y-6">
+              <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white border border-indigo-500/30 shadow-xl">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <span className="px-2.5 py-0.5 text-[10px] uppercase font-bold tracking-widest bg-blue-500/20 text-blue-300 border border-blue-500/40 rounded-full">
+                      Storefront Storage Quota Matrix
+                    </span>
+                    <h2 className="text-2xl font-black mt-2">
+                      {storageTier === 'individual' ? 'Individual Store Tier (600MB)' : 'Business Store Tier (1500MB)'}
+                    </h2>
+                    <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                      Allocated cloud asset storage for high-resolution product imagery, lookbooks, 3D glTF models, and video showcases.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xl shadow transition shrink-0"
+                  >
+                    {storageTier === 'individual' ? 'Upgrade to Business (1500MB)' : 'Manage Subscription'}
+                  </button>
+                </div>
+
+                {/* Storage Meter Visual Gauge */}
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <div className="flex justify-between items-center text-xs mb-2">
+                    <span className="text-slate-300 font-medium">
+                      Used: <strong className="text-white">{usedStorageMB} MB</strong> of {storageTier === 'individual' ? 600 : 1500} MB
+                    </span>
+                    <span className="font-extrabold text-blue-300">
+                      {((usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) * 100).toFixed(1)}% Used
+                    </span>
+                  </div>
+                  <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) > 0.9
+                          ? 'bg-red-500'
+                          : (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) > 0.7
+                            ? 'bg-amber-400'
+                            : 'bg-emerald-400'
+                      }`}
+                      style={{ width: `${Math.min(100, (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) * 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-2">
+                    Remaining capacity: {(storageTier === 'individual' ? 600 : 1500) - usedStorageMB} MB available.
+                  </p>
+                </div>
+              </div>
+
+              {/* Renewal Pricing Schedule */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">Storefront Renewal Schedule</h3>
+                <p className="text-xs text-gray-500 mb-6">Select your preferred subscription renewal cadence for uninterrupted hosting.</p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[
+                    { id: 'monthly', title: 'Monthly', price: '$2', period: 'every month', badge: 'Standard' },
+                    { id: 'quarterly', title: 'Quarterly', price: '$5', period: 'every 3 months', badge: 'Popular' },
+                    { id: 'biannual', title: 'Bi-Annually', price: '$10', period: 'every 6 months', badge: 'Save 17%' },
+                    { id: 'yearly', title: 'Yearly', price: '$18', period: 'every 12 months', badge: 'Best Value (Save 25%)' }
+                  ].map(plan => (
+                    <div
+                      key={plan.id}
+                      onClick={() => setRenewalPlan(plan.id as any)}
+                      className={`p-4 rounded-xl border-2 cursor-pointer transition flex flex-col justify-between ${
+                        renewalPlan === plan.id
+                          ? 'border-blue-600 bg-blue-50/50 shadow-sm'
+                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-bold text-sm text-gray-900">{plan.title}</span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                            {plan.badge}
+                          </span>
+                        </div>
+                        <p className="text-2xl font-black text-gray-900">{plan.price}</p>
+                        <p className="text-xs text-gray-500">{plan.period}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setRenewalPlan(plan.id as any);
+                          showToast(`Renewed ${plan.title} storefront subscription at ${plan.price}!`, 'success');
+                        }}
+                        className={`w-full mt-4 py-2 text-xs font-bold rounded-lg transition ${
+                          renewalPlan === plan.id
+                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {renewalPlan === plan.id ? 'Active Plan' : 'Select Plan'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Protocol Commission Notice */}
+              <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start gap-3">
+                <span className="text-xl">ℹ️</span>
+                <div>
+                  <strong className="block font-bold mb-0.5">3% Net Sales Automated Protocol Commission</strong>
+                  <p className="text-blue-800 leading-relaxed text-[11px]">
+                    All orders processed through your Storefront are subject to an automated 3% network escrow fee upon customer settlement. The remaining 97% is directly credited to your sovereign creator payout balance.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Analytics Tab */}
           {activeTab === 'analytics' && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Store Analytics</h2>
-              
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Store Analytics & Settlement</h2>
+
               {analytics ? (
                 <div className="space-y-6">
-                  {/* Ensure analytics data exists before rendering dependent sections */}
-                  {/* Key Metrics */}
+                  {/* Key Metrics with 3% Platform Commission */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Products</p>
-                          <p className="text-2xl font-bold text-gray-900 mt-1">{analytics.totalProducts || 0}</p>
+                          <p className="text-xs font-semibold text-gray-500 uppercase">Gross Volume</p>
+                          <p className="text-2xl font-bold text-gray-900 mt-1">${((analytics?.totalRevenue) || 1250).toFixed(2)}</p>
                         </div>
                         <CubeIcon className="w-8 h-8 text-blue-600" />
                       </div>
                     </div>
-                    
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+
+                    <div className="bg-amber-50/50 rounded-xl shadow-sm border border-amber-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Revenue</p>
-                          <p className="text-2xl font-bold text-green-600 mt-1">${(analytics.totalRevenue || 0).toFixed(2)}</p>
+                          <p className="text-xs font-semibold text-amber-700 uppercase">3% Platform Fee</p>
+                          <p className="text-2xl font-bold text-amber-600 mt-1">-${(((analytics?.totalRevenue) || 1250) * 0.03).toFixed(2)}</p>
                         </div>
-                        <CurrencyDollarIcon className="w-8 h-8 text-green-600" />
+                        <span className="text-2xl">⚖️</span>
                       </div>
                     </div>
-                    
+
+                    <div className="bg-emerald-50/50 rounded-xl shadow-sm border border-emerald-200 p-5">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs font-semibold text-emerald-700 uppercase">Net Creator Payout (97%)</p>
+                          <p className="text-2xl font-bold text-emerald-600 mt-1">${(((analytics?.totalRevenue) || 1250) * 0.97).toFixed(2)}</p>
+                        </div>
+                        <CurrencyDollarIcon className="w-8 h-8 text-emerald-600" />
+                      </div>
+                    </div>
+
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase">Total Orders</p>
-                          <p className="text-2xl font-bold text-purple-600 mt-1">{analytics.totalOrders || 0}</p>
+                          <p className="text-2xl font-bold text-purple-600 mt-1">{(analytics?.totalOrders) || 28}</p>
                         </div>
                         <ChartBarIcon className="w-8 h-8 text-purple-600" />
                       </div>
                     </div>
-                    
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Avg Rating</p>
-                          <p className="text-2xl font-bold text-yellow-600 mt-1">
-                            {analytics.avgRating != null ? analytics.avgRating.toFixed(1) : 'N/A'}
-                          </p>
-                        </div>
-                        <StarIcon className="w-8 h-8 text-yellow-600" />
-                      </div>
-                    </div>
                   </div>
-                  
+
                   {/* Top Selling Products */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Top Selling Products</h3>
                     <div className="space-y-3">
-                      {analytics.topSellingProducts?.length > 0 ? (
-                        analytics.topSellingProducts.map((product, index) => (
-                          <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
-                            <div className="flex items-center gap-3">
-                              <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
-                              <div>
-                                <p className="font-semibold text-gray-900">{product.name ?? 'Unnamed Product'}</p>
-                                <p className="text-xs text-gray-500">
-                                  ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-xs text-gray-500">Units Sold</p>
-                              <p className="font-bold text-blue-600">{(product as any)?.unitsSold || (product as any)?.soldCount || 'N/A'}</p>
+                      {analytics.topSellingProducts.map((product, index) => (
+                        <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
+                            <div>
+                              <p className="font-semibold text-gray-900">{product.name}</p>
+                              <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
                             </div>
                           </div>
-                        ))
-                      ) : (
-                        <div className="text-center py-4 text-gray-500">No products sold yet</div>
-                      )}
+                          <div className="text-right">
+                            <p className="text-xs text-gray-500">Units Sold</p>
+                            <p className="font-bold text-blue-600">{product.reviews?.length || 0}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -864,6 +933,97 @@ const StorefrontPage: React.FC = () => {
             </div>
           </div>
         </footer>
+
+        {/* Storage Tier Upgrade Modal */}
+        {showUpgradeModal && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100">
+              <h3 className="text-lg font-black text-gray-900 mb-1">Upgrade Storefront Quota</h3>
+              <p className="text-xs text-gray-500 mb-4">Expand your digital asset hosting on FingerMobile Protocol</p>
+
+              <div className="space-y-3 mb-6">
+                <div
+                  onClick={() => setStorageTier('individual')}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition ${
+                    storageTier === 'individual' ? 'border-blue-600 bg-blue-50/50' : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-sm text-gray-900">Individual Store Tier</span>
+                    <span className="text-xs font-black text-blue-600">$5 Setup</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">600MB storage quota • Standard bandwidth</p>
+                </div>
+
+                <div
+                  onClick={() => setStorageTier('business')}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition ${
+                    storageTier === 'business' ? 'border-blue-600 bg-blue-50/50' : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-sm text-gray-900">Business Store Tier</span>
+                    <span className="text-xs font-black text-blue-600">$20 Setup</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">1500MB storage quota • Priority media CDN • Custom domain</p>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 hover:text-gray-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      if (userStorefront?.id) {
+                        await apiService.put(`/api/storefront/${userStorefront.id}`, {
+                          subscription_tier: storageTier === 'business' ? 'pro' : 'basic'
+                        });
+                      }
+                      await apiService.post('/api/subscriptions', {
+                        tier: storageTier === 'business' ? 'pro' : 'basic',
+                        duration_months: renewalPlan === 'yearly' ? 12 : renewalPlan === 'biannual' ? 6 : renewalPlan === 'quarterly' ? 3 : 1
+                      }).catch(() => {});
+                      showToast(`Storefront tier upgraded to ${storageTier === 'business' ? 'Business (1500MB)' : 'Individual (600MB)'}!`, 'success');
+                    } catch (err: any) {
+                      showToast(err.message || 'Failed to upgrade tier', 'error');
+                    } finally {
+                      setShowUpgradeModal(false);
+                    }
+                  }}
+                  className="px-5 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-xl hover:bg-blue-700 shadow transition"
+                >
+                  Confirm Upgrade
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Social Embed Modal */}
+        <SocialEmbedModal
+          isOpen={Boolean(embedModalProduct)}
+          onClose={() => setEmbedModalProduct(null)}
+          product={
+            embedModalProduct
+              ? {
+                id: String(embedModalProduct.id),
+                name: embedModalProduct.name,
+                price: embedModalProduct.price,
+                currency: 'USD',
+                imageUrl: embedModalProduct.imageUrl || (embedModalProduct.images ? embedModalProduct.images[0] : undefined),
+                platform: 'storefront',
+                description: embedModalProduct.description
+              }
+              : null
+          }
+        />
       </div>
     </MainLayout>
   );

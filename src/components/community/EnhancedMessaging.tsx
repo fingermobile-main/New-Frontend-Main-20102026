@@ -21,7 +21,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
 
   const handleSend = () => {
     if (!newMessage.trim()) return;
-    
+
     const message = {
       id: String(messages.length + 1),
       sender: 'You',
@@ -29,7 +29,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       isOwn: true
     };
-    
+
     setMessages([...messages, message]);
     setNewMessage('');
   };
@@ -45,8 +45,8 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[70%] px-4 py-2 rounded-lg ${
-              message.isOwn 
-                ? 'bg-blue-600 text-white' 
+              message.isOwn
+                ? 'bg-blue-600 text-white'
                 : 'bg-gray-100 text-gray-900'
             }`}>
               {!message.isOwn && <p className="text-xs font-medium mb-1 opacity-75">{message.sender}</p>}

@@ -47,8 +47,8 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
     }
   };
 
-  const filteredOrders = filterStatus === 'all' 
-    ? orders 
+  const filteredOrders = filterStatus === 'all'
+    ? orders
     : orders.filter(order => order.status === filterStatus);
 
   const formatDate = (dateString: string) => {

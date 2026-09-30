@@ -22,12 +22,12 @@ const MiiUpdates: React.FC<MiiUpdatesProps> = ({ userId, limit = 5 }) => {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'milestone': return '🎯';
-      case 'achievement': return '🏆';
-      case 'reward': return '💰';
-      case 'badge': return '🎖️';
-      case 'update': return '✓';
-      default: return '📢';
+    case 'milestone': return '🎯';
+    case 'achievement': return '🏆';
+    case 'reward': return '💰';
+    case 'badge': return '🎖️';
+    case 'update': return '✓';
+    default: return '📢';
     }
   };
 

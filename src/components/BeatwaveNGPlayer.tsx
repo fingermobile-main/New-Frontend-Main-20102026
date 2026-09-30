@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, 
+import {
+  Play, Pause, SkipBack, SkipForward, Volume2, VolumeX,
   Repeat, Shuffle, Heart, MoreVertical, Download, Share2,
   ListMusic, Mic2, Radio, BrainCircuit
 } from 'lucide-react';
@@ -34,7 +34,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
   const [showVolumeSlider, setShowVolumeSlider] = React.useState(false);
   const [isShuffle, setIsShuffle] = React.useState(false);
   const [repeatMode, setRepeatMode] = React.useState<'none' | 'one' | 'all'>('none');
-  
+
   const audioRef = React.useRef<HTMLAudioElement>(null);
   const progressBarRef = React.useRef<HTMLDivElement>(null);
 
@@ -75,7 +75,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
     audio.src = currentTrack.url;
     audio.load();
-    
+
     if (isPlaying) {
       audio.play().catch(err => {
         console.error('Error playing audio:', err);
@@ -115,7 +115,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
   const handlePlayPause = () => {
     if (!currentTrack) return;
-    
+
     if (isPlaying) {
       pauseTrack();
     } else {
@@ -130,9 +130,9 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
     const clickX = e.clientX - rect.left;
     const percentage = clickX / rect.width;
     const newTime = percentage * currentTrack.duration;
-    
+
     seekTrack(newTime);
-    
+
     if (audioRef.current) {
       audioRef.current.currentTime = newTime;
     }
@@ -182,8 +182,8 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
     );
   }
 
-  const progressPercentage = currentTrack.duration > 0 
-    ? (playbackTime / currentTrack.duration) * 100 
+  const progressPercentage = currentTrack.duration > 0
+    ? (playbackTime / currentTrack.duration) * 100
     : 0;
 
   return (
@@ -194,16 +194,16 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
       <div className={`bg-gradient-to-r from-purple-900/95 to-indigo-900/95 backdrop-blur-xl border-t border-white/10 shadow-2xl ${className}`}>
         <div className="max-w-7xl mx-auto px-4 py-3">
           {/* Progress Bar */}
-          <div 
+          <div
             ref={progressBarRef}
             onClick={handleSeek} role="button" tabIndex={0}
             className="relative h-1 bg-white/10 rounded-full cursor-pointer group mb-3"
           >
-            <div 
+            <div
               className="absolute h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all"
               style={{ width: `${progressPercentage}%` }}
             />
-            <div 
+            <div
               className="absolute h-3 w-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity -translate-y-1"
               style={{ left: `${progressPercentage}%`, transform: 'translate(-50%, -50%)' }}
             />
@@ -213,11 +213,11 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
             {/* Left: Track Info */}
             <div className="flex items-center space-x-3 min-w-0">
               {currentTrack.coverArt && (
-                <img 
-                  src={currentTrack.coverArt} 
+                <img
+                  src={currentTrack.coverArt}
                   alt={currentTrack.title}
                   className="w-14 h-14 rounded-lg object-cover shadow-lg"
-                 />
+                />
               )}
               <div className="min-w-0 flex-1">
                 <h4 className="text-white font-semibold text-sm truncate">
@@ -227,14 +227,14 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                   {currentTrack.artist}
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => likeTrack(currentTrack.id)}
                 className="p-2 hover:bg-white/10 rounded-full transition-colors"
                 aria-label={currentTrack.isLiked ? 'Unlike track' : 'Like track'}
               >
-                <Heart 
-                  size={18} 
-                  className={currentTrack.isLiked ? 'fill-pink-500 text-pink-500' : 'text-gray-400'} 
+                <Heart
+                  size={18}
+                  className={currentTrack.isLiked ? 'fill-pink-500 text-pink-500' : 'text-gray-400'}
                 />
               </button>
               <button className="p-2 hover:bg-white/10 rounded-full transition-colors" aria-label="More options">
@@ -244,23 +244,23 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
             {/* Center: Playback Controls */}
             <div className="flex items-center justify-center space-x-4">
-              <button 
+              <button
                 onClick={() => setIsShuffle(!isShuffle)}
                 className={`p-2 rounded-full transition-colors ${isShuffle ? 'text-purple-400 bg-purple-500/20' : 'text-gray-400 hover:text-white'}`}
                 aria-label={isShuffle ? 'Disable shuffle' : 'Enable shuffle'}
               >
                 <Shuffle size={18} />
               </button>
-              
-              <button 
+
+              <button
                 onClick={handleSkipBack}
                 className="p-2 text-gray-400 hover:text-white transition-colors"
                 aria-label="Skip back 10 seconds"
               >
                 <SkipBack size={24} fill="currentColor" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={handlePlayPause}
                 className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -271,16 +271,16 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                   <Play size={24} fill="black" className="text-black ml-1" />
                 )}
               </button>
-              
-              <button 
+
+              <button
                 onClick={handleSkipForward}
                 className="p-2 text-gray-400 hover:text-white transition-colors"
                 aria-label="Skip forward 10 seconds"
               >
                 <SkipForward size={24} fill="currentColor" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={cycleRepeatMode}
                 className={`p-2 rounded-full transition-colors relative ${repeatMode !== 'none' ? 'text-purple-400 bg-purple-500/20' : 'text-gray-400 hover:text-white'}`}
                 aria-label={`Repeat mode: ${repeatMode === 'none' ? 'off' : repeatMode === 'one' ? 'one' : 'all'}`}
@@ -303,7 +303,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
 
               {/* Volume Control */}
               <div className="relative">
-                <button 
+                <button
                   onClick={toggleMuteHandler}
                   onMouseEnter={() => setShowVolumeSlider(true)}
                   className="p-2 text-gray-400 hover:text-white transition-colors"
@@ -315,9 +315,9 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
                     <Volume2 size={20} />
                   )}
                 </button>
-                
+
                 {(showVolumeSlider || true) && (
-                  <div 
+                  <div
                     className="absolute bottom-full right-0 mb-2 p-3 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/10 shadow-xl"
                     onMouseLeave={() => setShowVolumeSlider(false)}
                   >

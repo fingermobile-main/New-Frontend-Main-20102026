@@ -5,58 +5,62 @@ import React, { useState } from 'react';
 import { logError } from '../utils/errorLogger';
 import MainLayout from '../components/layout/MainLayout';
 
-import { useAppContext } from "contexts/AppContext";  // Using absolute path from src
+import { useAppContext } from '../contexts/AppContext';  // Using absolute path from src
 import { TrashIcon } from '../icons';
+import { legalComplianceService } from '../services/legalComplianceService';
 
 const AccountDeletionPage: React.FC = () => {
   const { ficBalance } = useAppContext();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    reason: "",
+    email: '',
+    password: '',
+    reason: '',
     confirmDeletion: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
     const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
+      type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.confirmDeletion) {
-      setSubmitError("Please confirm that you want to delete your account");
+      setSubmitError('Please confirm that you want to delete your account');
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitError("");
+    setSubmitError('');
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await legalComplianceService.requestAccountDeletion(formData);
       setIsSubmitting(false);
       setSubmitSuccess(true);
 
       // Reset form after successful submission
       setFormData({
-        email: "",
-        password: "",
-        reason: "",
+        email: '',
+        password: '',
+        reason: '',
         confirmDeletion: false
       });
-    }, 1500);
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setSubmitError(err.response?.data?.error || err.message || 'Failed to submit account deletion request');
+    }
   };
 
   return (
@@ -203,13 +207,13 @@ const AccountDeletionPage: React.FC = () => {
                         disabled={isSubmitting}
                         className={`px-6 py-3 rounded-lg font-medium text-white text-base ${
                           isSubmitting
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700"
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700'
                         }`}
                       >
                         {isSubmitting
-                          ? "Deleting Account..."
-                          : "Permanently Delete Account"}
+                          ? 'Deleting Account...'
+                          : 'Permanently Delete Account'}
                       </button>
                     </div>
                   </form>
@@ -251,7 +255,7 @@ const AccountDeletionPage: React.FC = () => {
               )}
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-100">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">

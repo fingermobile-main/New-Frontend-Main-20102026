@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => showToast("Hello, world!")}
+        onClick={() => showToast('Hello, world!')}
       >
         Show Toast
       </button>

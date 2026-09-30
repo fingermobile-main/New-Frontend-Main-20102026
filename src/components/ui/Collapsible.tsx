@@ -19,13 +19,13 @@ interface CollapsibleContentProps {
 
 const Collapsible = ({ children, className = '' }: CollapsibleProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // We'll pass the isOpen state and toggle function down to child components
   const cloneChildren = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child as React.ReactElement, { 
-        isOpen, 
-        toggle: () => setIsOpen(!isOpen) 
+      return React.cloneElement(child as React.ReactElement, {
+        isOpen,
+        toggle: () => setIsOpen(!isOpen)
       });
     }
     return child;
@@ -38,17 +38,17 @@ const Collapsible = ({ children, className = '' }: CollapsibleProps) => {
   );
 };
 
-const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({ 
-  children, 
+const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
+  children,
   className = '',
   isOpen,
   toggle
 }) => {
-  const cloneTrigger = React.isValidElement(children) 
-    ? React.cloneElement(children as React.ReactElement, { 
-        onClick: toggle,
-        'aria-expanded': isOpen
-      })
+  const cloneTrigger = React.isValidElement(children)
+    ? React.cloneElement(children as React.ReactElement, {
+      onClick: toggle,
+      'aria-expanded': isOpen
+    })
     : children;
 
   return (
@@ -58,10 +58,10 @@ const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
   );
 };
 
-const CollapsibleContent: React.FC<CollapsibleContentProps> = ({ 
-  children, 
+const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
+  children,
   className = '',
-  isOpen 
+  isOpen
 }) => {
   if (!isOpen) return null;
 

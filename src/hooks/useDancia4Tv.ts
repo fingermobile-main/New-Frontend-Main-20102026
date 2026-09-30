@@ -40,18 +40,18 @@ export const useDancia4TvData = () => {
   const [genres] = React.useState<string[]>(videoGenres);
   const [movieTypes] = React.useState<string[]>(movieTypeChoices);
   const [filteredVideos, setFilteredVideos] = React.useState<DanciaVideo[]>(mockVideos as any);
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [searchQuery, setSearchQuery] = React.useState<string>('');
 
   // Filter videos based on search query
   React.useEffect(() => {
-    if (searchQuery.trim() === "") {
+    if (searchQuery.trim() === '') {
       setFilteredVideos(videos);
     } else {
       const query = searchQuery.toLowerCase();
       const filtered = videos.filter(
         (video) =>
           video.title.toLowerCase().includes(query) ||
-          video.description?.toLowerCase().includes(query) ||
+          (video.description?.toLowerCase() || '').includes(query) ||
           video.genre.toLowerCase().includes(query) ||
           video.contentTags.some((tag) => tag.toLowerCase().includes(query)),
       );
@@ -75,70 +75,70 @@ export const useDancia4TvData = () => {
 
   const playVideo = React.useCallback(
     (
-  video: DanciaVideo) => {
+      video: DanciaVideo) => {
       setCurrentVideo(video);
       addToWatchHistory(video.videoID);
       updatePlayerState({
-  isPlaying: true });
+        isPlaying: true });
     },
     [setCurrentVideo, addToWatchHistory, updatePlayerState],
   );
 
   const pauseVideo = React.useCallback(() => {
     updatePlayerState({
-  isPlaying: false });
+      isPlaying: false });
   }, [updatePlayerState]);
 
   const resumeVideo = React.useCallback(() => {
     updatePlayerState({
-  isPlaying: true });
+      isPlaying: true });
   }, [updatePlayerState]);
 
   const stopVideo = React.useCallback(() => {
     updatePlayerState({
-  isPlaying: false, currentTime: 0 });
+      isPlaying: false, currentTime: 0 });
   }, [updatePlayerState]);
 
   const seekVideo = React.useCallback(
     (
-  time: number) => {
+      time: number) => {
       updatePlayerState({
-  currentTime: time });
+        currentTime: time });
     },
     [updatePlayerState],
   );
 
   const setVolume = React.useCallback(
     (
-  volume: number) => {
+      volume: number) => {
       updatePlayerState({ volume,
-isMuted: volume === 0 });
+        isMuted: volume === 0 });
     },
     [updatePlayerState],
   );
 
   const toggleMute = React.useCallback(() => {
     updatePlayerState({
-  isMuted: !playerState.isMuted });
+      isMuted: !playerState.isMuted });
   }, [playerState.isMuted, updatePlayerState]);
 
   const setPlaybackRate = React.useCallback(
     (
-  rate: number) => {
+      rate: number) => {
       updatePlayerState({
-  playbackRate: rate });
+        playbackRate: rate });
     },
     [updatePlayerState],
   );
 
   const toggleFullscreen = React.useCallback(() => {
     updatePlayerState({
-  isFullscreen: !playerState.isFullscreen });
+      isFullscreen: !playerState.isFullscreen });
   }, [playerState.isFullscreen, updatePlayerState]);
 
   const searchVideos = React.useCallback(
     (
-  query: string) => {
+      query: string) => {
       setSearchQuery(query);
       addToSearchHistory(query);
     },
@@ -147,8 +147,8 @@ isMuted: volume === 0 });
 
   const filterByGenre = React.useCallback(
     (
-  genre: string) => {
-      if (genre === "All") {
+      genre: string) => {
+      if (genre === 'All') {
         setFilteredVideos(videos);
       } else {
         const filtered = videos.filter((video) => video.genre === genre);
@@ -159,7 +159,7 @@ isMuted: volume === 0 });
   );
 
   const filterByMovieType = React.useCallback((
-  type: string) => {
+    type: string) => {
     // In a real app, this would filter videos by movie type
     console.info(`Filtering by movie,
 type: ${type}`);
@@ -167,18 +167,18 @@ type: ${type}`);
 
   const createPlaylist = React.useCallback(
     (
-  name: string, videoIDs: string[] = []) => {
+      name: string, videoIDs: string[] = []) => {
       if (!currentMember) return;
 
       const newPlaylist: DanciaPlaylist = {playlistID: `playlist_${Date.now()}`,
         name,
-ownerID: String(currentMember.id),
-videos: videoIDs, isPublic: false,
-createdAt: new Date(),
-updatedAt: new Date(),
-metadata: {artist: "Various", album: name, tracks: [],
-  genres: [],
-  length: 0, fileSize: 0
+        ownerID: String(currentMember.id),
+        videos: videoIDs, isPublic: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        metadata: {artist: 'Various', album: name, tracks: [],
+          genres: [],
+          length: 0, fileSize: 0
         }
       };
 
@@ -190,12 +190,12 @@ metadata: {artist: "Various", album: name, tracks: [],
 
   const addToPlaylist = React.useCallback(
     (
-  playlistID: string, videoID: string) => {
+      playlistID: string, videoID: string) => {
       const playlist = playlists.find((p) => p.playlistID === playlistID);
       if (playlist && !playlist.videos.includes(videoID)) {
         updatePlaylist(playlistID, {videos: [...playlist.videos,
-  videoID],
-  updatedAt: new Date()
+          videoID],
+        updatedAt: new Date()
         });
       }
     },
@@ -204,11 +204,11 @@ metadata: {artist: "Various", album: name, tracks: [],
 
   const removeFromPlaylist = React.useCallback(
     (
-  playlistID: string, videoID: string) => {
+      playlistID: string, videoID: string) => {
       const playlist = playlists.find((p) => p.playlistID === playlistID);
       if (playlist && playlist.videos.includes(videoID)) {
         updatePlaylist(playlistID, {videos: playlist.videos.filter((id) => id !== videoID),
-  updatedAt: new Date()
+          updatedAt: new Date()
         });
       }
     },
@@ -229,7 +229,7 @@ metadata: {artist: "Various", album: name, tracks: [],
 
   const isMemberSubscribedTo = React.useCallback(
     (
-  planType: DanciaSubscriptionPlan["type"]): boolean => {
+      planType: DanciaSubscriptionPlan['type']): boolean => {
       return getMemberSubscriptionStatus(planType);
     },
     [getMemberSubscriptionStatus],
@@ -247,7 +247,7 @@ metadata: {artist: "Various", album: name, tracks: [],
     recommendations,
     loading,
     error,
-videos: filteredVideos,
+    videos: filteredVideos,
     genres,
     movieTypes,
     searchQuery,

@@ -5,9 +5,9 @@ interface OperantVideoStreamModalProps {
   onClose: () => void;
 }
 
-const OperantVideoStreamModal: React.FC<OperantVideoStreamModalProps> = ({ 
-  isOpen, 
-  onClose 
+const OperantVideoStreamModal: React.FC<OperantVideoStreamModalProps> = ({
+  isOpen,
+  onClose
 }) => {
   if (!isOpen) return null;
 
@@ -16,7 +16,7 @@ const OperantVideoStreamModal: React.FC<OperantVideoStreamModalProps> = ({
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Video Stream</h2>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >

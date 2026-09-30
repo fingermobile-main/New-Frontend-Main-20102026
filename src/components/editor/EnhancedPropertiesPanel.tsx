@@ -6,10 +6,10 @@ interface EnhancedPropertiesPanelProps {
   onDelete?: (id: string) => void;
 }
 
-const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({ 
-  component, 
+const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
+  component,
   onUpdate,
-  onDelete 
+  onDelete
 }) => {
   const [activeTab, setActiveTab] = React.useState<'properties' | 'styles' | 'advanced'>('properties');
 

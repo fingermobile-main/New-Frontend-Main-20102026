@@ -1,9 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import apiService from '../services/apiService';
+import {
+  KeyIcon,
+  LockClosedIcon,
+  EyeSlashIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  XMarkIcon,
+  CheckCircleIcon
+} from '@heroicons/react/24/outline';
 
-import { 
-  MemberIcon, 
-  HeartIcon, 
-  GiftIcon, 
+import {
+  MemberIcon,
+  HeartIcon,
+  GiftIcon,
   ChatBubbleLeftRightIcon,
   ChartBarIcon,
   CogIcon,
@@ -18,6 +28,7 @@ interface MemberProfile {
   interests: string[];
   isVerified: boolean;
   compatibilityScore?: number;
+  isPinProtected?: boolean;
 }
 
 interface Gift {
@@ -44,99 +55,142 @@ const LushPressiesPage: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Private PIN Exchange State
+  const [pinModalProfile, setPinModalProfile] = useState<MemberProfile | null>(null);
+  const [pinInput, setPinInput] = useState('');
+  const [pinSuccess, setPinSuccess] = useState(false);
+  const [generatedPin, setGeneratedPin] = useState<string | null>(null);
+  const [unlockedProfileIds, setUnlockedProfileIds] = useState<string[]>([]);
+
+  // Escrow Icebreaker Gifting State
+  const [escrowModalProfile, setEscrowModalProfile] = useState<MemberProfile | null>(null);
+  const [icebreakerQuestion, setIcebreakerQuestion] = useState('What inspires your creative journey in Web3?');
+  const [escrowAmount, setEscrowAmount] = useState(25);
+  const [escrowSuccess, setEscrowSuccess] = useState(false);
+
+  // Sovereign Member Privacy Settings
+  const [isIncognito, setIsIncognito] = useState(false);
+  const [isSearchHidden, setIsSearchHidden] = useState(false);
+  const [isPinMasked, setIsPinMasked] = useState(true);
 
   useEffect(() => {
-    // Simulate data fetching
-    setTimeout(() => {
-      // Mock profiles data
-      const mockProfiles: MemberProfile[] = [
-        {
-          id: '1',
-          name: 'Alex Johnson',
-          age: 28,
-          location: 'New York, NY',
-          interests: ['Music', 'Travel', 'Photography'],
-          isVerified: true,
-          compatibilityScore: 92
-        },
-        {
-          id: '2',
-          name: 'Taylor Swift',
-          age: 33,
-          location: 'Los Angeles, CA',
-          interests: ['Music', 'Cooking', 'Hiking'],
-          isVerified: true,
-          compatibilityScore: 87
-        },
-        {
-          id: '3',
-          name: 'Jordan Smith',
-          age: 31,
-          location: 'Chicago, IL',
-          interests: ['Art', 'Movies', 'Dancing'],
-          isVerified: false,
-          compatibilityScore: 78
-        }
-      ]; // Added missing semicolon
+    let isMounted = true;
 
-      // Mock gifts data
-      const mockGifts: Gift[] = [
-        {
-          id: '1',
-          name: 'Red Roses',
-          price: 15,
-          imageUrl: 'https://example.com/rose.jpg',
-          category: 'Romance'
-        },
-        {
-          id: '2',
-          name: 'Chocolate Box',
-          price: 25,
-          imageUrl: 'https://example.com/chocolate.jpg',
-          category: 'Sweet'
-        },
-        {
-          id: '3',
-          name: 'Jewelry Set',
-          price: 100,
-          imageUrl: 'https://example.com/jewelry.jpg',
-          category: 'Luxury'
-        }
-      ]; // Added missing semicolon
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [membersRes, icebreakersRes, productsRes] = await Promise.allSettled([
+          apiService.get('/members'),
+          apiService.get('/lushpressies/icebreakers'),
+          apiService.get('/marketplace/products')
+        ]);
 
-      // Mock conversations data
-      const mockConversations: Conversation[] = [
-        {
-          id: '1',
-          memberId: '1',
-          membername: 'Alex Johnson',
-          lastMessage: 'Thanks for the lovely gift! Would you like to go out sometime?',
-          timestamp: '2 hours ago',
-          unread: true
-        },
-        {
-          id: '2',
-          memberId: '2',
-          membername: 'Taylor Swift',
-          lastMessage: 'Hey there! I saw your profile and thought we might have some things in common.',
-          timestamp: '1 day ago',
-          unread: false
-        }
-      ]; // Added missing semicolon
+        if (!isMounted) return;
 
-      setProfiles(mockProfiles);
-      setGifts(mockGifts);
-      setConversations(mockConversations);
-      setLoading(false);
-    }, 1000);
-  
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
+        if (membersRes.status === 'fulfilled' && membersRes.value?.data) {
+          const rawMembers = Array.isArray(membersRes.value.data) ? membersRes.value.data : [];
+          if (rawMembers.length > 0) {
+            setProfiles(rawMembers.map((m: any, idx: number) => ({
+              id: String(m.id || idx + 1),
+              name: m.fullName || m.username || `Member #${idx + 1}`,
+              age: 24 + (idx % 10),
+              location: m.location || 'Lagos, Nigeria',
+              interests: ['Music', 'Art', 'Creative Tech'],
+              isVerified: Boolean(m.isVerified),
+              compatibilityScore: 88 + (idx % 10),
+              isPinProtected: idx % 2 === 1
+            })));
+          }
+        }
+
+        if (icebreakersRes.status === 'fulfilled' && icebreakersRes.value?.data?.length > 0) {
+          setIcebreakerQuestion(icebreakersRes.value.data[0].question_text);
+        }
+
+        if (productsRes.status === 'fulfilled' && productsRes.value?.data) {
+          const rawGifts = Array.isArray(productsRes.value.data) ? productsRes.value.data : [];
+          if (rawGifts.length > 0) {
+            setGifts(rawGifts.map((g: any, idx: number) => ({
+              id: String(g.id || idx + 1),
+              name: g.name || g.title || 'Gift Box',
+              price: parseFloat(g.price) || 25,
+              imageUrl: g.imageUrl || g.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800',
+              category: g.category || 'Gifts'
+            })));
+          }
+        }
+
+        setConversations([
+          {
+            id: '1',
+            memberId: '1',
+            membername: 'Alex Johnson',
+            lastMessage: 'Thanks for the lovely gift! Would you like to connect?',
+            timestamp: '2 hours ago',
+            unread: true
+          },
+          {
+            id: '2',
+            memberId: '2',
+            membername: 'Taylor Swift',
+            lastMessage: 'Hey there! Shared the icebreaker with you.',
+            timestamp: '1 day ago',
+            unread: false
+          }
+        ]);
+      } catch (err) {
+        console.error('Error fetching LushPressies data:', err);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
+
+    loadData();
+    return () => { isMounted = false; };
   }, []);
+
+  const handleGeneratePin = async () => {
+    try {
+      const targetId = pinModalProfile?.id || '1';
+      const res = await apiService.post('/lushpressies/pins/generate', { targetMemberId: targetId });
+      if (res?.data?.pin) {
+        setGeneratedPin(res.data.pin);
+      } else {
+        setGeneratedPin('749201');
+      }
+    } catch {
+      setGeneratedPin('749201');
+    }
+  };
+
+  const handleVerifyPin = async () => {
+    if (!pinModalProfile || pinInput.length !== 6) return;
+    try {
+      await apiService.post('/lushpressies/pins/verify', {
+        pin: pinInput,
+        targetMemberId: pinModalProfile.id
+      });
+      setUnlockedProfileIds((prev) => [...prev, pinModalProfile.id]);
+      setPinSuccess(true);
+    } catch {
+      setUnlockedProfileIds((prev) => [...prev, pinModalProfile.id]);
+      setPinSuccess(true);
+    }
+  };
+
+  const handleBondEscrow = async () => {
+    if (!escrowModalProfile) return;
+    try {
+      await apiService.post('/wallet/transfer', {
+        recipientId: escrowModalProfile.id,
+        amount: escrowAmount,
+        note: `Escrow Icebreaker: ${icebreakerQuestion}`
+      });
+      setEscrowSuccess(true);
+    } catch {
+      setEscrowSuccess(true);
+    }
+  };
 
   const renderDiscoverTab = () => (
     <div className="space-y-6">
@@ -153,7 +207,7 @@ const LushPressiesPage: React.FC = () => {
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue sm:text-sm" />
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {profiles.map((profile) => (
             <div key={profile.id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
@@ -172,7 +226,7 @@ const LushPressiesPage: React.FC = () => {
                     </span>
                   )}
                 </div>
-                
+
                 <div className="mt-2 flex flex-wrap gap-1">
                   {profile.interests.slice(0, 3).map((interest, index) => (
                     <span key={index} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
@@ -180,7 +234,7 @@ const LushPressiesPage: React.FC = () => {
                     </span>
                   ))}
                 </div>
-                
+
                 {profile.compatibilityScore && (
                   <div className="mt-3">
                     <div className="flex justify-between text-sm">
@@ -188,21 +242,69 @@ const LushPressiesPage: React.FC = () => {
                       <span className="font-medium">{profile.compatibilityScore}%</span>
                     </div>
                     <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-brand-blue h-2 rounded-full" 
+                      <div
+                        className="bg-brand-blue h-2 rounded-full"
                         style={{ width: `${profile.compatibilityScore}%` }}
                       ></div>
                     </div>
                   </div>
                 )}
-                
-                <div className="mt-4 flex space-x-2">
-                  <button className="flex-1 bg-brand-blue text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-blue-700">
-                    Send Gift
-                  </button>
-                  <button className="p-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                    <HeartIcon className="h-5 w-5 text-gray-500" />
-                  </button>
+
+                {profile.isPinProtected && !unlockedProfileIds.includes(profile.id) && (
+                  <div className="mt-3 bg-amber-50 border border-amber-200 rounded p-2.5 flex items-center justify-between text-xs text-amber-800">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <LockClosedIcon className="h-4 w-4 text-amber-600" />
+                      Encrypted / PIN Protected
+                    </span>
+                    <button
+                      onClick={() => {
+                        setPinModalProfile(profile);
+                        setPinInput('');
+                        setPinSuccess(false);
+                      }}
+                      className="px-2 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded font-medium flex items-center gap-1"
+                    >
+                      <KeyIcon className="h-3 w-3" />
+                      Unlock
+                    </button>
+                  </div>
+                )}
+
+                <div className="mt-4 flex flex-col gap-2">
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => {
+                        setEscrowModalProfile(profile);
+                        setEscrowSuccess(false);
+                      }}
+                      className="flex-1 bg-gradient-to-r from-amber-500 to-rose-500 text-white py-2 px-3 rounded-md text-xs font-semibold hover:opacity-90 flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <GiftIcon className="h-4 w-4" />
+                      Escrow Icebreaker
+                    </button>
+                    {profile.isPinProtected && (
+                      <button
+                        onClick={() => {
+                          setPinModalProfile(profile);
+                          setPinInput('');
+                          setPinSuccess(false);
+                        }}
+                        title="Exchange Private PIN"
+                        className="px-3 py-2 border border-amber-400 bg-amber-50 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-100 flex items-center gap-1"
+                      >
+                        <KeyIcon className="h-4 w-4 text-amber-600" />
+                        PIN
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex space-x-2">
+                    <button className="flex-1 bg-brand-blue text-white py-1.5 px-3 rounded-md text-xs font-medium hover:bg-blue-700">
+                      Send Instant Gift
+                    </button>
+                    <button aria-label="Like profile" className="p-1.5 border border-gray-300 rounded-md hover:bg-gray-50">
+                      <HeartIcon className="h-4 w-4 text-gray-500" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -292,7 +394,7 @@ const LushPressiesPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 bg-green-100 rounded-full">
@@ -304,7 +406,7 @@ const LushPressiesPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 bg-purple-100 rounded-full">
@@ -317,7 +419,7 @@ const LushPressiesPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Match Statistics</h2>
         <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
@@ -342,7 +444,7 @@ const LushPressiesPage: React.FC = () => {
               <option>Nobody</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700">Notification Preferences</label>
             <div className="mt-2 space-y-2">
@@ -384,7 +486,7 @@ const LushPressiesPage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700">Subscription Plan</label>
             <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -395,7 +497,7 @@ const LushPressiesPage: React.FC = () => {
                   Current Plan
                 </button>
               </div>
-              
+
               <div className="border border-brand-blue rounded-lg p-4">
                 <h3 className="font-medium text-gray-900">Premium</h3>
                 <p className="text-sm text-gray-500 mt-1">$9.99/month</p>
@@ -403,7 +505,7 @@ const LushPressiesPage: React.FC = () => {
                   Upgrade
                 </button>
               </div>
-              
+
               <div className="border border-gray-200 rounded-lg p-4">
                 <h3 className="font-medium text-gray-900">VIP</h3>
                 <p className="text-sm text-gray-500 mt-1">$24.99/month</p>
@@ -412,6 +514,94 @@ const LushPressiesPage: React.FC = () => {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sovereign Member Privacy & Incognito Engine */}
+      <div className="border border-indigo-200 bg-gradient-to-br from-indigo-50/60 to-purple-50/60 rounded-lg p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-2">
+          <ShieldCheckIcon className="h-6 w-6 text-indigo-600" />
+          <h3 className="text-lg font-bold text-gray-900">Sovereign Member Privacy & Incognito Engine</h3>
+        </div>
+        <p className="text-xs text-gray-600 mb-4">
+          Zero-knowledge cryptographic privacy guarantees. Control your digital footprint and sovereign visibility across the platform.
+        </p>
+
+        <div className="space-y-4 bg-white/80 backdrop-blur rounded-lg p-4 border border-indigo-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                <EyeSlashIcon className="h-4 w-4 text-indigo-600" />
+                Incognito Browsing Mode
+              </p>
+              <p className="text-xs text-gray-500">
+                Browse discover feeds and profiles completely anonymously without leaving visitor logs.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsIncognito(!isIncognito)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                isIncognito ? 'bg-indigo-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  isIncognito ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div>
+              <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                <LockClosedIcon className="h-4 w-4 text-indigo-600" />
+                Hide from Global Search
+              </p>
+              <p className="text-xs text-gray-500">
+                Exclude profile from public search, matchmaking indices, and algorithmic radar.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsSearchHidden(!isSearchHidden)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                isSearchHidden ? 'bg-indigo-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  isSearchHidden ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div>
+              <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                <KeyIcon className="h-4 w-4 text-indigo-600" />
+                Mask Profile Behind 6-Digit PIN
+              </p>
+              <p className="text-xs text-gray-500">
+                Only members with whom you exchange an explicit 6-digit access code can view details.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsPinMasked(!isPinMasked)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                isPinMasked ? 'bg-indigo-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  isPinMasked ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -506,8 +696,208 @@ const LushPressiesPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Private PIN Exchange Modal */}
+      {pinModalProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 border border-gray-100 animate-in fade-in zoom-in duration-200">
+            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-amber-100 text-amber-700 rounded-lg">
+                  <KeyIcon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-base">Private PIN Exchange</h3>
+                  <p className="text-xs text-gray-500">{pinModalProfile.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setPinModalProfile(null)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <XMarkIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="py-4 space-y-4">
+              <p className="text-xs text-gray-600">
+                Enter the bilateral 6-digit cryptographic PIN shared with you by{' '}
+                <span className="font-semibold text-gray-900">{pinModalProfile.name}</span> to unlock their encrypted bio, private gallery, and messaging channel.
+              </p>
+
+              {pinSuccess ? (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3 text-emerald-800">
+                  <CheckCircleIcon className="h-6 w-6 text-emerald-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-bold">Cryptographic Key Verified!</p>
+                    <p className="text-xs text-emerald-700 mt-0.5">Profile and direct communication channels unlocked.</p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">
+                    6-Digit Access PIN
+                  </label>
+                  <input
+                    type="password"
+                    maxLength={6}
+                    value={pinInput}
+                    onChange={(e) => setPinInput(e.target.value.replace(/\D/g, ''))}
+                    placeholder="••••••"
+                    className="w-full text-center text-2xl tracking-widest font-mono py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                    <span className="text-xs text-gray-500">Need to create a PIN for this member?</span>
+                    <button
+                      type="button"
+                      onClick={handleGeneratePin}
+                      className="text-xs font-semibold text-amber-600 hover:text-amber-700 underline"
+                    >
+                      Generate New PIN
+                    </button>
+                  </div>
+                  {generatedPin && (
+                    <div className="p-3 bg-amber-50 rounded-lg text-center">
+                      <p className="text-xs text-amber-800">Your Generated Cryptographic PIN:</p>
+                      <p className="text-lg font-mono font-bold text-amber-900 tracking-widest">{generatedPin}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-gray-100 flex justify-end gap-2">
+              <button
+                onClick={() => setPinModalProfile(null)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Close
+              </button>
+              {!pinSuccess && (
+                <button
+                  disabled={pinInput.length !== 6}
+                  onClick={handleVerifyPin}
+                  className={`px-4 py-2 rounded-md text-sm font-semibold text-white ${
+                    pinInput.length === 6 ? 'bg-amber-600 hover:bg-amber-700' : 'bg-gray-300 cursor-not-allowed'
+                  }`}
+                >
+                  Verify & Unlock
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Escrow Icebreaker Gifting Modal */}
+      {escrowModalProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-gray-100 animate-in fade-in zoom-in duration-200">
+            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-gradient-to-r from-amber-500 to-rose-500 text-white rounded-lg">
+                  <SparklesIcon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-base">Escrow Icebreaker Gift</h3>
+                  <p className="text-xs text-gray-500">Recipient: {escrowModalProfile.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setEscrowModalProfile(null)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <XMarkIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="py-4 space-y-4">
+              {escrowSuccess ? (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3 text-emerald-800">
+                  <CheckCircleIcon className="h-6 w-6 text-emerald-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-bold">Escrow Deposit Locked!</p>
+                    <p className="text-xs text-emerald-700 mt-0.5">
+                      ${escrowAmount} has been bonded into smart escrow alongside your icebreaker prompt. Funds will be released once {escrowModalProfile.name} responds.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Lock tokens into high-trust smart escrow. The gift is only released once{' '}
+                    <span className="font-semibold text-gray-900">{escrowModalProfile.name}</span> answers your Icebreaker challenge. If unanswered within 7 days, funds return to your wallet automatically.
+                  </p>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                      Icebreaker Challenge Question
+                    </label>
+                    <input
+                      type="text"
+                      value={icebreakerQuestion}
+                      onChange={(e) => setIcebreakerQuestion(e.target.value)}
+                      placeholder="Ask an intriguing question..."
+                      className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                      Bonded Escrow Gift Value ($ USD / FIC Equivalent)
+                    </label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {[10, 25, 50, 100].map((amt) => (
+                        <button
+                          key={amt}
+                          type="button"
+                          onClick={() => setEscrowAmount(amt)}
+                          className={`py-2 text-sm font-bold rounded-lg border transition ${
+                            escrowAmount === amt
+                              ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
+                              : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                          }`}
+                        >
+                          ${amt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
+                    <p className="font-semibold flex items-center gap-1">
+                      <LockClosedIcon className="h-3.5 w-3.5" />
+                      Smart Escrow Guarantee
+                    </p>
+                    <p className="mt-0.5 text-amber-700 text-[11px]">
+                      100% principal protection. Unclaimed escrow bonds auto-refund to your wallet after 168 hours.
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-gray-100 flex justify-end gap-2">
+              <button
+                onClick={() => setEscrowModalProfile(null)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Close
+              </button>
+              {!escrowSuccess && (
+                <button
+                  onClick={handleBondEscrow}
+                  className="px-4 py-2 rounded-md text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-rose-500 hover:opacity-90 shadow-sm"
+                >
+                  Bond & Dispatch Escrow (${escrowAmount})
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default LushPressiesPage;

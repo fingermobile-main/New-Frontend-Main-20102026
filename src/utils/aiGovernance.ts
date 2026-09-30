@@ -23,9 +23,9 @@ function compileRedaction(patterns?: string[]): RegExp[] {
   if (!patterns || patterns.length === 0) return [];
   return patterns.map((p) => {
     try {
-      return new RegExp(p, "gi");
+      return new RegExp(p, 'gi');
     } catch {
-      return new RegExp("^$", "g");
+      return new RegExp('^$', 'g');
     }
   });
 }
@@ -36,7 +36,7 @@ function redactString(input: string, rules: RegExp[],
   let output = input;
   for (const rx of rules) {
     const before = output;
-    output = output.replace(rx, "[REDACTED]");
+    output = output.replace(rx, '[REDACTED]');
     if (!redacted && before !== output) redacted = true;
   }
   return { output, redacted };
@@ -50,9 +50,9 @@ export async function logGovernanceEvent(event: AIGovernanceEvent, cfg: AIGovern
   try {
     // Basic console audit for local dev; extend with real endpoint if needed
     // console.info('[AI Governance Event]', event);
-    if (dest && dest.startsWith("http")) {
-      await fetch(dest, {method: "POST", headers: { "Content-Type": "application/json" },
-body: JSON.stringify(event)
+    if (dest && dest.startsWith('http')) {
+      await fetch(dest, {method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
       }).catch(() => undefined);
     }
   } catch {
@@ -71,21 +71,21 @@ export function enforceAction(action: string, payload: Record<string, unknown>,
   const policyId = cfg.defaultPolicyId;
   const policy = cfg.policies[policyId];
 
-  const eventBase: Omit<AIGovernanceEvent, "id"> = {type: "policy_check",
-  action,
-  policyId,
-  timestamp: new Date().toISOString(), actor: opts?.actor,
-  details: {}
+  const eventBase: Omit<AIGovernanceEvent, 'id'> = {type: 'policy_check',
+    action,
+    policyId,
+    timestamp: new Date().toISOString(), actor: opts?.actor,
+    details: {}
   };
 
   // Check banned actions
   if (policy?.bannedActions?.includes(action)) {
-    const decision: AIGovernanceDecision = {allowed: false, reason: "Action is banned by policy",
-  policyId
+    const decision: AIGovernanceDecision = {allowed: false, reason: 'Action is banned by policy',
+      policyId
     };
     void logGovernanceEvent(
       {id: cryptoRandomId(),
-  ...eventBase, type: "action_block", details: { reason: decision.reason } },
+        ...eventBase, type: 'action_block', details: { reason: decision.reason } },
       cfg,
     );
     return decision;
@@ -93,12 +93,12 @@ export function enforceAction(action: string, payload: Record<string, unknown>,
 
   // Check allowed actions
   if (policy && !policy.allowedActions.includes(action)) {
-    const decision: AIGovernanceDecision = {allowed: false, reason: "Action not permitted by policy",
-  policyId
+    const decision: AIGovernanceDecision = {allowed: false, reason: 'Action not permitted by policy',
+      policyId
     };
     void logGovernanceEvent(
       {id: cryptoRandomId(),
-  ...eventBase, type: "action_block", details: { reason: decision.reason } },
+        ...eventBase, type: 'action_block', details: { reason: decision.reason } },
       cfg,
     );
     return decision;
@@ -108,12 +108,12 @@ export function enforceAction(action: string, payload: Record<string, unknown>,
   const needConsent = !!policy?.requireExplicitConsent;
   const hasConsent = opts?.consents?.[policyId] === true;
   if (needConsent && !hasConsent) {
-    const decision: AIGovernanceDecision = {allowed: false, reason: "Explicit consent required",
-  policyId
+    const decision: AIGovernanceDecision = {allowed: false, reason: 'Explicit consent required',
+      policyId
     };
     void logGovernanceEvent(
       {id: cryptoRandomId(),
-  ...eventBase, type: "consent", details: { granted: false } },
+        ...eventBase, type: 'consent', details: { granted: false } },
       cfg,
     );
     return decision;
@@ -127,7 +127,7 @@ export function enforceAction(action: string, payload: Record<string, unknown>,
   // Only redact string fields in payload
   const sanitizedPayload = Object.fromEntries(
     Object.entries(payload).map(([k, v]) => {
-      if (typeof v === "string" && rxRules.length) {
+      if (typeof v === 'string' && rxRules.length) {
         const { output, redacted } = redactString(v, rxRules);
         if (redacted) redactionApplied = true;
         return [k, output];
@@ -139,19 +139,19 @@ export function enforceAction(action: string, payload: Record<string, unknown>,
   if (redactionApplied) {
     void logGovernanceEvent(
       {id: cryptoRandomId(),
-  ...eventBase, type: "redaction", details: { fields: Object.keys(payload) } },
+        ...eventBase, type: 'redaction', details: { fields: Object.keys(payload) } },
       cfg,
     );
   }
 
   const decision: AIGovernanceDecision = {allowed: true,
-  policyId,
-  sanitizedPayload
+    policyId,
+    sanitizedPayload
   };
 
   void logGovernanceEvent(
     {id: cryptoRandomId(),
-  ...eventBase, type: "action_allow", details: { redactionApplied } },
+      ...eventBase, type: 'action_allow', details: { redactionApplied } },
     cfg,
   );
   return decision;
@@ -162,11 +162,11 @@ function cryptoRandomId(): string {
     const bytes = new Uint8Array(12);
     (
       globalThis.crypto ||
-      (typeof window !== "undefined" ? window.crypto : undefined)
+      (typeof window !== 'undefined' ? window.crypto : undefined)
     )?.getRandomValues?.(bytes);
     return Array.from(bytes)
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   } catch {
     return Math.random().toString(36).slice(2);
   }

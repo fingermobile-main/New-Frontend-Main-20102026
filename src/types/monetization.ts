@@ -73,7 +73,7 @@ changeHistory: {date: Date;
 export interface GemTransaction {id: string;
   senderMemberid: string;
   recipientMemberid: string;
-  gemType: "MARBLE" | "EMERALD" | "SAPPHIRE" | "RUBY" | "DIAMOND";
+  gemType: 'MARBLE' | 'EMERALD' | 'SAPPHIRE' | 'RUBY' | 'DIAMOND';
   quantity: number;
   amountFic: number;
   transactionDate: Date;
@@ -83,12 +83,12 @@ export interface GemTransaction {id: string;
 export interface MonetizationEarning {id: string;
   memberId: string;
   earningType:
-    | "VIEWS"
-    | "GEMS"
-    | "SUBSCRIPTIONS"
-    | "ADS"
-    | "AFFILIATE"
-    | "SHOP_SALES";
+    | 'VIEWS'
+    | 'GEMS'
+    | 'SUBSCRIPTIONS'
+    | 'ADS'
+    | 'AFFILIATE'
+    | 'SHOP_SALES';
   amountFic: number;
   details: Record<string,
   unknown>;
@@ -98,7 +98,7 @@ export interface MonetizationEarning {id: string;
 // Community Page Monetization Types
 export interface CommunityRevenue {id: string;
   communityId: string;
-  communityType: "hallmarks" | "gems" | "blogs" | "groups";
+  communityType: 'hallmarks' | 'gems' | 'blogs' | 'groups';
   totalRevenue: number;
   platformShare: number;
   creatorShare: number;
@@ -118,8 +118,8 @@ export interface CommunitySubscription {id: string;
   endDate: Date;
   amount: number;
   currency: string;
-  interval: "monthly" | "yearly";
-  status: "active" | "cancelled" | "expired";
+  interval: 'monthly' | 'yearly';
+  status: 'active' | 'cancelled' | 'expired';
 }
 
 export interface RevenueDistribution {id: string;
@@ -130,21 +130,21 @@ export interface RevenueDistribution {id: string;
   creatorAmount: number;
   marketplaceAmount: number;
   distributionDate: Date;
-  status: "pending" | "processed" | "failed";
+  status: 'pending' | 'processed' | 'failed';
 }
 
 export interface CommunityEarning {id: string;
   memberId: string;
   communityId: string;
-  communityType: "hallmarks" | "gems" | "blogs" | "groups";
+  communityType: 'hallmarks' | 'gems' | 'blogs' | 'groups';
   amountFic: number;
-  earningType: "SUBSCRIPTIONS" | "CONTENT_MONETIZATION" | "MARKETPLACE_SALES";
+  earningType: 'SUBSCRIPTIONS' | 'CONTENT_MONETIZATION' | 'MARKETPLACE_SALES';
   details: Record<string,
   unknown>;
   earningDate: Date;
 }
 
-export interface GemPricing {gemType: "MARBLE" | "EMERALD" | "SAPPHIRE" | "RUBY" | "DIAMOND";
+export interface GemPricing {gemType: 'MARBLE' | 'EMERALD' | 'SAPPHIRE' | 'RUBY' | 'DIAMOND';
   memberPrice: number; // Price member pays per gem
   creatorEarning: number; // How much creator earns per 5 gems
 }
@@ -163,5 +163,5 @@ topPerformingContent: {postId: string;
   earnings: number;
   }[];
 }
-  
-export {};  
+
+export {};

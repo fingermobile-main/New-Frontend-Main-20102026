@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Megaphone, DollarSign, Eye, MousePointer } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Megaphone, DollarSign, Eye, MousePointer } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 interface AdCampaign {
   id: string;
@@ -11,7 +11,7 @@ interface AdCampaign {
   spent: number;
   impressions: number;
   clicks: number;
-  status: "active" | "paused" | "completed";
+  status: 'active' | 'paused' | 'completed';
 }
 
 interface AdsPanelProps {
@@ -27,31 +27,31 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
 }) => {
   const defaultCampaigns: AdCampaign[] = [
     {
-      id: "1",
-      title: "Summer Sale Campaign",
+      id: '1',
+      title: 'Summer Sale Campaign',
       budget: 1000,
       spent: 650,
       impressions: 45000,
       clicks: 1200,
-      status: "active"
+      status: 'active'
     },
     {
-      id: "2",
-      title: "Product Launch - Q3",
+      id: '2',
+      title: 'Product Launch - Q3',
       budget: 2500,
       spent: 1800,
       impressions: 78000,
       clicks: 2400,
-      status: "active"
+      status: 'active'
     },
     {
-      id: "3",
-      title: "Brand Awareness",
+      id: '3',
+      title: 'Brand Awareness',
       budget: 500,
       spent: 500,
       impressions: 25000,
       clicks: 800,
-      status: "completed"
+      status: 'completed'
     }
   ];
 
@@ -61,7 +61,7 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
   const totalSpent = campaigns.reduce((sum, c) => sum + c.spent, 0);
   const totalImpressions = campaigns.reduce((sum, c) => sum + c.impressions, 0);
   const totalClicks = campaigns.reduce((sum, c) => sum + c.clicks, 0);
-  const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : "0";
+  const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : '0';
 
   return (
     <div className="w-full space-y-6">
@@ -154,11 +154,11 @@ const AdsPanel: React.FC<AdsPanelProps> = ({
                 </div>
                 <Badge
                   variant={
-                    campaign.status === "active"
-                      ? "default"
-                      : campaign.status === "paused"
-                      ? "secondary"
-                      : "outline"
+                    campaign.status === 'active'
+                      ? 'default'
+                      : campaign.status === 'paused'
+                        ? 'secondary'
+                        : 'outline'
                   }
                 >
                   {campaign.status}

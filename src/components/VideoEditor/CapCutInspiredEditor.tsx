@@ -6,9 +6,9 @@ interface CapCutInspiredEditorProps {
   onSave?: (editedVideo: any) => void;
 }
 
-const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({ 
+const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
   videoUrl,
-  onSave 
+  onSave
 }) => {
   const [selectedTool, setSelectedTool] = React.useState<'trim' | 'split' | 'speed' | 'effects'>('trim');
   const [effects, setEffects] = React.useState<string[]>([]);
@@ -68,8 +68,8 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
                 <button
                   key={effect}
                   onClick={() => {
-                    setEffects(prev => 
-                      prev.includes(effect) 
+                    setEffects(prev =>
+                      prev.includes(effect)
                         ? prev.filter(e => e !== effect)
                         : [...prev, effect]
                     );

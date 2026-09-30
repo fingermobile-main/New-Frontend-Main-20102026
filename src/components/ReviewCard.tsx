@@ -1,8 +1,8 @@
 import React, {} from 'react';
-import { Star, MessageSquare, ThumbsUp } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Star, MessageSquare, ThumbsUp } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 
 interface Review {
   id: string;
@@ -28,7 +28,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
       <Star
         key={i}
         className={`h-4 w-4 ${
-          i < rating ? "text-yellow-500 fill-current" : "text-muted-foreground"
+          i < rating ? 'text-yellow-500 fill-current' : 'text-muted-foreground'
         }`}
       />
     ));
@@ -36,7 +36,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onHelpful, onReply }) =
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   return (

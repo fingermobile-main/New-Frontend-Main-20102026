@@ -29,7 +29,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
   };
 
   const toggleContentType = (type: string) => {
-    setContentType(prev => 
+    setContentType(prev =>
       prev.includes(type) && type !== 'all'
         ? prev.filter(t => t !== type)
         : type === 'all'
@@ -139,7 +139,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Author</label>
                 <input
@@ -162,7 +162,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
               >
                 Apply Filters
               </button>
-              
+
               <button
                 onClick={() => {
                   setSelectedCategory('All');
@@ -186,25 +186,25 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
       {(selectedCategory !== 'All' || sortBy !== 'recent' || dateRange !== 'all') && (
         <div className="border-t border-gray-200 px-4 py-3 bg-gray-50 flex items-center gap-2 flex-wrap">
           <span className="text-sm text-gray-600 font-medium">Active filters:</span>
-          
+
           {selectedCategory !== 'All' && (
             <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
               {selectedCategory} ✕
             </span>
           )}
-          
+
           {sortBy !== 'recent' && (
             <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
               {sortBy} ✕
             </span>
           )}
-          
+
           {dateRange !== 'all' && (
             <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
               {dateRange} ✕
             </span>
           )}
-          
+
           <button
             onClick={() => {
               setSelectedCategory('All');
