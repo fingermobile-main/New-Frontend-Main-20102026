@@ -11,7 +11,7 @@ const GemsHallmarksDisplay = ({ userId }) => {
     const fetchUserData = async () => {
       try {
         // Fetch user's gems
-        const gemsResponse = await fetch(`/api/gems/total`, {
+        const gemsResponse = await fetch('/api/gems/total', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ const GemsHallmarksDisplay = ({ userId }) => {
   }, {});
 
   const rarityOrder = ['legendary', 'epic', 'rare', 'uncommon', 'common'];
-  const orderedHallmarks = rarityOrder.flatMap(rarity => 
+  const orderedHallmarks = rarityOrder.flatMap(rarity =>
     groupedHallmarks[rarity] ? groupedHallmarks[rarity].map(h => ({ ...h, rarity })) : []
   );
 
@@ -87,8 +87,8 @@ const GemsHallmarksDisplay = ({ userId }) => {
         {orderedHallmarks.length > 0 ? (
           <div className="hallmarks-grid">
             {orderedHallmarks.map((hallmark, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`hallmark-card rarity-${hallmark.rarity}`}
                 title={`${hallmark.name}: ${hallmark.description}`}
               >

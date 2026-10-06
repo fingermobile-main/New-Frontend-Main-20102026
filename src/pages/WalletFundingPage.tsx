@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
-import { GiftIcon, PaylinkIcon, CurrencyNairaIcon, CreditCardIcon, BankIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
+import { GiftIcon, PaylinkIcon, CurrencyNairaIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
 
 const WalletFundingPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();

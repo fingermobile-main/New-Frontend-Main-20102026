@@ -21,10 +21,10 @@ const MemberManagementPage: React.FC = () => {
     try {
       setLoading(true);
       const res = await api.get('/admin/users');
-      const userList = Array.isArray(res.data) 
-        ? res.data 
+      const userList = Array.isArray(res.data)
+        ? res.data
         : (res.data?.users || res.data?.data || []);
-      
+
       const mapped: Member[] = userList.map((u: any) => ({
         id: String(u.id),
         email: u.email || `${u.username}@fingermobile.io`,

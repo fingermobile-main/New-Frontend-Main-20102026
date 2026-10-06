@@ -30,7 +30,13 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 }));
 
 // Add TextEncoder and TextDecoder polyfills
-import { TextEncoder, TextDecoder } from 'text-encoding';
+// @ts-ignore
+import { TextEncoder, TextDecoder } from 'util';
+if (typeof global.TextEncoder === 'undefined') {
+  global.TextEncoder = TextEncoder;
+  // @ts-ignore
+  global.TextDecoder = TextDecoder;
+}
 
 // Mock window.scrollTo
 window.scrollTo = jest.fn();

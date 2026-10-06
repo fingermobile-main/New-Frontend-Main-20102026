@@ -33,14 +33,14 @@ export const useAds = (): UseAdsResult => {
     setError(null);
     try {
       const response: any = await ApiService.get('/ads');
-      const list = Array.isArray(response?.data) 
-        ? response.data 
-        : Array.isArray(response?.data?.ads) 
-          ? response.data.ads 
-          : Array.isArray(response?.ads) 
-            ? response.ads 
-            : Array.isArray(response) 
-              ? response 
+      const list = Array.isArray(response?.data)
+        ? response.data
+        : Array.isArray(response?.data?.ads)
+          ? response.data.ads
+          : Array.isArray(response?.ads)
+            ? response.ads
+            : Array.isArray(response)
+              ? response
               : [];
       setAds(list);
     } catch (err) {

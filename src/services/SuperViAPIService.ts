@@ -1,4 +1,3 @@
-import React, {} from 'react';
 // SuperViAPIService - A service for 3D visualization and character rendering
 // This service handles 3D character models animations, and rendering using Three.js
 
@@ -12,10 +11,12 @@ let OrbitControlsClass: any;
 // Initialize loaders asynchronously
 async function initializeLoaders() {
   if (!GLTFLoaderClass) {
+    // @ts-ignore
     const gltfModule = await import('three/addons/loaders/GLTFLoader.js');
     GLTFLoaderClass = gltfModule.GLTFLoader;
   }
   if (!OrbitControlsClass) {
+    // @ts-ignore
     const orbitModule = await import('three/addons/controls/OrbitControls.js');
     OrbitControlsClass = orbitModule.OrbitControls;
   }
@@ -269,8 +270,8 @@ class SuperViApiService {
   public updateCharacterPosition(
     characterId: string, position: THREE.Vector3,
   ): void {
-    const model = this.characterModels.get(characterId);
-    if (model && 'position' in model) {
+    const model = this.characterModels.get(characterId) as any;
+    if (model && model.position) {
       model.position.copy(position);
     }
   }
@@ -278,8 +279,8 @@ class SuperViApiService {
   public updateCharacterRotation(
     characterId: string, rotation: THREE.Euler,
   ): void {
-    const model = this.characterModels.get(characterId);
-    if (model && 'rotation' in model) {
+    const model = this.characterModels.get(characterId) as any;
+    if (model && model.rotation) {
       model.rotation.copy(rotation);
     }
   }
@@ -505,7 +506,7 @@ class SuperViApiService {
   }
 
   async getmemberInventory(
-    memberId: string): Promise<unknown[]> {
+    _memberId: string): Promise<unknown[]> {
     // Simulate API call to get member's inventory
     return [
       {itemId: 'pow_1',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiUser, FiMail, FiPhone, FiMapPin, FiCalendar, FiDollarSign, FiFilter, FiSearch, FiMoreVertical, FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
+import { User as FiUser, Mail as FiMail, Phone as FiPhone, MapPin as FiMapPin, Calendar as FiCalendar, DollarSign as FiDollarSign, Filter as FiFilter, Search as FiSearch, MoreVertical as FiMoreVertical, Edit as FiEdit, Trash2 as FiTrash2, Plus as FiPlus } from 'lucide-react';
 import { useAppContext } from '../../contexts/AppContext';
 
 const CustomerManagement: React.FC = () => {

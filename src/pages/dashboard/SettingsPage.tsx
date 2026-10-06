@@ -28,14 +28,14 @@ const SettingsPage: React.FC = () => {
   });
 
   const handleNotificationChange = (key: string) => {
-    setNotifications(prev => ({
+    setNotifications((prev: typeof notifications) => ({
       ...prev,
       [key]: !prev[key as keyof typeof prev]
     }));
   };
 
   const handlePrivacyChange = (key: string) => {
-    setPrivacy(prev => ({
+    setPrivacy((prev: typeof privacy) => ({
       ...prev,
       [key]: !prev[key as keyof typeof prev]
     }));

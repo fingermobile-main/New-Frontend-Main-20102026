@@ -25,7 +25,7 @@ const videoTranslationService = {
 
       return response.data;
     } catch (error) {
-      console.error("Error in uploadVideo function:", error);
+      console.error('Error in uploadVideo function:', error);
       throw error.response?.data || error;
     }
   },

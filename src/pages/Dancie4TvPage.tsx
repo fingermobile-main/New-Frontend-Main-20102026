@@ -13,6 +13,7 @@ interface DiscoveryItem {
   views?: number;
 }
 
+// eslint-disable-next-line no-unused-vars
 interface FeedVideo {
   id: string | number;
   title: string;
@@ -21,6 +22,7 @@ interface FeedVideo {
   uploadDate?: string;
 }
 
+// eslint-disable-next-line no-unused-vars
 interface UpdateItem {
   id: string | number;
   message: string;

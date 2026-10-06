@@ -22,7 +22,7 @@ const AdminSecuritySettingsPage: React.FC = () => {
       setLoading(true);
       const allSettings = await adminOperationsService.getSettings();
       const secSettings = allSettings.filter((s: any) => s.config_group === 'security');
-      
+
       const mapped: SecuritySetting[] = secSettings.map((s: any) => {
         let val = s.config_value;
         if (typeof val === 'object' && val !== null) {
@@ -30,7 +30,7 @@ const AdminSecuritySettingsPage: React.FC = () => {
         } else {
           val = String(val);
         }
-        
+
         let type: 'text' | 'number' | 'boolean' = 'text';
         if (val === 'true' || val === 'false') {
           type = 'boolean';

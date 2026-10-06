@@ -5,9 +5,11 @@ import MarketingDashboard from '../components/dashboard/MarketingDashboard';
 import { advertisingService, AdCampaignItem } from '../services/advertisingService';
 import {
   MegaphoneIcon,
+  // eslint-disable-next-line no-unused-vars
   PlusIcon,
   SparklesIcon,
   ArrowRightIcon,
+  // eslint-disable-next-line no-unused-vars
   ChartBarIcon,
   PlayIcon,
   PauseIcon
@@ -21,6 +23,7 @@ const MarketingPage: React.FC = () => {
   useEffect(() => {
     advertisingService.getCampaigns(true)
       .then((items) => setRecentCampaigns(items.slice(0, 5)))
+      // eslint-disable-next-line no-console
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);

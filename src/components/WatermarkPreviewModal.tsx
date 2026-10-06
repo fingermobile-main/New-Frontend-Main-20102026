@@ -82,7 +82,7 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
               <Label>Opacity: {opacity}%</Label>
               <Slider
                 value={[opacity]}
-                onValueChange={(value) => setOpacity(value[0])}
+                onValueChange={(value: number[]) => setOpacity(value[0])}
                 max={100}
                 step={1}
               />
@@ -92,7 +92,7 @@ const WatermarkPreviewModal: React.FC<WatermarkPreviewModalProps> = ({
               <Label>Font Size: {fontSize}px</Label>
               <Slider
                 value={[fontSize]}
-                onValueChange={(value) => setFontSize(value[0])}
+                onValueChange={(value: number[]) => setFontSize(value[0])}
                 min={12}
                 max={72}
                 step={1}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Shield, MessageSquare, Star, Share2, Tag, Bookmark, Download, Eye, Clock, X, Check, Lock, AlertCircle 
+import {
+  Shield, MessageSquare, Star, Share2, Tag, Bookmark, Download, Eye, Clock, X, Check, Lock, AlertCircle
 } from 'lucide-react';
 
 export interface UGCPrivacySettings {
@@ -122,9 +122,9 @@ export const UGCPrivacyControlModal: React.FC<UGCPrivacyControlModalProps> = ({
   if (!isOpen) return null;
 
   const renderOptionGroup = (
-    label: string, 
-    icon: React.ReactNode, 
-    value: 'everyone' | 'followers' | 'none', 
+    label: string,
+    icon: React.ReactNode,
+    value: 'everyone' | 'followers' | 'none',
     onChange: (val: 'everyone' | 'followers' | 'none') => void
   ) => (
     <div style={{ marginBottom: '16px', background: 'rgba(255, 255, 255, 0.03)', padding: '12px 16px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>

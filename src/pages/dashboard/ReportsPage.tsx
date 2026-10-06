@@ -86,25 +86,25 @@ const ReportsPage: React.FC = () => {
 
         <div className="flex space-x-2 mb-6">
           <Button
-            variant={activeTab === 'overview' ? 'default' : 'outline'}
+            variant={activeTab === 'overview' ? 'primary' : 'outline'}
             onClick={() => setActiveTab('overview')}
           >
             Overview
           </Button>
           <Button
-            variant={activeTab === 'users' ? 'default' : 'outline'}
+            variant={activeTab === 'users' ? 'primary' : 'outline'}
             onClick={() => setActiveTab('users')}
           >
             User Reports
           </Button>
           <Button
-            variant={activeTab === 'content' ? 'default' : 'outline'}
+            variant={activeTab === 'content' ? 'primary' : 'outline'}
             onClick={() => setActiveTab('content')}
           >
             Content Reports
           </Button>
           <Button
-            variant={activeTab === 'finance' ? 'default' : 'outline'}
+            variant={activeTab === 'finance' ? 'primary' : 'outline'}
             onClick={() => setActiveTab('finance')}
           >
             Financial Reports

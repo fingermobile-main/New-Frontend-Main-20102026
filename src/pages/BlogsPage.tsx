@@ -10,18 +10,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import PostCard from '../components/PostCard';
-import type { AiAssistData, AiAssistResponse } from '../components/PostCard';
 import { useHaptic } from '../contexts/HapticFeedbackContext';
 import { useCommunity } from '../contexts/CommunityContext';
 import MainLayout from '../components/layout/MainLayout';
-import type { Post, Member } from '../types';
 import { useBlogPosts, type BlogPost } from '../hooks/useBlogPosts';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 import {
   SearchIcon,
+  // eslint-disable-next-line no-unused-vars
   FilterIcon,
   ViewGridIcon,
   ViewListIcon,
   BookmarkIcon,
+  // eslint-disable-next-line no-unused-vars
   ShareIcon,
   UserCircleIcon,
   HeartIcon,
@@ -126,6 +127,7 @@ const BlogsPage: React.FC = () => {
   }, [blogPosts, isLoggedIn]);
 
   // Ensure we're using the correct type for setDisplayOption
+  // eslint-disable-next-line no-unused-vars
   const handleSetDisplayOption = (option: string) => {
     if (option === 'card' || option === 'row') {
       setDisplayOption(option);
@@ -198,6 +200,7 @@ const BlogsPage: React.FC = () => {
   };
 
   const onAddComment = () => {
+    voiceLineServiceInstance.playCommentaryVoiceLine('blogs');
     showToast('Add comment action triggered', 'info');
   };
 
@@ -223,6 +226,7 @@ const BlogsPage: React.FC = () => {
 
   const handleAiAssist = async (
     action: string,
+    // eslint-disable-next-line no-unused-vars
     data: unknown,
   ): Promise<unknown> => {
     showToast(`AI Assist action: ${action}`, 'info');

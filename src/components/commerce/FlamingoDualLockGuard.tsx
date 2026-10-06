@@ -33,7 +33,7 @@ export const FlamingoDualLockGuard: React.FC<FlamingoDualLockGuardProps> = ({ ch
 
   // 1. Evaluate Privilege Tier (Lock 1: Role & Subscription Guard)
   const role = (user?.role || '').toLowerCase();
-  const hasBadges = Array.isArray(user?.badges) && user.badges.length > 0;
+  const hasBadges = Array.isArray(user?.badges) && (user?.badges?.length || 0) > 0;
   const isVerifiedBadge = Boolean(user?.isVerified || hasBadges);
 
   const isPrivilegedRole =

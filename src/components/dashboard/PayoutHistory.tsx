@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { paymentAPI } from '../../services/paymentAPI';
-import { FiDollarSign, FiCalendar, FiDownload, FiInfo, FiFilter } from 'react-icons/fi';
+import { DollarSign as FiDollarSign, Calendar as FiCalendar, Download as FiDownload, Info as FiInfo, Filter as FiFilter } from 'lucide-react';
 
 const PayoutHistory: React.FC = () => {
   const [payoutHistory, setPayoutHistory] = useState<any[]>([]);

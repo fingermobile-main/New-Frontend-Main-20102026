@@ -173,7 +173,6 @@ const CanaryAdsPage: React.FC = () => {
       navigate('/campaigns');
     } catch (err: any) {
       showToast(err?.message || 'Failed to submit ad campaign. Please try again.', 'error');
-      console.error('Ad submission error:', err);
     } finally {
       setIsSubmitting(false);
     }

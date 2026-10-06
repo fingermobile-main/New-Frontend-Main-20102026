@@ -7,6 +7,7 @@ export type { AdminActionItem, AdminMemberItem, AuditLogItem };
 
 import { defaultAdminActionItems } from '../data/adminActions';
 import { defaultAdminMemberItems } from '../data/adminMembers';
+import api from './api';
 
 class AdminControlService {
   private static instance: AdminControlService;
@@ -95,181 +96,97 @@ class AdminControlService {
     return this.isSuperAdmin(memberId);
   }
 
-  public assignRole(
+  public async assignRole(
     superMemberId: string,
     targetMemberId: string,
     newRole: AdminMemberItem['role'],
-  ): {
-  success: boolean; message: string } {
-    // Only OWNER (SuperAdmin) can assign roles
+  ): Promise<{ success: boolean; message: string }> {
     if (!this.isSuperAdmin(superMemberId)) {
-      return {success: false,
-        message: 'Only SuperAdmin can assign roles' };
-    }
-
-    const targetMember = this.getMemberById(targetMemberId);
-    if (!targetMember) {
-      return {success: false,
-        message: 'Member not found' };
+      return {success: false, message: 'Only SuperAdmin can assign roles' };
     }
 
     // Prevent OWNER from downgrading their own role
     if (targetMemberId === superMemberId && newRole !== 'OWNER') {
-      return {success: false,
-        message: 'SuperAdmin cannot downgrade their own role'
-      };
+      return {success: false, message: 'SuperAdmin cannot downgrade their own role' };
     }
 
-    // Update member role
-    targetMember.role = newRole;
+    try {
+      const response = await api.put(`/superadmin/members/${targetMemberId}/role`, { role: newRole });
 
-    // Update permissions based on role
-    switch (newRole) {
-    case 'OWNER':
-      targetMember.permissions = ['all'];
-      break;
-    case 'ADMIN':
-      targetMember.permissions = ['modules', 'members', 'content'];
-      break;
-    case 'MODERATOR':
-      targetMember.permissions = ['content', 'members'];
-      break;
-    case 'AUDITOR':
-      targetMember.permissions = ['audit', 'logs'];
-      break;
+      const targetMember = this.getMemberById(targetMemberId);
+      if (targetMember) {
+        targetMember.role = newRole;
+        switch (newRole) {
+        case 'OWNER': targetMember.permissions = ['all']; break;
+        case 'ADMIN': targetMember.permissions = ['modules', 'members', 'content']; break;
+        case 'MODERATOR': targetMember.permissions = ['content', 'members']; break;
+        case 'AUDITOR': targetMember.permissions = ['audit', 'logs']; break;
+        }
+      }
+      return { success: true, message: response.data?.message || `Role ${newRole} assigned successfully` };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || 'Failed to assign role' };
     }
-
-    // Log the action
-    this.addAuditLogItem({memberId: superMemberId,
-      actionId: 'role-assignment',
-      details: `Assigned role ${newRole} to member ${targetMember.name}`,
-      ipAddress: '127.0.0.1',
-      memberAgent: 'Admin Control System',
-      status: 'success'
-    });
-
-    return {success: true,
-      message: `Role ${newRole} assigned to ${targetMember.name}`
-    };
   }
 
-  public addMember(
+  public async addMember(
     superMemberId: string,
     newMember: Omit<AdminMemberItem, 'id'>,
-  ): {
-  success: boolean; message: string; memberId?: string } {
-    // Only OWNER (SuperAdmin) can add members
+  ): Promise<{ success: boolean; message: string; memberId?: string }> {
     if (!this.isSuperAdmin(superMemberId)) {
-      return {success: false,
-        message: 'Only SuperAdmin can add members' };
+      return {success: false, message: 'Only SuperAdmin can add members' };
     }
 
-    const memberId = `member-${Date.now()}`;
-    this.members.push({
-      ...newMember,
-      id: memberId
-    });
-
-    // Log the action
-    this.addAuditLogItem({memberId: superMemberId,
-      actionId: 'member-addition',
-      details: `Added new member ${newMember.name} with role ${newMember.role}`,
-      ipAddress: '127.0.0.1',
-      memberAgent: 'Admin Control System',
-      status: 'success'
-    });
-
-    return {success: true,
-      message: `Member ${newMember.name} added successfully`,
-      memberId
-    };
+    try {
+      const response = await api.post('/superadmin/members', newMember);
+      const memberId = response.data?.member?.id || `member-${Date.now()}`;
+      this.members.push({ ...newMember, id: memberId });
+      return { success: true, message: response.data?.message || `Member ${newMember.name} added successfully`, memberId };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || 'Failed to add member' };
+    }
   }
 
-  public removeMember(
+  public async removeMember(
     superMemberId: string,
     targetMemberId: string,
-  ): {
-  success: boolean; message: string } {
-    // Only OWNER (SuperAdmin) can remove members
+  ): Promise<{ success: boolean; message: string }> {
     if (!this.isSuperAdmin(superMemberId)) {
-      return {success: false,
-        message: 'Only SuperAdmin can remove members' };
+      return {success: false, message: 'Only SuperAdmin can remove members' };
     }
-
-    // Prevent OWNER from removing themselves
     if (targetMemberId === superMemberId) {
-      return {success: false,
-        message: 'SuperAdmin cannot remove themselves' };
+      return {success: false, message: 'SuperAdmin cannot remove themselves' };
     }
 
-    const targetMember = this.getMemberById(targetMemberId);
-    if (!targetMember) {
-      return {success: false,
-        message: 'Member not found' };
+    try {
+      const response = await api.delete(`/superadmin/members/${targetMemberId}`);
+      this.members = this.members.filter((member) => member.id !== targetMemberId);
+      return { success: true, message: response.data?.message || 'Member removed successfully' };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || 'Failed to remove member' };
     }
-
-    this.members = this.members.filter(
-      (member) => member.id !== targetMemberId,
-    );
-
-    // Log the action
-    this.addAuditLogItem({memberId: superMemberId,
-      actionId: 'member-removal',
-      details: `Removed member ${targetMember.name}`,
-      ipAddress: '127.0.0.1',
-      memberAgent: 'Admin Control System',
-      status: 'success'
-    });
-
-    return {success: true,
-      message: `Member ${targetMember.name} removed successfully`
-    };
   }
 
-  public updateMember(
+  public async updateMember(
     superMemberId: string,
     targetMemberId: string,
     updates: Partial<AdminMemberItem>,
-  ): {
-  success: boolean; message: string } {
-    // Only OWNER (SuperAdmin) can update members
+  ): Promise<{ success: boolean; message: string }> {
     if (!this.isSuperAdmin(superMemberId)) {
-      return {success: false,
-        message: 'Only SuperAdmin can update members' };
+      return {success: false, message: 'Only SuperAdmin can update members' };
+    }
+    if (targetMemberId === superMemberId && updates.role && updates.role !== 'OWNER') {
+      return {success: false, message: 'SuperAdmin cannot downgrade their own role' };
     }
 
-    const targetMember = this.getMemberById(targetMemberId);
-    if (!targetMember) {
-      return {success: false,
-        message: 'Member not found' };
+    try {
+      const response = await api.put(`/superadmin/members/${targetMemberId}`, updates);
+      const targetMember = this.getMemberById(targetMemberId);
+      if (targetMember) Object.assign(targetMember, updates);
+      return { success: true, message: response.data?.message || 'Member updated successfully' };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || 'Failed to update member' };
     }
-
-    // Prevent OWNER from downgrading their own role through updates
-    if (
-      targetMemberId === superMemberId &&
-      updates.role &&
-      updates.role !== 'OWNER'
-    ) {
-      return {success: false,
-        message: 'SuperAdmin cannot downgrade their own role'
-      };
-    }
-
-    // Apply updates
-    Object.assign(targetMember, updates);
-
-    // Log the action
-    this.addAuditLogItem({memberId: superMemberId,
-      actionId: 'member-update',
-      details: `Updated member ${targetMember.name}`,
-      ipAddress: '127.0.0.1',
-      memberAgent: 'Admin Control System',
-      status: 'success'
-    });
-
-    return {success: true,
-      message: `Member ${targetMember.name} updated successfully`
-    };
   }
 
   public async executeAction(
@@ -387,42 +304,24 @@ required: ${action.minSignatures} signatures needed`,
       message: 'No active action to cancel' };
   }
 
-  private performAction(
+  private async performAction(
     actionId: string,
     memberId: string,
-  ): {
-  success: boolean; message: string } {
+  ): Promise<{ success: boolean; message: string }> {
     const action = this.getActionById(actionId);
-    const member = this.getMemberById(memberId);
+    if (!action) return { success: false, message: 'Invalid action' };
 
-    if (!action || !member) {
-      return {success: false,
-        message: 'Invalid action or member' };
-    }
-
-    // Simulate action execution
     action.status = 'executing';
     action.executionTime = new Date();
 
-    // Log the action
-    this.auditLogs.push({id: `log-${Date.now()}`,
-      memberId: member.id,
-      actionId: action.id,
-      timestamp: new Date(),
-      details: `Executing,
-action: ${action.description}`,
-      ipAddress: '127.0.0.1',
-      memberAgent: 'Admin Control System',
-      status: 'success'
-    });
-
-    // Simulate action completion
-    setTimeout(() => {
+    try {
+      const response = await api.post('/superadmin/operations', { actionId });
       action.status = 'completed';
-    }, 2000);
-
-    return {success: true,
-      message: 'Action executed successfully' };
+      return { success: true, message: response.data?.message || 'Action executed successfully' };
+    } catch (error: any) {
+      action.status = 'failed';
+      return { success: false, message: error.response?.data?.error || 'Action failed' };
+    }
   }
 
   public addAuditLogItem(
@@ -433,6 +332,48 @@ action: ${action.description}`,
       timestamp: new Date()
     });
   }
+
+  public async curateProduct(
+    action: string,
+    platform: string,
+    productId: string,
+    productData?: any
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await api.post('/superadmin/curation/product', { action, platform, productId, productData });
+      return { success: true, message: response.data?.message || `Product ${action} successful` };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || `Product ${action} failed` };
+    }
+  }
+
+  public async curateMedia(
+    action: string,
+    platform: string,
+    mediaId: string,
+    mediaData?: any
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await api.post('/superadmin/curation/media', { action, platform, mediaId, mediaData });
+      return { success: true, message: response.data?.message || `Media ${action} successful` };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || `Media ${action} failed` };
+    }
+  }
+
+  public async manageAds(
+    action: string,
+    adId: string,
+    adData?: any
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await api.post('/superadmin/curation/ads', { action, adId, adData });
+      return { success: true, message: response.data?.message || `Ad ${action} successful` };
+    } catch (error: any) {
+      return { success: false, message: error.response?.data?.error || `Ad ${action} failed` };
+    }
+  }
+
 
   public getActiveAction(): AdminActionItem | null {
     return this.activeAction;

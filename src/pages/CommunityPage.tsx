@@ -13,6 +13,7 @@ interface Community {
 }
 
 const CommunityPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { authState } = useSuperViAuth();
   const [communities, setCommunities] = useState<Community[]>([]);
   const [activeTab, setActiveTab] = useState<'my' | 'discover'>('my');
@@ -35,6 +36,7 @@ const CommunityPage: React.FC = () => {
           return;
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.warn('Failed to load communities, using default list:', err);
       }
       if (mounted) {
@@ -54,6 +56,7 @@ const CommunityPage: React.FC = () => {
     try {
       await api.post(`/communities/${id}/join`);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to persist join community:', err);
     }
     setCommunities(
@@ -69,6 +72,7 @@ const CommunityPage: React.FC = () => {
     try {
       await api.post(`/communities/${id}/leave`);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to persist leave community:', err);
     }
     setCommunities(

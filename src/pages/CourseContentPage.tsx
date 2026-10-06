@@ -31,6 +31,7 @@ const CourseContentPage: React.FC = () => {
           });
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load course content from DB:', err);
       } finally {
         setLoading(false);

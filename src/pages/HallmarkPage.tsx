@@ -102,6 +102,7 @@ const HallmarkPage: React.FC = () => {
         }));
         setAchievements(mapped);
       }
+    // eslint-disable-next-line no-console
     }).catch(err => console.warn('Failed to load live hallmarks in HallmarkPage:', err));
     return () => { mounted = false; };
   }, []);

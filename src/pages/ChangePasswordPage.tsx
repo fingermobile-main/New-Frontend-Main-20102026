@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
-import { EyeIcon, EyeOffIcon } from '@/icons';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Label } from '../components/ui/Label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
+import { EyeIcon, EyeOffIcon } from '../icons';
+import { useToast } from '../hooks/use-toast';
 import authService from '../services/authService';
 
 const ChangePasswordPage: React.FC = () => {
@@ -75,6 +75,7 @@ const ChangePasswordPage: React.FC = () => {
       // Redirect to forum after successful password change
       navigate('/forum');
     } catch (error: any) {
+      // eslint-disable-next-line no-console
       console.error('Change password error:', error);
 
       const errorMessage = error.response?.data?.message ||

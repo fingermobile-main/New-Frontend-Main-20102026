@@ -5,6 +5,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import {
   BuildingOfficeIcon,
+  // eslint-disable-next-line no-unused-vars
   CurrencyDollarIcon,
   ChartBarIcon,
   UserCircleIcon,

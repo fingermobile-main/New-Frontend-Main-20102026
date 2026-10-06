@@ -20,57 +20,60 @@ import { P2PProvider } from './P2PContext';
 import { Dancia4TvProvider } from './Dancia4TvProvider';
 import { MarketplaceProvider } from './MarketplaceContext';
 import { CamusProvider } from './CamusContext';
+import { CommunityProvider } from './CommunityContext';
 
 export const GlobalProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <CamusProvider>
     <ToastProvider>
       <HapticFeedbackProvider>
         <SuperViAuthProvider>
           <AuthProvider>
-            <AppProvider>
-              <Web3Provider>
-                <IdentityAuthProvider>
-                  <ProfileProvider>
-                    <MonetizationProvider>
-                      <ContentProvider>
-                        <PostProvider>
-                          <GroupProvider>
-                            <OnboardingProvider>
-                              <P2PProvider>
-                                <BeatwaveNGProvider>
-                                  <Dancia4TvProvider>
-                                    <MarketplaceProvider>
-                                      <ToastContainer
-                                        position="top-right"
-                                        autoClose={5000}
-                                        hideProgressBar={false}
-                                        newestOnTop
-                                        closeOnClick
-                                        rtl={false}
-                                        pauseOnFocusLoss
-                                        draggable
-                                        pauseOnHover
-                                        theme="light"
-                                      />
-                                      {children}
-                                    </MarketplaceProvider>
-                                  </Dancia4TvProvider>
-                                </BeatwaveNGProvider>
-                              </P2PProvider>
-                            </OnboardingProvider>
-                          </GroupProvider>
-                        </PostProvider>
-                      </ContentProvider>
-                    </MonetizationProvider>
-                  </ProfileProvider>
-                </IdentityAuthProvider>
-              </Web3Provider>
-            </AppProvider>
+            <CamusProvider>
+              <AppProvider>
+                <Web3Provider>
+                  <IdentityAuthProvider>
+                    <ProfileProvider>
+                      <MonetizationProvider>
+                        <ContentProvider>
+                          <PostProvider>
+                            <GroupProvider>
+                              <OnboardingProvider>
+                                <P2PProvider>
+                                  <BeatwaveNGProvider>
+                                    <Dancia4TvProvider>
+                                      <MarketplaceProvider>
+                                        <CommunityProvider>
+                                          <ToastContainer
+                                            position="top-right"
+                                            autoClose={5000}
+                                            hideProgressBar={false}
+                                            newestOnTop
+                                            closeOnClick
+                                            rtl={false}
+                                            pauseOnFocusLoss
+                                            draggable
+                                            pauseOnHover
+                                            theme="light"
+                                          />
+                                          {children}
+                                        </CommunityProvider>
+                                      </MarketplaceProvider>
+                                    </Dancia4TvProvider>
+                                  </BeatwaveNGProvider>
+                                </P2PProvider>
+                              </OnboardingProvider>
+                            </GroupProvider>
+                          </PostProvider>
+                        </ContentProvider>
+                      </MonetizationProvider>
+                    </ProfileProvider>
+                  </IdentityAuthProvider>
+                </Web3Provider>
+              </AppProvider>
+            </CamusProvider>
           </AuthProvider>
         </SuperViAuthProvider>
       </HapticFeedbackProvider>
     </ToastProvider>
-    </CamusProvider>
   );
 };

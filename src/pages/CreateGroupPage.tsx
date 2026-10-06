@@ -6,6 +6,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { useGroup } from '../contexts/GroupContext';
 import { playAudio } from '../utils/audioPlayer';
 
+// eslint-disable-next-line no-unused-vars
 interface VoiceLine {
   id: string;
   audioUrl: string;
@@ -35,6 +36,7 @@ const CreateGroupPage: React.FC = () => {
           setVoiceLines([]);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch voice lines:', error);
       }
     };
@@ -58,6 +60,7 @@ const CreateGroupPage: React.FC = () => {
       showToast('Group created successfully!', 'success');
       navigate('/groups');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to create group:', error);
       showToast('Failed to create group. Please try again.', 'error');
     } finally {

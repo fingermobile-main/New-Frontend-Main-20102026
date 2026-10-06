@@ -5,9 +5,11 @@
 .dancia4tv-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #000;
+  min-height: 100vh;
+  height: auto;
+  background-color: #030712;
   color: #fff;
+  overflow-x: hidden;
 }
 
 .dancia4tv-header {
@@ -70,9 +72,10 @@
 }
 
 .dancia4tv-main {
-  flex: 1;
-  overflow: hidden;
+  flex: 1 0 auto;
+  overflow: visible;
   position: relative;
+  width: 100%;
 }
 
 /* Tab Navigation */

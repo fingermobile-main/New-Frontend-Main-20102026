@@ -5,9 +5,7 @@ import Footer from '../components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/Select';
 
 import { moderationAdminService } from '../services/moderationAdminService';
 
@@ -23,6 +21,7 @@ const ModerationQueuePage: React.FC = () => {
   }>>([]);
 
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  // eslint-disable-next-line no-unused-vars
   const [rejectionReason, setRejectionReason] = useState('');
 
   React.useEffect(() => {
@@ -58,6 +57,7 @@ const ModerationQueuePage: React.FC = () => {
         ]);
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.warn('Using queue fallback:', e);
     }
   };
@@ -66,6 +66,7 @@ const ModerationQueuePage: React.FC = () => {
     try {
       await moderationAdminService.approveItem(itemId, 'Approved by moderator review');
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.warn('Approve call:', e);
     }
     setQueueItems(prev => prev.filter(item => item.id !== itemId));
@@ -78,6 +79,7 @@ const ModerationQueuePage: React.FC = () => {
     try {
       await moderationAdminService.rejectItem(itemId, 'remove_content', rejectionReason || 'Content violates protocol rules');
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.warn('Reject call:', e);
     }
     setQueueItems(prev => prev.filter(item => item.id !== itemId));
@@ -203,7 +205,7 @@ const ModerationQueuePage: React.FC = () => {
                         Approve Content
                       </Button>
                       <Button
-                        variant="destructive"
+                        variant="danger"
                         onClick={() => handleReject(selectedItem.id)}
                         disabled={selectedItem.status !== 'pending'}
                       >

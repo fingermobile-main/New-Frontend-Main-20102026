@@ -225,6 +225,7 @@ const LiveStreamingPage: React.FC = () => {
   });
 
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>(LIVE_STREAMS);
+  // eslint-disable-next-line no-unused-vars
   const [loadingStreams, setLoadingStreams] = useState(false);
 
   useEffect(() => {

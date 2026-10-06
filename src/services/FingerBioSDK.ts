@@ -128,14 +128,29 @@ export class FingerBioSDK {
       const frame = this.captureFrame();
 
       this.updateLabel('Verifying identity with FingerMobile BioFace...');
-      const res = await fetch(`${this.baseUrl}/verify-1to1`, {
+      let res = await fetch(`${this.baseUrl}/verify-1to1`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, image_base64: frame })
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'VERIFICATION_FAILED');
+      if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
+        res = await fetch('http://localhost:3001/api/biometrics/verify-1to1', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, image_base64: frame })
+        });
+      }
+
+      const text = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Biometric verification failed: HTTP ${res.status}`);
+      }
+
+      if (!res.ok) throw new Error(data.detail || data.message || 'VERIFICATION_FAILED');
       return data;
     } finally {
       this.close();
@@ -153,14 +168,29 @@ export class FingerBioSDK {
       const frame = this.captureFrame();
 
       this.updateLabel('Searching FingerMobile Database...');
-      const res = await fetch(`${this.baseUrl}/identify-1toN`, {
+      let res = await fetch(`${this.baseUrl}/identify-1toN`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image_base64: frame })
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'IDENTIFICATION_FAILED');
+      if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
+        res = await fetch('http://localhost:3001/api/biometrics/identify-1toN', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image_base64: frame })
+        });
+      }
+
+      const text = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Biometric authentication failed: HTTP ${res.status}`);
+      }
+
+      if (!res.ok) throw new Error(data.detail || data.message || 'IDENTIFICATION_FAILED');
       return data;
     } finally {
       this.close();
@@ -178,14 +208,29 @@ export class FingerBioSDK {
       const frame = this.captureFrame();
 
       this.updateLabel('Securing template in Vector DB...');
-      const res = await fetch(`${this.baseUrl}/enroll`, {
+      let res = await fetch(`${this.baseUrl}/enroll`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, image_base64: frame })
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'ENROLLMENT_FAILED');
+      if (!res.ok && res.status === 404 && this.baseUrl === '/api/biometrics') {
+        res = await fetch('http://localhost:3001/api/biometrics/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, image_base64: frame })
+        });
+      }
+
+      const text = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Biometric enrollment failed: HTTP ${res.status}`);
+      }
+
+      if (!res.ok) throw new Error(data.detail || data.message || 'ENROLLMENT_FAILED');
       return data;
     } finally {
       this.close();

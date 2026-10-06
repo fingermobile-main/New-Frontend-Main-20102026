@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiGrid, FiList, FiBell, FiSettings, FiFilter, FiX, FiCheck, FiStar, FiHeart, FiShare2, FiSend } from 'react-icons/fi';
+import { Grid as FiGrid, List as FiList, Bell as FiBell, Settings as FiSettings, Filter as FiFilter, X as FiX, Check as FiCheck, Star as FiStar, Heart as FiHeart, Share2 as FiShare2, Send as FiSend } from 'lucide-react';
 import { useAppContext } from '../../contexts/AppContext';
 
 const FeedManagement: React.FC = () => {

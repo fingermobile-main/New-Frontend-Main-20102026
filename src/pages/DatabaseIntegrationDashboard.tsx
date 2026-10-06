@@ -5,6 +5,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ServerIcon, DatabaseIcon, UserCircleIcon, ChartBarIcon, CheckCircleIcon, ClockIcon } from '../icons';
 
 const DatabaseIntegrationDashboard: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { ficBalance, showToast } = useAppContext();
 
   return (

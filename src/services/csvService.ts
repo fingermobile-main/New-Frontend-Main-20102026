@@ -30,10 +30,10 @@ class CsvService {
     return new Promise((resolve, reject) => {
       Papa.parse(file, {header: true,
         skipEmptyLines: true,
-        complete: (results) => {
+        complete: (results: any) => {
           resolve(results as CsvParseResult);
         },
-        error: (error) => {
+        error: (error: any) => {
           reject(error);
         }
       });

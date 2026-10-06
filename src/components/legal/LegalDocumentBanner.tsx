@@ -40,7 +40,7 @@ export const LegalDocumentBanner: React.FC<LegalDocumentBannerProps> = ({
   }, [slug]);
 
   const version = doc?.version || defaultVersion;
-  const effectiveDate = doc?.effective_date 
+  const effectiveDate = doc?.effective_date
     ? new Date(doc.effective_date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
     : defaultEffectiveDate;
   const summary = doc?.summary;

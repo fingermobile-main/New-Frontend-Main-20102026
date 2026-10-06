@@ -133,6 +133,18 @@ body {
   border-color: var(--border-color);
 }
 
+/* Ensure inputs on white/light backgrounds always render high-contrast dark text */
+input[class*="bg-white"],
+textarea[class*="bg-white"],
+select[class*="bg-white"],
+.form-input[class*="bg-white"],
+input[class*="bg-gray-50"],
+textarea[class*="bg-gray-50"],
+input[class*="bg-emerald-50"] {
+  color: #111827 !important;
+  background-color: #ffffff !important;
+}
+
 .form-input::placeholder, input::placeholder, textarea::placeholder {
   color: var(--secondary-text-color);
 }

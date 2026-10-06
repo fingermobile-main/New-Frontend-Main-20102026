@@ -2,26 +2,26 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Phone, Shield, Fingerprint } from 'lucide-react';
+import { Eye, EyeOff, User, Phone, Mail, Shield, Fingerprint, Sparkles } from 'lucide-react';
 import authService from '../../services/authService';
+import { useAuth } from '../../contexts/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [phone, setPhone] = useState('');
+  const { setUser } = useAuth();
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ phone?: string; password?: string; general?: string }>({});
+  const [errors, setErrors] = useState<{ identifier?: string; password?: string; general?: string }>({});
 
   const validateForm = () => {
     let valid = true;
-    const newErrors: { phone?: string; password?: string; general?: string } = {};
+    const newErrors: { identifier?: string; password?: string; general?: string } = {};
 
-    if (!phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-      valid = false;
-    } else if (!/^\+?[1-9]\d{1,14}$/.test(phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
+    const clean = identifier.trim();
+    if (!clean) {
+      newErrors.identifier = 'Email, phone number, or username is required';
       valid = false;
     }
 
@@ -37,6 +37,12 @@ const LoginPage = () => {
     return valid;
   };
 
+  const fillQuickAccount = (ident: string, pass: string) => {
+    setIdentifier(ident);
+    setPassword(pass);
+    setErrors({});
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -46,26 +52,48 @@ const LoginPage = () => {
     setErrors({});
 
     try {
-      const loginResponse = await authService.login({
-        phone: phone.startsWith('+') ? phone : `+${phone}`,
+      const trimmed = identifier.trim();
+      const isEmail = trimmed.includes('@');
+      const isPhoneLike = /^[+0-9\s\-()]+$/.test(trimmed) && trimmed.replace(/[^0-9]/g, '').length >= 7;
+
+      const loginResponse: any = await authService.login({
+        identifier: trimmed,
+        email: isEmail ? trimmed.toLowerCase() : undefined,
+        phone: isPhoneLike ? trimmed : undefined,
+        username: (!isEmail && !isPhoneLike) ? trimmed.toLowerCase() : undefined,
         password
       });
 
       // Store tokens and user info
-      if (loginResponse.accessToken) {
-        localStorage.setItem('accessToken', loginResponse.accessToken);
+      const token = loginResponse.accessToken || loginResponse.token;
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('fingermobile_token', token);
+        localStorage.setItem('token', token);
       }
       if (loginResponse.refreshToken) {
         localStorage.setItem('refreshToken', loginResponse.refreshToken);
       }
       if (loginResponse.user) {
-        localStorage.setItem('user', JSON.stringify(loginResponse.user));
+        const fullUser = {
+          ...loginResponse.user,
+          onboardingComplete: true,
+          onboarding_completed: true
+        };
+        localStorage.setItem('user', JSON.stringify(fullUser));
+        localStorage.setItem('onboardingComplete', 'true');
+        localStorage.setItem('hasCompletedOnboarding', 'true');
+        localStorage.setItem(`onboardingComplete_${fullUser.id}`, 'true');
 
-        // Redirect based on user role or last location
-        navigate(loginResponse.user.onboardingComplete ? '/dashboard' : '/onboarding');
+        if (setUser) {
+          setUser(fullUser);
+        }
+
+        // Flow Step 5 -> Step 6: Always loads ForumPage
+        navigate('/forum');
       }
     } catch (error: any) {
-      setErrors({ general: error.message || 'Login failed. Please try again.' });
+      setErrors({ general: error.response?.data?.message || error.message || 'Login failed. Please check your credentials.' });
     } finally {
       setIsLoading(false);
     }
@@ -83,7 +111,7 @@ const LoginPage = () => {
       const assertionOptions = await fetch('/api/auth/biometric-options', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: phone })
+        body: JSON.stringify({ username: identifier || 'user' })
       }).then(res => res.json());
 
       const credential = await navigator.credentials.get({
@@ -104,12 +132,32 @@ const LoginPage = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-        localStorage.setItem('user', JSON.stringify(data.user));
+      if (response.ok && data.user) {
+        const token = data.accessToken || data.token;
+        if (token) {
+          localStorage.setItem('accessToken', token);
+          localStorage.setItem('fingermobile_token', token);
+          localStorage.setItem('token', token);
+        }
+        if (data.refreshToken) {
+          localStorage.setItem('refreshToken', data.refreshToken);
+        }
+        const fullUser = {
+          ...data.user,
+          onboardingComplete: true,
+          onboarding_completed: true
+        };
+        localStorage.setItem('user', JSON.stringify(fullUser));
+        localStorage.setItem('onboardingComplete', 'true');
+        localStorage.setItem('hasCompletedOnboarding', 'true');
+        localStorage.setItem(`onboardingComplete_${fullUser.id}`, 'true');
 
-        navigate(data.user.onboardingComplete ? '/dashboard' : '/onboarding');
+        if (setUser) {
+          setUser(fullUser);
+        }
+
+        // Flow Step 5 -> Step 6: Always loads ForumPage
+        navigate('/forum');
       } else {
         setErrors({ general: data.message || 'Biometric authentication failed' });
       }
@@ -138,12 +186,21 @@ const LoginPage = () => {
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+              <img
+                src="/assets/branding/fingermobile/FRONT copy.webp"
+                alt="FingerMobile Logo"
+                className="w-full h-full object-contain filter drop-shadow-md"
+                onError={(e) => {
+                  (e.target as HTMLElement).setAttribute('src', '/assets/branding/fingermobile/drawer-splash-logo.webp');
+                }}
+              />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome Back</h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-2">
-              Sign in to your account
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              FingerMobile<span className="text-[#ff6b00]">™</span>
+            </h1>
+            <p className="text-sm font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-1">
+              Protocol Platform Sign In
             </p>
           </div>
 
@@ -154,29 +211,76 @@ const LoginPage = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Quick Test Accounts Pills */}
+            <div className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-300 flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  Quick Test Credentials
+                </span>
+                <span className="text-[11px] text-slate-400">1-click fill</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('admin@fingermobile.com', 'admin123')}
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                >
+                  👑 Admin <span className="text-slate-400 text-[10px] block">admin123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('user@fingermobile.com', 'user123')}
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                >
+                  👤 Test User <span className="text-slate-400 text-[10px] block">user123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('creator@fingermobile.com', 'creator123')}
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                >
+                  🎨 Creator <span className="text-slate-400 text-[10px] block">creator123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('merchant@fingermobile.com', 'merchant123')}
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                >
+                  🛍️ Merchant <span className="text-slate-400 text-[10px] block">merchant123</span>
+                </button>
+              </div>
+            </div>
+
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Phone Number
+              <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Email, Phone Number, or Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
+                  {identifier.includes('@') ? (
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  ) : /^[+0-9]/.test(identifier) ? (
+                    <Phone className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <User className="h-5 w-5 text-gray-400" />
+                  )}
                 </div>
                 <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  id="identifier"
+                  name="identifier"
+                  type="text"
+                  autoComplete="username"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-3 border ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    errors.identifier ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="admin, user@fingermobile.com, or +234..."
                 />
               </div>
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.phone}</p>
+              {errors.identifier && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.identifier}</p>
               )}
             </div>
 

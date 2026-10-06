@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useAuth } from '../contexts/AuthContext';  // Using the useAuth hook instead
 import { SessionContextType, SessionUser } from '../types/auth';
 import { User } from '../types/user';
@@ -37,7 +36,7 @@ export const useAuthSession = (): SessionContextType => {
   const { state } = context;
   return {
     isAuthenticated: state.isAuthenticated,
-    isLoading: state.isLoading,
+    isLoading: state.loading,
     user: convertToSessionUser(state.user)
   };
 };

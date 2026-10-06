@@ -24,13 +24,13 @@ import zhTranslations from './locales/zh/translation.json';
 // Translation resources
 const resources = {en: {
   translation: enTranslations
-  },
+},
 es: {translation: esTranslations
-  },
+},
 fr: {translation: frTranslations
-  },
+},
 zh: {translation: zhTranslations
-  }
+}
 };
 
 i18n
@@ -38,37 +38,37 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-fallbackLng: 'en', // Default language,
-debug: process.env.NODE_ENV === 'development',
-interpolation: {escapeValue: false, // React already escapes by default
+    fallbackLng: 'en', // Default language,
+    debug: process.env.NODE_ENV === 'development',
+    interpolation: {escapeValue: false, // React already escapes by default
     },
-detection: {order: ['localStorage', 'navigator', 'htmlTag'],
-  caches: ['localStorage']
+    detection: {order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage']
     },
-    
+
     // Special options for right-to-left languages (if applicable),
-rtl: false, // Will be set dynamically based on language
-    
+    rtl: false, // Will be set dynamically based on language
+
     // Key separator for nested translations,
-keySeparator: '.',
-    
+    keySeparator: '.',
+
     // Namespace options (if using namespaces),
-ns: ['translation'],
-defaultNS: 'translation'
+    ns: ['translation'],
+    defaultNS: 'translation'
   });
 
 // Function to change language and update document direction
 i18n.on('languageChanged', (lng) => {
   // Set the language attribute on the HTML element
   document.documentElement.lang = lng;
-  
+
   // Determine if the language is RTL
   const rtlLanguages = ['ar', 'he', 'fa', 'ur']; // Example RTL languages
   const isRtl = rtlLanguages.includes(lng.split('-')[0]); // Get base language code
-  
+
   // Update document direction
   document.dir = isRtl ? 'rtl' : 'ltr';
-  
+
   // Update CSS classes for RTL support
   if (isRtl) {
     document.body.classList.add('rtl');

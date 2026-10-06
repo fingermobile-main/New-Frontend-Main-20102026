@@ -29,6 +29,7 @@ const CataloguePage: React.FC = () => {
     setFilters((prev) => ({ ...prev, [filterType]: value }));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const onDownloadClick = (item: PhotoCreditItem) => {
     handleDownloadPhotoCredit(item.id as any);
     setItemToDownload(item);

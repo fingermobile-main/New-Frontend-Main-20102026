@@ -43,6 +43,7 @@ const JobsPage: React.FC = () => {
       const { jobs: list } = await jobsService.getJobs(filters);
       setJobs(list);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load jobs:', err);
     } finally {
       setLoading(false);
@@ -104,6 +105,7 @@ const JobsPage: React.FC = () => {
       });
       fetchJobs();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to post job:', err);
     }
   };

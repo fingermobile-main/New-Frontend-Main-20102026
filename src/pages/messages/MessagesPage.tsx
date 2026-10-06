@@ -698,7 +698,7 @@ const MessagesPage: React.FC = () => {
 
               {showEmojiPicker && (
                 <div className="absolute bottom-20 z-50">
-                  <EmojiPicker onEmojiClick={(emoji) => setNewMessage(p => p + emoji.emoji)} />
+                  <EmojiPicker onEmojiClick={(emoji: any) => setNewMessage(p => p + emoji.emoji)} />
                 </div>
               )}
 

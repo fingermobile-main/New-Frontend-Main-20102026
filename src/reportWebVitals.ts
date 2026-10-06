@@ -1,16 +1,21 @@
 import React from 'react';
-import { ReportHandler } from 'web-vitals';
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
+const reportWebVitals = (onPerfEntry?: any) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
+    import('web-vitals').then((webVitals: any) => {
+      if (webVitals.onCLS) {
+        webVitals.onCLS(onPerfEntry);
+        webVitals.onFCP?.(onPerfEntry);
+        webVitals.onLCP?.(onPerfEntry);
+        webVitals.onTTFB?.(onPerfEntry);
+      } else if (webVitals.getCLS) {
+        webVitals.getCLS(onPerfEntry);
+        webVitals.getFCP?.(onPerfEntry);
+        webVitals.getLCP?.(onPerfEntry);
+        webVitals.getTTFB?.(onPerfEntry);
+      }
     }).catch((error) => {
-      console.error('Error importing web- vitals:', error);
+      console.error('Error importing web-vitals:', error);
     });
   }
 };

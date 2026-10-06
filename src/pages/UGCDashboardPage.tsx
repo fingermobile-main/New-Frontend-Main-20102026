@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useAppContext } from '../contexts/AppContext';
 import UGCContentStudio from '../components/ugc/UGCContentStudio';
 import UGCPublishingTools from '../components/ugc/UGCPublishingTools';
 import UGCAnalyticsDashboard from '../components/ugc/UGCAnalyticsDashboard';
@@ -136,7 +135,7 @@ const UGCDashboardPage: React.FC = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold text-gray-900">Content Studio</h2>
                   <div className="flex gap-3">
-                    <button 
+                    <button
                       onClick={() => setIsPrivacyModalOpen(true)}
                       className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center text-sm font-medium transition-colors"
                     >

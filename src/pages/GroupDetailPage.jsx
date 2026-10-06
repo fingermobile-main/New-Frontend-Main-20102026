@@ -1,16 +1,15 @@
 import { useParams} from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
 
-import { Card, Button, Spinner, Alert } from "react-bootstrap";
-import groupsService from "../services/groupsService";
+import { Card, Button, Spinner, Alert } from 'react-bootstrap';
+import groupsService from '../services/groupsService';
 
 const GroupDetailPage = () => {
   const { id } = useParams();
   const [group, setGroup] = React.useState(null);
   const [members, setMembers] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [success, setSuccess] = React.useState("");
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState('');
 
   React.useEffect(() => {
     loadGroupData();
@@ -18,7 +17,7 @@ const GroupDetailPage = () => {
 
   const loadGroupData = async () => {
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const [groupResponse, membersResponse] = await Promise.all([
@@ -29,7 +28,8 @@ const GroupDetailPage = () => {
       setGroup(groupResponse.group);
       setMembers(membersResponse.members);
     } catch (err) {
-      setError("Failed to load group data");
+      setError('Failed to load group data');
+      // eslint-disable-next-line no-console
       console.error(err);
     } finally {
       setLoading(false);
@@ -38,15 +38,15 @@ const GroupDetailPage = () => {
 
   const handleJoinGroup = async () => {
     setLoading(true);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
       const response = await groupsService.joinGroup(id);
       setSuccess(response.message);
       loadGroupData(); // Refresh data
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to join group");
+      setError(err.response?.data?.message || 'Failed to join group');
     } finally {
       setLoading(false);
     }
@@ -54,15 +54,15 @@ const GroupDetailPage = () => {
 
   const handleLeaveGroup = async () => {
     setLoading(true);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
       const response = await groupsService.leaveGroup(id);
       setSuccess(response.message);
       loadGroupData(); // Refresh data
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to leave group");
+      setError(err.response?.data?.message || 'Failed to leave group');
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ const GroupDetailPage = () => {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ height: "80vh" }}
+        style={{ height: '80vh' }}
       >
         <Spinner animation="border" />
       </div>
@@ -105,11 +105,11 @@ const GroupDetailPage = () => {
                 <div>
                   <Card.Title>{group.name}</Card.Title>
                   <Card.Text>
-                    {group.description || "No description provided."}
+                    {group.description || 'No description provided.'}
                   </Card.Text>
                   <div className="d-flex gap-3">
                     <small className="text-muted">
-                      Created by {group.creator_membername} on{" "}
+                      Created by {group.creator_membername} on{' '}
                       {formatDate(group.created_at)}
                     </small>
                     <span className="badge bg-secondary">{group.privacy}</span>
@@ -119,7 +119,7 @@ const GroupDetailPage = () => {
                   </div>
                 </div>
                 <div>
-                  {members.some((member) => member.role === "owner") ? (
+                  {members.some((member) => member.role === 'owner') ? (
                     <Button variant="success" disabled>
                       Owner
                     </Button>
@@ -129,7 +129,7 @@ const GroupDetailPage = () => {
                       onClick={handleLeaveGroup}
                       disabled={loading}
                     >
-                      {loading ? "Leaving..." : "Leave Group"}
+                      {loading ? 'Leaving...' : 'Leave Group'}
                     </Button>
                   ) : (
                     <Button
@@ -137,7 +137,7 @@ const GroupDetailPage = () => {
                       onClick={handleJoinGroup}
                       disabled={loading}
                     >
-                      {loading ? "Joining..." : "Join Group"}
+                      {loading ? 'Joining...' : 'Join Group'}
                     </Button>
                   )}
                 </div>
@@ -182,13 +182,13 @@ const GroupDetailPage = () => {
                           <td>
                             <span
                               className={`badge ${
-                                member.role === "owner"
-                                  ? "bg-success"
-                                  : member.role === "admin"
-                                    ? "bg-primary"
-                                    : member.role === "moderator"
-                                      ? "bg-warning"
-                                      : "bg-secondary"
+                                member.role === 'owner'
+                                  ? 'bg-success'
+                                  : member.role === 'admin'
+                                    ? 'bg-primary'
+                                    : member.role === 'moderator'
+                                      ? 'bg-warning'
+                                      : 'bg-secondary'
                               }`}
                             >
                               {member.role}

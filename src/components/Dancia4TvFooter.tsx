@@ -9,49 +9,83 @@ const Dancia4TvFooter: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm rounded-t-[3rem]">
-      <div className="max-w-7xl mx-auto px-8">
+    <footer className="mt-16 sm:mt-24 py-12 border-t border-white/10 bg-gray-950/90 backdrop-blur-md rounded-t-[2.5rem] w-full relative z-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-xl font-black tracking-tighter text-white">DANCIA-4Tv</h3>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <h3 className="text-xl font-black tracking-tighter text-white flex items-center gap-2">
+              <span className="text-red-500">DANCIA-4Tv</span>
+            </h3>
+            <p className="text-sm text-gray-400 leading-relaxed">
               The ultimate premium streaming experience for FingerMobile Protocol™ members. Quality content, anywhere, anytime.
             </p>
             <div className="flex space-x-4 pt-2">
-              <Twitter size={18} className="text-gray-400 hover:text-blue-400 cursor-pointer transition-colors" />
-              <Camera size={18} className="text-gray-400 hover:text-pink-400 cursor-pointer transition-colors" />
-              <Users size={18} className="text-gray-400 hover:text-blue-600 cursor-pointer transition-colors" />
-              <Terminal size={18} className="text-gray-400 hover:text-white cursor-pointer transition-colors" />
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Twitter size={18} />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-pink-400 transition-colors">
+                <Camera size={18} />
+              </a>
+              <Link to="/communities" aria-label="Community" className="text-gray-400 hover:text-blue-500 transition-colors">
+                <Users size={18} />
+              </Link>
+              <Link to="/terminal" aria-label="Terminal" className="text-gray-400 hover:text-white transition-colors">
+                <Terminal size={18} />
+              </Link>
             </div>
           </div>
 
           {/* Platform */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Platform</h4>
-            <ul className="space-y-3 text-sm text-gray-500">
-              <li className="hover:text-blue-400 cursor-pointer transition-colors">Movies & Series</li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors">Live Streaming</li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors">Original Content</li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors">Digital Marketplace</li>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li>
+                <Link to="/dancia4tv" className="hover:text-blue-400 transition-colors block">
+                  Movies & Series
+                </Link>
+              </li>
+              <li>
+                <Link to="/livestreaming" className="hover:text-blue-400 transition-colors block">
+                  Live Streaming
+                </Link>
+              </li>
+              <li>
+                <Link to="/dancia4tv" className="hover:text-blue-400 transition-colors block">
+                  Original Content
+                </Link>
+              </li>
+              <li>
+                <Link to="/marketplace" className="hover:text-blue-400 transition-colors block">
+                  Digital Marketplace
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Support</h4>
-            <ul className="space-y-3 text-sm text-gray-500">
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <HelpCircle size={14} className="mr-2" /> Help Center
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li>
+                <Link to="/support" className="hover:text-blue-400 transition-colors flex items-center">
+                  <HelpCircle size={14} className="mr-2 text-blue-400" /> Help Center
+                </Link>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <Shield size={14} className="mr-2" /> Content Policy
+              <li>
+                <Link to="/communityguidelines" className="hover:text-blue-400 transition-colors flex items-center">
+                  <Shield size={14} className="mr-2 text-emerald-400" /> Content Policy
+                </Link>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <Mail size={14} className="mr-2" /> Contact Us
+              <li>
+                <Link to="/contactus" className="hover:text-blue-400 transition-colors flex items-center">
+                  <Mail size={14} className="mr-2 text-amber-400" /> Contact Us
+                </Link>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <Globe size={14} className="mr-2" /> Global Coverage
+              <li>
+                <Link to="/services" className="hover:text-blue-400 transition-colors flex items-center">
+                  <Globe size={14} className="mr-2 text-indigo-400" /> Global Coverage
+                </Link>
               </li>
             </ul>
           </div>
@@ -59,15 +93,21 @@ const Dancia4TvFooter: React.FC = () => {
           {/* Legal */}
           <div>
             <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Legal</h4>
-            <ul className="space-y-3 text-sm text-gray-500">
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <FileText size={14} className="mr-2" /> Terms of Use
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li>
+                <Link to="/termsofservice" className="hover:text-blue-400 transition-colors flex items-center">
+                  <FileText size={14} className="mr-2 text-blue-400" /> Terms of Use
+                </Link>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <Shield size={14} className="mr-2" /> Privacy Policy
+              <li>
+                <Link to="/privacypolicy" className="hover:text-blue-400 transition-colors flex items-center">
+                  <Shield size={14} className="mr-2 text-emerald-400" /> Privacy Policy
+                </Link>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors flex items-center">
-                <Shield size={14} className="mr-2" /> AI Governance
+              <li>
+                <Link to="/governance" className="hover:text-blue-400 transition-colors flex items-center">
+                  <Shield size={14} className="mr-2 text-purple-400" /> AI Governance
+                </Link>
               </li>
             </ul>
           </div>

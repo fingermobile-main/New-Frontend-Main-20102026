@@ -69,7 +69,7 @@ const RedeemGiftCardModal: React.FC<RedeemGiftCardModalProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
+    <Dialog open={isOpen} onOpenChange={(open: boolean) => {
       if (!open) {
         resetForm();
         onClose();

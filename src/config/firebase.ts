@@ -20,10 +20,10 @@ if (typeof window !== 'undefined' && firebaseConfig.projectId) {
     app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     messaging = getMessaging(app);
   } catch (error) {
-    console.warn("Failed to initialize Firebase:", error);
+    console.warn('Failed to initialize Firebase:', error);
   }
 } else {
-  console.warn("Firebase config is missing or not running in browser environment. Push notifications will be disabled.");
+  console.warn('Firebase config is missing or not running in browser environment. Push notifications will be disabled.');
 }
 
 export { messaging, getToken, onMessage };

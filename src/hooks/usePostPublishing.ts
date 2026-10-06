@@ -1,26 +1,27 @@
 import { useState, useCallback, useMemo } from 'react';
 import { generatePublishingSuggestions } from '../services/publishingAIService';
+import { logError } from '../utils/errorLogger';
 
 export interface PublishingSettings {
-  privacy: 'publicGroup' | 'privateGroup' | 'followers' | 'everyone';
+  privacy: 'publicGroup' | 'privateGroup' | 'followers' | 'following' | 'followersFollowing' | 'taggedMembers' | 'custom' | 'onlyMe' | 'everyone';
   audience: {
-    gender: 'everyone' | 'male' | 'female' | 'non-binary';
-    ageBracket: 'everyone' | '13-17' | '18-24' | '25-34' | '35-44' | '45+';
+    gender: 'everyone' | 'male' | 'female' | 'custom';
+    ageBracket: 'everyone' | '24-34' | '34-45' | '45+' | '13-17' | '18-24' | '25-34' | '35-44';
   };
-  comments: 'everyone' | 'followers' | 'none';
+  comments: 'everyone' | 'followers' | 'following' | 'taggedOnly' | 'none';
   schedule: {
     time: string;
     day: string;
     month: string;
   };
-  shareToMi: boolean;
+  shareToMi: boolean | 'always';
   monetization: {
     enabled: boolean;
-    model: 'subscription' | 'oneTime' | 'payPerView';
+    model: 'subscription' | 'oneTime' | 'payPerView' | 'tips' | 'sponsored' | 'affiliate';
   };
   broadcast: {
     enabled: boolean;
-    audience: 'everyone' | 'subscribers' | 'followers';
+    audience: 'everyone' | 'subscribers' | 'followers' | 'following' | 'taggedOnly';
     gender: string;
     ageBracket: string;
   };
@@ -52,14 +53,19 @@ export interface PublishingSettings {
 
 interface UsePostPublishingReturn {
   settings: PublishingSettings;
+  // eslint-disable-next-line no-unused-vars
   updateSettings: (newSettings: Partial<PublishingSettings>) => void;
+  // eslint-disable-next-line no-unused-vars
   saveSettings: (postId: string) => Promise<boolean>;
   resetSettings: () => void;
   isDirty: boolean;
   isGeneratingSuggestions: boolean;
   error: string | null;
+  // eslint-disable-next-line no-unused-vars
   generateAISuggestions: (
+    // eslint-disable-next-line no-unused-vars
     contentData: any,
+    // eslint-disable-next-line no-unused-vars
     memberData: unknown
   ) => Promise<Partial<PublishingSettings> | null>;
 }
@@ -126,12 +132,11 @@ export const usePostPublishing = (): UsePostPublishingReturn => {
 
   const saveSettings = useCallback(async (postId: string): Promise<boolean> => {
     try {
-      // Mock / Local state save logic integration
-      console.info(`Saving settings for post ${postId}`, settings);
+      if (!postId) return false;
       setOriginalSettings({ ...settings });
       return true;
     } catch (err) {
-      console.error('Failed to save settings:', err);
+      logError(err, { context: 'usePostPublishing - saveSettings' });
       return false;
     }
   }, [settings]);
@@ -162,7 +167,7 @@ export const usePostPublishing = (): UsePostPublishingReturn => {
         return suggestions as Partial<PublishingSettings>;
       } catch (err) {
         setError('Failed to generate AI suggestions. Please try again.');
-        console.error('Error generating AI suggestions:', err);
+        logError(err, { context: 'usePostPublishing - generateAISuggestions' });
         return null;
       } finally {
         setIsGeneratingSuggestions(false);

@@ -23,11 +23,27 @@ export interface MediaFile {id: string;
 }
 
 class UploadService {
-  private api = axios.create({baseURL: '',
+  private api = axios.create({
+    baseURL: '/api/uploads',
     headers: {
       'Content-Type': 'multipart/form-data'
     }
   });
+
+  constructor() {
+    this.api.interceptors.request.use((config) => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          if (!config.headers) {
+            config.headers = {} as any;
+          }
+          (config.headers as any).Authorization = `Bearer ${token}`;
+        }
+      }
+      return config;
+    });
+  }
 
   async uploadFile(file: File, category?: string): Promise<UploadResult> {
     const formData = new FormData();

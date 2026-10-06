@@ -13,13 +13,13 @@ export * from './emojis';
 
 // ===== Lucide React Icons (Comprehensive) =====
 export {
-  Youtube as CamusIcon,
+  Video as CamusIcon,
   Flame as FlamingoIcon,
   Sparkles as OwnitIcon,
-  Linkedin as LinkedInIcon,
-  Facebook as FacebookIcon,
-  Instagram as InstagramIcon,
-  Twitter as TikTokIcon,
+  Share as LinkedInIcon,
+  Globe as FacebookIcon,
+  Camera as InstagramIcon,
+  MessageSquare as TikTokIcon,
   Mail as YahooIcon,
   LogIn as GoogleIcon,
   DollarSign as CurrencyNairaIcon,
@@ -201,7 +201,7 @@ export {
   Palette as SwatchIcon,
   ArrowUpNarrowWide as BarsArrowUpIcon,
   Wrench as WrenchScrewdriverIcon,
-  Plus as PlusIcon  // Added missing PlusIcon
+  Plus as PlusIcon
 } from 'lucide-react';
 
 // ===== Factory Helper =====

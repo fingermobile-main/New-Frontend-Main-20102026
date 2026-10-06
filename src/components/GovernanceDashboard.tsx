@@ -122,7 +122,7 @@ const GovernanceDashboard: React.FC = () => {
               <h3 className="text-sm font-bold text-white uppercase tracking-tight">Active Policies</h3>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">
-              {policies.length > 0 
+              {policies.length > 0
                 ? `${policies.map(p => p.name).join(', ')} currently enforced.`
                 : 'Automated AI Seekers are currently monitoring 100% of video tracks for intellectual property and safety compliance.'}
             </p>

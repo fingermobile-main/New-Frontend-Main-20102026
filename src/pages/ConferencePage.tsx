@@ -3,7 +3,9 @@ import MainLayout from '../components/layout/MainLayout';
 import ConferenceRoom from '../components/ConferenceRoom';
 import {
   VideoCameraIcon,
+  // eslint-disable-next-line no-unused-vars
   PlusIcon,
+  // eslint-disable-next-line no-unused-vars
   UserGroupIcon
 } from '../icons';
 

@@ -1,7 +1,7 @@
 import React, {} from 'react';
 import MainLayout from '../layouts/MainLayout';
 import GovernanceDashboard from '../components/GovernanceDashboard';
-import { Shield, Info, FileText, Lock, Eye, BookOpen } from 'lucide-react';
+import { Shield, Info, FileText, Eye, BookOpen } from 'lucide-react';
 
 const GovernancePage: React.FC = () => {
   return (

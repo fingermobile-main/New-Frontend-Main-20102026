@@ -10,8 +10,11 @@ import type { Event } from '../types';
 // --- Subcomponent: Decoupled Event Card ---
 interface EventCardProps {
   event: Event;
+  // eslint-disable-next-line no-unused-vars
   onAddToCalendar: (event: Event) => void;
+  // eslint-disable-next-line no-unused-vars
   onOpenGiftModal: (event: Event) => void;
+  // eslint-disable-next-line no-unused-vars
   onOpenPaylinkModal: (event: Event) => void;
 }
 

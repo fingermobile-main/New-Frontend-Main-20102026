@@ -1,190 +1,145 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../types/user';
-import UserService from '../services/UserService';  // Corrected import path
+import UserService from '../services/UserService';
 
-interface AuthState {
+interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean;
+  member: User | null;
+  setUser: (_user: User | null) => void;
+  loading: boolean;
   isLoading: boolean;
   error: string | null;
-}
-
-interface AuthAction {
-  type: string;
-  payload?: any;
-}
-
-const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
-  isLoading: true,
-  error: null,
-};
-
-/* eslint-disable no-unused-vars */
-const AuthContext = createContext<{
-  state: AuthState;
-  dispatch: React.Dispatch<AuthAction>;
-  login: (username: string, password: string) => Promise<boolean>;
-  register: (userData: { email: string; username: string; password: string }) => Promise<boolean>;
+  state: {
+    user: User | null;
+    isAuthenticated: boolean;
+    loading: boolean;
+    error: string | null;
+  };
+  login: (_email: string, _password: string) => Promise<boolean>;
   logout: () => void;
-  getCurrentUser: () => Promise<void>;
-  updateProfile: (profileData: any) => Promise<boolean>;
-    }>({
-      /* eslint-enable no-unused-vars */
-      state: initialState,
-      dispatch: () => {},
-      login: async () => false,
-      register: async () => false,
-      logout: () => {},
-      getCurrentUser: async () => {},
-      updateProfile: async () => false,
-    });
+  register: (_userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+  }) => Promise<boolean>;
+  refreshToken: () => Promise<boolean>;
+  clearAuthData: () => void;
+}
 
-const authReducer = (state: AuthState, action: AuthAction): AuthState => {
-  switch (action.type) {
-  case 'LOGIN_START':
-    return {
-      ...state,
-      isLoading: true,
-      error: null,
-    };
-  case 'LOGIN_SUCCESS':
-    return {
-      ...state,
-      user: action.payload.user,
-      isAuthenticated: true,
-      isLoading: false,
-      error: null,
-    };
-  case 'LOGIN_FAILURE':
-    return {
-      ...state,
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: action.payload.error,
-    };
-  case 'REGISTER_START':
-    return {
-      ...state,
-      isLoading: true,
-      error: null,
-    };
-  case 'REGISTER_SUCCESS':
-    return {
-      ...state,
-      user: action.payload.user,
-      isAuthenticated: true,
-      isLoading: false,
-      error: null,
-    };
-  case 'REGISTER_FAILURE':
-    return {
-      ...state,
-      isLoading: false,
-      error: action.payload.error,
-    };
-  case 'LOGOUT':
-    return {
-      ...state,
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
-    };
-  case 'SET_USER':
-    return {
-      ...state,
-      user: action.payload.user,
-      isAuthenticated: !!action.payload.user,
-      isLoading: false,
-      error: null,
-    };
-  case 'SET_ERROR':
-    return {
-      ...state,
-      error: action.payload.error,
-    };
-  case 'CLEAR_ERROR':
-    return {
-      ...state,
-      error: null,
-    };
-  default:
-    return state;
-  }
-};
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-  const login = async (username: string, password: string) => {
-    dispatch({ type: 'LOGIN_START' });
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('user');
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (_e) {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Check for existing session on app load
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        // First check localStorage for tokens
+        const accessToken = localStorage.getItem('accessToken') ||
+                          localStorage.getItem('fingermobile_token') ||
+                          localStorage.getItem('token');
+
+        if (accessToken) {
+          const storedUser = localStorage.getItem('user');
+          if (storedUser) {
+            try {
+              setUser(JSON.parse(storedUser));
+            } catch (_err) {
+              setUser(null);
+            }
+          }
+          // Verify token and get user info
+          try {
+            const result = await UserService.getCurrentUser();
+            if (result && result.success && result.data) {
+              setUser(result.data);
+            }
+          } catch (_e) {
+            // Keep localStorage user in dev or offline
+          }
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Error checking auth status:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  const clearAuthData = () => {
+    // Remove tokens from localStorage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('fingermobile_token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+  const login = async (email: string, password: string) => {
     try {
-      const result = await UserService.login({ username, password });
+      setLoading(true);
+      setError(null);
+
+      const result = await UserService.login({ email, password });
 
       if (result.success && result.data) {
         const { user, accessToken, refreshToken } = result.data;
-
-        // Extract user data properly
-        const userData = {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          bio: user.bio,
-          avatar: user.avatar,
-          coverImage: user.coverImage,
-          role: user.role,
-          isVerified: user.isVerified,
-          isOnline: user.isOnline,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-          lastSeenAt: user.lastSeenAt,
-          followersCount: user.followersCount,
-          followingCount: user.followingCount,
-          postsCount: user.postsCount,
-          badges: user.badges,
-          location: user.location,
-          website: user.website,
-          birthDate: user.birthDate,
-          privacySettings: user.privacySettings,
-          notificationSettings: user.notificationSettings,
-        };
 
         // Store tokens in localStorage
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
 
-        dispatch({
-          type: 'LOGIN_SUCCESS',
-          payload: { user: userData },
-        });
-
+        setUser(user);
+        setError(null);
         return true;
       } else {
-        dispatch({
-          type: 'LOGIN_FAILURE',
-          payload: { error: result.error || 'Login failed' },
-        });
+        setError(result.error || 'Login failed');
         return false;
       }
     } catch (error: any) {
-      dispatch({
-        type: 'LOGIN_FAILURE',
-        payload: { error: error.message || 'An unexpected error occurred' },
-      });
+      setError(error.message || 'An unexpected error occurred');
       return false;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const register = async (userData: { email: string; username: string; password: string }) => {
-    dispatch({ type: 'REGISTER_START' });
-
+  const register = async (userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    username: string
+  }) => {
     try {
+      setLoading(true);
+      setError(null);
+
       const result = await UserService.register(userData);
 
       if (result.success && result.data) {
@@ -202,122 +157,97 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
 
-          dispatch({
-            type: 'REGISTER_SUCCESS',
-            payload: { user }
-          });
+          setUser(user);
+          setError(null);
           return true;
         } else {
-          dispatch({
-            type: 'REGISTER_FAILURE',
-            payload: { error: loginResult.error || 'Login after registration failed' }
-          });
+          setError(loginResult.error || 'Login after registration failed');
           return false;
         }
       } else {
-        dispatch({
-          type: 'REGISTER_FAILURE',
-          payload: { error: result.error || 'Registration failed' }
-        });
+        setError(result.error || 'Registration failed');
         return false;
       }
     } catch (error: any) {
-      dispatch({
-        type: 'REGISTER_FAILURE',
-        payload: { error: error.message || 'An unexpected error occurred' },
-      });
+      setError(error.message || 'An unexpected error occurred');
       return false;
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
-    // Remove tokens from localStorage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('fingermobile_token');
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
-
-    dispatch({ type: 'LOGOUT' });
+    clearAuthData();
   };
 
-  const getCurrentUser = async () => {
+  const refreshToken = async () => {
     try {
-      const result = await UserService.getCurrentUser();
+      const refreshToken = localStorage.getItem('refreshToken');
 
-      if (result.success && result.data) {
-        dispatch({
-          type: 'SET_USER',
-          payload: { user: result.data },
-        });
-      } else {
-        // If getting user fails, clear auth state
-        logout();
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
       }
-    } catch (error) {
-      // If getting user fails, clear auth state
-      logout();
-    }
-  };
 
-  const updateProfile = async (profileData: any) => {
-    try {
-      const result = await UserService.updateUserProfile(profileData);
+      const result = await UserService.refreshToken(refreshToken);
 
       if (result.success && result.data) {
-        dispatch({
-          type: 'SET_USER',
-          payload: { user: result.data },
-        });
+        const { accessToken, refreshToken: newRefreshToken } = result.data;
+
+        // Update tokens in localStorage
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+
+        // Update user data if available
+        if (result.data.user) {
+          setUser(result.data.user);
+        }
+
         return true;
+      } else {
+        // If refresh fails, logout user
+        logout();
+        return false;
       }
-      return false;
     } catch (error) {
+      // On error, logout user
+      logout();
       return false;
     }
   };
 
-  useEffect(() => {
-    // Check if user is already logged in
-    const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
-
-    if (accessToken) {
-      getCurrentUser();
-    } else {
-      // If no token, set loading to false
-      dispatch({ type: 'SET_USER', payload: { user: null } });
-    }
-  }, []);
+  const value = {
+    user,
+    member: user,
+    setUser,
+    loading,
+    isLoading: loading,
+    error,
+    state: {
+      user,
+      isAuthenticated: !!user,
+      loading,
+      error
+    },
+    login,
+    logout,
+    register,
+    refreshToken,
+    clearAuthData
+  };
 
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-        login,
-        register,
-        logout,
-        getCurrentUser,
-        updateProfile,
-      }}
-    >
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  return {
-    ...context,
-    user: context.state.user,
-    member: context.state.user, // Alias member to user
-    isAuthenticated: context.state.isAuthenticated,
-    isLoading: context.state.isLoading,
-  };
+  return context;
 };
 
 // Export default for the provider component

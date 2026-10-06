@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 import React, {} from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import { logError } from '../utils/errorLogger';
 
 import { useHaptic } from '../hooks/useHaptic';
 import { useToast } from '../components/Toast';
 import useDashboardData from '../hooks/useDashboardData';
 
 const DashboardPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { triggerHaptic } = useHaptic();
+  // eslint-disable-next-line no-unused-vars
   const { addToast } = useToast();
   const { data, loading, error, refreshData } = useDashboardData();
 
@@ -24,6 +25,7 @@ const DashboardPage: React.FC = () => {
     return <div className="text-center py-8">No dashboard data available.</div>;
   }
 
+  // eslint-disable-next-line no-unused-vars
   const { communitySections, featuredSections, quickActions, ficBalance } = data;
 
   // Removed unused interaction placeholders

@@ -70,6 +70,8 @@ export interface User {
   isActive: boolean;
   role: UserRole;
   preferences?: UserPreferences;
+  twoFactorEnabled?: boolean;
+  twoFactorMethod?: string;
   subProfiles?: Array<{
     id: string;
     name: string;

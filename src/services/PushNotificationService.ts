@@ -74,7 +74,7 @@ class PushNotificationService {
     callback: (
   payload: Record<string, unknown>) => void): void {
     if (!messaging) return;
-    onMessage(messaging, (payload) => {
+    onMessage(messaging, (payload: any) => {
       console.info('Message received in foreground:', payload);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback(payload as any);

@@ -12,15 +12,16 @@ import MainLayout from '../components/layout/MainLayout';
  */
 
 import { useAppContext } from '../contexts/AppContext';
-import { logError } from '../utils/errorLogger';
-import { GiftIcon, UserCircleIcon } from '../icons';
+import { UserCircleIcon } from '../icons';
 
 
 import { useAuth } from '../contexts/AuthContext';
 import {
   CamusIcon,
+  // eslint-disable-next-line no-unused-vars
   MembersIcon as MembersGroupIcon,
   VideoCameraIcon,
+  // eslint-disable-next-line no-unused-vars
   GraduationCapIcon,
   BookOpenIcon,
   AcademicCapIcon,
@@ -45,6 +46,7 @@ interface CourseFilters {
   sortBy: string;
 }
 
+// eslint-disable-next-line no-unused-vars
 interface CourseCardProps {
   id: string;
   title: string;
@@ -62,6 +64,7 @@ interface CourseCardProps {
 const CamusPage: React.FC = () => {
   const { member } = useAuth();
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const { showToast, ficBalance } = useAppContext();
   const [filters, setFilters] = useState<CourseFilters>({
     query: '',

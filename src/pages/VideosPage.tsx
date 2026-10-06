@@ -83,6 +83,7 @@ const VideosPage: React.FC = () => {
   ];
 
   const [videosList, setVideosList] = useState<VideoType[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);

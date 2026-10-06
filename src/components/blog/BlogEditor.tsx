@@ -34,7 +34,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
     seo_title: editingPost?.seo_title || '',
     seo_description: editingPost?.seo_description || '',
     tags: Array.isArray(editingPost?.tags)
-      ? editingPost.tags.map(t => typeof t === 'string' ? t : (t as any).name || t)
+      ? editingPost!.tags.map(t => typeof t === 'string' ? t : (t as any).name || t)
       : [],
     allow_comments: editingPost?.allow_comments !== false,
     is_featured: editingPost?.is_featured || false,

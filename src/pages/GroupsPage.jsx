@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal, Form, Spinner, Alert } from "react-bootstrap";
-import groupsService from "../services/groupsService";
+import { Card, Button, Modal, Form, Spinner, Alert } from 'react-bootstrap';
+import groupsService from '../services/groupsService';
 
 const GroupsPage = () => {
   const [groups, setGroups] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [success, setSuccess] = React.useState("");
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState('');
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [createGroupForm, setCreateGroupForm] = React.useState({
-    name: "",
-    description: "",
-    privacy: "public"
+    name: '',
+    description: '',
+    privacy: 'public'
   });
 
   React.useEffect(() => {
@@ -20,13 +19,14 @@ const GroupsPage = () => {
 
   const loadGroups = async () => {
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const response = await groupsService.getGroups();
       setGroups(response.groups);
     } catch (err) {
-      setError("Failed to load groups");
+      setError('Failed to load groups');
+      // eslint-disable-next-line no-console
       console.error(err);
     } finally {
       setLoading(false);
@@ -36,17 +36,17 @@ const GroupsPage = () => {
   const handleCreateGroup = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
       const response = await groupsService.createGroup(createGroupForm);
       setSuccess(response.message);
       setShowCreateModal(false);
-      setCreateGroupForm({ name: "", description: "", privacy: "public" });
+      setCreateGroupForm({ name: '', description: '', privacy: 'public' });
       loadGroups(); // Refresh groups list
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to create group");
+      setError(err.response?.data?.message || 'Failed to create group');
     } finally {
       setLoading(false);
     }
@@ -89,11 +89,11 @@ const GroupsPage = () => {
               <Card.Body>
                 <Card.Title>{group.name}</Card.Title>
                 <Card.Text>
-                  {group.description || "No description provided."}
+                  {group.description || 'No description provided.'}
                 </Card.Text>
                 <div className="d-flex justify-content-between align-items-center">
                   <small className="text-muted">
-                    Created by {group.creator_membername} on{" "}
+                    Created by {group.creator_membername} on{' '}
                     {formatDate(group.created_at)}
                   </small>
                   <span className="badge bg-secondary">{group.privacy}</span>
@@ -197,7 +197,7 @@ const GroupsPage = () => {
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Group"}
+              {loading ? 'Creating...' : 'Create Group'}
             </Button>
           </Modal.Footer>
         </Form>

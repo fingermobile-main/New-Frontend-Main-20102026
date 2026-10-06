@@ -18,21 +18,22 @@ import { UserRole } from '../types/auth';
 // -----------------------------------------------------------------------------
 
 // Module 1: Auth & Account Security
-const LoginPage = lazy(() => import('../pages/LoginPage'));
-const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'));
 const AdminLoginPage = lazy(() => import('../pages/AdminLoginPage'));
 const VerificationPage = lazy(() => import('../pages/VerificationPage'));
-const SecuritySetupPage = lazy(() => import('../pages/SecuritySetupPage'));
+const SecuritySetupPage = lazy(() => import('../pages/auth/SecuritySetupPage'));
 const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage'));
 const AccountDeletionPage = lazy(() => import('../pages/AccountDeletionPage'));
 const OnboardingPage = lazy(() => import('../pages/OnboardingPage'));
+const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'));
 
 // Module 2: Core Social, Discovery & Consumption
 const HomePage = lazy(() => import('../pages/HomePage'));
 const DiscoverPage = lazy(() => import('../pages/DiscoverPage'));
 const DiscoveryPage = lazy(() => import('../pages/DiscoveryPage'));
 const CategoryFeedPage = lazy(() => import('../pages/CategoryFeedPage'));
-const SearchPage = lazy(() => import('../pages/SearchPage'));
+const SearchPage = lazy(() => import('../pages/search/SearchPage'));
 const TrendsPage = lazy(() => import('../pages/TrendsPage'));
 const TrendsFeedPage = lazy(() => import('../pages/TrendsFeedPage'));
 const TopicsPage = lazy(() => import('../pages/TopicsPage'));
@@ -62,7 +63,7 @@ const CreatorDashboardPage = lazy(() => import('../pages/CreatorDashboardPage'))
 const CreatorsCenterPage = lazy(() => import('../pages/CreatorsCenterPage'));
 const CreatorInfluencePage = lazy(() => import('../pages/CreatorInfluencePage'));
 const MonetizationDashboardPage = lazy(() => import('../pages/MonetizationDashboardPage'));
-const MonetizationPage = lazy(() => import('../pages/MonetizationPage'));
+const MonetizationPage = lazy(() => import('../pages/financials/MonetizationPage'));
 const MemberEarningPage = lazy(() => import('../pages/MemberEarningPage'));
 const AdvancedGiftingPage = lazy(() => import('../pages/AdvancedGiftingPage'));
 const GemsPage = lazy(() => import('../pages/GemsPage'));
@@ -77,10 +78,10 @@ const CommunitiesPage = lazy(() => import('../pages/CommunitiesPage'));
 const CommunityPage = lazy(() => import('../pages/CommunityPage'));
 const CommunityPageEnhanced = lazy(() => import('../pages/CommunityPageEnhanced'));
 const CommunityPages = lazy(() => import('../pages/CommunityPages'));
-const CommunityManagementPage = lazy(() => import('../pages/CommunityManagementPage'));
-const CommunityGuidelinesPage = lazy(() => import('../pages/CommunityGuidelinesPage'));
+const CommunityManagementPage = lazy(() => import('../pages/dashboard/community/CommunityManagementPage'));
+const CommunityGuidelinesPage = lazy(() => import('../pages/legal/CommunityGuidelinesPage'));
 const GroupsPage = lazy(() => import('../pages/GroupsPage')); // Consolidated standard
-const GroupDetailPage = lazy(() => import('../pages/GroupDetailPage')); // Consolidated standard
+const GroupDetailPage = lazy(() => import('../pages/groups/GroupDetailPage')); // Consolidated standard
 const CreateGroupPage = lazy(() => import('../pages/CreateGroupPage'));
 const ForumPage = lazy(() => import('../pages/ForumPage'));
 const ConferencePage = lazy(() => import('../pages/ConferencePage'));
@@ -89,7 +90,7 @@ const EventsPage = lazy(() => import('../pages/EventsPage'));
 
 // Module 6: Audio, Streaming & Rich Media
 const BeatwaveNGPage = lazy(() => import('../pages/BeatwaveNGPage'));
-const AiPlaylistPage = lazy(() => import('../pages/AiPlaylistPage'));
+const AiPlaylistPage = lazy(() => import('../pages/music/AiPlaylistPage'));
 const AdvancedVoicePage = lazy(() => import('../pages/AdvancedVoicePage'));
 const Dancia4TvPage = lazy(() => import('../pages/Dancia4TvPage'));
 const VideoTranslationDashboard = lazy(() => import('../pages/VideoTranslationDashboard')); // Fixed missing route
@@ -105,7 +106,7 @@ const StorefrontDetailPage = lazy(() => import('../pages/StorefrontDetailPage'))
 const MyStorefrontPage = lazy(() => import('../pages/MyStorefrontPage'));
 const CheckoutPage = lazy(() => import('../pages/CheckoutPage'));
 const CouponsPage = lazy(() => import('../pages/CouponsPage'));
-const MarketplaceTrackingPage = lazy(() => import('../pages/MarketplaceTrackingPage'));
+const MarketplaceTrackingPage = lazy(() => import('../pages/marketplace/MarketplaceTrackingPage'));
 const StorefrontTrackingPage = lazy(() => import('../pages/StorefrontTrackingPage'));
 const FingerLuxPage = lazy(() => import('../pages/FingerLuxPage'));
 const LushPressiesPage = lazy(() => import('../pages/LushPressiesPage')); // Consolidated standard
@@ -116,7 +117,7 @@ const WalletPage = lazy(() => import('../pages/WalletPage'));
 const WalletAndPayPage = lazy(() => import('../pages/WalletAndPayPage'));
 const WalletFundingPage = lazy(() => import('../pages/WalletFundingPage'));
 const PaylinksPage = lazy(() => import('../pages/PaylinksPage'));
-const FinancialsPage = lazy(() => import('../pages/FinancialsPage'));
+const FinancialsPage = lazy(() => import('../pages/financials/FinancialsPage'));
 const FICVaultPage = lazy(() => import('../pages/FICVaultPage'));
 const LendsqrPage = lazy(() => import('../pages/LendsqrPage'));
 
@@ -129,14 +130,14 @@ const ProgramsPage = lazy(() => import('../pages/ProgramsPage'));
 const NyscPage = lazy(() => import('../pages/NyscPage'));
 
 // Module 10: User Identity, Settings & Internal Operations
-const ProfilePage = lazy(() => import('../pages/ProfilePage'));
-const SettingsPage = lazy(() => import('../pages/SettingsPage'));
+const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'));
+const SettingsPage = lazy(() => import('../pages/settings/SettingsPage'));
 const NotificationsPage = lazy(() => import('../pages/NotificationsPage'));
 const MessagesPage = lazy(() => import('../pages/messages/MessagesPage'));
 const PrivateMessagesPage = lazy(() => import('../pages/PrivateMessagesPage'));
-const MembersPage = lazy(() => import('../pages/MembersPage'));
+const MembersPage = lazy(() => import('../pages/dashboard/MembersPage'));
 const MemberLandingPage = lazy(() => import('../pages/MemberLandingPage'));
-const SubscriptionsPage = lazy(() => import('../pages/SubscriptionsPage'));
+const SubscriptionsPage = lazy(() => import('../pages/financials/SubscriptionsPage'));
 const PortfolioPage = lazy(() => import('../pages/PortfolioPage'));
 const MiiPage = lazy(() => import('../pages/MiiPage'));
 const MyPages = lazy(() => import('../pages/MyPages'));
@@ -158,15 +159,15 @@ const FlamingoTrackingPage = lazy(() => import('../pages/FlamingoTrackingPage'))
 const OwnitPage = lazy(() => import('../pages/OwnitPage'));
 const OwnitTrackingPage = lazy(() => import('../pages/OwnitTrackingPage'));
 const BusinessOfficesPage = lazy(() => import('../pages/BusinessOfficesPage'));
-const FranchiseManagementPage = lazy(() => import('../pages/FranchiseManagementPage'));
+const FranchiseManagementPage = lazy(() => import('../pages/dashboard/FranchiseManagementPage'));
 const OrganizeThesePage = lazy(() => import('../pages/OrganizeThesePage'));
 const PermanencePage = lazy(() => import('../pages/PermanencePage'));
 
 // Module 12: Analytics, Operations & Admin Dashboards
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
-const DashboardHomePage = lazy(() => import('../pages/DashboardHomePage'));
+const DashboardHomePage = lazy(() => import('../pages/dashboard/DashboardHomePage'));
 const UnifiedDashboardPage = lazy(() => import('../pages/UnifiedDashboardPage'));
-const AdminDashboardPage = lazy(() => import('../pages/AdminDashboardPage'));
+const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
 const AdminUserManagementPage = lazy(() => import('../pages/admin/AdminUserManagement'));
 const AdminControlDashboard = lazy(() => import('../pages/AdminControlDashboard'));
 const AdvancedAnalyticsPage = lazy(() => import('../pages/AdvancedAnalyticsPage'));
@@ -178,7 +179,7 @@ const UGCDashboardPage = lazy(() => import('../pages/UGCDashboardPage'));
 const RbacManagementPage = lazy(() => import('../pages/RbacManagementPage'));
 
 // Module 13: Systems Engineering, Data, Dev & Cloud Infrastructure
-const DeveloperPortalPage = lazy(() => import('../pages/DeveloperPortalPage'));
+const DeveloperPortalPage = lazy(() => import('../pages/dashboard/DeveloperPortalPage'));
 const DatabaseIntegrationDashboard = lazy(() => import('../pages/DatabaseIntegrationDashboard'));
 const DatabaseIntegrationReportPage = lazy(() => import('../pages/DatabaseIntegrationReportPage'));
 const DatabaseIntegrationSummary = lazy(() => import('../pages/DatabaseIntegrationSummary'));
@@ -195,7 +196,7 @@ const CamusPage = lazy(() => import('../pages/CamusPage'));
 const CamusDashboardPage = lazy(() => import('../pages/CamusDashboardPage'));
 
 // Module 14: Corporate, Legal, Compliance & Information
-const AboutPage = lazy(() => import('../pages/AboutPage'));
+const AboutPage = lazy(() => import('../pages/about/AboutPage'));
 const AboutUsPage = lazy(() => import('../pages/AboutUsPage'));
 const BlogsPage = lazy(() => import('../pages/BlogsPage'));
 const BlogTemplatesPage = lazy(() => import('../pages/BlogTemplatesPage'));
@@ -204,8 +205,8 @@ const SupportPage = lazy(() => import('../pages/SupportPage'));
 const GovernancePage = lazy(() => import('../pages/GovernancePage'));
 const InvestorRelationsPage = lazy(() => import('../pages/InvestorRelationsPage'));
 const ServicesPage = lazy(() => import('../pages/ServicesPage'));
-const PrivacyPolicyPage = lazy(() => import('../pages/PrivacyPolicyPage'));
-const TermsOfServicePage = lazy(() => import('../pages/TermsOfServicePage'));
+const PrivacyPolicyPage = lazy(() => import('../pages/legal/PrivacyPolicyPage'));
+const TermsOfServicePage = lazy(() => import('../pages/legal/TermsOfServicePage'));
 const TermsAndConditionsPage = lazy(() => import('../pages/TermsAndConditionsPage'));
 const CookiePolicyPage = lazy(() => import('../pages/CookiePolicyPage'));
 const DataSubjectRequestPage = lazy(() => import('../pages/DataSubjectRequestPage'));
@@ -245,6 +246,9 @@ export const routes: RouteObject[] = [
       { path: '/changepassword', element: <ChangePasswordPage /> },
       { path: '/data-request', element: redirectTo('/datasubjectrequest') },
       { path: '/datasubjectrequest', element: <DataSubjectRequestPage /> },
+      { path: '/forgot-password', element: <ForgotPasswordPage /> },
+      { path: '/forgotpassword', element: redirectTo('/forgot-password') },
+      { path: '/reset-password', element: redirectTo('/forgot-password') },
       { path: '/checkout', element: <CheckoutPage /> },
     ],
   },
@@ -308,7 +312,10 @@ export const routes: RouteObject[] = [
       { path: '/blogs/templates', element: <BlogTemplatesPage /> },
       { path: '/blog-templates', element: <BlogTemplatesPage /> },
       { path: '/dancia4tv', element: <Dancia4TvPage /> },
+      { path: '/dancia-4tv', element: redirectTo('/dancia4tv') },
       { path: '/dancie4tv', element: <Navigate to="/dancia4tv" replace /> }, // Canonical Redirection
+      { path: '/beatwave-ng', element: redirectTo('/beatwaveng') },
+      { path: '/beatwave', element: redirectTo('/beatwaveng') },
       { path: '/marketplace', element: <MarketplacePage /> },
       { path: '/products', element: <ProductsPage /> },
       { path: '/product/:id', element: <ProductDetailPage /> },
@@ -331,8 +338,22 @@ export const routes: RouteObject[] = [
       { path: '/forum', element: <ForumPage /> },
       { path: '/events', element: <EventsPage /> },
       { path: '/fingerwars', element: <FingerWarsPage /> },
-      { path: '/hallmark', element: <HallmarkPage /> },
+      { path: '/finger-wars', element: redirectTo('/fingerwars') },
+      { path: '/gameon', element: <GameOnPage /> },
+      { path: '/game-on', element: redirectTo('/gameon') },
+      { path: '/canaryads', element: <CanaryAdsPage /> },
+      { path: '/canary-ads', element: redirectTo('/canaryads') },
+      { path: '/photo-credits', element: redirectTo('/photocredits') },
       { path: '/photocredits', element: <PhotoCreditsPage /> },
+      { path: '/business-offices', element: redirectTo('/businessoffices') },
+      { path: '/business/offices', element: redirectTo('/businessoffices') },
+      { path: '/businessoffices', element: <BusinessOfficesPage /> },
+      { path: '/franchise', element: redirectTo('/franchisemanagement') },
+      { path: '/ugc-dashboard', element: redirectTo('/ugcdashboard') },
+      { path: '/my-downloads', element: redirectTo('/mydownloads') },
+      { path: '/downloads', element: redirectTo('/mydownloads') },
+      { path: '/pricing', element: redirectTo('/subscriptions') },
+      { path: '/hallmark', element: <HallmarkPage /> },
       { path: '/photocredit/:id', element: <PhotoCreditDetailPage /> },
       { path: '/photocreditdetail', element: <PhotoCreditDetailPage /> },
       { path: '/profile', element: <ProfilePage /> },
@@ -487,6 +508,8 @@ export const routes: RouteObject[] = [
               { path: '/monetization', element: <MonetizationPage /> },
               { path: '/financials', element: <FinancialsPage /> },
               { path: '/ficvault', element: <FICVaultPage /> },
+              { path: '/fic-vault', element: <FICVaultPage /> },
+              { path: '/fic/vault', element: <FICVaultPage /> },
               { path: '/insights', element: <InsightsPage /> },
               { path: '/seads', element: <SeadsPage /> },
               { path: '/canary', element: <CanaryPage /> },

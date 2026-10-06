@@ -101,7 +101,7 @@ const PaymentHistory: React.FC = () => {
         <FlatList
           data={payments}
           renderItem={renderPaymentItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: PaymentHistoryItem) => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

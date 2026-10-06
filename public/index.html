@@ -4,29 +4,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FingerMobile Frontend</title>
-    <link rel="icon" type="image/png" href="/assets/branding/fingermobile/logo.png" />
+    <link rel="icon" type="image/png" href="/assets/branding/fingermobile/ic_launcher(2).png" />
+    <link rel="apple-touch-icon" href="/assets/branding/fingermobile/ic_launcher(2).png" />
     <style>
-      /* Splash Screen Styles */
+      /* Glassmorphic Crystal White Splash Screen Styles */
       #splash-screen {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgb(248, 251, 254); /* Crystalline white background (hsl(240, 2%, 98%)) */
+        background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 252, 0.94) 50%, rgba(235, 240, 248, 0.9) 100%);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 9999; /* High z-index to appear on top */
-        /* Transition for fade-out effect */
+        z-index: 99999;
         opacity: 1;
-        transition: opacity 0.5s ease-out;
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .splash-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.65) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(255, 255, 255, 0.9) inset;
+        border-radius: 28px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 360px;
+        width: 90%;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+      }
+
+      .splash-logo-container {
+        position: relative;
+        margin-bottom: 24px;
       }
 
       #splash-screen img {
-        max-width: 30%; /* Adjust size as needed */
-        max-height: 30%;
+        width: 120px;
+        height: 120px;
         object-fit: contain;
+        filter: drop-shadow(0 10px 20px rgba(255, 107, 0, 0.25));
+        animation: pulse 2.5s infinite ease-in-out;
+      }
+
+      .splash-title {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 22px;
+        font-weight: 900;
+        color: #111827;
+        margin: 0 0 4px 0;
+      }
+
+      .splash-tagline {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+
+      .splash-progress-track {
+        width: 100%;
+        height: 6px;
+        background: rgba(226, 232, 240, 0.7);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .splash-progress-bar {
+        height: 100%;
+        width: 50%;
+        background: linear-gradient(90deg, #ff6b00, #f59e0b);
+        border-radius: 9999px;
+        animation: loadingBar 1.8s infinite ease-in-out;
+      }
+
+      @keyframes loadingBar {
+        0% { transform: translateX(-100%); width: 30%; }
+        50% { transform: translateX(50%); width: 70%; }
+        100% { transform: translateX(200%); width: 30%; }
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
       }
 
       /* Hide the main app content initially */
@@ -36,14 +106,24 @@
 
       /* Class to fade out the splash screen */
       .fade-out {
-        opacity: 0;
+        opacity: 0 !important;
+        pointer-events: none;
       }
     </style>
   </head>
   <body>
-    <!-- Splash Screen -->
+    <!-- Glassmorphic Crystal White Splash Screen -->
     <div id="splash-screen">
-      <img src="/assets/branding/fingermobile/FingerMobile orange logo.webp" alt="FingerMobile Logo" />
+      <div class="splash-card">
+        <div class="splash-logo-container">
+          <img src="/assets/branding/fingermobile/FRONT copy.webp" alt="FingerMobile Splash Logo" onerror="this.src='/assets/branding/fingermobile/drawer-splash-logo.webp'" />
+        </div>
+        <h1 class="splash-title">FingerMobile<span style="color:#ff6b00">™</span></h1>
+        <p class="splash-tagline">Protocol Platform</p>
+        <div class="splash-progress-track">
+          <div class="splash-progress-bar"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Main App Container -->
@@ -52,21 +132,22 @@
     <script>
       // JavaScript to handle the splash screen timeout
       window.addEventListener('load', function() {
-        // Set timeout for 3.5 seconds (3500 milliseconds)
+        // Set timeout for 4 seconds (4000 milliseconds) ONLY
         setTimeout(function() {
           const splashScreen = document.getElementById('splash-screen');
           const mainApp = document.getElementById('root');
 
           // Add the fade-out class to start the transition
-          splashScreen.classList.add('fade-out');
+          if (splashScreen) {
+            splashScreen.classList.add('fade-out');
 
-          // After the transition completes (0.5s), hide the splash screen and show the main app
-          setTimeout(function() {
-            splashScreen.style.display = 'none';
-            mainApp.style.display = 'block'; // Show the main app content
-          }, 500); // Match the transition duration in CSS
-
-        }, 3500); // Duration of the splash screen in milliseconds
+            // After the transition completes (0.5s), hide the splash screen and show the main app
+            setTimeout(function() {
+              splashScreen.style.display = 'none';
+              if (mainApp) mainApp.style.display = 'block';
+            }, 500);
+          }
+        }, 4000); // 4 seconds display gate ONLY
       });
     </script>
   </body>

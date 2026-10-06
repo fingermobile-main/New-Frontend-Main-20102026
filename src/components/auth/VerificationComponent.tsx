@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react';
 
 import authService from '../../services/authService';
 
 interface VerificationProps {
   phone: string;
-  onSuccess: (userData: any) => void;
+  onSuccess: (_userData: any) => void;
 }
 
 const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }) => {
@@ -16,8 +15,6 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
   const [error, setError] = useState('');
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const navigate = useNavigate();
 
   // Handle input change for each digit
   const handleChange = (index: number, value: string) => {
@@ -82,13 +79,17 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
 
   // Countdown timer for resend button
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
     if (resendDisabled && countdown > 0) {
-      timer = timerRef.current = setTimeout(() => setCountdown(countdown - 1), 1000);
+      timerRef.current = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       setResendDisabled(false);
     }
-    return () => clearTimeout(timerRef.current);
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, [resendDisabled, countdown]);
 
   // Send initial verification code

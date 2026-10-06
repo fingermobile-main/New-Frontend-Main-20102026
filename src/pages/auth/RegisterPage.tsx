@@ -2,13 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Phone, Shield, User } from 'lucide-react';
+import { Eye, EyeOff, Phone, Shield, User, Mail } from 'lucide-react';
 import authService from '../../services/authService';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,6 +19,7 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState<{
     firstName?: string;
     lastName?: string;
+    email?: string;
     phone?: string;
     password?: string;
     confirmPassword?: string;
@@ -29,6 +31,7 @@ const RegisterPage = () => {
     const newErrors: {
       firstName?: string;
       lastName?: string;
+      email?: string;
       phone?: string;
       password?: string;
       confirmPassword?: string;
@@ -45,11 +48,19 @@ const RegisterPage = () => {
       valid = false;
     }
 
-    if (!phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+    const trimmedPhone = phone.trim();
+    const rawDigits = trimmedPhone.replace(/[^0-9]/g, '');
+
+    if (!trimmedPhone && !email.trim()) {
+      newErrors.phone = 'Phone number or email is required';
       valid = false;
-    } else if (!/^\+?[1-9]\d{1,14}$/.test(phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
+    } else if (trimmedPhone && rawDigits.length < 8) {
+      newErrors.phone = 'Please enter a valid phone number (at least 8 digits)';
+      valid = false;
+    }
+
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = 'Please enter a valid email address';
       valid = false;
     }
 
@@ -79,28 +90,56 @@ const RegisterPage = () => {
     setErrors({});
 
     try {
-      const registerResponse = await authService.register({
-        phone: phone.startsWith('+') ? phone : `+${phone}`,
+      const trimmedPhone = phone.trim();
+      const rawDigits = trimmedPhone.replace(/[^0-9]/g, '');
+      let cleanPhone = '';
+      if (rawDigits.length > 0) {
+        if (trimmedPhone.startsWith('+')) {
+          cleanPhone = `+${rawDigits}`;
+        } else if (rawDigits.startsWith('0') && rawDigits.length === 11) {
+          // Auto-normalize Nigerian local format (08012345678 -> +2348012345678)
+          cleanPhone = `+234${rawDigits.slice(1)}`;
+        } else {
+          cleanPhone = `+${rawDigits}`;
+        }
+      }
+
+      const effectiveEmail = email.trim() || `user_${cleanPhone.replace(/[^0-9]/g, '') || Date.now()}@fingermobile.com`;
+
+      const registerResponse: any = await authService.register({
+        name: `${firstName} ${lastName}`.trim(),
+        phone: cleanPhone,
+        email: effectiveEmail,
         password,
         firstName,
         lastName
       });
 
       // Store tokens and user info
-      if (registerResponse.accessToken) {
-        localStorage.setItem('accessToken', registerResponse.accessToken);
+      const token = registerResponse.accessToken || registerResponse.token;
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('fingermobile_token', token);
+        localStorage.setItem('token', token);
       }
       if (registerResponse.refreshToken) {
         localStorage.setItem('refreshToken', registerResponse.refreshToken);
       }
       if (registerResponse.user) {
-        localStorage.setItem('user', JSON.stringify(registerResponse.user));
+        const fullUser = {
+          ...registerResponse.user,
+          onboardingComplete: true,
+          onboarding_completed: true
+        };
+        localStorage.setItem('user', JSON.stringify(fullUser));
+        localStorage.setItem('onboardingComplete', 'true');
+        localStorage.setItem('hasCompletedOnboarding', 'true');
       }
 
-      // Navigate to verification or onboarding
-      navigate('/verification');
+      // Navigate to forum or onboarding
+      navigate('/onboarding');
     } catch (error: any) {
-      setErrors({ general: error.message || 'Registration failed. Please try again.' });
+      setErrors({ general: error.response?.data?.message || error.message || 'Registration failed. Please try again.' });
     } finally {
       setIsLoading(false);
     }
@@ -120,12 +159,21 @@ const RegisterPage = () => {
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+              <img
+                src="/assets/branding/fingermobile/FRONT copy.webp"
+                alt="FingerMobile Logo"
+                className="w-full h-full object-contain filter drop-shadow-md"
+                onError={(e) => {
+                  (e.target as HTMLElement).setAttribute('src', '/assets/branding/fingermobile/drawer-splash-logo.webp');
+                }}
+              />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Create Account</h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-2">
-              Join us today to get started
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              FingerMobile<span className="text-[#ff6b00]">™</span>
+            </h1>
+            <p className="text-sm font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-1">
+              Create Your Sovereign Identity Account
             </p>
           </div>
 
@@ -187,6 +235,27 @@ const RegisterPage = () => {
                 {errors.lastName && (
                   <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.lastName}</p>
                 )}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Email Address (Optional)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                  placeholder="name@example.com"
+                />
               </div>
             </div>
 

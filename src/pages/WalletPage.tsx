@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
-
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
 import {
+  // eslint-disable-next-line no-unused-vars
   CreditCardIcon,
   ArrowUpIcon,
   ArrowDownIcon,
@@ -17,8 +19,8 @@ import {
   CurrencyDollarIcon,
   QrCodeIcon,
   PlusIcon
-} from '@/icons';
-import { useToast } from '@/hooks/use-toast';
+} from '../icons';
+import { useToast } from '../hooks/use-toast';
 
 interface WalletTransaction {
   id: string | number;
@@ -33,11 +35,13 @@ interface WalletTransaction {
 
 const WalletPage: React.FC = () => {
   const { toast } = useToast();
+  // eslint-disable-next-line no-unused-vars
   const [balance, setBalance] = useState(0);
   const [fiatBalance, setFiatBalance] = useState(0);
   const [ficBalance, setFicBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
 
   // Modal States
@@ -81,6 +85,7 @@ const WalletPage: React.FC = () => {
         setTransactions(txData.transactions || txData.data);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch live wallet data', err);
       toast({
         title: 'Error',
@@ -269,18 +274,14 @@ const WalletPage: React.FC = () => {
                           <ArrowDownIcon className="w-6 h-6 mb-2 text-blue-500" />
                           Receive
                         </Button>
-                        <Button variant="outline" className="flex flex-col items-center p-4" asChild>
-                          <Link to="/financials/vault">
-                            <CurrencyDollarIcon className="w-6 h-6 mb-2 text-purple-500" />
-                            Vault
-                          </Link>
-                        </Button>
-                        <Button variant="outline" className="flex flex-col items-center p-4" asChild>
-                          <Link to="/financials/giftcards">
-                            <GiftIcon className="w-6 h-6 mb-2 text-pink-500" />
-                            Gift Cards
-                          </Link>
-                        </Button>
+                        <Link to="/financials/vault" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
+                          <CurrencyDollarIcon className="w-6 h-6 mb-2 text-purple-500" />
+                          <span className="text-sm font-medium">Vault</span>
+                        </Link>
+                        <Link to="/financials/giftcards" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
+                          <GiftIcon className="w-6 h-6 mb-2 text-pink-500" />
+                          <span className="text-sm font-medium">Gift Cards</span>
+                        </Link>
                       </CardContent>
                     </Card>
                   </div>
@@ -317,9 +318,9 @@ const WalletPage: React.FC = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="outline" className="w-full text-xs" asChild>
-                        <Link to="/financials/wallet">Full Financials Portal</Link>
-                      </Button>
+                      <Link to="/financials/wallet" className="w-full text-center py-2 px-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs font-medium text-gray-700">
+                        Full Financials Portal
+                      </Link>
                     </CardFooter>
                   </Card>
                 </div>

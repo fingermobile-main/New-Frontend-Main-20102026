@@ -41,7 +41,7 @@ const BillingPage: React.FC = () => {
                 Active Protocol Dedicated Node. Unlimited SLA.
               </p>
             </div>
-            <button 
+            <button
               onClick={() => showToast('Subscription tier managed by Protocol Foundation', 'info')}
               className="w-full mt-4 py-2 font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm"
             >
@@ -58,7 +58,7 @@ const BillingPage: React.FC = () => {
                 <p className="text-sm text-gray-500 font-mono">Net 30 Direct Treasury</p>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => showToast('Settlement details verified', 'info')}
               className="w-full mt-4 py-2 font-semibold bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm"
             >

@@ -129,6 +129,7 @@ const TEMPLATES: BlogTemplate[] = [
 ];
 
 const BlogTemplatesPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
   const [templates, setTemplates] = useState<BlogTemplate[]>(TEMPLATES);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');

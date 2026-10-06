@@ -76,7 +76,7 @@ const BeatwaveFooter: React.FC<BeatwaveFooterProps> = ({
               value={[progress]}
               max={duration || 100}
               step={1}
-              onValueChange={(value) => onSeek?.(value[0])}
+              onValueChange={(value: number[]) => onSeek?.(value[0])}
               className="flex-1"
             />
             <span className="text-xs text-muted-foreground w-12">
@@ -91,7 +91,7 @@ const BeatwaveFooter: React.FC<BeatwaveFooterProps> = ({
               value={[volume]}
               max={100}
               step={1}
-              onValueChange={(value) => onVolumeChange?.(value[0])}
+              onValueChange={(value: number[]) => onVolumeChange?.(value[0])}
               className="flex-1"
             />
           </div>

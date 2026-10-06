@@ -128,7 +128,7 @@ class PaymentService {
     const headers = idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined;
     return this.request<PaymentIntent>({
       method: 'POST',
-      url: `/confirm`,
+      url: '/confirm',
       data: { paymentIntentId: intentId, paymentMethodId },
       headers
     });
@@ -146,7 +146,7 @@ class PaymentService {
   async refundPayment(paymentId: string, amount?: number, reason?: string): Promise<PaymentIntent> {
     return this.request<PaymentIntent>({
       method: 'POST',
-      url: `/refund`,
+      url: '/refund',
       data: { paymentIntentId: paymentId, amount, reason }
     });
   }

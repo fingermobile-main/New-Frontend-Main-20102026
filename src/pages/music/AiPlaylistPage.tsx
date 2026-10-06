@@ -21,7 +21,7 @@ const AiPlaylistPage: React.FC = () => {
       // 1. Fetch available tracks to match vibe
       const tracksRes: any = await apiService.get('/api/beatwave/tracks').catch(() => null);
       const availableTracks = Array.isArray(tracksRes) ? tracksRes : (tracksRes?.tracks || tracksRes?.data || []);
-      
+
       const trackIds = availableTracks.slice(0, 5).map((t: any) => t.id || t.trackId || 1);
 
       // 2. Persist new AI playlist to live database

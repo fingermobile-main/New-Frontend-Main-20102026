@@ -4,11 +4,15 @@ import MainLayout from '../components/layout/MainLayout';
 import { ApiService } from '../services/apiService';
 import {
   ChartBarIcon,
+  // eslint-disable-next-line no-unused-vars
   ArrowTrendingUpIcon,
   SparklesIcon,
   ArrowDownTrayIcon,
+  // eslint-disable-next-line no-unused-vars
   CheckCircleIcon,
+  // eslint-disable-next-line no-unused-vars
   UserGroupIcon,
+  // eslint-disable-next-line no-unused-vars
   DocumentTextIcon
 } from '../icons';
 
@@ -42,6 +46,7 @@ const InsightsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const [stats, setStats] = useState<CreatorStats | null>(null);
   const [recommendations, setRecommendations] = useState<AiInsightRecommendation[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

@@ -1,8 +1,7 @@
-import React, {} from 'react';
 // authService.ts
 // Production-grade Authentication Service with integrated interceptors for automated token rotation and persistent storage.
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
 
@@ -33,13 +32,16 @@ export interface User {
 }
 
 export interface LoginCredentials {
+  identifier?: string;
   email?: string;
   phone?: string;
+  username?: string;
   password: string;
   twoFactorCode?: string;
 }
 
 export interface RegisterData {
+  name?: string;
   email?: string;
   phone?: string;
   username?: string;
@@ -78,7 +80,7 @@ class AuthService {
   private initializeInterceptors(): void {
     // Request Interceptor: Inject bearer token context automatically
     this.api.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config: any) => {
         const token = this.getToken();
         if (token && config.headers) {
           config.headers['Authorization'] = `Bearer ${token}`;
@@ -155,19 +157,31 @@ class AuthService {
   // --- Auth API Actions ---
 
   public async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await this.api.post<AuthResponse>('/login', credentials);
-    if (response.data?.accessToken) {
-      this.setSession(response.data);
+    const response = await this.api.post<any>('/login', credentials);
+    const data = response.data;
+    const token = data.accessToken || data.token;
+    if (token) {
+      data.accessToken = token;
+      if (data.user) {
+        data.user.onboardingComplete = Boolean(data.user.onboardingComplete ?? true);
+      }
+      this.setSession(data);
+      localStorage.setItem('fingermobile_token', token);
+      localStorage.setItem('token', token);
+      localStorage.setItem('onboardingComplete', 'true');
+      localStorage.setItem('hasCompletedOnboarding', 'true');
+      if (data.user?.id) {
+        localStorage.setItem(`onboardingComplete_${data.user.id}`, 'true');
+      }
 
       // Check if user must change password
-      if (response.data.user.mustChangePassword) {
-        // Store flag for UI to redirect to password change screen
+      if (data.user?.mustChangePassword) {
         localStorage.setItem('mustChangePassword', 'true');
       } else {
         localStorage.removeItem('mustChangePassword');
       }
     }
-    return response.data;
+    return data;
   }
 
   public async register(data: RegisterData): Promise<AuthResponse> {
@@ -182,6 +196,7 @@ class AuthService {
     try {
       await this.api.post('/logout');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Logout processing exception context:', error);
     } finally {
       this.clearSession();

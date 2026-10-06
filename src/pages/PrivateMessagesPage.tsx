@@ -62,6 +62,7 @@ const PrivateMessagesPage: React.FC = () => {
         selectChat(mapped[0].id);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching private conversations:', err);
     } finally {
       setLoading(false);
@@ -85,6 +86,7 @@ const PrivateMessagesPage: React.FC = () => {
       messageService.markAsRead(chatId).catch(() => {});
       setConversations(prev => prev.map(c => c.id === chatId ? { ...c, unread: 0 } : c));
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching messages for chat:', err);
       showToast('Failed to load private messages', 'error');
     } finally {
@@ -124,6 +126,7 @@ const PrivateMessagesPage: React.FC = () => {
         showToast('Failed to send secure message', 'error');
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Error sending message:', err);
       showToast('Error sending secure message', 'error');
     } finally {
@@ -152,6 +155,7 @@ const PrivateMessagesPage: React.FC = () => {
         showToast('Failed to start conversation. Check recipient ID.', 'error');
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Error starting conversation:', err);
       showToast('Error starting conversation', 'error');
     } finally {
@@ -161,19 +165,19 @@ const PrivateMessagesPage: React.FC = () => {
 
   const getPrivacyLabel = (level: string) => {
     switch (level) {
-      case 'strict': return 'High Security';
-      case 'standard': return 'Standard';
-      case 'open': return 'Open';
-      default: return 'Standard';
+    case 'strict': return 'High Security';
+    case 'standard': return 'Standard';
+    case 'open': return 'Open';
+    default: return 'Standard';
     }
   };
 
   const getPrivacyColor = (level: string) => {
     switch (level) {
-      case 'strict': return 'bg-red-100 text-red-800';
-      case 'standard': return 'bg-yellow-100 text-yellow-800';
-      case 'open': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+    case 'strict': return 'bg-red-100 text-red-800';
+    case 'standard': return 'bg-yellow-100 text-yellow-800';
+    case 'open': return 'bg-green-100 text-green-800';
+    default: return 'bg-gray-100 text-gray-800';
     }
   };
 

@@ -66,31 +66,47 @@ class GroupsService {
     });
 
     // Inherit token logic with standard app keys
-    this.api.interceptors.request.use((config) => {
-      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
-      if (token && config.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    });
+    if (this.api.interceptors) {
+      this.api.interceptors.request.use((config) => {
+        const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+        if (token && config.headers) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      });
+    }
   }
 
-  async getAllGroups(params?: { 
-    page?: number; 
-    limit?: number; 
-    search?: string; 
-    category?: string; 
-    privacy?: string 
+  async getAllGroups(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    category?: string;
+    privacy?: string
   }): Promise<GroupsResponse & { groups?: Group[] }> {
     try {
       const response = await this.api.get('', { params });
-      
+
       if (response.data.success || Array.isArray(response.data) || Array.isArray(response.data?.data)) {
         const rawList = Array.isArray(response.data) ? response.data : (response.data.data || response.data.groups || []);
+        const normalized: Group[] = rawList.map((item: any) => ({
+          id: String(item.id),
+          name: item.name || 'Unnamed Group',
+          description: item.description || '',
+          members: Number(item.members_count || item.members || 1),
+          online: Number(item.online || Math.max(1, Math.round((item.members_count || 1) * 0.25))),
+          privacy: (item.privacy || (item.is_public !== false ? 'public' : 'private')) as 'public' | 'private' | 'secret',
+          category: item.category || 'General',
+          avatarUrl: item.image_url || item.avatarUrl || 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&auto=format&fit=crop&q=60',
+          isJoined: Boolean(item.isJoined || item.is_member),
+          lastActivity: item.updated_at || item.lastActivity || 'Just now',
+          owner: String(item.creator_id || item.owner || 'FingerMobile Node')
+        }));
+
         return {
           success: true,
-          data: rawList,
-          groups: rawList,
+          data: normalized,
+          groups: normalized,
           pagination: response.data.pagination,
           message: response.data.message
         };
@@ -115,7 +131,7 @@ class GroupsService {
   async getGroupById(groupId: string): Promise<GroupResponse & { group?: Group }> {
     try {
       const response = await this.api.get(`/${groupId}`);
-      
+
       if (response.data.success || response.data.data || response.data.group) {
         const groupData = response.data.data || response.data.group || response.data;
         return {
@@ -139,7 +155,7 @@ class GroupsService {
   async createGroup(request: CreateGroupRequest): Promise<GroupResponse> {
     try {
       const response = await this.api.post('', request);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -162,7 +178,7 @@ class GroupsService {
   async updateGroup(groupId: string, updates: Partial<CreateGroupRequest>): Promise<GroupResponse> {
     try {
       const response = await this.api.put(`/${groupId}`, updates);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -185,7 +201,7 @@ class GroupsService {
   async deleteGroup(groupId: string): Promise<{ success: boolean; message?: string }> {
     try {
       const response = await this.api.delete(`/${groupId}`);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -206,7 +222,7 @@ class GroupsService {
   async joinGroup(groupId: string): Promise<{ success: boolean; message?: string }> {
     try {
       const response = await this.api.post(`/${groupId}/join`);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -227,7 +243,7 @@ class GroupsService {
   async leaveGroup(groupId: string): Promise<{ success: boolean; message?: string }> {
     try {
       const response = await this.api.post(`/${groupId}/leave`);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -248,7 +264,7 @@ class GroupsService {
   async getGroupMembers(groupId: string): Promise<{ success: boolean; data?: GroupMember[]; members?: GroupMember[]; message?: string }> {
     try {
       const response = await this.api.get(`/${groupId}/members`);
-      
+
       if (response.data.success || response.data.data || response.data.members) {
         const memberList = response.data.data || response.data.members || [];
         return {
@@ -274,7 +290,7 @@ class GroupsService {
   async getGroupStats(): Promise<{ success: boolean; data?: any; message?: string }> {
     try {
       const response = await this.api.get('/stats');
-      
+
       if (response.data.success) {
         return {
           success: true,

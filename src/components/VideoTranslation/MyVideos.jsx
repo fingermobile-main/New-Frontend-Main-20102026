@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Grid, 
-  Typography, 
-  Button, 
-  CircularProgress, 
-  Alert, 
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Typography,
+  Button,
+  CircularProgress,
+  Alert,
   Chip,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions
 } from '@mui/material';
-import { 
+import {
   VideoCameraBack as VideoCameraIcon,
   Download as DownloadIcon,
   Delete as DeleteIcon,
   Schedule as ClockIcon,
   CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon 
+  Cancel as CancelIcon
 } from '@mui/icons-material';
 import videoTranslationService from '../../services/videoTranslationService';
 
@@ -52,27 +52,27 @@ const MyVideos = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'completed':
-        return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
-      case 'processing':
-        return <ClockIcon className="w-5 h-5 text-yellow-500" />;
-      case 'failed':
-        return <CancelIcon className="w-5 h-5 text-red-500" />;
-      default:
-        return <ClockIcon className="w-5 h-5 text-gray-500" />;
+    case 'completed':
+      return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
+    case 'processing':
+      return <ClockIcon className="w-5 h-5 text-yellow-500" />;
+    case 'failed':
+      return <CancelIcon className="w-5 h-5 text-red-500" />;
+    default:
+      return <ClockIcon className="w-5 h-5 text-gray-500" />;
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'completed':
-        return 'success';
-      case 'processing':
-        return 'warning';
-      case 'failed':
-        return 'error';
-      default:
-        return 'default';
+    case 'completed':
+      return 'success';
+    case 'processing':
+      return 'warning';
+    case 'failed':
+      return 'error';
+    default:
+      return 'default';
     }
   };
 
@@ -143,7 +143,7 @@ const MyVideos = () => {
                       <Typography variant="subtitle1" gutterBottom>
                         {video.originalFileName}
                       </Typography>
-                      
+
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                         {getStatusIcon(video.status)}
                         <Chip
@@ -162,7 +162,7 @@ const MyVideos = () => {
                         Uploaded: {new Date(video.createdAt).toLocaleDateString()}
                       </Typography>
                     </CardContent>
-                    
+
                     <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
                       {video.status === 'completed' && video.outputFiles && video.outputFiles.length > 0 && (
                         video.outputFiles.map((file, index) => (
@@ -179,7 +179,7 @@ const MyVideos = () => {
                           </Button>
                         ))
                       )}
-                      
+
                       <Button
                         variant="outlined"
                         size="small"
@@ -204,14 +204,14 @@ const MyVideos = () => {
         <DialogTitle>Delete Video</DialogTitle>
         <DialogContent>
           <Typography>
-            {"Are you sure you want to delete \"" + (selectedVideo?.originalFileName || '') + "\"? "}
-            {"This action cannot be undone."}
+            {'Are you sure you want to delete "' + (selectedVideo?.originalFileName || '') + '"? '}
+            {'This action cannot be undone.'}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog}>Cancel</Button>
-          <Button 
-            onClick={() => handleDeleteVideo(selectedVideo?.id)} 
+          <Button
+            onClick={() => handleDeleteVideo(selectedVideo?.id)}
             color="error"
             variant="contained"
           >

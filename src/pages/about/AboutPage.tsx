@@ -275,7 +275,7 @@ const AboutPage: React.FC = () => {
               <div>
                 <p className="font-medium text-gray-900">Email:</p>
                 <p className="text-gray-600">info@fingerprotocol.com</p>
-                <p className="text-gray-600">fingerprotocolmobile@gmail.com</p>
+                <p className="text-gray-600">fingermobileprotocol@gmail.com</p>
               </div>
               <div>
                 <p className="font-medium text-gray-900">Phone:</p>

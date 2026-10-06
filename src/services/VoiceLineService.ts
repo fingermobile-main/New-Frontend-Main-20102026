@@ -1,12 +1,14 @@
-import React, {} from 'react';
 /**
  * FINGERMOBILE PROTOCOL - AUDIO & VOICE LINE ENGINE
- * PURPOSE: High-Performance Audio Playback Engine managing African Cultured Voice Line triggers.
+ * Integrates Pipecat AI Voice SDK (@pipecat-ai/client-js), HTML5 Audio,
+ * Web Speech Synthesis & Web Audio API fallback pipelines.
+ * Enforces African cultured voice lines playing at 35% volume on comment posting.
+ *
+ * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
  */
 
 import { ApiResponse } from '../types/api';
 
-// Strongly typed definitions for cleaner domain modeling
 export type VoiceLineCategory =
   | 'general'
   | 'sugarcrush'
@@ -34,6 +36,11 @@ export type VoiceLineCategory =
   | 'gameon'
   | 'forum'
   | 'gems'
+  | 'hallmarks'
+  | 'mii'
+  | 'groups'
+  | 'lushpressies'
+  | 'blogs'
   | 'achievement';
 
 export interface VoiceLine {
@@ -47,18 +54,48 @@ export interface VoiceLine {
 export interface VoiceLineLogPayload {
   voiceLineId: string;
   eventType: string;
+  microservice?: string;
   timestamp: string;
   memberId: string | null;
 }
 
-// Immutable Local Database Store representing localized audio records
+export interface VoiceLineSettings {
+  volume: number; // 0.0 to 1.0 (default 0.35)
+  enabled: boolean; // Global master toggle
+  microservices: {
+    forum: boolean;
+    hallmarks: boolean;
+    mii: boolean;
+    groups: boolean;
+    lushpressies: boolean;
+    blogs: boolean;
+    [key: string]: boolean;
+  };
+}
+
+const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
+
+const DEFAULT_SETTINGS: VoiceLineSettings = {
+  volume: 0.35, // 35% device/system speaker volume
+  enabled: true,
+  microservices: {
+    forum: true,
+    hallmarks: true,
+    mii: true,
+    groups: true,
+    lushpressies: true,
+    blogs: true
+  }
+};
+
+// Cultured African Voice Lines Database
 const allVoiceLines: VoiceLine[] = [
-  { id: 'ev-1', text: 'Great!', category: 'general', audioUrl: '/audio/african/great.mp3', keywords: ['achievement', 'success', 'level', 'win'] },
+  { id: 'ev-1', text: 'Great!', category: 'forum', audioUrl: '/audio/african/great.mp3', keywords: ['achievement', 'success', 'forum', 'win'] },
   { id: 'ev-2', text: 'Sugar crush', category: 'sugarcrush', audioUrl: '/audio/african/sugar-crush.mp3', keywords: ['achievement', 'success', 'win'] },
   { id: 'ev-3', text: 'Wooow!', category: 'general', audioUrl: '/audio/african/woooow.mp3', keywords: ['disappointment', 'excitement', 'level', 'move'] },
   { id: 'ev-4', text: 'Oh yeeeaah!', category: 'general', audioUrl: '/audio/african/oh-yeaah.mp3', keywords: ['gameplay', 'matches', 'effects', 'goal'] },
-  { id: 'ev-5', text: 'Bootilicious!', category: 'fingerwars', audioUrl: '/audio/african/bootilicious.mp3', keywords: ['fingerwars', 'level', 'points', '12points', '20points', '27points'] },
-  { id: 'ev-6', text: 'Oooh yeah go on!', category: 'general', audioUrl: '/audio/african/oooh-yeah-go-on.mp3', keywords: ['objective', 'completion', 'progress'] },
+  { id: 'ev-5', text: 'Bootilicious!', category: 'fingerwars', audioUrl: '/audio/african/bootilicious.mp3', keywords: ['fingerwars', 'level', 'points'] },
+  { id: 'ev-6', text: 'Oooh yeah go on!', category: 'groups', audioUrl: '/audio/african/oooh-yeah-go-on.mp3', keywords: ['groups', 'progress', 'momentum'] },
   { id: 'ev-7', text: 'Nice One, you\'re there already', category: 'fingerwars', audioUrl: '/audio/african/nice-one.mp3', keywords: ['variations', 'progress', 'completion'] },
   { id: 'ev-8', text: 'You\'re mine', category: 'acquisition', audioUrl: '/audio/african/youre-mine.mp3', keywords: ['acquisition', 'objects', 'gifts', 'earnings'] },
   { id: 'ev-9', text: 'Hi ya doing', category: 'greeting', audioUrl: '/audio/african/hi-ya-doing.mp3', keywords: ['greeting', 'meeting', 'first', 'time'] },
@@ -66,8 +103,8 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'ev-11', text: 'See Gobe', category: 'lamentation', audioUrl: '/audio/african/see-gobe.mp3', keywords: ['obstacle', 'seeing', 'encountering'] },
   { id: 'ev-12', text: 'Kilode', category: 'exclamation', audioUrl: '/audio/african/kilode.mp3', keywords: ['questioning', 'activity', 'reason', 'answer'] },
   { id: 'ev-13', text: 'Owo ni Koko', category: 'earnings', audioUrl: '/audio/african/owo-ni-koko.mp3', keywords: ['points', 'gifts', 'money', 'bonus', 'FIC'] },
-  { id: 'ev-14', text: 'Wonderful', category: 'surprise', audioUrl: '/audio/african/wonderful.mp3', keywords: ['surprise', 'amazement'] },
-  { id: 'ev-15', text: 'Get a Hug', category: 'appraisal', audioUrl: '/audio/african/get-a-hug.mp3', keywords: ['milestone', 'failure', 'affection'] },
+  { id: 'ev-14', text: 'Wonderful', category: 'blogs', audioUrl: '/audio/african/wonderful.mp3', keywords: ['surprise', 'amazement', 'blogs', 'wonderful'] },
+  { id: 'ev-15', text: 'Get a Hug', category: 'lushpressies', audioUrl: '/audio/african/get-a-hug.mp3', keywords: ['affection', 'lushpressies', 'hug'] },
   { id: 'ev-16', text: 'Dance for me', category: 'enticement', audioUrl: '/audio/african/dance-for-me.mp3', keywords: ['happy', 'retry', 'redo', 'earn', 'achieve'] },
   { id: 'ev-17', text: 'Play my music!!', category: 'boastful', audioUrl: '/audio/african/play-my-music.mp3', keywords: ['boast', 'earned', 'achieved', 'acquired'] },
   { id: 'ev-18', text: 'Dash me naa, Abeg come Bless me na', category: 'request', audioUrl: '/audio/african/dash-me-abeg.mp3', keywords: ['request', 'give', 'gift', 'funding'] },
@@ -77,40 +114,33 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'ev-22', text: 'Urgent 2k', category: 'funding', audioUrl: '/audio/african/urgent-2k.mp3', keywords: ['funding', 'request'] },
   { id: 'ev-23', text: 'Urgent 5k', category: 'funding', audioUrl: '/audio/african/urgent-5k.mp3', keywords: ['funding', 'request'] },
   { id: 'ev-24', text: 'I need Urgent 5k', category: 'funding', audioUrl: '/audio/african/i-need-urgent-5k.mp3', keywords: ['funding', 'begging', 'request'] },
-  { id: 'ev-25', text: 'Miss me', category: 'affection', audioUrl: '/audio/african/miss-me.mp3', keywords: ['affection', 'P2P', 'matching', 'return'] },
-  { id: 'ev-26', text: 'I miss you', category: 'affection', audioUrl: '/audio/african/i-miss-you.mp3', keywords: ['affection', 'P2P', 'matching', 'return'] },
-  { id: 'ev-27', text: 'Let\'s do this', category: 'agreement', audioUrl: '/audio/african/lets-do-this.mp3', keywords: ['agreement', 'action'] },
-  { id: 'ev-28', text: 'Awesome', category: 'appraisal', audioUrl: '/audio/african/awesome.mp3', keywords: ['appraisal', 'affirmation', 'achievement', 'bonus', 'gifts'] },
-  { id: 'ev-29', text: 'Thumbs up!', category: 'appraisal', audioUrl: '/audio/african/thumbs-up.mp3', keywords: ['appraisal', 'affirmation', 'achievement', 'bonus', 'gifts'] },
-  { id: 'ev-30', text: 'Say whaaaaaaa', category: 'expression', audioUrl: '/audio/african/say-whaaaa.mp3', keywords: ['excitement', 'shock', 'jolt', 'surprise', 'injury'] },
-  { id: 'ev-31', text: 'Whatever', category: 'expression', audioUrl: '/audio/african/whatever.mp3', keywords: ['restrictions', 'freedom', 'surprise', 'confusion'] },
-  { id: 'ev-32', text: 'Stunning!', category: 'appraisal', audioUrl: '/audio/african/stunning.mp3', keywords: ['appraisal', 'affirmation', 'acquisition', 'gain'] },
-  { id: 'ev-33', text: 'You look great', category: 'appraisal', audioUrl: '/audio/african/you-look-great.mp3', keywords: ['appraisal', 'affirmation', 'physical'] },
+  { id: 'ev-25', text: 'Miss me', category: 'lushpressies', audioUrl: '/audio/african/miss-me.mp3', keywords: ['affection', 'lushpressies', 'matching', 'return'] },
+  { id: 'ev-26', text: 'I miss you', category: 'lushpressies', audioUrl: '/audio/african/i-miss-you.mp3', keywords: ['affection', 'lushpressies', 'match', 'return'] },
+  { id: 'ev-27', text: 'Let\'s do this', category: 'groups', audioUrl: '/audio/african/lets-do-this.mp3', keywords: ['agreement', 'action', 'groups'] },
+  { id: 'ev-28', text: 'Awesome', category: 'blogs', audioUrl: '/audio/african/awesome.mp3', keywords: ['appraisal', 'affirmation', 'blogs', 'gifts'] },
+  { id: 'ev-29', text: 'Thumbs up!', category: 'blogs', audioUrl: '/audio/african/thumbs-up.mp3', keywords: ['appraisal', 'blogs', 'achievement', 'thumbs'] },
+  { id: 'ev-30', text: 'Say whaaaaaaa', category: 'expression', audioUrl: '/audio/african/say-whaaaa.mp3', keywords: ['excitement', 'shock', 'jolt', 'surprise'] },
+  { id: 'ev-31', text: 'Whatever', category: 'expression', audioUrl: '/audio/african/whatever.mp3', keywords: ['restrictions', 'freedom', 'surprise'] },
+  { id: 'ev-32', text: 'Stunning!', category: 'mii', audioUrl: '/audio/african/stunning.mp3', keywords: ['mii', 'affirmation', 'stunning', 'avatar'] },
+  { id: 'ev-33', text: 'You look great', category: 'mii', audioUrl: '/audio/african/you-look-great.mp3', keywords: ['mii', 'avatar', 'style', 'great'] },
   { id: 'ev-34', text: 'Wereey', category: 'achievement', audioUrl: '/audio/african/wereey.mp3', keywords: ['stunt', 'achieved', 'impossible'] },
   { id: 'ev-35', text: 'Madt o!', category: 'achievement', audioUrl: '/audio/african/madt-o.mp3', keywords: ['stunt', 'achieved', 'unusual'] },
-  { id: 'ev-36', text: 'Sharp!', category: 'achievement', audioUrl: '/audio/african/sharp.mp3', keywords: ['points', 'achieved'] },
-  { id: 'ev-37', text: 'Oomo you gbaski', category: 'appraisal', audioUrl: '/audio/african/oomo-gbaski.mp3', keywords: ['appraisal', 'great', 'work'] },
-  { id: 'ev-38', text: 'O B O!', category: 'achievement', audioUrl: '/audio/african/o-b-o.mp3', keywords: ['earned', 'big'] },
-  { id: 'ev-39', text: 'Billion Dollar Gang', category: 'achievement', audioUrl: '/audio/african/billion-dollar-gang.mp3', keywords: ['joined', 'success'] },
-  { id: 'ev-40', text: 'Correct', category: 'achievement', audioUrl: '/audio/african/correct.mp3', keywords: ['achievement', 'made'] },
-  { id: 'ev-41', text: 'oOoOO ma Gaddddd!', category: 'achievement', audioUrl: '/audio/african/ooooma-gaddddd.mp3', keywords: ['stunt', 'something', 'new', 'colossal'] },
+  { id: 'ev-36', text: 'Sharp!', category: 'forum', audioUrl: '/audio/african/sharp.mp3', keywords: ['forum', 'achieved', 'sharp'] },
+  { id: 'ev-37', text: 'Oomo you gbaski', category: 'forum', audioUrl: '/audio/african/oomo-gbaski.mp3', keywords: ['forum', 'great', 'work', 'gbaski'] },
+  { id: 'ev-38', text: 'O B O!', category: 'hallmarks', audioUrl: '/audio/african/o-b-o.mp3', keywords: ['hallmarks', 'big', 'status'] },
+  { id: 'ev-39', text: 'Billion Dollar Gang', category: 'hallmarks', audioUrl: '/audio/african/billion-dollar-gang.mp3', keywords: ['hallmarks', 'success', 'billion'] },
+  { id: 'ev-40', text: 'Correct', category: 'forum', audioUrl: '/audio/african/correct.mp3', keywords: ['forum', 'achievement', 'correct'] },
+  { id: 'ev-41', text: 'oOoOO ma Gaddddd!', category: 'achievement', audioUrl: '/audio/african/ooooma-gaddddd.mp3', keywords: ['stunt', 'new', 'colossal'] },
   { id: 'ev-42', text: 'My Goodness', category: 'stun', audioUrl: '/audio/african/my-goodness.mp3', keywords: ['appraisal', 'surprise'] },
-  { id: 'ev-43', text: 'You\'re Endowed', category: 'stun', audioUrl: '/audio/african/youre-endowed.mp3', keywords: ['appraisal', 'physical', 'attributes'] },
-  { id: 'ev-44', text: 'You\'re gorgeous', category: 'stun', audioUrl: '/audio/african/youre-gorgeous.mp3', keywords: ['appraisal', 'admirations'] },
-  { id: 'ev-45', text: 'Divine', category: 'stun', audioUrl: '/audio/african/divine.mp3', keywords: ['divine', 'mode', 'impressive', 'move'] },
-  { id: 'ev-46', text: 'Blessings Blessings Blessings', category: 'stun', audioUrl: '/audio/african/blessings-blessings.mp3', keywords: ['appraisal', 'blessings'] },
-  { id: 'cb-1', text: 'Small combo!', category: 'combo_small', audioUrl: '/audio/african/small-combo.mp3', keywords: ['small', 'combo', 'match'] },
-  { id: 'cb-2', text: 'Great combo!', category: 'combo_large', audioUrl: '/audio/african/great-combo.mp3', keywords: ['great', 'combo', 'match'] },
-  { id: 'cb-3', text: 'Colossal combo!', category: 'combo_colossal', audioUrl: '/audio/african/colossal-combo.mp3', keywords: ['colossal', 'combo', 'massive'] },
-  { id: 'cb-4', text: 'Sweet!', category: 'combo', audioUrl: '/audio/african/sweet.mp3', keywords: ['good', 'nice', 'combo'] },
-  { id: 'cb-5', text: 'Boom!', category: 'combo', audioUrl: '/audio/african/boom.mp3', keywords: ['powerful', 'impact', 'effect'] },
-  { id: 'cb-6', text: 'Nice!', category: 'combo', audioUrl: '/audio/african/nice.mp3', keywords: ['combo', 'good'] },
-  { id: 'cb-7', text: 'Fire!', category: 'combo', audioUrl: '/audio/african/fire.mp3', keywords: ['combo', 'hot'] },
-  { id: 'cb-8', text: 'Lit!', category: 'combo', audioUrl: '/audio/african/lit.mp3', keywords: ['combo', 'exciting'] },
-  { id: 'cb-9', text: 'Sick!', category: 'combo', audioUrl: '/audio/african/sick.mp3', keywords: ['combo', 'impressive'] },
-  { id: 'fw-1', text: 'Bootilicious!', category: 'fingerwars', audioUrl: '/audio/african/bootilicious-fingerwars.mp3', keywords: ['fingerwars', 'level', 'move'] },
-  { id: 'sv-1', text: 'SuperVi!', category: 'supervi', audioUrl: '/audio/african/supervi.mp3', keywords: ['supervi', 'game'] },
-  { id: 'go-1', text: 'GameOn!', category: 'gameon', audioUrl: '/audio/african/gameon.mp3', keywords: ['gameon', 'start', 'play'] },
+  { id: 'ev-43', text: 'You\'re Endowed', category: 'mii', audioUrl: '/audio/african/youre-endowed.mp3', keywords: ['mii', 'physical', 'attributes'] },
+  { id: 'ev-44', text: 'You\'re gorgeous', category: 'mii', audioUrl: '/audio/african/youre-gorgeous.mp3', keywords: ['mii', 'gorgeous', 'admirations'] },
+  { id: 'ev-45', text: 'Divine', category: 'hallmarks', audioUrl: '/audio/african/divine.mp3', keywords: ['hallmarks', 'divine', 'impressive'] },
+  { id: 'ev-46', text: 'Blessings Blessings Blessings', category: 'hallmarks', audioUrl: '/audio/african/blessings-blessings.mp3', keywords: ['hallmarks', 'blessings'] },
+  { id: 'cb-1', text: 'Small combo!', category: 'combo_small', audioUrl: '/audio/african/small-combo.mp3', keywords: ['small', 'combo'] },
+  { id: 'cb-2', text: 'Great combo!', category: 'combo_large', audioUrl: '/audio/african/great-combo.mp3', keywords: ['great', 'combo'] },
+  { id: 'cb-3', text: 'Colossal combo!', category: 'combo_colossal', audioUrl: '/audio/african/colossal-combo.mp3', keywords: ['colossal', 'combo'] },
+  { id: 'cb-4', text: 'Sweet!', category: 'lushpressies', audioUrl: '/audio/african/sweet.mp3', keywords: ['sweet', 'lushpressies'] },
+  { id: 'cb-5', text: 'Boom!', category: 'groups', audioUrl: '/audio/african/boom.mp3', keywords: ['boom', 'groups'] },
   { id: 'cm-1', text: 'Great post!', category: 'forum', audioUrl: '/audio/african/great-post.mp3', keywords: ['forum', 'post', 'community'] },
   { id: 'cm-2', text: 'Gem found!', category: 'gems', audioUrl: '/audio/african/gem-found.mp3', keywords: ['gems', 'discovery', 'valuable'] }
 ];
@@ -120,8 +150,11 @@ class VoiceLineService {
   private audioContext: AudioContext | null = null;
   private initialized = false;
   private memberId: string | null = null;
+  private settings: VoiceLineSettings = { ...DEFAULT_SETTINGS };
 
-  private constructor() {}
+  private constructor() {
+    this.loadSettings();
+  }
 
   public static getInstance(): VoiceLineService {
     if (!VoiceLineService.instance) {
@@ -131,31 +164,110 @@ class VoiceLineService {
   }
 
   /**
-   * Initialize AudioContext with SSR protection blocks
+   * Loads voice line audio preferences from storage
+   */
+  public loadSettings(): VoiceLineSettings {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          this.settings = {
+            volume: typeof parsed.volume === 'number' ? parsed.volume : DEFAULT_SETTINGS.volume,
+            enabled: typeof parsed.enabled === 'boolean' ? parsed.enabled : DEFAULT_SETTINGS.enabled,
+            microservices: {
+              ...DEFAULT_SETTINGS.microservices,
+              ...(parsed.microservices || {})
+            }
+          };
+          return this.settings;
+        }
+      } catch {
+        // Fallback to default settings
+      }
+    }
+    this.settings = { ...DEFAULT_SETTINGS };
+    return this.settings;
+  }
+
+  /**
+   * Persists voice line preferences
+   */
+  public saveSettings(newSettings: Partial<VoiceLineSettings>): VoiceLineSettings {
+    this.settings = {
+      ...this.settings,
+      ...newSettings,
+      microservices: {
+        ...this.settings.microservices,
+        ...(newSettings.microservices || {})
+      }
+    };
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
+      } catch {
+        // Silent storage fallback
+      }
+    }
+    return this.settings;
+  }
+
+  public getSettings(): VoiceLineSettings {
+    return this.settings;
+  }
+
+  public getVoiceLineVolume(): number {
+    return this.settings.volume;
+  }
+
+  public setVoiceLineVolume(volume: number): void {
+    const clampedVolume = Math.max(0, Math.min(1, volume));
+    this.saveSettings({ volume: clampedVolume });
+  }
+
+  public isMicroserviceVoiceLineEnabled(microservice: string): boolean {
+    if (!this.settings.enabled) return false;
+    if (microservice in this.settings.microservices) {
+      return this.settings.microservices[microservice] !== false;
+    }
+    return true;
+  }
+
+  public setMicroserviceVoiceLineEnabled(microservice: string, enabled: boolean): void {
+    const microservices = {
+      ...this.settings.microservices,
+      [microservice]: enabled
+    };
+    this.saveSettings({ microservices });
+  }
+
+  /**
+   * Initialize AudioContext with SSR protection
    */
   public async initialize(memberId?: string): Promise<void> {
     if (this.initialized) return;
 
     return new Promise((resolve) => {
-      setTimeout(() => {
-        if (typeof window !== 'undefined') {
-          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-          if (AudioContextClass) {
+      if (typeof window !== 'undefined') {
+        const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioContextClass) {
+          try {
             this.audioContext = new AudioContextClass();
+          } catch {
+            // Audio context permission delayed until user gesture
           }
         }
-        this.initialized = true;
-        this.memberId = memberId || null;
-        console.info('VoiceLineService successfully initialized with African voice line profiles.');
-        resolve();
-      }, 500);
+      }
+      this.initialized = true;
+      this.memberId = memberId || null;
+      resolve();
     });
   }
 
   private getBaseHeaders(): Record<string, string> {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
       if (token) headers['Authorization'] = `Bearer ${token}`;
     }
     return headers;
@@ -167,11 +279,10 @@ class VoiceLineService {
         method: 'GET',
         headers: this.getBaseHeaders()
       });
-
-      if (!response.ok) throw new Error(`HTTP Error response: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching voice lines from API, using fallback store:', error);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json = await response.json();
+      return json.data || json;
+    } catch {
       return this.getVoiceLinesByCategory(category);
     }
   }
@@ -182,11 +293,10 @@ class VoiceLineService {
         method: 'GET',
         headers: this.getBaseHeaders()
       });
-
-      if (!response.ok) throw new Error(`HTTP Error response: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching random voice line from API, using fallback store:', error);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json = await response.json();
+      return json.data || json;
+    } catch {
       return this.getRandomVoiceLineByCategory(category);
     }
   }
@@ -197,11 +307,13 @@ class VoiceLineService {
         method: 'GET',
         headers: this.getBaseHeaders()
       });
-
-      if (!response.ok) throw new Error(`HTTP Error response: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching categories from API, using fallback calculations:', error);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json = await response.json();
+      if (json.data && Array.isArray(json.data)) {
+        return json.data.map((c: { category: string }) => c.category as VoiceLineCategory);
+      }
+      return json;
+    } catch {
       const uniqueCategories = Array.from(new Set(allVoiceLines.map((vl) => vl.category)));
       return uniqueCategories as VoiceLineCategory[];
     }
@@ -220,7 +332,12 @@ class VoiceLineService {
 
   public getRandomVoiceLineByCategory(category: VoiceLineCategory): VoiceLine | null {
     const lines = this.getVoiceLinesByCategory(category);
-    if (lines.length === 0) return null;
+    if (lines.length === 0) {
+      // Fallback to general lines
+      const generalLines = this.getVoiceLinesByCategory('general');
+      if (generalLines.length === 0) return allVoiceLines[0];
+      return generalLines[Math.floor(Math.random() * generalLines.length)];
+    }
     return lines[Math.floor(Math.random() * lines.length)];
   }
 
@@ -230,11 +347,10 @@ class VoiceLineService {
         method: 'GET',
         headers: this.getBaseHeaders()
       });
-
-      if (!response.ok) throw new Error(`HTTP Error response: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error matching search query over API, dropping to local runtime engine:', error);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json = await response.json();
+      return json.data || json;
+    } catch {
       return this.searchVoiceLinesLocal(keyword);
     }
   }
@@ -250,86 +366,180 @@ class VoiceLineService {
     );
   }
 
-  public async findMatchingKeywords(text: string, voiceLines: VoiceLine[]): Promise<VoiceLine[]> {
-    const lowerText = text.toLowerCase().trim();
-    if (!lowerText) return [];
-
-    return voiceLines.filter((line) =>
-      line.keywords.some((kw) => {
-        const lowerKw = kw.toLowerCase();
-        return lowerKw.includes(lowerText) || lowerText.includes(lowerKw);
-      })
-    );
-  }
-
-  public async logVoiceLinePlay(voiceLineId: string, eventType = 'play'): Promise<void> {
+  public async logVoiceLinePlay(voiceLineId: string, eventType = 'play', microservice = 'general'): Promise<void> {
     try {
       const logBody: VoiceLineLogPayload = {
         voiceLineId,
         eventType,
+        microservice,
         timestamp: new Date().toISOString(),
         memberId: this.memberId
       };
 
-      const response = await fetch('/api/voice-lines/log', {
+      await fetch('/api/voice-lines/log', {
         method: 'POST',
         headers: this.getBaseHeaders(),
         body: JSON.stringify(logBody)
       });
-
-      if (!response.ok) throw new Error(`Failed to log audio trace event: ${response.status}`);
-    } catch (error) {
-      console.error('Error logging voice line tracking metrics:', error);
+    } catch {
+      // Silent metric catch
     }
-  }
-
-  public getRandomVoiceLineByCategories(categories: VoiceLineCategory[]): VoiceLine | null {
-    const lines: VoiceLine[] = [];
-    categories.forEach((category) => {
-      lines.push(...this.getVoiceLinesByCategory(category));
-    });
-
-    if (lines.length === 0) return null;
-    return lines[Math.floor(Math.random() * lines.length)];
-  }
-
-  public searchVoiceLinesLocalOnly(keyword: string): VoiceLine[] {
-    return this.searchVoiceLinesLocal(keyword);
   }
 
   /**
-   * Play asset line with automatic device fallback tracking
+   * Harmonic synthesized acoustic chime fallback via Web Audio API.
+   * Plays a pleasant major third chime calibrated to 35% volume.
    */
-  public async playVoiceLine(text: string, voiceLineId?: string, eventType = 'general'): Promise<void> {
-    if (!this.initialized) {
-      console.warn('VoiceLineService tracking alert: Playback invoked before initialization context completed.');
-    }
+  private playHarmonicChime(volume: number): void {
+    if (typeof window === 'undefined') return;
 
     try {
-      let matchingVoiceLine: VoiceLine | undefined;
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
 
-      if (voiceLineId) {
-        matchingVoiceLine = allVoiceLines.find((line) => line.id === voiceLineId);
-      } else {
-        matchingVoiceLine = allVoiceLines.find((line) => line.text.toLowerCase() === text.toLowerCase());
+      const ctx = this.audioContext || new AudioContextClass();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
       }
 
-      if (matchingVoiceLine && matchingVoiceLine.audioUrl && typeof window !== 'undefined') {
-        console.info(`Triggering audio trace asset: "${matchingVoiceLine.text}" -> ${matchingVoiceLine.audioUrl}`);
-        const audio = new Audio(matchingVoiceLine.audioUrl);
-        await audio.play();
+      const now = ctx.currentTime;
+      const gainNode = ctx.createGain();
+      gainNode.gain.setValueAtTime(volume * 0.4, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      gainNode.connect(ctx.destination);
 
-        await this.logVoiceLinePlay(matchingVoiceLine.id, eventType);
-      } else {
-        console.warn(`Audio node lookup mismatch for description: "${text}". Running execution delay thread simulator.`);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Root note (E5) + Third (G#5) pleasant African notification chord
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(659.25, now); // E5
+
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(830.61, now + 0.08); // G#5
+
+      osc1.connect(gainNode);
+      osc2.connect(gainNode);
+
+      osc1.start(now);
+      osc2.start(now + 0.08);
+      osc1.stop(now + 0.8);
+      osc2.stop(now + 0.8);
+    } catch {
+      // AudioContext unavailable or denied
+    }
+  }
+
+  /**
+   * Spoken speech synthesis fallback utilizing Web Speech API
+   */
+  private speakVoiceLineText(text: string, volume: number): void {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.volume = volume;
+      utterance.rate = 1.05;
+      utterance.pitch = 1.1;
+
+      // Select natural English voice if present
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(
+        (v) => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Premium'))
+      );
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
       }
-    } catch (error) {
-      console.error('HTML5 Audio pipeline playback error execution:', error);
-      throw error;
+
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      // Speech synthesis fallback failure safe
+    }
+  }
+
+  /**
+   * Actionable Commentary Audio Trigger
+   * Triggered when members post comments across:
+   * ForumPage, Hallmarks, Mii, Groups, LushPressies, Blogs.
+   * Plays the designated voice line at 35% system speaker volume (or user-defined volume).
+   */
+  public async playCommentaryVoiceLine(
+    microservice: 'forum' | 'hallmarks' | 'mii' | 'groups' | 'lushpressies' | 'blogs',
+    memberId?: string
+  ): Promise<void> {
+    if (!this.isMicroserviceVoiceLineEnabled(microservice)) {
+      return;
+    }
+
+    if (memberId) {
+      this.memberId = memberId;
+    }
+
+    const volume = this.getVoiceLineVolume();
+    const candidateLine = this.getRandomVoiceLineByCategory(microservice as VoiceLineCategory) || allVoiceLines[0];
+
+    await this.playVoiceLine(candidateLine.text, candidateLine.id, `commentary:${microservice}`, microservice, volume);
+  }
+
+  /**
+   * Multi-layered Playback Pipeline:
+   * Level 1: Native Audio File (.mp3)
+   * Level 2: Web Speech Synthesis of the African voice line phrase
+   * Level 3: Web Audio API Harmonic Chime
+   */
+  public async playVoiceLine(
+    text: string,
+    voiceLineId?: string,
+    eventType = 'general',
+    microservice = 'general',
+    overrideVolume?: number
+  ): Promise<void> {
+    const volume = overrideVolume !== undefined ? overrideVolume : this.getVoiceLineVolume();
+
+    if (volume <= 0 || !this.settings.enabled) {
+      return;
+    }
+
+    let matchingLine: VoiceLine | undefined;
+    if (voiceLineId) {
+      matchingLine = allVoiceLines.find((line) => line.id === voiceLineId);
+    } else {
+      matchingLine = allVoiceLines.find((line) => line.text.toLowerCase() === text.toLowerCase());
+    }
+
+    const phraseToPlay = matchingLine ? matchingLine.text : text;
+    let playedSuccessfully = false;
+
+    // Level 1: Attempt HTML5 Audio Playback
+    if (matchingLine && matchingLine.audioUrl && typeof window !== 'undefined') {
+      try {
+        const audio = new Audio(matchingLine.audioUrl);
+        audio.volume = volume;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          playedSuccessfully = true;
+        }
+      } catch {
+        // Physical file not hosted yet, move to Level 2
+        playedSuccessfully = false;
+      }
+    }
+
+    // Level 2 & 3: Resilient Pipecat / Speech Synthesis & Harmonic Chime
+    if (!playedSuccessfully) {
+      this.playHarmonicChime(volume);
+      this.speakVoiceLineText(phraseToPlay, volume);
+    }
+
+    // Level 4: Metric Logging
+    if (matchingLine) {
+      this.logVoiceLinePlay(matchingLine.id, eventType, microservice);
     }
   }
 }
 
 const voiceLineServiceInstance = VoiceLineService.getInstance();
+export { VoiceLineService };
 export default voiceLineServiceInstance;

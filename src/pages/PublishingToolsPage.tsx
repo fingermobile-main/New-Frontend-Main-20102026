@@ -1,11 +1,11 @@
 import React, {} from 'react';
 
-import { useAppContext } from '../contexts/AppContext';
 // Deleted:
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import { useCommunity } from '../../src/hooks/useCommunity';
 
+// eslint-disable-next-line no-unused-vars
 interface Post {
   id: string;
   title?: string;

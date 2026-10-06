@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Radio, Lock, Music, ShieldAlert, Folder, ShoppingBag, X } from 'lucide-react';
+import { Plus, Radio, Lock, Music, ShieldAlert, Folder, ShoppingBag, X, Gift } from 'lucide-react';
+import SendFicModal from './SendFicModal';
 
 export interface MiiContactStatus {
   status_id: string;
@@ -38,6 +39,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
   const [statuses, setStatuses] = useState<MiiContactStatus[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeStory, setActiveStory] = useState<any | null>(null);
+  const [showTipModal, setShowTipModal] = useState(false);
 
   useEffect(() => {
     fetchMiiFeed();
@@ -205,6 +207,13 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
 
             {/* Bottom Reply Bar */}
             <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setShowTipModal(true)}
+                className="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 hover:bg-emerald-500/40 transition-colors"
+                title="Tip/Gift Creator"
+              >
+                <Gift className="w-4 h-4" />
+              </button>
               <input
                 type="text"
                 placeholder="Reply to Mii..."
@@ -216,6 +225,16 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {showTipModal && (
+        <SendFicModal
+          onClose={() => setShowTipModal(false)}
+          onSend={async (recipient, amount, message) => {
+            console.log(`Sending ${amount} FIC to ${recipient} with message: ${message}`);
+            return Promise.resolve();
+          }}
+        />
       )}
     </div>
   );

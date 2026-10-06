@@ -189,11 +189,11 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
       {/* Footer Links */}
       <div className="px-3 py-4 border-t border-gray-700">
         <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500">
-          <a href="/privacy" className="hover:text-gray-300 transition-colors">Privacy</a>
-          <a href="/terms" className="hover:text-gray-300 transition-colors">Terms</a>
-          <a href="/user-policy" className="hover:text-gray-300 transition-colors">User Policy</a>
-          <a href="/ai-policy" className="hover:text-gray-300 transition-colors">AI Policy</a>
-          <a href="/disclaimer" className="hover:text-gray-300 transition-colors">Disclaimer</a>
+          <Link to="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
+          <Link to="/terms" className="hover:text-gray-300 transition-colors">Terms</Link>
+          <Link to="/user-policy" className="hover:text-gray-300 transition-colors">User Policy</Link>
+          <Link to="/ai-policy" className="hover:text-gray-300 transition-colors">AI Policy</Link>
+          <Link to="/disclaimer" className="hover:text-gray-300 transition-colors">Disclaimer</Link>
           <a href="/advertising" className="hover:text-gray-300 transition-colors">Advertising</a>
           <a href="/canary" className="hover:text-gray-300 transition-colors">Canary</a>
           <a href="/cookies" className="hover:text-gray-300 transition-colors">Cookies</a>

@@ -98,7 +98,7 @@ const DPODashboard = () => {
         <div className="metric-card pending-reviews">
           <h3>Pending Reviews</h3>
           <div className="count-display">{complianceData.pendingReviews}</div>
-          <button 
+          <button
             className="btn-secondary"
             onClick={() => document.getElementById('pending-reviews-section').scrollIntoView()}
           >
@@ -123,25 +123,25 @@ const DPODashboard = () => {
         <h2>API Kill-Switch Controls</h2>
         <p>Emergency isolation controls for platform modules</p>
         <div className="kill-switch-grid">
-          <button 
+          <button
             className="kill-switch-btn tier-3"
             onClick={() => triggerKillSwitch('Gems')}
           >
             Isolate Gems Module
           </button>
-          <button 
+          <button
             className="kill-switch-btn tier-3"
             onClick={() => triggerKillSwitch('Hallmarks')}
           >
             Isolate Hallmarks Module
           </button>
-          <button 
+          <button
             className="kill-switch-btn tier-2"
             onClick={() => triggerKillSwitch('Forum')}
           >
             Isolate Forum Module
           </button>
-          <button 
+          <button
             className="kill-switch-btn tier-2"
             onClick={() => triggerKillSwitch('Groups')}
           >

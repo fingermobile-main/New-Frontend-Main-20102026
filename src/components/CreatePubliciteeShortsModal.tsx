@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Film, Smartphone, Clock, CheckCircle2, AlertCircle, X, Layers } from 'lucide-react';
 
+import { uploadService } from '../services/UploadService';
+
 interface CreatePubliciteeShortsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,10 +25,10 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
   const [pubTitle, setPubTitle] = useState('');
   const [pubDescription, setPubDescription] = useState('');
   const [pubCategory, setPubCategory] = useState<'short_film' | 'vlog' | 'skit'>('short_film');
-  const [pubVideoUrl, setPubVideoUrl] = useState('');
-  const [pubThumbnailUrl, setPubThumbnailUrl] = useState('');
+  const [pubVideoFile, setPubVideoFile] = useState<File | null>(null);
+  const [pubThumbnailFile, setPubThumbnailFile] = useState<File | null>(null);
   const [pubDurationSeconds, setPubDurationSeconds] = useState(300);
-  const pubFileSizeBytes = 50000000;
+  const [pubFileSizeBytes, setPubFileSizeBytes] = useState(0);
 
   // FingerShorts State (Up to 20 Media Cards, Max 20MB, Max 60s, Free)
   const [shortTitle, setShortTitle] = useState('');
@@ -36,8 +38,9 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
     duration_seconds: number;
     file_size_bytes: number;
     sound_title?: string;
+    file?: File;
   }>>([
-    { media_url: '', media_type: 'video', duration_seconds: 15, file_size_bytes: 5000000 }
+    { media_url: '', media_type: 'video', duration_seconds: 15, file_size_bytes: 0 }
   ]);
 
   if (!isOpen) return null;
@@ -61,7 +64,11 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
   const handleCardChange = (index: number, field: string, value: any) => {
     setCards(prev => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: value };
+      if (field === 'file' && value instanceof File) {
+        updated[index] = { ...updated[index], file: value, file_size_bytes: value.size };
+      } else {
+        updated[index] = { ...updated[index], [field]: value };
+      }
       return updated;
     });
   };
@@ -81,14 +88,22 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
 
       if (selectedType === 'publicitee') {
         // Validate Publicitee Constraints
-        if (!pubTitle || !pubVideoUrl) {
-          throw new Error('Title and Video URL are required');
+        if (!pubTitle || !pubVideoFile) {
+          throw new Error('Title and Video File are required');
         }
         if (pubDurationSeconds > 6900) {
           throw new Error('Video duration exceeds 1hr 55mins (6900s) maximum cap');
         }
         if (pubFileSizeBytes > 1610612736) {
           throw new Error('File size exceeds 1.5GB maximum cap');
+        }
+
+        // Upload files
+        const uploadedVideo = await uploadService.uploadFile(pubVideoFile, 'publicitee');
+        let uploadedThumbUrl = '';
+        if (pubThumbnailFile) {
+          const uploadedThumb = await uploadService.uploadFile(pubThumbnailFile, 'publicitee');
+          uploadedThumbUrl = uploadedThumb.url;
         }
 
         const res = await fetch('/api/publicitee', {
@@ -98,8 +113,8 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
             title: pubTitle,
             description: pubDescription,
             category: pubCategory,
-            video_url: pubVideoUrl,
-            thumbnail_url: pubThumbnailUrl,
+            video_url: uploadedVideo.url,
+            thumbnail_url: uploadedThumbUrl,
             duration_seconds: pubDurationSeconds,
             file_size_bytes: pubFileSizeBytes
           })
@@ -119,8 +134,8 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           throw new Error('FingerShorts must have between 1 and 20 media cards');
         }
         for (let i = 0; i < cards.length; i++) {
-          if (!cards[i].media_url) {
-            throw new Error(`Card #${i + 1} is missing a Media URL`);
+          if (!cards[i].file) {
+            throw new Error(`Card #${i + 1} is missing a Media File`);
           }
           if (cards[i].duration_seconds > 60) {
             throw new Error(`Card #${i + 1} duration exceeds 1 minute (60s) cap`);
@@ -130,12 +145,20 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           }
         }
 
+        const uploadedCards = await Promise.all(cards.map(async (c) => {
+          if (c.file) {
+            const uploaded = await uploadService.uploadFile(c.file, 'fingershorts');
+            return { ...c, media_url: uploaded.url, file: undefined };
+          }
+          return c;
+        }));
+
         const res = await fetch('/api/fingershorts/sessions', {
           method: 'POST',
           headers,
           body: JSON.stringify({
             title: shortTitle || 'My FingerShorts Story',
-            cards
+            cards: uploadedCards
           })
         });
         const data = await res.json();
@@ -273,24 +296,30 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Video URL (One Video Card Only) *</label>
+                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Video File (Max 1.5GB) *</label>
                 <input
-                  type="url"
+                  type="file"
                   required
-                  placeholder="https://cdn.fingermobile.com/videos/reel1.mp4"
-                  value={pubVideoUrl}
-                  onChange={(e) => setPubVideoUrl(e.target.value)}
+                  accept="video/mp4,video/x-m4v,video/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setPubVideoFile(file);
+                      setPubFileSizeBytes(file.size);
+                    }
+                  }}
                   className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Thumbnail URL</label>
+                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Thumbnail Image</label>
                 <input
-                  type="url"
-                  placeholder="https://cdn.fingermobile.com/thumbs/thumb1.jpg"
-                  value={pubThumbnailUrl}
-                  onChange={(e) => setPubThumbnailUrl(e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files?.[0]) setPubThumbnailFile(e.target.files[0]);
+                  }}
                   className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none"
                 />
               </div>
@@ -385,11 +414,13 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
 
                     <div>
                       <input
-                        type="url"
+                        type="file"
                         required
-                        placeholder="Media URL (Max 20MB)..."
-                        value={card.media_url}
-                        onChange={(e) => handleCardChange(idx, 'media_url', e.target.value)}
+                        accept="video/*,image/*,audio/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleCardChange(idx, 'file', file);
+                        }}
                         className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white outline-none"
                       />
                     </div>

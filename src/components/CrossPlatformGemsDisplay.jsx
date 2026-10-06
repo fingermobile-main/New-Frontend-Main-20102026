@@ -64,12 +64,12 @@ const CrossPlatformGemsDisplay = ({ userId }) => {
   // Determine platform from user agent
   const detectPlatform = () => {
     const userAgent = navigator.userAgent;
-    
+
     if (userAgent.includes('Android')) return 'mobile_android';
     if (userAgent.includes('iPhone') || userAgent.includes('iPad')) return 'mobile_ios';
     if (userAgent.includes('Mac')) return 'desktop_mac';
     if (userAgent.includes('Win')) return 'desktop_windows';
-    
+
     return 'web';
   };
 
@@ -94,7 +94,7 @@ const CrossPlatformGemsDisplay = ({ userId }) => {
   }, {});
 
   const rarityOrder = ['legendary', 'epic', 'rare', 'uncommon', 'common'];
-  const orderedHallmarks = rarityOrder.flatMap(rarity => 
+  const orderedHallmarks = rarityOrder.flatMap(rarity =>
     groupedHallmarks[rarity] ? groupedHallmarks[rarity].map(h => ({ ...h, rarity })) : []
   );
 
@@ -114,7 +114,7 @@ const CrossPlatformGemsDisplay = ({ userId }) => {
           <span className="gem-number">{gems || 0}</span>
         </div>
         <p>Total Gems earned through engagement</p>
-        
+
         {platformSettings && (
           <div className="platform-notes">
             <p><strong>Platform Settings:</strong></p>
@@ -132,8 +132,8 @@ const CrossPlatformGemsDisplay = ({ userId }) => {
         {orderedHallmarks.length > 0 ? (
           <div className="hallmarks-grid">
             {orderedHallmarks.map((hallmark, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`hallmark-card rarity-${hallmark.rarity}`}
                 title={`${hallmark.name}: ${hallmark.description}`}
               >
@@ -160,23 +160,23 @@ const CrossPlatformGemsDisplay = ({ userId }) => {
           <div className="feature-card">
             <h4>Haptic Feedback</h4>
             <p>
-              {platformSettings 
-                ? platformSettings.platform === 'mobile_android' || platformSettings.platform === 'mobile_ios' 
-                  ? 'Available' 
-                  : 'Unavailable' 
+              {platformSettings
+                ? platformSettings.platform === 'mobile_android' || platformSettings.platform === 'mobile_ios'
+                  ? 'Available'
+                  : 'Unavailable'
                 : 'Loading...'}
             </p>
           </div>
           <div className="feature-card">
             <h4>Biometric Auth</h4>
             <p>
-              {platformSettings 
-                ? platformSettings.platform === 'mobile_android' || 
+              {platformSettings
+                ? platformSettings.platform === 'mobile_android' ||
                   platformSettings.platform === 'mobile_ios' ||
                   platformSettings.platform === 'desktop_mac' ||
                   platformSettings.platform === 'desktop_windows'
-                  ? 'Available' 
-                  : 'Limited' 
+                  ? 'Available'
+                  : 'Limited'
                 : 'Loading...'}
             </p>
           </div>

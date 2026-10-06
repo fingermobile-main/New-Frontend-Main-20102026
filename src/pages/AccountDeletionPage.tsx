@@ -2,7 +2,6 @@ import { Link} from 'react-router-dom';
 import React, { useState } from 'react';
 
 
-import { logError } from '../utils/errorLogger';
 import MainLayout from '../components/layout/MainLayout';
 
 import { useAppContext } from '../contexts/AppContext';  // Using absolute path from src

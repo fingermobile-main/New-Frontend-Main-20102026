@@ -21,7 +21,7 @@ const VideoUpload = () => {
     { code: 'id-ID', name: 'Indonesian' }
   ]);
   const [quotaInfo, setQuotaInfo] = useState(null);
-  
+
   const fileInputRef = useRef(null);
 
   // Load quota info on component mount
@@ -45,13 +45,13 @@ const VideoUpload = () => {
         setError('Please select a video file');
         return;
       }
-      
+
       // Validate file size (max 100MB)
       if (file.size > 100 * 1024 * 1024) {
         setError('File size exceeds 100MB limit');
         return;
       }
-      
+
       setSelectedFile(file);
       setError('');
       setUploadSuccess(false);
@@ -87,17 +87,17 @@ const VideoUpload = () => {
 
       // Upload the video
       const response = await VideoTranslationService.uploadVideo(selectedFile, selectedLanguages);
-      
+
       document.removeEventListener('videoUploadProgress', handleProgress);
-      
+
       setUploadSuccess(true);
       setUploadProgress(100);
       setError('');
-      
+
       // Refresh quota info
       const quota = await VideoTranslationService.getQuotaInfo();
       setQuotaInfo(quota);
-      
+
       // Reset form
       setTimeout(() => {
         setSelectedFile(null);
@@ -119,22 +119,22 @@ const VideoUpload = () => {
         <Typography variant="h6" gutterBottom>
           Multilingual Video Translation
         </Typography>
-        
+
         {/* Quota Info */}
         {quotaInfo && (
           <Box sx={{ mb: 3, p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
             <Typography variant="subtitle2">Storage Quota</Typography>
-            <LinearProgress 
-              variant="determinate" 
-              value={(quotaInfo.currentUsage / quotaInfo.maxQuota) * 100} 
-              sx={{ mb: 1 }} 
+            <LinearProgress
+              variant="determinate"
+              value={(quotaInfo.currentUsage / quotaInfo.maxQuota) * 100}
+              sx={{ mb: 1 }}
             />
             <Typography variant="caption">
               {Math.round(quotaInfo.currentUsage / 1024 / 1024)} MB used of {Math.round(quotaInfo.maxQuota / 1024 / 1024)} MB
             </Typography>
           </Box>
         )}
-        
+
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Box sx={{ mb: 3 }}>
@@ -154,7 +154,7 @@ const VideoUpload = () => {
                   disabled={isUploading}
                 />
               </Button>
-              
+
               {selectedFile && (
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Selected: {selectedFile.name} ({(selectedFile.size / (1024 * 1024)).toFixed(2)} MB)

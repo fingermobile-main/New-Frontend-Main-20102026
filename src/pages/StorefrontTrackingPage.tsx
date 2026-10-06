@@ -33,6 +33,7 @@ interface Shipment {
 const StorefrontTrackingPage: React.FC = () => {
   const { showToast } = useAppContext();
   const [shipments, setShipments] = useState<Shipment[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [refreshing, setRefreshing] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
@@ -50,6 +51,7 @@ const StorefrontTrackingPage: React.FC = () => {
         });
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error loading shipments:', error);
       if (showToast) showToast('Failed to load shipments', 'error');
     }
@@ -59,6 +61,7 @@ const StorefrontTrackingPage: React.FC = () => {
     loadShipments();
   }, [loadShipments]);
 
+  // eslint-disable-next-line no-unused-vars
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadShipments();

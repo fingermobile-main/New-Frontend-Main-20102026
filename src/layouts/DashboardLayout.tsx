@@ -1,42 +1,20 @@
-import { useLocation, Outlet, useNavigate, Navigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import React from 'react';
 
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../contexts/ThemeContext';
 import {
-  Bars3Icon,
-  ArrowRightOnRectangleIcon,
-  UserCircleIcon,
-  HomeIcon,
-  ChatBubbleLeftRightIcon,
-  Cog6ToothIcon,
-  SignalIcon,
-  MusicalNoteIcon,
-  FilmIcon,
-  UserGroupIcon,
-  HeartIcon,
-  GiftIcon,
-  DocumentTextIcon,
-  CreditCardIcon,
-  ComputerDesktopIcon,
-  MoonIcon,
-  SunIcon,
-  BellAlertIcon,
-  QuestionMarkCircleIcon,
-  XMarkIcon
+  Bars3Icon
 } from '../icons';
 import DashboardNavigation from '../components/dashboard/DashboardNavigation';
 import { useAppContext } from '../contexts';
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
+  const isAuthenticated = !!user;
   const { darkMode, toggleTheme } = useTheme();
   const { sidebarOpen, toggleSidebar } = useAppContext();
-  const location = useLocation();
   const navigate = useNavigate();
-
-  // State for profile menu - moved before any conditional logic
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   // Redirect to login if not authenticated
   if (!isAuthenticated) {

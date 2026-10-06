@@ -70,6 +70,7 @@ const MemberEarningPage: React.FC = () => {
           setEarningSummary(prev => ({ ...prev, activeServices: fallback.length }));
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load services:', err);
       }
     };

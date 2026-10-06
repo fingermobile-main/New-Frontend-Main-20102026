@@ -5,6 +5,7 @@ import CsvImportTrigger from '../components/CsvImportTrigger';
 
 const CsvImportPage: React.FC = () => {
   const handleImportComplete = () => {
+    // eslint-disable-next-line no-console
     console.info('Import completed');
     // Handle imported data as needed
   };

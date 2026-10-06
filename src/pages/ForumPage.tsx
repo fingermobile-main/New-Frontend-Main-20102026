@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOnboarding } from '../contexts/OnboardingContext'; // Added onboarding context
 import LoadingSpinner from '../components/LoadingSpinner';
-import { SearchIcon, MessageIcon, CameraIcon, HeartIcon, PlayIcon, ChevronDownIcon } from '../components/icons';
+import { SearchIcon, MessageIcon, CameraIcon, HeartIcon, PlayIcon, ChevronDownIcon, XIcon } from '../components/icons';
 import ForumService from '../services/forumService';
 import { ForumPost, ForumCategory, ForumThread } from '../types/forum';
 import CensorshipSelector, { CensorshipOptions } from '../components/CensorshipSelector';
@@ -22,8 +22,8 @@ import UniversalHeader from '../components/layout/UniversalHeader';
 import H2AdBucket from '../components/layout/H2AdBucket';
 import CanaryAdPlacementWidget from '../components/canary/CanaryAdPlacementWidget';
 
-// Import the P2P indicator component
 import P2PStatusIndicator from '../components/P2PStatusIndicator';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 
 const MainNavigationTabBar = () => {
   const [activeTab, setActiveTab] = useState('trends');
@@ -31,9 +31,9 @@ const MainNavigationTabBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed top-18 left-0 right-0 h-20 bg-crystalline-white-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-40 flex items-center px-4">
+    <div className="w-full max-w-[1280px] mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 my-4 py-2.5 px-4 rounded-2xl shadow-sm flex items-center justify-between gap-4">
       <div className="flex items-center space-x-2">
-        <button className="p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-lg">
+        <button className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-base text-gray-700 dark:text-gray-300">
           ≡
         </button>
       </div>
@@ -196,8 +196,24 @@ const AdvertisementCard = () => {
   );
 };
 
+// Define the MediaAttachment interface
+interface MediaAttachment {
+  id: string;
+  file?: File;
+  preview: string;
+  type: 'image' | 'video';
+  name: string;
+}
+
+// Define the FeelingActivity interface
+interface FeelingActivity {
+  type: 'feeling' | 'activity';
+  emoji: string;
+  label: string;
+}
+
 // Define the ForumPostExtended type properly
-type ForumPostExtended = Omit<ForumPost, 'author'> & {
+type ForumPostExtended = Omit<ForumPost, 'author' | 'attachments'> & {
   title: string;
   author: string;
   category: string;
@@ -211,32 +227,109 @@ type ForumPostExtended = Omit<ForumPost, 'author'> & {
   thread: ForumThread;
   replies: ForumPost[];
   censorship?: CensorshipOptions;
+  attachments?: any[];
+  feeling?: FeelingActivity;
+  mediaUrls?: string[];
 };
+
+// Fallback categories list to guarantee categories never fail to load
+const defaultCategories: ForumCategory[] = [
+  { id: '1', name: 'General Discussion', description: 'Open talk, questions, and community interactions', icon: '💬', color: '#3B82F6', displayOrder: 1, isActive: true } as any,
+  { id: '2', name: 'Entertainment & TV', description: 'BeatwaveNG, Dancia-4Tv, movies, and music', icon: '📺', color: '#8B5CF6', displayOrder: 2, isActive: true } as any,
+  { id: '3', name: 'Marketplace & Deals', description: 'Buy, sell, digital products, and storefronts', icon: '🛍️', color: '#EC4899', displayOrder: 3, isActive: true } as any,
+  { id: '4', name: 'Lush Pressies & Gifting', description: 'P2P gifting, interactions, and moments', icon: '🎁', color: '#10B981', displayOrder: 4, isActive: true } as any,
+  { id: '5', name: 'Technology & AI', description: 'Protocols, apps, AI development, and innovation', icon: '⚡', color: '#F59E0B', displayOrder: 5, isActive: true } as any,
+  { id: '6', name: 'Gaming & FingerWars', description: 'GameOn, FingerWars, tournaments, and rules', icon: '🎮', color: '#EF4444', displayOrder: 6, isActive: true } as any,
+  { id: '7', name: 'Creative Studio & UGC', description: 'PhotoCredits, photography, audio creation, and art', icon: '🎨', color: '#06B6D4', displayOrder: 7, isActive: true } as any,
+  { id: '8', name: 'Announcements', description: 'Official FingerMobile Protocol releases and notices', icon: '📢', color: '#F97316', displayOrder: 8, isActive: true } as any
+];
+
+const feelingsList: FeelingActivity[] = [
+  { type: 'feeling', emoji: '😊', label: 'Happy' },
+  { type: 'feeling', emoji: '🤩', label: 'Excited' },
+  { type: 'feeling', emoji: '🔥', label: 'Motivated' },
+  { type: 'feeling', emoji: '💡', label: 'Inspired' },
+  { type: 'feeling', emoji: '😎', label: 'Cool' },
+  { type: 'feeling', emoji: '🥳', label: 'Celebrating' },
+  { type: 'feeling', emoji: '❤️', label: 'Loved' },
+  { type: 'feeling', emoji: '🧘', label: 'Relaxed' },
+  { type: 'feeling', emoji: '🎯', label: 'Focused' },
+  { type: 'feeling', emoji: '😴', label: 'Tired' },
+];
+
+const activitiesList: FeelingActivity[] = [
+  { type: 'activity', emoji: '🎧', label: 'Listening to BeatwaveNG' },
+  { type: 'activity', emoji: '📺', label: 'Watching Dancia-4Tv' },
+  { type: 'activity', emoji: '🛍️', label: 'Shopping on Marketplace' },
+  { type: 'activity', emoji: '🎁', label: 'Gifting on Lush-Pressies' },
+  { type: 'activity', emoji: '🎮', label: 'Playing FingerWars' },
+  { type: 'activity', emoji: '🚀', label: 'Exploring Mii Orbit' },
+  { type: 'activity', emoji: '💻', label: 'Building Protocol' },
+  { type: 'activity', emoji: '📚', label: 'Reading Blogs' },
+  { type: 'activity', emoji: '☕', label: 'Sipping Coffee' },
+];
 
 const ForumPage: React.FC = () => {
   const { showToast } = useAppContext();
   const { state: authState } = useAuth();
-  const { state: onboardingState } = useOnboarding(); // Added onboarding state
-  const navigate = useNavigate(); // Added navigation hook
+  const { state: onboardingState } = useOnboarding();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'discussed'>('recent');
-  const [filterBy, setFilterBy] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [forumPosts, setForumPosts] = useState<ForumPostExtended[]>([]);
-  const [forumCategories, setForumCategories] = useState<ForumCategory[]>([]);
-  const [, setForumThreads] = useState<ForumThread[]>([]);
+  const [forumCategories, setForumCategories] = useState<ForumCategory[]>(defaultCategories);
 
   // Post creation state
   const [newPostContent, setNewPostContent] = useState('');
   const [isCreatingPost, setIsCreatingPost] = useState(false);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('1');
   const [censorshipOptions, setCensorshipOptions] = useState<CensorshipOptions>({
     tags: [],
     visualEffect: 'NONE',
     interactionRule: 'NONE'
   });
+
+  // Action handlers state: Photo/Video
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [attachments, setAttachments] = useState<MediaAttachment[]>([]);
+
+  // Action handlers state: Feeling/Activity
+  const [isFeelingModalOpen, setIsFeelingModalOpen] = useState(false);
+  const [feelingModalTab, setFeelingModalTab] = useState<'feelings' | 'activities'>('feelings');
+  const [selectedFeeling, setSelectedFeeling] = useState<FeelingActivity | null>(null);
+
+  // Action handlers state: Live Stream
+  const [isLiveModalOpen, setIsLiveModalOpen] = useState(false);
+  const [liveStreamTitle, setLiveStreamTitle] = useState('');
+  const [liveStreamCategory, setLiveStreamCategory] = useState('BeatwaveNG & Entertainment');
+  const [isLiveStreaming, setIsLiveStreaming] = useState(false);
+  const [activeRooms, setActiveRooms] = useState<Array<{ name: string; isLive?: boolean; streamer?: string }>>([
+    { name: 'Sara\'s Room' },
+    { name: 'jawad\'s Room' },
+    { name: 'Jack\'s Room' },
+    { name: 'jobidn\'s Room' }
+  ]);
+
+  // Infinite/Endless Scroll state
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  // Member Registration date for endless scroll boundary indicator
+  const memberRegistrationDate = useMemo(() => {
+    if (authState.user?.createdAt) {
+      return new Date(authState.user.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+    return 'September 2026';
+  }, [authState.user]);
 
   // Publicitee, FingerShorts, and Mii Interactive Modal & Tab States
   const [feedTab, setFeedTab] = useState<'feed' | 'publicitee'>('feed');
@@ -247,114 +340,184 @@ const ForumPage: React.FC = () => {
 
   // Check if user has completed onboarding and redirect if not
   useEffect(() => {
+    const isGlobalComplete = localStorage.getItem('onboardingComplete') === 'true' || localStorage.getItem('hasCompletedOnboarding') === 'true';
+    if (isGlobalComplete) {
+      return;
+    }
+
     if (authState.isAuthenticated && authState.user) {
-      // If user hasn't completed onboarding, redirect to onboarding page
-      if (!onboardingState.progress || onboardingState.progress.completedSteps.length < 5) { // Requiring more steps to be completed
+      const isCompleteInStorage = localStorage.getItem(`onboardingComplete_${authState.user.id}`) === 'true';
+      const isCompleteInUser = authState.user.onboardingComplete || (authState.user as any).onboarding_completed;
+
+      if (isCompleteInStorage || isCompleteInUser) {
+        return;
+      }
+
+      if (!onboardingState.progress || onboardingState.progress.completedSteps.length < 5) {
         navigate('/onboarding');
       }
     }
   }, [authState, onboardingState, navigate]);
 
-  // Fetch forum data
+  // Convert raw DB thread into ForumPostExtended
+  const mapThreadToPost = useCallback((thread: any): ForumPostExtended => {
+    const threadAuthor = typeof thread.author === 'string'
+      ? thread.author
+      : thread.author?.username || 'Member';
+
+    return {
+      id: thread.id,
+      title: thread.title,
+      content: thread.content,
+      author: threadAuthor,
+      category: thread.category?.name || 'General Discussion',
+      date: new Date(thread.createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      likes: thread.posts?.reduce((sum: number, post: any) => sum + (post.likesCount || 0), 0) || 0,
+      comments: thread.replyCount || thread.repliesCount || 0,
+      views: thread.viewCount || thread.viewsCount || 0,
+      isPinned: thread.isPinned || thread.isSticky,
+      tags: thread.tags || [],
+      threadId: thread.id,
+      thread: thread,
+      authorId: thread.authorId,
+      parentPostId: undefined,
+      parentPost: undefined,
+      likesCount: 0,
+      dislikesCount: 0,
+      isLiked: false,
+      isDisliked: false,
+      isBookmarked: false,
+      isReported: false,
+      isDeleted: false,
+      isEdited: false,
+      replies: [],
+      replyCount: thread.replyCount || 0,
+      attachments: thread.attachments || [],
+      feeling: thread.activityType ? {
+        type: 'activity',
+        emoji: thread.activityType.split(' ')[0] || '✨',
+        label: thread.activityType
+      } : undefined,
+      createdAt: thread.createdAt,
+      updatedAt: thread.updatedAt,
+      isApproved: true,
+      spamScore: 0,
+      moderationStatus: 'approved'
+    };
+  }, []);
+
+  // Fetch forum categories & initial threads
+  const fetchForumData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 1. Fetch categories with reliable fallback
+      const categoriesResult = await ForumService.getCategories();
+      let cats: ForumCategory[] = defaultCategories;
+
+      if (categoriesResult.success && categoriesResult.data) {
+        let rawCats: any[] = [];
+        if (Array.isArray(categoriesResult.data)) {
+          rawCats = categoriesResult.data;
+        } else if (Array.isArray(categoriesResult.data.categories)) {
+          rawCats = categoriesResult.data.categories;
+        }
+        if (rawCats && rawCats.length > 0) {
+          cats = rawCats.map((c: any) => ({
+            ...c,
+            id: String(c.id)
+          }));
+        }
+      }
+
+      setForumCategories(cats);
+      if (cats.length > 0) {
+        setSelectedCategoryId(String(cats[0].id));
+      }
+
+      // 2. Fetch initial threads
+      const targetCat = categoryFilter === 'all' ? 'all' : categoryFilter;
+      const threadsResult = await ForumService.getThreadsByCategory(targetCat, 10, 0, 'latest');
+
+      if (threadsResult.success && threadsResult.data?.threads) {
+        const converted = threadsResult.data.threads.map(mapThreadToPost);
+        setForumPosts(converted);
+        setHasMore(threadsResult.data.threads.length >= 10);
+      } else {
+        setForumPosts([]);
+        setHasMore(false);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching forum data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch forum data');
+    } finally {
+      setLoading(false);
+    }
+  }, [categoryFilter, mapThreadToPost]);
+
   useEffect(() => {
-    const fetchForumData = async () => {
-      setLoading(true);
-      setError(null);
+    fetchForumData();
+  }, [fetchForumData]);
 
-      try {
-        // Fetch categories
-        const categoriesResult = await ForumService.getCategories();
-        if (categoriesResult.success) {
-          const cats = categoriesResult.data?.categories || [];
-          setForumCategories(cats);
-          if (cats.length > 0) {
-            setSelectedCategoryId(prev => prev || cats[0].id);
-          }
-        } else {
-          // eslint-disable-next-line no-console
-          console.error('Failed to fetch categories:', categoriesResult.error);
+  // Infinite / Endless Scroll Handler
+  const loadMorePosts = useCallback(async () => {
+    if (loadingMore || !hasMore || loading) return;
+
+    setLoadingMore(true);
+    try {
+      const targetCat = categoryFilter === 'all' ? 'all' : categoryFilter;
+      const offset = forumPosts.length;
+      const threadsResult = await ForumService.getThreadsByCategory(targetCat, 10, offset, 'latest');
+
+      if (threadsResult.success && threadsResult.data?.threads && threadsResult.data.threads.length > 0) {
+        const newPosts = threadsResult.data.threads.map(mapThreadToPost);
+        setForumPosts(prev => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const uniqueNew = newPosts.filter(p => !existingIds.has(p.id));
+          return [...prev, ...uniqueNew];
+        });
+        setHasMore(threadsResult.data.threads.length >= 10);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Error loading more posts:', err);
+      setHasMore(false);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, hasMore, loading, categoryFilter, forumPosts.length, mapThreadToPost]);
+
+  // Attach IntersectionObserver for Endless Scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+          loadMorePosts();
         }
+      },
+      { threshold: 0.1 }
+    );
 
-        // Fetch threads for the first category if available
-        let defaultCategoryId = null;
-        if (categoriesResult.success && categoriesResult.data?.categories && categoriesResult.data.categories.length > 0) {
-          defaultCategoryId = categoriesResult.data.categories[0].id;
-        }
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
 
-        // Only fetch threads if we have a valid category ID
-        let threadsResult: any = { success: false, data: null };
-        if (defaultCategoryId) {
-          threadsResult = await ForumService.getThreadsByCategory(defaultCategoryId, 20, 0, 'latest');
-          if (threadsResult.success) {
-            setForumThreads(threadsResult.data?.threads || []);
-          } else {
-            // eslint-disable-next-line no-console
-            console.error('Failed to fetch threads:', threadsResult.error);
-          }
-        }
-
-        // Convert threads to posts format for display
-        const convertedPosts: ForumPostExtended[] = threadsResult.success && threadsResult.data?.threads
-          ? threadsResult.data.threads.map((thread: any) => ({
-            id: thread.id,
-            title: thread.title,
-            content: thread.content,
-            author: typeof thread.author === 'string' ? thread.author : thread.author?.username || 'Anonymous',
-            category: thread.category?.name || 'General',
-            date: thread.createdAt,
-            likes: thread.posts?.reduce((sum: number, post: any) => sum + post.likesCount, 0) || 0,
-            comments: thread.repliesCount,
-            views: thread.viewsCount,
-            isPinned: thread.isPinned,
-            tags: thread.tags,
-            threadId: thread.id,
-            thread: thread,
-            authorId: thread.authorId,
-            parentPostId: undefined,
-            parentPost: undefined,
-            likesCount: thread.posts?.reduce((sum: number, post: any) => sum + post.likesCount, 0) || 0,
-            dislikesCount: thread.posts?.reduce((sum: number, post: any) => sum + post.dislikesCount, 0) || 0,
-            isLiked: false,
-            isDisliked: false,
-            isBookmarked: false,
-            isReported: false,
-            isDeleted: false,
-            isEdited: false,
-            editReason: undefined,
-            replies: [],  // Initialize with empty replies array
-            replyCount: 0,
-            attachments: [],
-            location: undefined,
-            ipHash: undefined,
-            userAgent: undefined,
-            createdAt: thread.createdAt,
-            updatedAt: thread.updatedAt,
-            editedAt: undefined,
-            deletedAt: undefined,
-            reportedAt: undefined,
-            reportedReason: undefined,
-            reportedById: undefined,
-            isApproved: true,
-            approvedById: undefined,
-            approvedAt: undefined,
-            spamScore: 0,
-            moderationStatus: 'approved'
-          }))
-          : [];
-
-        // Remove mock data and only use actual DB data
-        setForumPosts(convertedPosts);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching forum data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch forum data');
-      } finally {
-        setLoading(false);
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
     };
-
-    fetchForumData();
-  }, [showToast]);
+  }, [hasMore, loadingMore, loading, loadMorePosts]);
 
   // Filter and sort posts
   const filteredAndSortedPosts = useMemo(() => {
@@ -365,16 +528,73 @@ const ForumPage: React.FC = () => {
         post.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.category.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .filter(post => filterBy === 'all' || post.category === filterBy)
       .sort((a, b) => {
         if (sortBy === 'recent') {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime();
         }
         if (sortBy === 'popular') return b.likes - a.likes;
         if (sortBy === 'discussed') return b.comments - a.comments;
         return 0;
       });
-  }, [forumPosts, searchTerm, sortBy, filterBy]);
+  }, [forumPosts, searchTerm, sortBy]);
+
+  // Handler: Photo / Video Select
+  const handlePhotoVideoClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const newAttachments: MediaAttachment[] = files.map(file => ({
+      id: Math.random().toString(36).substring(2, 9),
+      file,
+      preview: URL.createObjectURL(file),
+      type: file.type.startsWith('video') ? 'video' : 'image',
+      name: file.name
+    }));
+
+    setAttachments(prev => [...prev, ...newAttachments]);
+    showToast(`Attached ${files.length} media file(s)`, 'info');
+    if (e.target) e.target.value = '';
+  };
+
+  const handleRemoveAttachment = (id: string) => {
+    setAttachments(prev => {
+      const target = prev.find(a => a.id === id);
+      if (target?.preview) {
+        URL.revokeObjectURL(target.preview);
+      }
+      return prev.filter(a => a.id !== id);
+    });
+  };
+
+  // Handler: Feeling / Activity
+  const handleFeelingSelect = (item: FeelingActivity) => {
+    setSelectedFeeling(item);
+    setIsFeelingModalOpen(false);
+    showToast(`Feeling set: ${item.emoji} ${item.label}`, 'info');
+  };
+
+  // Handler: Live Stream
+  const handleStartLiveStream = (e: React.FormEvent) => {
+    e.preventDefault();
+    const streamName = liveStreamTitle.trim() || `${authState.user?.username || 'Member'}'s Live Broadcast`;
+    setIsLiveStreaming(true);
+    setActiveRooms(prev => [
+      { name: streamName, isLive: true, streamer: authState.user?.username || 'You' },
+      ...prev
+    ]);
+    setIsLiveModalOpen(false);
+    showToast('🔴 You are now LIVE! Broadcasting across FingerMobile P2P Protocol.', 'success');
+  };
+
+  const handleEndLiveStream = () => {
+    setIsLiveStreaming(false);
+    setActiveRooms(prev => prev.filter(r => r.streamer !== (authState.user?.username || 'You')));
+    showToast('Live stream broadcasting ended.', 'info');
+  };
 
   const handleCensorCurrentText = async () => {
     if (!newPostContent.trim()) {
@@ -398,57 +618,57 @@ const ForumPage: React.FC = () => {
   };
 
   const handleCreatePost = async () => {
-    if (!newPostContent.trim()) {
-      showToast('Please enter some content for your post.', 'error');
+    if (!newPostContent.trim() && attachments.length === 0) {
+      showToast('Please enter some content or attach media for your post.', 'error');
       return;
     }
 
     setIsCreatingPost(true);
     try {
-      // Use selected category or fallback to first available category
-      let targetCategoryId = selectedCategoryId || (forumCategories.length > 0 ? forumCategories[0].id : null);
-
-      if (!targetCategoryId) {
-        showToast('No forum categories available to post in.', 'error');
-        setIsCreatingPost(false);
-        return;
-      }
+      const targetCategoryId = selectedCategoryId || (forumCategories.length > 0 ? forumCategories[0].id : '1');
 
       // Collect censorship tags
       const appliedTags = [...(censorshipOptions.tags || [])];
       if (censorshipOptions.visualEffect !== 'NONE') {
         appliedTags.push(`censor:${censorshipOptions.visualEffect}`);
       }
+      if (selectedFeeling) {
+        appliedTags.push(`activity:${selectedFeeling.emoji} ${selectedFeeling.label}`);
+      }
+
+      const postTitle = newPostContent.trim()
+        ? (newPostContent.substring(0, 50) + (newPostContent.length > 50 ? '...' : ''))
+        : (attachments.length > 0 ? `Shared ${attachments.length} media file(s)` : 'New Post');
 
       const result = await ForumService.createThread({
-        title: newPostContent.substring(0, 50) + (newPostContent.length > 50 ? '...' : ''),
-        content: newPostContent,
+        title: postTitle,
+        content: newPostContent || ' ',
         categoryId: targetCategoryId,
         tags: appliedTags
       });
 
       if (result.success && result.data) {
         showToast('Post created successfully!', 'success');
-        setNewPostContent('');
+        voiceLineServiceInstance.playCommentaryVoiceLine('forum');
+        const currentCategory = forumCategories.find(c => String(c.id) === String(targetCategoryId));
 
-        // Format thread as ForumPostExtended to add to the feed
-        const thread = result.data;
-        const currentCategory = forumCategories.find(c => c.id === targetCategoryId);
         const newPost: ForumPostExtended = {
-          id: thread.id,
-          title: thread.title,
-          content: thread.content,
-          author: typeof thread.author === 'string' ? thread.author : thread.author?.username || authState.user?.username || 'Anonymous',
-          category: typeof thread.category === 'string' ? thread.category : thread.category?.name || currentCategory?.name || 'General',
-          date: thread.createdAt,
+          id: result.data.id || Math.random().toString(36).substring(2, 9),
+          title: postTitle,
+          content: newPostContent,
+          author: authState.user?.username || 'You',
+          category: currentCategory?.name || 'General Discussion',
+          date: 'Just now',
           likes: 0,
           comments: 0,
-          views: 0,
-          isPinned: thread.isPinned || false,
-          tags: thread.tags,
-          threadId: thread.id,
-          thread: thread,
-          authorId: thread.authorId || authState.user?.id || '',
+          views: 1,
+          isPinned: false,
+          tags: appliedTags,
+          threadId: result.data.id,
+          thread: result.data,
+          authorId: String(authState.user?.id || '1'),
+          parentPostId: undefined,
+          parentPost: undefined,
           likesCount: 0,
           dislikesCount: 0,
           isLiked: false,
@@ -459,9 +679,10 @@ const ForumPage: React.FC = () => {
           isEdited: false,
           replies: [],
           replyCount: 0,
-          attachments: [],
-          createdAt: thread.createdAt,
-          updatedAt: thread.updatedAt,
+          attachments: [...attachments],
+          feeling: selectedFeeling || undefined,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
           isApproved: true,
           spamScore: 0,
           moderationStatus: 'approved',
@@ -469,7 +690,11 @@ const ForumPage: React.FC = () => {
         };
 
         setForumPosts(prev => [newPost, ...prev]);
-        // Reset censorship options
+
+        // Reset state
+        setNewPostContent('');
+        setAttachments([]);
+        setSelectedFeeling(null);
         setCensorshipOptions({ tags: [], visualEffect: 'NONE', interactionRule: 'NONE' });
       } else {
         showToast(result.error || 'Failed to create post', 'error');
@@ -477,25 +702,23 @@ const ForumPage: React.FC = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error creating post:', error);
-      showToast('An unexpected error occurred', 'error');
+      showToast('An unexpected error occurred while posting', 'error');
     } finally {
       setIsCreatingPost(false);
     }
   };
-
 
   const handleLike = async (postId: string) => {
     const postToLike = forumPosts.find(p => p.id === postId);
     if (!postToLike) return;
     const isCurrentlyLiked = postToLike.isLiked;
 
-    // Optimistic UI update
     setForumPosts(prevPosts =>
       prevPosts.map(post => {
         if (post.id === postId) {
           return {
             ...post,
-            likes: isCurrentlyLiked ? post.likes - 1 : post.likes + 1,
+            likes: isCurrentlyLiked ? Math.max(0, post.likes - 1) : post.likes + 1,
             isLiked: !isCurrentlyLiked
           };
         }
@@ -509,14 +732,14 @@ const ForumPage: React.FC = () => {
       } else {
         await ForumService.likePost(postId);
       }
-    } catch (err) {
+    } catch {
       // Revert on error
       setForumPosts(prevPosts =>
         prevPosts.map(post => {
           if (post.id === postId) {
             return {
               ...post,
-              likes: isCurrentlyLiked ? post.likes + 1 : post.likes - 1,
+              likes: isCurrentlyLiked ? post.likes + 1 : Math.max(0, post.likes - 1),
               isLiked: isCurrentlyLiked
             };
           }
@@ -538,6 +761,7 @@ const ForumPage: React.FC = () => {
 
         if (result.success) {
           showToast('Reply added!', 'success');
+          voiceLineServiceInstance.playCommentaryVoiceLine('forum');
           setForumPosts(prevPosts =>
             prevPosts.map(post => {
               if (post.id === postId) {
@@ -552,7 +776,7 @@ const ForumPage: React.FC = () => {
         } else {
           showToast(result.error || 'Failed to reply', 'error');
         }
-      } catch (err) {
+      } catch {
         showToast('An unexpected error occurred', 'error');
       }
     }
@@ -561,19 +785,21 @@ const ForumPage: React.FC = () => {
   const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement> | React.FormEvent) => {
     if ('key' in e && e.key !== 'Enter') return;
     e.preventDefault();
-    if (!searchTerm.trim()) return;
+    if (!searchTerm.trim()) {
+      fetchForumData();
+      return;
+    }
 
     setLoading(true);
     try {
       const result = await ForumService.searchPosts(searchTerm);
       if (result.success && result.data?.posts) {
-        // Map search results back to extended format
         const convertedSearchPosts: ForumPostExtended[] = result.data.posts.map((post: any) => ({
           ...post,
           title: post.thread?.title || 'Forum Post',
-          author: typeof post.author === 'string' ? post.author : post.author?.username || 'Anonymous',
-          category: 'General',
-          date: post.createdAt,
+          author: typeof post.author === 'string' ? post.author : post.author?.username || 'Member',
+          category: 'General Discussion',
+          date: 'Search Result',
           likes: 0,
           comments: 0,
           views: 0,
@@ -581,11 +807,12 @@ const ForumPage: React.FC = () => {
           replies: []
         }));
         setForumPosts(convertedSearchPosts);
+        setHasMore(false);
         showToast('Search completed', 'success');
       } else {
         showToast(result.error || 'Search failed', 'error');
       }
-    } catch (err) {
+    } catch {
       showToast('Search error', 'error');
     } finally {
       setLoading(false);
@@ -595,7 +822,6 @@ const ForumPage: React.FC = () => {
   const handleDelete = async (postId: string) => {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
     try {
-      // In this frontend structure, posts are actually threads in the root feed
       const result = await ForumService.deleteThread(postId);
       if (result.success) {
         setForumPosts(prev => prev.filter(p => p.id !== postId));
@@ -603,7 +829,7 @@ const ForumPage: React.FC = () => {
       } else {
         showToast(result.error || 'Failed to delete', 'error');
       }
-    } catch (err) {
+    } catch {
       showToast('An unexpected error occurred', 'error');
     }
   };
@@ -618,56 +844,111 @@ const ForumPage: React.FC = () => {
         } else {
           showToast(result.error || 'Failed to report', 'error');
         }
-      } catch (err) {
+      } catch {
         showToast('An unexpected error occurred', 'error');
       }
     }
   };
 
-  if (loading) {
+  if (loading && forumPosts.length === 0) {
     return <LoadingSpinner />;
   }
 
   return (
-    <div className="min-h-screen bg-crystalline-white-100 dark:bg-gray-900 pb-16">
-      {/* STATIC H1: SLIM THREE-COLUMN BAR WITH PERMANENT BURGER MENU */}
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900 pb-16">
+      {/* STATIC H1: SLIM THREE-COLUMN BAR WITH CLEAN TITLE */}
       <UniversalHeader pageTitle="Forum & Social Feeds" />
-      {/* STATIC H2: HIGH-IMPACT AD CONTAINER (3X LARGER THAN H1) */}
+      {/* STATIC H2: HIGH-IMPACT AD CONTAINER */}
       <H2AdBucket />
       <MainNavigationTabBar />
 
+      {/* Hidden File Input for Photo/Video Picker */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*,video/*"
+        multiple
+        onChange={handleMediaSelect}
+        className="hidden"
+      />
+
       <div className="flex max-w-[1280px] mx-auto gap-8 px-4">
-        {/* Left Column Navigation MENU (This is the Members Area, Utilities & Status), Mii, Groups, Blog, Hallmarks, Permanence, Gameon, PhotoCredits, Lendsqr (Load More Button) */}
+        {/* Left Column Navigation MENU (Members Area & Status - NO Load More Button) */}
         <div className="w-80 flex-shrink-0 hidden md:block pr-8">
-          <div className="sticky top-32 space-y-4">
+          <div className="sticky top-24 space-y-4">
             <CanaryAdsWidget />
             <ProfileCompletionCard />
             <AdvertisementCard />
 
-            {/* P2P Status Indicator - showing the P2P matching status */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">P2P Connection Status</h3>
+            {/* P2P Status Indicator */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-bold text-base text-gray-900 dark:text-white mb-3">P2P Connection Status</h3>
               <P2PStatusIndicator status="connected" connectionCount={12} speed={1.5} />
               <p className="text-xs text-gray-500 mt-2">Your P2P algorithm is optimized for maximum engagement</p>
             </div>
 
-            {/* Additional left column sections */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Members Area</h3>
-              <ul className="space-y-4">
-                <li onClick={() => navigate('/mii')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Mii</li>
-                <li onClick={() => navigate('/groups')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Groups</li>
-                <li onClick={() => navigate('/blogs')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Blog</li>
-                <li onClick={() => navigate('/hallmarks')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Hallmarks</li>
-                <li onClick={() => navigate('/permanence')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Permanence</li>
-                <li onClick={() => navigate('/gameon')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Gameon</li>
-                <li onClick={() => navigate('/photocredits')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">PhotoCredits</li>
-                <li onClick={() => navigate('/lendsqr')} className="text-base text-gray-600 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">Lendsqr</li>
+            {/* Members Area Navigation Menu */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-bold text-base text-gray-900 dark:text-white mb-3">Members Area</h3>
+              <ul className="space-y-1.5">
+                <li
+                  onClick={() => navigate('/mii')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Mii</span>
+                  <span className="text-xs text-gray-400">✨</span>
+                </li>
+                <li
+                  onClick={() => navigate('/groups')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Groups</span>
+                  <span className="text-xs text-gray-400">👥</span>
+                </li>
+                <li
+                  onClick={() => navigate('/blogs')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Blog</span>
+                  <span className="text-xs text-gray-400">📝</span>
+                </li>
+                <li
+                  onClick={() => navigate('/hallmarks')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Hallmarks</span>
+                  <span className="text-xs text-gray-400">🏅</span>
+                </li>
+                <li
+                  onClick={() => navigate('/permanence')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Permanence</span>
+                  <span className="text-xs text-gray-400">🔒</span>
+                </li>
+                <li
+                  onClick={() => navigate('/gameon')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Gameon</span>
+                  <span className="text-xs text-gray-400">🎮</span>
+                </li>
+                <li
+                  onClick={() => navigate('/photocredits')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>PhotoCredits</span>
+                  <span className="text-xs text-gray-400">📸</span>
+                </li>
+                <li
+                  onClick={() => navigate('/lendsqr')}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
+                >
+                  <span>Lendsqr</span>
+                  <span className="text-xs text-gray-400">💳</span>
+                </li>
               </ul>
-
-              <button className="w-full mt-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white py-4 rounded-lg hover:from-orange-600 hover:to-amber-600 transition text-base font-medium shadow">
-                Load More
-              </button>
+              {/* Load More button removed as requested */}
             </div>
           </div>
         </div>
@@ -683,10 +964,10 @@ const ForumPage: React.FC = () => {
           />
 
           {/* Feed Filter Tabs & In-Page Search */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-2">
             <div className="flex space-x-2 overflow-x-auto w-full sm:w-auto">
               {[
-                { id: 'all', label: 'Home', sort: 'popular' as const, tabType: 'feed' as const },
+                { id: 'all', label: 'Home Feed', sort: 'popular' as const, tabType: 'feed' as const },
                 { id: 'publicitee', label: '🎬 Publicitee (Reels)', sort: 'recent' as const, tabType: 'publicitee' as const },
                 { id: 'recent', label: 'Recent', sort: 'recent' as const, tabType: 'feed' as const },
                 { id: 'discussed', label: 'Discussed', sort: 'discussed' as const, tabType: 'feed' as const }
@@ -696,13 +977,13 @@ const ForumPage: React.FC = () => {
                   onClick={() => {
                     setFeedTab(tab.tabType);
                     setSortBy(tab.sort);
-                    if (tab.id === 'all') setFilterBy('all');
+                    if (tab.id === 'all') setCategoryFilter('all');
                   }}
-                  className={`px-4 py-2 rounded-full whitespace-nowrap text-base font-semibold transition ${
+                  className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-semibold transition ${
                     (tab.id === 'publicitee' && feedTab === 'publicitee') ||
                     (tab.id !== 'publicitee' && feedTab === 'feed' && sortBy === tab.sort)
                       ? 'bg-orange-500 text-white shadow-sm'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
                   {tab.label}
@@ -717,14 +998,42 @@ const ForumPage: React.FC = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleSearch}
                 placeholder="Search forum..."
-                className="w-full px-3.5 py-1.5 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white"
+                className="w-full px-3.5 py-1.5 text-xs bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white"
               />
               <SearchIcon className="absolute right-3 top-2 h-4 w-4 text-gray-400 pointer-events-none" />
             </div>
           </div>
 
+          {/* Interactive Category Filter Pills Bar */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <button
+              onClick={() => setCategoryFilter('all')}
+              className={`text-xs px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap ${
+                categoryFilter === 'all'
+                  ? 'bg-slate-900 text-white dark:bg-white dark:text-gray-900 shadow-sm'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+              }`}
+            >
+              🌐 All Categories
+            </button>
+            {forumCategories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setCategoryFilter(String(cat.id))}
+                className={`text-xs px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap flex items-center gap-1.5 ${
+                  String(categoryFilter) === String(cat.id)
+                    ? 'bg-orange-500 text-white shadow-sm'
+                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                }`}
+              >
+                <span>{cat.icon || '💬'}</span>
+                <span>{cat.name}</span>
+              </button>
+            ))}
+          </div>
+
           {/* Create New Post Box */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
             {/* Category and Censorship Toolbar */}
             <div className="flex items-center justify-between flex-wrap gap-2 mb-3 pb-3 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center space-x-2">
@@ -736,7 +1045,7 @@ const ForumPage: React.FC = () => {
                 >
                   {forumCategories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
-                      {cat.name}
+                      {cat.icon ? `${cat.icon} ` : ''}{cat.name}
                     </option>
                   ))}
                 </select>
@@ -760,11 +1069,29 @@ const ForumPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Selected Feeling/Activity Badge Display */}
+            {selectedFeeling && (
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-xs inline-flex items-center gap-1.5 bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 px-3 py-1 rounded-full font-medium">
+                  <span>{selectedFeeling.type === 'feeling' ? 'Feeling:' : 'Activity:'}</span>
+                  <span>{selectedFeeling.emoji}</span>
+                  <span>{selectedFeeling.label}</span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedFeeling(null)}
+                    className="ml-1 text-orange-500 hover:text-orange-800 focus:outline-none"
+                  >
+                    ×
+                  </button>
+                </span>
+              </div>
+            )}
+
             <div className="flex items-center">
               <img
                 src={authState.user?.avatar || 'https://via.placeholder.com/48x48'}
                 alt="User Avatar"
-                className="w-10 h-10 rounded-full mr-4"
+                className="w-10 h-10 rounded-full mr-4 object-cover border border-gray-200"
               />
               <div className="flex-1 flex space-x-2">
                 <input
@@ -779,13 +1106,13 @@ const ForumPage: React.FC = () => {
                   }}
                   disabled={isCreatingPost}
                   placeholder="Share Your Moments, Create a New Post..."
-                  className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white text-base"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white text-sm"
                 />
                 <button
                   onClick={handleCreatePost}
-                  disabled={isCreatingPost || !newPostContent.trim()}
-                  className={`px-4 py-2 rounded-full font-medium text-white transition whitespace-nowrap ${
-                    isCreatingPost || !newPostContent.trim()
+                  disabled={isCreatingPost || (!newPostContent.trim() && attachments.length === 0)}
+                  className={`px-5 py-2.5 rounded-full font-semibold text-white text-sm transition whitespace-nowrap shadow-sm ${
+                    isCreatingPost || (!newPostContent.trim() && attachments.length === 0)
                       ? 'bg-orange-300 cursor-not-allowed'
                       : 'bg-orange-500 hover:bg-orange-600'
                   }`}
@@ -794,42 +1121,79 @@ const ForumPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className="flex justify-between flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+
+            {/* Media Attachment Previews */}
+            {attachments.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-2">
+                {attachments.map(att => (
+                  <div key={att.id} className="relative group rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 w-24 h-24 bg-black">
+                    {att.type === 'video' ? (
+                      <video src={att.preview} className="w-full h-full object-cover" />
+                    ) : (
+                      <img src={att.preview} alt={att.name} className="w-full h-full object-cover" />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveAttachment(att.id)}
+                      className="absolute top-1 right-1 bg-black/70 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs transition"
+                      title="Remove media"
+                    >
+                      ×
+                    </button>
+                    {att.type === 'video' && (
+                      <span className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1 rounded">
+                        📹 Video
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Post Action Buttons with Live Working Handlers */}
+            <div className="flex justify-between flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
               <button
+                type="button"
                 onClick={() => setShowCreateModal(true)}
                 className="flex items-center text-orange-600 dark:text-orange-400 hover:text-orange-700 font-semibold group"
               >
-                <div className="p-2 rounded-full bg-orange-100 dark:bg-orange-950/60 group-hover:bg-orange-200 transition mr-3">
-                  <PlayIcon className="h-5 w-5 text-orange-600" />
+                <div className="p-2 rounded-full bg-orange-100 dark:bg-orange-950/60 group-hover:bg-orange-200 transition mr-2">
+                  <PlayIcon className="h-4 w-4 text-orange-600" />
                 </div>
-                <span className="text-base font-medium">Create Reels & Shorts</span>
+                <span className="text-sm font-medium">Reels & Shorts</span>
               </button>
+
               <button
-                onClick={() => showToast('Photo/Video upload coming soon!', 'info')}
+                type="button"
+                onClick={handlePhotoVideoClick}
                 className="flex items-center text-gray-600 dark:text-gray-400 hover:text-orange-500 group"
               >
-                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-3">
-                  <CameraIcon className="h-5 w-5" />
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 dark:group-hover:bg-gray-600 transition mr-2">
+                  <CameraIcon className="h-4 w-4" />
                 </div>
-                <span className="text-base font-medium">Photo/Video</span>
+                <span className="text-sm font-medium">Photo/Video</span>
               </button>
+
               <button
-                onClick={() => showToast('Feeling/Activity selector coming soon!', 'info')}
+                type="button"
+                onClick={() => setIsFeelingModalOpen(true)}
                 className="flex items-center text-gray-600 dark:text-gray-400 hover:text-orange-500 group"
               >
-                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-3">
-                  <HeartIcon className="h-5 w-5" />
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 dark:group-hover:bg-gray-600 transition mr-2">
+                  <HeartIcon className="h-4 w-4" />
                 </div>
-                <span className="text-base font-medium">Feeling/Activity</span>
+                <span className="text-sm font-medium">Feeling/Activity</span>
               </button>
+
               <button
-                onClick={() => showToast('Live Stream feature coming soon!', 'info')}
+                type="button"
+                onClick={() => setIsLiveModalOpen(true)}
                 className="flex items-center text-gray-600 dark:text-gray-400 hover:text-orange-500 group"
               >
-                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-3">
-                  <PlayIcon className="h-5 w-5" />
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 dark:group-hover:bg-gray-600 transition mr-2">
+                  <PlayIcon className="h-4 w-4" />
                 </div>
-                <span className="text-base font-medium">Live Stream</span>
+                <span className="text-sm font-medium">Live Stream</span>
               </button>
             </div>
           </div>
@@ -837,33 +1201,65 @@ const ForumPage: React.FC = () => {
           {/* FingerShorts™ (48h Stories) Section embedded in the body */}
           <FingerShortsSection />
 
-          {/* Chat Rooms Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          {/* Chat Rooms & Live Stream Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white">Livestream/Video chat with friends</h3>
-              <button
-                onClick={() => showToast('Room creation coming soon!', 'info')}
-                className="text-base text-orange-500 hover:underline font-medium"
-              >
-                Create Room
-              </button>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-base text-gray-900 dark:text-white">Livestream/Video chat with friends</h3>
+                {isLiveStreaming && (
+                  <span className="flex items-center gap-1 bg-red-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full animate-pulse">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    Live Now
+                  </span>
+                )}
+              </div>
+              {isLiveStreaming ? (
+                <button
+                  onClick={handleEndLiveStream}
+                  className="text-xs bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg transition shadow-sm"
+                >
+                  End Stream
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsLiveModalOpen(true)}
+                  className="text-sm text-orange-500 hover:underline font-semibold"
+                >
+                  Create Room
+                </button>
+              )}
             </div>
-            <div className="flex space-x-4 overflow-x-auto pb-4">
-              {['Sara\'s Room', 'jawad\'s Room', 'Jack\'s Room', 'jobidn\'s Room'].map((room, index) => (
-                <div key={index} className="flex-shrink-0 w-48 bg-gray-100 dark:bg-gray-700 rounded-xl p-4">
-                  <div className="bg-gray-300 dark:bg-gray-600 h-40 rounded-lg mb-4 flex items-center justify-center">
-                    <PlayIcon className="h-12 w-12 text-gray-500" />
+
+            <div className="flex space-x-4 overflow-x-auto pb-2">
+              {activeRooms.map((room, index) => (
+                <div key={index} className="flex-shrink-0 w-48 bg-gray-50 dark:bg-gray-700/60 rounded-xl p-3 border border-gray-200 dark:border-gray-600">
+                  <div className="relative bg-gray-300 dark:bg-gray-600 h-32 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                    <PlayIcon className="h-10 w-10 text-gray-500" />
+                    {room.isLive && (
+                      <span className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                        LIVE
+                      </span>
+                    )}
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-base font-bold truncate text-gray-900 dark:text-white">{room}</span>
-                    <div className="flex space-x-3">
-                      <button className="bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full p-2 shadow hover:from-orange-600 hover:to-amber-600 transition">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-xs font-bold truncate text-gray-900 dark:text-white max-w-[100px]">{room.name}</span>
+                    <div className="flex space-x-1.5">
+                      <button
+                        onClick={() => showToast(`Connecting to ${room.name}...`, 'info')}
+                        className="bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full p-1.5 shadow hover:from-orange-600 hover:to-amber-600 transition"
+                        title="Join video stream"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                       </button>
-                      <button className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full p-2 shadow hover:from-blue-600 hover:to-indigo-600 transition">
-                        <MessageIcon className="w-4 h-4" />
+                      <button
+                        onClick={() => showToast(`Opening chat for ${room.name}...`, 'info')}
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full p-1.5 shadow hover:from-blue-600 hover:to-indigo-600 transition"
+                        title="Chat"
+                      >
+                        <MessageIcon className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -885,18 +1281,44 @@ const ForumPage: React.FC = () => {
                   {idx === 4 && (
                     <CanaryAdPlacementWidget placement="feed_video" className="my-4" />
                   )}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 transition hover:border-gray-200">
                     <div className="flex items-start">
                       <img
                         src="https://via.placeholder.com/40x40"
                         alt={post.author}
-                        className="w-10 h-10 rounded-full mr-4"
+                        className="w-10 h-10 rounded-full mr-3 border border-gray-200 dark:border-gray-700"
                       />
-                      <div className="flex-1">
-                        <div className="flex justify-between">
-                          <h4 className="font-semibold text-gray-900 dark:text-white">{post.author}</h4>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">{post.date}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-bold text-sm text-gray-900 dark:text-white">{post.author}</h4>
+                              {post.feeling && (
+                                <span className="text-xs text-orange-600 dark:text-orange-400 font-medium flex items-center gap-1">
+                                  <span>— {post.feeling.type === 'feeling' ? 'feeling' : 'is'}</span>
+                                  <span>{post.feeling.emoji}</span>
+                                  <span>{post.feeling.label}</span>
+                                </span>
+                              )}
+                              <span className="text-[11px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full font-medium">
+                                {post.category}
+                              </span>
+                            </div>
+                            <span className="text-xs text-gray-400">{post.date}</span>
+                          </div>
+                          {post.isPinned && (
+                            <span className="text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 px-2 py-0.5 rounded font-bold">
+                              PINNED
+                            </span>
+                          )}
                         </div>
+
+                        {post.title && post.title !== 'Forum Post' && (
+                          <h5 className="font-semibold text-base text-gray-900 dark:text-white mt-2">
+                            {post.title}
+                          </h5>
+                        )}
+
                         <div className="mt-2">
                           <CensoredPostWrapper
                             options={
@@ -907,54 +1329,78 @@ const ForumPage: React.FC = () => {
                               }
                             }
                           >
-                            <p className="text-sm text-gray-700 dark:text-gray-300">{post.content}</p>
+                            <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{post.content}</p>
                           </CensoredPostWrapper>
                         </div>
+
+                        {/* Attached Media Rendering */}
+                        {post.attachments && post.attachments.length > 0 && (
+                          <div className={`mt-3 grid gap-2 ${post.attachments.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                            {post.attachments.map((att: any, aIdx: number) => {
+                              const attPreview = typeof att === 'string' ? att : att?.preview || att?.url;
+                              const isVideo = typeof att === 'string' ? (att.endsWith('.mp4') || att.endsWith('.webm')) : (att?.type === 'video');
+                              const attName = typeof att === 'string' ? 'Attachment' : att?.name || 'Media';
+                              return (
+                                <div key={aIdx} className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 max-h-72 bg-black">
+                                  {isVideo ? (
+                                    <video src={attPreview} controls className="w-full h-full object-contain" />
+                                  ) : (
+                                    <img src={attPreview} alt={attName} className="w-full h-full object-cover" />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div className="flex items-center mt-4 space-x-4 text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 space-x-4 text-gray-500 dark:text-gray-400 text-xs">
                       <button
                         onClick={() => handleLike(post.id)}
-                        className={`flex items-center text-base font-medium group transition ${post.isLiked ? 'text-orange-500' : 'hover:text-orange-500'}`}
+                        className={`flex items-center font-medium group transition ${post.isLiked ? 'text-orange-500' : 'hover:text-orange-500'}`}
                       >
-                        <div className={`p-2 rounded-full transition mr-2 ${post.isLiked ? 'bg-orange-100 text-orange-500' : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100'}`}>
-                          <HeartIcon className="h-4 w-4" />
+                        <div className={`p-1.5 rounded-full transition mr-1.5 ${post.isLiked ? 'bg-orange-100 text-orange-500' : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100'}`}>
+                          <HeartIcon className="h-3.5 w-3.5" />
                         </div>
                         <span>{post.likes}</span>
                       </button>
+
                       <button
                         onClick={() => handleReply(post.id)}
-                        className="flex items-center text-base font-medium hover:text-orange-500 group"
+                        className="flex items-center font-medium hover:text-orange-500 group"
                       >
-                        <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-2">
-                          <MessageIcon className="h-4 w-4" />
+                        <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-1.5">
+                          <MessageIcon className="h-3.5 w-3.5" />
                         </div>
                         <span>{post.comments}</span>
                       </button>
+
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(`${window.location.origin}/forum/post/${post.id}`);
                           showToast('Link copied to clipboard!', 'success');
                         }}
-                        className="flex items-center text-base font-medium hover:text-orange-500 group"
+                        className="flex items-center font-medium hover:text-orange-500 group"
                       >
-                        <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-2">
-                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-1.5">
+                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                           </svg>
                         </div>
                         <span>Share</span>
                       </button>
+
                       <button
                         onClick={() => handleDelete(post.id)}
-                        className="flex items-center text-base font-medium hover:text-red-500 group ml-auto"
+                        className="flex items-center font-medium hover:text-red-500 group ml-auto"
                       >
                         <span>Delete</span>
                       </button>
+
                       <button
                         onClick={() => handleReport(post.id)}
-                        className="flex items-center text-base font-medium hover:text-yellow-500 group ml-4"
+                        className="flex items-center font-medium hover:text-yellow-500 group ml-3"
                       >
                         <span>Report</span>
                       </button>
@@ -963,30 +1409,55 @@ const ForumPage: React.FC = () => {
                 </React.Fragment>
               ))}
 
-              {/* Removed the Load More button as requested - Forum page is now an infinite scroll */}
+              {/* Endless Scroll Observer Sentinel */}
+              <div ref={observerTarget} className="py-4 flex justify-center">
+                {loadingMore && (
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <span className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
+                    <span>Streaming more protocol threads...</span>
+                  </div>
+                )}
+              </div>
+
+              {/* End of Scroll Journey Marker (No Load More Button) */}
+              {!hasMore && forumPosts.length > 0 && (
+                <div className="py-8 px-4 text-center my-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-white text-xl shadow-md">
+                    ✨
+                  </div>
+                  <h4 className="text-base font-bold text-gray-900 dark:text-white">You've reached the beginning of your journey</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Member registered: <span className="font-semibold text-orange-500">{memberRegistrationDate}</span> • Initial Sign-In Verified
+                  </p>
+                  <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-400">
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span>FingerMobile Protocol P2P Feed Synced</span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* Right Column (Social Discovery & Sidebar Widgets) */}
+        {/* Right Column (Social Discovery & Widgets with Canary Ads Tab 2 and Google Adsense at Bottom) */}
         <div className="w-80 flex-shrink-0 hidden lg:block pl-8">
-          <div className="sticky top-32 space-y-4">
+          <div className="sticky top-24 space-y-4">
             {/* Groups Widget */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Groups</h3>
-              <div className="space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-semibold text-base mb-3 text-gray-900 dark:text-white">Groups</h3>
+              <div className="space-y-3">
                 {[
                   { name: 'Good Group', unread: 3 },
                   { name: 'E-course Group', unread: 0 },
                   { name: 'Tech Enthusiasts', unread: 12 }
                 ].map((group, index) => (
-                  <div key={index} className="flex items-center justify-between py-2">
+                  <div key={index} className="flex items-center justify-between py-1.5">
                     <div>
-                      <div className="font-bold text-base text-gray-900 dark:text-white">{group.name}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">View feed</div>
+                      <div className="font-bold text-sm text-gray-900 dark:text-white">{group.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">View feed</div>
                     </div>
                     {group.unread > 0 && (
-                      <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold shadow">
+                      <span className="bg-red-500 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
                         {group.unread}
                       </span>
                     )}
@@ -996,109 +1467,286 @@ const ForumPage: React.FC = () => {
             </div>
 
             {/* Hallmarks Widget */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Hallmarks</h3>
-              <div className="space-y-4">
-                <div className="flex items-center py-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mr-4">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-semibold text-base mb-3 text-gray-900 dark:text-white">Hallmarks</h3>
+              <div className="space-y-2.5">
+                <div className="flex items-center py-1.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mr-3 text-white text-xs">
+                    ✓
                   </div>
-                  <span className="text-base font-medium text-gray-700 dark:text-gray-300">Verified Account</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Verified Account</span>
                 </div>
-                <div className="flex items-center py-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center mr-4">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                <div className="flex items-center py-1.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center mr-3 text-white text-xs">
+                    ★
                   </div>
-                  <span className="text-base font-medium text-gray-700 dark:text-gray-300">Community Leader</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Community Leader</span>
                 </div>
-                <div className="flex items-center py-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center mr-4">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                <div className="flex items-center py-1.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center mr-3 text-white text-xs">
+                    💎
                   </div>
-                  <span className="text-base font-medium text-gray-700 dark:text-gray-300">Top Contributor</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Top Contributor</span>
                 </div>
               </div>
             </div>
 
             {/* Storefront Widget */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Storefront</h3>
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4">
-                <div className="bg-gray-300 dark:bg-gray-600 h-20 rounded-lg mb-4"></div>
-                <h4 className="font-bold text-base text-gray-900 dark:text-white">Digital Products</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Latest items</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Sales: 125</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-semibold text-base mb-3 text-gray-900 dark:text-white">Storefront</h3>
+              <div className="bg-gray-50 dark:bg-gray-700/60 rounded-lg p-3">
+                <div className="bg-gray-200 dark:bg-gray-600 h-16 rounded-md mb-2"></div>
+                <h4 className="font-bold text-sm text-gray-900 dark:text-white">Digital Products</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Latest items • 125 Sales</p>
               </div>
-              <button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-4 rounded-lg hover:from-orange-600 hover:to-amber-600 transition mt-4 text-base font-medium shadow">
+              <button
+                onClick={() => navigate('/marketplace')}
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-2 rounded-lg hover:from-orange-600 hover:to-amber-600 transition mt-3 text-xs font-bold shadow-sm"
+              >
                 View Store
               </button>
             </div>
 
             {/* Suggested Photocredit Widget */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">Suggested Photocredit</h3>
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-4">
-                <div className="bg-gray-300 dark:bg-gray-600 h-20 rounded-lg mb-4"></div>
-                <h4 className="font-bold text-base text-gray-900 dark:text-white">Photo Credits</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">@photographer</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Available: 50</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-semibold text-base mb-3 text-gray-900 dark:text-white">Suggested Photocredit</h3>
+              <div className="bg-gray-50 dark:bg-gray-700/60 rounded-lg p-3 mb-3">
+                <div className="bg-gray-200 dark:bg-gray-600 h-16 rounded-md mb-2"></div>
+                <h4 className="font-bold text-sm text-gray-900 dark:text-white">Photo Credits</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">@photographer • Available: 50</p>
               </div>
-              <button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-4 rounded-lg hover:from-orange-600 hover:to-amber-600 transition text-base font-medium shadow">
+              <button
+                onClick={() => navigate('/photocredits')}
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-2 rounded-lg hover:from-orange-600 hover:to-amber-600 transition text-xs font-bold shadow-sm"
+              >
                 Buy Credits
               </button>
-              <div className="flex justify-center mt-4 space-x-3">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-2 w-8 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-                ))}
-              </div>
             </div>
 
             {/* Lumina Widget */}
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-4 text-white">
-              <h3 className="font-bold text-lg mb-4">Lumina?</h3>
-              <p className="text-sm opacity-90 mb-4">AI Assistant for instant answers</p>
-              <button className="w-full bg-white text-blue-600 py-4 rounded-lg font-bold text-base hover:bg-gray-100 transition shadow">
+            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-4 text-white shadow-sm">
+              <h3 className="font-bold text-base mb-1">Lumina AI</h3>
+              <p className="text-xs opacity-90 mb-3">Assistant for instant protocol answers</p>
+              <button
+                onClick={() => showToast('Opening Lumina AI assistant...', 'info')}
+                className="w-full bg-white text-blue-600 py-2 rounded-lg font-bold text-xs hover:bg-gray-100 transition shadow"
+              >
                 Ask a question
               </button>
+            </div>
+
+            {/* BOTTOM / LAST WIDGET 1: Canary Ads Tab 2 Widget */}
+            <div className="bg-gradient-to-br from-amber-50 to-orange-100 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-sm p-4 border border-amber-200 dark:border-gray-600">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">Sponsored</span>
+                <span className="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full">Canary Ads Tab 2</span>
+              </div>
+              <h4 className="font-bold text-sm text-gray-950 dark:text-white mb-1">Exclusive Protocol Rewards</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">Earn verified FIC tokens with Canary verified sponsor interactions.</p>
+              <button
+                onClick={() => navigate('/canary-ads')}
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-bold py-2 rounded-lg transition shadow-sm"
+              >
+                Explore Canary Offers
+              </button>
+            </div>
+
+            {/* BOTTOM / LAST WIDGET 2: Google Adsense Content Here Widget */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-dashed border-gray-300 dark:border-gray-700 text-center">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">Advertisement</div>
+              <div className="bg-gray-50 dark:bg-gray-700/60 rounded-lg p-4 min-h-[140px] flex flex-col items-center justify-center border border-gray-100 dark:border-gray-600">
+                <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center font-bold text-xs mb-2">
+                  Ad
+                </div>
+                <div className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  Google Adsense Content Here
+                </div>
+                <div className="text-[10px] text-gray-400 mt-1">Responsive Banner • 300x250</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Floating Action Button */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button className="bg-orange-500 text-white rounded-full p-4 shadow-lg hover:from-orange-600 hover:to-amber-600 transition relative group">
-          <MessageIcon className="h-6 w-6" />
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold shadow group-hover:scale-110 transition-transform">07</span>
+      <div className="fixed bottom-4 right-4 z-40">
+        <button
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="bg-orange-500 text-white rounded-full p-3.5 shadow-lg hover:bg-orange-600 transition relative group"
+          title="Scroll to Top & Post"
+        >
+          <MessageIcon className="h-5 w-5" />
+          <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold shadow group-hover:scale-110 transition-transform">07</span>
         </button>
       </div>
 
-      {/* Bottom Right Canary Ads Tab 1 */}
-      <div className="fixed bottom-16 right-0 h-16 w-80 bg-crystalline-white-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center justify-center z-40">
-        <div className="text-center text-base font-medium text-gray-600 dark:text-gray-400">
-          Canary Ads Tab 1
-        </div>
-      </div>
+      {/* Interactive Feeling / Activity Modal */}
+      {isFeelingModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+              <h3 className="font-bold text-base text-gray-900 dark:text-white">How are you feeling?</h3>
+              <button
+                onClick={() => setIsFeelingModalOpen(false)}
+                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
+            </div>
 
-      {/* Bottom Right Canary Ads Tab 2 */}
-      <div className="fixed bottom-16 right-80 h-16 w-80 bg-crystalline-white-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center justify-center z-40">
-        <div className="text-center text-base font-medium text-gray-600 dark:text-gray-400">
-          Canary Ads Tab 2
-        </div>
-      </div>
+            {/* Modal Tabs */}
+            <div className="flex border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+              <button
+                type="button"
+                onClick={() => setFeelingModalTab('feelings')}
+                className={`flex-1 py-3 text-xs font-bold transition text-center ${
+                  feelingModalTab === 'feelings'
+                    ? 'text-orange-600 border-b-2 border-orange-500 bg-white dark:bg-gray-800'
+                    : 'text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                Feelings
+              </button>
+              <button
+                type="button"
+                onClick={() => setFeelingModalTab('activities')}
+                className={`flex-1 py-3 text-xs font-bold transition text-center ${
+                  feelingModalTab === 'activities'
+                    ? 'text-orange-600 border-b-2 border-orange-500 bg-white dark:bg-gray-800'
+                    : 'text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                Activities
+              </button>
+            </div>
 
-      {/* Bottom Google Adsense Ads Tab */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 bg-crystalline-white-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center justify-center z-40">
-        <div className="text-center text-base font-medium text-gray-600 dark:text-gray-400">
-          Google Adsense Content Here
+            {/* Items Grid */}
+            <div className="p-4 max-h-72 overflow-y-auto grid grid-cols-2 gap-2">
+              {(feelingModalTab === 'feelings' ? feelingsList : activitiesList).map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleFeelingSelect(item)}
+                  className="flex items-center gap-2 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-gray-700 transition text-left"
+                >
+                  <span className="text-xl">{item.emoji}</span>
+                  <span className="text-xs font-medium text-gray-800 dark:text-gray-200">{item.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {selectedFeeling && (
+              <div className="p-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <span className="text-xs text-gray-500">Currently: {selectedFeeling.emoji} {selectedFeeling.label}</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedFeeling(null)}
+                  className="text-xs text-red-500 hover:underline font-semibold"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Interactive Live Stream Modal */}
+      {isLiveModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                <h3 className="font-bold text-base text-gray-900 dark:text-white">Go Live on Protocol</h3>
+              </div>
+              <button
+                onClick={() => setIsLiveModalOpen(false)}
+                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleStartLiveStream} className="p-5 space-y-4">
+              {/* Simulated Camera Viewfinder */}
+              <div className="relative rounded-xl overflow-hidden bg-slate-900 h-44 flex flex-col items-center justify-center text-white border border-slate-700">
+                <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded text-[10px] font-bold">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  <span>CAMERA PREVIEW</span>
+                </div>
+                <div className="absolute top-2 right-2 text-[10px] text-slate-400 bg-black/50 px-2 py-0.5 rounded">
+                  HD 1080p • 60 FPS
+                </div>
+                <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center mb-2">
+                  <CameraIcon className="w-7 h-7 text-slate-400" />
+                </div>
+                <p className="text-xs text-slate-300 font-medium">Ready to broadcast to P2P relay nodes</p>
+
+                {/* Simulated Audio Indicator */}
+                <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1">
+                  <span className="text-[10px] text-slate-400 mr-1">MIC:</span>
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-2 flex-1 rounded-sm ${i < 8 ? 'bg-emerald-500' : i < 10 ? 'bg-amber-500' : 'bg-red-500'}`}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider">
+                  Stream Title
+                </label>
+                <input
+                  type="text"
+                  value={liveStreamTitle}
+                  onChange={(e) => setLiveStreamTitle(e.target.value)}
+                  placeholder={`${authState.user?.username || 'Member'}'s Protocol Live Session`}
+                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider">
+                  Stream Channel / Category
+                </label>
+                <select
+                  value={liveStreamCategory}
+                  onChange={(e) => setLiveStreamCategory(e.target.value)}
+                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <option value="BeatwaveNG & Entertainment">🎵 BeatwaveNG & Entertainment</option>
+                  <option value="Dancia-4Tv Live Showcase">📺 Dancia-4Tv Live Showcase</option>
+                  <option value="FingerWars Gaming Tournament">🎮 FingerWars Gaming Tournament</option>
+                  <option value="Lush Pressies Gifting Room">🎁 Lush Pressies Gifting Room</option>
+                  <option value="Tech & AI Protocol Development">⚡ Tech & AI Protocol Development</option>
+                </select>
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsLiveModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 text-xs font-bold bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-lg shadow-md transition flex items-center gap-1.5"
+                >
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                  <span>Start Live Broadcast</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Interactive Publicitee, FingerShorts, and Mii Modals */}
       <CreatePubliciteeShortsModal

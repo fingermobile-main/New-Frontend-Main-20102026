@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 // Removed unused paymentAPI import
-import { FiDollarSign, FiTrendingUp, FiCalendar, FiClock } from 'react-icons/fi';
+import { DollarSign as FiDollarSign, TrendingUp as FiTrendingUp, Calendar as FiCalendar, Clock as FiClock } from 'lucide-react';
 
 const EarningsDashboard: React.FC = () => {
   const { member } = useAppContext(); // Using the correct property name

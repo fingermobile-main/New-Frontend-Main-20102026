@@ -3,10 +3,10 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 // Dynamic import for react-leaflet (ES module)
-const MapContainer = React.lazy(() => import('react-leaflet').then(module => ({ default: module.MapContainer })));
-const TileLayer = React.lazy(() => import('react-leaflet').then(module => ({ default: module.TileLayer })));
-const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
-const Popup = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Popup })));
+const MapContainer: any = React.lazy(() => import('react-leaflet').then(module => ({ default: module.MapContainer })));
+const TileLayer: any = React.lazy(() => import('react-leaflet').then(module => ({ default: module.TileLayer })));
+const Marker: any = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
+const Popup: any = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Popup })));
 
 // Fix for default marker icons in Leaflet with webpack
 const DefaultIcon = L.Icon.Default as any;

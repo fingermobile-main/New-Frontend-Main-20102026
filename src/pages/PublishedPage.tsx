@@ -33,6 +33,7 @@ const PublishedPage: React.FC = () => {
         setPage(fetchedPage || null);
       } catch (err) {
         setError('Failed to load page');
+        // eslint-disable-next-line no-console
         console.error('Error fetching page:', err);
       } finally {
         setLoading(false);

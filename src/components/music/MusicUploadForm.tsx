@@ -87,7 +87,7 @@ const MusicUploadForm: React.FC<MusicUploadFormProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
+    <Dialog open={isOpen} onOpenChange={(open: boolean) => {
       if (!open) {
         resetForm();
         onClose();

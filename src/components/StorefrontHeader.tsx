@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Search, Filter, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input';
 interface StorefrontHeaderProps {
   storeName?: string;
   cartCount?: number;
+  // eslint-disable-next-line no-unused-vars
   onSearch?: (query: string) => void;
   onCartClick?: () => void;
   onFilterClick?: () => void;

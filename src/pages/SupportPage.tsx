@@ -55,6 +55,7 @@ const SupportPage: React.FC = () => {
         ticketType: 'support'
       });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error submitting ticket:', error);
       showToast('Failed to submit ticket. Please try again.', 'error');
     } finally {

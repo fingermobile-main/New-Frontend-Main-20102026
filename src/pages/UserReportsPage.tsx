@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from '../contexts/AppContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/Select';
 import { ShieldExclamationIcon, UserCircleIcon, CheckCircleIcon, XCircleIcon, DocumentTextIcon } from '../icons';
-
+import { useAppContext } from '../contexts/AppContext';
 import { moderationAdminService } from '../services/moderationAdminService';
 
 const UserReportsPage: React.FC = () => {
@@ -36,7 +35,7 @@ const UserReportsPage: React.FC = () => {
     try {
       const data = await moderationAdminService.getReports();
       if (data && data.length > 0) {
-        setReports(data.map(r => ({
+        setReports(data.map((r: any) => ({
           id: r.id,
           reporter: r.reporter_id || 'System User',
           reportedUser: r.target_id,
@@ -69,8 +68,8 @@ const UserReportsPage: React.FC = () => {
   const handleResolve = async (reportId: string) => {
     try {
       await moderationAdminService.updateReport(reportId, { status: 'resolved', resolutionNotes: 'Resolved by admin' });
-    } catch {}
-    setReports(reports.map(report =>
+    } catch { /* ignore error - UI state updated optimistically */ }
+    setReports(reports.map((report: any) =>
       report.id === reportId ? {...report, status: 'resolved'} : report
     ));
     if (selectedReport && selectedReport.id === reportId) {
@@ -82,8 +81,8 @@ const UserReportsPage: React.FC = () => {
   const handleReject = async (reportId: string) => {
     try {
       await moderationAdminService.updateReport(reportId, { status: 'dismissed', resolutionNotes: 'Dismissed after review' });
-    } catch {}
-    setReports(reports.map(report =>
+    } catch { /* ignore error - UI state updated optimistically */ }
+    setReports(reports.map((report: any) =>
       report.id === reportId ? {...report, status: 'rejected'} : report
     ));
     if (selectedReport && selectedReport.id === reportId) {
@@ -92,7 +91,7 @@ const UserReportsPage: React.FC = () => {
     showToast(`Report #${reportId} marked as rejected`, 'info');
   };
 
-  const filteredReports = reports.filter(report => report.status === 'open' || report.status === 'under_review');
+  const filteredReports = reports.filter((report: any) => report.status === 'open' || report.status === 'under_review');
 
   return (
     <MainLayout>
@@ -119,7 +118,7 @@ const UserReportsPage: React.FC = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                      {filteredReports.map((report) => (
+                      {filteredReports.map((report: any) => (
                         <div
                           key={report.id}
                           className={`p-4 border rounded-lg cursor-pointer transition-all ${
@@ -264,15 +263,15 @@ const UserReportsPage: React.FC = () => {
                         <p className="text-sm text-gray-600">Total Reports</p>
                       </div>
                       <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                        <p className="text-2xl font-bold text-yellow-700">{reports.filter(r => r.status === 'open').length}</p>
+                        <p className="text-2xl font-bold text-yellow-700">{reports.filter((r: any) => r.status === 'open').length}</p>
                         <p className="text-sm text-gray-600">Open</p>
                       </div>
                       <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <p className="text-2xl font-bold text-green-700">{reports.filter(r => r.status === 'resolved').length}</p>
+                        <p className="text-2xl font-bold text-green-700">{reports.filter((r: any) => r.status === 'resolved').length}</p>
                         <p className="text-sm text-gray-600">Resolved</p>
                       </div>
                       <div className="text-center p-4 bg-red-50 rounded-lg">
-                        <p className="text-2xl font-bold text-red-700">{reports.filter(r => r.status === 'under_review').length}</p>
+                        <p className="text-2xl font-bold text-red-700">{reports.filter((r: any) => r.status === 'under_review').length}</p>
                         <p className="text-sm text-gray-600">Under Review</p>
                       </div>
                     </div>

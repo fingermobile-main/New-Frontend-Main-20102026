@@ -157,6 +157,7 @@ const OwnitTrackingPage: React.FC = () => {
         });
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error loading shipments registry:', error);
     }
   }, []);

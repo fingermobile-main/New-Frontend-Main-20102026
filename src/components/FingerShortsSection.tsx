@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Heart, MessageCircle, Music, Clock, Sparkles, Layers, SplitSquareVertical } from 'lucide-react';
+import { Smartphone, Heart, MessageCircle, Music, Clock, Sparkles, Layers, SplitSquareVertical, Gift } from 'lucide-react';
+import SendFicModal from './SendFicModal';
 
 export interface FingerShortCard {
   id: string;
@@ -40,6 +41,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [activeSession, setActiveSession] = useState<FingerShortSession | null>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
+  const [showTipModal, setShowTipModal] = useState(false);
 
   useEffect(() => {
     fetchShorts();
@@ -228,6 +230,13 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
                 )}
               </div>
               <div className="flex items-center space-x-2">
+                <button
+                  title="Tip Creator"
+                  onClick={() => setShowTipModal(true)}
+                  className="p-2 bg-black/60 rounded-full hover:bg-black/90"
+                >
+                  <Gift className="w-4 h-4 text-emerald-400" />
+                </button>
                 <button title="Duet" className="p-2 bg-black/60 rounded-full hover:bg-black/90">
                   <SplitSquareVertical className="w-4 h-4 text-purple-300" />
                 </button>
@@ -241,6 +250,16 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {showTipModal && (
+        <SendFicModal
+          onClose={() => setShowTipModal(false)}
+          onSend={async (recipient, amount, message) => {
+            console.log(`Sending ${amount} FIC to ${recipient} with message: ${message}`);
+            return Promise.resolve();
+          }}
+        />
       )}
     </div>
   );

@@ -22,6 +22,7 @@ export interface OnboardingProgress {
     termsAccepted?: boolean;
     permissionsGranted?: boolean;
     business?: boolean;
+    twoFactor?: boolean;
   };
   accountType: 'personal' | 'creator' | 'business' | null;
   demographicInfo: {
@@ -174,6 +175,7 @@ class OnboardingService {
       'welcome',
       'terms-permissions',
       'registration',
+      'two-factor-setup',
       'verification-captcha',
       'demographics-interests',
       'profile-customization',
@@ -330,6 +332,12 @@ class OnboardingService {
         id: 'registration',
         title: 'Registration',
         description: 'Create your account with email and phone',
+        required: true
+      },
+      {
+        id: 'two-factor-setup',
+        title: 'Two-Factor Authentication Setup',
+        description: 'Secure your account with 2FA',
         required: true
       },
       {

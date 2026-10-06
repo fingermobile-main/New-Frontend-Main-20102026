@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 export const useMediaQuery = () => {
   const [deviceType, setDeviceType] = useState('desktop'); // desktop, tablet, mobile
   const [screenSize, setScreenSize] = useState({width: typeof window !== 'undefined' ? window.
-  innerWidth : 0,
+    innerWidth : 0,
   height: typeof window !== 'undefined' ? window.
-  innerHeight : 0
+    innerHeight : 0
   });
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -44,11 +44,11 @@ export const useMediaQuery = () => {
 
   // Predefined breakpoints
   const breakpoints = {xs: 0,      // Extra small devices (phones, 0px and up),
-  sm: 576,    // Small devices (landscape phones, 576px and up),
-  md: 768,    // Medium devices (tablets, 768px and up),
-  lg: 992,    // Large devices (desktops, 992px and up),
-  xl: 1200,   // Extra large devices (large desktops, 1200px and up),
-  xxl: 1400   // Extra extra large devices (larger desktops, 1400px and up)
+    sm: 576,    // Small devices (landscape phones, 576px and up),
+    md: 768,    // Medium devices (tablets, 768px and up),
+    lg: 992,    // Large devices (desktops, 992px and up),
+    xl: 1200,   // Extra large devices (large desktops, 1200px and up),
+    xxl: 1400   // Extra extra large devices (larger desktops, 1400px and up)
   };
 
   // Helper functions to check if screen matches a breakpoint

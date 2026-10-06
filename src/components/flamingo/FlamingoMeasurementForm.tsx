@@ -87,7 +87,7 @@ const FlamingoMeasurementForm: React.FC<FlamingoMeasurementFormProps> = ({ userI
             <Label htmlFor="bodyType">Body Type</Label>
             <Select
               value={formData.body_type}
-              onValueChange={(value) => handleChange('body_type', value)}
+              onValueChange={(value: string) => handleChange('body_type', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select body type" />
@@ -209,7 +209,7 @@ const FlamingoMeasurementForm: React.FC<FlamingoMeasurementFormProps> = ({ userI
             <Label htmlFor="fitPreference">Preferred Fit</Label>
             <Select
               value={formData.preferred_fit}
-              onValueChange={(value) => handleChange('preferred_fit', value)}
+              onValueChange={(value: string) => handleChange('preferred_fit', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select fit preference" />

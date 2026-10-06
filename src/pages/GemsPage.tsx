@@ -1,300 +1,1094 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { SearchIcon, StarIcon, HeartIcon } from '../components/icons';
 import gemsService, { GemItem } from '../services/gemsService';
+import {
+  Sparkles,
+  Radio,
+  Shield,
+  Eye,
+  Lock,
+  Globe,
+  Search,
+  CheckCircle2,
+  AlertCircle,
+  Heart,
+  BookOpen,
+  HelpCircle,
+  Zap,
+  RefreshCw,
+  ShoppingCart,
+  Info,
+  Flame,
+  Award,
+  Clock,
+  Layers,
+  ChevronRight,
+  Sliders,
+  Send,
+  Filter
+} from 'lucide-react';
+
+type TabType = 'marketplace' | 'broadcast' | 'powertools' | 'guides';
+type PrivacyFilter = 'all' | 'public' | 'private_visible' | 'secret';
+
+interface BroadcastPost {
+  id: number;
+  creator_id: number;
+  content_text: string;
+  media_urls: string[];
+  privacy_type: string;
+  expires_at: string;
+  created_at: string;
+  username?: string;
+  first_name?: string;
+  avatar_url?: string;
+  reactions?: Record<string, number>;
+}
+
+const SAMPLE_GUIDES = [
+  {
+    id: 1,
+    title: 'Module 1: Sovereign Node Setup & Gem Minting',
+    duration: '15 min read',
+    lessons: 4,
+    description: 'Learn how sovereign accounts validate micro-transactions and mint verifiable community badges.'
+  },
+  {
+    id: 2,
+    title: 'Module 2: 24h Broadcast Channel Engagement Playbook',
+    duration: '22 min read',
+    lessons: 6,
+    description: 'Strategies for creators with 50k+ followers to maximize engagement before the 24-hour TTL expiration.'
+  },
+  {
+    id: 3,
+    title: 'Module 3: Admin Assist & Keyword Moderation Policies',
+    duration: '18 min read',
+    lessons: 5,
+    description: 'Deep dive into FingerMobile content flags (Authenticity, Safety, Privacy, Dignity) and word filtering.'
+  }
+];
 
 const GemsPage: React.FC = () => {
-  const { showToast, handleGlobalAction } = useAppContext();
-  const [allGems, setAllGems] = useState<GemItem[]>([]);  // Renamed from 'gems' to 'allGems' to avoid conflict
-  const [userBalance, setUserBalance] = useState<number>(0);
-  const [loadingState, setLoadingState] = useState(true); // Renamed from 'loading' to 'loadingState' to avoid conflict
-  const [errorState, setErrorState] = useState<string | null>(null); // Renamed from 'error' to 'errorState' to avoid conflict
-  const [searchTermState, setSearchTermState] = useState(''); // Renamed from 'searchTerm' to 'searchTermState' to avoid conflict
-  const [sortByState, setSortByState] = useState<'price' | 'rating' | 'newest'>('rating'); // Renamed from 'sortBy' to 'sortByState' to avoid conflict
+  const { showToast, user } = useAppContext();
 
-  // Infinite scroll state
-  const [hasMoreState, setHasMoreState] = useState(true); // Renamed from 'hasMore' to 'hasMoreState' to avoid conflict
-  const [pageState, setPageState] = useState(1); // Renamed from 'page' to 'pageState' to avoid conflict
-  const [itemsState, setItemsState] = useState<GemItem[]>([]); // Renamed from 'items' to 'itemsState' to avoid conflict
-  const [isLoadingMoreState, setIsLoadingMoreState] = useState(false); // Renamed from 'isLoadingMore' to 'isLoadingMoreState' to avoid conflict
+  // Tab & Navigation State
+  const [activeTab, setActiveTab] = useState<TabType>('marketplace');
+  const [privacyFilter, setPrivacyFilter] = useState<PrivacyFilter>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  // Marketplace & Balance State
+  const [allGems, setAllGems] = useState<GemItem[]>([]);
+  const [userBalance, setUserBalance] = useState<number>(0);
+  const [loadingState, setLoadingState] = useState(true);
+  const [errorState, setErrorState] = useState<string | null>(null);
+  const [searchTermState, setSearchTermState] = useState('');
+  const [sortByState, setSortByState] = useState<'rating' | 'price_asc' | 'price_desc' | 'newest'>('rating');
+
+  // Purchase / Redeem Modal State
+  const [selectedItemForPurchase, setSelectedItemForPurchase] = useState<GemItem | null>(null);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+
+  // Broadcast Channels State
+  const [broadcastPosts, setBroadcastPosts] = useState<BroadcastPost[]>([]);
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [newBroadcastText, setNewBroadcastText] = useState('');
+  const [broadcastSubscriptionType, setBroadcastSubscriptionType] = useState<'basic' | 'premium'>('basic');
+  const [broadcastError, setBroadcastError] = useState<string | null>(null);
+
+  // Admin Power Tools State
+  const [anonymousPostingEnabled, setAnonymousPostingEnabled] = useState(false);
+  const [membershipQuestions, setMembershipQuestions] = useState<string[]>([
+    'What specific value or expertise do you bring to this Gem community?',
+    'Do you agree to uphold the 4 Platform Principles (Authenticity, Safety, Privacy, Dignity)?',
+    'Are you willing to participate in daily peer-to-peer discussions without link dumping?'
+  ]);
+  const [moderationTestText, setModerationTestText] = useState('');
+  const [moderationResult, setModerationResult] = useState<{ clean: boolean; flaggedWords: string[] } | null>(null);
+
+  // Infinite scroll
+  const [pageState, setPageState] = useState(1);
+  const [hasMoreState, setHasMoreState] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
   const gemsPerPage = 6;
 
-  useEffect(() => {
-    gemsService.getGemBalance().then(res => {
+  // Fetch Gem Balance
+  const refreshBalance = useCallback(async () => {
+    try {
+      const res = await gemsService.getGemBalance();
       if (res.success) {
         setUserBalance(res.balance);
       }
-    }).catch(err => console.warn('Could not fetch gem balance:', err));
+    } catch (err) {
+      console.warn('Could not fetch gem balance:', err);
+    }
   }, []);
 
-  const lastGemElementRef = useCallback((node: Element | null) => {
-    if (node) {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && hasMoreState) {
-          loadMoreItems();
-        }
-      });
-      observer.current.observe(node);
+  // Fetch Gem Items from Backend PostgreSQL
+  const fetchGems = useCallback(async () => {
+    try {
+      setLoadingState(true);
+      setErrorState(null);
+      const res = await gemsService.getGems(50, 0);
+      if (res && res.data) {
+        setAllGems(res.data);
+      }
+    } catch (err) {
+      setErrorState('Failed to load gems marketplace items from database');
+    } finally {
+      setLoadingState(false);
     }
-  }, [hasMoreState]);
+  }, []);
 
-  // Filter and sort gems
+  // Fetch Broadcast Feed
+  const fetchBroadcastFeed = useCallback(async () => {
+    try {
+      const res = await gemsService.getBroadcastFeed();
+      if (res && res.data) {
+        setBroadcastPosts(res.data);
+      }
+    } catch (err) {
+      console.warn('Could not fetch broadcast feed:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshBalance();
+    fetchGems();
+    fetchBroadcastFeed();
+  }, [refreshBalance, fetchGems, fetchBroadcastFeed]);
+
+  // Filtered & Sorted Gems
   const filteredGems = useMemo(() => {
     return allGems
-      .filter(gem =>
-        gem.title.toLowerCase().includes(searchTermState.toLowerCase()) ||
-        gem.category.toLowerCase().includes(searchTermState.toLowerCase())
-      )
+      .filter((gem) => {
+        // Search term
+        const matchesSearch =
+          gem.title.toLowerCase().includes(searchTermState.toLowerCase()) ||
+          gem.description.toLowerCase().includes(searchTermState.toLowerCase()) ||
+          gem.category.toLowerCase().includes(searchTermState.toLowerCase());
+
+        // Category filter
+        const matchesCategory =
+          selectedCategory === 'all' ||
+          gem.category.toLowerCase() === selectedCategory.toLowerCase();
+
+        // Privacy filter
+        const gemPrivacy = gem.privacy_type || 'public';
+        const matchesPrivacy =
+          privacyFilter === 'all' ||
+          gemPrivacy === privacyFilter;
+
+        return matchesSearch && matchesCategory && matchesPrivacy;
+      })
       .sort((a, b) => {
-        if (sortByState === 'price') return a.price - b.price;
+        if (sortByState === 'price_asc') return a.price - b.price;
+        if (sortByState === 'price_desc') return b.price - a.price;
         if (sortByState === 'rating') return b.rating - a.rating;
         return 0;
       });
-  }, [allGems, searchTermState, sortByState]);
+  }, [allGems, searchTermState, selectedCategory, privacyFilter, sortByState]);
 
-  useEffect(() => {
-    const fetchGems = async () => {
-      try {
-        setLoadingState(true);
-        const res = await gemsService.getGems();
-        if (res && res.data) {
-          setAllGems(res.data);
-        }
-      } catch (err) {
-        setErrorState('Failed to load gems');
-      } finally {
-        setLoadingState(false);
-      }
-    };
-    fetchGems();
-  }, []);
-
-  // Initialize items with existing gems
-  useEffect(() => {
-    setItemsState(filteredGems.slice(0, gemsPerPage));
-    setPageState(1);
-    setHasMoreState(filteredGems.length > gemsPerPage);
-  }, [filteredGems]);
-
-  // Load more items for infinite scroll
-  const loadMoreItems = useCallback(() => {
-    setIsLoadingMoreState(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const nextIndex = pageState * gemsPerPage;
-      const nextItems = filteredGems.slice(nextIndex, nextIndex + gemsPerPage);
-
-      if (nextItems.length > 0) {
-        setItemsState(prev => [...prev, ...nextItems]);
-        setPageState(prev => prev + 1);
-      } else {
-        setHasMoreState(false);
-      }
-
-      setIsLoadingMoreState(false);
-    }, 1000);
+  // Paginated items
+  const paginatedGems = useMemo(() => {
+    return filteredGems.slice(0, pageState * gemsPerPage);
   }, [filteredGems, pageState]);
 
-  // Handle infinite scrolling logic
   useEffect(() => {
-    setItemsState(filteredGems.slice(0, gemsPerPage));
-    setPageState(1);
-    setHasMoreState(filteredGems.length > gemsPerPage);
-  }, [filteredGems]);
+    setHasMoreState(filteredGems.length > pageState * gemsPerPage);
+  }, [filteredGems, pageState]);
 
-  // Set up infinite scroll observer
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoadingMoreState || !hasMoreState) {
-        return;
+  const lastGemElementRef = useCallback(
+    (node: Element | null) => {
+      if (loadingState) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMoreState) {
+          setPageState((prev) => prev + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loadingState, hasMoreState]
+  );
+
+  // Categories list
+  const categories = useMemo(() => {
+    const list = Array.from(new Set(allGems.map((g) => g.category)));
+    return ['all', ...list];
+  }, [allGems]);
+
+  // Handle Item Redemption
+  const handleConfirmRedeem = async () => {
+    if (!selectedItemForPurchase) return;
+    setIsPurchasing(true);
+    try {
+      const res = await gemsService.redeemItem(selectedItemForPurchase.id);
+      if (res.success) {
+        showToast(res.message || `Successfully redeemed ${selectedItemForPurchase.title}!`, 'success');
+        if (res.newBalance !== undefined) {
+          setUserBalance(res.newBalance);
+        } else {
+          refreshBalance();
+        }
+        setSelectedItemForPurchase(null);
+      } else {
+        showToast(res.message || 'Redemption failed. Check your Gem balance.', 'error');
       }
-      loadMoreItems();
-    };
+    } catch (err: any) {
+      showToast(err.message || 'Error executing transaction', 'error');
+    } finally {
+      setIsPurchasing(false);
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [loadMoreItems, isLoadingMoreState, hasMoreState]);
+  // Handle Broadcast Submission
+  const handlePostBroadcast = async () => {
+    if (!newBroadcastText.trim()) return;
+    setBroadcastError(null);
+    setIsBroadcasting(true);
 
+    try {
+      const res = await gemsService.postBroadcast(newBroadcastText);
+      if (res.success) {
+        showToast('Broadcast published! Live on follower walls for 24 hours.', 'success');
+        setNewBroadcastText('');
+        fetchBroadcastFeed();
+      } else {
+        setBroadcastError(res.message || 'Broadcast publication failed');
+        showToast(res.message || 'Broadcast rejected', 'error');
+      }
+    } catch (err: any) {
+      setBroadcastError(err.message || 'Broadcast failed');
+    } finally {
+      setIsBroadcasting(false);
+    }
+  };
 
-  if (loadingState) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  // Admin Assist Keyword Moderation Tester
+  const runModerationCheck = () => {
+    const BANNED_PATTERNS = [
+      '100% free', 'make money', 'million dollars', 'act now', 'click here',
+      'urgent', 'winner', 'miracle', 'work from home', 'fast cash', 'no catch',
+      'fuck', 'bitch', 'asshole', 'pussy', 'dick', 'scam'
+    ];
+    const lower = moderationTestText.toLowerCase();
+    const hits = BANNED_PATTERNS.filter((word) => lower.includes(word));
+    setModerationResult({
+      clean: hits.length === 0,
+      flaggedWords: hits
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 py-8 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Gems</h1>
-          <p className="text-gray-600">Discover premium content and exclusive offerings</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 bg-purple-100 border border-purple-200 text-purple-900 font-semibold rounded-full shadow-sm text-sm">
-            <span>💎 Gem Balance:</span>
-            <span className="text-purple-700 font-bold">{userBalance.toLocaleString()}</span>
-          </div>
-        </div>
-
-        {errorState && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-center" role="alert">
-            {errorState}
-          </div>
-        )}
-
-        {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <SearchIcon className="h-5 w-5 text-gray-400" />
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
+      {/* Top Banner & Multi-Currency Header */}
+      <div className="max-w-7xl mx-auto mb-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-900/60 via-indigo-900/40 to-slate-900/90 border border-purple-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-300 text-xs font-semibold mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                FingerMobile Protocol™ Virtual Economy & Broadcast Architecture
               </div>
-              <input
-                type="text"
-                placeholder="Search gems..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                value={searchTermState}
-                onChange={(e) => setSearchTermState(e.target.value)}
-              />
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                <span>Gems Protocol Hub</span>
+                <span className="text-sm font-medium px-2.5 py-0.5 rounded-md bg-purple-600/30 text-purple-300 border border-purple-500/30">
+                  v2.6 Enterprise
+                </span>
+              </h1>
+              <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-2xl">
+                Micro-currency economy, peer-to-peer digital living room assets, 24-hour ephemeral broadcast channels, and automated admin power tools.
+              </p>
             </div>
-            <select
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-              value={sortByState}
-              onChange={(e) => setSortByState(e.target.value as 'price' | 'rating' | 'newest')}
+
+            {/* Wallet & Multi-Currency Balances Card */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 bg-slate-900/80 border border-purple-500/40 rounded-xl p-4 shadow-lg backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-inner">
+                  <Zap className="w-6 h-6 text-yellow-300 animate-pulse" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Gem Balance</div>
+                  <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300">
+                    💎 {userBalance.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-10 w-px bg-slate-800 hidden sm:block" />
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={refreshBalance}
+                  title="Refresh Balance"
+                  className="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => {
+                    showToast('Opening Flamingo instant Gem purchase gateway...', 'info');
+                  }}
+                  className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all transform hover:scale-[1.02]"
+                >
+                  + Add Gems
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Primary Navigation Tabs */}
+          <div className="flex flex-wrap items-center gap-2 mt-6 pt-6 border-t border-purple-500/20">
+            <button
+              onClick={() => setActiveTab('marketplace')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'marketplace'
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
             >
-              <option value="rating">Highest Rated</option>
-              <option value="price">Price: Low to High</option>
-              <option value="newest">Newest</option>
-            </select>
+              <ShoppingCart className="w-4 h-4" />
+              Marketplace & Store
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-purple-900/60 text-purple-200">
+                {allGems.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('broadcast')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'broadcast'
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Radio className="w-4 h-4 text-emerald-400" />
+              Broadcast Channels (24h TTL)
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-emerald-900/60 text-emerald-200">
+                Live
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('powertools')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'powertools'
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Sliders className="w-4 h-4 text-amber-400" />
+              Admin Power Tools & Moderation
+            </button>
+
+            <button
+              onClick={() => setActiveTab('guides')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'guides'
+                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <BookOpen className="w-4 h-4 text-sky-400" />
+              Featured & Guides
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Gems Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {itemsState.map((gem, index) => {
-            if (index === itemsState.length - 1) {
-              return (
-                <div
-                  key={gem.id}
-                  ref={lastGemElementRef}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="relative">
-                    <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
-                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
-                      <StarIcon className="h-3 w-3 mr-1" />
-                      {gem.rating}
-                    </div>
+      {/* Main Content Sections */}
+      <div className="max-w-7xl mx-auto">
+        {/* ======================================================== */}
+        {/* TAB 1: MARKETPLACE & STORE */}
+        {/* ======================================================== */}
+        {activeTab === 'marketplace' && (
+          <div className="space-y-6">
+            {/* Architectural Blueprint: Privacy Types Banner */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'public' ? 'all' : 'public')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'public'
+                    ? 'bg-purple-950/60 border-purple-500 shadow-lg shadow-purple-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                    <Globe className="w-5 h-5" />
                   </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-semibold text-gray-900">{gem.title}</h3>
-                      <span className="text-lg font-bold text-purple-600">${gem.price.toFixed(2)}</span>
-                    </div>
-                    <p className="text-gray-500 text-sm mt-1">by {gem.creator}</p>
-                    <p className="text-gray-600 text-sm mt-3">{gem.description}</p>
-                    <div className="mt-4 flex justify-between items-center">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (handleGlobalAction) handleGlobalAction('like', gem.id);
-                        }}
-                        className="flex items-center text-gray-500 text-sm hover:text-red-500 transition-colors"
-                      >
-                        <HeartIcon className="h-4 w-4 mr-1" />
-                        {gem.likes} likes
-                      </button>
-                      <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
-                        {gem.category}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        if (handleGlobalAction) handleGlobalAction('save', gem.id);
-                        showToast(`Added ${gem.title} to cart`, 'success');
-                      }}
-                      className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-                    >
-                      Purchase
-                    </button>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Public Gems</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Discoverable globally across the FingerMobile ecosystem</p>
                   </div>
                 </div>
-              );
-            } else {
-              return (
-                <div
-                  key={gem.id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="relative">
-                    <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
-                    <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
-                      <StarIcon className="h-3 w-3 mr-1" />
-                      {gem.rating}
-                    </div>
+              </div>
+
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'private_visible' ? 'all' : 'private_visible')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'private_visible'
+                    ? 'bg-purple-950/60 border-purple-500 shadow-lg shadow-purple-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400">
+                    <Eye className="w-5 h-5" />
                   </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-semibold text-gray-900">{gem.title}</h3>
-                      <span className="text-lg font-bold text-purple-600">${gem.price.toFixed(2)}</span>
-                    </div>
-                    <p className="text-gray-500 text-sm mt-1">by {gem.creator}</p>
-                    <p className="text-gray-600 text-sm mt-3">{gem.description}</p>
-                    <div className="mt-4 flex justify-between items-center">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (handleGlobalAction) handleGlobalAction('like', gem.id);
-                        }}
-                        className="flex items-center text-gray-500 text-sm hover:text-red-500 transition-colors"
-                      >
-                        <HeartIcon className="h-4 w-4 mr-1" />
-                        {gem.likes} likes
-                      </button>
-                      <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
-                        {gem.category}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        if (handleGlobalAction) handleGlobalAction('save', gem.id);
-                        showToast(`Added ${gem.title} to cart`, 'success');
-                      }}
-                      className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-                    >
-                      Purchase
-                    </button>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Private & Visible</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Searchable by all, but unlockable only by pass holders</p>
                   </div>
                 </div>
-              );
-            }
-          })}
-        </div>
+              </div>
 
-        {!hasMoreState && itemsState.length > 0 && (
-          <div className="text-center mt-8 text-gray-500">
-            You've reached the end of the gems list.
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'secret' ? 'all' : 'secret')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'secret'
+                    ? 'bg-purple-950/60 border-purple-500 shadow-lg shadow-purple-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Secret / Hidden Gems</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Invisible to search; accessible only via direct invitations</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter and Search Controls Bar */}
+            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
+              {/* Search Bar */}
+              <div className="relative flex-1">
+                <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search gems by title, creator, or keyword..."
+                  value={searchTermState}
+                  onChange={(e) => setSearchTermState(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Category Pills Filter */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize whitespace-nowrap transition-colors ${
+                      selectedCategory === cat
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {/* Sort Selector */}
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-slate-400" />
+                <select
+                  value={sortByState}
+                  onChange={(e) => setSortByState(e.target.value as any)}
+                  aria-label="Sort gems by"
+                  className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <option value="rating">Highest Rated</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
+                  <option value="newest">Recently Minted</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {errorState && (
+              <div className="p-4 rounded-xl bg-red-950/50 border border-red-800 text-red-300 flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+                <span className="text-sm">{errorState}</span>
+              </div>
+            )}
+
+            {/* Loading State */}
+            {loadingState && (
+              <div className="flex flex-col items-center justify-center py-20">
+                <LoadingSpinner />
+                <p className="mt-4 text-sm text-slate-400">Syncing Gem store from PostgreSQL cluster...</p>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!loadingState && paginatedGems.length === 0 && (
+              <div className="text-center py-16 px-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold text-white">No Gem Items Found</h3>
+                <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
+                  No items match your active search or privacy filter criteria. Try resetting filters to browse all sovereign assets.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTermState('');
+                    setSelectedCategory('all');
+                    setPrivacyFilter('all');
+                  }}
+                  className="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg transition-colors"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            )}
+
+            {/* Gems Grid */}
+            {!loadingState && paginatedGems.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedGems.map((gem, index) => {
+                  const isLast = index === paginatedGems.length - 1;
+                  const itemPrivacy = gem.privacy_type || 'public';
+
+                  return (
+                    <div
+                      key={gem.id}
+                      ref={isLast ? lastGemElementRef : undefined}
+                      className="group bg-slate-900/70 border border-slate-800 hover:border-purple-500/50 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col justify-between"
+                    >
+                      {/* Thumbnail Container */}
+                      <div className="relative h-48 w-full overflow-hidden bg-slate-950">
+                        <img
+                          src={gem.thumbnail || gem.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60'}
+                          alt={gem.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+
+                        {/* Privacy Pill Badge */}
+                        <div className="absolute top-3 left-3">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase shadow-md ${
+                              itemPrivacy === 'public'
+                                ? 'bg-emerald-950/80 border border-emerald-500/40 text-emerald-300'
+                                : itemPrivacy === 'private_visible'
+                                ? 'bg-indigo-950/80 border border-indigo-500/40 text-indigo-300'
+                                : 'bg-amber-950/80 border border-amber-500/40 text-amber-300'
+                            }`}
+                          >
+                            {itemPrivacy === 'public' && <Globe className="w-3 h-3" />}
+                            {itemPrivacy === 'private_visible' && <Eye className="w-3 h-3" />}
+                            {itemPrivacy === 'secret' && <Lock className="w-3 h-3" />}
+                            {itemPrivacy.replace('_', ' ')}
+                          </span>
+                        </div>
+
+                        {/* Rating Pill */}
+                        <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-yellow-400 text-xs font-bold shadow-md">
+                          <span>★</span>
+                          <span>{gem.rating.toFixed(1)}</span>
+                        </div>
+
+                        {/* Category Pill */}
+                        <div className="absolute bottom-3 left-3">
+                          <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-purple-900/80 text-purple-200 border border-purple-500/30">
+                            {gem.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Card Body */}
+                      <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="font-bold text-base text-white group-hover:text-purple-300 transition-colors line-clamp-1">
+                              {gem.title}
+                            </h3>
+                            <div className="text-right shrink-0">
+                              <span className="font-black text-purple-400 text-base">
+                                💎 {gem.price}
+                              </span>
+                            </div>
+                          </div>
+
+                          <p className="text-xs text-slate-400 mt-1">
+                            Issued by <span className="text-slate-300 font-medium">{gem.creator}</span>
+                          </p>
+
+                          <p className="text-xs text-slate-300 mt-3 line-clamp-2 leading-relaxed">
+                            {gem.description}
+                          </p>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+                          <button
+                            onClick={() => {
+                              showToast(`Saved ${gem.title} to wishlist`, 'info');
+                            }}
+                            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors"
+                            title="Add to favorites"
+                          >
+                            <Heart className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() => setSelectedItemForPurchase(gem)}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-purple-600/20 transition-all transform hover:-translate-y-0.5"
+                          >
+                            <Zap className="w-3.5 h-3.5 text-yellow-300" />
+                            Redeem with Gems
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
-        {itemsState.length === 0 && !loadingState && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No gems found matching your criteria.</p>
+        {/* ======================================================== */}
+        {/* TAB 2: BROADCAST CHANNELS (24H TTL) */}
+        {/* ======================================================== */}
+        {activeTab === 'broadcast' && (
+          <div className="space-y-6">
+            {/* Broadcast Architecture Explainer */}
+            <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-500/30">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+                  <Radio className="w-6 h-6 animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    Mini/Short-Lived Broadcast Channels (24h TTL)
+                  </h3>
+                  <p className="text-sm text-slate-300 mt-1 leading-relaxed">
+                    Broadcast Channels allow eligible creators (50,000+ followers) and verified brands to push direct daily updates to followers. Updates appear straight on member walls and self-destruct after exactly 24 hours.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 50,000 follower threshold check
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-amber-400" /> 24 Hour TTL auto-expiration
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Layers className="w-4 h-4 text-indigo-400" /> 5–20 daily updates based on subscription
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Broadcast Creation Form (Creators with 50,000+ Followers) */}
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+              <h3 className="font-bold text-white text-base mb-2 flex items-center gap-2">
+                <Send className="w-4 h-4 text-purple-400" />
+                Publish Ephemeral Broadcast Update
+              </h3>
+              <p className="text-xs text-slate-400 mb-4">
+                Eligible channels can publish text and media directly to subscriber feeds.
+              </p>
+
+              {broadcastError && (
+                <div className="mb-4 p-3 rounded-lg bg-red-950/60 border border-red-800 text-red-300 text-xs flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                  <span>{broadcastError}</span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <textarea
+                  rows={3}
+                  value={newBroadcastText}
+                  onChange={(e) => setNewBroadcastText(e.target.value)}
+                  placeholder="Share a timely drop, salon invite, or exclusive update (expires in 24h)..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-slate-400 font-semibold">Tier Limit:</span>
+                    <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                      <input
+                        type="radio"
+                        checked={broadcastSubscriptionType === 'basic'}
+                        onChange={() => setBroadcastSubscriptionType('basic')}
+                        className="text-emerald-500 focus:ring-emerald-500"
+                      />
+                      Standard (5 / day)
+                    </label>
+                    <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                      <input
+                        type="radio"
+                        checked={broadcastSubscriptionType === 'premium'}
+                        onChange={() => setBroadcastSubscriptionType('premium')}
+                        className="text-emerald-500 focus:ring-emerald-500"
+                      />
+                      Enterprise (20 / day)
+                    </label>
+                  </div>
+
+                  <button
+                    onClick={handlePostBroadcast}
+                    disabled={isBroadcasting || !newBroadcastText.trim()}
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-lg shadow-emerald-600/20"
+                  >
+                    {isBroadcasting ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <>
+                        <Radio className="w-4 h-4" />
+                        Transmit Broadcast
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Broadcast Feed */}
+            <div className="space-y-4">
+              <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                <Clock className="w-5 h-5 text-emerald-400" />
+                Active Broadcast Transmissions (Last 24 Hours)
+              </h3>
+
+              {broadcastPosts.length === 0 ? (
+                <div className="p-8 text-center bg-slate-900/40 border border-slate-800 rounded-2xl">
+                  <p className="text-sm text-slate-400">No active broadcasts in the last 24 hours.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {broadcastPosts.map((post) => {
+                    const hoursLeft = Math.max(
+                      0,
+                      Math.round(
+                        (new Date(post.expires_at).getTime() - Date.now()) / (1000 * 60 * 60)
+                      )
+                    );
+
+                    return (
+                      <div
+                        key={post.id}
+                        className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-3 mb-3">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 font-bold text-xs">
+                                {post.username ? post.username[0].toUpperCase() : 'C'}
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-bold text-white leading-tight">
+                                  @{post.username || 'sovereign_creator'}
+                                </h4>
+                                <span className="text-[10px] text-slate-400">Verified Broadcast Channel</span>
+                              </div>
+                            </div>
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
+                              <Clock className="w-3 h-3" /> {hoursLeft}h left
+                            </span>
+                          </div>
+
+                          <p className="text-sm text-slate-200 leading-relaxed mb-4">
+                            {post.content_text}
+                          </p>
+
+                          {post.media_urls && post.media_urls.length > 0 && (
+                            <div className="rounded-xl overflow-hidden mb-4 border border-slate-800">
+                              <img
+                                src={post.media_urls[0]}
+                                alt="Broadcast attachment"
+                                className="w-full h-44 object-cover"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Follower Reactions Bar */}
+                        <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                          <span className="text-xs text-slate-500">React to broadcast:</span>
+                          <div className="flex items-center gap-1">
+                            {['❤️', '🔥', '👏', '💎', '🚀'].map((emoji) => (
+                              <button
+                                key={emoji}
+                                onClick={() => showToast(`Reacted with ${emoji}!`, 'success')}
+                                className="p-1.5 rounded-lg hover:bg-slate-800 text-sm transition-transform hover:scale-125"
+                              >
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
-        {/* Loading indicator for infinite scroll */}
-        {isLoadingMoreState && (
-          <div className="flex justify-center py-4">
-            <LoadingSpinner />
+        {/* ======================================================== */}
+        {/* TAB 3: ADMIN POWER TOOLS & MODERATION */}
+        {/* ======================================================== */}
+        {activeTab === 'powertools' && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Tool 1: Admin Assist & Keyword Auto-Moderation */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400">
+                    <Shield className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-base">Admin Assist: Keyword Auto-Moderation</h3>
+                    <p className="text-xs text-slate-400">
+                      Enforces FingerMobile Words Moderation List & Platform Policy flags.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Automated filtration prevents spam promises, predatory promotions, and profane content from appearing in peer-to-peer living rooms.
+                </p>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-300">Test Content against Moderation List:</label>
+                  <textarea
+                    rows={3}
+                    value={moderationTestText}
+                    onChange={(e) => setModerationTestText(e.target.value)}
+                    placeholder="e.g. Try typing: '100% free make money click here' or regular compliant text..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <button
+                    onClick={runModerationCheck}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition-colors"
+                  >
+                    Run Policy Scanner
+                  </button>
+                </div>
+
+                {moderationResult && (
+                  <div
+                    className={`p-3 rounded-xl border text-xs ${
+                      moderationResult.clean
+                        ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                        : 'bg-red-950/60 border-red-500/40 text-red-300'
+                    }`}
+                  >
+                    {moderationResult.clean ? (
+                      <span className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        Compliant: Content strictly satisfies all 4 platform principles (Authenticity, Safety, Privacy, Dignity).
+                      </span>
+                    ) : (
+                      <div>
+                        <span className="flex items-center gap-2 font-bold mb-1">
+                          <AlertCircle className="w-4 h-4 text-red-400" />
+                          Auto-Declined by Admin Assist!
+                        </span>
+                        <span>Flagged phrases: {moderationResult.flaggedWords.join(', ')}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Tool 2: Anonymous Posting & Membership Questions */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400">
+                      <Sliders className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-base">Anonymous Posting Toggle</h3>
+                      <p className="text-xs text-slate-400">Safe haven for sensitive discussions</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setAnonymousPostingEnabled(!anonymousPostingEnabled);
+                      showToast(
+                        `Anonymous posting ${!anonymousPostingEnabled ? 'enabled' : 'disabled'} for members`,
+                        'info'
+                      );
+                    }}
+                    className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                      anonymousPostingEnabled ? 'bg-indigo-600' : 'bg-slate-700'
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                        anonymousPostingEnabled ? 'translate-x-6' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Allows members to ask questions regarding sensitive health, finance, or relationship matters without public identity exposure while remaining fully accountable to admins behind the scenes.
+                </p>
+
+                {/* Membership Vetting Questions */}
+                <div className="pt-3 border-t border-slate-800">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-slate-300 mb-2">
+                    Membership Vetting Questions (Up to 3):
+                  </h4>
+                  <div className="space-y-2">
+                    {membershipQuestions.map((q, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-start gap-2"
+                      >
+                        <span className="font-bold text-indigo-400">Q{idx + 1}:</span>
+                        <span>{q}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAB 4: FEATURED & GUIDES */}
+        {/* ======================================================== */}
+        {activeTab === 'guides' && (
+          <div className="space-y-6">
+            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl">
+              <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-sky-400" />
+                Featured Educational Modules & Guides
+              </h3>
+              <p className="text-xs text-slate-400 mb-6">
+                Step-by-step learning modules for creators, node runners, and sovereign group admins.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {SAMPLE_GUIDES.map((guide) => (
+                  <div
+                    key={guide.id}
+                    className="p-5 rounded-xl bg-slate-950 border border-slate-800 hover:border-sky-500/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs text-sky-400 font-semibold mb-2">
+                        <span>{guide.duration}</span>
+                        <span>{guide.lessons} Lessons</span>
+                      </div>
+                      <h4 className="font-bold text-white text-sm mb-2">{guide.title}</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">{guide.description}</p>
+                    </div>
+
+                    <button
+                      onClick={() => showToast(`Opening ${guide.title}...`, 'info')}
+                      className="mt-4 flex items-center justify-between w-full px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-sky-300 text-xs font-semibold transition-colors"
+                    >
+                      <span>Start Learning</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
+
+      {/* ======================================================== */}
+      {/* REDEEM / PURCHASE MODAL */}
+      {/* ======================================================== */}
+      {selectedItemForPurchase && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-slate-900 border border-purple-500/50 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
+                <Sparkles className="w-4 h-4" />
+                Confirm Sovereign Gem Redemption
+              </div>
+              <button
+                onClick={() => setSelectedItemForPurchase(null)}
+                className="text-slate-400 hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="rounded-xl overflow-hidden border border-slate-800">
+              <img
+                src={selectedItemForPurchase.thumbnail || selectedItemForPurchase.image_url}
+                alt={selectedItemForPurchase.title}
+                className="w-full h-40 object-cover"
+              />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-extrabold text-white">{selectedItemForPurchase.title}</h3>
+              <p className="text-xs text-slate-400 mt-1">{selectedItemForPurchase.description}</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Item Cost:</span>
+                <span className="font-bold text-purple-400">💎 {selectedItemForPurchase.price} Gems</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Your Current Balance:</span>
+                <span className="font-bold text-white">💎 {userBalance.toLocaleString()} Gems</span>
+              </div>
+              <div className="h-px bg-slate-800 my-1" />
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Remaining After Redemption:</span>
+                <span
+                  className={`font-bold ${
+                    userBalance >= selectedItemForPurchase.price ? 'text-emerald-400' : 'text-red-400'
+                  }`}
+                >
+                  💎 {(userBalance - selectedItemForPurchase.price).toLocaleString()} Gems
+                </span>
+              </div>
+            </div>
+
+            {userBalance < selectedItemForPurchase.price && (
+              <div className="p-3 rounded-lg bg-red-950/60 border border-red-800 text-red-300 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                <span>Insufficient Gems! Please add gems to complete this redemption.</span>
+              </div>
+            )}
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={() => setSelectedItemForPurchase(null)}
+                className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmRedeem}
+                disabled={isPurchasing || userBalance < selectedItemForPurchase.price}
+                className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2"
+              >
+                {isPurchasing ? <LoadingSpinner /> : 'Confirm & Unlock'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

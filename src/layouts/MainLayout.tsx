@@ -1,42 +1,52 @@
-import { Outlet } from 'react-router-dom';
-import React, { useState } from 'react';
-
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Header from './Header';
+import { DrawerMenuContainer } from '../components/layout/DrawerMenu/DrawerMenuContainer';
+import { useAuth } from '../hooks/useAuth';
 
 interface MainLayoutProps {
   children?: React.ReactNode;
   pageTitle?: string;
-  onMenuToggle?: () => void;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, pageTitle, onMenuToggle }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+  // Check if user is authenticated
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Slide-over Drawer Menu (Zero permanent sidebar on screen) */}
+      <DrawerMenuContainer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        isDesktopSidebar={false}
+      />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header
-          pageTitle={pageTitle}
-          onMenuToggle={() => {
-            setSidebarOpen(!sidebarOpen);
-            // Call the passed onMenuToggle if provided
-            if (onMenuToggle) {
-              onMenuToggle();
-            }
-          }}
-        />
+      {/* Header */}
+      <Header
+        sidebarOpen={drawerOpen}
+        onToggleSidebar={() => setDrawerOpen(!drawerOpen)}
+        user={user}
+        onLogout={handleLogout}
+      />
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4">
-          {children || <Outlet />}
-        </main>
-      </div>
+      {/* Main page content - Full clean canvas width */}
+      <main className="flex-1 overflow-x-hidden overflow-y-auto">
+        {children || <Outlet />}
+      </main>
     </div>
   );
 };

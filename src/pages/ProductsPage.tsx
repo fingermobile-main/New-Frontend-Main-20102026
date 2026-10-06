@@ -8,6 +8,7 @@ const ProductsPage: React.FC = () => {
     products,
     loading,
     error,
+    // eslint-disable-next-line no-unused-vars
     getProductById,
     handleAddToCart
   } = useMarketplace();

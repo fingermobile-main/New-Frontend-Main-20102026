@@ -19,7 +19,7 @@ const VideoTranslationDashboard = () => {
         <Grid item xs={12} lg={8}>
           <VideoUpload />
         </Grid>
-        
+
         <Grid item xs={12} lg={4}>
           <MyVideos />
         </Grid>

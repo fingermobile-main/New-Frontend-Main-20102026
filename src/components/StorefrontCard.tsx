@@ -15,7 +15,9 @@ interface StorefrontCardProps {
     category?: string;
     inStock?: boolean;
   };
+  // eslint-disable-next-line no-unused-vars
   onAddToCart?: (productId: string) => void;
+  // eslint-disable-next-line no-unused-vars
   onViewDetails?: (productId: string) => void;
 }
 

@@ -81,7 +81,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
             value={[progress]}
             max={track.duration || 100}
             step={1}
-            onValueChange={(value) => onSeek?.(value[0])}
+            onValueChange={(value: number[]) => onSeek?.(value[0])}
           />
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{formatTime(progress)}</span>
@@ -117,7 +117,7 @@ const BeatwavePlayer: React.FC<BeatwavePlayerProps> = ({
             value={[volume]}
             max={100}
             step={1}
-            onValueChange={(value) => onVolumeChange?.(value[0])}
+            onValueChange={(value: number[]) => onVolumeChange?.(value[0])}
             className="flex-1"
           />
         </div>

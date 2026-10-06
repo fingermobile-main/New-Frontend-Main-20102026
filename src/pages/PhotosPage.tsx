@@ -4,7 +4,7 @@ import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import { CommunityContext } from '../contexts/CommunityContext';
 import apiService from '../services/apiService';
-import { Camera, Heart, Sparkles } from 'lucide-react';
+import { Camera, Heart } from 'lucide-react';
 
 interface PhotoItem {
   id: string | number;
@@ -15,6 +15,7 @@ interface PhotoItem {
 }
 
 const PhotosPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { member: currentMember } = useAuth();
   const context = useContext(CommunityContext);
   const navigate = useNavigate();

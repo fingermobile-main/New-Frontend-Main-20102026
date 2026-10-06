@@ -1,6 +1,6 @@
 import React from 'react';
 import * as React from 'react';
-import dataCache from "../utils/dataCache";
+import dataCache from '../utils/dataCache';
 
 /**
  * Higher-Order Component for adding caching capabilities to components
@@ -19,9 +19,9 @@ export const withCache = (WrappedComponent, options = {}) => {
     constructor(props) {
       super(props);
       this.state = {
-  data: null,
-  loading: false,
-  error: null
+        data: null,
+        loading: false,
+        error: null
       };
     }
 
@@ -33,9 +33,9 @@ export const withCache = (WrappedComponent, options = {}) => {
       if (!cacheKey || !fetchData) return;
 
       this.setState({
-  loading: true,
-  error: null
-});
+        loading: true,
+        error: null
+      });
 
       try {
         // Check cache first
@@ -49,15 +49,15 @@ export const withCache = (WrappedComponent, options = {}) => {
         }
 
         this.setState({
-  data,
-  loading: false
-});
+          data,
+          loading: false
+        });
       } catch (error) {
         console.error(`Error loading data for ${cacheKey}:`, error);
         this.setState({
-  error,
-  loading: false
-});
+          error,
+          loading: false
+        });
       }
     };
 

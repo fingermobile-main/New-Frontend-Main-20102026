@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import type { Member, Post, Group } from '../types';
 import { useCommunityMembers } from '../hooks/useCommunityMembers';
 import { useCommunityPosts } from '../hooks/useCommunityPosts';
 import { useCommunityGroups } from '../hooks/useCommunityGroups';
@@ -13,6 +12,7 @@ interface CommunityFilters {
 }
 
 const CommunityPageEnhanced: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { showToast } = useAppContext();
   const {
     members,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import subscriptionService from "../services/subscriptionService";
-import { useAppContext } from "../contexts/AppContext.tsx";
+import subscriptionService from '../services/subscriptionService';
+import { useAppContext } from '../contexts/AppContext.tsx';
 
 const SubscriptionManager = () => {
   const { showToast } = useAppContext();
@@ -9,8 +9,8 @@ const SubscriptionManager = () => {
   const [loading, setLoading] = React.useState(true);
   const [actionLoading, setActionLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
-  const [selectedPlan, setSelectedPlan] = React.useState("");
-  const [selectedDuration, setSelectedDuration] = React.useState("monthly");
+  const [selectedPlan, setSelectedPlan] = React.useState('');
+  const [selectedDuration, setSelectedDuration] = React.useState('monthly');
 
   React.useEffect(() => {
     fetchSubscriptionData();
@@ -25,7 +25,7 @@ const SubscriptionManager = () => {
         setSubscription(response.subscription);
       }
     } catch (err) {
-      setError("Failed to load subscription data");
+      setError('Failed to load subscription data');
     } finally {
       setLoading(false);
     }
@@ -38,13 +38,13 @@ const SubscriptionManager = () => {
         setPlans(response.plans);
       }
     } catch (err) {
-      console.error("Failed to load subscription plans");
+      console.error('Failed to load subscription plans');
     }
   };
 
   const handlePurchase = async () => {
     if (!selectedPlan) {
-      showToast("Please select a plan", "error");
+      showToast('Please select a plan', 'error');
       return;
     }
 
@@ -63,21 +63,21 @@ const SubscriptionManager = () => {
         selectedDuration,
       );
       if (response.success) {
-        showToast("Subscription purchased successfully!", "success");
+        showToast('Subscription purchased successfully!', 'success');
         setSubscription(response.subscription);
-        setSelectedPlan("");
+        setSelectedPlan('');
       } else {
-        showToast(response.message || "Failed to purchase subscription", "error");
+        showToast(response.message || 'Failed to purchase subscription', 'error');
       }
     } catch (err) {
-      showToast("Failed to purchase subscription. Please try again.", "error");
+      showToast('Failed to purchase subscription. Please try again.', 'error');
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleCancel = async () => {
-    if (!window.confirm("Are you sure you want to cancel your subscription?")) {
+    if (!window.confirm('Are you sure you want to cancel your subscription?')) {
       return;
     }
 
@@ -85,26 +85,26 @@ const SubscriptionManager = () => {
       setActionLoading(true);
       const response = await subscriptionService.cancelSubscription();
       if (response.success) {
-        showToast("Subscription cancelled successfully!", "success");
+        showToast('Subscription cancelled successfully!', 'success');
         setSubscription(response.subscription);
       } else {
-        showToast(response.message || "Failed to cancel subscription", "error");
+        showToast(response.message || 'Failed to cancel subscription', 'error');
       }
     } catch (err) {
-      showToast("Failed to cancel subscription. Please try again.", "error");
+      showToast('Failed to cancel subscription. Please try again.', 'error');
     } finally {
       setActionLoading(false);
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString();
   };
 
   const getPlanPrice = (planKey, duration) => {
     if (!plans[planKey]) return 0;
-    return duration === "monthly"
+    return duration === 'monthly'
       ? plans[planKey].monthlyPrice
       : plans[planKey].yearlyPrice;
   };
@@ -153,11 +153,11 @@ const SubscriptionManager = () => {
             <div>
               <p className="text-sm opacity-80">Current Subscription</p>
               <h3 className="text-2xl font-bold mt-1">
-                {subscription?.status === "active"
-                  ? "Active"
-                  : subscription?.status === "trialing"
-                    ? "Trial"
-                    : "Inactive"}
+                {subscription?.status === 'active'
+                  ? 'Active'
+                  : subscription?.status === 'trialing'
+                    ? 'Trial'
+                    : 'Inactive'}
               </h3>
               {subscription?.expiryDate && (
                 <p className="mt-2 opacity-90">
@@ -193,20 +193,20 @@ const SubscriptionManager = () => {
                 key={key}
                 className={`border rounded-xl p-6 transition-all cursor-pointer ${
                   selectedPlan === key
-                    ? "border-brand-blue ring-2 ring-brand-blue ring-opacity-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? 'border-brand-blue ring-2 ring-brand-blue ring-opacity-50'
+                    : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setSelectedPlan(key)} role="button" tabIndex={0}
               >
                 <h4 className="font-bold text-lg mb-2">{plan.name}</h4>
                 <div className="mb-4">
                   <p className="text-3xl font-bold">
-                    {selectedDuration === "monthly"
+                    {selectedDuration === 'monthly'
                       ? plan.monthlyPrice
-                      : plan.yearlyPrice}{" "}
+                      : plan.yearlyPrice}{' '}
                     FIC
                     <span className="text-sm font-normal text-gray-500">
-                      /{selectedDuration === "monthly" ? "month" : "year"}
+                      /{selectedDuration === 'monthly' ? 'month' : 'year'}
                     </span>
                   </p>
                 </div>
@@ -239,21 +239,21 @@ const SubscriptionManager = () => {
             <div className="flex space-x-4">
               <button
                 className={`px-4 py-2 rounded-lg ${
-                  selectedDuration === "monthly"
-                    ? "bg-brand-blue text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  selectedDuration === 'monthly'
+                    ? 'bg-brand-blue text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
-                onClick={() => setSelectedDuration("monthly")}
+                onClick={() => setSelectedDuration('monthly')}
               >
                 Monthly
               </button>
               <button
                 className={`px-4 py-2 rounded-lg ${
-                  selectedDuration === "yearly"
-                    ? "bg-brand-blue text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  selectedDuration === 'yearly'
+                    ? 'bg-brand-blue text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
-                onClick={() => setSelectedDuration("yearly")}
+                onClick={() => setSelectedDuration('yearly')}
               >
                 Yearly
               </button>
@@ -268,24 +268,24 @@ const SubscriptionManager = () => {
               onClick={handlePurchase}
               disabled={actionLoading}
               className={`px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors ${
-                actionLoading ? "opacity-50 cursor-not-allowed" : ""
+                actionLoading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
               {actionLoading
-                ? "Processing..."
+                ? 'Processing...'
                 : `Purchase ${plans[selectedPlan]?.name}`}
             </button>
           )}
 
-          {subscription?.status === "active" && (
+          {subscription?.status === 'active' && (
             <button
               onClick={handleCancel}
               disabled={actionLoading}
               className={`px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors ${
-                actionLoading ? "opacity-50 cursor-not-allowed" : ""
+                actionLoading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
-              {actionLoading ? "Processing..." : "Cancel Subscription"}
+              {actionLoading ? 'Processing...' : 'Cancel Subscription'}
             </button>
           )}
         </div>

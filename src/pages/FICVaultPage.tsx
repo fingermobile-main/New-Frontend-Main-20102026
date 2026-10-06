@@ -175,6 +175,7 @@ ActionModal.displayName = 'ActionModal';
 
 const FICVaultPage: React.FC = () => {
   const { balance: _balance } = useWeb3();
+  // eslint-disable-next-line no-unused-vars
   const { ficBalance: _ficBalance, showToast } = useAppContext();
   const [vaultBalance, setVaultBalance] = useState(0);
   const [apy, setApy] = useState(5.0);
@@ -182,8 +183,11 @@ const FICVaultPage: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showGiftModal, setShowGiftModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showPaylinkModal, setShowPaylinkModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [vaultHistory, setVaultHistory] = useState<Array<{
@@ -217,6 +221,7 @@ const FICVaultPage: React.FC = () => {
         })));
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load FIC Vault data:', err);
     }
   }, []);
@@ -225,36 +230,52 @@ const FICVaultPage: React.FC = () => {
     loadVaultData();
   }, [loadVaultData]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const onLike = useCallback(async (_postId: string) => {
     showToast('Like action triggered', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const onAddComment = useCallback(async (_postId: string, _comment: string) => {
     showToast('Add comment action triggered', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
   const onOpenGiftModal = useCallback(() => {
     setShowGiftModal(true);
     showToast('Gift modal opened', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
   const onOpenPaylinkModal = useCallback(() => {
     setShowPaylinkModal(true);
     showToast('Paylink modal opened', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const onVote = useCallback(async (_postId: string, _voteType: unknown) => {
     showToast('Vote action triggered', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const handleDeletePost = useCallback(async (_postId?: string) => {
     showToast('Delete post action triggered', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const handleTokenizePost = useCallback(async (_postId?: string) => {
     showToast('Tokenize post action triggered', 'info');
   }, [showToast]);
 
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const handleAiAssist = useCallback(async (..._args: unknown[]) => {
     showToast('AI assist action triggered', 'info');
     return { success: true, message: 'AI assist completed' };
@@ -285,6 +306,7 @@ const FICVaultPage: React.FC = () => {
       }
     } catch (error: any) {
       showToast(error?.response?.data?.message || error?.message || 'Failed to deposit FIC', 'error');
+      // eslint-disable-next-line no-console
       console.error('Deposit error:', error);
     } finally {
       setIsProcessing(false);
@@ -321,6 +343,7 @@ const FICVaultPage: React.FC = () => {
       }
     } catch (error: any) {
       showToast(error?.response?.data?.message || error?.message || 'Failed to withdraw FIC', 'error');
+      // eslint-disable-next-line no-console
       console.error('Withdrawal error:', error);
     } finally {
       setIsProcessing(false);

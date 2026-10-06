@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import {
+  // eslint-disable-next-line no-unused-vars
   Activity, Radio, Volume2, Play, Pause, Disc,
+  // eslint-disable-next-line no-unused-vars
   Sliders, Waves, Sparkles, ArrowLeft, RefreshCw
 } from 'lucide-react';
 
@@ -23,6 +25,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
   const { showToast } = useAppContext();
 
   const [tracks, setTracks] = useState<BeatwaveTrack[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [genres, setGenres] = useState<string[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<BeatwaveTrack | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -31,6 +34,7 @@ const BeatwaveNGDemoPage: React.FC = () => {
   const [midGain, setMidGain] = useState<number>(0);
   const [trebleGain, setTrebleGain] = useState<number>(2);
   const [spatialAudio, setSpatialAudio] = useState<boolean>(true);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -72,26 +76,26 @@ const BeatwaveNGDemoPage: React.FC = () => {
 
   const handleApplyAcousticPreset = (preset: 'Club' | 'Vocal' | 'Bass' | 'Studio Flat') => {
     switch (preset) {
-      case 'Club':
-        setBassGain(8);
-        setMidGain(-2);
-        setTrebleGain(4);
-        break;
-      case 'Vocal':
-        setBassGain(-1);
-        setMidGain(5);
-        setTrebleGain(3);
-        break;
-      case 'Bass':
-        setBassGain(12);
-        setMidGain(1);
-        setTrebleGain(-1);
-        break;
-      case 'Studio Flat':
-        setBassGain(0);
-        setMidGain(0);
-        setTrebleGain(0);
-        break;
+    case 'Club':
+      setBassGain(8);
+      setMidGain(-2);
+      setTrebleGain(4);
+      break;
+    case 'Vocal':
+      setBassGain(-1);
+      setMidGain(5);
+      setTrebleGain(3);
+      break;
+    case 'Bass':
+      setBassGain(12);
+      setMidGain(1);
+      setTrebleGain(-1);
+      break;
+    case 'Studio Flat':
+      setBassGain(0);
+      setMidGain(0);
+      setTrebleGain(0);
+      break;
     }
     showToast?.(`Applied ${preset} acoustic profile!`, 'success');
   };
@@ -158,8 +162,8 @@ const BeatwaveNGDemoPage: React.FC = () => {
                     idx % 4 === 0
                       ? 'bg-purple-500'
                       : idx % 2 === 0
-                      ? 'bg-indigo-500'
-                      : 'bg-cyan-500'
+                        ? 'bg-indigo-500'
+                        : 'bg-cyan-500'
                   }`}
                   style={{
                     height: `${dynamicHeight}%`,

@@ -23,6 +23,7 @@ interface SystemMetrics {
 }
 
 const MonitoringDashboardPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { showToast } = useAppContext();
   const [metrics, setMetrics] = useState<SystemMetrics>({
     cpuUsage: 0,
@@ -80,6 +81,7 @@ const MonitoringDashboardPage: React.FC = () => {
       setLastUpdated(new Date());
       setLoading(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to fetch live metrics, using baseline:', error);
       setMetrics({
         cpuUsage: 35.0,

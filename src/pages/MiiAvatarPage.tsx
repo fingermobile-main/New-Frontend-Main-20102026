@@ -8,16 +8,19 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import { Badge } from '@/components/ui/Badge';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Slider } from '@/components/ui/Slider';
-import { Separator } from '@/components/ui/Separator';
-import { ScrollArea } from '@/components/ui/ScrollArea';
+import { motion } from 'framer-motion';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
+import { Badge } from '../components/ui/Badge';
+import { Input } from '../components/ui/Input';
+import { Label } from '../components/ui/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/Select';
+import { Slider } from '../components/ui/Slider';
+import { Separator } from '../components/ui/Separator';
+import { ScrollArea } from '../components/ui/ScrollArea';
 import {
   UserIcon,
   PaletteIcon,

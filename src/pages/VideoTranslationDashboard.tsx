@@ -76,6 +76,7 @@ const VideoTranslationDashboard: React.FC = () => {
     minutesLimit: 120,
     tier: 'Creator Pro'
   });
+  // eslint-disable-next-line no-unused-vars
   const [userVideos, setUserVideos] = useState<any[]>([]);
 
   useEffect(() => {

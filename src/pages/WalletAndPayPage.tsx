@@ -11,7 +11,6 @@ import {
   ArrowDownIcon,
   LinkIcon
 } from '../icons';
-import PageHeader from '../components/PageHeader';
 import { useAppContext } from '../contexts/AppContext';
 
 const WalletAndPayPage: React.FC = () => {

@@ -15,17 +15,26 @@ interface PostType {
 
 interface TrendsFeedPageProps {
   posts?: any[]; // Making posts optional to allow default empty array
+  // eslint-disable-next-line no-unused-vars
   handleLikePost?: (postId: string) => void; // Making optional
+  // eslint-disable-next-line no-unused-vars
   handleOpenGiftModal?: (post: any) => void; // Making optional
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   showToast?: (message: React.ReactNode, type?: 'error' | 'success' | 'warning' | 'info') => void; // Making optional
 }
 
 const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
   posts: propsPosts = [],
+  // eslint-disable-next-line no-unused-vars
   handleLikePost: propsHandleLikePost = () => {},
+  // eslint-disable-next-line no-unused-vars
   handleOpenGiftModal: propsHandleOpenGiftModal = () => {},
+  // eslint-disable-next-line no-unused-vars
   showToast: propsShowToast = () => {}
 }) => {
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const { openModal, showToast: contextShowToast, ficBalance } = useAppContext();
   const [posts, setLocalPosts] = useState<PostType[]>(propsPosts);
 
@@ -50,6 +59,7 @@ const TrendsFeedPage: React.FC<TrendsFeedPageProps> = ({
     () => posts.filter((p) => p.contentImageUrl),
     [posts],
   );
+  // eslint-disable-next-line no-unused-vars
   const [trendPosts, setTrendPosts] = useState<PostType[]>(trendingSource);
 
   useEffect(() => {

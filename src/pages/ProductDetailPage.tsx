@@ -27,6 +27,7 @@ const ProductDetailPage: React.FC = () => {
   const {
     products,
     loading: marketplaceLoading,
+    // eslint-disable-next-line no-unused-vars
     getProductById,
     handleAddToCart
   } = useMarketplace();
@@ -66,6 +67,7 @@ const ProductDetailPage: React.FC = () => {
           setProduct(prod || null);
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load product from backend, using context fallback', err);
         const prod = products.find(p => p.id === id);
         setProduct(prod || null);

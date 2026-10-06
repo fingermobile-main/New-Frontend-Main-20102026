@@ -10,7 +10,7 @@ module.exports = function(app) {
       secure: false, // Set to true if using HTTPS
     })
   );
-  
+
   // Proxy OAuth routes
   app.use(
     '/oauth',
@@ -20,7 +20,7 @@ module.exports = function(app) {
       secure: false,
     })
   );
-  
+
   // Proxy authentication routes
   app.use(
     '/auth',

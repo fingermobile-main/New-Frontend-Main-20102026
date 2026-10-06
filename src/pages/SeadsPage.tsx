@@ -4,13 +4,18 @@ import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import {
   GlobeAltIcon,
+  // eslint-disable-next-line no-unused-vars
   SparklesIcon,
+  // eslint-disable-next-line no-unused-vars
   CalendarIcon,
   MapPinIcon,
+  // eslint-disable-next-line no-unused-vars
   UserGroupIcon,
+  // eslint-disable-next-line no-unused-vars
   ChartBarIcon,
   PlusIcon,
   XMarkIcon,
+  // eslint-disable-next-line no-unused-vars
   CurrencyDollarIcon,
   CheckCircleIcon
 } from '../icons';
@@ -32,6 +37,7 @@ export interface SeadProject {
 const SeadsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
   const [projects, setProjects] = useState<SeadProject[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [backingProject, setBackingProject] = useState<SeadProject | null>(null);

@@ -3,10 +3,10 @@ import { Link} from 'react-router-dom';
 // NOTE: Icons already in core/ui.tsx are EXCLUDED to avoid duplicate export errors
 import {
   Filter, Grid3x3, List, Gamepad2, Play, CirclePlay,
-  MessageSquare, MessageCircle, UsersRound, Linkedin, Facebook,
-  Instagram, Twitter, Mail, LogIn, DollarSign,
+  MessageSquare, MessageCircle, UsersRound, Share2 as Linkedin, Share2 as Facebook,
+  Camera as Instagram, MessageSquare as Twitter, Mail, LogIn, DollarSign,
   Wallet, TrendingUp, Building2, Package, Ticket,
-  Image, Download, MoreHorizontal, Music, Youtube, Users, User,
+  Image, Download, MoreHorizontal, Music, Video as Youtube, Users, User,
   Scale, Database, FolderDown, ClipboardCheck, ClipboardList,
   Wand2, ArrowUpDown, Pin, Shuffle, Handshake, Coins, Trophy,
   Shield, Sparkles, Flame,
@@ -20,8 +20,8 @@ import {
   QrCode, CreditCard, Euro, PoundSterling, Percent, Calculator,
   Gavel, IdCard, Receipt, Box, Layers, Grid, Columns, Rows, Table,
   ChartPie, Activity, Server, HardDrive, Cpu, Terminal,
-  Code, GitBranch, GitCommit, GitPullRequest, Github, Gitlab,
-  Slack, Twitch
+  Code, GitBranch, GitCommit, GitPullRequest, Code as Github, Code as Gitlab,
+  MessageSquare as Slack, Video as Twitch
 } from 'lucide-react';
 import React from 'react';
 

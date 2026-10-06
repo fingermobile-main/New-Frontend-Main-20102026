@@ -557,6 +557,10 @@ export interface AppContextType extends AppState {
   handleAiAssist: (prompt: string) => Promise<string>;
   sidebarOpen: boolean;
   toggleSidebar: () => void;
+  notificationsOpen?: boolean;
+  toggleNotifications?: () => void;
+  showSearch?: boolean;
+  setShowSearch?: (_show: boolean) => void;
   enforceAiAction?: (action: string, data: Record<string, unknown>) => Promise<{ success: boolean; approved?: boolean; reason?: string }>;
   handleSubmitTicket?: (ticketData: unknown) => Promise<{ success: boolean }>;
   supportTickets?: SupportTicket[];

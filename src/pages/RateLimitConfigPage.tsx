@@ -7,6 +7,7 @@ import {
   TrashIcon,
   PencilIcon,
   ArrowPathIcon,
+  // eslint-disable-next-line no-unused-vars
   ChartBarIcon,
   UserCircleIcon,
   GlobeAltIcon,
@@ -76,6 +77,7 @@ const RateLimitConfigPage: React.FC = () => {
       }
       setLoading(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch rate limit configs:', error);
       showToast('Failed to load rate limit configurations', 'error');
       setLoading(false);
@@ -109,6 +111,7 @@ const RateLimitConfigPage: React.FC = () => {
       setShowCreateModal(false);
       showToast('Rate limit configuration created', 'success');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to create rate limit config:', error);
       showToast('Failed to create rate limit configuration', 'error');
     }

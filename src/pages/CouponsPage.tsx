@@ -6,6 +6,7 @@ import {
   TagIcon,
   CheckCircleIcon,
   ClockIcon,
+  // eslint-disable-next-line no-unused-vars
   CurrencyDollarIcon,
   SparklesIcon,
   ClipboardCheckIcon
@@ -31,6 +32,7 @@ const CouponsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'available' | 'claimed'>('available');
   const [availableCoupons, setAvailableCoupons] = useState<CouponItem[]>([]);
   const [claimedCoupons, setClaimedCoupons] = useState<CouponItem[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [isRedeeming, setIsRedeeming] = useState<boolean>(false);
 

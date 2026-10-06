@@ -25,10 +25,10 @@ const MembersPage: React.FC = () => {
     try {
       setLoading(true);
       const res = await api.get('/admin/users');
-      const rawList = Array.isArray(res.data) 
-        ? res.data 
+      const rawList = Array.isArray(res.data)
+        ? res.data
         : (res.data?.users || res.data?.data || []);
-      
+
       const mapped: MemberItem[] = rawList.map((u: any) => ({
         id: String(u.id),
         name: u.username || u.name || 'Member',
@@ -101,7 +101,7 @@ const MembersPage: React.FC = () => {
           </p>
         </div>
         <div className="mt-4 md:mt-0">
-          <button 
+          <button
             onClick={() => setShowAddModal(true)}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition shadow-sm font-medium"
           >

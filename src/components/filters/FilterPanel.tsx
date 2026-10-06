@@ -135,7 +135,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           <Label>Price Range</Label>
           <Slider
             value={price}
-            onValueChange={(value) => setPrice(value as [number, number])}
+            onValueChange={(value: number[]) => setPrice(value as [number, number])}
             max={priceRange[1]}
             step={10}
           />

@@ -26,7 +26,11 @@ const PulsatingBalance: React.FC<PulsatingBalanceProps> = ({
         setIsAnimating(false);
       }, 1000);
 
-      return () => clearTimeout(timerRef.current);
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+      };
     }
   }, [balance, previousBalance]);
 

@@ -4,6 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import {
   AcademicCapIcon,
+  // eslint-disable-next-line no-unused-vars
   PlayIcon,
   ClockIcon,
   UserGroupIcon,
@@ -35,6 +36,7 @@ export interface ProgramItem {
 const ProgramsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
   const [programs, setPrograms] = useState<ProgramItem[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

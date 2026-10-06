@@ -23,9 +23,11 @@ export interface TrendingContent {id: string; type: 'post' | 'video' | 'music' |
 }
 
 class TrendService {
-  private api = axios.create({baseURL: API_BASE_URL, headers: {
-    'Content-Type': 'application/json'
-  }
+  private api = axios.create({
+    baseURL: API_BASE_URL + '/trends',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   });
 
   async getTrendingHashtags(category?: string, limit: number = 20): Promise<Trend[]> {

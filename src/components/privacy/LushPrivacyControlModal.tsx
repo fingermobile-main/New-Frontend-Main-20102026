@@ -56,7 +56,7 @@ interface LushPrivacyControlModalProps {
 // ─────────────────────────────────────────────────────────────────────────────
 // DEFAULT SETTINGS (Lush-safe defaults — connections-gated)
 // ─────────────────────────────────────────────────────────────────────────────
-const DEFAULT_SETTINGS: LushPrivacySettings = {
+export const DEFAULT_SETTINGS: LushPrivacySettings = {
   allowReviews: 'connections',
   allowComments: 'connections',
   allowSharing: 'connections',

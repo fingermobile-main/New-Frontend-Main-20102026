@@ -8,22 +8,27 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 import {
   TrophyIcon,
   UsersIcon,
+  // eslint-disable-next-line no-unused-vars
   StarIcon,
   CalendarIcon,
+  // eslint-disable-next-line no-unused-vars
   ClockIcon,
   PlusIcon,
   EyeIcon,
+  // eslint-disable-next-line no-unused-vars
   HeartIcon,
+  // eslint-disable-next-line no-unused-vars
   ShareIcon
-} from '@/icons';
-import { hallmarksService, Hallmark, UserHallmark } from '../services/HallmarksService';
+} from '../icons';
+import { hallmarksService, Hallmark } from '../services/HallmarksService';
 import { useAppContext } from '../contexts/AppContext';
 
 interface Community {
@@ -38,6 +43,7 @@ interface Community {
 
 const HallmarksPage: React.FC = () => {
   const { user } = useAppContext(); // Get current user from context
+  // eslint-disable-next-line no-unused-vars
   const [communities, setCommunities] = useState<Community[]>([
     {
       id: 1,
@@ -126,6 +132,27 @@ const HallmarksPage: React.FC = () => {
   const observer = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
+  // Hallmark Community Commentary & Milestone Commendations
+  const [commentInput, setCommentInput] = useState('');
+  const [comments, setComments] = useState<Array<{ id: string; author: string; text: string; time: string }>>([
+    { id: '1', author: 'Nia Adebayo', text: 'Huge congratulations to all sovereign node builders awarded the Top Contributor Hallmark!', time: '10m ago' },
+    { id: '2', author: 'Tariq Al-Mansoor', text: 'Proud to see our Digital Living Room community achieve the Community Builder Hallmark milestone today!', time: '25m ago' }
+  ]);
+
+  const handlePostCommendation = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentInput.trim()) return;
+    const newComment = {
+      id: Date.now().toString(),
+      author: user?.username || 'You',
+      text: commentInput.trim(),
+      time: 'Just now'
+    };
+    setComments(prev => [newComment, ...prev]);
+    voiceLineServiceInstance.playCommentaryVoiceLine('hallmarks');
+    setCommentInput('');
+  };
+
   // Fetch user hallmarks from backend
   useEffect(() => {
     const fetchUserHallmarks = async () => {
@@ -195,13 +222,14 @@ const HallmarksPage: React.FC = () => {
       try {
         setLoading(true);
         const response = await hallmarksService.getUserHallmarks(user.id);
-        
+
         if (response.success) {
           setMyHallmarks(response.data.map(uh => uh.hallmark));
         } else {
           setError('Failed to load your hallmarks');
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching user hallmarks:', err);
         setError('Failed to load your hallmarks');
       } finally {
@@ -510,6 +538,48 @@ const HallmarksPage: React.FC = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Hallmark Community Commentary & Commendations */}
+        <div className="mt-12 bg-white rounded-2xl p-6 shadow-md border border-gray-200 space-y-6">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <span>🏅</span> Hallmark Commendations & Discourse
+              </h3>
+              <p className="text-sm text-gray-500">
+                Congratulate peers on milestone unlocks and share community hallmark accolades.
+              </p>
+            </div>
+            <span className="text-xs font-semibold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full">
+              {comments.length} Commendations
+            </span>
+          </div>
+
+          <form onSubmit={handlePostCommendation} className="flex gap-3">
+            <input
+              type="text"
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+              placeholder="Leave an encouraging comment or commendation on this hallmark..."
+              className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 rounded-xl">
+              Post Comment
+            </Button>
+          </form>
+
+          <div className="space-y-3 pt-2">
+            {comments.map((c) => (
+              <div key={c.id} className="p-3.5 bg-gray-50 rounded-xl border border-gray-100 flex items-start justify-between">
+                <div>
+                  <span className="font-bold text-sm text-gray-800 mr-2">@{c.author}</span>
+                  <span className="text-xs text-gray-400">{c.time}</span>
+                  <p className="text-sm text-gray-700 mt-1">{c.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

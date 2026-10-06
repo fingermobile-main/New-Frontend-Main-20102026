@@ -67,13 +67,18 @@ const TopHeaderNavigation: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <Link to="/" className="text-2xl font-bold flex items-center hidden sm:flex">
-                <span className="mr-2">🌀</span>
-                FingerMobile Protocol
-              </Link>
-              <Link to="/" className="text-xl font-bold flex items-center sm:hidden">
-                <span className="mr-1">🌀</span>
-                FingerMobile
+              <Link to="/" className="flex items-center space-x-2">
+                <img
+                  src="/assets/branding/fingermobile/FingerMobile orange logo.webp"
+                  alt="FingerMobile"
+                  className="h-9 w-auto object-contain drop-shadow"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/branding/fingermobile/logo.png';
+                  }}
+                />
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-white hidden sm:inline">
+                  FingerMobile<span className="text-orange-300"> Protocol</span>
+                </span>
               </Link>
             </div>
 
@@ -192,8 +197,18 @@ const TopHeaderNavigation: React.FC = () => {
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setIsMobileMenuOpen(false)}></div>
           <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col z-50 overflow-y-auto">
-            <div className="p-4 flex justify-between items-center border-b border-gray-100">
-              <span className="font-bold text-gray-900 text-lg">Menu</span>
+            <div className="p-4 flex justify-between items-center border-b border-gray-100 bg-slate-50/70">
+              <div className="flex items-center space-x-2">
+                <img
+                  src="/assets/branding/fingermobile/FRONT copy.webp"
+                  alt="FingerMobile"
+                  className="h-8 w-8 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/branding/fingermobile/drawer-splash-logo.webp';
+                  }}
+                />
+                <span className="font-bold text-gray-900 text-lg">FingerMobile</span>
+              </div>
               <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-500 hover:text-gray-700">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -106,7 +106,7 @@ const PaymentForm: React.FC = () => {
           <TextInput
             style={styles.input}
             value={formData.paymentMethod}
-            onChangeText={(value) => handleInputChange('paymentMethod', value)}
+            onChangeText={(value: string) => handleInputChange('paymentMethod', value)}
             placeholder="Card, PayPal, Apple Pay"
             autoCapitalize="words"
             editable={!loading}
@@ -118,7 +118,7 @@ const PaymentForm: React.FC = () => {
           <TextInput
             style={styles.input}
             value={formData.currency}
-            onChangeText={(value) => handleInputChange('currency', value.toUpperCase())}
+            onChangeText={(value: string) => handleInputChange('currency', value.toUpperCase())}
             placeholder="USD"
             autoCapitalize="characters"
             maxLength={3}
@@ -131,7 +131,7 @@ const PaymentForm: React.FC = () => {
           <TextInput
             style={[styles.input, styles.textArea]}
             value={formData.description}
-            onChangeText={(value) => handleInputChange('description', value)}
+            onChangeText={(value: string) => handleInputChange('description', value)}
             placeholder="Enter payment description"
             multiline
             numberOfLines={3}

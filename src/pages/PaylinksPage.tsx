@@ -71,6 +71,7 @@ const PaylinksPage: React.FC = () => {
 
     setIsProcessing(true);
     try {
+      // eslint-disable-next-line no-unused-vars
       const res = await apiService.post('/api/paylinks', {
         title: newPaylink.title,
         description: newPaylink.description,

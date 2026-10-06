@@ -31,6 +31,7 @@ interface FilterOptions {
 const StorefrontsPage: React.FC = () => {
   const navigate = useNavigate();
   const { ficBalance, showToast } = useAppContext();
+  // eslint-disable-next-line no-unused-vars
   const { balance } = useWeb3();
 
   const [storefronts, setStorefronts] = useState<StorefrontItem[]>([]);
@@ -357,7 +358,7 @@ const StorefrontsPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
               <h3 className="text-xl font-bold text-gray-900 mb-1">Send FIC Gift</h3>
               <p className="text-sm text-gray-500 mb-4">Support {selectedStore.name} with instant FIC transfer</p>
-              
+
               <div className="mb-4">
                 <label className="block text-xs font-semibold text-gray-700 mb-1">Gift Amount (FIC)</label>
                 <input

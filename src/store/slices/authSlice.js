@@ -53,34 +53,34 @@ export const logoutUser = createAsyncThunk(
       // Even if the API fails, still remove the local token
       localStorage.removeItem('accessToken');
       return {success: true,
-  message: 'Logged out successfully' };
+        message: 'Logged out successfully' };
     }
   }
 );
 
 export const authSlice = createSlice({name: 'auth',
   initialState: {
-  user: null,
-  token: localStorage.getItem('accessToken'),
-  isAuthenticated: false,
-  loading: false,
-  error: null
+    user: null,
+    token: localStorage.getItem('accessToken'),
+    isAuthenticated: false,
+    loading: false,
+    error: null
   },
-reducers: {clearError: (state) => {
-      state.error = null;
-    },
-setCredentials: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-    },
-logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-    }
+  reducers: {clearError: (state) => {
+    state.error = null;
   },
-extraReducers: (builder) => {
+  setCredentials: (state, action) => {
+    state.user = action.payload.user;
+    state.token = action.payload.token;
+    state.isAuthenticated = true;
+  },
+  logout: (state) => {
+    state.user = null;
+    state.token = null;
+    state.isAuthenticated = false;
+  }
+  },
+  extraReducers: (builder) => {
     builder
       // Login cases
       .addCase(loginUser.pending, (state) => {

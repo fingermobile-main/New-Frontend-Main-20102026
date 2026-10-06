@@ -11,6 +11,7 @@ import { logError } from '../utils/errorLogger';
 // --- Subcomponent: AI Instruction Suggestions ---
 interface AISuggestionProps {
   suggestions: Array<{ label: string; description?: string; instruction: string }>;
+  // eslint-disable-next-line no-unused-vars
   onSelect: (instruction: string) => void;
 }
 

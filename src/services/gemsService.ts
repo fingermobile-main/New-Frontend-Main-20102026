@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export interface GemItem {
-  id: string;
+  id: string | number;
   title: string;
   description: string;
   price: number;
@@ -10,6 +10,8 @@ export interface GemItem {
   creator: string;
   likes: number;
   thumbnail: string;
+  image_url?: string;
+  privacy_type?: 'public' | 'private_visible' | 'secret' | string;
 }
 
 export interface GemsResponse {
@@ -54,9 +56,11 @@ class GemsService {
           price: Number(item.price || item.cost || 100),
           category: item.category || 'Collectibles',
           rating: Number(item.rating || 4.8),
-          creator: item.creator || 'FingerMobile Protocol',
+          creator: item.creator || 'FingerMobile Protocol™',
           likes: Number(item.likes || 0),
-          thumbnail: item.thumbnail || item.icon || '/thumbnails/default-gem.jpg'
+          thumbnail: item.image_url || item.thumbnail || item.icon || '/thumbnails/default-gem.jpg',
+          image_url: item.image_url || item.thumbnail || '',
+          privacy_type: item.privacy_type || 'public'
         }));
 
         return {
@@ -72,7 +76,7 @@ class GemsService {
       const txResponse = await this.api.get('/gems/transactions', {
         params: { limit, offset }
       });
-      
+
       if (txResponse.data && txResponse.data.data && txResponse.data.data.transactions) {
         const gems = txResponse.data.data.transactions.map((transaction: any, index: number) => ({
           id: String(transaction.id || `gem-${index}`),
@@ -85,7 +89,7 @@ class GemsService {
           likes: 0,
           thumbnail: '/thumbnails/default-gem.jpg'
         }));
-        
+
         return {
           success: true,
           data: gems,
@@ -94,7 +98,7 @@ class GemsService {
           offset: txResponse.data.data.offset || offset
         };
       }
-      
+
       return {
         success: true,
         data: [],
@@ -169,6 +173,39 @@ class GemsService {
       return {
         success: false,
         message: error instanceof Error ? error.message : 'Failed to deduct gems'
+      };
+    }
+  }
+
+  async redeemItem(itemId: string | number): Promise<{ success: boolean; message: string; newBalance?: number; item?: any }> {
+    try {
+      const response = await this.api.post('/gems/redeem', { itemId });
+      return response.data;
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to redeem gem item'
+      };
+    }
+  }
+
+  async getBroadcastFeed(): Promise<{ success: boolean; data: any[] }> {
+    try {
+      const response = await this.api.get('/gems/broadcast/feed');
+      return response.data;
+    } catch (error: any) {
+      return { success: false, data: [] };
+    }
+  }
+
+  async postBroadcast(contentText: string, mediaUrls: string[] = []): Promise<{ success: boolean; message: string; data?: any }> {
+    try {
+      const response = await this.api.post('/gems/broadcast', { contentText, mediaUrls });
+      return response.data;
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to post Gems broadcast'
       };
     }
   }

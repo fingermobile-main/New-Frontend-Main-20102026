@@ -19,7 +19,7 @@ export const OwnItAccessGuard: React.FC<OwnItAccessGuardProps> = ({ children }) 
 
   // Evaluate RBAC & Badge Access Logic
   const role = (user?.role || '').toLowerCase();
-  const hasBadges = Array.isArray(user?.badges) && user.badges.length > 0;
+  const hasBadges = Array.isArray(user?.badges) && (user?.badges?.length || 0) > 0;
   const isVerifiedBadge = Boolean(user?.isVerified || hasBadges);
 
   // Check subscription tiers or elevated roles

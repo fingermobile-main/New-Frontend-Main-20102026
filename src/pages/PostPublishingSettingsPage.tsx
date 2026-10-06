@@ -30,6 +30,7 @@ const PostPublishingSettingsPage: React.FC = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const continents = [
     'USSR', 'Europe', 'USA', 'North America', 'South America', 'United Kingdom',
     'Africa', 'West Africa', 'East Africa', 'South Africa', 'North Africa',
@@ -208,7 +209,7 @@ const PostPublishingSettingsPage: React.FC = () => {
                         id="share-to-mi"
                         name="shareToMi"
                         type="checkbox"
-                        checked={settings.shareToMi}
+                        checked={Boolean(settings.shareToMi)}
                         onChange={(e) => updateSettings({ shareToMi: e.target.checked })}
                         className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />

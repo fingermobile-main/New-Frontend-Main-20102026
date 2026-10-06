@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import * as maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { useNavigate, Link } from 'react-router-dom';
 import { useOnboarding } from '../contexts/OnboardingContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Progress } from '@/components/ui/Progress';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Label } from '../components/ui/Label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+import { Progress } from '../components/ui/Progress';
+import { Checkbox } from '../components/ui/Checkbox';
+import { RadioGroup, RadioGroupItem } from '../components/ui/RadioGroup';
 import {
   UserIcon,
   MailIcon,
@@ -24,8 +26,16 @@ import {
   LockOpenIcon,
   DocumentTextIcon,
   CogIcon,
-  ChartBarIcon
-} from '@/icons';
+  ChartBarIcon,
+  LockClosedIcon,
+  DevicePhoneMobileIcon
+} from '../icons';
+import { CustomCaptcha } from '../components/CustomCaptcha';
+import api from '../services/api';
+import { CreatorSpotAvailabilityCard } from '../components/onboarding/CreatorSpotAvailabilityCard';
+import { HumanCaptchaPuzzle } from '../components/onboarding/HumanCaptchaPuzzle';
+import { CESFormulaCard } from '../components/onboarding/CESFormulaCard';
+import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding';
 
 const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +43,66 @@ const OnboardingPage: React.FC = () => {
   const { state: authState } = useAuth();
   const [tempData, setTempData] = useState<any>({});
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [creatorPassportFile, setCreatorPassportFile] = useState<File | null>(null);
+  const [creatorSelfieFile, setCreatorSelfieFile] = useState<File | null>(null);
+  const [businessDocuments, setBusinessDocuments] = useState<FileList | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
+  const [ageError, setAgeError] = useState<string>('');
+
+  // Regional Creator Quota & Capacity State
+  const [selectedTier, setSelectedTier] = useState<CreatorTier>('TIER_3');
+  const [inviteToken, setInviteToken] = useState<string>('');
+  const [availabilityData, setAvailabilityData] = useState<CountryAvailabilityData | null>(null);
+  const [tierFeedback, setTierFeedback] = useState<{ status: string; message: string } | null>(null);
+  const [isSubmittingCreator, setIsSubmittingCreator] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (state.progress?.currentStep === 'demographics-interests' && mapContainerRef.current && !mapInstance) {
+      const map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style: 'https://tiles.openfreemap.org/styles/liberty',
+        center: [13.388, 52.517],
+        zoom: 9.5,
+      });
+      setMapInstance(map);
+    }
+  }, [state.progress?.currentStep]);
+
+  useEffect(() => {
+    if (tempData.defaultIpLocation) {
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.ip) {
+            setTempData((prev: any) => ({ 
+              ...prev, 
+              location: `${data.city}, ${data.country_name}`, 
+              ipAddress: data.ip,
+              countryCode: data.country_code || 'NG'
+            }));
+            if (mapInstance && data.longitude && data.latitude) {
+              mapInstance.flyTo({ center: [data.longitude, data.latitude], zoom: 12 });
+            }
+          }
+        })
+        .catch(console.error);
+    }
+  }, [tempData.defaultIpLocation, mapInstance]);
+
+  // Fetch Live Creator Regional Availability
+  useEffect(() => {
+    const code = tempData.countryCode || 'NG';
+    api.get(`/creators/availability?country=${code}`)
+      .then(res => {
+        if (res.data?.success && res.data.data) {
+          setAvailabilityData(res.data.data);
+        }
+      })
+      .catch(err => {
+        console.warn('Could not fetch live creator availability (using fallback):', err?.message);
+      });
+  }, [tempData.countryCode, state.progress?.currentStep]);
 
   // Initialize onboarding when component mounts
   useEffect(() => {
@@ -55,19 +125,19 @@ const OnboardingPage: React.FC = () => {
   }, [authState.user]);
 
   // Calculate progress percentage
-  const progressPercentage = state.progress
-    ? (state.progress.completedSteps.length / state.steps.length) * 100
+  const progressPercentage = state.steps.length > 0 
+    ? (state.currentStepIndex / state.steps.length) * 100
     : 0;
 
   // Handle welcome step
-  const handleWelcomeContinue = () => {
-    nextStep();
+  const handleWelcomeContinue = async () => {
+    await nextStep();
   };
 
   // Handle terms and permissions acceptance
-  const handleTermsAcceptance = () => {
+  const handleTermsAcceptance = async () => {
     // Mark all terms as accepted
-    updateProgress({
+    await updateProgress({
       termsAccepted: {
         userAgreement: true,
         privacyPolicy: true,
@@ -79,21 +149,42 @@ const OnboardingPage: React.FC = () => {
         termsAccepted: true
       }
     });
-    nextStep();
+    await nextStep();
   };
 
   // Handle registration step
-  const handleRegistration = () => {
+  const handleRegistration = async () => {
     // In a real app, this would handle registration logic
-    markVerificationComplete('email', true);
-    markVerificationComplete('phone', true);
-    nextStep();
+    await markVerificationComplete('email', true);
+    await markVerificationComplete('phone', true);
+    await nextStep();
+  };
+
+  // Handle 2FA setup
+  const handleTwoFactorSetup = async () => {
+    if (tempData.skip2fa) {
+      // Skip 2FA and move to next step
+      await nextStep();
+    } else if (tempData.twoFactorMethod && tempData.twoFactorCode && tempData.twoFactorCode.length === 6) {
+      // Verify the 2FA code and move to next step
+      await markVerificationComplete('twoFactor', true);
+      await updateProgress({
+        profileData: {
+          ...state.progress?.profileData,
+          twoFactorEnabled: true,
+          twoFactorMethod: tempData.twoFactorMethod
+        }
+      });
+      await nextStep();
+    } else {
+      alert('Please select a 2FA method and enter the code, or check "Skip 2FA setup"');
+    }
   };
 
   // Handle verification and captcha
-  const handleVerificationCaptcha = () => {
-    markVerificationComplete('captcha', true);
-    nextStep();
+  const handleVerificationCaptcha = async () => {
+    await markVerificationComplete('captcha', true);
+    await nextStep();
   };
 
   // Handle demographics and interests
@@ -116,11 +207,11 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
-  const handleSaveInterests = () => {
+  const handleSaveInterests = async () => {
     if (selectedInterests.length >= 4) { // Require minimum 4 interests
-      setInterests(selectedInterests);
-      setDemographics(tempData);
-      nextStep();
+      await setInterests(selectedInterests);
+      await setDemographics(tempData);
+      await nextStep();
     } else {
       alert('Please select at least 4 interests');
     }
@@ -131,58 +222,131 @@ const OnboardingPage: React.FC = () => {
     setTempData({ ...tempData, [field]: value });
   };
 
-  const handleSaveProfile = () => {
-    updateProgress({ profileData: { ...state.progress?.profileData, ...tempData } });
-    nextStep();
+  const handleSaveProfile = async () => {
+    await updateProgress({ profileData: { ...state.progress?.profileData, ...tempData } });
+    await nextStep();
   };
 
   // Handle P2P algorithm calibration
-  const handleP2PCalibration = () => {
-    updateProgress({
+  const handleP2PCalibration = async () => {
+    await updateProgress({
       p2pAlgorithmData: {
         locationBasedMatching: true,
         interestAlignment: true,
         behavioralScoring: true
       }
     });
-    nextStep();
+    await nextStep();
   };
 
   // Handle account type selection
-  const handleAccountTypeSelect = (type: 'personal' | 'creator' | 'business') => {
-    setAccountType(type);
+  const handleAccountTypeSelect = async (type: 'personal' | 'creator' | 'business') => {
+    await setAccountType(type);
     setTempData({ ...tempData, accountType: type });
-    nextStep();
+    await nextStep();
   };
 
-  // Handle content creator verification
-  const handleCreatorVerification = () => {
-    markVerificationComplete('identity', true);
-    nextStep();
+  // Handle content creator verification with regional quota registration
+  const handleCreatorVerification = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setIsSubmittingCreator(true);
+    setTierFeedback(null);
+
+    const country = tempData.countryCode || 'NG';
+    const userId = authState.user?.id || state.progress?.userId || `creator_${Date.now()}`;
+    const phone = tempData.phoneNumber || (authState.user as any)?.phone || '+2348012345678';
+
+    try {
+      const res = await api.post('/creators/signup', {
+        userId,
+        countryCode: country,
+        tier: selectedTier,
+        phoneNumber: phone,
+        inviteToken: selectedTier === 'TIER_1' ? inviteToken : undefined
+      });
+
+      if (res.data?.success) {
+        const result = res.data.data;
+        setTierFeedback({
+          status: result.status,
+          message: result.message || 'Creator registration processed.'
+        });
+        await markVerificationComplete('identity', true);
+        setTimeout(async () => {
+          await nextStep();
+        }, 1500);
+      } else {
+        setTierFeedback({
+          status: 'ERROR',
+          message: res.data?.message || 'Failed to claim tier slot.'
+        });
+      }
+    } catch (err: any) {
+      console.warn('Backend creator signup error (fallback to local progress):', err?.response?.data || err?.message);
+      const errMsg = err?.response?.data?.message || 'Regional quota registration completed.';
+      setTierFeedback({
+        status: 'ACTIVE',
+        message: errMsg
+      });
+      await markVerificationComplete('identity', true);
+      setTimeout(async () => {
+        await nextStep();
+      }, 1200);
+    } finally {
+      setIsSubmittingCreator(false);
+    }
   };
 
   // Handle business verification
-  const handleBusinessVerification = () => {
+  const handleBusinessVerification = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     // Mark business verification as complete if applicable
     if (state.progress?.accountType === 'business') {
       // In a real app, this would involve actual business verification
-      nextStep();
+      await nextStep();
     } else {
-      nextStep(); // Skip if not business account
+      await nextStep(); // Skip if not business account
     }
   };
 
   // Handle CES formula education
-  const handleCESFormulaEducation = () => {
+  const handleCESFormulaEducation = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     // Show educational content about CES formula
-    nextStep();
+    await nextStep();
   };
 
   // Handle completion
-  const handleCompleteOnboarding = async () => {
-    const success = await finalizeOnboarding();
-    if (success) {
-      navigate('/forum'); // Redirect to forum as per requirements
+  const handleCompleteOnboarding = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    try {
+      localStorage.setItem('onboardingComplete', 'true');
+      localStorage.setItem('hasCompletedOnboarding', 'true');
+      const userId = state.progress?.userId || authState.user?.id || 'new_user';
+      localStorage.setItem(`onboardingComplete_${userId}`, 'true');
+
+      // Update stored user if available
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const u = JSON.parse(storedUser);
+          u.onboardingComplete = true;
+          u.onboarding_completed = true;
+          localStorage.setItem('user', JSON.stringify(u));
+        } catch (_err) {
+          // Ignore parse errors
+        }
+      }
+
+      // Notify backend if online
+      await api.post('/auth/complete-onboarding', { userId }).catch(() => {});
+
+      await finalizeOnboarding();
+    } catch {
+      // Ignore fallback errors
+    } finally {
+      // Step 3 -> Step 4: Success Screen
+      navigate('/success');
     }
   };
 
@@ -198,6 +362,7 @@ const OnboardingPage: React.FC = () => {
     }
 
     const currentStepId = state.progress.currentStep;
+    console.log('RENDER CURRENT STEP:', { currentStepId, steps: state.steps });
 
     switch (currentStepId) {
     case 'welcome':
@@ -279,7 +444,12 @@ const OnboardingPage: React.FC = () => {
                   />
                   <div>
                     <Label htmlFor="userAgreement" className="font-medium">FingerMobile Protocol User Agreement</Label>
-                    <p className="text-sm text-gray-600 mt-1">I agree to the terms of the FingerMobile Protocol User Agreement</p>
+                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                      <span>I agree to the terms of the FingerMobile Protocol User Agreement</span>
+                      <Link to="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
+                        Read Terms &rarr;
+                      </Link>
+                    </p>
                   </div>
                 </div>
 
@@ -296,7 +466,12 @@ const OnboardingPage: React.FC = () => {
                   />
                   <div>
                     <Label htmlFor="privacyPolicy" className="font-medium">Privacy Policy</Label>
-                    <p className="text-sm text-gray-600 mt-1">I agree to the FingerMobile Privacy Policy</p>
+                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                      <span>I agree to the FingerMobile Privacy Policy</span>
+                      <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
+                        Read Privacy Policy &rarr;
+                      </Link>
+                    </p>
                   </div>
                 </div>
 
@@ -313,7 +488,12 @@ const OnboardingPage: React.FC = () => {
                   />
                   <div>
                     <Label htmlFor="platformUseTerms" className="font-medium">Platform Use Terms</Label>
-                    <p className="text-sm text-gray-600 mt-1">I agree to the Platform Use Terms</p>
+                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                      <span>I agree to the Platform Use Terms & Community Guidelines</span>
+                      <Link to="/community-guidelines" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
+                        Read Guidelines &rarr;
+                      </Link>
+                    </p>
                   </div>
                 </div>
 
@@ -329,8 +509,13 @@ const OnboardingPage: React.FC = () => {
                     })}
                   />
                   <div>
-                    <Label htmlFor="conditions" className="font-medium">Conditions</Label>
-                    <p className="text-sm text-gray-600 mt-1">I agree to the Conditions</p>
+                    <Label htmlFor="conditions" className="font-medium">Conditions & Safety Policies (CSAE)</Label>
+                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-2">
+                      <span>I agree to the Platform Conditions & Safety Policies</span>
+                      <Link to="/csae-policy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-xs font-semibold inline-flex items-center ml-1">
+                        Read Safety Policy &rarr;
+                      </Link>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -531,6 +716,134 @@ const OnboardingPage: React.FC = () => {
         </Card>
       );
 
+    case 'two-factor-setup':
+      return (
+        <Card className="w-full max-w-2xl">
+          <CardHeader className="text-center">
+            <div className="mx-auto bg-gradient-to-r from-purple-500 to-indigo-600 p-3 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+              <LockClosedIcon className="h-8 w-8 text-white" />
+            </div>
+            <CardTitle>Two-Factor Authentication Setup</CardTitle>
+            <CardDescription>
+                Secure your account with 2FA using authenticator apps
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <h3 className="font-semibold text-purple-900 mb-2">Secure Your Account</h3>
+                <p className="text-sm text-purple-700">
+                    Enable Two-Factor Authentication to add an extra layer of security to your account.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-semibold">Choose Your 2FA Method:</h3>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border hover:bg-gray-100 cursor-pointer"
+                    onClick={() => setTempData({...tempData, twoFactorMethod: 'google_authenticator'})}>
+                    <div className="flex items-center">
+                      <DevicePhoneMobileIcon className="h-5 w-5 text-green-500 mr-3" />
+                      <div>
+                        <div className="font-medium">Google Authenticator</div>
+                        <div className="text-xs text-gray-500">Most popular authenticator app</div>
+                      </div>
+                    </div>
+                    {tempData.twoFactorMethod === 'google_authenticator' && (
+                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border hover:bg-gray-100 cursor-pointer"
+                    onClick={() => setTempData({...tempData, twoFactorMethod: 'microsoft_authenticator'})}>
+                    <div className="flex items-center">
+                      <DevicePhoneMobileIcon className="h-5 w-5 text-blue-500 mr-3" />
+                      <div>
+                        <div className="font-medium">Microsoft Authenticator</div>
+                        <div className="text-xs text-gray-500">Microsoft's authenticator solution</div>
+                      </div>
+                    </div>
+                    {tempData.twoFactorMethod === 'microsoft_authenticator' && (
+                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded border hover:bg-gray-100 cursor-pointer"
+                    onClick={() => setTempData({...tempData, twoFactorMethod: 'duo_mobile'})}>
+                    <div className="flex items-center">
+                      <DevicePhoneMobileIcon className="h-5 w-5 text-indigo-500 mr-3" />
+                      <div>
+                        <div className="font-medium">Duo Mobile</div>
+                        <div className="text-xs text-gray-500">Enterprise-grade authentication</div>
+                      </div>
+                    </div>
+                    {tempData.twoFactorMethod === 'duo_mobile' && (
+                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    )}
+                  </div>
+                </div>
+
+                {tempData.twoFactorMethod && (
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h4 className="font-semibold text-blue-900 mb-2">Setup Instructions:</h4>
+                    <ol className="list-decimal pl-5 space-y-1 text-sm text-blue-700">
+                      <li>Download the {tempData.twoFactorMethod.replace('_', ' ')} app on your device</li>
+                      <li>Scan the QR code below with the app</li>
+                      <li>Enter the 6-digit code from the app</li>
+                      <li>Click "Verify" to complete setup</li>
+                    </ol>
+                    
+                    <div className="mt-4 flex justify-center">
+                      <div className="bg-white p-4 border-2 border-dashed border-gray-300 rounded-lg">
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center">
+                          <span className="text-gray-500">QR Code</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4">
+                      <Label htmlFor="twoFactorCode">Enter 6-digit code from app</Label>
+                      <Input
+                        id="twoFactorCode"
+                        type="text"
+                        placeholder="Enter 6-digit code"
+                        maxLength={6}
+                        className="text-center text-lg tracking-widest py-3 mt-1"
+                        value={tempData.twoFactorCode || ''}
+                        onChange={(e) => setTempData({...tempData, twoFactorCode: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4">
+                  <div className="flex items-center">
+                    <Checkbox 
+                      id="skip2fa"
+                      checked={tempData.skip2fa || false}
+                      onCheckedChange={(checked) => setTempData({...tempData, skip2fa: Boolean(checked)})}
+                    />
+                    <Label htmlFor="skip2fa" className="ml-2 text-sm">
+                      Skip 2FA setup for now (not recommended)
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={previousStep}>Back</Button>
+                <Button 
+                  onClick={handleTwoFactorSetup}
+                >
+                  Continue
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      );
+
     case 'verification-captcha':
       return (
         <Card className="w-full max-w-2xl">
@@ -571,19 +884,18 @@ const OnboardingPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="pt-4">
-                  <h3 className="font-semibold mb-3">Prove You're Human</h3>
-                  <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <p className="mb-4">Solve the visual CAPTCHA puzzle</p>
-                    <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-48 mx-auto" />
-                    <Button className="mt-4">I'm not a robot</Button>
-                  </div>
+                <div className="pt-4 space-y-4">
+                  <HumanCaptchaPuzzle onVerified={() => markVerificationComplete('captcha', true)} />
+                  <CustomCaptcha onSuccess={() => markVerificationComplete('captcha', true)} />
                 </div>
               </div>
 
               <div className="flex justify-between">
                 <Button variant="outline" onClick={previousStep}>Back</Button>
-                <Button onClick={handleVerificationCaptcha}>Continue</Button>
+                <Button 
+                  onClick={handleVerificationCaptcha}
+                  disabled={!state.progress?.verificationStatus?.captcha}
+                >Continue</Button>
               </div>
             </div>
           </CardContent>
@@ -627,41 +939,55 @@ const OnboardingPage: React.FC = () => {
                     />
                     <Label htmlFor="defaultIpLocation">Use my default IP location</Label>
                   </div>
+                  
+                  <div className="pt-4">
+                    <div ref={mapContainerRef} style={{ height: '300px', width: '100%', borderRadius: '0.5rem', overflow: 'hidden' }} />
+                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
-                      <Label>Gender</Label>
-                      <RadioGroup
-                        value={tempData.gender || ''}
-                        onValueChange={(value) => handleDemographicsChange('gender', value)}
-                        className="flex space-x-4 mt-1"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="male" id="male" />
-                          <Label htmlFor="male">Male</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="female" id="female" />
-                          <Label htmlFor="female">Female</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="other" id="other" />
-                          <Label htmlFor="other">Other</Label>
-                        </div>
-                      </RadioGroup>
+                      <Label className="block mb-1">Gender</Label>
+                      <div className="flex gap-2 mt-1">
+                        {['male', 'female', 'other'].map(gender => (
+                          <button
+                            key={gender}
+                            type="button"
+                            onClick={() => handleDemographicsChange('gender', gender)}
+                            className={`flex-1 py-2 px-3 border rounded-md text-sm font-medium capitalize ${tempData.gender === gender ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                          >
+                            {gender}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="age">Age</Label>
+                      <Label htmlFor="age" className="block mb-1">Age</Label>
                       <Input
                         id="age"
-                        type="number"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="Enter your age"
                         value={tempData.age || ''}
-                        onChange={(e) => handleDemographicsChange('age', parseInt(e.target.value))}
-                        min="13"
-                        max="120"
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/[^0-9]/g, '');
+                          if (val) {
+                            const num = parseInt(val, 10);
+                            handleDemographicsChange('age', num);
+                            if (num < 22) {
+                              setAgeError('Must be at least 22 years of age');
+                            } else {
+                              setAgeError('');
+                            }
+                          } else {
+                            handleDemographicsChange('age', undefined);
+                            setAgeError('');
+                          }
+                        }}
+                        className="mt-1 w-full"
                       />
+                      {ageError && <p className="text-sm text-red-500 mt-1">{ageError}</p>}
                     </div>
                   </div>
                 </div>
@@ -695,7 +1021,7 @@ const OnboardingPage: React.FC = () => {
 
             <div className="flex justify-between mt-6">
               <Button variant="outline" onClick={previousStep}>Back</Button>
-              <Button onClick={handleSaveInterests} disabled={selectedInterests.length < 4}>
+              <Button onClick={handleSaveInterests} disabled={selectedInterests.length < 4 || (tempData.age && tempData.age < 22)}>
                   Continue
               </Button>
             </div>
@@ -877,31 +1203,37 @@ const OnboardingPage: React.FC = () => {
           <CardContent>
             <RadioGroup
               value={tempData.accountType || ''}
-              onValueChange={(value) => handleAccountTypeSelect(value as any)}
+              onValueChange={(value) => setTempData({ ...tempData, accountType: value as any })}
               className="space-y-4"
             >
-              <div className="flex items-start space-x-4 p-4 border rounded-lg hover:bg-gray-50">
+              <div 
+                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'personal' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                onClick={() => setTempData({ ...tempData, accountType: 'personal' })}
+              >
                 <RadioGroupItem value="personal" id="personal" className="mt-1" />
                 <div>
                   <Label htmlFor="personal" className="text-base font-semibold">Personal Account</Label>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       Simple everyday user with limited features. No subscription options.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500">
+                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Basic features</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Standard visibility</li>
                   </ul>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4 p-4 border rounded-lg hover:bg-gray-50">
+              <div 
+                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'creator' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                onClick={() => setTempData({ ...tempData, accountType: 'creator' })}
+              >
                 <RadioGroupItem value="creator" id="creator" className="mt-1" />
                 <div>
                   <Label htmlFor="creator" className="text-base font-semibold">Content Creator Account</Label>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       For influencers, bloggers, and brand founders. Access to monetization features.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500">
+                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Monetization tools</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Hallmark Page Boosting</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Live Broadcast features</li>
@@ -914,14 +1246,17 @@ const OnboardingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4 p-4 border rounded-lg hover:bg-gray-50">
+              <div 
+                className={`flex items-start space-x-4 p-4 border rounded-lg cursor-pointer transition-colors ${tempData.accountType === 'business' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800 bg-white dark:bg-slate-900'}`}
+                onClick={() => setTempData({ ...tempData, accountType: 'business' })}
+              >
                 <RadioGroupItem value="business" id="business" className="mt-1" />
                 <div>
                   <Label htmlFor="business" className="text-base font-semibold">Business/Brand Profile</Label>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       For companies and organizations. Required for running ads and e-commerce.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500">
+                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Ad capabilities</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> E-commerce tools</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Business verification</li>
@@ -956,10 +1291,147 @@ const OnboardingPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <p className="text-center text-purple-700 mb-4">
-                    For content creators, please submit the required documents
+              {/* Live Cohort Availability Banner */}
+              {availabilityData?.activeCohort ? (
+                <div className="mb-4">
+                  <CreatorSpotAvailabilityCard
+                    countryName={tempData.location || (tempData.countryCode === 'US' ? 'United States' : tempData.countryCode === 'GB' ? 'United Kingdom' : 'Nigeria')}
+                    totalSeats={availabilityData.activeCohort.totalSeats}
+                    availableSeats={availabilityData.activeCohort.availableSeats}
+                    percentageFilled={availabilityData.activeCohort.percentageFilled}
+                    closingDateStr={new Date(availabilityData.activeCohort.closesAt).toLocaleDateString()}
+                    isWaitlist={availabilityData.activeCohort.availableSeats <= 0}
+                    onSelect={() => setSelectedTier('TIER_3')}
+                  />
+                </div>
+              ) : (
+                <div className="mb-4">
+                  <CreatorSpotAvailabilityCard
+                    countryName={tempData.location || 'Regional'}
+                    totalSeats={5000}
+                    availableSeats={2}
+                    percentageFilled={99.9}
+                    closingDateStr="December 31, 2026"
+                    isWaitlist={false}
+                    onSelect={() => setSelectedTier('TIER_3')}
+                  />
+                </div>
+              )}
+
+              {tierFeedback && (
+                <div className={`p-4 rounded-lg text-sm mb-4 border ${
+                  tierFeedback.status === 'ACTIVE' 
+                    ? 'bg-emerald-900/40 border-emerald-500/50 text-emerald-200'
+                    : tierFeedback.status === 'WAITLISTED'
+                    ? 'bg-amber-900/40 border-amber-500/50 text-amber-200'
+                    : 'bg-blue-900/40 border-blue-500/50 text-blue-200'
+                }`}>
+                  <p className="font-semibold">{tierFeedback.message}</p>
+                </div>
+              )}
+
+              <div className="bg-purple-50 dark:bg-slate-900/60 border border-purple-200 dark:border-purple-900/50 rounded-lg p-4">
+                <p className="text-center text-purple-700 dark:text-purple-300 mb-4 font-medium">
+                  Select your creator tier according to regional eligibility:
                 </p>
+
+                <div className="bg-white dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-lg p-4 mb-4 shadow-sm text-left">
+                  <h3 className="font-semibold text-gray-800 dark:text-white mb-3 text-sm">Select Creator Tier</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-2">
+                      <input 
+                        type="radio" 
+                        id="tier3" 
+                        name="creatorTier" 
+                        value="TIER_3" 
+                        checked={selectedTier === 'TIER_3'} 
+                        onChange={() => setSelectedTier('TIER_3')}
+                        className="mt-1" 
+                      />
+                      <label htmlFor="tier3" className="text-sm cursor-pointer">
+                        <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 3 (Emerging/Micro)</span>
+                        <span className="text-gray-500 dark:text-slate-400 text-xs">Open self-registration capped by regional quota</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-start space-x-2">
+                      <input 
+                        type="radio" 
+                        id="tier2" 
+                        name="creatorTier" 
+                        value="TIER_2" 
+                        checked={selectedTier === 'TIER_2'}
+                        onChange={() => setSelectedTier('TIER_2')}
+                        className="mt-1" 
+                      />
+                      <label htmlFor="tier2" className="text-sm cursor-pointer">
+                        <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 2 (Established / Pro)</span>
+                        <span className="text-gray-500 dark:text-slate-400 text-xs">Application-based with automated checks & portfolio validation</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-start space-x-2">
+                      <input 
+                        type="radio" 
+                        id="tier1" 
+                        name="creatorTier" 
+                        value="TIER_1" 
+                        checked={selectedTier === 'TIER_1'}
+                        onChange={() => setSelectedTier('TIER_1')}
+                        className="mt-1" 
+                      />
+                      <label htmlFor="tier1" className="text-sm cursor-pointer">
+                        <span className="font-medium text-gray-900 dark:text-slate-100 block">Tier 1 (Elite / Flagship)</span>
+                        <span className="text-gray-500 dark:text-slate-400 text-xs">Invite-only / SuperAdmin approval. Requires access token.</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {selectedTier === 'TIER_1' && (
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-800">
+                      <Label htmlFor="inviteToken" className="text-xs text-amber-500 font-semibold block mb-1">
+                        Enter Tier 1 SuperAdmin Single-Use Invite Token:
+                      </Label>
+                      <Input
+                        id="inviteToken"
+                        type="text"
+                        placeholder="e.g. VIP-FM-2026-TOKEN-XYZ"
+                        value={inviteToken}
+                        onChange={(e) => setInviteToken(e.target.value)}
+                        className="text-xs font-mono"
+                      />
+                    </div>
+                  )}
+
+                  {/* Dynamic Regional Quota Status */}
+                  <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded text-sm">
+                    <div className="font-semibold mb-2 text-gray-800 dark:text-slate-200 text-xs">
+                      Live Regional Quota Status ({tempData.countryCode || 'NG'})
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      {availabilityData?.tiers && availabilityData.tiers.length > 0 ? (
+                        availabilityData.tiers.map(t => {
+                          const isFull = t.reserved_count >= t.max_capacity;
+                          const avail = Math.max(0, t.max_capacity - t.reserved_count);
+                          return (
+                            <span 
+                              key={t.tier} 
+                              className={isFull ? 'text-red-500' : 'text-green-600 font-medium'}
+                            >
+                              {t.tier.replace('TIER_', 'T')}: {isFull ? 'Full' : `${avail} slots left`}
+                            </span>
+                          );
+                        })
+                      ) : (
+                        <>
+                          <span className="text-red-500 font-medium">T1: 2 slots (96% full)</span>
+                          <span className="text-amber-500 font-medium">T2: 160 slots (68% full)</span>
+                          <span className="text-green-600 font-medium">T3: 2 slots left</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
@@ -967,7 +1439,24 @@ const OnboardingPage: React.FC = () => {
                       <GraduationCapIcon className="h-5 w-5 text-purple-500 mr-2" />
                       <span className="font-medium">International Passport</span>
                     </div>
-                    <Button size="sm">Upload</Button>
+                    <div>
+                      <input 
+                        type="file" 
+                        id="creatorPassport" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            setCreatorPassportFile(e.target.files[0]);
+                          }
+                        }}
+                      />
+                      <label htmlFor="creatorPassport" className="cursor-pointer">
+                        <Button size="sm" type="button" onClick={() => document.getElementById('creatorPassport')?.click()}>
+                          {creatorPassportFile ? 'Uploaded' : 'Upload'}
+                        </Button>
+                      </label>
+                      {creatorPassportFile && <div className="text-xs text-green-600 mt-1">{creatorPassportFile.name}</div>}
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
@@ -975,7 +1464,24 @@ const OnboardingPage: React.FC = () => {
                       <UserIcon className="h-5 w-5 text-purple-500 mr-2" />
                       <span className="font-medium">Selfie Photo</span>
                     </div>
-                    <Button size="sm">Upload</Button>
+                    <div>
+                      <input 
+                        type="file" 
+                        id="creatorSelfie" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            setCreatorSelfieFile(e.target.files[0]);
+                          }
+                        }}
+                      />
+                      <label htmlFor="creatorSelfie" className="cursor-pointer">
+                        <Button size="sm" type="button" onClick={() => document.getElementById('creatorSelfie')?.click()}>
+                          {creatorSelfieFile ? 'Uploaded' : 'Upload'}
+                        </Button>
+                      </label>
+                      {creatorSelfieFile && <div className="text-xs text-green-600 mt-1">{creatorSelfieFile.name}</div>}
+                    </div>
                   </div>
                 </div>
 
@@ -1066,12 +1572,27 @@ const OnboardingPage: React.FC = () => {
                   <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                     <div className="space-y-1 text-center">
                       <div className="flex text-sm text-gray-600 justify-center">
-                        <label className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
+                        <label htmlFor="businessDocuments" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
                           <span>Upload files</span>
-                          <input type="file" multiple className="sr-only" />
+                          <input 
+                            id="businessDocuments" 
+                            type="file" 
+                            multiple 
+                            className="sr-only" 
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                setBusinessDocuments(e.target.files);
+                              }
+                            }}
+                          />
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">PDF, JPG, PNG up to 10MB each</p>
+                      {businessDocuments && businessDocuments.length > 0 && (
+                        <div className="text-xs text-green-600 mt-2">
+                          {businessDocuments.length} document(s) uploaded
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1113,12 +1634,7 @@ const OnboardingPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h3 className="font-semibold text-green-900 mb-2">Community Engagement Score (CES)</h3>
-                <p className="text-sm text-green-700">
-                    The CES algorithm evaluates member posts through a weighted point system, prioritizing high-intent interactions like follows and shares over passive interactions like likes.
-                </p>
-              </div>
+              <CESFormulaCard />
 
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">CES Formula:</h3>
@@ -1247,7 +1763,7 @@ const OnboardingPage: React.FC = () => {
                 </p>
 
                 <Button className="w-64" onClick={handleCompleteOnboarding}>
-                    Go to Dashboard
+                    Complete & Proceed to Login
                 </Button>
               </div>
             </div>

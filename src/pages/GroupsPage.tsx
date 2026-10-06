@@ -1,577 +1,941 @@
 /*
  * FingerMobile Protocol™ - Groups Page Component
- * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
- * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
- * which are the sole and exclusive intellectual property of Mbah Israel Obinna.
- *
- * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
+ * Digital Living Room™ Micro-Community Architecture
+ * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import MainLayout from '../components/layout/MainLayout';
-import { SearchIcon, LockClosedIcon, GlobeAltIcon, UsersIcon, ChatIcon, CalendarIcon, DotsVerticalIcon } from '../components/icons';
-import groupsService, { Group } from '../services/groupsService';
+import groupsService, { Group, CreateGroupRequest } from '../services/groupsService';
+import {
+  Users,
+  Search,
+  Plus,
+  Shield,
+  Eye,
+  Lock,
+  Globe,
+  Sliders,
+  BookOpen,
+  HelpCircle,
+  CheckCircle2,
+  AlertCircle,
+  MessageSquare,
+  Sparkles,
+  BarChart2,
+  Heart,
+  ChevronRight
+} from 'lucide-react';
 
-interface CreateGroupForm {
-  name: string;
-  description?: string;
-  category: string;
-  privacy: 'public' | 'private' | 'secret';
-  isModerated: boolean;
+type TabType = 'my-groups' | 'discover' | 'guides' | 'powertools';
+type PrivacyTier = 'all' | 'public' | 'private' | 'secret';
+
+interface GroupRule {
+  id: number;
+  title: string;
+  description: string;
 }
+
+const DEFAULT_GROUP_RULES: GroupRule[] = [
+  { id: 1, title: 'No Link Dropping or Unauthorized Pitching', description: 'Avoid promotional opt-ins, cold affiliate links, or self-promotion unless in designated threads.' },
+  { id: 2, title: 'Authenticity & Real Identity', description: 'No fake identities, impersonation, bots, or artificial engagement inflation.' },
+  { id: 3, title: 'Absolute Safety & Zero Intimidation', description: 'Zero tolerance for bullying, harassment, intimidation, or predatory behavior.' },
+  { id: 4, title: 'Data Privacy & Anti-Doxxing', description: 'Never share private messages, phone numbers, or off-platform identities without consent.' },
+  { id: 5, title: 'Dignity & Mutual Respect', description: 'Maintain discourse free of hate speech, discrimination, or systemic degradation.' },
+  { id: 6, title: 'Listen Before You Speak', description: 'Read pinned guidelines and search existing discussions before opening redundant threads.' },
+  { id: 7, title: 'No Cross-Spamming', description: 'Never copy-paste the exact same query across multiple groups simultaneously.' },
+  { id: 8, title: 'Constructive Crowdsourced Problem Solving', description: 'Keep comments focused on real-world practical answers, insights, and solutions.' },
+  { id: 9, title: 'Respect Moderator Decisions', description: 'Adhere to rulings by community moderators and sovereign node facilitators.' },
+  { id: 10, title: 'Uphold the Member-First Lens', description: 'Center conversations on shared member growth rather than corporate broadcasting.' }
+];
+
+const GROUP_GUIDES = [
+  {
+    id: 1,
+    title: 'The Digital Living Room: Peer-to-Peer Community Architecture',
+    lessons: 5,
+    duration: '20 min read',
+    description: 'Learn why many-to-many communication outperforms performative billboards, and how micro-communities foster genuine trust.'
+  },
+  {
+    id: 2,
+    title: 'Admin Assist Setup: Keyword Moderation & Automation',
+    lessons: 4,
+    duration: '15 min read',
+    description: 'Deploy automated policy scanners that block scam links, banned words, and bot accounts from your community feed.'
+  },
+  {
+    id: 3,
+    title: 'Facilitated Engagement: Interactive Polls & Live Q&As',
+    lessons: 6,
+    duration: '25 min read',
+    description: 'How to facilitate peer-to-peer psychology, prompt members to answer each other, and drive organic user-generated content.'
+  }
+];
 
 const GroupsPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'my-groups' | 'discover' | 'requests'>('my-groups');
+
+  // Tab & Filters State
+  const [activeTab, setActiveTab] = useState<TabType>('discover');
+  const [privacyFilter, setPrivacyFilter] = useState<PrivacyTier>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [createGroupForm, setCreateGroupForm] = useState<CreateGroupForm>({
+
+  // Groups Data State
+  const [allGroups, setAllGroups] = useState<Group[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Group Creation Modal State
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createForm, setCreateForm] = useState<CreateGroupRequest>({
     name: '',
     description: '',
-    category: 'general',
+    category: 'Technology',
     privacy: 'public',
     isModerated: true
   });
 
-  // Infinite scroll state for discover tab
-  const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
-  const [discoverItems, setDiscoverItems] = useState<Group[]>([]);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track user login state
-  const observer = useRef<IntersectionObserver | null>(null);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  // Admin Power Tools & Policy Test State
+  const [anonymousPostingEnabled, setAnonymousPostingEnabled] = useState(false);
+  const [moderationText, setModerationText] = useState('');
+  const [moderationScan, setModerationScan] = useState<{ clean: boolean; flaggedWords: string[] } | null>(null);
+  const [activePollVote, setActivePollVote] = useState<number | null>(null);
 
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [myGroups, setMyGroups] = useState<Group[]>([]);
-  const [discoverGroups, setDiscoverGroups] = useState<Group[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const joinRequests = [
-    { id: 'req1', groupId: '1', groupName: 'Tech Innovators', userName: 'John Doe', timestamp: '2 hours ago' },
-    { id: 'req2', groupId: '1', groupName: 'Tech Innovators', userName: 'Jane Smith', timestamp: '1 day ago' },
-    { id: 'req3', groupId: '2', groupName: 'Art Enthusiasts', userName: 'Robert Lee', timestamp: '3 days ago' }
-  ];
-
-  // Check if user is logged in (implement your own logic)
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      // Check if user is logged in by checking localStorage, cookies, or auth tokens
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      const user = localStorage.getItem('user') || sessionStorage.getItem('user');
-      setIsLoggedIn(!!token || !!user);
-    };
-
-    checkLoginStatus();
-
-    // Listen for auth changes
-    const handleStorageChange = () => {
-      checkLoginStatus();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+  // Fetch Groups from Backend API
+  const fetchGroups = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await groupsService.getAllGroups();
+      if (res.success && res.data) {
+        setAllGroups(res.data);
+      }
+    } catch (err) {
+      setError('Failed to connect to groups database');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // Simulate loading more groups for infinite scroll
-  const loadMoreItems = useCallback(async () => {
-    if (isLoggedIn || !hasMore || isLoadingMore) return;
-
-    setIsLoadingMore(true);
-
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In a real implementation, this would fetch more groups from the API
-    // For now, we'll create some mock groups to simulate more content
-    const newItems: Group[] = Array.from({ length: 3 }, (_, i) => ({
-      id: `discover-group-${page}-${i}`,
-      name: `Additional Group ${page}.${i + 1}`,
-      description: `Description for additional group ${page}.${i + 1}`,
-      members: Math.floor(Math.random() * 500) + 50,
-      online: Math.floor(Math.random() * 100),
-      privacy: ['public', 'private', 'secret'][Math.floor(Math.random() * 3)] as 'public' | 'private' | 'secret',
-      category: ['Technology', 'Arts', 'Health', 'Business', 'Gaming', 'Travel', 'Food'][Math.floor(Math.random() * 7)],
-      avatarUrl: `/groups/group-${page}-${i}.jpg`,
-      isJoined: false,
-      lastActivity: `${Math.floor(Math.random() * 12) + 1} hours ago`,
-      owner: `Owner ${page}.${i + 1}`
-    }));
-
-    setDiscoverItems(prev => [...prev, ...newItems]);
-    setPage(prev => prev + 1);
-
-    // Stop loading more if we've reached a certain threshold or user has logged in
-    if (page >= 10) { // Increased limit
-      setHasMore(false);
-    }
-
-    setIsLoadingMore(false);
-  }, [hasMore, isLoadingMore, isLoggedIn, page]);
-
-  // Handle infinite scroll with Intersection Observer
   useEffect(() => {
-    if (isLoggedIn || activeTab !== 'discover') {
-      // Stop infinite scroll when user logs in or when not on discover tab
-      setHasMore(false);
-      return;
-    }
-
-    if (sentinelRef.current) {
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            loadMoreItems();
-          }
-        },
-        { threshold: 1.0 }
-      );
-
-      observer.current.observe(sentinelRef.current);
-    }
-
-    return () => {
-      if (observer.current) {
-        observer.current.disconnect();
-      }
-    };
-  }, [loadMoreItems, hasMore, isLoggedIn, activeTab]);
-
-  // Fetch groups from backend
-  useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        setLoading(true);
-        const response = await groupsService.getAllGroups({ page: 1, limit: 20, search: searchTerm });
-
-        if (response.success) {
-          setGroups(response.data);
-          setMyGroups(response.data.filter(g => g.isJoined));
-          setDiscoverGroups(response.data);
-        } else {
-          setError(response.message || 'Failed to load groups');
-          showToast(response.message || 'Failed to load groups', 'error');
-        }
-      } catch (err) {
-        console.error('Error fetching groups:', err);
-        setError('Failed to load groups');
-        showToast('Failed to load groups', 'error');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGroups();
-  }, [showToast, searchTerm]);
+  }, [fetchGroups]);
 
-  // Filter discover groups based on search term and include infinite scroll items
-  const filteredDiscoverGroups = [...discoverGroups, ...discoverItems]
-    .filter(group =>
-      group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (group.description && group.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      group.category.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((group, index, self) =>
-      index === self.findIndex(g => g.id === group.id) // Remove duplicates
-    ); // Combine initial and infinite scroll items
+  // Categories list derived from groups
+  const categories = useMemo(() => {
+    const set = new Set(allGroups.map((g) => g.category));
+    return ['all', ...Array.from(set)];
+  }, [allGroups]);
 
-  const handleJoinGroup = async (groupId: string) => {
+  // Filtered Groups
+  const filteredGroups = useMemo(() => {
+    return allGroups.filter((g) => {
+      const matchesSearch =
+        g.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (g.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        g.category.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesCategory =
+        selectedCategory === 'all' ||
+        g.category.toLowerCase() === selectedCategory.toLowerCase();
+
+      const matchesPrivacy =
+        privacyFilter === 'all' ||
+        g.privacy === privacyFilter;
+
+      const matchesTab =
+        activeTab !== 'my-groups' ||
+        g.isJoined;
+
+      return matchesSearch && matchesCategory && matchesPrivacy && matchesTab;
+    });
+  }, [allGroups, searchTerm, selectedCategory, privacyFilter, activeTab]);
+
+  // Join/Leave Toggle
+  const handleToggleJoin = async (group: Group) => {
     try {
-      const response = await groupsService.joinGroup(groupId);
-
-      if (response.success) {
-        showToast('Successfully joined the group!', 'success');
-
-        // Update the group in the list to reflect the join status
-        setDiscoverGroups(prev =>
-          prev.map(group =>
-            group.id === groupId ? {...group, isJoined: true} : group
+      if (group.isJoined) {
+        await groupsService.leaveGroup(group.id);
+        setAllGroups((prev) =>
+          prev.map((g) =>
+            g.id === group.id ? { ...g, isJoined: false, members: Math.max(0, g.members - 1) } : g
           )
         );
-
-        if (activeTab === 'discover') {
-          setDiscoverItems(prev =>
-            prev.map(group =>
-              group.id === groupId ? {...group, isJoined: true} : group
-            )
-          );
-        }
+        showToast(`Left ${group.name}`, 'info');
       } else {
-        showToast(response.message || 'Failed to join group', 'error');
+        await groupsService.joinGroup(group.id);
+        setAllGroups((prev) =>
+          prev.map((g) =>
+            g.id === group.id ? { ...g, isJoined: true, members: g.members + 1 } : g
+          )
+        );
+        showToast(`Welcome to ${group.name}!`, 'success');
       }
-    } catch (error) {
-      console.error('Error joining group:', error);
-      showToast('Failed to join group', 'error');
+    } catch (err: any) {
+      showToast(err.message || 'Operation failed', 'error');
     }
   };
 
-  const handleLeaveGroup = async (groupId: string) => {
-    try {
-      const response = await groupsService.leaveGroup(groupId);
-
-      if (response.success) {
-        showToast('Successfully left the group!', 'success');
-
-        // Update the group in the list to reflect the leave status
-        setDiscoverGroups(prev =>
-          prev.map(group =>
-            group.id === groupId ? {...group, isJoined: false} : group
-          )
-        );
-
-        if (activeTab === 'discover') {
-          setDiscoverItems(prev =>
-            prev.map(group =>
-              group.id === groupId ? {...group, isJoined: false} : group
-            )
-          );
-        }
-      } else {
-        showToast(response.message || 'Failed to leave group', 'error');
-      }
-    } catch (error) {
-      console.error('Error leaving group:', error);
-      showToast('Failed to leave group', 'error');
-    }
-  };
-
-  const handleCreateGroup = async () => {
-    if (!createGroupForm.name.trim()) {
+  // Create Group Submission
+  const handleCreateGroup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!createForm.name.trim()) {
       showToast('Group name is required', 'error');
       return;
     }
-
+    setIsSubmitting(true);
     try {
-      const response = await groupsService.createGroup(createGroupForm);
-
-      if (response.success && response.data) {
-        const newGroup = response.data;
-        showToast('Group created successfully!', 'success');
-
-        // Update the groups list
-        setGroups(prev => [...prev, newGroup]);
-        setMyGroups(prev => [...prev, newGroup]);
-
-        setCreateGroupForm({
+      const res = await groupsService.createGroup(createForm);
+      if (res.success) {
+        showToast(`Group "${createForm.name}" created successfully!`, 'success');
+        setIsCreateModalOpen(false);
+        setCreateForm({
           name: '',
           description: '',
-          category: 'general',
+          category: 'Technology',
           privacy: 'public',
           isModerated: true
         });
+        fetchGroups();
       } else {
-        showToast(response.message || 'Failed to create group', 'error');
+        showToast(res.message || 'Failed to create group', 'error');
       }
-    } catch (error) {
-      console.error('Error creating group:', error);
-      showToast('Failed to create group', 'error');
+    } catch (err: any) {
+      showToast(err.message || 'Group creation error', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setCreateGroupForm(prev => ({ ...prev, [name]: value }));
+  // Run Admin Assist Policy Scanner
+  const runAdminAssistScan = () => {
+    const BANNED_PATTERNS = [
+      '100% free', 'make money', 'million dollars', 'act now', 'click here',
+      'urgent', 'winner', 'miracle', 'work from home', 'fast cash', 'no catch',
+      'fuck', 'bitch', 'asshole', 'pussy', 'dick', 'scam', 'unsecured debt'
+    ];
+    const lower = moderationText.toLowerCase();
+    const hits = BANNED_PATTERNS.filter((word) => lower.includes(word));
+    setModerationScan({
+      clean: hits.length === 0,
+      flaggedWords: hits
+    });
   };
-
-  const getPrivacyIcon = (privacy: 'public' | 'private' | 'secret') => {
-    switch (privacy) {
-    case 'public':
-      return <GlobeAltIcon className="w-4 h-4 text-green-500" />;
-    case 'private':
-      return <LockClosedIcon className="w-4 h-4 text-yellow-500" />;
-    case 'secret':
-      return <LockClosedIcon className="w-4 h-4 text-red-500" />;
-    default:
-      return <GlobeAltIcon className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
-  const renderDiscoverTab = () => (
-    <div className="space-y-4">
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <SearchIcon className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          placeholder="Search groups..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-        />
-      </div>
-
-      <div className="space-y-4">
-        {filteredDiscoverGroups.map((group) => (
-          <div key={group.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold">
-                  {group.name.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white">{group.name}</h3>
-                  <p className="text-sm text-gray-400">{group.description}</p>
-                  <div className="flex items-center text-xs text-gray-500 mt-1">
-                    <UsersIcon className="w-3 h-3 mr-1" />
-                    {group.members} members • {group.online} online
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-end space-y-2">
-                <div className="flex items-center space-x-2">
-                  {getPrivacyIcon(group.privacy)}
-                  <span className="text-xs text-gray-400">{group.category}</span>
-                </div>
-                {group.isJoined ? (
-                  <button
-                    onClick={() => handleLeaveGroup(group.id)}
-                    className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded-lg transition-colors"
-                  >
-                    Joined
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleJoinGroup(group.id)}
-                    className="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-lg transition-colors"
-                  >
-                    Join
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {/* Sentinel element for infinite scroll */}
-        <div ref={sentinelRef} style={{ height: '20px' }} />
-
-        {isLoadingMore && (
-          <div className="flex justify-center py-4">
-            <LoadingSpinner />
-          </div>
-        )}
-
-        {!hasMore && filteredDiscoverGroups.length > 0 && (
-          <div className="text-center py-4 text-gray-500">
-            You've reached the end of the groups list.
-          </div>
-        )}
-
-        {filteredDiscoverGroups.length === 0 && !isLoadingMore && (
-          <div className="text-center py-8 text-gray-500">
-            No groups found matching your criteria.
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderMyGroupsTab = () => (
-    <div className="space-y-4">
-      {myGroups.map((group) => (
-        <div key={group.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold">
-                {group.name.charAt(0)}
-              </div>
-              <div>
-                <h3 className="font-semibold text-white">{group.name}</h3>
-                <p className="text-sm text-gray-400">{group.description}</p>
-                <div className="flex items-center text-xs text-gray-500 mt-1">
-                  <UsersIcon className="w-3 h-3 mr-1" />
-                  {group.members} members • {group.online} online
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-end space-y-2">
-              <div className="flex items-center space-x-2">
-                {getPrivacyIcon(group.privacy)}
-                <span className="text-xs text-gray-400">{group.category}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button className="p-1 text-gray-400 hover:text-white">
-                  <ChatIcon className="w-5 h-5" />
-                </button>
-                <button className="p-1 text-gray-400 hover:text-white">
-                  <CalendarIcon className="w-5 h-5" />
-                </button>
-                <button className="p-1 text-gray-400 hover:text-white">
-                  <DotsVerticalIcon className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderRequestsTab = () => (
-    <div className="space-y-4">
-      {joinRequests.map((request) => (
-        <div key={request.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-white">{request.userName}</h3>
-              <p className="text-sm text-gray-400">Requested to join {request.groupName}</p>
-              <p className="text-xs text-gray-500">{request.timestamp}</p>
-            </div>
-            <div className="flex space-x-2">
-              <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
-                Approve
-              </button>
-              <button className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors">
-                Decline
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 
   return (
-    <MainLayout pageTitle="Groups">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md overflow-hidden">
-          <div className="p-6">
-            <h1 className="text-3xl font-bold text-white mb-2">Groups</h1>
-            <p className="text-indigo-100">Connect with people who share your interests</p>
-          </div>
-        </div>
-
-        <div className="mt-6 bg-gray-800 rounded-xl shadow-md overflow-hidden">
-          <div className="border-b border-gray-700">
-            <nav className="flex -mb-px">
-              <button
-                onClick={() => setActiveTab('my-groups')}
-                className={`flex-1 py-4 px-1 text-center font-medium text-sm ${
-                  activeTab === 'my-groups'
-                    ? 'border-b-2 border-orange-500 text-orange-500'
-                    : 'text-gray-400 hover:text-gray-300'
-                }`}
-              >
-                My Groups
-              </button>
-              <button
-                onClick={() => setActiveTab('discover')}
-                className={`flex-1 py-4 px-1 text-center font-medium text-sm ${
-                  activeTab === 'discover'
-                    ? 'border-b-2 border-orange-500 text-orange-500'
-                    : 'text-gray-400 hover:text-gray-300'
-                }`}
-              >
-                Discover
-              </button>
-              <button
-                onClick={() => setActiveTab('requests')}
-                className={`flex-1 py-4 px-1 text-center font-medium text-sm ${
-                  activeTab === 'requests'
-                    ? 'border-b-2 border-orange-500 text-orange-500'
-                    : 'text-gray-400 hover:text-gray-300'
-                }`}
-              >
-                Requests {joinRequests.length > 0 && (
-                  <span className="ml-1 bg-orange-500 text-white text-xs rounded-full px-2 py-0.5">
-                    {joinRequests.length}
-                  </span>
-                )}
-              </button>
-            </nav>
-          </div>
-
-          <div className="p-6">
-            {activeTab === 'my-groups' && renderMyGroupsTab()}
-            {activeTab === 'discover' && renderDiscoverTab()}
-            {activeTab === 'requests' && renderRequestsTab()}
-          </div>
-        </div>
-
-        <div className="mt-6 bg-gray-800 rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Create New Group</h2>
-          <div className="space-y-4">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
+      {/* Top Banner & Living Room Identity */}
+      <div className="max-w-7xl mx-auto mb-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/60 via-indigo-900/40 to-slate-900/90 border border-blue-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <label className="block text-gray-300 mb-2">Group Name</label>
-              <input
-                type="text"
-                name="name"
-                value={createGroupForm.name}
-                onChange={handleInputChange}
-                placeholder="Enter group name"
-                className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
-              />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                The Digital Living Room™ Micro-Community Architecture
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                <span>Groups Protocol</span>
+                <span className="text-sm font-medium px-2.5 py-0.5 rounded-md bg-blue-600/30 text-blue-300 border border-blue-500/30">
+                  Many-to-Many
+                </span>
+              </h1>
+              <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+                Shared dedicated spaces prioritizing peer-to-peer dialogue, crowdsourced problem solving, and belonging. Stripping away performative status feeds in favor of focused high-utility connections.
+              </p>
             </div>
-            <div>
-              <label className="block text-gray-300 mb-2">Description</label>
-              <textarea
-                name="description"
-                value={createGroupForm.description}
-                onChange={handleInputChange}
-                placeholder="Describe your group"
-                rows={3}
-                className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
-              />
+
+            {/* Quick Action Button */}
+            <div className="shrink-0 flex items-center gap-3">
+              <button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 transform hover:-translate-y-0.5"
+              >
+                <Plus className="w-4 h-4" />
+                Create Digital Living Room
+              </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-300 mb-2">Category</label>
-                <select
-                  name="category"
-                  value={createGroupForm.category}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                >
-                  <option value="general">General</option>
-                  <option value="technology">Technology</option>
-                  <option value="arts">Arts</option>
-                  <option value="health">Health</option>
-                  <option value="business">Business</option>
-                  <option value="gaming">Gaming</option>
-                  <option value="travel">Travel</option>
-                  <option value="food">Food</option>
-                </select>
+          </div>
+
+          {/* 3 Core Pillars Header Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-blue-500/20">
+            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
+                <Users className="w-4 h-4" />
               </div>
               <div>
-                <label className="block text-gray-300 mb-2">Privacy</label>
-                <select
-                  name="privacy"
-                  value={createGroupForm.privacy}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                  <option value="secret">Secret</option>
-                </select>
+                <h4 className="text-xs font-bold text-white">1. Shared Identity & Passion</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Hyper-specific niche gathering without generic social clutter.</p>
               </div>
             </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="moderated"
-                name="isModerated"
-                checked={createGroupForm.isModerated}
-                onChange={(e) => setCreateGroupForm(prev => ({ ...prev, isModerated: e.target.checked }))}
-                className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-600 rounded bg-gray-700"
-              />
-              <label htmlFor="moderated" className="ml-2 block text-sm text-gray-300">
-                Enable moderation
-              </label>
+
+            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white">2. Crowdsourced Problem Solving</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Living search engine where peers provide battle-tested answers.</p>
+              </div>
             </div>
+
+            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-pink-500/20 text-pink-400">
+                <Heart className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white">3. Belonging & Support</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">Psychological safe havens understood by peers who truly get it.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="flex flex-wrap items-center gap-2 mt-6 pt-6 border-t border-blue-500/20">
             <button
-              onClick={handleCreateGroup}
-              className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium rounded-lg transition-all transform hover:scale-[1.02]"
+              onClick={() => setActiveTab('discover')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'discover'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
             >
-              Create Group
+              <Globe className="w-4 h-4" />
+              Discover Living Rooms
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-blue-900/60 text-blue-200">
+                {allGroups.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('my-groups')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'my-groups'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Users className="w-4 h-4 text-emerald-400" />
+              My Joined Communities
+              <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-emerald-900/60 text-emerald-200">
+                {allGroups.filter((g) => g.isJoined).length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('guides')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'guides'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <BookOpen className="w-4 h-4 text-sky-400" />
+              Guides & Modules
+            </button>
+
+            <button
+              onClick={() => setActiveTab('powertools')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'powertools'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Sliders className="w-4 h-4 text-amber-400" />
+              Admin Power Tools & Policy Flags
             </button>
           </div>
         </div>
       </div>
-    </MainLayout>
+
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto">
+        {/* ======================================================== */}
+        {/* TAB 1 & 2: DISCOVER & MY GROUPS */}
+        {/* ======================================================== */}
+        {(activeTab === 'discover' || activeTab === 'my-groups') && (
+          <div className="space-y-6">
+            {/* The Architectural Blueprint: 3 Privacy Tiers */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'public' ? 'all' : 'public')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'public'
+                    ? 'bg-blue-950/60 border-blue-500 shadow-lg shadow-blue-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Public Groups</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Open ecosystem discovery; posts show across the global feed</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'private' ? 'all' : 'private')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'private'
+                    ? 'bg-blue-950/60 border-blue-500 shadow-lg shadow-blue-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400">
+                    <Eye className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Private & Visible</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Discoverable in search; posts protected for members only</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setPrivacyFilter(privacyFilter === 'secret' ? 'all' : 'secret')}
+                className={`cursor-pointer p-4 rounded-xl border transition-all ${
+                  privacyFilter === 'secret'
+                    ? 'bg-blue-950/60 border-blue-500 shadow-lg shadow-blue-500/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Private & Hidden ("Secret")</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Zero search visibility; exclusive private family/mastermind salons</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter and Search Bar */}
+            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
+              <div className="relative flex-1">
+                <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search groups by name, topic, or category..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                />
+              </div>
+
+              {/* Category Pills */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize whitespace-nowrap transition-colors ${
+                      selectedCategory === cat
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Error Banner */}
+            {error && (
+              <div className="p-4 rounded-xl bg-red-950/50 border border-red-800 text-red-300 flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+                <span className="text-sm">{error}</span>
+              </div>
+            )}
+
+            {/* Loading */}
+            {loading && (
+              <div className="flex flex-col items-center justify-center py-20">
+                <LoadingSpinner />
+                <p className="mt-4 text-sm text-slate-400">Loading Digital Living Rooms from PostgreSQL...</p>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!loading && filteredGroups.length === 0 && (
+              <div className="text-center py-16 px-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+                  <Users className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold text-white">No Groups Found</h3>
+                <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
+                  {activeTab === 'my-groups'
+                    ? 'You have not joined any groups yet. Browse the Discover tab to connect!'
+                    : 'No groups matched your active search query.'}
+                </p>
+                {activeTab === 'my-groups' && (
+                  <button
+                    onClick={() => setActiveTab('discover')}
+                    className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg transition-colors"
+                  >
+                    Explore Discover Tab
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Groups Grid */}
+            {!loading && filteredGroups.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredGroups.map((group) => {
+                  return (
+                    <div
+                      key={group.id}
+                      className="group bg-slate-900/70 border border-slate-800 hover:border-blue-500/50 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/20 flex flex-col justify-between"
+                    >
+                      {/* Thumbnail Container */}
+                      <div className="relative h-44 w-full overflow-hidden bg-slate-950">
+                        <img
+                          src={group.avatarUrl}
+                          alt={group.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+
+                        {/* Privacy Badge */}
+                        <div className="absolute top-3 left-3">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase shadow-md ${
+                              group.privacy === 'public'
+                                ? 'bg-emerald-950/80 border border-emerald-500/40 text-emerald-300'
+                                : group.privacy === 'private'
+                                  ? 'bg-indigo-950/80 border border-indigo-500/40 text-indigo-300'
+                                  : 'bg-amber-950/80 border border-amber-500/40 text-amber-300'
+                            }`}
+                          >
+                            {group.privacy === 'public' && <Globe className="w-3 h-3" />}
+                            {group.privacy === 'private' && <Eye className="w-3 h-3" />}
+                            {group.privacy === 'secret' && <Lock className="w-3 h-3" />}
+                            {group.privacy}
+                          </span>
+                        </div>
+
+                        {/* Online Indicator */}
+                        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-xs font-medium text-emerald-400 shadow-md">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                          <span>{group.online} online</span>
+                        </div>
+
+                        {/* Category Pill */}
+                        <div className="absolute bottom-3 left-3">
+                          <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-blue-900/80 text-blue-200 border border-blue-500/30">
+                            {group.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Card Body */}
+                      <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="font-bold text-base text-white group-hover:text-blue-300 transition-colors line-clamp-1">
+                            {group.name}
+                          </h3>
+
+                          <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
+                            <Users className="w-3.5 h-3.5 text-slate-500" />
+                            <span>{group.members.toLocaleString()} members</span>
+                          </div>
+
+                          <p className="text-xs text-slate-300 mt-3 line-clamp-2 leading-relaxed">
+                            {group.description || 'Dedicated micro-community for crowdsourced problem solving and shared passion.'}
+                          </p>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+                          <button
+                            onClick={() => showToast(`Opening chat room for ${group.name}...`, 'info')}
+                            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+                            title="Enter living room chat"
+                          >
+                            <MessageSquare className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() => handleToggleJoin(group)}
+                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                              group.isJoined
+                                ? 'bg-slate-800 hover:bg-red-950/60 text-slate-300 hover:text-red-300 border border-slate-700 hover:border-red-800'
+                                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20'
+                            }`}
+                          >
+                            {group.isJoined ? (
+                              <>
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                                Joined (Leave)
+                              </>
+                            ) : (
+                              <>
+                                <Plus className="w-3.5 h-3.5" />
+                                Join Living Room
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAB 3: GUIDES & LEARNING MODULES */}
+        {/* ======================================================== */}
+        {activeTab === 'guides' && (
+          <div className="space-y-6">
+            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl">
+              <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-sky-400" />
+                Featured Educational Modules & Guides
+              </h3>
+              <p className="text-xs text-slate-400 mb-6">
+                Step-by-step learning modules for community founders, moderators, and active participants.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {GROUP_GUIDES.map((guide) => (
+                  <div
+                    key={guide.id}
+                    className="p-5 rounded-xl bg-slate-950 border border-slate-800 hover:border-sky-500/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs text-sky-400 font-semibold mb-2">
+                        <span>{guide.duration}</span>
+                        <span>{guide.lessons} Lessons</span>
+                      </div>
+                      <h4 className="font-bold text-white text-sm mb-2">{guide.title}</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">{guide.description}</p>
+                    </div>
+
+                    <button
+                      onClick={() => showToast(`Starting guide: ${guide.title}`, 'info')}
+                      className="mt-4 flex items-center justify-between w-full px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-sky-300 text-xs font-semibold transition-colors"
+                    >
+                      <span>Explore Module</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Interactive Poll Demonstration */}
+            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400">
+                  <BarChart2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-base">Facilitated Psychology: Interactive Community Poll</h4>
+                  <p className="text-xs text-slate-400">Prompting peer-to-peer engagement instead of brand broadcasts.</p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <p className="text-sm font-semibold text-slate-200">
+                  "What is your highest priority when establishing a new sovereign digital living room?"
+                </p>
+                <div className="space-y-2">
+                  {[
+                    'Enforcing strict keyword moderation & zero-doxxing policies',
+                    'Curating step-by-step learning modules in the Guides tab',
+                    'Fostering peer-to-peer crowdsourced problem solving'
+                  ].map((option, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setActivePollVote(idx);
+                        showToast('Vote recorded on sovereign ledger!', 'success');
+                      }}
+                      className={`w-full p-3 rounded-lg text-xs font-medium text-left transition-all border ${
+                        activePollVote === idx
+                          ? 'bg-blue-600/30 border-blue-500 text-white'
+                          : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{option}</span>
+                        {activePollVote === idx && <CheckCircle2 className="w-4 h-4 text-blue-400" />}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAB 4: ADMIN POWER TOOLS & POLICY FLAGS */}
+        {/* ======================================================== */}
+        {activeTab === 'powertools' && (
+          <div className="space-y-6">
+            {/* 4 Guiding Principles of Content Moderation Banner */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div className="flex items-center gap-2.5 text-blue-400 mb-1">
+                  <Shield className="w-4 h-4" />
+                  <h4 className="text-xs font-bold text-white">1. Authenticity</h4>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Prevents fake identities, spam link drops, bot accounts, and artificial engagement inflation.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div className="flex items-center gap-2.5 text-emerald-400 mb-1">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <h4 className="text-xs font-bold text-white">2. Safety</h4>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Zero tolerance for real-world harm, predatory behaviors, intimidation, or harassment.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div className="flex items-center gap-2.5 text-pink-400 mb-1">
+                  <Lock className="w-4 h-4" />
+                  <h4 className="text-xs font-bold text-white">3. Privacy</h4>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Safeguards member data; strictly prohibits unauthorized sharing of personal records (doxxing).
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div className="flex items-center gap-2.5 text-amber-400 mb-1">
+                  <Sparkles className="w-4 h-4" />
+                  <h4 className="text-xs font-bold text-white">4. Dignity</h4>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Preserves a shared environment free of hate speech, prejudice, or systemic degradation.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Admin Assist Auto-Moderation Scanner */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400">
+                    <Shield className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-base">Admin Assist: Words Moderation Test</h3>
+                    <p className="text-xs text-slate-400">Tests incoming text against the platform words blacklist</p>
+                  </div>
+                </div>
+
+                <textarea
+                  rows={3}
+                  value={moderationText}
+                  onChange={(e) => setModerationText(e.target.value)}
+                  placeholder="Test phrases (e.g. 'earn money fast cash 100% free' or ordinary text)..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <button
+                  onClick={runAdminAssistScan}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors"
+                >
+                  Scan Policy Compliance
+                </button>
+
+                {moderationScan && (
+                  <div
+                    className={`p-3 rounded-xl border text-xs ${
+                      moderationScan.clean
+                        ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                        : 'bg-red-950/60 border-red-500/40 text-red-300'
+                    }`}
+                  >
+                    {moderationScan.clean ? (
+                      <span className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        Compliant: Text cleared all 4 platform principles (Authenticity, Safety, Privacy, Dignity).
+                      </span>
+                    ) : (
+                      <div>
+                        <span className="flex items-center gap-2 font-bold mb-1">
+                          <AlertCircle className="w-4 h-4 text-red-400" />
+                          Declined by Admin Assist!
+                        </span>
+                        <span>Flagged phrases: {moderationScan.flaggedWords.join(', ')}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="pt-2 flex items-center justify-between border-t border-slate-800">
+                  <span className="text-xs text-slate-300 font-semibold">Allow Anonymous Posting in Living Room</span>
+                  <input
+                    type="checkbox"
+                    checked={anonymousPostingEnabled}
+                    onChange={(e) => setAnonymousPostingEnabled(e.target.checked)}
+                    className="w-4 h-4 rounded text-blue-500 bg-slate-950 border-slate-700"
+                  />
+                </div>
+              </div>
+
+              {/* 10 Explicit Group Rules */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400">
+                      <Sliders className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-base">Clear Governance: 10 Explicit Rules</h3>
+                      <p className="text-xs text-slate-400">Concrete bounds to remove spam and resolve disputes</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="max-h-64 overflow-y-auto space-y-2 pr-1">
+                  {DEFAULT_GROUP_RULES.map((rule) => (
+                    <div
+                      key={rule.id}
+                      className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs space-y-0.5"
+                    >
+                      <div className="font-bold text-blue-400">
+                        {rule.id}. {rule.title}
+                      </div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">{rule.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ======================================================== */}
+      {/* CREATE GROUP MODAL */}
+      {/* ======================================================== */}
+      {isCreateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-slate-900 border border-blue-500/50 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-blue-400 font-bold text-sm">
+                <Plus className="w-4 h-4" />
+                Initialize Digital Living Room
+              </div>
+              <button
+                onClick={() => setIsCreateModalOpen(false)}
+                className="text-slate-400 hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateGroup} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Living Room Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Vintage Camera Collectors Club"
+                  value={createForm.name}
+                  onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Purpose & Description
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="Define your niche, peer expectations, and problem solving focus..."
+                  value={createForm.description}
+                  onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={createForm.category}
+                    onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="Technology">Technology</option>
+                    <option value="Social">Social</option>
+                    <option value="Crypto">Crypto</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Philosophy">Philosophy</option>
+                    <option value="Education">Education</option>
+                    <option value="Community">Community</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                    Privacy Tier
+                  </label>
+                  <select
+                    value={createForm.privacy}
+                    onChange={(e) => setCreateForm({ ...createForm, privacy: e.target.value as any })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="public">Public</option>
+                    <option value="private">Private & Visible</option>
+                    <option value="secret">Secret (Hidden)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400">
+                <span className="font-semibold text-blue-400">Living Room Policy:</span> All new groups enforce the 4 principles (Authenticity, Safety, Privacy, Dignity) and 10 default community rules.
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateModalOpen(false)}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? <LoadingSpinner /> : 'Create Living Room'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

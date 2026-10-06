@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/Card';
-import { Input } from './ui/Input';
 import { Button } from './ui/Button';
 import { Label } from './ui/Label';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,7 +8,6 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  // @ts-expect-error: auto-fixed by agent
   const { login, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {

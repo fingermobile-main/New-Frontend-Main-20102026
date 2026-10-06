@@ -118,7 +118,7 @@ const ContactUsPage: React.FC = () => {
                           Email
                         </h3>
                         <p className="mt-1 text-sm sm:text-base text-gray-600">
-                          fingerprotocolmobile@gmail.com
+                          fingermobileprotocol@gmail.com
                         </p>
                         <p className="text-sm sm:text-base text-gray-600">
                           info@fingermobileprotocol.com
@@ -373,7 +373,7 @@ const ContactUsPage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="mailto:fingerprotocolmobile@gmail.com"
+                href="mailto:fingermobileprotocol@gmail.com"
                 className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center"
               >
                 Email Support

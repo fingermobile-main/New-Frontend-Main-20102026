@@ -20,6 +20,10 @@ interface ProfileData {
   isProfessional: boolean;
 }
 
+// Shared input class — explicitly sets dark text so it stays visible on light/white backgrounds
+const inputClass =
+  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400';
+
 const ProfileEnhancement: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData>({
     username: '',
@@ -112,7 +116,7 @@ const ProfileEnhancement: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md text-gray-900">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Profile Enhancement</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,7 +126,9 @@ const ProfileEnhancement: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Basic Info</h3>
 
             <div className="mb-4">
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username (3-30 characters)</label>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                Username (3-30 characters)
+              </label>
               <input
                 id="username"
                 type="text"
@@ -130,9 +136,10 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.username}
                 onChange={handleInputChange}
                 placeholder="Enter your username"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={inputClass}
                 maxLength={30}
-                minLength={3} />
+                minLength={3}
+              />
             </div>
 
             <div className="mb-4">
@@ -144,12 +151,14 @@ const ProfileEnhancement: React.FC = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
+              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">
+                Profile Picture URL
+              </label>
               <input
                 id="profilePicture"
                 type="text"
@@ -157,11 +166,14 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profilePicture}
                 onChange={handleInputChange}
                 placeholder="https://example.com/profile.jpg"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className={inputClass}
+              />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="profileVideo" className="block text-sm font-medium text-gray-700 mb-1">Profile Video URL (3-5s)</label>
+              <label htmlFor="profileVideo" className="block text-sm font-medium text-gray-700 mb-1">
+                Profile Video URL (3-5s)
+              </label>
               <input
                 id="profileVideo"
                 type="text"
@@ -169,7 +181,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={profile.profileVideo || ''}
                 onChange={(e) => setProfile(prev => ({ ...prev, profileVideo: e.target.value || null }))}
                 placeholder="https://example.com/video.mp4"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={inputClass}
               />
             </div>
 
@@ -203,14 +215,16 @@ const ProfileEnhancement: React.FC = () => {
 
             {profile.coverImages.map((img, index) => (
               <div key={index} className="mb-3">
-                <label htmlFor={`coverImage-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Cover Image {index + 1}</label>
+                <label htmlFor={`coverImage-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Cover Image {index + 1}
+                </label>
                 <input
                   id={`coverImage-${index}`}
                   type="text"
                   value={img}
                   onChange={(e) => handleCoverImageChange(index, e.target.value)}
                   placeholder={`https://example.com/cover-${index + 1}.jpg`}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className={inputClass}
                 />
               </div>
             ))}
@@ -228,15 +242,16 @@ const ProfileEnhancement: React.FC = () => {
                 value={currentSkill.name}
                 onChange={(e) => setCurrentSkill({...currentSkill, name: e.target.value})}
                 placeholder="Add a skill"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddSkill(); } }}
               />
               <select
                 value={currentSkill.level}
                 onChange={(e) => setCurrentSkill({...currentSkill, level: parseInt(e.target.value)})}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900"
               >
                 {[1, 2, 3, 4, 5].map(level => (
-                  <option key={level} value={level}>{level}</option>
+                  <option key={level} value={level} className="text-gray-900 bg-white">{level}</option>
                 ))}
               </select>
               <button
@@ -249,9 +264,9 @@ const ProfileEnhancement: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-2">
               {profile.skills.map(skill => (
-                <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border">
+                <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
                   <div>
-                    <span className="font-medium">{skill.name}</span>
+                    <span className="font-medium text-gray-900">{skill.name}</span>
                     <div className="flex mt-1">
                       {[...Array(5)].map((_, i) => (
                         <span
@@ -265,7 +280,7 @@ const ProfileEnhancement: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleRemoveSkill(skill.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 ml-2"
                   >
                     ×
                   </button>
@@ -273,6 +288,9 @@ const ProfileEnhancement: React.FC = () => {
               ))}
             </div>
 
+            {profile.skills.length === 0 && (
+              <p className="text-sm text-gray-400 mt-2">No skills added yet. Type a skill and click Add.</p>
+            )}
             <p className="text-sm text-gray-500 mt-2">
               {profile.skills.length}/25 skills added
             </p>
@@ -287,7 +305,8 @@ const ProfileEnhancement: React.FC = () => {
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
                 placeholder="https://example.com"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddLink(); } }}
               />
               <button
                 onClick={handleAddLink}
@@ -299,14 +318,14 @@ const ProfileEnhancement: React.FC = () => {
 
             <ul className="space-y-2">
               {profile.links.map((link, index) => (
-                <li key={index} className="flex items-center justify-between bg-white p-2 rounded border">
+                <li key={index} className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
                   <a
                     href={link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-indigo-600 truncate max-w-[70%]"
+                    className="text-indigo-600 truncate max-w-[70%] hover:underline"
                   >
-                    {link}
+                    {link || <span className="text-gray-400 italic text-sm">No URL entered</span>}
                   </a>
                   <button
                     onClick={() => handleRemoveLink(index)}
@@ -317,12 +336,16 @@ const ProfileEnhancement: React.FC = () => {
                 </li>
               ))}
             </ul>
+
+            {profile.links.length === 0 && (
+              <p className="text-sm text-gray-400 mt-2">No links added yet.</p>
+            )}
           </div>
         </div>
       </div>
 
       <div className="mt-6 flex justify-end">
-        <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
           Save Profile
         </button>
       </div>

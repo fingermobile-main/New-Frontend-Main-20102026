@@ -54,7 +54,7 @@ const GiftCardsPage: React.FC = () => {
       });
 
       if (res?.success) {
-        showToast?.(`Gift card redeemed successfully! Added to your balance.`, 'success');
+        showToast?.('Gift card redeemed successfully! Added to your balance.', 'success');
         setRedeemCode('');
         setSecurityCode('');
         await loadGiftCards();

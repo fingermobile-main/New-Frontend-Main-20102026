@@ -365,6 +365,38 @@ class AdvertisingService {
       // Non-blocking telemetry
     }
   }
+
+  /**
+   * Advertiser Profile & Management
+   */
+  async getAdvertiserProfile(): Promise<any> {
+    try {
+      const response: any = await ApiService.get('/canary/advertiser/profile');
+      return response?.profile || response?.data || response;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async registerAdvertiser(data: any): Promise<any> {
+    const response: any = await ApiService.post('/canary/advertiser/register', data);
+    return response?.advertiser || response?.data || response;
+  }
+
+  async createAdGroup(campaignId: string, data: any): Promise<any> {
+    const response: any = await ApiService.post(`/canary/campaigns/${campaignId}/ad-groups`, data);
+    return response?.adGroup || response?.data || response;
+  }
+
+  async addCreative(adGroupId: string, data: any): Promise<any> {
+    const response: any = await ApiService.post(`/canary/ad-groups/${adGroupId}/creatives`, data);
+    return response?.creative || response?.data || response;
+  }
+
+  async processPayment(campaignId: string, data: any): Promise<any> {
+    const response: any = await ApiService.post(`/canary/campaigns/${campaignId}/payment`, data);
+    return response?.payment || response?.data || response;
+  }
 }
 
 export const advertisingService = new AdvertisingService();

@@ -2,7 +2,8 @@ import ApiService from './api';
 import { User } from '../types/user';
 
 interface LoginCredentials {
-  username: string;
+  email?: string;
+  username?: string;
   password: string;
 }
 
@@ -10,6 +11,8 @@ interface RegisterData {
   email: string;
   username: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface UpdateProfileData {
@@ -74,6 +77,23 @@ class UserService {
         success: false,
         message: 'Logout failed',
         error: error.response?.data?.message || error.message || 'An error occurred during logout',
+      };
+    }
+  }
+
+  static async refreshToken(token: string): Promise<ApiResponse<{ accessToken: string; refreshToken: string; user?: User }>> {
+    try {
+      const response = await ApiService.post('/auth/refresh', { refreshToken: token });
+      return {
+        success: true,
+        data: response.data,
+        message: 'Token refreshed',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Token refresh failed',
+        error: error.response?.data?.message || error.message || 'Refresh failed',
       };
     }
   }

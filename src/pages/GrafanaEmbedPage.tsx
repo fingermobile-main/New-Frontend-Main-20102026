@@ -8,6 +8,7 @@ import {
 } from '../icons';
 
 const GrafanaEmbedPage: React.FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const { showToast } = useAppContext();
   const [selectedDashboard, setSelectedDashboard] = useState('fingermobile-overview');
   const [autoRefresh, setAutoRefresh] = useState(30); // seconds

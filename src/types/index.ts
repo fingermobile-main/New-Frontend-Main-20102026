@@ -39,6 +39,8 @@ export interface User {
   subscriptionExpiryDate?: string | Date;
   permissions?: string[];
   subProfiles?: SubProfile[];
+  twoFactorEnabled?: boolean;
+  twoFactorMethod?: string;
 }
 
 export interface SimpleAuthor {

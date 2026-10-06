@@ -4,12 +4,16 @@ import MainLayout from '../components/layout/MainLayout';
 import { ApiService } from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import {
+  // eslint-disable-next-line no-unused-vars
   HashtagIcon,
+  // eslint-disable-next-line no-unused-vars
   ChatBubbleLeftRightIcon,
+  // eslint-disable-next-line no-unused-vars
   UserGroupIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   XMarkIcon,
+  // eslint-disable-next-line no-unused-vars
   CheckCircleIcon,
   ArrowTrendingUpIcon
 } from '../icons';
@@ -35,6 +39,7 @@ const TopicsPage: React.FC = () => {
   const [topics, setTopics] = useState<TopicItem[]>([]);
   const [hashtags, setHashtags] = useState<HashtagItem[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

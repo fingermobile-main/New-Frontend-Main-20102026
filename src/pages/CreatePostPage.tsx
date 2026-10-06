@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { logError } from '../utils/errorLogger';
 import { useAI } from '../contexts/AIContext';
 import { useWeb3 } from '../contexts/Web3Context';
 import apiService from '../services/apiService';
-import PageHeader from '../components/PageHeader';
-import LoadingSpinner from '../components/LoadingSpinner';
 import H2Composer from '../components/H2Composer';
 import {
   SparklesIcon,
@@ -23,10 +20,12 @@ const CreatePostPage: React.FC = () => {
   const navigate = useNavigate();
   const { showToast, ficBalance } = useAppContext();
   const { generatePostContent, isLoading: aiLoading, error } = useAI();
+  // eslint-disable-next-line no-unused-vars
   const { balance } = useWeb3();
   const [prompt, setPrompt] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  // eslint-disable-next-line no-unused-vars
   const [isPosting, setIsPosting] = useState<boolean>(false);
   const [showH2Composer, setShowH2Composer] = useState<boolean>(false);
   const [postType, setPostType] = useState<'text' | 'image' | 'video'>('text');
@@ -41,6 +40,7 @@ const CreatePostPage: React.FC = () => {
       const generatedContent = await generatePostContent(prompt);
       setContent(generatedContent);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to generate content:', err);
       showToast('Failed to generate content', 'error');
     } finally {
@@ -75,6 +75,7 @@ const CreatePostPage: React.FC = () => {
       setPrompt('');
       navigate('/forum');
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to publish post:', err);
       showToast('Failed to publish post to server', 'error');
     } finally {

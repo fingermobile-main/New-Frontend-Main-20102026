@@ -10,8 +10,11 @@ export interface User {
   role: string;
   isVerified: boolean;
   isOnline: boolean;
+  onboardingComplete?: boolean;
   createdAt: string;
   updatedAt: string;
+  twoFactorEnabled?: boolean;
+  twoFactorMethod?: string;
   lastSeenAt?: string;
   followersCount: number;
   followingCount: number;

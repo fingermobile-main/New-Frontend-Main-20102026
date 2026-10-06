@@ -5,18 +5,18 @@ interface ToastContextType {
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
-interface Toast {
+interface ToastItem {
   id: string;
   message: string;
   type: 'success' | 'error' | 'info' | 'warning';
 }
 
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   const addToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
     const id = Math.random().toString(36).substring(2, 9);
-    const newToast: Toast = { id, message, type };
+    const newToast: ToastItem = { id, message, type };
     setToasts(prev => [...prev, newToast]);
 
     setTimeout(() => {

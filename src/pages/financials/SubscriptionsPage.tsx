@@ -69,11 +69,11 @@ const SubscriptionsPage: React.FC = () => {
       if (res?.success) {
         showToast?.(`Subscription to ${sub.creatorName} has been cancelled.`, 'success');
       } else {
-        showToast?.(`Subscription cancelled.`, 'info');
+        showToast?.('Subscription cancelled.', 'info');
       }
       await loadSubscriptions();
     } catch {
-      showToast?.(`Subscription cancellation processed.`, 'info');
+      showToast?.('Subscription cancellation processed.', 'info');
       setSubscriptions(prev => prev.map(s => s.id === sub.id ? { ...s, status: 'cancelled' } : s));
     } finally {
       setCancellingId(null);

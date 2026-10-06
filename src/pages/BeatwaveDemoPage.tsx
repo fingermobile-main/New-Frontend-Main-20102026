@@ -4,6 +4,8 @@ import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import {
   Play, Pause, SkipBack, SkipForward, Volume2, Disc,
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   Music, ListMusic, Plus, Sparkles, Radio, ArrowLeft
 } from 'lucide-react';
 
@@ -42,6 +44,7 @@ const BeatwaveDemoPage: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(80);
   const [playbackSec, setPlaybackSec] = useState<number>(0);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
   // New playlist modal state

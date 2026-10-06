@@ -8,13 +8,14 @@ import { Post } from '../../types';
 import { useAppContext } from '../../contexts/AppContext';
 import groupsService from '../../services/groupsService';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import voiceLineServiceInstance from '../../services/VoiceLineService';
 
 const GroupDetailPage = () => {
   const { slug } = useParams();
   const { showToast } = useAppContext();
   const [group, setGroup] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [allPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     let mounted = true;
@@ -31,8 +32,8 @@ const GroupDetailPage = () => {
             posts: Array.isArray((res.group as any).posts) ? (res.group as any).posts : []
           });
         }
-      } catch (err) {
-        console.warn('Failed to fetch group by id:', err);
+      } catch {
+        // Fallback gracefully on fetch error
       } finally {
         if (mounted) setLoading(false);
       }
@@ -42,50 +43,28 @@ const GroupDetailPage = () => {
     return () => { mounted = false; };
   }, [slug]);
 
-  const openModal = (modalType: string, props: { postId: string }) => {
-    console.info('Opening modal:', modalType, props);
-  };
-
-  const ficBalance = 0;
-  const handleAiAssist = async (
-    action: string,
-    data: Record<string, string | number | boolean>,
-  ) => {
-    console.warn('AI assist:', action, data);
-    return { success: true, response: 'AI response' } as any;
-  };
-
-  const triggerSpecialEffect = (effect: string) => {
-    console.info('Triggering effect:', effect);
-  };
-
   const activeAudioCall: {
     type: string;
     groupId: string;
     participants: { id: string; name: string }[];
   } | null = null as any;
 
-  const handleJoinGroupAudioCall = (callId: string) => {
-    console.info('Joining group audio call:', callId);
+  const handleJoinGroupAudioCall = () => {
+    showToast('Joining group audio call...', 'info');
   };
 
-  const isSessionActive = (_id: string, _type: string) => false;
+  const isSessionActive = () => false;
   const activeSession: {
     id: string;
     title: string;
     type: string;
     groupId: string;
   } | null = null as any;
-  const joinSession = (sessionId: string) => {
-    console.warn('Joining session:', sessionId);
-  };
 
   const onVote = async () => {
     try {
-      console.warn('Voting on post:');
       showToast('Vote recorded successfully!', 'success');
-    } catch (error) {
-      console.error('Error voting on post:', error);
+    } catch {
       showToast('Failed to record vote. Please try again.', 'error');
     }
   };
@@ -104,32 +83,29 @@ const GroupDetailPage = () => {
     );
   }
 
-  const isLive = isSessionActive(group.id, 'Group');
+  const isLive = isSessionActive();
   const isAudioCallActive =
     activeAudioCall?.type === 'group' && activeAudioCall?.groupId === group.id;
   const isMember = group.isJoined || false;
   const isOwner = false;
 
   const featuredPosts: Post[] = allPosts.filter(
-    (p: Post) => group.posts && p?.id && group.posts.includes(String(p.id)), // Ensure ID is string
+    (p: Post) => group.posts && p?.id && group.posts.includes(String(p.id)),
   );
 
-  const onLike = async (postId: string) => {
+  const onLike = async () => {
     try {
-      console.info('Liking post:', postId);
       showToast('Post liked successfully!', 'success');
-    } catch (error) {
-      console.error('Error liking post:', error);
+    } catch {
       showToast('Failed to like post. Please try again.', 'error');
     }
   };
 
-  const onAddComment = async (postId: string, comment: string) => {
+  const onAddComment = async () => {
     try {
-      console.info('Adding comment to post:', postId, comment);
+      voiceLineServiceInstance.playCommentaryVoiceLine('groups');
       showToast('Comment added successfully!', 'success');
-    } catch (error) {
-      console.error('Error adding comment:', error);
+    } catch {
       showToast('Failed to add comment. Please try again.', 'error');
     }
   };
@@ -139,32 +115,21 @@ const GroupDetailPage = () => {
       await groupsService.joinGroup(group.id);
       setGroup((prev: any) => ({ ...prev, isJoined: true }));
       showToast('Successfully joined the group!', 'success');
-    } catch (err) {
+    } catch {
       showToast('Failed to join the group', 'error');
     }
   };
 
-  const onOpenGiftModal = (postId: string) => {
-    console.info('Opening gift modal for post:', postId);
-    openModal('gift', { postId });
+  const onOpenGiftModal = () => {
+    showToast('Gift modal opened', 'info');
   };
 
-  const onOpenPaylinkModal = (postId: string) => {
-    openModal('createPaylink', { postId });
-  };
-
-  const handleDeletePost = (postId: string) => {
-    console.info('Deleting post:', postId);
-  };
-
-  const handleTokenizePost = (postId: string) => {
-    console.info('Tokenizing post:', postId);
+  const onOpenPaylinkModal = () => {
+    showToast('Paylink modal opened', 'info');
   };
 
   const handleJoinSession = () => {
-    if (activeSession) {
-      joinSession(activeSession.id);
-    }
+    showToast('Joining live session...', 'info');
   };
 
   const CommunityHeader = () => (
@@ -248,7 +213,7 @@ const GroupDetailPage = () => {
               </div>
             </div>
             <button
-              onClick={() => handleJoinGroupAudioCall(group.id)}
+              onClick={() => handleJoinGroupAudioCall()}
               className="px-4 py-2 font-semibold bg-white text-teal-600 rounded-full hover:bg-teal-50"
             >
               Join Call
@@ -262,7 +227,7 @@ const GroupDetailPage = () => {
                 key={post.id}
                 post={post}
                 onLike={onLike}
-                _onAddComment={onAddComment} // Change onAddComment to _onAddComment to match PostCardProps
+                _onAddComment={onAddComment}
                 onOpenGiftModal={onOpenGiftModal}
                 onOpenPaylinkModal={onOpenPaylinkModal}
                 onVote={onVote}

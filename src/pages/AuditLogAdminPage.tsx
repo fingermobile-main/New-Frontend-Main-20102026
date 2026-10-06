@@ -3,7 +3,9 @@ import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
 import {
   ShieldCheckIcon,
+  // eslint-disable-next-line no-unused-vars
   MagnifyingGlassIcon,
+  // eslint-disable-next-line no-unused-vars
   ArrowPathIcon,
   ClockIcon,
   DownloadIcon,
@@ -76,6 +78,7 @@ const AuditLogAdminPage: React.FC = () => {
       }));
       setLogs(mapped);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch audit logs:', error);
       showToast('Failed to load audit logs from database', 'error');
     } finally {
@@ -98,6 +101,7 @@ const AuditLogAdminPage: React.FC = () => {
         });
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch stats:', e);
     }
   };

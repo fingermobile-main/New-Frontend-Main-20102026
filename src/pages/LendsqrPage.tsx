@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MainLayout from '../components/layout/MainLayout';
 import { useAppContext } from '../contexts/AppContext';
 import { CreditCardIcon, HeartIcon, ArrowUpIcon, ArrowDownIcon } from '../icons';
 import { api } from '../services/api';
@@ -120,8 +119,7 @@ const LendsqrPage: React.FC = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-10">
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
@@ -339,7 +337,6 @@ const LendsqrPage: React.FC = () => {
           </div>
         )}
       </div>
-    </MainLayout>
   );
 };
 

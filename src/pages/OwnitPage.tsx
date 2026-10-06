@@ -10,6 +10,7 @@ import React, { useState, useEffect, useContext } from 'react';
  */
 
 import { ApiService } from '../services/apiService';
+import { CURATED_LUXURY_PRODUCTS, LUXURY_CATEGORIES, LuxuryProduct } from '../data/luxuryProducts';
 
 import { MarketplaceContext } from '../contexts/MarketplaceContext';
 import { AppContext } from '../contexts/AppContext';
@@ -150,14 +151,29 @@ const OwnitPage: React.FC = () => {
         setLoadingProfile(true);
         setError(null);
 
-        // Fetch products
-        const productsResponse = await ApiService.get<any>('/marketplace/products');
-        setProducts(productsResponse);
+        // Fetch products with fallback to 30 Curated High-Net-Worth Luxury Products
+        try {
+          const productsResponse = await ApiService.get<any>('/marketplace/products');
+          if (Array.isArray(productsResponse) && productsResponse.length > 0) {
+            setProducts(productsResponse);
+          } else {
+            setProducts(CURATED_LUXURY_PRODUCTS as any);
+          }
+        } catch {
+          setProducts(CURATED_LUXURY_PRODUCTS as any);
+        }
 
-        // Fetch categories
-        const categoriesResponse =
-          await ApiService.get<any>('/marketplace/categories');
-        setCategories(categoriesResponse);
+        // Fetch categories with fallback to High Fashion & Horology categories
+        try {
+          const categoriesResponse = await ApiService.get<any>('/marketplace/categories');
+          if (Array.isArray(categoriesResponse) && categoriesResponse.length > 0) {
+            setCategories(categoriesResponse);
+          } else {
+            setCategories(LUXURY_CATEGORIES as any);
+          }
+        } catch {
+          setCategories(LUXURY_CATEGORIES as any);
+        }
 
         // Fetch analytics
         const analyticsResponse = await ApiService.get<any>('/marketplace/analytics');
@@ -394,28 +410,45 @@ const OwnitPage: React.FC = () => {
   const renderMarketplace = () => {
     return (
       <div className="space-y-8">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-8 text-white">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold mb-4">OwnIt Marketplace</h1>
-            <p className="text-lg mb-6">
-              Discover and own unique digital assets
+        {/* Glamorous Luxury Hero Showroom */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-950 via-slate-900 to-black border border-amber-500/30 p-8 md:p-12 text-white shadow-2xl">
+          <div className="absolute -right-24 -top-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute right-0 bottom-0 opacity-20 hidden lg:block w-1/2 h-full bg-cover bg-center rounded-r-3xl pointer-events-none" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1200&q=85')" }} />
+          
+          <div className="relative z-10 max-w-2xl space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 text-amber-300 text-xs font-medium tracking-widest uppercase">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              FingerMobile™ Private Luxury Vault • Demographics 25–55
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-100 to-amber-400 leading-tight">
+              OWNIT™ High Fashion & Haute Horologie
+            </h1>
+            
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed font-light">
+              An exclusive digital luxury boutique for discerning collectors. Curated Haute Couture, Swiss Perpetual Timepieces, 24k Fine Jewelry, and Exotic Italian Leathers—authenticated on FingerMobile Sovereign Ledger.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <div className="relative flex-1">
                 <input
                   type="text"
                   value={filters.query}
-                  onChange={(e) => setFilters({ ...filters, query: e.target.value })
-                  }
-                  placeholder="Search products, categories, or creators..."
-                  className="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                  onChange={(e) => setFilters({ ...filters, query: e.target.value })}
+                  placeholder="Search Swiss Horology, Vicuña, Birkin, Diamonds..."
+                  className="w-full px-5 py-3.5 rounded-xl bg-gray-900/80 border border-amber-500/30 text-amber-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm shadow-inner"
                 />
-                <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <SearchIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
               </div>
-              <button className="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors">
-                Search
+              <button className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-gray-950 font-semibold text-sm hover:from-amber-300 hover:to-amber-500 transition-all transform hover:scale-105 shadow-lg shadow-amber-500/20">
+                Explore Vault
               </button>
+            </div>
+
+            <div className="flex items-center gap-6 pt-4 text-xs text-amber-200/70 border-t border-gray-800">
+              <div><strong className="text-amber-300 font-semibold">30 Curated</strong> Masterpieces</div>
+              <div><strong className="text-amber-300 font-semibold">100% Guaranteed</strong> Provenance</div>
+              <div><strong className="text-amber-300 font-semibold">Concierge</strong> Global Delivery</div>
             </div>
           </div>
         </div>

@@ -7,27 +7,13 @@ interface CreateForumPostData {
   parentId?: string;
 }
 
-interface UpdateForumPostData {
-  title?: string;
-  content?: string;
-  categoryId?: string;
-  tags?: string[];
-  isPinned?: boolean;
-  isLocked?: boolean;
-}
-
-interface CreateForumPostData {
-  content: string;
-  threadId: string;
-  parentId?: string;
-}
-
 interface CreateForumThreadData {
   title: string;
   content: string;
   categoryId: string;
   tags?: string[];
   isSticky?: boolean;
+  mediaUrls?: string[];
 }
 
 interface ApiResponse<T> {
@@ -462,6 +448,194 @@ class ForumService {
         success: false,
         message: 'Failed to unlike post',
         error: error.response?.data?.message || error.message || 'An error occurred while unliking post',
+      };
+    }
+  }
+
+  // Get forum notifications
+  static async getNotifications(): Promise<ApiResponse<{ data: any[] }>> {
+    try {
+      const response = await ApiService.get('/forums/notifications');
+      return {
+        success: true,
+        data: response.data,
+        message: 'Notifications retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve notifications',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching notifications',
+      };
+    }
+  }
+
+  // Get unread notification count
+  static async getUnreadCount(): Promise<ApiResponse<{ count: number }>> {
+    try {
+      const response = await ApiService.get('/forums/notifications/unread-count');
+      return {
+        success: true,
+        data: response.data,
+        message: 'Unread count retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve unread count',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching unread count',
+      };
+    }
+  }
+
+  // Mark notification as read
+  static async markNotificationRead(id: string): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post(`/forums/notifications/${id}/read`);
+      return {
+        success: true,
+        message: 'Notification marked as read',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to mark notification as read',
+        error: error.response?.data?.message || error.message || 'An error occurred while marking notification as read',
+      };
+    }
+  }
+
+  // Mark all notifications as read
+  static async markAllNotificationsRead(): Promise<ApiResponse<void>> {
+    try {
+      await ApiService.post('/forums/notifications/read-all');
+      return {
+        success: true,
+        message: 'All notifications marked as read',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to mark all notifications as read',
+        error: error.response?.data?.message || error.message || 'An error occurred while marking all notifications as read',
+      };
+    }
+  }
+
+  // ─── Save / Bookmark Posts ──────────────────────────────────────────────────
+  // BACKEND GAP: Requires `saved_posts` table (id, user_id, post_id, saved_at)
+  // Endpoint: POST /api/forums/posts/:postId/save
+  static async savePost(postId: string): Promise<ApiResponse<{ saved: boolean }>> {
+    try {
+      const response = await ApiService.post(`/forums/posts/${postId}/save`, {});
+      return {
+        success: true,
+        data: response.data.data || { saved: true },
+        message: 'Post saved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to save post',
+        error: error.response?.data?.message || error.message || 'An error occurred while saving post',
+      };
+    }
+  }
+
+  // Endpoint: DELETE /api/forums/posts/:postId/save
+  static async unsavePost(postId: string): Promise<ApiResponse<{ saved: boolean }>> {
+    try {
+      const response = await ApiService.delete(`/forums/posts/${postId}/save`);
+      return {
+        success: true,
+        data: response.data.data || { saved: false },
+        message: 'Post unsaved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to unsave post',
+        error: error.response?.data?.message || error.message || 'An error occurred while unsaving post',
+      };
+    }
+  }
+
+  // Endpoint: GET /api/forums/posts/saved
+  static async getSavedPosts(): Promise<ApiResponse<ForumPost[]>> {
+    try {
+      const response = await ApiService.get('/forums/posts/saved');
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Saved posts retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve saved posts',
+        error: error.response?.data?.message || error.message || 'An error occurred while fetching saved posts',
+      };
+    }
+  }
+
+  // ─── Activity Type ──────────────────────────────────────────────────────────
+  // Endpoint: PUT /api/forums/threads/:threadId/activity
+  static async setThreadActivityType(threadId: string, activityType: string): Promise<ApiResponse<ForumThread>> {
+    try {
+      const response = await ApiService.put(`/forums/threads/${threadId}/activity`, { activityType });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Activity type set successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to set activity type',
+        error: error.response?.data?.message || error.message || 'An error occurred while setting activity type',
+      };
+    }
+  }
+
+  // ─── Video Rooms ────────────────────────────────────────────────────────────
+  // Endpoint: POST /api/live-spaces/rooms/create
+  static async createVideoRoom(title: string, type: 'video' | 'audio' = 'video', maxParticipants: number = 10): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post('/live-spaces/rooms/create', {
+        title,
+        type,
+        maxParticipants
+      });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Video room created successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create video room',
+        error: error.response?.data?.message || error.message || 'An error occurred while creating video room',
+      };
+    }
+  }
+
+  static async askLuminaAI(question: string, context?: string): Promise<ApiResponse<{ question: string; answer: string; timestamp: string; context?: string }>> {
+    try {
+      const response = await ApiService.post('/lumina/ask', {
+        question,
+        context
+      });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'AI response received',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to get AI response',
+        error: error.response?.data?.message || error.message || 'An error occurred while getting AI response',
       };
     }
   }

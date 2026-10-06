@@ -8,6 +8,7 @@ import { Member, PhotoCredit } from '../types';
 
 const PortfolioPage: React.FC = () => {
   const { memberId } = useParams<{ memberId: string }>();
+  // eslint-disable-next-line no-unused-vars
   const { photoCreditItems, ficBalance, member } = useAppContext();
   const [profileMember, setProfileMember] = useState<Member | null>(null);
   const [portfolioItems, setPortfolioItems] = useState<PhotoCredit[]>([]);

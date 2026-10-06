@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Film, Play, Heart, MessageSquare, Sparkles, Clock } from 'lucide-react';
+import { Film, Play, Heart, MessageSquare, Sparkles, Clock, Gift } from 'lucide-react';
+import SendFicModal from './SendFicModal';
 
 export interface PubliciteeItem {
   id: string;
@@ -39,6 +40,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string>(category || 'all');
   const [activeVideo, setActiveVideo] = useState<PubliciteeItem | null>(null);
+  const [showTipModal, setShowTipModal] = useState(false);
 
   useEffect(() => {
     if (category) {
@@ -218,9 +220,27 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
               {activeVideo.description && (
                 <p className="text-xs text-gray-300 mt-1">{activeVideo.description}</p>
               )}
+              <div className="mt-4 flex space-x-2">
+                <button
+                  onClick={() => setShowTipModal(true)}
+                  className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                >
+                  <Gift className="w-4 h-4" /> Tip Creator
+                </button>
+              </div>
             </div>
           </div>
         </div>
+      )}
+
+      {showTipModal && (
+        <SendFicModal
+          onClose={() => setShowTipModal(false)}
+          onSend={async (recipient, amount, message) => {
+            console.log(`Sending ${amount} FIC to ${recipient} with message: ${message}`);
+            return Promise.resolve();
+          }}
+        />
       )}
     </div>
   );

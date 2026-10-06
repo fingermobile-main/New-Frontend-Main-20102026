@@ -7,6 +7,7 @@ import StercsControlCenter from '../../components/dashboard/StercsControlCenter'
 import SentientAIDashboard from '../../components/dashboard/SentientAIDashboard';
 import GuardianProtocolDashboard from '../../components/dashboard/GuardianProtocolDashboard';
 import PromptsThreatDashboard from '../../components/dashboard/PromptsThreatDashboard';
+import RegionalCreatorControlsPanel from '../../components/admin/RegionalCreatorControlsPanel';
 
 import { GuardianSystemStatus, GuardianAlert } from '../../types';
 
@@ -175,6 +176,18 @@ AI Sentinel | FingerMobileTM STERCS System
             <ExclamationTriangleIcon className="w-4 h-4" />
             <span>PRO-MPTS</span>
           </button>
+
+          <button
+            className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 ${
+              activeSystem === 'creator-rules'
+                ? 'bg-brand-blue text-white'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            }`}
+            onClick={() => setActiveSystem('creator-rules')}
+          >
+            <ShieldCheckIcon className="w-4 h-4" />
+            <span>CREATOR QUOTAS</span>
+          </button>
         </div>
       </div>
 
@@ -231,6 +244,7 @@ AI Sentinel | FingerMobileTM STERCS System
       {activeSystem === 'sentient' && <SentientAIDashboard />}
       {activeSystem === 'guardian' && <GuardianProtocolDashboard />}
       {activeSystem === 'prompts' && <PromptsThreatDashboard />}
+      {activeSystem === 'creator-rules' && <RegionalCreatorControlsPanel />}
 
       {/* Platform Task Manager */}
       <div className="mt-8">

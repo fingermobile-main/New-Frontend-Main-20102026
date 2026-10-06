@@ -91,7 +91,7 @@ class HallmarksService {
   async getAllHallmarks(filters?: Record<string, any>): Promise<HallmarksResponse> {
     try {
       const response = await this.api.get('/hallmarks', { params: filters });
-      
+
       if (response.data.success || Array.isArray(response.data) || Array.isArray(response.data?.data)) {
         const list = Array.isArray(response.data) ? response.data : (response.data.data || []);
         return {
@@ -128,7 +128,7 @@ class HallmarksService {
   async getUserHallmarks(userId: string): Promise<UserHallmarksResponse> {
     try {
       const response = await this.api.get(`/hallmarks/user/${userId}`);
-      
+
       if (response.data.success || Array.isArray(response.data?.data) || Array.isArray(response.data)) {
         const list = Array.isArray(response.data) ? response.data : (response.data.data || []);
         return {
@@ -152,7 +152,7 @@ class HallmarksService {
   async createHallmark(request: CreateHallmarkRequest): Promise<{ success: boolean; message?: string; hallmark?: Hallmark }> {
     try {
       const response = await this.api.post('/hallmarks', request);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -174,7 +174,7 @@ class HallmarksService {
   async awardHallmark(request: AwardHallmarkRequest): Promise<{ success: boolean; message?: string; userHallmark?: UserHallmark }> {
     try {
       const response = await this.api.post('/hallmarks/award', request);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -196,7 +196,7 @@ class HallmarksService {
   async checkMilestones(request: CheckMilestonesRequest): Promise<{ success: boolean; message?: string; data?: { awarded: any[]; count: number } }> {
     try {
       const response = await this.api.post('/hallmarks/check-milestones', request);
-      
+
       if (response.data.success) {
         return {
           success: true,

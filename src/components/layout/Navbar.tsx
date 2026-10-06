@@ -45,8 +45,16 @@ const Navbar: React.FC = () => {
                 className="flex-shrink-0 flex items-center focus:outline-none"
                 aria-label="FingerMobile Home Menu"
               >
-                <span className={`text-xl font-bold text-indigo-600 ${isLogoPulsing ? 'animate-pulse' : ''}`}>
-                  FingerMobile
+                <img
+                  src="/assets/branding/fingermobile/FingerMobile orange logo.webp"
+                  alt="FingerMobile"
+                  className={`h-8 w-auto object-contain mr-2 ${isLogoPulsing ? 'scale-105' : ''} transition-transform`}
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/branding/fingermobile/logo.png';
+                  }}
+                />
+                <span className={`text-xl font-black text-gray-900 ${isLogoPulsing ? 'animate-pulse' : ''}`}>
+                  Finger<span className="text-orange-500">Mobile</span>
                 </span>
               </button>
 
@@ -220,6 +228,17 @@ const Navbar: React.FC = () => {
 
       {isMenuOpen && (
         <div className="md:hidden">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center space-x-2 bg-slate-50/80">
+            <img
+              src="/assets/branding/fingermobile/FRONT copy.webp"
+              alt="FingerMobile Drawer"
+              className="h-7 w-7 object-contain"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/branding/fingermobile/drawer-splash-logo.webp';
+              }}
+            />
+            <span className="font-bold text-gray-900 text-sm tracking-wide">FingerMobile Drawer</span>
+          </div>
           <div className="pt-2 pb-3 space-y-1">
             <Link
               to="/"

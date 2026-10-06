@@ -1,4 +1,4 @@
-import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import { algoliasearch } from 'algoliasearch';
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID || 'AH8QFD8X1H', // Application ID

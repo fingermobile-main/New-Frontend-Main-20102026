@@ -88,7 +88,7 @@ class MessageService {
   async getConversations(): Promise<GetConversationsResponse> {
     try {
       const response = await this.api.get('/messages/conversations');
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -109,7 +109,7 @@ class MessageService {
   async getMessages(conversationPartnerId: string): Promise<GetMessagesResponse> {
     try {
       const response = await this.api.get(`/messages/conversations/${conversationPartnerId}`);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -130,7 +130,7 @@ class MessageService {
   async sendMessage(request: SendMessageRequest): Promise<SendMessageResponse> {
     try {
       const response = await this.api.post('/messages', request);
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -151,7 +151,7 @@ class MessageService {
   async getUnreadCount(): Promise<UnreadCountResponse> {
     try {
       const response = await this.api.get('/messages/unread-count');
-      
+
       if (response.data.success) {
         return {
           success: true,
@@ -174,7 +174,7 @@ class MessageService {
       const response = await this.api.post('/messages/mark-as-read', {
         conversation_partner_id: conversationPartnerId
       });
-      
+
       if (response.data.success) {
         return {
           success: true

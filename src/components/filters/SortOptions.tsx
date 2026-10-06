@@ -35,7 +35,7 @@ const SortOptions: React.FC<SortOptionsProps> = ({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">Sort By</label>
-          <Select value={currentSort} onValueChange={(value) => onSortChange?.(value, 'desc')}>
+          <Select value={currentSort} onValueChange={(value: string) => onSortChange?.(value, 'desc')}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

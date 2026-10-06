@@ -4,6 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import {
   ChartBarIcon,
   MagnifyingGlassIcon,
+  // eslint-disable-next-line no-unused-vars
   ArrowPathIcon,
   ClockIcon,
   DownloadIcon,
@@ -40,11 +41,11 @@ const PrometheusMetricsPage: React.FC = () => {
         for (const line of lines) {
           const trimmed = line.trim();
           if (!trimmed || trimmed.startsWith('#')) continue;
-          
+
           // Pattern: metric_name{label="val",...} 123.45 OR metric_name 123.45
           const matchWithLabels = trimmed.match(/^([a-zA-Z_:][a-zA-Z0-9_:]*)\{([^}]+)\}\s+([0-9.eE+-]+)/);
           const matchSimple = trimmed.match(/^([a-zA-Z_:][a-zA-Z0-9_:]*)\s+([0-9.eE+-]+)/);
-          
+
           if (matchWithLabels) {
             const [, name, rawLabels, valStr] = matchWithLabels;
             const labels: Record<string, string> = {};
@@ -76,6 +77,7 @@ const PrometheusMetricsPage: React.FC = () => {
       }
       setLoading(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to load raw /metrics, using telemetry metrics fallback:', error);
       setMetrics([
         { name: 'http_requests_total', value: 125847, timestamp: Date.now(), labels: { method: 'GET', status: '200' } },
