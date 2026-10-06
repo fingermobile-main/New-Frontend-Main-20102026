@@ -1,4 +1,27 @@
 Updated test credentials to log in and test the platform:
+
+#### DATE: 04/10/2026
+Verified Test Credentials Summary
+Role	Email	Phone	Password
+Admin	admin@fingermobile.com	+2348012345678	Admin@123
+Regular User	user@fingermobile.com	+2348012345679	User@123
+Creator	creator@fingermobile.com	+2348012345680	Creator@123
+Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
+
+
+
+
+#### DATE: 04/10/2026
+Verified Test Credentials Summary
+Role	Email	Phone	Password
+Admin	admin@fingermobile.com	+2348012345678	Admin@123
+Regular User	user@fingermobile.com	+2348012345679	User@123
+Creator	creator@fingermobile.com	+2348012345680	Creator@123
+Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
+
+
+
+
 open postgres and fix these mock production developement test credentials., 
 so we can test with google chrome and fix the remaining typescript syntax and lint errors where there are any. and also optimize code and scripts and files.
 
@@ -372,3 +395,11 @@ Active wallets with $1000 USD balance
 The authentication system requires email, phone, and password for login, and all these test accounts meet the verification requirements. The database schema includes the necessary columns for email_verified, phone_verified, and other security features.
 
 These test credentials are ready to use for platform testing.
+
+#### DATE: 04/10/2026
+Verified Test Credentials Summary
+Role	Email	Phone	Password
+Admin	admin@fingermobile.com	+2348012345678	Admin@123
+Regular User	user@fingermobile.com	+2348012345679	User@123
+Creator	creator@fingermobile.com	+2348012345680	Creator@123
+Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
