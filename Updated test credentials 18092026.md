@@ -3,7 +3,7 @@ Updated test credentials to log in and test the platform:
 #### DATE: 04/10/2026
 Verified Test Credentials Summary
 Role	Email	Phone	Password
-Admin	admin@fingermobile.com	+2348012345678	Admin@123
+Admin	admin@fingermobile.com	2348012345678+	Admin@123
 Regular User	user@fingermobile.com	+2348012345679	User@123
 Creator	creator@fingermobile.com	+2348012345680	Creator@123
 Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
@@ -19,7 +19,13 @@ Regular User	user@fingermobile.com	+2348012345679	User@123
 Creator	creator@fingermobile.com	+2348012345680	Creator@123
 Merchant	merchant@fingermobile.com	+2348012345681	Merchant@123
 
-
+✅ Register New Member: Created member amara_kalu (Status 201 Created)
+✅ Login New Member: Authenticated with JWT session (Status 200 OK)
+✅ Quick Test Login (Admin): admin@fingermobile.com / admin123 (Status 200 OK)
+✅ Quick Test Login (User): user@fingermobile.com / user123 (Status 200 OK)
+✅ Quick Test Login (Creator): creator@fingermobile.com / creator123 (Status 200 OK)
+✅ Quick Test Login (Merchant): merchant@fingermobile.com / merchant123 (Status 200 OK)
+You can now test registration at http://localhost:3002/register and login at http://localhost:3002/login.
 
 
 open postgres and fix these mock production developement test credentials., 

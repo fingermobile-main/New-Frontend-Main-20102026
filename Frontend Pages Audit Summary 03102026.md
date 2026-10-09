@@ -113,7 +113,7 @@
 | InsightsPage.tsx | TODO | ? | ? | ? | ? | |
 | InvestorRelationsPage.tsx | TODO | ? | ? | ? | ? | |
 | JobsPage.tsx | TODO | ? | ? | ? | ? | |
-| LendsqrPage.tsx | TODO | ? | ? | ? | ? | |
+| LoansqrPage.tsx | TODO | ? | ? | ? | ? | |
 | LiveStreamingPage.test.tsx | TODO | ? | ? | ? | ? | |
 | LiveStreamingPage.tsx | TODO | ? | ? | ? | ? | |
 | LmsPage.tsx | TODO | ? | ? | ? | ? | |

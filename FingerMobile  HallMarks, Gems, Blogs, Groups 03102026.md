@@ -166,7 +166,7 @@ Member must have been active and have more than 20-30 Personal Live UGC at least
 
 Members Hallmark Page Name must accurately represent the Members registered organization and strictly follow FingerMobile name formatting and policy guidelines to avoid rejection.
 
-Core Name Formatting Rules
+HallMarks Core Name Formatting Rules
 • Capitalization: Use grammatically correct title case (capitalize only the first letter of each word). All-caps are prohibited unless the name is an established acronym. Conjunctions should not be capitalized.
 • Name must either be all small letters but never capital letters.
 • Names can contain Small Letters and Capital Letters
@@ -197,7 +197,6 @@ Database Schema: user_hallmarks, hallmark_badges, hallmark_communities.
 Core Concept: Platform reward currency, Gem Marketplace, micro-transactions, and digital asset redeeming.
 
 #### Gems is a “Mini/Short Lived Broadcast Channel” that lets an eligible Gem members share direct updates with their own Gems followers inside the app.
-
 #### Gem members must Purchase Gems from either Marketplace/Flamingo/OwnIt
 
 How Gems Work

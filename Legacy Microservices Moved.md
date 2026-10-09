@@ -6,7 +6,7 @@ FingerLux - Luxury/Fashion service
 FingerWars - Gaming competition service
 Flamingo - Marketing/Advertising service
 GameOn - Gaming platform service
-LendSqr - Financial lending service
+Loansqr - Financial lending service
 LuminaGallery - Photo gallery service
 MyLearning - E-learning service
 Nysc - NYSC program service

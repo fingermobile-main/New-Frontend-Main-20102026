@@ -33,7 +33,7 @@ Module 4: Creator & Competitions (CreatorDashboard, MonetizationPage, FingerWars
 Module 5: Communities & Streaming (CommunitiesPage, GroupsPage, ForumPage, LiveStreaming, EventsPage)
 Module 6: Audio & TV (BeatwaveNGPage, AiPlaylistPage, Dancia4TvPage, VideoTranslationDashboard)
 Module 7: E-Commerce & Storefronts (MarketplacePage, StorefrontPage, CheckoutPage, LushPressiesPage, FingerLuxPage)
-Module 8: Financials & Wallets (WalletPage, FinancialsPage, FICVaultPage, LendsqrPage, PaylinksPage)
+Module 8: Financials & Wallets (WalletPage, FinancialsPage, FICVaultPage, LoansqrPage, PaylinksPage)
 Module 9: E-Learning (ELearningPage, CourseDetailPage, LmsPage, NyscPage)
 Module 10: User Identity & Settings (ProfilePage, SettingsPage, MessagesPage, MiiPage, PhotoCreditsPage)
 Module 11: Enterprise & Campaigns (SeadsPage, CanaryAdsPage, FlamingoPage, OwnitPage, FranchiseManagementPage)

@@ -849,7 +849,7 @@ const ForumPage: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
               <h3 className="font-bold text-base text-gray-900 dark:text-white mb-3">Members Area</h3>
               <ul className="space-y-1 text-sm font-medium">
-                {['mii', 'groups', 'blogs', 'hallmarks', 'permanence', 'gameon', 'photocredits', 'lendsqr'].map((path) => (
+                {['mii', 'groups', 'blogs', 'hallmarks', 'permanence', 'gameon', 'photocredits', 'Loansqr'].map((path) => (
                   <li
                     key={path}
                     onClick={() => navigate(`/${path}`)}

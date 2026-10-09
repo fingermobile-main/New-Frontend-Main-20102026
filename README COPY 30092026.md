@@ -1121,7 +1121,7 @@ apps/
 │   ├── backend/, frontend/, database/, docker/
 ├── hallmarks/ (with Dockerfile - IMPLEMENTED)
 ├── load-balancer/ (Nginx config)
-├── LendSqr/ (with Dockerfile - IMPLEMENTED)
+├── Loansqr/ (with Dockerfile - IMPLEMENTED)
 ├── LuminaGallery/ (with Dockerfile - IMPLEMENTED)
 ├── lushpressies/ (with Dockerfile - IMPLEMENTED)
 ├── marketplace/ (with Dockerfile - IMPLEMENTED

@@ -54,7 +54,7 @@ Technical specification and wireframe for the ForumPage Screen with dimensions, 
 
 ## Content Area Components
 
-### Left Column Navigation MENU ** (This is the Members Area, Utilities & Status), Mii, Groups, Blog, Hallmarks, Permanence, Gameon, PhotoCredits, Lendsqr (Load More Botton)
+### Left Column Navigation MENU ** (This is the Members Area, Utilities & Status), Mii, Groups, Blog, Hallmarks, Permanence, Gameon, PhotoCredits, Loansqr (Load More Botton)
 
 - **Width**: 256px (16rem)
 - **Visibility**: Hidden on mobile (md:block)

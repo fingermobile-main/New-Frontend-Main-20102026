@@ -64,7 +64,7 @@
 | Gems | `/gems` |
 | BeatwaveNG | `/beatwaveng` |
 | Camus | `/camus` |
-| Lendsqr | `/lendsqr` |
+| Loansqr | `/Loansqr` |
 | Hallmarks | `/hallmarks` |
 | LushPressies | `/lushpressies` |
 | Mii | `/mii` |
