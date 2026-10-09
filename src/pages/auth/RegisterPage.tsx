@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Phone, Shield, User, Mail } from 'lucide-react';
+import { Eye, EyeOff, Phone, User, Mail } from 'lucide-react';
 import authService from '../../services/authService';
 
 const RegisterPage = () => {
@@ -104,7 +104,11 @@ const RegisterPage = () => {
         }
       }
 
-      const effectiveEmail = email.trim() || `user_${cleanPhone.replace(/[^0-9]/g, '') || Date.now()}@fingermobile.com`;
+      const effectiveEmail =
+        email.trim() ||
+        `user_${
+          cleanPhone.replace(/[^0-9]/g, '') || Date.now()
+        }@fingermobile.com`;
 
       const registerResponse: any = await authService.register({
         name: `${firstName} ${lastName}`.trim(),
@@ -112,7 +116,7 @@ const RegisterPage = () => {
         email: effectiveEmail,
         password,
         firstName,
-        lastName
+        lastName,
       });
 
       // Store tokens and user info
@@ -129,7 +133,7 @@ const RegisterPage = () => {
         const fullUser = {
           ...registerResponse.user,
           onboardingComplete: true,
-          onboarding_completed: true
+          onboarding_completed: true,
         };
         localStorage.setItem('user', JSON.stringify(fullUser));
         localStorage.setItem('onboardingComplete', 'true');
@@ -139,7 +143,12 @@ const RegisterPage = () => {
       // Navigate to forum or onboarding
       navigate('/onboarding');
     } catch (error: any) {
-      setErrors({ general: error.response?.data?.message || error.message || 'Registration failed. Please try again.' });
+      setErrors({
+        general:
+          error.response?.data?.message ||
+          error.message ||
+          'Registration failed. Please try again.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -165,15 +174,18 @@ const RegisterPage = () => {
                 alt="FingerMobile Logo"
                 className="w-full h-full object-contain filter drop-shadow-md"
                 onError={(e) => {
-                  (e.target as HTMLElement).setAttribute('src', '/assets/branding/fingermobile/drawer-splash-logo.webp');
+                  (e.target as HTMLElement).setAttribute(
+                    'src',
+                    '/assets/branding/fingermobile/drawer-splash-logo.webp'
+                  );
                 }}
               />
             </div>
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
-            <p className="text-sm font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-1">
-              Create Your Sovereign Identity Account
+            <p className="text-sm font-semibold tracking-normal text-gray-500 dark:text-gray-400 mt-1">
+              Create your Sovereign Account
             </p>
           </div>
 
@@ -186,7 +198,10 @@ const RegisterPage = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   First Name
                 </label>
                 <div className="relative">
@@ -201,18 +216,25 @@ const RegisterPage = () => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className={`block w-full pl-10 pr-3 py-3 border ${
-                      errors.firstName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                      errors.firstName
+                        ? 'border-red-500'
+                        : 'border-gray-300 dark:border-gray-600'
                     } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                     placeholder="John"
                   />
                 </div>
                 {errors.firstName && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.firstName}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                    {errors.firstName}
+                  </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Last Name
                 </label>
                 <div className="relative">
@@ -227,19 +249,26 @@ const RegisterPage = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className={`block w-full pl-10 pr-3 py-3 border ${
-                      errors.lastName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                      errors.lastName
+                        ? 'border-red-500'
+                        : 'border-gray-300 dark:border-gray-600'
                     } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                     placeholder="Doe"
                   />
                 </div>
                 {errors.lastName && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.lastName}</p>
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                    {errors.lastName}
+                  </p>
                 )}
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Email Address (Optional)
               </label>
               <div className="relative">
@@ -260,7 +289,10 @@ const RegisterPage = () => {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Phone Number
               </label>
               <div className="relative">
@@ -275,18 +307,25 @@ const RegisterPage = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className={`block w-full pl-10 pr-3 py-3 border ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    errors.phone
+                      ? 'border-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="+1 (555) 123-4567"
                 />
               </div>
               {errors.phone && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.phone}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                  {errors.phone}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Password
               </label>
               <div className="relative">
@@ -298,7 +337,9 @@ const RegisterPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`block w-full px-3 py-3 pr-10 border ${
-                    errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    errors.password
+                      ? 'border-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="Enter your password"
                 />
@@ -315,12 +356,17 @@ const RegisterPage = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                  {errors.password}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Confirm Password
               </label>
               <div className="relative">
@@ -332,7 +378,9 @@ const RegisterPage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className={`block w-full px-3 py-3 pr-10 border ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    errors.confirmPassword
+                      ? 'border-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="Confirm your password"
                 />
@@ -349,7 +397,9 @@ const RegisterPage = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-500">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
@@ -361,9 +411,25 @@ const RegisterPage = () => {
               >
                 {isLoading ? (
                   <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Creating Account...
                   </span>

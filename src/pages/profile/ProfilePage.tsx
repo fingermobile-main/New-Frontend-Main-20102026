@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { identityService, UserProfileData } from '../../services/identityService';
 import { useAppContext } from '../../contexts/AppContext';
 import {
@@ -18,7 +18,10 @@ import {
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id?: string }>();
   const { member, showToast } = useAppContext();
+
+  const isViewingOther = Boolean(id && (!member || String(id) !== String(member.id)));
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -41,26 +44,53 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     loadProfile();
-  }, [member]);
+  }, [member, id]);
 
   const loadProfile = async () => {
     setLoading(true);
     try {
-      const targetId = member?.id || (member as any)?.user_id;
-      const res = await identityService.getProfile(targetId);
+      const targetId = id || member?.id || (member as any)?.user_id;
+      let res: UserProfileData | null = null;
+      if (targetId) {
+        try {
+          res = await identityService.getProfile(targetId);
+        } catch {
+          // Gracefully fallback
+        }
+      }
+
       if (res && (res.name || res.email || res.username)) {
         setProfile({
           ...res,
-          name: res.name || member?.name || '',
-          email: res.email || member?.email || '',
-          username: res.username || (member as any)?.username || (member as any)?.handle || '',
-          bio: res.bio || member?.bio || '',
-          headline: res.headline || '',
-          avatarUrl: res.avatarUrl || res.avatar || member?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+          name: res.name || (id ? 'Lush Member' : member?.name || ''),
+          email: res.email || (id ? `${id}@fingermobile.network` : member?.email || ''),
+          username: res.username || (id ? id : (member as any)?.username || ''),
+          bio: res.bio || 'Verified Sovereign FingerMobile Protocol member.',
+          headline: res.headline || 'Active Protocol Contributor',
+          avatarUrl: res.avatarUrl || res.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
           website: res.website || '',
-          location: typeof res.location === 'object' && res.location ? JSON.stringify(res.location) : (res.location || ''),
+          location: typeof res.location === 'object' && res.location ? JSON.stringify(res.location) : (res.location || 'Lagos, Nigeria'),
           skills: Array.isArray(res.skills) ? res.skills : ['Digital Identity', 'Fintech', 'Micro-investing'],
           certifications: Array.isArray(res.certifications) ? res.certifications : []
+        });
+      } else if (id) {
+        // Mock / Target member fallback profile
+        setProfile({
+          id,
+          name: id === 'mock-user-1' ? 'Zainab Al-Mansoor' : `Member ${id}`,
+          email: `${id}@fingermobile.network`,
+          username: id === 'mock-user-1' ? 'zainab_luxury' : id,
+          bio: id === 'mock-user-1'
+            ? 'Haute couture curator, digital asset architect, and sovereign protocol enthusiast based between Dubai and Lagos. Passionate about curated gifting and luxury craftsmanship.'
+            : 'Verified sovereign member on the FingerMobile Protocol network.',
+          headline: id === 'mock-user-1' ? 'Sovereign Luxury & Protocol Curator (VIP 5-Star)' : 'Verified Member',
+          avatarUrl: id === 'mock-user-1'
+            ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
+            : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
+          website: 'https://fingermobile.com',
+          location: 'Dubai & Lagos',
+          skills: ['Haute Horology', 'Curated Gifting', 'Digital Identity', 'FIC Protocol'],
+          certifications: ['Verified Sovereign PIN Holder', 'Lush VIP 5-Star']
         });
       } else {
         // Fallback to local member context
@@ -203,17 +233,19 @@ const ProfilePage: React.FC = () => {
                   alt={profile.name || 'User Avatar'}
                   className="w-28 h-28 rounded-full object-cover border-4 border-slate-100 dark:border-slate-700 shadow"
                 />
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newUrl = prompt('Enter image avatar URL:', profile.avatarUrl || '');
-                    if (newUrl) setProfile(prev => ({ ...prev, avatarUrl: newUrl }));
-                  }}
-                  className="absolute bottom-0 right-0 p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-md transition-colors"
-                  title="Change avatar photo"
-                >
-                  <Camera className="w-4 h-4" />
-                </button>
+                {!isViewingOther && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newUrl = prompt('Enter image avatar URL:', profile.avatarUrl || '');
+                      if (newUrl) setProfile(prev => ({ ...prev, avatarUrl: newUrl }));
+                    }}
+                    className="absolute bottom-0 right-0 p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-md transition-colors"
+                    title="Change avatar photo"
+                  >
+                    <Camera className="w-4 h-4" />
+                  </button>
+                )}
               </div>
 
               <div className="flex-1 text-center sm:text-left">
@@ -228,14 +260,37 @@ const ProfilePage: React.FC = () => {
                 </p>
               </div>
 
-              <button
-                type="submit"
-                disabled={saving}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 shadow-sm transition-colors disabled:opacity-50"
-              >
-                <Save className="w-4 h-4" />
-                {saving ? 'Saving...' : 'Save Profile'}
-              </button>
+              {!isViewingOther ? (
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 shadow-sm transition-colors disabled:opacity-50"
+                >
+                  <Save className="w-4 h-4" />
+                  {saving ? 'Saving...' : 'Save Profile'}
+                </button>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <Link
+                    to={`/lush-pressies?chatWith=${profile.id || id || 'mock-user-1'}`}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-xs text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors"
+                  >
+                    <Mail className="w-4 h-4" /> Message
+                  </Link>
+                  <Link
+                    to={`/gifts/shop?recipientId=${profile.id || id || 'mock-user-1'}`}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-amber-500 to-rose-500 hover:opacity-95 shadow-sm transition-all"
+                  >
+                    <Award className="w-4 h-4" /> Send Gift
+                  </Link>
+                  <Link
+                    to="/lush-pressies"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-300 dark:border-slate-600 transition-colors"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Exchange PIN
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
@@ -256,9 +311,10 @@ const ProfilePage: React.FC = () => {
                   name="name"
                   value={profile.name || ''}
                   onChange={handleChange}
+                  readOnly={isViewingOther}
                   required
                   placeholder="e.g. Jane Doe"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                  className={`w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
                 />
               </div>
 
@@ -273,9 +329,10 @@ const ProfilePage: React.FC = () => {
                     name="email"
                     value={profile.email || ''}
                     onChange={handleChange}
+                    readOnly={isViewingOther}
                     required
                     placeholder="jane@example.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
                   />
                 </div>
               </div>
@@ -291,8 +348,9 @@ const ProfilePage: React.FC = () => {
                     name="headline"
                     value={profile.headline || ''}
                     onChange={handleChange}
+                    readOnly={isViewingOther}
                     placeholder="e.g. Senior Smart Contract Architect"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
                   />
                 </div>
               </div>
@@ -308,8 +366,9 @@ const ProfilePage: React.FC = () => {
                     name="website"
                     value={profile.website || ''}
                     onChange={handleChange}
+                    readOnly={isViewingOther}
                     placeholder="https://myportfolio.io"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
                   />
                 </div>
               </div>
@@ -326,8 +385,9 @@ const ProfilePage: React.FC = () => {
                   name="location"
                   value={typeof profile.location === 'string' ? profile.location : ''}
                   onChange={handleChange}
+                  readOnly={isViewingOther}
                   placeholder="e.g. Lagos, Nigeria or Global Remote"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
                 />
               </div>
             </div>
@@ -341,8 +401,9 @@ const ProfilePage: React.FC = () => {
                 rows={4}
                 value={profile.bio || ''}
                 onChange={handleChange}
+                readOnly={isViewingOther}
                 placeholder="Share your background, achievements, and protocol focus..."
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm"
+                className={`w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm ${isViewingOther ? 'bg-slate-50 dark:bg-slate-800/50 cursor-default' : ''}`}
               />
             </div>
           </div>
@@ -361,34 +422,38 @@ const ProfilePage: React.FC = () => {
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
                 >
                   {skill}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveSkill(skill)}
-                    className="hover:text-rose-500 font-bold"
-                  >
-                    ×
-                  </button>
+                  {!isViewingOther && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveSkill(skill)}
+                      className="hover:text-rose-500 font-bold"
+                    >
+                      ×
+                    </button>
+                  )}
                 </span>
               ))}
             </div>
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                onKeyDown={handleAddSkill}
-                placeholder="Add a new skill (press Enter)"
-                className="flex-1 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={handleAddSkill}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium text-xs text-slate-800 dark:text-slate-200 transition-colors"
-              >
-                Add Skill
-              </button>
-            </div>
+            {!isViewingOther && (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
+                  onKeyDown={handleAddSkill}
+                  placeholder="Add a new skill (press Enter)"
+                  className="flex-1 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddSkill}
+                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-medium text-xs text-slate-800 dark:text-slate-200 transition-colors"
+                >
+                  Add Skill
+                </button>
+              </div>
+            )}
           </div>
         </form>
       </div>

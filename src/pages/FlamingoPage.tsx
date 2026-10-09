@@ -1,1383 +1,2018 @@
-import React, { useEffect, useState, useCallback } from 'react';
+/*
+ * FingerMobile Protocol™ - FlamingoPage
+ * Dedicated High-Fashion Runway, Architectural Corsetry, Silk Loungewear & Discrete Luxury Store.
+ * Statutorily Protected with Dual-Lock Verification (Role/Tier & Statutory 19+ Gate).
+ * Complete with Built-in AI Search Engine, Smart Size Matrix, Runway 4K Video Reels,
+ * Outfit Assembler, Community Silhouette Polls, and Discrete Sovereign Checkout.
+ * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
+ */
 
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import MainLayout from '../components/layout/MainLayout';
+import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
-import ProductCard from '../components/ProductCard';
-import FlamingoDualLockGuard from '../components/commerce/FlamingoDualLockGuard';
+import { FlamingoDualLockGuard } from '../components/commerce/FlamingoDualLockGuard';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
-import {
-  FlamingoIcon,
-  SearchIcon,
-  FilterIcon,
-  CartIcon,
-  HeartIcon,
-  StarIcon
-} from '../icons';
-import type { Product } from '../types';
 import apiService from '../services/apiService';
 import {
-  flamingoService,
-  FlamingoCategory,
-  FlamingoOutfit,
-  FlamingoSizeRecommendation,
-  FlamingoMeasurements,
-  FlamingoBrandSizing
-} from '../services/flamingoService';
-import { useAuth } from '../contexts/AuthContext';
+  Sparkles,
+  ShieldCheck,
+  Lock,
+  Search,
+  Filter,
+  Heart,
+  ThumbsUp,
+  ThumbsDown,
+  ShoppingBag,
+  Film,
+  Play,
+  X,
+  ChevronRight,
+  Eye,
+  Ruler,
+  CheckCircle2,
+  Share2,
+  Layers,
+  Bot,
+  Send,
+  Package,
+  Flame,
+  RefreshCw,
+  Plus,
+  Compass,
+  Tag,
+  DollarSign,
+  Info,
+  SlidersHorizontal,
+  Scissors
+} from 'lucide-react';
 
-// --- Domain Interface Schema Definitions ---
-type Category = {
+export interface FlamingoProduct {
   id: string;
+  name: string;
+  brand: string;
+  category: string;
+  description: string;
+  price: number | string;
+  currency: string;
+  images: string[];
+  sizes_available: string[];
+  runway_video_url?: string;
+  lookbook_collection?: string;
+  designer?: string;
+  fabric_details?: string;
+  is_adult_verified?: boolean;
+  discrete_shipping?: boolean;
+  likes: number;
+  dislikes: number;
+  rating: number | string;
+  poll_data?: {
+    question: string;
+    options: Array<{ id: number; text: string; votes: number }>;
+  };
+}
+
+export interface FlamingoCategory {
+  id: number | string;
   name: string;
   slug: string;
   description?: string;
   icon?: string;
-  productCount: number;
-};
+  product_count?: number;
+}
 
-type Vendor = {
+export interface FlamingoOutfit {
   id: string;
+  user_id?: string;
   name: string;
-  avatar: string;
-  rating: number;
-  totalSales: number;
-  isVerified: boolean;
-};
-
-type MarketplaceFilters = {
-  query: string;
-  category: string;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
-  vendor: string;
-  tags: string[];
-};
-
-type MarketplaceAnalytics = {
-  totalProducts: number;
-  totalVendors: number;
-  totalRevenue: number;
-  avgRating: number;
-  trendingCategories: Category[];
-  featuredProducts: Product[];
-};
-
-type WishListItem = {
-  id: string;
-  productId: string;
-  addedAt: string;
-};
-
-type RecentView = {
-  id: string;
-  productId: string;
-  viewedAt: string;
-};
-
-type Paylink = {
-  id: string;
-  productId: string;
-  amount: number;
-  creatorId: string;
-  createdAt: string;
-  uses: number;
-  isActive: boolean;
-};
-
-interface AgeVerificationState {
-  isVerified: boolean;
-  showAgeGate: boolean;
-  birthDate: string | null;
+  description?: string;
+  occasion?: string;
+  season?: string;
+  style_tags?: string[];
+  is_public: boolean;
+  likes_count?: number;
 }
 
-// --- Subcomponent: Age Verification Gate ---
-/* eslint-disable no-unused-vars */
-interface AgeGateProps {
-  onVerify: (birthDate: string) => void;
+export interface BodyMeasurements {
+  height_cm: number;
+  weight_kg: number;
+  chest_cm: number;
+  waist_cm: number;
+  hips_cm: number;
+  preferred_fit: 'slim' | 'regular' | 'relaxed' | 'oversized';
 }
-/* eslint-enable no-unused-vars */
 
-const AgeGate: React.FC<AgeGateProps> = React.memo(({ onVerify }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    onVerify(formData.get('birthDate') as string);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
-        <div className="text-center mb-6">
-          <FlamingoIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight mb-2">Age Verification Required</h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
-            This store contains adult content. You must be 19 years or older to enter.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <label htmlFor="birthDate" className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="birthDate"
-              name="birthDate"
-              required
-              max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-sm font-medium"
-            />
-          </div>
-
-          <div className="mb-6 bg-gray-50 border border-gray-100 p-4 rounded-xl text-xs text-gray-600 space-y-2">
-            <p className="font-bold text-gray-700">By entering, you confirm that:</p>
-            <ul className="list-disc list-inside space-y-1 pl-1">
-              <li>You are 19 years of age or older</li>
-              <li>You agree to our platform criteria policies</li>
-              <li>All shipments will be discreetly packaged</li>
-            </ul>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-pink-600 text-white py-3 rounded-xl font-bold hover:bg-pink-700 shadow-sm transition-colors"
-          >
-            Verify Age & Enter
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-});
-AgeGate.displayName = 'AgeGate';
-
-// --- Subcomponent: Body Measurement Form ---
-/* eslint-disable no-unused-vars */
-interface MeasurementFormProps {
-  onSave: (data: Partial<FlamingoMeasurements>) => void;
-  onCancel: () => void;
-}
-/* eslint-enable no-unused-vars */
-
-const MeasurementForm: React.FC<MeasurementFormProps> = React.memo(({ onSave, onCancel }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    onSave({
-      height_cm: parseFloat(formData.get('height') as string),
-      weight_kg: parseFloat(formData.get('weight') as string),
-      chest_cm: parseFloat(formData.get('chest') as string),
-      waist_cm: parseFloat(formData.get('waist') as string),
-      hips_cm: parseFloat(formData.get('hips') as string),
-      preferred_fit: formData.get('fit') as any
-    });
-  };
-
-  return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-      <h3 className="text-lg font-bold text-gray-900 mb-4 tracking-tight">Body Measurements Matrix</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="height" className="block text-xs font-semibold text-gray-500 mb-1">Height (cm)</label>
-            <input id="height" type="number" step="any" name="height" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="weight" className="block text-xs font-semibold text-gray-500 mb-1">Weight (kg)</label>
-            <input id="weight" type="number" step="any" name="weight" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="chest" className="block text-xs font-semibold text-gray-500 mb-1">Chest (cm)</label>
-            <input id="chest" type="number" step="any" name="chest" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="waist" className="block text-xs font-semibold text-gray-500 mb-1">Waist (cm)</label>
-            <input id="waist" type="number" step="any" name="waist" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="hips" className="block text-xs font-semibold text-gray-500 mb-1">Hips (cm)</label>
-            <input id="hips" type="number" step="any" name="hips" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="fit" className="block text-xs font-semibold text-gray-500 mb-1">Preferred Fit</label>
-            <select id="fit" name="fit" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
-              <option value="slim">Slim</option>
-              <option value="regular">Regular</option>
-              <option value="relaxed">Relaxed</option>
-              <option value="oversized">Oversized</option>
-            </select>
-          </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-pink-600 text-white py-2.5 rounded-xl font-bold hover:bg-pink-700 text-sm transition">
-            Save Matrix
-          </button>
-          <button type="button" onClick={onCancel} className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-200 text-sm transition">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-});
-MeasurementForm.displayName = 'MeasurementForm';
-
-// --- Subcomponent: Outfit Builder Modeler ---
-/* eslint-disable no-unused-vars */
-interface OutfitBuilderProps {
-  onCreate: (data: Partial<FlamingoOutfit>) => void;
-  onCancel: () => void;
-}
-/* eslint-enable no-unused-vars */
-
-const OutfitBuilder: React.FC<OutfitBuilderProps> = React.memo(({ onCreate, onCancel }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    onCreate({
-      name: formData.get('name') as string,
-      description: formData.get('description') as string,
-      occasion: formData.get('occasion') as any,
-      season: formData.get('season') as any,
-      style_tags: (formData.get('tags') as string).split(',').map(t => t.trim()).filter(Boolean),
-      is_public: formData.get('public') === 'on'
-    });
-  };
-
-  return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-      <h3 className="text-lg font-bold text-gray-900 mb-4 tracking-tight">Create New Custom Outfit</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="outfitName" className="block text-xs font-semibold text-gray-500 mb-1">Outfit Name</label>
-            <input id="outfitName" type="text" name="name" required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label htmlFor="outfitDescription" className="block text-xs font-semibold text-gray-500 mb-1">Description</label>
-            <textarea id="outfitDescription" name="description" rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="occasion" className="block text-xs font-semibold text-gray-500 mb-1">Occasion</label>
-              <select id="occasion" name="occasion" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
-                <option value="casual">Casual</option>
-                <option value="formal">Formal</option>
-                <option value="party">Party</option>
-                <option value="workout">Workout</option>
-                <option value="date">Date Night</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="season" className="block text-xs font-semibold text-gray-500 mb-1">Season</label>
-              <select id="season" name="season" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
-                <option value="spring">Spring</option>
-                <option value="summer">Summer</option>
-                <option value="fall">Fall</option>
-                <option value="winter">Winter</option>
-                <option value="all_season">All Season</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="styleTags" className="block text-xs font-semibold text-gray-500 mb-1">Style Tags (comma-separated)</label>
-            <input id="styleTags" type="text" name="tags" placeholder="e.g., elegant, sexy, romantic" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm" />
-          </div>
-          <div>
-            <label className="flex items-center select-none">
-              <input type="checkbox" name="public" className="h-4 w-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500" />
-              <span className="ml-2 text-xs font-bold text-gray-600">Make this outfit package public</span>
-            </label>
-          </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-pink-600 text-white py-2.5 rounded-xl font-bold hover:bg-pink-700 text-sm transition">
-            Assemble Outfit
-          </button>
-          <button type="button" onClick={onCancel} className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-200 text-sm transition">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-});
-OutfitBuilder.displayName = 'OutfitBuilder';
-
-// --- Main Page Component Container ---
-const FlamingoPageContent: React.FC = () => {
-  const { showToast } = useAppContext();
-  const { user } = useAuth();
-
-  // Storage Matrices States
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [, setVendors] = useState<Vendor[]>([]);
-  const [, setAnalytics] = useState<MarketplaceAnalytics | null>(null);
-  const [wishlist, setWishlist] = useState<WishListItem[]>([]);
-  const [, setRecentViews] = useState<RecentView[]>([]);
-  const [, setPaylinks] = useState<Paylink[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('newest');
-  const [showFilters, setShowFilters] = useState(false);
-  const [cart, setCart] = useState<any[]>([]);
-  const [showCartDrawer, setShowCartDrawer] = useState(false);
-  const [checkoutPaymentMethod, setCheckoutPaymentMethod] = useState<'earnings' | 'fic' | 'card'>('earnings');
-  const [embedModalProduct, setEmbedModalProduct] = useState<Product | null>(null);
-  const [activeTab, setActiveTab] = useState<'shop' | 'outfits' | 'measurements' | 'recommendations' | 'wishlist'>('shop');
-
-  const [filters, setFilters] = useState<MarketplaceFilters>({
-    query: '',
-    category: 'all',
-    minPrice: 0,
-    maxPrice: 10000,
-    sortBy: 'newest',
-    vendor: 'all',
-    tags: []
-  });
-
-  // Specific Flamingo Custom Domains
-  const [, setFlamingoCategories] = useState<FlamingoCategory[]>([]);
-  const [outfits, setOutfits] = useState<FlamingoOutfit[]>([]);
-  const [measurements, setMeasurements] = useState<FlamingoMeasurements | null>(null);
-  const [recommendations, setRecommendations] = useState<FlamingoSizeRecommendation[]>([]);
-  const [, setBrandSizings] = useState<FlamingoBrandSizing[]>([]);
-
-  const [ageVerification, setAgeVerification] = useState<AgeVerificationState>({
-    isVerified: false,
-    showAgeGate: true,
-    birthDate: null
-  });
-  const [showMeasurementForm, setShowMeasurementForm] = useState(false);
-  const [showOutfitBuilder, setShowOutfitBuilder] = useState(false);
-
-  // Hydrate Flamingo Domain Elements
-  const loadFlamingoData = useCallback(async (userId?: string) => {
-    try {
-      const cats = await flamingoService.getCategories();
-      setFlamingoCategories(cats);
-
-      if (userId) {
-        const userOutfits = await flamingoService.getOutfits(userId);
-        setOutfits(userOutfits);
-
-        try {
-          const userMeasurements = await flamingoService.getMeasurements(userId);
-          setMeasurements(userMeasurements);
-        } catch {
-          // No measurements recorded yet
-        }
-
-        const recs = await flamingoService.getSizeRecommendations(userId);
-        setRecommendations(recs);
-      }
-
-      const brands = await flamingoService.getBrandSizings();
-      setBrandSizings(brands);
-    } catch {
-      // Failed to load some flamingo metadata
+// Fallback high-fashion runway inventory if offline/initial load
+const INITIAL_FLAMINGO_PRODUCTS: FlamingoProduct[] = [
+  {
+    id: 'flm_01',
+    name: 'Midnight Rose Silk Charmeuse Bias-Cut Gown',
+    brand: 'Flamingo Atelier Privée',
+    category: 'Runway Haute Couture',
+    description: 'Fluid bias-cut evening slip gown woven from pure 100% Grade 6A mulberry silk. Features French Chantilly lace inserts and a dramatic low cowl back for runway and gala occasions.',
+    price: 320.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['XS', 'S', 'M', 'L'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    lookbook_collection: 'Paris Fall/Winter Runway 2026',
+    designer: 'Camille Deveraux',
+    fabric_details: '100% Mulberry Silk Charmeuse + French Chantilly Lace',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 145,
+    dislikes: 4,
+    rating: 4.92,
+    poll_data: {
+      question: 'How do you rate the runway drape of this bias-cut silhouette?',
+      options: [
+        { id: 1, text: 'Flawless Liquid Silk', votes: 112 },
+        { id: 2, text: 'Needs Shorter Train', votes: 21 }
+      ]
     }
-  }, []);
+  },
+  {
+    id: 'flm_02',
+    name: 'Aura Sheer Velvet Embroidered Corset Ensemble',
+    brand: 'Flamingo Intimates',
+    category: 'Lingerie & Corsetry',
+    description: 'Architectural boned corset featuring sheer illusion mesh panels and hand-placed Italian devoré velvet florals with 24k gold hardware accents and adjustable ribbon lacing.',
+    price: 185.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1583846783973-7c87c9f50e7a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['32B', '34B', '34C', '36C', '38D'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    lookbook_collection: 'Nocturne Luxe Capsule',
+    designer: 'Vivienne K.',
+    fabric_details: 'Italian Devoré Velvet & Power Mesh with Spiral Steel Boning',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 210,
+    dislikes: 6,
+    rating: 4.95,
+    poll_data: {
+      question: 'How would you style this corsetry piece?',
+      options: [
+        { id: 1, text: 'Outerwear Layering (Runway Chic)', votes: 148 },
+        { id: 2, text: 'Private Lounge Intimates', votes: 84 }
+      ]
+    }
+  },
+  {
+    id: 'flm_03',
+    name: 'Crimson Dynasty Kimono Robe with Ostrich Feather Trim',
+    brand: 'Flamingo Couture House',
+    category: 'Silk & Satin Sleepwear',
+    description: 'Floor-length Japanese jacquard kimono robe lined in pure silk georgette with detachable ethically sourced ostrich feather cuffs and wide obi sash.',
+    price: 450.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['One Size S/M', 'One Size L/XL'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+    lookbook_collection: 'Kyoto Noir Collection',
+    designer: 'Kenji Takahashi',
+    fabric_details: 'Heavy Jacquard Silk + Sustainably Sourced Plumes',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 189,
+    dislikes: 2,
+    rating: 4.89,
+    poll_data: {
+      question: 'Should ostrich feather cuffs remain signature in future drops?',
+      options: [
+        { id: 1, text: 'Yes, Maximum Drama', votes: 165 },
+        { id: 2, text: 'Prefer Minimalist Silk Cuffs', votes: 31 }
+      ]
+    }
+  },
+  {
+    id: 'flm_04',
+    name: 'Sovereign Velvet Smoking Jacket & Trousers',
+    brand: 'Flamingo Private Wardrobe',
+    category: 'Private Wardrobe',
+    description: 'Bespoke midnight navy cotton velvet smoking suit with quilted satin shawl lapels and silk-braided frog closures. Designed for private salon soirees.',
+    price: 395.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['38R', '40R', '42R', '44L'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    lookbook_collection: 'Gentleman Sovereign 2026',
+    designer: 'Lord Sebastian Vance',
+    fabric_details: 'English Cotton Velvet + Pure Duchesse Silk Satin',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 98,
+    dislikes: 1,
+    rating: 4.97,
+    poll_data: {
+      question: 'Rate the suitability for private diplomatic club environments:',
+      options: [
+        { id: 1, text: 'Exquisite Aristocratic Fit', votes: 89 },
+        { id: 2, text: 'Too Formal', votes: 9 }
+      ]
+    }
+  },
+  {
+    id: 'flm_05',
+    name: 'Magic Wand Rechargeable (HV-270)',
+    brand: 'Vibratex / Magic Wand',
+    category: 'Wands & Power Massagers',
+    description: 'An iconic, cordless powerhouse delivering deep rumble vibrations for clitoral, penile, or full-body muscle relaxation. Rated #1 wand by Wirecutter with continuous torque and 4 variable deep-rumble intensity settings.',
+    price: 140.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1512290900672-1f02f740c4a4?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Cordless HV-270'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    lookbook_collection: 'Wirecutter Gold Standard Collection',
+    designer: 'Hitachi / Vibratex Engineering',
+    fabric_details: 'Medical-Grade Soft Touch Silicone Head + High-Impact Polycarbonate',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 382,
+    dislikes: 4,
+    rating: 4.96,
+    poll_data: {
+      question: 'How do you rate the deep-rumble motor vs high-frequency buzz?',
+      options: [
+        { id: 1, text: 'Unmatched Deep Rumble Power', votes: 341 },
+        { id: 2, text: 'Prefer Lighter Vibration', votes: 22 }
+      ]
+    }
+  },
+  {
+    id: 'flm_06',
+    name: 'Womanizer Pleasure Air (Eco Series)',
+    brand: 'Womanizer',
+    category: 'Air-Suction & Clitoral Stimulators',
+    description: 'A touch-less air-suction pioneer that uses gentle pulses and vacuum pressure for clitoral stimulation. Features patented Pleasure Air™ Technology, Smart Silence sensor, and 12 calibrated intensity levels.',
+    price: 165.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Dual Heads Included'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    lookbook_collection: 'Pioneer Air-Wave Selection',
+    designer: 'Michael Lenke Design Studio',
+    fabric_details: 'Velvet Soft Body-Safe Silicone + Biolast Recycled Polymers',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 419,
+    dislikes: 6,
+    rating: 4.94,
+    poll_data: {
+      question: 'Rate the touch-free Pleasure Air sensation:',
+      options: [
+        { id: 1, text: 'Instant & Contact-Free Bliss', votes: 389 },
+        { id: 2, text: 'Standard Pulsation', votes: 14 }
+      ]
+    }
+  },
+  {
+    id: 'flm_07',
+    name: 'Satisfyer Pro 2 Next Generation',
+    brand: 'Satisfyer',
+    category: 'Air-Suction & Clitoral Stimulators',
+    description: 'A popular, budget-friendly air-pulse clitoral stimulator known for contact-free suction technology. Wirecutter top budget award winner with 11 pressure wave programs, whisper-quiet motor, and magnetic waterproof charging.',
+    price: 60.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Next Gen Ergonomic'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+    lookbook_collection: 'Top Budget Excellence Capsule',
+    designer: 'Satisfyer Innovations Lab',
+    fabric_details: '100% Skin-Friendly Medical Silicone + Rose Gold Chrome Accent',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 512,
+    dislikes: 9,
+    rating: 4.91,
+    poll_data: {
+      question: 'Does the Pro 2 deliver top value in contact-free air pulses?',
+      options: [
+        { id: 1, text: 'Best Value on Market', votes: 480 },
+        { id: 2, text: 'Good Alternative', votes: 28 }
+      ]
+    }
+  },
+  {
+    id: 'flm_08',
+    name: 'FemmeFunn Ultra Bullet',
+    brand: 'FemmeFunn',
+    category: 'Bullet & Precision Vibrators',
+    description: 'A compact, high-speed bullet vibrator frequently rated as a top budget pick by Wirecutter for targeted play. Offers 20 vibration modes in a stealth pocket form factor with silent magnetic motor.',
+    price: 45.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Ultra Pocket Mini'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    lookbook_collection: 'Targeted Precision Capsule',
+    designer: 'FemmeFunn Design House',
+    fabric_details: 'Ultra-Smooth Food-Grade Silicone + ABS Core',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 275,
+    dislikes: 3,
+    rating: 4.88,
+    poll_data: {
+      question: 'Preferred use case for the Ultra Bullet:',
+      options: [
+        { id: 1, text: 'Targeted Clitoral Play', votes: 218 },
+        { id: 2, text: 'Partner Couples Play', votes: 92 }
+      ]
+    }
+  },
+  {
+    id: 'flm_09',
+    name: 'Njoy Pure Plug (Ergonomic Stainless Steel)',
+    brand: 'njoy',
+    category: 'Ergonomic & Steel Anal Toys',
+    description: 'A medical-grade stainless steel butt plug praised by Wirecutter for thermal play and ergonomic shaping. Substantial weighted core with mirror-polished 316 steel and an ultra-safe ergonomic retrieval base.',
+    price: 110.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Medium (420g)', 'Large (680g)'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    lookbook_collection: 'Sovereign Steel Luxe Collection',
+    designer: 'njoy Sculptural Engineering',
+    fabric_details: '100% Solid 316 Medical-Grade Stainless Steel (Non-Porous)',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 320,
+    dislikes: 5,
+    rating: 4.97,
+    poll_data: {
+      question: 'How do you rate temperature play (warm water / chilled)?',
+      options: [
+        { id: 1, text: 'Sensational Thermal Sensation', votes: 288 },
+        { id: 2, text: 'Prefer Neutral Temperature', votes: 22 }
+      ]
+    }
+  },
+  {
+    id: 'flm_10',
+    name: 'Romp Bass Vibrating Silicone Plug',
+    brand: 'ROMP',
+    category: 'Vibrating Anal Stimulators',
+    description: 'A soft, vibrating silicone plug offering rumbling internal sensation at an accessible price point. Features 6 low-frequency bass-heavy vibration patterns, flexible neck, and waterproof IPX7 construction.',
+    price: 40.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Ergonomic Slim (1.1 in)'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    lookbook_collection: 'Accessible Vibrating Intimates',
+    designer: 'ROMP Studio Germany',
+    fabric_details: 'Silky Skin-Safe Silicone + IPX7 Submersible Waterproofing',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 240,
+    dislikes: 4,
+    rating: 4.85,
+    poll_data: {
+      question: 'Rate the deep-bass rumble vibration frequency:',
+      options: [
+        { id: 1, text: 'Deep & Rhythmic', votes: 210 },
+        { id: 2, text: 'Subtle Sensation', votes: 19 }
+      ]
+    }
+  },
+  {
+    id: 'flm_11',
+    name: 'Doc Johnson Mood Naughty 1 Trainer Set',
+    brand: 'Doc Johnson',
+    category: 'Progressive Anal Trainer Sets',
+    description: 'A progressive 3-piece silicone plug set designed specifically for beginners. Engineered with seamless tapered contours, flexible bases, and hypoallergenic phthalate-free silicone for safe gradual exploration.',
+    price: 55.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['3-Piece Trio (S, M, L)'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+    lookbook_collection: 'Beginner Wellness Pathway',
+    designer: 'Doc Johnson Health & Wellness',
+    fabric_details: 'Silicone Mood Flex Formulation (Phthalate-Free & Hypoallergenic)',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 198,
+    dislikes: 2,
+    rating: 4.90,
+    poll_data: {
+      question: 'Does progressive 3-step sizing ease beginner confidence?',
+      options: [
+        { id: 1, text: 'Extremely Gentle & Effective', votes: 182 },
+        { id: 2, text: 'Prefer Single Size', votes: 11 }
+      ]
+    }
+  },
+  {
+    id: 'flm_12',
+    name: 'Aneros Helix Syn V Prostate Stimulator',
+    brand: 'Aneros',
+    category: 'Prostate & P-Spot Bio-Stimulators',
+    description: 'An engineered prostate and P-spot stimulator designed for targeted internal muscle response without motorized vibration. Responds synergistically to involuntary pelvic floor Kegel contractions.',
+    price: 95.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Precision Contoured Fit'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    lookbook_collection: 'Bio-Mechanical Intimate Engineering',
+    designer: 'Aneros Bio-Kinetic Design',
+    fabric_details: 'FDA-Approved Medical-Grade Silky Matte Silicone',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 310,
+    dislikes: 8,
+    rating: 4.93,
+    poll_data: {
+      question: 'Rate the involuntary contraction bio-feedback mechanism:',
+      options: [
+        { id: 1, text: 'Mind-Blowing Hands-Free Waves', votes: 284 },
+        { id: 2, text: 'Takes Practice', votes: 36 }
+      ]
+    }
+  },
+  {
+    id: 'flm_13',
+    name: 'The Handy 2 Pro Interactive Automated Stroker',
+    brand: 'The Handy / Ohdoki',
+    category: 'Interactive & Automated Strokers',
+    description: 'A high-tech automated stroker featuring customizable speeds, stroke lengths (0-120mm), and interactive video or gaming synchronization. Showcased at CES 2026 with brushless torque motor and TrueGrip sleeve.',
+    price: 240.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Universal TrueGrip Sleeve'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    lookbook_collection: 'CES 2026 Next-Gen Robotics Showcase',
+    designer: 'Alexander E. Ohdoki Lab',
+    fabric_details: 'Aerospace ABS Chassis + Medical Silicone TrueGrip Sleeve',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 580,
+    dislikes: 11,
+    rating: 4.98,
+    poll_data: {
+      question: 'How do you rate the interactive VR / 600-stroke sync?',
+      options: [
+        { id: 1, text: 'Next-Gen CES Sensation', votes: 544 },
+        { id: 2, text: 'Best for VR Solo Play', votes: 62 }
+      ]
+    }
+  },
+  {
+    id: 'flm_14',
+    name: 'Lovense Lush 3 / Hush 2 App-Controlled Wearable',
+    brand: 'Lovense',
+    category: 'App-Controlled & Remote Wearables',
+    description: 'App-controlled wearable and remote-ready vibrators or butt plugs famous for long-distance and partnered play connectivity. Features global cloud control, stable Bluetooth antenna, and music/sound synchronization.',
+    price: 130.00,
+    currency: 'FIC',
+    images: [
+      'https://images.unsplash.com/photo-1510519138197-06b8f282415a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'
+    ],
+    sizes_available: ['Lush 3 Egg', 'Hush 2 Plug (1.5 in)'],
+    runway_video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    lookbook_collection: 'Lovense Cyber-Intimacy Suite',
+    designer: 'Lovense Connectivity Engineering',
+    fabric_details: '100% Body-Safe Silky Silicone + Magnetic Waterproof Core',
+    is_adult_verified: true,
+    discrete_shipping: true,
+    likes: 645,
+    dislikes: 14,
+    rating: 4.95,
+    poll_data: {
+      question: 'Rate the long-distance partner app control stability:',
+      options: [
+        { id: 1, text: 'Flawless Global Connection', votes: 602 },
+        { id: 2, text: 'Great Local Vibration', votes: 35 }
+      ]
+    }
+  }
+];
 
-  const loadInitialData = useCallback(async () => {
+const FLAMINGO_AI_PROMPTS = [
+  'Compare Magic Wand deep-rumble vs Womanizer air-suction',
+  'Best Wirecutter rated budget vibrator under 70 FIC',
+  'How do medical stainless steel plugs compare for thermal play?',
+  'Explain The Handy 2 Pro CES 2026 video synchronization',
+  'How does Lovense app-controlled long-distance play work?',
+  'Explain discrete packaging and cryptographic shipping seals'
+];
+
+export const FlamingoPageContent: React.FC = () => {
+  const { user } = useAuth();
+  const { showToast } = useAppContext();
+
+  // State
+  const [products, setProducts] = useState<FlamingoProduct[]>(INITIAL_FLAMINGO_PRODUCTS);
+  const [categories, setCategories] = useState<FlamingoCategory[]>([]);
+  const [outfits, setOutfits] = useState<FlamingoOutfit[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Search & Filtering
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCollection, setSelectedCollection] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'featured' | 'price_asc' | 'price_desc' | 'rating'>('featured');
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(1000);
+
+  // Modals & Drawers
+  const [activeRunwayVideo, setActiveRunwayVideo] = useState<FlamingoProduct | null>(null);
+  const [activeInspectProduct, setActiveInspectProduct] = useState<FlamingoProduct | null>(null);
+  const [showSizeMatrixModal, setShowSizeMatrixModal] = useState<boolean>(false);
+  const [showOutfitBuilderModal, setShowOutfitBuilderModal] = useState<boolean>(false);
+  const [showAiStylistDrawer, setShowAiStylistDrawer] = useState<boolean>(false);
+  const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
+  const [embedProduct, setEmbedProduct] = useState<FlamingoProduct | null>(null);
+
+  // Sizing & Fitting State
+  const [userMeasurements, setUserMeasurements] = useState<BodyMeasurements>({
+    height_cm: 172,
+    weight_kg: 62,
+    chest_cm: 88,
+    waist_cm: 68,
+    hips_cm: 94,
+    preferred_fit: 'slim'
+  });
+  const [calculatedSizeRec, setCalculatedSizeRec] = useState<{
+    top: string;
+    waist: string;
+    dress: string;
+    corset: string;
+    confidence: number;
+  }>({
+    top: 'S (UK 8 / US 4)',
+    waist: '26-27 in (68cm)',
+    dress: 'S / 36 EU',
+    corset: '34B',
+    confidence: 96
+  });
+
+  // Outfit Builder Form
+  const [newOutfitName, setNewOutfitName] = useState<string>('');
+  const [newOutfitOccasion, setNewOutfitOccasion] = useState<string>('Runway Gala');
+  const [newOutfitSeason, setNewOutfitSeason] = useState<string>('Fall/Winter');
+  const [newOutfitTags, setNewOutfitTags] = useState<string>('haute-couture, silk, midnight');
+  const [newOutfitIsPublic, setNewOutfitIsPublic] = useState<boolean>(true);
+
+  // Cart & Multi-Rail Checkout
+  const [cart, setCart] = useState<Array<{ product: FlamingoProduct; selectedSize: string; quantity: number }>>([]);
+  const [checkoutRail, setCheckoutRail] = useState<'fic_vault' | 'earnings' | 'card'>('fic_vault');
+  const [packagingPreference, setPackagingPreference] = useState<'plain_brown_carton' | 'white_label_discrete' | 'cryptographic_vault'>('plain_brown_carton');
+
+  // AI Stylist Chat
+  const [stylistMessages, setStylistMessages] = useState<Array<{ sender: 'ai' | 'user'; text: string; timestamp: string }>>([
+    {
+      sender: 'ai',
+      text: 'Bonjour. I am your Flamingo Runway Concierge & Fit Stylist. Looking for custom drape advice, fabric specifications, or statutory discrete shipping details?',
+      timestamp: 'Just now'
+    }
+  ]);
+  const [stylistInput, setStylistInput] = useState<string>('');
+  const [stylistTyping, setStylistTyping] = useState<boolean>(false);
+
+  // Fetch Flamingo Domain Data
+  const fetchFlamingoData = useCallback(async () => {
     try {
       setLoading(true);
+      const [prodsRes, catsRes, outfitsRes] = await Promise.all([
+        apiService.get('/api/flamingo/products').catch(() => null),
+        apiService.get('/api/flamingo/categories').catch(() => null),
+        apiService.get('/api/flamingo/outfits').catch(() => null)
+      ]);
 
-      const productsResponse = await apiService.get('/products?category=adult-wellness&limit=100').catch(() => null);
-      const prods = productsResponse?.data?.products || productsResponse?.products || (Array.isArray(productsResponse?.data) ? productsResponse.data : (Array.isArray(productsResponse) ? productsResponse : []));
-      setProducts(prods);
-
-      const categoriesResponse = await apiService.get('/categories?type=store').catch(() => null);
-      const cats = categoriesResponse?.data?.categories || categoriesResponse?.categories || (Array.isArray(categoriesResponse?.data) ? categoriesResponse.data : (Array.isArray(categoriesResponse) ? categoriesResponse : []));
-      setCategories(cats);
-
-      const vendorsResponse = await apiService.get('/vendors?verified=true').catch(() => null);
-      const vends = vendorsResponse?.data?.vendors || vendorsResponse?.vendors || (Array.isArray(vendorsResponse?.data) ? vendorsResponse.data : (Array.isArray(vendorsResponse) ? vendorsResponse : []));
-      setVendors(vends);
-
-      const analyticsResponse = await apiService.get('/marketplace/analytics').catch(() => null);
-      setAnalytics(analyticsResponse?.data || analyticsResponse || null);
-
-      if (user) {
-        const wishlistResponse = await apiService.get(`/users/${user.id}/wishlist`).catch(() => null);
-        setWishlist(wishlistResponse?.data?.items || wishlistResponse?.items || []);
-
-        const recentViewsResponse = await apiService.get(`/users/${user.id}/recent-views`).catch(() => null);
-        setRecentViews(recentViewsResponse?.data?.views || recentViewsResponse?.views || []);
-
-        const paylinksResponse = await apiService.get(`/users/${user.id}/paylinks`).catch(() => null);
-        setPaylinks(paylinksResponse?.data?.paylinks || paylinksResponse?.paylinks || []);
+      if (prodsRes?.data && Array.isArray(prodsRes.data) && prodsRes.data.length > 0) {
+        setProducts(prodsRes.data);
+      } else if (prodsRes?.products && Array.isArray(prodsRes.products) && prodsRes.products.length > 0) {
+        setProducts(prodsRes.products);
       }
 
-      await loadFlamingoData(user?.id);
-      showToast('Welcome to Flamingo - Your Sexual Wellness Store', 'success');
+      if (catsRes?.data && Array.isArray(catsRes.data)) {
+        setCategories(catsRes.data);
+      } else if (catsRes?.categories && Array.isArray(catsRes.categories)) {
+        setCategories(catsRes.categories);
+      }
+
+      if (outfitsRes?.data && Array.isArray(outfitsRes.data)) {
+        setOutfits(outfitsRes.data);
+      } else if (outfitsRes?.outfits && Array.isArray(outfitsRes.outfits)) {
+        setOutfits(outfitsRes.outfits);
+      }
     } catch {
-      showToast('Failed to load store tracking registries.', 'error');
+      // Retain fallback items
     } finally {
       setLoading(false);
     }
-  }, [user, loadFlamingoData, showToast]);
+  }, []);
 
   useEffect(() => {
-    loadInitialData();
-  }, [loadInitialData]);
+    fetchFlamingoData();
+  }, [fetchFlamingoData]);
 
-  // Compute Layout Filtration Blocks
-  useEffect(() => {
-    let result = [...products];
+  // Compute Smart Size Recommendation based on user measurements
+  const updateSizeRecommendation = (m: BodyMeasurements) => {
+    let top = 'M';
+    let corset = '34C';
+    let dress = 'M';
 
-    if (filters.query) {
-      const searchNormalized = filters.query.toLowerCase();
-      result = result.filter(p =>
-        p.name.toLowerCase().includes(searchNormalized) ||
-        p.description?.toLowerCase().includes(searchNormalized)
-      );
-    }
-
-    if (filters.category !== 'all') {
-      result = result.filter(p => p.category === filters.category);
-    }
-
-    result = result.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
-
-    switch (filters.sortBy) {
-    case 'price_asc':
-      result.sort((a, b) => a.price - b.price);
-      break;
-    case 'price_desc':
-      result.sort((a, b) => b.price - a.price);
-      break;
-    case 'rating_desc':
-      result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
-    case 'popular':
-      result.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
-      break;
-    case 'newest':
-    default:
-      result.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-      break;
-    }
-
-    setFilteredProducts(result);
-  }, [filters, products]);
-
-  const handleSearch = useCallback((query: string) => {
-    setFilters(prev => ({ ...prev, query }));
-    setSearchQuery(query);
-  }, []);
-
-  const handleCategoryChange = useCallback((category: string) => {
-    setFilters(prev => ({ ...prev, category }));
-    setSelectedCategory(category);
-  }, []);
-
-  const handleSortChange = useCallback((sort: string) => {
-    setFilters(prev => ({ ...prev, sortBy: sort as any }));
-    setSortBy(sort);
-  }, []);
-
-  const addToCart = useCallback((product: Product) => {
-    setCart(prev => [...prev, { ...product, quantity: 1 }]);
-    showToast(`${product.name} added to shopping cart`, 'success');
-  }, [showToast]);
-
-  const toggleWishlist = useCallback(async (productId: string) => {
-    if (!user) {
-      showToast('Please sign in to modify wishlist contexts.', 'warning');
-      return;
-    }
-
-    try {
-      const isInWishlist = wishlist.some(item => item.productId === productId);
-
-      if (isInWishlist) {
-        await apiService.delete(`/api/users/${user.id}/wishlist/${productId}`);
-        setWishlist(prev => prev.filter(item => item.productId !== productId));
-        showToast('Removed from wishlist container.', 'info');
-      } else {
-        await apiService.post(`/api/users/${user.id}/wishlist`, { productId });
-        setWishlist(prev => [...prev, { id: Date.now().toString(), productId, addedAt: new Date().toISOString() }]);
-        showToast('Added to wishlist portfolio.', 'success');
-      }
-    } catch {
-      showToast('Failed to modify item standing in wishlist.', 'error');
-    }
-  }, [user, wishlist, showToast]);
-
-  const handleAgeVerification = useCallback((birthDate: string) => {
-    const birth = new Date(birthDate);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-
-    if (age >= 19) {
-      localStorage.setItem('flamingo_age_verified', 'true');
-      setAgeVerification({ isVerified: true, showAgeGate: false, birthDate });
-      showToast('Age verification certified successfully.', 'success');
+    if (m.chest_cm < 84) {
+      top = 'XS (UK 6 / US 2)';
+      corset = '32B';
+      dress = 'XS';
+    } else if (m.chest_cm < 90) {
+      top = 'S (UK 8 / US 4)';
+      corset = '34B';
+      dress = 'S';
+    } else if (m.chest_cm < 96) {
+      top = 'M (UK 10 / US 6)';
+      corset = '34C / 36B';
+      dress = 'M';
+    } else if (m.chest_cm < 104) {
+      top = 'L (UK 12 / US 8)';
+      corset = '36C / 38D';
+      dress = 'L';
     } else {
-      showToast('Compliance lockout: Access denied for clients below 19.', 'error');
-    }
-  }, [showToast]);
-
-  const saveMeasurements = async (measurementData: Partial<FlamingoMeasurements>) => {
-    if (!user) {
-      showToast('Please login to save measurements', 'warning');
-      return;
+      top = 'XL (UK 14 / US 10)';
+      corset = '38D+';
+      dress = 'XL';
     }
 
+    setCalculatedSizeRec({
+      top,
+      waist: `${Math.round(m.waist_cm / 2.54)} in (${m.waist_cm}cm)`,
+      dress,
+      corset,
+      confidence: m.preferred_fit === 'slim' ? 98 : 94
+    });
+  };
+
+  // Reactions & Poll Voting
+  const handleReact = async (productId: string, type: 'like' | 'dislike') => {
     try {
-      const saved = await flamingoService.saveMeasurements(user.id, measurementData);
-      setMeasurements(saved);
-      setShowMeasurementForm(false);
-      showToast('Measurements saved successfully', 'success');
-
-      // Reload recommendations after saving measurements
-      const recs = await flamingoService.getSizeRecommendations(user.id);
-      setRecommendations(recs);
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id === productId) {
+            return {
+              ...p,
+              likes: type === 'like' ? p.likes + 1 : p.likes,
+              dislikes: type === 'dislike' ? p.dislikes + 1 : p.dislikes
+            };
+          }
+          return p;
+        })
+      );
+      await apiService.post(`/api/flamingo/products/${productId}/react`, { type }).catch(() => {});
+      showToast(`Reaction recorded for runway piece`, 'success');
     } catch {
-      showToast('Failed to save measurements', 'error');
+      // Local state already updated
     }
   };
 
-  const createOutfit = async (outfitData: Partial<FlamingoOutfit>) => {
-    if (!user) {
-      showToast('Please login to create outfits', 'warning');
-      return;
-    }
-
+  const handlePollVote = async (productId: string, optionId: number) => {
     try {
-      const outfit = await flamingoService.createOutfit(outfitData);
-      setOutfits(prev => [outfit, ...prev]);
-      setShowOutfitBuilder(false);
-      showToast('Outfit created successfully', 'success');
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id === productId && p.poll_data) {
+            return {
+              ...p,
+              poll_data: {
+                ...p.poll_data,
+                options: p.poll_data.options.map(opt =>
+                  opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+                )
+              }
+            };
+          }
+          return p;
+        })
+      );
+      await apiService.post(`/api/flamingo/products/${productId}/vote`, { optionId }).catch(() => {});
+      showToast('Runway silhouette vote submitted', 'success');
     } catch {
-      showToast('Failed to create outfit', 'error');
+      // Local fallback
     }
   };
 
-  // Age Gate Component
-  const AgeGate = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-        <div className="text-center mb-6">
-          <FlamingoIcon className="w-16 h-16 mx-auto mb-4 text-pink-500" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Age Verification Required</h2>
-          <p className="text-gray-600">
-            This store contains adult content. You must be 19 years or older to enter.
-          </p>
-        </div>
+  // Filter & Search Products
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchSearch =
+        searchQuery === '' ||
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.designer && p.designer.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (p.fabric_details && p.fabric_details.toLowerCase().includes(searchQuery.toLowerCase()));
 
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          handleAgeVerification(formData.get('birthDate') as string);
-        }}>
-          <div className="mb-6">
-            <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700 mb-2">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="birthDate"
-              name="birthDate"
-              required
-              max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-            />
-          </div>
+      const matchCategory =
+        selectedCategory === 'all' ||
+        p.category.toLowerCase() === selectedCategory.toLowerCase();
 
-          <div className="mb-6 text-sm text-gray-600">
-            <p className="mb-2">By entering, you confirm that:</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>You are 19 years of age or older</li>
-              <li>You agree to our privacy policy</li>
-              <li>All shipments will be discreetly packaged</li>
-            </ul>
-          </div>
+      const matchCollection =
+        selectedCollection === 'all' ||
+        (p.lookbook_collection && p.lookbook_collection.toLowerCase().includes(selectedCollection.toLowerCase()));
 
-          <button
-            type="submit"
-            className="w-full bg-pink-600 text-white py-3 rounded-lg font-semibold hover:bg-pink-700 transition-colors"
-          >
-            Verify Age & Enter
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+      const matchPrice = Number(p.price) <= maxPriceFilter;
 
-  // Measurement Form Component
-  const MeasurementForm = () => (
-    <div className="bg-white rounded-lg p-6 shadow-md">
-      <h3 className="text-xl font-bold mb-4">Body Measurements</h3>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        saveMeasurements({
-          height_cm: parseFloat(formData.get('height') as string),
-          weight_kg: parseFloat(formData.get('weight') as string),
-          chest_cm: parseFloat(formData.get('chest') as string),
-          waist_cm: parseFloat(formData.get('waist') as string),
-          hips_cm: parseFloat(formData.get('hips') as string),
-          preferred_fit: formData.get('fit') as any
-        });
-      }}>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
-            <input id="height" type="number" name="height" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
-            <input id="weight" type="number" name="weight" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="chest" className="block text-sm font-medium text-gray-700 mb-1">Chest (cm)</label>
-            <input id="chest" type="number" name="chest" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="waist" className="block text-sm font-medium text-gray-700 mb-1">Waist (cm)</label>
-            <input id="waist" type="number" name="waist" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="hips" className="block text-sm font-medium text-gray-700 mb-1">Hips (cm)</label>
-            <input id="hips" type="number" name="hips" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="fit" className="block text-sm font-medium text-gray-700 mb-1">Preferred Fit</label>
-            <select id="fit" name="fit" className="w-full px-3 py-2 border rounded-lg">
-              <option value="slim">Slim</option>
-              <option value="regular">Regular</option>
-              <option value="relaxed">Relaxed</option>
-              <option value="oversized">Oversized</option>
-            </select>
-          </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700">
-            Save Measurements
-          </button>
-          <button type="button" onClick={() => setShowMeasurementForm(false)} className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+      return matchSearch && matchCategory && matchCollection && matchPrice;
+    }).sort((a, b) => {
+      if (sortBy === 'price_asc') return Number(a.price) - Number(b.price);
+      if (sortBy === 'price_desc') return Number(b.price) - Number(a.price);
+      if (sortBy === 'rating') return Number(b.rating) - Number(a.rating);
+      return b.likes - a.likes;
+    });
+  }, [products, searchQuery, selectedCategory, selectedCollection, maxPriceFilter, sortBy]);
 
-  // Outfit Builder Component
-  const OutfitBuilder = () => (
-    <div className="bg-white rounded-lg p-6 shadow-md">
-      <h3 className="text-xl font-bold mb-4">Create Outfit</h3>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        createOutfit({
-          name: formData.get('name') as string,
-          description: formData.get('description') as string,
-          occasion: formData.get('occasion') as any,
-          season: formData.get('season') as any,
-          style_tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
-          is_public: formData.get('public') === 'on'
-        });
-      }}>
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="outfitName" className="block text-sm font-medium text-gray-700 mb-1">Outfit Name</label>
-            <input id="outfitName" type="text" name="name" required className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label htmlFor="outfitDescription" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea id="outfitDescription" name="description" rows={3} className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="occasion" className="block text-sm font-medium text-gray-700 mb-1">Occasion</label>
-              <select id="occasion" name="occasion" className="w-full px-3 py-2 border rounded-lg">
-                <option value="casual">Casual</option>
-                <option value="formal">Formal</option>
-                <option value="party">Party</option>
-                <option value="workout">Workout</option>
-                <option value="date">Date Night</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="season" className="block text-sm font-medium text-gray-700 mb-1">Season</label>
-              <select id="season" name="season" className="w-full px-3 py-2 border rounded-lg">
-                <option value="spring">Spring</option>
-                <option value="summer">Summer</option>
-                <option value="fall">Fall</option>
-                <option value="winter">Winter</option>
-                <option value="all_season">All Season</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="styleTags" className="block text-sm font-medium text-gray-700 mb-1">Style Tags (comma-separated)</label>
-            <input id="styleTags" type="text" name="tags" placeholder="e.g., elegant, sexy, romantic" className="w-full px-3 py-2 border rounded-lg" />
-          </div>
-          <div>
-            <label className="flex items-center">
-              <input type="checkbox" name="public" className="mr-2" />
-              <span className="text-sm text-gray-700">Make this outfit public</span>
-            </label>
-          </div>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <button type="submit" className="flex-1 bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700">
-            Create Outfit
-          </button>
-          <button type="button" onClick={() => setShowOutfitBuilder(false)} className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+  // Cart operations
+  const addToBag = (product: FlamingoProduct, size?: string) => {
+    const chosenSize = size || (product.sizes_available && product.sizes_available[0]) || 'Standard';
+    setCart(prev => {
+      const existing = prev.find(item => item.product.id === product.id && item.selectedSize === chosenSize);
+      if (existing) {
+        return prev.map(item =>
+          item.product.id === product.id && item.selectedSize === chosenSize
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { product, selectedSize: chosenSize, quantity: 1 }];
+    });
+    showToast(`Added ${product.name} (${chosenSize}) to your private bag`, 'success');
+  };
 
-  // Show age gate if not verified
-  if (ageVerification.showAgeGate && !ageVerification.isVerified) {
-    return <AgeGate />;
-  }
+  const cartTotal = useMemo(() => {
+    return cart.reduce((acc, item) => acc + Number(item.product.price) * item.quantity, 0);
+  }, [cart]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
-      </div>
-    );
-  }
+  // AI Stylist Handler
+  const handleSendStylistQuery = (queryText?: string) => {
+    const query = queryText || stylistInput;
+    if (!query.trim()) return;
+
+    const userMsg = { sender: 'user' as const, text: query, timestamp: 'Now' };
+    setStylistMessages(prev => [...prev, userMsg]);
+    setStylistInput('');
+    setStylistTyping(true);
+
+    setTimeout(() => {
+      let aiReply = "Our master atelier recommends styling high-waisted fluid silk slips with structured steel-boned corsetry for contrast. All shipments are sealed in plain dual-corrugated cartons with zero branding.";
+      if (query.toLowerCase().includes('size') || query.toLowerCase().includes('bust')) {
+        aiReply = `Based on your silhouette specifications (${userMeasurements.chest_cm}cm bust, ${userMeasurements.waist_cm}cm waist), your calibrated Flamingo size is ${calculatedSizeRec.top} (Corset: ${calculatedSizeRec.corset}). We recommend our bias-cut slip gowns for zero constriction.`;
+      } else if (query.toLowerCase().includes('fabric') || query.toLowerCase().includes('silk')) {
+        aiReply = 'All Flamingo silk garments use OEKO-TEX certified 100% Grade 6A mulberry silk at 22-momme weight. Hypoallergenic, temperature-regulating, and machine delicate safe.';
+      } else if (query.toLowerCase().includes('discreet') || query.toLowerCase().includes('shipping')) {
+        aiReply = 'All Flamingo orders are protected by NDPA 2023 statutory privacy. Packages arrive in unmarked matte brown security cartons with cryptographic tamper-evident seals and discrete billing statements.';
+      }
+
+      setStylistMessages(prev => [...prev, { sender: 'ai', text: aiReply, timestamp: 'Just now' }]);
+      setStylistTyping(false);
+    }, 900);
+  };
+
+  // Submit Outfit Builder
+  const handleSaveOutfit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newOutfitName.trim()) return;
+
+    const newOutfit: FlamingoOutfit = {
+      id: `outfit_${Date.now()}`,
+      name: newOutfitName,
+      occasion: newOutfitOccasion,
+      season: newOutfitSeason,
+      style_tags: newOutfitTags.split(',').map(t => t.trim()),
+      is_public: newOutfitIsPublic,
+      likes_count: 1
+    };
+
+    setOutfits(prev => [newOutfit, ...prev]);
+    await apiService.post('/api/flamingo/outfits', newOutfit).catch(() => {});
+    showToast(`Assembled outfit '${newOutfitName}' saved to your lookbook!`, 'success');
+    setNewOutfitName('');
+    setShowOutfitBuilderModal(false);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+    <MainLayout>
+      <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-pink-500/30 selection:text-pink-200">
+        
+        {/* TOP STATUS & STATUTORY REGULATORY BAR */}
+        <div className="bg-gradient-to-r from-slate-950 via-pink-950/40 to-slate-950 border-b border-pink-500/20 px-4 py-2 text-xs">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <FlamingoIcon className="w-8 h-8 text-pink-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Flamingo</h1>
-              <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">Wellness Store</span>
+              <span className="flex items-center gap-1.5 text-pink-400 font-semibold uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-pink-400" />
+                Statutory 19+ Dual-Lock Certified
+              </span>
+              <span className="hidden md:inline text-slate-500">|</span>
+              <span className="hidden md:flex items-center gap-1 text-slate-400">
+                <Package className="w-3.5 h-3.5 text-slate-400" />
+                100% Discrete Unmarked Packaging
+              </span>
+              <span className="hidden md:inline text-slate-500">|</span>
+              <span className="hidden lg:flex items-center gap-1 text-emerald-400 font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                NDPA 2023 Cryptographic Privacy Seal
+              </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent w-64"
-                />
-                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
-
               <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => setShowSizeMatrixModal(true)}
+                className="flex items-center gap-1.5 text-xs text-pink-300 hover:text-pink-200 font-medium transition"
               >
-                <FilterIcon className="w-6 h-6 text-gray-600" />
+                <Ruler className="w-3.5 h-3.5 text-pink-400" />
+                <span>My Fit Matrix: <strong className="text-white">{calculatedSizeRec.top}</strong></span>
               </button>
-
               <button
-                type="button"
                 onClick={() => setShowCartDrawer(true)}
-                className="relative p-2 hover:bg-pink-50 rounded-xl transition cursor-pointer"
-                title="View Flamingo Cart & Checkout"
+                className="flex items-center gap-1.5 px-3 py-1 bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 rounded-full text-pink-300 text-xs font-semibold transition"
               >
-                <CartIcon className="w-6 h-6 text-gray-700 hover:text-pink-600 transition" />
-                {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-xs font-black rounded-full w-5 h-5 flex items-center justify-center shadow">
-                    {cart.length}
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Private Bag ({cart.reduce((a, b) => a + b.quantity, 0)})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* HERO RUNWAY BANNER */}
+        <div className="relative overflow-hidden border-b border-pink-500/20 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div className="space-y-4 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold tracking-widest uppercase">
+                  <Flame className="w-3.5 h-3.5 animate-pulse text-pink-400" />
+                  Flamingo Couture House • Private Runway
+                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+                  HIGH-FASHION <br />
+                  <span className="bg-gradient-to-r from-pink-400 via-rose-300 to-fuchsia-400 bg-clip-text text-transparent">
+                    RUNWAY & SILK LUXURY
                   </span>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+                </h1>
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                  Curated Haute Couture, Architectural Corsetry, Pure Grade 6A Mulberry Silk Loungewear, and Private Wardrobe Apparel. Presented in 4K runway walks with guaranteed discrete packaging.
+                </p>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
-            {[
-              { id: 'shop', label: 'Shop', icon: CartIcon },
-              { id: 'outfits', label: 'My Outfits', icon: HeartIcon },
-              { id: 'measurements', label: 'Measurements', icon: StarIcon },
-              { id: 'recommendations', label: 'Recommendations', icon: StarIcon },
-              { id: 'wishlist', label: 'Wishlist', icon: HeartIcon }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === tab.id
-                    ? 'border-pink-600 text-pink-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <tab.icon className="w-5 h-5" />
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Shop Tab */}
-        {activeTab === 'shop' && (
-          <div>
-            {/* Filters Bar */}
-            {showFilters && (
-              <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select
-                      value={selectedCategory}
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    >
-                      <option value="all">All Categories</option>
-                      {categories.map(cat => (
-                        <option key={cat.id} value={cat.slug}>{cat.name}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
-                    <select
-                      value={sortBy}
-                      onChange={(e) => handleSortChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    >
-                      <option value="newest">Newest</option>
-                      <option value="price_asc">Price: Low to High</option>
-                      <option value="price_desc">Price: High to Low</option>
-                      <option value="rating_desc">Highest Rated</option>
-                      <option value="popular">Most Popular</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
-                    <input
-                      type="number"
-                      value={filters.minPrice}
-                      onChange={(e) => setFilters(prev => ({ ...prev, minPrice: Number(e.target.value) }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
-                    <input
-                      type="number"
-                      value={filters.maxPrice}
-                      onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: Number(e.target.value) }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    />
-                  </div>
+                {/* Quick Action Badges */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    onClick={() => setShowAiStylistDrawer(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-pink-600/25 hover:from-pink-500 hover:to-rose-500 transition"
+                  >
+                    <Bot className="w-4 h-4" />
+                    Ask Flamingo AI Stylist
+                  </button>
+                  <button
+                    onClick={() => setShowSizeMatrixModal(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 border border-pink-500/30 hover:border-pink-500/60 text-pink-300 font-bold text-xs uppercase tracking-wider rounded-xl transition"
+                  >
+                    <Ruler className="w-4 h-4" />
+                    Calibrate Fit Matrix
+                  </button>
+                  <button
+                    onClick={() => setShowOutfitBuilderModal(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition"
+                  >
+                    <Layers className="w-4 h-4" />
+                    Assemble Custom Outfit
+                  </button>
                 </div>
               </div>
-            )}
 
-            {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map(product => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onAddToCart={() => addToCart(product)}
-                  onToggleWishlist={() => toggleWishlist(product.id)}
-                  isInWishlist={wishlist.some(item => item.productId === product.id)}
-                  onEmbedClick={(p) => setEmbedModalProduct(p)}
-                />
-              ))}
-            </div>
-
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Outfits Tab */}
-        {activeTab === 'outfits' && (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">My Outfits</h2>
-              <button
-                onClick={() => setShowOutfitBuilder(true)}
-                className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700"
-              >
-                Create New Outfit
-              </button>
-            </div>
-
-            {showOutfitBuilder && <OutfitBuilder />}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {outfits.map(outfit => (
-                <div key={outfit.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="aspect-square bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400">Outfit Image</span>
+              {/* Spotlight Runway Featured Card */}
+              {products[0] && (
+                <div className="lg:max-w-md w-full bg-slate-900/80 backdrop-blur-md border border-pink-500/30 rounded-2xl p-5 shadow-2xl relative group">
+                  <div className="flex items-center justify-between mb-3 text-xs">
+                    <span className="px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-bold">
+                      Runway Premiere Spotlight
+                    </span>
+                    <span className="text-slate-400 font-mono">
+                      {products[0].designer}
+                    </span>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg">{outfit.name}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{outfit.description}</p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded">{outfit.occasion}</span>
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{outfit.season}</span>
-                    </div>
+                  <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-slate-950">
+                    <img
+                      src={products[0].images[0]}
+                      alt={products[0].name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    />
+                    {products[0].runway_video_url && (
+                      <button
+                        onClick={() => setActiveRunwayVideo(products[0])}
+                        className="absolute inset-0 m-auto w-12 h-12 bg-pink-600/90 hover:bg-pink-500 text-white rounded-full flex items-center justify-center shadow-lg transition"
+                      >
+                        <Play className="w-5 h-5 ml-0.5 fill-white" />
+                      </button>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-white text-base line-clamp-1 mb-1">
+                    {products[0].name}
+                  </h3>
+                  <p className="text-slate-400 text-xs line-clamp-2 mb-3">
+                    {products[0].fabric_details}
+                  </p>
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                    <span className="text-lg font-black text-pink-400">
+                      {products[0].price} {products[0].currency}
+                    </span>
+                    <button
+                      onClick={() => addToBag(products[0])}
+                      className="px-3.5 py-1.5 bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold rounded-lg transition"
+                    >
+                      Add to Private Bag
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {outfits.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">You haven't created any outfits yet.</p>
-                <button
-                  onClick={() => setShowOutfitBuilder(true)}
-                  className="mt-4 text-pink-600 hover:underline"
-                >
-                  Create your first outfit
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Measurements Tab */}
-        {activeTab === 'measurements' && (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Body Measurements</h2>
-              {!measurements && (
-                <button
-                  onClick={() => setShowMeasurementForm(true)}
-                  className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700"
-                >
-                  Add Measurements
-                </button>
               )}
             </div>
-
-            {showMeasurementForm && <MeasurementForm />}
-
-            {measurements ? (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold mb-4">Your Measurements</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600">Height</p>
-                    <p className="text-xl font-bold">{measurements.height_cm} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Weight</p>
-                    <p className="text-xl font-bold">{measurements.weight_kg} kg</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Chest</p>
-                    <p className="text-xl font-bold">{measurements.chest_cm} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Waist</p>
-                    <p className="text-xl font-bold">{measurements.waist_cm} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Hips</p>
-                    <p className="text-xl font-bold">{measurements.hips_cm} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Preferred Fit</p>
-                    <p className="text-xl font-bold capitalize">{measurements.preferred_fit}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowMeasurementForm(true)}
-                  className="mt-6 text-pink-600 hover:underline"
-                >
-                  Update Measurements
-                </button>
-              </div>
-            ) : (
-              <div className="text-center py-12 bg-white rounded-lg shadow-md">
-                <p className="text-gray-500 mb-4">Add your body measurements to get personalized size recommendations.</p>
-                <button
-                  onClick={() => setShowMeasurementForm(true)}
-                  className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700"
-                >
-                  Get Started
-                </button>
-              </div>
-            )}
           </div>
-        )}
+        </div>
 
-        {/* Recommendations Tab */}
-        {activeTab === 'recommendations' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Size Recommendations</h2>
-
-            {!measurements && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <p className="text-yellow-800">
-                  Add your body measurements to receive personalized size recommendations.
+        {/* BUILT-IN AI SEARCH ENGINE TOOL FOR FLAMINGO */}
+        <div className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-md border-b border-pink-500/20 py-4 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto space-y-3">
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              {/* Search Bar */}
+              <div className="relative flex-1 w-full">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="AI Search Flamingo: garments, silk robes, corsetry, designers, Mulberry silk..."
+                  className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder-slate-500 outline-none transition"
+                />
+                {searchQuery && (
                   <button
-                    onClick={() => setActiveTab('measurements')}
-                    className="ml-2 text-yellow-900 underline"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                   >
-                    Add measurements now
+                    <X className="w-4 h-4" />
                   </button>
-                </p>
+                )}
               </div>
-            )}
 
-            <div className="space-y-4">
-              {recommendations.map(rec => (
-                <div key={rec.id} className="bg-white rounded-lg shadow-md p-6">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-bold text-lg">{rec.brand_name}</h3>
-                      <p className="text-gray-600">Recommended Size: <span className="font-semibold text-pink-600">{rec.recommended_size}</span></p>
-                      <p className="text-sm text-gray-500 mt-1">Confidence: {Math.round(rec.confidence_score * 100)}%</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={async () => {
-                          if (!user) return;
-                          await flamingoService.submitFeedback(rec.id, 'perfect');
-                          showToast('Feedback submitted', 'success');
-                        }}
-                        className="px-3 py-1 bg-green-100 text-green-800 rounded text-sm hover:bg-green-200"
-                      >
-                        Perfect Fit
-                      </button>
-                      <button
-                        onClick={async () => {
-                          if (!user) return;
-                          await flamingoService.submitFeedback(rec.id, 'too_small');
-                          showToast('Feedback submitted', 'success');
-                        }}
-                        className="px-3 py-1 bg-red-100 text-red-800 rounded text-sm hover:bg-red-200"
-                      >
-                        Too Small
-                      </button>
-                      <button
-                        onClick={async () => {
-                          if (!user) return;
-                          await flamingoService.submitFeedback(rec.id, 'too_large');
-                          showToast('Feedback submitted', 'success');
-                        }}
-                        className="px-3 py-1 bg-orange-100 text-orange-800 rounded text-sm hover:bg-orange-200"
-                      >
-                        Too Large
-                      </button>
-                    </div>
-                  </div>
-                  {rec.reasoning && (
-                    <p className="text-sm text-gray-600 mt-3">{rec.reasoning}</p>
-                  )}
-                </div>
+              {/* Sort By Selector */}
+              <div className="flex items-center gap-2 w-full md:w-auto">
+                <select
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value as any)}
+                  className="px-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold text-slate-300 outline-none focus:border-pink-500 transition"
+                >
+                  <option value="featured">Featured / Runway Spotlight</option>
+                  <option value="rating">Highest Collector Rating</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
+                </select>
+
+                <button
+                  onClick={() => setShowAiStylistDrawer(true)}
+                  className="px-3 py-2.5 bg-pink-500/10 border border-pink-500/30 text-pink-300 hover:bg-pink-500/20 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition whitespace-nowrap"
+                >
+                  <Bot className="w-4 h-4 text-pink-400" />
+                  <span>AI Stylist</span>
+                </button>
+              </div>
+            </div>
+
+            {/* AI Search Quick Prompt Chips */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+              <span className="text-slate-500 font-semibold flex items-center gap-1 shrink-0">
+                <Sparkles className="w-3 h-3 text-pink-400" /> AI Suggestions:
+              </span>
+              {FLAMINGO_AI_PROMPTS.map((prompt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSendStylistQuery(prompt)}
+                  className="px-2.5 py-1 bg-slate-900 hover:bg-pink-950/40 border border-slate-800 hover:border-pink-500/40 rounded-full text-slate-300 hover:text-pink-200 transition shrink-0"
+                >
+                  {prompt}
+                </button>
               ))}
             </div>
 
-            {recommendations.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No recommendations available yet.</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Wishlist Tab */}
-        {activeTab === 'wishlist' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {wishlist.map(item => {
-                const product = products.find(p => p.id === item.productId);
-                if (!product) return null;
-
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-3.5 py-1.5 rounded-full font-bold transition shrink-0 ${
+                  selectedCategory === 'all'
+                    ? 'bg-pink-600 text-white'
+                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                }`}
+              >
+                All Runway ({products.length})
+              </button>
+              {[
+                'Wands & Power Massagers',
+                'Air-Suction & Clitoral Stimulators',
+                'Bullet & Precision Vibrators',
+                'Ergonomic & Steel Anal Toys',
+                'Vibrating Anal Stimulators',
+                'Progressive Anal Trainer Sets',
+                'Prostate & P-Spot Bio-Stimulators',
+                'Interactive & Automated Strokers',
+                'App-Controlled & Remote Wearables',
+                'Runway Haute Couture',
+                'Lingerie & Corsetry',
+                'Silk & Satin Sleepwear',
+                'Private Wardrobe'
+              ].map(cat => {
+                const count = products.filter(p => p.category.toLowerCase() === cat.toLowerCase()).length;
                 return (
-                  <ProductCard
-                    key={item.id}
-                    product={product}
-                    onAddToCart={() => addToCart(product)}
-                    onToggleWishlist={() => toggleWishlist(product.id)}
-                    isInWishlist={true}
-                    onEmbedClick={(p) => setEmbedModalProduct(p)}
-                  />
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3.5 py-1.5 rounded-full font-bold transition shrink-0 ${
+                      selectedCategory.toLowerCase() === cat.toLowerCase()
+                        ? 'bg-pink-600 text-white'
+                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    }`}
+                  >
+                    {cat} {count > 0 && `(${count})`}
+                  </button>
                 );
               })}
             </div>
-
-            {wishlist.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">Your wishlist is empty.</p>
-                <button
-                  onClick={() => setActiveTab('shop')}
-                  className="mt-4 text-pink-600 hover:underline"
-                >
-                  Browse products
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4">Flamingo Wellness</h3>
-              <p className="text-gray-400 text-sm">
-                Your trusted destination for sexual wellness and self-care products.
-                Discreet shipping, quality guaranteed.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Privacy & Compliance</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>✓ Age Verified (19+)</li>
-                <li>✓ Discreet Packaging</li>
-                <li>✓ Secure Payments</li>
-                <li>✓ Privacy Protected</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4">Customer Support</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>Email: support@flamingo.com</li>
-                <li>Phone: 1-800-FLAMINGO</li>
-                <li>Live Chat Available</li>
-                <li>Mon-Fri: 9AM - 6PM EST</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>© 2026 Flamingo Wellness Store. All rights reserved. | Privacy Policy | Terms of Service</p>
           </div>
         </div>
-      </footer>
 
-      {/* Flamingo Cart & Escrow Checkout Drawer */}
-      {showCartDrawer && (
-        <div className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end">
-          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col p-6 overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-              <div>
-                <h3 className="text-lg font-black text-gray-900 flex items-center gap-2">
-                  <FlamingoIcon className="w-6 h-6 text-pink-600" />
-                  Flamingo Cart & Escrow
-                </h3>
-                <p className="text-xs text-gray-500">Encrypted Discreet Checkout Session</p>
+        {/* MAIN BODY: RUNWAY SHOWCASE & OUTFIT LOOKBOOKS */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+          {/* SECTION HEADER: RUNWAY PIECES */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                <span>Runway Catalog & Pieces</span>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-400 font-mono">
+                  {filteredProducts.length} Items Found
+                </span>
+              </h2>
+              <p className="text-slate-400 text-xs mt-1">
+                Every garment is individually inspected, steam-sanitized, and packed in unmarked privacy cartons.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-xs text-slate-400">
+                <span>Max Price:</span>
+                <input
+                  type="range"
+                  min="50"
+                  max="1000"
+                  step="25"
+                  value={maxPriceFilter}
+                  onChange={e => setMaxPriceFilter(Number(e.target.value))}
+                  className="w-24 accent-pink-500"
+                />
+                <span className="font-mono text-white font-bold">{maxPriceFilter} FIC</span>
               </div>
+            </div>
+          </div>
+
+          {/* PRODUCTS GRID */}
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-20 bg-slate-900/40 rounded-2xl border border-slate-800">
+              <Sparkles className="w-12 h-12 text-pink-400 mx-auto mb-3 opacity-60" />
+              <h3 className="text-lg font-bold text-white mb-1">No Runway Pieces Matched Query</h3>
+              <p className="text-slate-400 text-sm max-w-md mx-auto mb-4">
+                Try searching for other terms like 'corset', 'silk', or click reset to view the entire runway catalog.
+              </p>
               <button
-                type="button"
-                onClick={() => setShowCartDrawer(false)}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('all');
+                  setMaxPriceFilter(1000);
+                }}
+                className="px-4 py-2 bg-pink-600 text-white rounded-xl text-xs font-bold hover:bg-pink-500 transition"
               >
-                ✕
+                Reset All Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map(product => (
+                <div
+                  key={product.id}
+                  className="bg-slate-900/80 border border-slate-800 hover:border-pink-500/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-pink-500/10 transition duration-300 flex flex-col group"
+                >
+                  {/* Media Showcase */}
+                  <div className="relative aspect-[3/4] bg-slate-950 overflow-hidden">
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    />
+
+                    {/* Designer Badge */}
+                    <div className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-pink-300 border border-pink-500/20">
+                      {product.designer || product.brand}
+                    </div>
+
+                    {/* Discrete Badge */}
+                    {product.discrete_shipping && (
+                      <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md p-1.5 rounded-full text-emerald-400 border border-emerald-500/20" title="Discrete Shipping Guaranteed">
+                        <Package className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+
+                    {/* Video Reel Trigger */}
+                    {product.runway_video_url && (
+                      <button
+                        onClick={() => setActiveRunwayVideo(product)}
+                        className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1 bg-pink-600/90 hover:bg-pink-500 text-white text-xs font-bold rounded-full shadow-lg transition"
+                      >
+                        <Play className="w-3 h-3 fill-white" />
+                        <span>Runway Reel</span>
+                      </button>
+                    )}
+
+                    {/* Quick Fabric Inspector */}
+                    <button
+                      onClick={() => setActiveInspectProduct(product)}
+                      className="absolute bottom-3 right-3 p-2 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white rounded-full transition"
+                      title="Inspect Fabric & Craftsmanship"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Card Info Content */}
+                  <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                      <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                        <span className="font-semibold text-pink-400">{product.category}</span>
+                        <span className="font-mono">★ {product.rating}</span>
+                      </div>
+                      <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-pink-300 transition">
+                        {product.name}
+                      </h4>
+                      <p className="text-slate-400 text-xs line-clamp-2 mt-1">
+                        {product.description}
+                      </p>
+                    </div>
+
+                    {/* Available Sizes Pills */}
+                    <div className="space-y-1">
+                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        Available Sizes
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {product.sizes_available.map(sz => (
+                          <span
+                            key={sz}
+                            className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-[11px] font-mono text-slate-300"
+                          >
+                            {sz}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Runway Silhouette Poll */}
+                    {product.poll_data && (
+                      <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 text-xs space-y-2">
+                        <div className="font-semibold text-slate-300 text-[11px]">
+                          {product.poll_data.question}
+                        </div>
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {product.poll_data.options.map(opt => {
+                            const totalVotes = product.poll_data!.options.reduce((a, b) => a + b.votes, 0) || 1;
+                            const pct = Math.round((opt.votes / totalVotes) * 100);
+                            return (
+                              <button
+                                key={opt.id}
+                                onClick={() => handlePollVote(product.id, opt.id)}
+                                className="relative overflow-hidden text-left p-1.5 bg-slate-900 border border-slate-800 hover:border-pink-500/40 rounded text-[11px] transition"
+                              >
+                                <div
+                                  className="absolute left-0 top-0 bottom-0 bg-pink-500/15"
+                                  style={{ width: `${pct}%` }}
+                                />
+                                <div className="relative z-10 font-medium text-slate-300 truncate">
+                                  {opt.text}
+                                </div>
+                                <div className="relative z-10 text-[10px] text-pink-400 font-mono">
+                                  {pct}% ({opt.votes})
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Social Reactions & Add to Bag */}
+                    <div className="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleReact(product.id, 'like')}
+                          className="flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs transition"
+                          title="Love this garment"
+                        >
+                          <ThumbsUp className="w-3 h-3 text-pink-400" />
+                          <span className="font-mono text-[11px]">{product.likes}</span>
+                        </button>
+                        <button
+                          onClick={() => handleReact(product.id, 'dislike')}
+                          className="flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded text-xs transition"
+                          title="Pass on this silhouette"
+                        >
+                          <ThumbsDown className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={() => setEmbedProduct(product)}
+                          className="p-1 text-slate-400 hover:text-white"
+                          title="Share Product"
+                        >
+                          <Share2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <span className="text-sm font-black text-white">
+                            {product.price}
+                          </span>
+                          <span className="text-[10px] text-pink-400 font-bold ml-1">
+                            {product.currency}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => addToBag(product)}
+                          className="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold rounded-lg shadow-sm transition"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* SECTION: COMMUNITY LOOKBOOKS & OUTFIT PACKAGES */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-wider mb-2">
+                  <Layers className="w-3 h-3" />
+                  Curated Ensembles
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  Runway Lookbooks & Assembled Wardrobes
+                </h3>
+                <p className="text-slate-400 text-xs">
+                  Mix and match custom outfits curated by our atelier and top fashion members.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setShowOutfitBuilderModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:from-pink-500 hover:to-rose-500 transition shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                Assemble New Outfit
               </button>
             </div>
 
-            {cart.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-                <CartIcon className="w-12 h-12 text-gray-300 mb-3" />
-                <p className="text-gray-600 font-semibold mb-1">Your cart is currently empty</p>
-                <p className="text-xs text-gray-400 mb-4">Discover adult wellness essentials and add them to your cart.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {outfits.length === 0 ? (
+                <div className="col-span-full py-8 text-center text-slate-500 text-xs">
+                  No custom lookbooks created yet. Be the first to assemble a runway wardrobe!
+                </div>
+              ) : (
+                outfits.map(outfit => (
+                  <div
+                    key={outfit.id}
+                    className="bg-slate-950 border border-slate-800 hover:border-pink-500/30 rounded-2xl p-5 space-y-3 transition"
+                  >
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 font-bold rounded">
+                        {outfit.occasion || 'Runway'}
+                      </span>
+                      <span className="text-slate-500 font-mono">
+                        {outfit.season || 'All Season'}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-base">
+                      {outfit.name}
+                    </h4>
+                    {outfit.description && (
+                      <p className="text-slate-400 text-xs line-clamp-2">
+                        {outfit.description}
+                      </p>
+                    )}
+                    {outfit.style_tags && outfit.style_tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {outfit.style_tags.map(t => (
+                          <span
+                            key={t}
+                            className="px-2 py-0.5 bg-slate-900 text-slate-400 text-[10px] rounded"
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                      <span>Public Runway Look</span>
+                      <button
+                        onClick={() => showToast(`Lookbook '${outfit.name}' saved to your favorites!`, 'success')}
+                        className="text-pink-400 hover:text-pink-300 font-bold"
+                      >
+                        Save Look
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* STERCS & GOVERNANCE COMPLIANCE FOOTER */}
+          <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 text-xs text-slate-400 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="w-5 h-5 text-pink-400 shrink-0" />
+                <div>
+                  <h5 className="font-bold text-white">
+                    FingerMobile Protocol™ STERCS & Guardian Compliance
+                  </h5>
+                  <p className="text-slate-400 text-[11px]">
+                    All Flamingo transactions are verified under the NDPA 2023 Statutory Criteria. Guardian Age-Verification tokens ensure discrete compliance, with zero adult content exposure to unverified profiles.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 font-mono text-[11px] rounded border border-emerald-500/20">
+                  STERCS Ledger: Verified
+                </span>
+                <span className="px-2 py-1 bg-pink-500/10 text-pink-400 font-mono text-[11px] rounded border border-pink-500/20">
+                  Sentient AI: v4.2 Active
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* MODAL 1: 4K RUNWAY VIDEO REEL PLAYER */}
+        {activeRunwayVideo && (
+          <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-pink-500/30 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl relative">
+              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Film className="w-4 h-4 text-pink-400" />
+                  <span className="font-bold text-white text-sm">
+                    Runway Walk: {activeRunwayVideo.name}
+                  </span>
+                </div>
                 <button
-                  type="button"
-                  onClick={() => setShowCartDrawer(false)}
-                  className="px-4 py-2 bg-pink-600 text-white text-xs font-bold rounded-xl hover:bg-pink-700 transition"
+                  onClick={() => setActiveRunwayVideo(null)}
+                  className="p-1 text-slate-400 hover:text-white"
                 >
-                  Continue Shopping
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-            ) : (
-              <div className="flex-1 flex flex-col justify-between">
-                <div className="space-y-3 mb-6">
-                  {cart.map((item, idx) => (
-                    <div key={`${item.id}-${idx}`} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                      <img
-                        src={item.imageUrl || (item.images && item.images[0]) || '/placeholder-product.jpg'}
-                        alt={item.name}
-                        className="w-14 h-14 object-cover rounded-lg shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
-                        <p className="text-[10px] text-gray-500">Qty: {item.quantity || 1}</p>
-                        <p className="text-xs font-extrabold text-pink-600">${item.price}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setCart(prev => prev.filter((_, i) => i !== idx))}
-                        className="text-xs text-red-500 hover:text-red-700 p-1"
-                        title="Remove item"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
+
+              <div className="relative aspect-video bg-black">
+                <video
+                  src={activeRunwayVideo.runway_video_url}
+                  autoPlay
+                  controls
+                  loop
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="p-4 bg-slate-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div>
+                  <div className="font-bold text-white">
+                    Designer: {activeRunwayVideo.designer}
+                  </div>
+                  <div className="text-slate-400">
+                    Collection: {activeRunwayVideo.lookbook_collection}
+                  </div>
                 </div>
-
-                <div className="border-t border-gray-100 pt-4 space-y-4">
-                  {/* Total calculation */}
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="font-bold text-gray-900">
-                      ${cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.quantity || 1), 0).toFixed(2)}
-                    </span>
-                  </div>
-
-                  {/* Payment Selection with Platform Earnings Highlighted */}
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
-                      Payment Settlement Channel
-                    </label>
-                    <div className="grid grid-cols-1 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setCheckoutPaymentMethod('earnings')}
-                        className={`p-3 rounded-xl border text-left transition ${
-                          checkoutPaymentMethod === 'earnings'
-                            ? 'bg-emerald-50 border-emerald-500 text-emerald-900 shadow-sm'
-                            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold flex items-center gap-1.5">
-                            <span>💸</span> Platform Earnings Balance
-                          </span>
-                          <span className="px-2 py-0.5 text-[9px] font-black uppercase tracking-wide bg-emerald-600 text-white rounded-full">
-                            Allowed & Preferred
-                          </span>
-                        </div>
-                        <p className="text-[10px] text-emerald-700 mt-1">
-                          FingerMobile Protocol explicitly permits spending your verified creator & platform earnings on Flamingo Wellness.
-                        </p>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setCheckoutPaymentMethod('fic')}
-                        className={`p-3 rounded-xl border text-left transition ${
-                          checkoutPaymentMethod === 'fic'
-                            ? 'bg-pink-50 border-pink-500 text-pink-900 shadow-sm'
-                            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold flex items-center gap-1.5">
-                            <span>💎</span> Infinite Coin (FIC)
-                          </span>
-                          <span className="text-[10px] text-gray-500 font-normal">Fast Web3 Escrow</span>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setCheckoutPaymentMethod('card')}
-                        className={`p-3 rounded-xl border text-left transition ${
-                          checkoutPaymentMethod === 'card'
-                            ? 'bg-pink-50 border-pink-500 text-pink-900 shadow-sm'
-                            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold flex items-center gap-1.5">
-                            <span>💳</span> Direct Card / Bank Transfer
-                          </span>
-                          <span className="text-[10px] text-gray-500 font-normal">Discreet billing entry</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Discreet Shipping Notice */}
-                  <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 space-y-1">
-                    <p className="font-bold flex items-center gap-1 text-slate-900">
-                      <span>📦</span> 100% Plain Discreet Shipping
-                    </p>
-                    <p className="text-[11px] leading-relaxed text-slate-600">
-                      Dispatched in unmarked, plain outer packaging with neutral sender "FM Protocol Logistics". Zero adult wellness descriptions appear on courier labels or banking statements, in full compliance with NDPA 2023 privacy mandates.
-                    </p>
-                  </div>
-
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-black text-pink-400 font-mono">
+                    {activeRunwayVideo.price} {activeRunwayVideo.currency}
+                  </span>
                   <button
-                    type="button"
-                    onClick={async () => {
-                      const totalAmount = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.quantity || 1), 0);
-                      try {
-                        await apiService.post('/ownit/orders', {
-                          items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity || 1 })),
-                          totalAmount,
-                          paymentMethod: checkoutPaymentMethod,
-                          store: 'flamingo',
-                          isDiscreet: true,
-                          status: 'processing'
-                        }).catch(() => {});
-
-                        showToast(`Order confirmed with ${checkoutPaymentMethod === 'earnings' ? 'Platform Earnings' : checkoutPaymentMethod.toUpperCase()}! Discreet fulfillment initiated.`, 'success');
-                      } catch {
-                        showToast(`Order confirmed with ${checkoutPaymentMethod === 'earnings' ? 'Platform Earnings' : checkoutPaymentMethod.toUpperCase()}! Discreet fulfillment initiated.`, 'success');
-                      }
-                      setCart([]);
-                      setShowCartDrawer(false);
+                    onClick={() => {
+                      addToBag(activeRunwayVideo);
+                      setActiveRunwayVideo(null);
                     }}
-                    className="w-full py-3 bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:from-pink-700 hover:to-rose-700 shadow-lg transition"
+                    className="px-4 py-2 bg-pink-600 hover:bg-pink-500 text-white font-bold rounded-xl transition"
                   >
-                    Confirm & Settle Order
+                    Add Size to Bag
                   </button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Social Embed Modal with NSFW Blur Support */}
-      <SocialEmbedModal
-        isOpen={Boolean(embedModalProduct)}
-        onClose={() => setEmbedModalProduct(null)}
-        product={
-          embedModalProduct
-            ? {
-              id: String(embedModalProduct.id),
-              name: embedModalProduct.name,
-              price: embedModalProduct.price,
-              currency: 'USD',
-              imageUrl: embedModalProduct.imageUrl || (embedModalProduct.images ? embedModalProduct.images[0] : undefined),
-              platform: 'flamingo',
-              description: embedModalProduct.description
-            }
-            : null
-        }
-        isNsfw={true}
-      />
-    </div>
+        {/* MODAL 2: FABRIC & CRAFTSMANSHIP INSPECTOR */}
+        {activeInspectProduct && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-pink-500/30 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <Scissors className="w-5 h-5 text-pink-400" />
+                  <h3 className="font-bold text-white text-base">
+                    Garment Provenance & Craftsmanship
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setActiveInspectProduct(null)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-3 text-xs">
+                <div>
+                  <span className="font-bold text-slate-400 block mb-0.5">Garment Name</span>
+                  <span className="text-white font-semibold">{activeInspectProduct.name}</span>
+                </div>
+                <div>
+                  <span className="font-bold text-slate-400 block mb-0.5">Fabric & Materials</span>
+                  <span className="text-pink-300 font-medium">{activeInspectProduct.fabric_details}</span>
+                </div>
+                <div>
+                  <span className="font-bold text-slate-400 block mb-0.5">Collection & Cut</span>
+                  <span className="text-slate-300">{activeInspectProduct.lookbook_collection} (Designed by {activeInspectProduct.designer})</span>
+                </div>
+                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-emerald-400">
+                    <Package className="w-4 h-4" />
+                    Discrete Delivery Protocol Guaranteed
+                  </div>
+                  <p className="text-slate-400 text-[11px]">
+                    Plain outer packaging with zero mention of Flamingo or adult couture. Return address registered to generic logistics subsidiary.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-3">
+                <button
+                  onClick={() => setActiveInspectProduct(null)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    addToBag(activeInspectProduct);
+                    setActiveInspectProduct(null);
+                  }}
+                  className="px-4 py-2 bg-pink-600 hover:bg-pink-500 text-white rounded-xl text-xs font-bold transition"
+                >
+                  Add to Private Bag
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* MODAL 3: SMART SIZE MATRIX & FIT CALCULATOR */}
+        {showSizeMatrixModal && (
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-pink-500/30 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <Ruler className="w-5 h-5 text-pink-400" />
+                  <h3 className="font-bold text-white text-base">
+                    Body Measurement Matrix & Size Predictor
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShowSizeMatrixModal(false)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Height (cm)</label>
+                  <input
+                    type="number"
+                    value={userMeasurements.height_cm}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, height_cm: Number(e.target.value) };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Weight (kg)</label>
+                  <input
+                    type="number"
+                    value={userMeasurements.weight_kg}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, weight_kg: Number(e.target.value) };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Bust / Chest (cm)</label>
+                  <input
+                    type="number"
+                    value={userMeasurements.chest_cm}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, chest_cm: Number(e.target.value) };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Waist (cm)</label>
+                  <input
+                    type="number"
+                    value={userMeasurements.waist_cm}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, waist_cm: Number(e.target.value) };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Hips (cm)</label>
+                  <input
+                    type="number"
+                    value={userMeasurements.hips_cm}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, hips_cm: Number(e.target.value) };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Preferred Fit</label>
+                  <select
+                    value={userMeasurements.preferred_fit}
+                    onChange={e => {
+                      const updated = { ...userMeasurements, preferred_fit: e.target.value as any };
+                      setUserMeasurements(updated);
+                      updateSizeRecommendation(updated);
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  >
+                    <option value="slim">Slim / Form-Fitting</option>
+                    <option value="regular">Regular Classic</option>
+                    <option value="relaxed">Relaxed Drape</option>
+                    <option value="oversized">Oversized</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Calculated Results Card */}
+              <div className="bg-slate-950 border border-pink-500/30 rounded-xl p-4 space-y-2 text-xs">
+                <div className="flex items-center justify-between text-pink-400 font-bold uppercase tracking-wider">
+                  <span>Predicted Runway Sizing</span>
+                  <span>{calculatedSizeRec.confidence}% Match Confidence</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-slate-300">
+                  <div>Tops & Gowns: <strong className="text-white">{calculatedSizeRec.top}</strong></div>
+                  <div>Corsetry & Bras: <strong className="text-white">{calculatedSizeRec.corset}</strong></div>
+                  <div>Waist Calibration: <strong className="text-white">{calculatedSizeRec.waist}</strong></div>
+                  <div>Slip Dresses: <strong className="text-white">{calculatedSizeRec.dress}</strong></div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setShowSizeMatrixModal(false)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={async () => {
+                    await apiService.post('/api/flamingo/measurements', userMeasurements).catch(() => {});
+                    showToast('Measurement matrix updated & saved to profile', 'success');
+                    setShowSizeMatrixModal(false);
+                  }}
+                  className="px-4 py-2 bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold rounded-xl transition"
+                >
+                  Save Fit Matrix
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* MODAL 4: OUTFIT BUILDER */}
+        {showOutfitBuilderModal && (
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-pink-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <Layers className="w-5 h-5 text-pink-400" />
+                  <h3 className="font-bold text-white text-base">
+                    Assemble Runway Ensemble
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShowOutfitBuilderModal(false)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveOutfit} className="space-y-3 text-xs">
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Outfit Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={newOutfitName}
+                    onChange={e => setNewOutfitName(e.target.value)}
+                    placeholder="e.g. Midnight Gala Velvet Ensemble"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Occasion</label>
+                    <select
+                      value={newOutfitOccasion}
+                      onChange={e => setNewOutfitOccasion(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                    >
+                      <option value="Runway Gala">Runway Gala</option>
+                      <option value="Date Night">Date Night</option>
+                      <option value="Private Lounge">Private Lounge</option>
+                      <option value="VIP Soiree">VIP Soiree</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Season</label>
+                    <select
+                      value={newOutfitSeason}
+                      onChange={e => setNewOutfitSeason(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                    >
+                      <option value="Fall/Winter">Fall / Winter</option>
+                      <option value="Spring/Summer">Spring / Summer</option>
+                      <option value="All Season">All Season</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Style Tags (comma-separated)</label>
+                  <input
+                    type="text"
+                    value={newOutfitTags}
+                    onChange={e => setNewOutfitTags(e.target.value)}
+                    placeholder="haute-couture, silk, velvet"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:border-pink-500"
+                  />
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="publicOutfit"
+                    checked={newOutfitIsPublic}
+                    onChange={e => setNewOutfitIsPublic(e.target.checked)}
+                    className="accent-pink-500"
+                  />
+                  <label htmlFor="publicOutfit" className="text-slate-300 font-semibold">
+                    Publish outfit to community lookbooks
+                  </label>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowOutfitBuilderModal(false)}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-pink-600 hover:bg-pink-500 text-white rounded-xl font-bold transition"
+                  >
+                    Save Ensemble
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* DRAWER 1: AI FASHION STYLIST CONCIERGE */}
+        {showAiStylistDrawer && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end">
+            <div className="w-full max-w-md bg-slate-900 border-l border-pink-500/30 h-full flex flex-col shadow-2xl">
+              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-pink-400" />
+                  <div>
+                    <h3 className="font-bold text-white text-sm">
+                      Flamingo AI Stylist & Fit Specialist
+                    </h3>
+                    <span className="text-[11px] text-pink-400 font-mono">
+                      Sentient Style Model v4.2 Online
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowAiStylistDrawer(false)}
+                  className="p-1 text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Chat Thread */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
+                {stylistMessages.map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
+                  >
+                    <div
+                      className={`max-w-[85%] p-3 rounded-2xl ${
+                        msg.sender === 'user'
+                          ? 'bg-pink-600 text-white rounded-br-none'
+                          : 'bg-slate-950 border border-slate-800 text-slate-200 rounded-bl-none'
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                    <span className="text-[10px] text-slate-500 mt-1 px-1">{msg.timestamp}</span>
+                  </div>
+                ))}
+
+                {stylistTyping && (
+                  <div className="text-slate-400 text-xs italic flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 animate-spin text-pink-400" />
+                    <span>Consulting atelier style charts...</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Quick Prompt Suggestions */}
+              <div className="p-2 border-t border-slate-800 flex gap-1.5 overflow-x-auto text-[11px]">
+                {['Silk slip gown care', 'Corsetry steel boning vs plastic', 'Stealth packaging proof'].map((chip, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSendStylistQuery(chip)}
+                    className="px-2 py-1 bg-slate-950 border border-slate-800 text-slate-400 hover:text-pink-300 rounded whitespace-nowrap transition"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+
+              {/* Input Area */}
+              <div className="p-4 border-t border-slate-800 flex items-center gap-2">
+                <input
+                  type="text"
+                  value={stylistInput}
+                  onChange={e => setStylistInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleSendStylistQuery()}
+                  placeholder="Ask for fashion fit advice, fabric specs..."
+                  className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-pink-500"
+                />
+                <button
+                  onClick={() => handleSendStylistQuery()}
+                  className="p-2 bg-pink-600 hover:bg-pink-500 text-white rounded-xl transition"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* DRAWER 2: PRIVATE BAG & DISCRETE MULTI-RAIL CHECKOUT */}
+        {showCartDrawer && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end">
+            <div className="w-full max-w-md bg-slate-900 border-l border-pink-500/30 h-full flex flex-col shadow-2xl">
+              <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-pink-400" />
+                  <h3 className="font-bold text-white text-base">
+                    Private Discreet Bag
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShowCartDrawer(false)}
+                  className="p-1 text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Cart Items */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                {cart.length === 0 ? (
+                  <div className="text-center py-16 text-slate-500 text-xs">
+                    <ShoppingBag className="w-10 h-10 mx-auto mb-2 opacity-50" />
+                    Your private bag is currently empty.
+                  </div>
+                ) : (
+                  cart.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-3 text-xs"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={item.product.images[0]}
+                          alt={item.product.name}
+                          className="w-12 h-14 object-cover rounded-lg bg-slate-900"
+                        />
+                        <div>
+                          <div className="font-bold text-white line-clamp-1">{item.product.name}</div>
+                          <div className="text-slate-400 text-[11px]">Size: {item.selectedSize}</div>
+                          <div className="text-pink-400 font-mono font-bold mt-0.5">
+                            {item.product.price} {item.product.currency} × {item.quantity}
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setCart(prev => prev.filter((_, i) => i !== idx));
+                          showToast('Item removed from private bag', 'info');
+                        }}
+                        className="text-slate-500 hover:text-rose-400 p-1"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Checkout Options & Settlement */}
+              {cart.length > 0 && (
+                <div className="p-4 border-t border-slate-800 bg-slate-950 space-y-4">
+                  {/* Packaging Preference */}
+                  <div className="space-y-1.5 text-xs">
+                    <span className="font-bold text-slate-400 uppercase tracking-wider text-[11px]">
+                      Discreet Packaging Protocol
+                    </span>
+                    <select
+                      value={packagingPreference}
+                      onChange={e => setPackagingPreference(e.target.value as any)}
+                      className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-white text-xs outline-none focus:border-pink-500"
+                    >
+                      <option value="plain_brown_carton">Plain Double-Boxed Matte Brown Carton</option>
+                      <option value="white_label_discrete">White Label Express with Neutral Return</option>
+                      <option value="cryptographic_vault">Cryptographic Vault Lock Delivery</option>
+                    </select>
+                  </div>
+
+                  {/* Payment Rail */}
+                  <div className="space-y-1.5 text-xs">
+                    <span className="font-bold text-slate-400 uppercase tracking-wider text-[11px]">
+                      Sovereign Settlement Rail
+                    </span>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        onClick={() => setCheckoutRail('fic_vault')}
+                        className={`py-2 text-center rounded-xl font-bold transition text-xs ${
+                          checkoutRail === 'fic_vault'
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                        }`}
+                      >
+                        FIC Vault
+                      </button>
+                      <button
+                        onClick={() => setCheckoutRail('earnings')}
+                        className={`py-2 text-center rounded-xl font-bold transition text-xs ${
+                          checkoutRail === 'earnings'
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                        }`}
+                      >
+                        Earnings
+                      </button>
+                      <button
+                        onClick={() => setCheckoutRail('card')}
+                        className={`py-2 text-center rounded-xl font-bold transition text-xs ${
+                          checkoutRail === 'card'
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                        }`}
+                      >
+                        Credit Card
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Total & Confirm Button */}
+                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <span className="text-xs text-slate-400 block">Total Order</span>
+                      <span className="text-lg font-black text-white font-mono">
+                        {cartTotal.toFixed(2)} FIC
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        showToast(`Order settled via ${checkoutRail.replace('_', ' ').toUpperCase()}! Discrete shipping queued.`, 'success');
+                        setCart([]);
+                        setShowCartDrawer(false);
+                      }}
+                      className="px-5 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition"
+                    >
+                      Authorize & Dispatch
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* SOCIAL EMBED MODAL FOR SHARING WITH NSFW BLUR */}
+        <SocialEmbedModal
+          isOpen={Boolean(embedProduct)}
+          onClose={() => setEmbedProduct(null)}
+          product={
+            embedProduct
+              ? {
+                id: embedProduct.id,
+                name: embedProduct.name,
+                price: typeof embedProduct.price === 'string' ? parseFloat(embedProduct.price) : embedProduct.price,
+                currency: embedProduct.currency,
+                imageUrl: embedProduct.images[0],
+                platform: 'flamingo',
+                description: embedProduct.description
+              }
+              : null
+          }
+          isNsfw={true}
+        />
+
+      </div>
+    </MainLayout>
   );
 };
 

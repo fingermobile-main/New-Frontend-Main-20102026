@@ -19,6 +19,7 @@ FROM nginx:alpine
 
 # Copy the build output from the previous stage
 COPY --from=builder /app/build /usr/share/nginx/html
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Copy nginx configuration to the sites-enabled directory (replacing default)
 COPY nginx.conf /etc/nginx/conf.d/default.conf

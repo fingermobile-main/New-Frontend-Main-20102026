@@ -3,6 +3,7 @@ FROM nginx:alpine
 
 # Copy the existing build output
 COPY build /usr/share/nginx/html
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Copy environment variables
 COPY .env /usr/share/nginx/html/.env

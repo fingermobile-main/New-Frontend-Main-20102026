@@ -191,7 +191,8 @@ export interface AppState {
   domains?: Domain[];
   giftCards?: unknown[];
   loyaltyRewards?: unknown[];
-  lendsqrProjects?: unknown[];
+  loanSqrProducts?: unknown[];
+  LoansqrProjects?: unknown[];
   isLive?: boolean;
   paidStreamIds?: unknown[];
   scheduledEvents?: unknown[];
@@ -313,7 +314,8 @@ const initialState: AppState = {
   domains: [],
   giftCards: [],
   loyaltyRewards: [],
-  lendsqrProjects: [],
+  loanSqrProducts: [],
+  LoansqrProjects: [],
   isLive: false,
   paidStreamIds: [],
   scheduledEvents: [],

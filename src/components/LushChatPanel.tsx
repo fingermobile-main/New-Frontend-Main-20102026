@@ -220,7 +220,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                   </div>
                   <p className="text-xs font-bold text-gray-800">Start the conversation</p>
                   <p className="text-[11px] text-gray-500 max-w-xs mx-auto">
-                    You matched and verified PIN exchange! Send a friendly icebreaker or a compliment.
+                    You matched and verified PIN exchange! Send a friendlylapidaire or a compliment.
                   </p>
                 </div>
               ) : (
@@ -324,7 +324,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
             <div>
               <h4 className="text-sm font-bold text-gray-800">Select a Conversation</h4>
               <p className="text-xs text-gray-500 mt-1 max-w-sm">
-                Choose a matched connection from the left list to send messages, exchange icebreakers, or send gifts.
+                Choose a matched connection from the left list to send messages, exchangelapidaires, or send gifts.
               </p>
             </div>
           </div>

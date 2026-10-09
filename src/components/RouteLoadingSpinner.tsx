@@ -1,6 +1,11 @@
 import React from 'react';
-import { SplashScreen } from './SplashScreen';
+import LoadingSpinner from './LoadingSpinner';
 
 export const RouteLoadingSpinner: React.FC = () => {
-  return <SplashScreen isLoading={true} message="Loading platform stage..." />;
+  return (
+    <div className="flex items-center justify-center min-h-[60vh] w-full">
+      <LoadingSpinner size="lg" color="primary" label="Loading..." />
+    </div>
+  );
 };
+

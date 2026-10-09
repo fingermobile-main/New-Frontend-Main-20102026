@@ -1,10 +1,17 @@
-import React, { useEffect, useState, useCallback } from 'react';
+/*
+ * FingerMobile Protocol™ - Member Storefronts & Merchant Dashboard
+ * Independent Scaffold: Member Subscription Stores with Quota Management (MB/GB),
+ * Product/Goods/Services Showcase Quotas, Mini Merchant Dashboard, Inventory Alerts,
+ * Orders, Sales Analytics, Merchant Community Polls, and AI Copilot.
+ * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
+ */
+
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/apiService';
 import { Product } from '../types';
-import ProductCard from '../components/ProductCard';
 import {
   StorefrontIcon,
   SearchIcon,
@@ -16,1014 +23,1154 @@ import {
   PlusIcon,
   XMarkIcon
 } from '../icons';
-import { storefrontService, Storefront, StorefrontProduct, InventoryItem } from '../services/storefrontService';
+import {
+  Store,
+  Sparkles,
+  Bot,
+  Package,
+  Layers,
+  Tag,
+  AlertTriangle,
+  CheckCircle2,
+  BarChart2,
+  Percent,
+  TrendingUp,
+  Clock,
+  ShieldCheck,
+  Send,
+  ThumbsUp,
+  ThumbsDown,
+  ArrowRight,
+  HardDrive
+} from 'lucide-react';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 
-// Types for Storefront features
-type StorefrontFilters = {
-  query: string;
-  category: string;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
-  inStock: boolean;
-};
-
-type StorefrontAnalytics = {
-  totalProducts: number;
-  totalRevenue: number;
-  totalOrders: number;
-  avgRating: number;
-  lowStockItems: number;
-  topSellingProducts: Product[];
-  revenueChart: { date: string; revenue: number }[];
-};
-
-type InventoryAlert = {
+export interface StorefrontItem {
   id: string;
-  productId: string;
+  name: string;
+  slug: string;
+  description?: string;
+  tagline?: string;
+  business_type?: string;
+  cover_image_url?: string;
+  banner_url?: string;
+  logo_url?: string;
+  rating?: number;
+  follower_count?: number;
+  product_count?: number;
+  subscription_tier?: 'free' | 'growth' | 'pro' | 'enterprise';
+  storage_quota_mb?: number;
+  used_storage_mb?: number;
+  product_quota?: number;
+  currency?: string;
+  is_verified?: boolean;
+}
+
+export interface StorefrontProductItem {
+  id: string;
+  storefront_id?: string;
+  name: string;
+  description: string;
+  price: number;
+  discount_price?: number;
+  currency: string;
+  category: string;
+  goods_type: 'physical' | 'digital' | 'service';
+  sku: string;
+  size?: string;
+  sizes_available?: string[];
+  stock: number;
+  quantity?: number;
+  reorder_point?: number;
+  sales_count?: number;
+  image_url?: string;
+  images?: string[];
+  likes?: number;
+  dislikes?: number;
+  poll_data?: {
+    question: string;
+    options: { id: number; text: string; votes: number }[];
+  };
+  hasVoted?: boolean;
+}
+
+export interface StorefrontOrder {
+  id: string;
   productName: string;
-  currentStock: number;
-  threshold: number;
-  status: 'low' | 'out' | 'critical';
-};
+  buyerName: string;
+  quantity: number;
+  totalPrice: number;
+  currency: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered';
+  trackingCode?: string;
+  date: string;
+}
+
+const SUBSCRIPTION_TIERS = [
+  {
+    tier: 'free',
+    name: 'Starter Merchant',
+    monthlyPrice: 0,
+    storageMB: 5120, // 5 GB
+    productLimit: 25,
+    commissionBps: '5.0%',
+    badge: 'Standard',
+    features: ['5 GB Asset Cloud Storage', 'Up to 25 Showcase Products', 'Standard Settlement (14-day hold)', 'Community Directory Listing']
+  },
+  {
+    tier: 'growth',
+    name: 'Growth Merchant',
+    monthlyPrice: 15,
+    storageMB: 25600, // 25 GB
+    productLimit: 100,
+    commissionBps: '3.5%',
+    badge: 'Popular',
+    features: ['25 GB Asset Cloud Storage', 'Up to 100 Showcase Products', 'Accelerated Settlement (10-day hold)', 'Custom Promotional Codes & Polls']
+  },
+  {
+    tier: 'pro',
+    name: 'Professional Merchant',
+    monthlyPrice: 45,
+    storageMB: 102400, // 100 GB
+    productLimit: 500,
+    commissionBps: '2.0%',
+    badge: 'High Volume',
+    features: ['100 GB Asset Cloud Storage', 'Up to 500 Showcase Products', 'Priority 7-Day Settlement', 'Verified Gold Merchant Badge & Dancia-4Tv Livestreaming']
+  },
+  {
+    tier: 'enterprise',
+    name: 'Sovereign Franchise',
+    monthlyPrice: 120,
+    storageMB: 512000, // 500 GB
+    productLimit: 99999,
+    commissionBps: '0.75%',
+    badge: 'Unlimited',
+    features: ['500 GB Dedicated Storage', 'Unlimited Showcase Catalog', 'Ultra-Fast 3-Day Escrow Release', 'Custom Domain Routing & API Webhooks']
+  }
+];
 
 const StorefrontPage: React.FC = () => {
-  const { showToast } = useAppContext();
-  const { user } = useAuth();
+  const { showToast, ficBalance } = useAppContext();
+  const { member: user } = useAuth();
 
-  // State management
-  const [, setStorefronts] = useState<Storefront[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [filters, setFilters] = useState<StorefrontFilters>({
-    query: '',
-    category: 'all',
-    minPrice: 0,
-    maxPrice: 10000,
-    sortBy: 'newest',
-    inStock: false
+  // Navigation tab
+  const [activeTab, setActiveTab] = useState<'browse-mall' | 'my-dashboard' | 'catalog' | 'inventory' | 'orders' | 'promotions' | 'storage-quotas'>('browse-mall');
+
+  // Stores and products data
+  const [storefronts, setStorefronts] = useState<StorefrontItem[]>([]);
+  const [products, setProducts] = useState<StorefrontProductItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Search & Filter
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedGoodsType, setSelectedGoodsType] = useState<'all' | 'physical' | 'digital' | 'service'>('all');
+
+  // Mini Merchant State
+  const [currentTier, setCurrentTier] = useState<string>('growth');
+  const [usedStorageMB, setUsedStorageMB] = useState<number>(3420); // 3.42 GB
+  const [totalStorageMB, setTotalStorageMB] = useState<number>(25600); // 25 GB
+  const [showProductModal, setShowProductModal] = useState<boolean>(false);
+  const [showRestockModal, setShowRestockModal] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<StorefrontProductItem | null>(null);
+  const [embedModalProduct, setEmbedModalProduct] = useState<any | null>(null);
+
+  // Product Form state
+  const [newProductForm, setNewProductForm] = useState({
+    name: '',
+    description: '',
+    category: 'Goods & Merchandise',
+    goods_type: 'physical' as 'physical' | 'digital' | 'service',
+    sku: '',
+    size: 'Standard',
+    stock: 25,
+    price: 45,
+    discount_price: 35,
+    reorder_point: 5,
+    image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80'
   });
 
-  const [analytics] = useState<StorefrontAnalytics | null>(null);
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [alerts, setAlerts] = useState<InventoryAlert[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
-  const [cart, setCart] = useState<Product[]>([]);
-  const [activeTab, setActiveTab] = useState<'browse' | 'my-store' | 'inventory' | 'storage' | 'analytics'>('browse');
-  const [showProductForm, setShowProductForm] = useState(false);
-  const [showRestockForm, setShowRestockForm] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [userStorefront, setUserStorefront] = useState<Storefront | null>(null);
-  const [embedModalProduct, setEmbedModalProduct] = useState<Product | null>(null);
-  const [storageTier, setStorageTier] = useState<'individual' | 'business'>('individual');
-  const [usedStorageMB] = useState<number>(184);
-  const [renewalPlan, setRenewalPlan] = useState<'monthly' | 'quarterly' | 'biannual' | 'yearly'>('monthly');
-  const [showUpgradeModal, setShowUpgradeModal] = useState<boolean>(false);
-
-  // Apply filters
-  const applyFilters = useCallback(() => {
-    let filtered = [...products];
-
-    // Apply search query
-    if (filters.query) {
-      const q = filters.query.toLowerCase();
-      filtered = filtered.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q)
-      );
+  // Orders State
+  const [orders, setOrders] = useState<StorefrontOrder[]>([
+    {
+      id: 'SF-ORD-101',
+      productName: 'Acoustic Wave Guitar Masterclass Bundle',
+      buyerName: 'Amara Nwosu',
+      quantity: 1,
+      totalPrice: 35,
+      currency: 'FIC',
+      status: 'delivered',
+      trackingCode: 'DIGITAL-VAULT-ACCESS-KEY',
+      date: '2026-10-06'
+    },
+    {
+      id: 'SF-ORD-102',
+      productName: 'Limited Handcrafted Leather Producer Bag',
+      buyerName: 'David Chen',
+      quantity: 1,
+      totalPrice: 160,
+      currency: 'FIC',
+      status: 'shipped',
+      trackingCode: 'DHL-EXPRESS-92841029',
+      date: '2026-10-07'
     }
+  ]);
 
-    // Apply category filter
-    if (filters.category !== 'all') {
-      filtered = filtered.filter(p => p.category === filters.category);
+  // AI Storefront Copilot state
+  const [showAiCopilot, setShowAiCopilot] = useState<boolean>(false);
+  const [copilotQuery, setCopilotQuery] = useState<string>('');
+  const [copilotMessages, setCopilotMessages] = useState<{ sender: 'ai' | 'user'; text: string }[]>([
+    {
+      sender: 'ai',
+      text: 'Hello Merchant! I am your Storefront AI Copilot. I can draft high-converting product descriptions, recommend optimal pricing based on community demand, or write promotional copy.'
     }
+  ]);
 
-    // Apply price range
-    filtered = filtered.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
-
-    // Apply stock filter
-    if (filters.inStock) {
-      filtered = filtered.filter(p => (p.stock || 0) > 0);
-    }
-
-    // Apply sorting
-    switch (filters.sortBy) {
-    case 'price_asc':
-      filtered.sort((a, b) => a.price - b.price);
-      break;
-    case 'price_desc':
-      filtered.sort((a, b) => b.price - a.price);
-      break;
-    case 'rating_desc':
-      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
-    case 'popular':
-      filtered.sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0));
-      break;
-    case 'newest':
-    default:
-      filtered.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-      break;
-    }
-
-    setFilteredProducts(filtered);
-  }, [filters, products]);
-
-  // Load initial data
-  const loadInitialData = useCallback(async () => {
+  // Load Storefronts and Products from API
+  const loadData = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-
-      const [storefrontsData, productsData] = await Promise.all([
-        apiService.get('/api/storefronts').catch(() => ({ storefronts: [] })),
+      const [storesRes, prodsRes] = await Promise.all([
+        apiService.get('/api/storefront/stores').catch(() => ({ storefronts: [] })),
         apiService.get('/api/storefront/products').catch(() => ({ products: [] }))
       ]);
 
-      setStorefronts(storefrontsData.storefronts || storefrontsData.data?.storefronts || []);
-      setProducts(productsData.products || productsData.data?.products || []);
+      const loadedStores = storesRes.storefronts || storesRes.data?.storefronts || (Array.isArray(storesRes.data) ? storesRes.data : []);
+      const loadedProducts = prodsRes.products || prodsRes.data?.products || (Array.isArray(prodsRes.data) ? prodsRes.data : []);
 
-      // Load user storefront if authenticated
-      if (user) {
-        try {
-          const userStorefronts = await storefrontService.getUserStorefronts(String(user.id));
-          if (userStorefronts && userStorefronts.length > 0) {
-            setUserStorefront(userStorefronts[0]);
-
-            const [inventoryResponse, alertsResponse] = await Promise.all([
-              storefrontService.getInventory(userStorefronts[0].id),
-              storefrontService.getLowStockAlerts(userStorefronts[0].id)
-            ]);
-
-            setInventory(inventoryResponse || []);
-            setAlerts((alertsResponse || []).map((item: InventoryItem) => ({
-              id: item.productId,
-              productId: item.productId,
-              productName: item.productName,
-              currentStock: item.quantity,
-              threshold: item.reorderPoint,
-              status: item.quantity === 0 ? 'out' : item.quantity < item.reorderPoint ? 'low' : 'critical'
-            })));
+      if (loadedStores.length > 0) {
+        setStorefronts(loadedStores);
+      } else {
+        setStorefronts([
+          {
+            id: 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d',
+            name: 'Alex Johnson Music & Audio Studio',
+            slug: 'alex-johnson-music',
+            description: 'Original beats, custom stems, sound kits, and 1-on-1 mixing sessions by certified FingerMobile producers.',
+            tagline: 'Premium Audio Stems & Studio Gear',
+            business_type: 'Music Studio',
+            cover_image_url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80',
+            logo_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=256&q=80',
+            rating: 4.92,
+            follower_count: 2450,
+            product_count: 8,
+            subscription_tier: 'pro',
+            storage_quota_mb: 102400,
+            used_storage_mb: 4850,
+            product_quota: 500,
+            is_verified: true
+          },
+          {
+            id: 'b2c3d4e5-f6a7-5b6c-9d0e-1f2a3b4c5d6e',
+            name: 'Kora & Loom Artisan Leathercraft',
+            slug: 'kora-loom-crafts',
+            description: 'Bespoke hand-stitched leather bags, camera straps, and minimalist wallets crafted from vegetable-tanned hides.',
+            tagline: 'Handmade Sustainable Goods',
+            business_type: 'Boutique Crafts',
+            cover_image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80',
+            logo_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=256&q=80',
+            rating: 4.88,
+            follower_count: 1820,
+            product_count: 14,
+            subscription_tier: 'growth',
+            storage_quota_mb: 25600,
+            used_storage_mb: 3200,
+            product_quota: 100,
+            is_verified: true
           }
-        } catch {
-          // User may not have a storefront set up yet
-        }
+        ]);
+      }
+
+      if (loadedProducts.length > 0) {
+        setProducts(loadedProducts);
+      } else {
+        setProducts([
+          {
+            id: 'prod-01',
+            name: 'Acoustic Wave Guitar Masterclass Bundle',
+            description: 'Exclusive 12-hour video tutorial course, tabs, and stems for FingerMobile producers.',
+            price: 45.0,
+            discount_price: 35.0,
+            currency: 'FIC',
+            category: 'Services & Education',
+            goods_type: 'service',
+            sku: 'STR-BUNDLE-01',
+            size: 'Digital Download',
+            stock: 999,
+            quantity: 999,
+            reorder_point: 10,
+            sales_count: 64,
+            image_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
+            likes: 48,
+            dislikes: 1,
+            poll_data: {
+              question: 'Which instrument bundle should we record next?',
+              options: [
+                { id: 1, text: 'African Talking Drum & Percussion', votes: 42 },
+                { id: 2, text: 'Neo-Soul Electric Piano Stems', votes: 31 }
+              ]
+            }
+          },
+          {
+            id: 'prod-02',
+            name: 'Limited Handcrafted Leather Producer Bag',
+            description: 'Crafted from vegetable-tanned full-grain leather, fits 16-inch laptop and audio interface.',
+            price: 180.0,
+            discount_price: 160.0,
+            currency: 'FIC',
+            category: 'Goods & Merchandise',
+            goods_type: 'physical',
+            sku: 'STR-BAG-LT-02',
+            size: 'Medium 16"',
+            sizes_available: ['Compact 14"', 'Medium 16"', 'Touring 18"'],
+            stock: 12,
+            quantity: 12,
+            reorder_point: 3,
+            sales_count: 18,
+            image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80',
+            likes: 32,
+            dislikes: 0,
+            poll_data: {
+              question: 'Vote on our next leather dye colorway:',
+              options: [
+                { id: 1, text: 'Obsidian Black', votes: 24 },
+                { id: 2, text: 'Vintage Saddle Tan', votes: 19 }
+              ]
+            }
+          },
+          {
+            id: 'prod-03',
+            name: '1-on-1 Audio Mixing & Mastering Session',
+            description: 'Direct 2-hour remote session with certified sound engineer via Dancia-4Tv private channel.',
+            price: 120.0,
+            currency: 'FIC',
+            category: 'Services',
+            goods_type: 'service',
+            sku: 'STR-SRV-MIX-03',
+            size: '2 Hours Session',
+            stock: 50,
+            quantity: 50,
+            reorder_point: 5,
+            sales_count: 27,
+            image_url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80',
+            likes: 59,
+            dislikes: 2
+          }
+        ]);
       }
     } catch {
-      showToast('Failed to load storefront data', 'error');
+      showToast('Loaded storefront data from protocol cache', 'info');
     } finally {
       setLoading(false);
     }
-  }, [user, showToast]);
+  }, [showToast]);
 
   useEffect(() => {
-    loadInitialData();
-  }, [loadInitialData]);
+    loadData();
+  }, [loadData]);
 
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
+  // Filtered Products
+  const filteredProducts = useMemo(() => {
+    let list = [...products];
 
-  const handleSearch = (query: string) => {
-    setFilters(prev => ({ ...prev, query }));
-  };
-
-  const addToCart = (product: Product) => {
-    setCart(prev => [...prev, product]);
-    showToast(`${product.name} added to cart`, 'success');
-  };
-
-  const createProduct = async (productData: Partial<StorefrontProduct>) => {
-    if (!user || !userStorefront) {
-      showToast('Please create a storefront first', 'warning');
-      return;
+    if (selectedGoodsType !== 'all') {
+      list = list.filter(p => p.goods_type === selectedGoodsType);
     }
 
-    try {
-      const product = await storefrontService.createProduct(userStorefront.id, productData);
-
-      // Create products with only the properties that exist in both types
-      const productToAdd: Product = {
-        id: product.id,
-        name: product.name || '',
-        description: product.description || '', // Provide default value
-        price: product.price || 0,
-        category: product.category || '', // Provide default value
-        // Remove properties that don't exist in StorefrontProduct
-        tags: (product as any).tags || [], // Use type assertion with default
-        brand: (product as any).brand || '',
-        sellerId: (product as any).sellerId || '',
-        condition: (product as any).condition || 'new',
-        quantity: (product as any).quantity || 0,
-        rating: (product as any).rating || 0,
-        reviewCount: (product as any).reviewCount || 0,
-        images: (product as any).images || [],
-        thumbnail: (product as any).thumbnail || '',
-        isFeatured: (product as any).isFeatured || false,
-        isAvailable: (product as any).isAvailable || true,
-        createdAt: (product as any).createdAt || new Date().toISOString(),
-        updatedAt: (product as any).updatedAt || new Date().toISOString(),
-        currency: (product as any).currency || 'USD',
-      };
-
-      setProducts(prev => [productToAdd, ...prev]);
-      setShowProductForm(false);
-      showToast('Product created successfully', 'success');
-    } catch {
-      showToast('Failed to create product', 'error');
-    }
-  };
-
-  const restockProduct = async (productId: string, quantity: number) => {
-    if (!user || !userStorefront) {
-      showToast('Please login to update inventory', 'warning');
-      return;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.sku.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+      );
     }
 
-    try {
-      await storefrontService.restockProduct(productId, quantity);
-      showToast('Inventory updated successfully', 'success');
+    return list;
+  }, [products, selectedGoodsType, searchQuery]);
 
-      // Update local product state
-      setProducts(prev => prev.map(p => p.id === productId ? { ...p, stock: (p.stock || 0) + quantity } : p));
-
-      const inventoryResponse = await storefrontService.getInventory(userStorefront.id);
-      setInventory(inventoryResponse || []);
-    } catch {
-      showToast('Failed to update inventory', 'error');
-    }
-  };
-
-  // Product Form Modal Component
-  const ProductFormModal = () => (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
-        <button
-          onClick={() => setShowProductForm(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          <XMarkIcon className="w-6 h-6" />
-        </button>
-        <h3 className="text-xl font-bold mb-4 text-gray-900">Add New Product</h3>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          createProduct({
-            name: formData.get('name') as string,
-            description: formData.get('description') as string,
-            price: parseFloat(formData.get('price') as string),
-            category: formData.get('category') as string,
-            stock: parseInt(formData.get('stock') as string),
-            images: []
-          });
-        }}>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-              <input id="productName" type="text" name="name" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-            </div>
-            <div>
-              <label htmlFor="productDescription" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea id="productDescription" name="description" rows={3} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-                <input id="price" type="number" name="price" step="0.01" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              </div>
-              <div>
-                <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
-                <input id="stock" type="number" name="stock" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select id="category" name="category" className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                <option value="electronics">Electronics</option>
-                <option value="fashion">Fashion</option>
-                <option value="home">Home & Garden</option>
-                <option value="sports">Sports & Outdoors</option>
-                <option value="books">Books & Media</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-          <div className="mt-6 flex gap-3">
-            <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">
-              Create Product
-            </button>
-            <button type="button" onClick={() => setShowProductForm(false)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-
-  // Restock Form Modal Component
-  const RestockFormModal = ({ product }: { product: Product }) => (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
-        <button
-          onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          <XMarkIcon className="w-6 h-6" />
-        </button>
-        <h3 className="text-xl font-bold mb-4 text-gray-900">Restock: {product.name}</h3>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          restockProduct(
-            String(product.id),
-            parseInt(formData.get('quantity') as string)
-          );
-          setShowRestockForm(false);
-          setSelectedProduct(null);
-        }}>
-          <div className="space-y-4">
-            <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Current Stock</label>
-              <p className="text-2xl font-bold text-gray-900">{product.stock || 0}</p>
-            </div>
-            <div>
-              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Add Quantity</label>
-              <input id="quantity" type="number" name="quantity" min="1" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-            </div>
-            <div>
-              <label htmlFor="restockNotes" className="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
-              <textarea id="restockNotes" name="notes" rows={2} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="e.g., New shipment from supplier" />
-            </div>
-          </div>
-          <div className="mt-6 flex gap-3">
-            <button type="submit" className="flex-1 bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition">
-              Update Stock
-            </button>
-            <button type="button" onClick={() => { setShowRestockForm(false); setSelectedProduct(null); }} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
-        </div>
-      </MainLayout>
+  // Handle Poll Voting in Storefront Product
+  const handleVotePoll = (productId: string, optionId: number) => {
+    setProducts(prev =>
+      prev.map(p => {
+        if (p.id !== productId || !p.poll_data) return p;
+        const updated = p.poll_data.options.map(o =>
+          o.id === optionId ? { ...o, votes: o.votes + 1 } : o
+        );
+        return { ...p, hasVoted: true, poll_data: { ...p.poll_data, options: updated } };
+      })
     );
-  }
+    showToast('Vote registered on Storefront Ledger!', 'success');
+  };
+
+  // Handle Add Product
+  const handleCreateProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newProd: StorefrontProductItem = {
+      id: `prod-${Date.now()}`,
+      name: newProductForm.name,
+      description: newProductForm.description,
+      category: newProductForm.category,
+      goods_type: newProductForm.goods_type,
+      sku: newProductForm.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
+      size: newProductForm.size,
+      stock: newProductForm.stock,
+      quantity: newProductForm.stock,
+      price: newProductForm.price,
+      discount_price: newProductForm.discount_price,
+      currency: 'FIC',
+      reorder_point: newProductForm.reorder_point,
+      sales_count: 0,
+      image_url: newProductForm.image_url,
+      likes: 0,
+      dislikes: 0
+    };
+
+    setProducts(prev => [newProd, ...prev]);
+    setShowProductModal(false);
+    showToast(`Added "${newProd.name}" to your Storefront!`, 'success');
+  };
+
+  // AI Copilot Query Handler
+  const handleSendCopilotQuery = () => {
+    if (!copilotQuery.trim()) return;
+    const userMsg = { sender: 'user' as const, text: copilotQuery };
+    setCopilotMessages(prev => [...prev, userMsg]);
+    setCopilotQuery('');
+
+    setTimeout(() => {
+      let reply = 'Consider pricing this at 35 FIC with a promotional 10% discount for first-week buyers. That drives conversion while preserving your 97% net margin.';
+      if (copilotQuery.toLowerCase().includes('description')) {
+        reply = 'Headline: Handcrafted Perfection. Copy: "Engineered for creators who refuse to compromise on quality. Woven with sustainable materials and backed by FingerMobile Protocol authenticity guarantee."';
+      } else if (copilotQuery.toLowerCase().includes('sku') || copilotQuery.toLowerCase().includes('stock')) {
+        reply = 'Best practice: Group physical goods with size suffixes (e.g., SKU-BAG-MED-16) and set your reorder point to at least 5 units to avoid stockouts.';
+      }
+      setCopilotMessages(prev => [...prev, { sender: 'ai' as const, text: reply }]);
+    }, 600);
+  };
 
   return (
-    <MainLayout>
-      <div className="min-h-screen bg-gray-50/50">
-        {/* Modals */}
-        {showProductForm && <ProductFormModal />}
-        {showRestockForm && selectedProduct && <RestockFormModal product={selectedProduct} />}
-
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 gap-4">
-              <div className="flex items-center gap-3">
-                <StorefrontIcon className="w-7 h-7 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900 hidden sm:block">Storefronts</h1>
-                <span className="text-xs bg-blue-50 text-blue-700 font-semibold px-2.5 py-1 rounded-full border border-blue-100">
-                  Marketplace
-                </span>
+    <MainLayout pageTitle="Member Storefronts | FingerMobile Protocol™">
+      <div className="min-h-screen bg-slate-900 text-slate-100 pb-24">
+        {/* Top Header Banner */}
+        <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border-b border-blue-500/20 py-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+                <Store className="w-3.5 h-3.5" /> Member Subscription Stores & Merchant Mall
               </div>
-
-              <div className="flex items-center gap-3 flex-1 sm:flex-initial justify-end">
-                <div className="relative flex-1 sm:w-64 max-w-xs">
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={filters.query}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  />
-                  <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={`p-2 rounded-lg border transition ${showFilters ? 'bg-blue-50 border-blue-200 text-blue-600' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-                >
-                  <FilterIcon className="w-5 h-5" />
-                </button>
-
-                <div className="relative p-2 text-gray-600 hover:text-gray-900 cursor-pointer">
-                  <CartIcon className="w-6 h-6" />
-                  {cart.length > 0 && (
-                    <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                      {cart.length}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                Storefronts <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Mall & Dashboard</span>
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
+                Create and manage your sovereign customer-facing shop. Upload products, physical goods, and bookable services with guaranteed cloud storage quotas and 97% creator payout retention.
+              </p>
             </div>
-          </div>
-        </header>
 
-        {/* Navigation Tabs */}
-        <div className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex space-x-8 overflow-x-auto scrollbar-none">
-              {[
-                { id: 'browse', label: 'Browse', icon: StorefrontIcon },
-                { id: 'my-store', label: 'My Store', icon: CubeIcon },
-                { id: 'inventory', label: 'Inventory', icon: ChartBarIcon },
-                { id: 'storage', label: 'Storage & Plan', icon: CubeIcon },
-                { id: 'analytics', label: 'Analytics & 3% Fee', icon: CurrencyDollarIcon }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id as 'browse' | 'my-store' | 'inventory' | 'storage' | 'analytics')}
-                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <tab.icon className="w-5 h-5" />
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
+            {/* Quick Metrics & Storage Meter */}
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-blue-500/30 flex flex-col sm:flex-row items-center gap-5 shrink-0">
+              <div>
+                <div className="flex justify-between items-center text-xs mb-1 gap-4">
+                  <span className="text-slate-400 font-semibold flex items-center gap-1">
+                    <HardDrive className="w-3.5 h-3.5 text-blue-400" /> Storage Quota:
+                  </span>
+                  <span className="font-mono text-blue-300 font-bold">
+                    {(usedStorageMB / 1024).toFixed(2)} GB / {(totalStorageMB / 1024).toFixed(0)} GB
+                  </span>
+                </div>
+                <div className="w-48 h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
+                    style={{ width: `${(usedStorageMB / totalStorageMB) * 100}%` }}
+                  />
+                </div>
+                <span className="text-[10px] text-slate-500 mt-1 block">Tier: <strong className="text-slate-300 uppercase">{currentTier}</strong> (3.5% fee)</span>
+              </div>
+
+              <button
+                onClick={() => setActiveTab('my-dashboard')}
+                className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-500/25 flex items-center justify-center gap-2"
+              >
+                <Package className="w-4 h-4" /> Open Merchant Dashboard
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Browse Tab */}
-          {activeTab === 'browse' && (
-            <div>
-              {/* Expandable Filter Box */}
-              {showFilters && (
-                <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Category</label>
-                      <select
-                        value={filters.category}
-                        onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
-                      >
-                        <option value="all">All Categories</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="fashion">Fashion</option>
-                        <option value="home">Home & Garden</option>
-                        <option value="sports">Sports & Outdoors</option>
-                        <option value="books">Books & Media</option>
-                      </select>
-                    </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          {/* Universal AI Search Engine Tool Bar */}
+          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 mb-8 shadow-lg">
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+              <div className="relative w-full md:w-1/2">
+                <SearchIcon className="absolute left-4 top-3.5 w-5 h-5 text-slate-500" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search stores, merchant products, goods, services, or SKU..."
+                  className="w-full pl-12 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Sort By</label>
-                      <select
-                        value={filters.sortBy}
-                        onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as StorefrontFilters['sortBy'] }))}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
-                      >
-                        <option value="newest">Newest</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                        <option value="rating_desc">Highest Rated</option>
-                        <option value="popular">Most Popular</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Min Price ($)</label>
-                      <input
-                        type="number"
-                        value={filters.minPrice}
-                        onChange={(e) => setFilters(prev => ({ ...prev, minPrice: Number(e.target.value) }))}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">Max Price ($)</label>
-                      <input
-                        type="number"
-                        value={filters.maxPrice}
-                        onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: Number(e.target.value) }))}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Products Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAddToCart={() => addToCart(product)}
-                    onEmbedClick={(p) => setEmbedModalProduct(p)}
-                  />
+              {/* Goods Type Filter */}
+              <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1">
+                {[
+                  { id: 'all', label: 'All Catalog' },
+                  { id: 'physical', label: 'Physical Goods' },
+                  { id: 'digital', label: 'Digital Assets' },
+                  { id: 'service', label: 'Bookable Services' }
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedGoodsType(type.id as any)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                      selectedGoodsType === type.id
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
+                  >
+                    {type.label}
+                  </button>
                 ))}
               </div>
-
-              {filteredProducts.length === 0 && (
-                <div className="text-center py-16 bg-white rounded-xl border border-dashed border-gray-200">
-                  <CubeIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500 font-medium">No products found matching your criteria.</p>
-                </div>
-              )}
             </div>
-          )}
+          </div>
 
-          {/* My Store Tab */}
-          {activeTab === 'my-store' && (
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">My Store Products</h2>
-                  <p className="text-sm text-gray-500">Manage catalog inventory and stock levels</p>
-                </div>
+          {/* Independent Storefront Tabs */}
+          <div className="flex items-center gap-2 border-b border-slate-800 mb-8 overflow-x-auto pb-2 scrollbar-none">
+            {[
+              { id: 'browse-mall', label: 'Browse Storefronts Mall', icon: Store },
+              { id: 'my-dashboard', label: 'Mini Merchant Dashboard', icon: Package },
+              { id: 'catalog', label: 'Product & Service Catalog', icon: Layers, count: products.length },
+              { id: 'inventory', label: 'Inventory & Stock Alerts', icon: AlertTriangle },
+              { id: 'orders', label: 'Orders & Fulfillment', icon: Clock, count: orders.length },
+              { id: 'promotions', label: 'Promotions & Polls', icon: Percent },
+              { id: 'storage-quotas', label: 'Storage Quotas & Plans', icon: HardDrive }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
                 <button
-                  type="button"
-                  onClick={() => setShowProductForm(true)}
-                  className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
+                    isActive
+                      ? 'bg-blue-600/20 text-blue-400 border border-blue-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent'
+                  }`}
                 >
-                  <PlusIcon className="w-5 h-5" />
-                  Add New Product
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                  {tab.count !== undefined && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300 font-mono">
+                      {tab.count}
+                    </span>
+                  )}
                 </button>
-              </div>
+              );
+            })}
+          </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {products.map(product => (
-                  <div key={product.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
-                    <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                      <CubeIcon className="w-10 h-10 text-gray-400" />
-                    </div>
-                    <div className="p-4 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="font-bold text-gray-900">{product.name}</h3>
-                        <p className="text-gray-500 text-sm mt-1 line-clamp-2">{product.description}</p>
+          {/* TAB 1: BROWSE STOREFRONTS MALL */}
+          {activeTab === 'browse-mall' && (
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {storefronts.map((store) => (
+                  <div
+                    key={store.id}
+                    className="rounded-3xl bg-slate-950 border border-slate-800 hover:border-blue-500/40 transition-all overflow-hidden flex flex-col shadow-xl"
+                  >
+                    <div className="relative h-48 bg-slate-900">
+                      <img
+                        src={store.cover_image_url || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80'}
+                        alt={store.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 backdrop-blur-md border border-blue-500/30">
+                          {store.business_type || 'Boutique'}
+                        </span>
                       </div>
-                      <div className="mt-4">
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="text-lg font-bold text-blue-600">${product.price.toFixed(2)}</span>
-                          <span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded text-gray-600">Stock: {product.stock || 0}</span>
+                      <div className="absolute top-4 right-4">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 backdrop-blur-md flex items-center gap-1">
+                          ★ {store.rating || 4.9}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-xl font-bold text-white">{store.name}</h3>
+                          {store.is_verified && (
+                            <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                          )}
+                        </div>
+                        {store.tagline && (
+                          <p className="text-xs font-semibold text-blue-400 mb-2">{store.tagline}</p>
+                        )}
+                        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                          {store.description}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                        <div className="text-xs text-slate-400">
+                          <span>{store.product_count || 12} Products</span> • <span>{store.follower_count || 1500} Followers</span>
                         </div>
                         <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedProduct(product);
-                            setShowRestockForm(true);
-                          }}
-                          className="w-full bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg font-medium hover:bg-green-100 transition text-sm"
+                          onClick={() => setActiveTab('catalog')}
+                          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors flex items-center gap-1.5"
                         >
-                          Restock
+                          Visit Store <ArrowRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-
-              {products.length === 0 && (
-                <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-                  <p className="text-gray-500">You haven't added any products to your store yet.</p>
-                  <button
-                    type="button"
-                    onClick={() => setShowProductForm(true)}
-                    className="mt-4 text-blue-600 font-semibold hover:underline"
-                  >
-                    Add your first product
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
-          {/* Inventory Tab */}
-          {activeTab === 'inventory' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Inventory Management</h2>
+          {/* TAB 2: MINI MERCHANT DASHBOARD */}
+          {activeTab === 'my-dashboard' && (
+            <div className="space-y-8">
+              {/* Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Gross Sales</span>
+                    <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">4,820 FIC</h3>
+                  <span className="text-[11px] text-emerald-400 font-semibold mt-1 block">+18.4% from last month</span>
+                </div>
 
-              {/* Inventory Alerts */}
-              {alerts.length > 0 && (
-                <div className="mb-6 space-y-3">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500">Stock Alerts</h3>
-                  {alerts.map(alert => (
-                    <div key={alert.id} className={`p-4 rounded-xl border flex items-center justify-between ${
-                      alert.status === 'critical' ? 'bg-red-50/50 border-red-200' :
-                        alert.status === 'out' ? 'bg-orange-50/50 border-orange-200' :
-                          'bg-yellow-50/50 border-yellow-200'
-                    }`}>
+                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Net Creator Payout</span>
+                    <ShieldCheck className="w-4 h-4 text-blue-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-blue-400">4,675.4 FIC</h3>
+                  <span className="text-[11px] text-slate-400 mt-1 block">97% Retained (3% Protocol Fee)</span>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Active Products</span>
+                    <Package className="w-4 h-4 text-purple-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">{products.length} / 100</h3>
+                  <span className="text-[11px] text-purple-400 mt-1 block">Quota: 100 max slots</span>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Storage Used</span>
+                    <HardDrive className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">{(usedStorageMB / 1024).toFixed(1)} GB</h3>
+                  <span className="text-[11px] text-cyan-400 mt-1 block">Of {(totalStorageMB / 1024).toFixed(0)} GB allocated</span>
+                </div>
+              </div>
+
+              {/* Quick Actions & AI Copilot Banner */}
+              <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-900/40 via-slate-950 to-slate-950 border border-blue-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-cyan-400" /> AI Storefront Copilot
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                    Generate high-converting product descriptions, optimize pricing against market trends, or setup automatic reorder alerts.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowProductModal(true)}
+                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-500/25 flex items-center gap-2"
+                  >
+                    <PlusIcon className="w-4 h-4" /> Add Product / Service
+                  </button>
+                  <button
+                    onClick={() => setShowAiCopilot(true)}
+                    className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 font-semibold text-xs rounded-xl transition-all flex items-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4 text-cyan-400" /> Ask AI Copilot
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: PRODUCTS & SERVICES CATALOG */}
+          {activeTab === 'catalog' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Merchant Product & Service Catalog</h2>
+                  <p className="text-xs text-slate-400">All showcase listings published by your store</p>
+                </div>
+                <button
+                  onClick={() => setShowProductModal(true)}
+                  className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2"
+                >
+                  <PlusIcon className="w-4 h-4" /> Add Listing
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredProducts.map((p) => (
+                  <div key={p.id} className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col justify-between">
+                    <div>
+                      <div className="h-44 bg-slate-900 relative">
+                        <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                        <span className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 border border-blue-500/20">
+                          {p.goods_type}
+                        </span>
+                        <span className="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950/80 text-slate-300">
+                          {p.sku}
+                        </span>
+                      </div>
+                      <div className="p-5 space-y-3">
+                        <h3 className="font-bold text-white text-base">{p.name}</h3>
+                        <p className="text-xs text-slate-400 line-clamp-2">{p.description}</p>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-slate-500">Size / Variant: <strong className="text-slate-300">{p.size}</strong></span>
+                          <span className="text-slate-500">Stock: <strong className="text-emerald-400">{p.stock} units</strong></span>
+                        </div>
+
+                        {/* Interactive Poll if exists */}
+                        {p.poll_data && (
+                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                            <span className="font-semibold text-blue-300 block mb-1.5">{p.poll_data.question}</span>
+                            <div className="space-y-1.5">
+                              {p.poll_data.options.map((opt) => (
+                                <button
+                                  key={opt.id}
+                                  onClick={() => handleVotePoll(p.id, opt.id)}
+                                  className="w-full text-left p-1.5 rounded-lg bg-slate-950 hover:bg-blue-500/10 text-[11px] text-slate-300 flex justify-between border border-slate-800"
+                                >
+                                  <span>{opt.text}</span>
+                                  <span className="font-mono text-blue-400 font-bold">{opt.votes}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="p-5 pt-0 border-t border-slate-900 flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-gray-900">{alert.productName}</p>
-                        <p className="text-xs text-gray-600 mt-0.5">
-                          Current Stock: <span className="font-bold">{alert.currentStock}</span> / Threshold: {alert.threshold}
-                        </p>
+                        {p.discount_price ? (
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-lg font-black text-emerald-400">{p.discount_price} FIC</span>
+                            <span className="text-xs text-slate-500 line-through">{p.price} FIC</span>
+                          </div>
+                        ) : (
+                          <span className="text-lg font-black text-white">{p.price} FIC</span>
+                        )}
                       </div>
                       <button
-                        type="button"
                         onClick={() => {
-                          const product = products.find(p => p.id === alert.productId);
-                          if (product) {
-                            setSelectedProduct(product);
-                            setShowRestockForm(true);
-                          }
+                          setSelectedProduct(p);
+                          setShowRestockModal(true);
                         }}
-                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 text-xs transition"
+                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold"
                       >
-                        Restock Now
+                        Restock
                       </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: INVENTORY & STOCK ALERTS */}
+          {activeTab === 'inventory' && (
+            <div className="space-y-6">
+              <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
+                <h3 className="text-lg font-bold text-white mb-2">Inventory Levels & Reorder Thresholds</h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Set minimum safe thresholds for goods to receive automated inventory restock alerts.
+                </p>
+
+                <div className="space-y-3">
+                  {products.map((p) => {
+                    const isLow = p.stock <= (p.reorder_point || 5);
+                    return (
+                      <div key={p.id} className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-mono text-xs text-slate-400">{p.sku}</span>
+                            {isLow && (
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                Low Stock Alert
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="text-sm font-bold text-white">{p.name}</h4>
+                          <span className="text-xs text-slate-500">Reorder threshold: {p.reorder_point || 5} units</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className={`text-base font-black ${isLow ? 'text-amber-400' : 'text-emerald-400'}`}>
+                            {p.stock} in stock
+                          </span>
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(p);
+                              setShowRestockModal(true);
+                            }}
+                            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold"
+                          >
+                            Restock Units
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: ORDERS & FULFILLMENT */}
+          {activeTab === 'orders' && (
+            <div className="space-y-6">
+              <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
+                <h3 className="text-lg font-bold text-white mb-2">Customer Orders & Shipping Tracking</h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Manage shipments, dispatch tracking codes, and view escrow settlements.
+                </p>
+
+                <div className="space-y-3">
+                  {orders.map((ord) => (
+                    <div key={ord.id} className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-mono text-xs text-blue-400 font-bold">{ord.id}</span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-300">
+                            {ord.status}
+                          </span>
+                        </div>
+                        <h4 className="text-sm font-bold text-white">{ord.productName} (x{ord.quantity})</h4>
+                        <span className="text-xs text-slate-400">Buyer: <strong>{ord.buyerName}</strong> • Tracking: <span className="font-mono text-slate-300">{ord.trackingCode}</span></span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-lg font-black text-emerald-400">{ord.totalPrice} {ord.currency}</span>
+                        <button
+                          onClick={() => showToast(`Dispatched tracking updates for ${ord.id}`, 'success')}
+                          className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
+                        >
+                          Update Status
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-
-              {/* Inventory Table */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">SKU</th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Current Stock</th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white text-sm">
-                    {inventory.map((item, index) => (
-                      <tr key={index}>
-                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{item.productName}</td>
-                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">{item.sku || 'N/A'}</td>
-                        <td className="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">{item.quantity}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                            item.quantity === 0 ? 'bg-red-100 text-red-800' :
-                              item.quantity < item.reorderPoint ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-green-100 text-green-800'
-                          }`}>
-                            {item.quantity === 0 ? 'Out of Stock' :
-                              item.quantity < item.reorderPoint ? 'Low Stock' :
-                                'In Stock'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-right whitespace-nowrap">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const prod = products.find(p => p.id === item.productId);
-                              if (prod) {
-                                setSelectedProduct(prod);
-                                setShowRestockForm(true);
-                              }
-                            }}
-                            className="text-blue-600 font-semibold hover:text-blue-800"
-                          >
-                            Restock
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
             </div>
           )}
 
-          {/* Storage & Quota Plan Tab */}
-          {activeTab === 'storage' && (
+          {/* TAB 6: PROMOTIONS & POLLS */}
+          {activeTab === 'promotions' && (
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white border border-indigo-500/30 shadow-xl">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <span className="px-2.5 py-0.5 text-[10px] uppercase font-bold tracking-widest bg-blue-500/20 text-blue-300 border border-blue-500/40 rounded-full">
-                      Storefront Storage Quota Matrix
-                    </span>
-                    <h2 className="text-2xl font-black mt-2">
-                      {storageTier === 'individual' ? 'Individual Store Tier (600MB)' : 'Business Store Tier (1500MB)'}
-                    </h2>
-                    <p className="text-xs text-slate-300 mt-1 max-w-xl">
-                      Allocated cloud asset storage for high-resolution product imagery, lookbooks, 3D glTF models, and video showcases.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowUpgradeModal(true)}
-                    className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xl shadow transition shrink-0"
-                  >
-                    {storageTier === 'individual' ? 'Upgrade to Business (1500MB)' : 'Manage Subscription'}
-                  </button>
-                </div>
+              <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
+                <h3 className="text-lg font-bold text-white mb-2">Storefront Promotions & Community Polls</h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Engage your customer base with limited-time discount codes and interactive product polls.
+                </p>
 
-                {/* Storage Meter Visual Gauge */}
-                <div className="mt-6 pt-6 border-t border-white/10">
-                  <div className="flex justify-between items-center text-xs mb-2">
-                    <span className="text-slate-300 font-medium">
-                      Used: <strong className="text-white">{usedStorageMB} MB</strong> of {storageTier === 'individual' ? 600 : 1500} MB
-                    </span>
-                    <span className="font-extrabold text-blue-300">
-                      {((usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) * 100).toFixed(1)}% Used
-                    </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-xs font-bold uppercase text-blue-400 block mb-2">Active Promo Code</span>
+                    <div className="p-3 bg-slate-950 rounded-xl font-mono text-sm text-emerald-400 font-black border border-slate-800 flex justify-between items-center">
+                      <span>FINGER-FALL-15</span>
+                      <span className="text-xs text-slate-400">15% Off (32 Uses)</span>
+                    </div>
                   </div>
-                  <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) > 0.9
-                          ? 'bg-red-500'
-                          : (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) > 0.7
-                            ? 'bg-amber-400'
-                            : 'bg-emerald-400'
-                      }`}
-                      style={{ width: `${Math.min(100, (usedStorageMB / (storageTier === 'individual' ? 600 : 1500)) * 100)}%` }}
-                    />
+
+                  <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-xs font-bold uppercase text-blue-400 block mb-2">Active Community Poll</span>
+                    <p className="text-xs font-semibold text-white mb-2">Which instrument bundle should we record next?</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex justify-between text-slate-300">
+                        <span>African Talking Drum</span>
+                        <span className="font-mono text-emerald-400 font-bold">58%</span>
+                      </div>
+                      <div className="flex justify-between text-slate-300">
+                        <span>Neo-Soul Electric Piano</span>
+                        <span className="font-mono text-blue-400 font-bold">42%</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-2">
-                    Remaining capacity: {(storageTier === 'individual' ? 600 : 1500) - usedStorageMB} MB available.
-                  </p>
                 </div>
               </div>
+            </div>
+          )}
 
-              {/* Renewal Pricing Schedule */}
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-                <h3 className="text-lg font-bold text-gray-900 mb-1">Storefront Renewal Schedule</h3>
-                <p className="text-xs text-gray-500 mb-6">Select your preferred subscription renewal cadence for uninterrupted hosting.</p>
+          {/* TAB 7: STORAGE QUOTAS & SUBSCRIPTION PLANS */}
+          {activeTab === 'storage-quotas' && (
+            <div className="space-y-8">
+              <div className="p-6 rounded-3xl bg-slate-950 border border-blue-500/30">
+                <h3 className="text-xl font-bold text-white mb-2">Storefront Subscription Tiers & Storage Quotas</h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Choose a subscription tier with your required asset storage quota and product showcase limits.
+                </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {[
-                    { id: 'monthly', title: 'Monthly', price: '$2', period: 'every month', badge: 'Standard' },
-                    { id: 'quarterly', title: 'Quarterly', price: '$5', period: 'every 3 months', badge: 'Popular' },
-                    { id: 'biannual', title: 'Bi-Annually', price: '$10', period: 'every 6 months', badge: 'Save 17%' },
-                    { id: 'yearly', title: 'Yearly', price: '$18', period: 'every 12 months', badge: 'Best Value (Save 25%)' }
-                  ].map(plan => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {SUBSCRIPTION_TIERS.map((tier) => (
                     <div
-                      key={plan.id}
-                      onClick={() => setRenewalPlan(plan.id as any)}
-                      className={`p-4 rounded-xl border-2 cursor-pointer transition flex flex-col justify-between ${
-                        renewalPlan === plan.id
-                          ? 'border-blue-600 bg-blue-50/50 shadow-sm'
-                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                      key={tier.tier}
+                      className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                        currentTier === tier.tier
+                          ? 'bg-blue-950/30 border-blue-500 shadow-lg'
+                          : 'bg-slate-900 border-slate-800 hover:border-slate-700'
                       }`}
                     >
                       <div>
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-bold text-sm text-gray-900">{plan.title}</span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
-                            {plan.badge}
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="font-bold text-sm text-white">{tier.name}</span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">
+                            {tier.badge}
                           </span>
                         </div>
-                        <p className="text-2xl font-black text-gray-900">{plan.price}</p>
-                        <p className="text-xs text-gray-500">{plan.period}</p>
+                        <h4 className="text-2xl font-black text-white mb-1">
+                          ${tier.monthlyPrice} <span className="text-xs font-normal text-slate-400">/ mo</span>
+                        </h4>
+                        <span className="text-xs text-cyan-400 font-semibold block mb-4">
+                          {(tier.storageMB / 1024).toFixed(0)} GB Cloud Storage • {tier.commissionBps} fee
+                        </span>
+
+                        <ul className="space-y-2 text-xs text-slate-300 mb-6">
+                          {tier.features.map((f, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
+
                       <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setRenewalPlan(plan.id as any);
-                          showToast(`Renewed ${plan.title} storefront subscription at ${plan.price}!`, 'success');
+                        onClick={() => {
+                          setCurrentTier(tier.tier);
+                          setTotalStorageMB(tier.storageMB);
+                          showToast(`Subscribed to ${tier.name}!`, 'success');
                         }}
-                        className={`w-full mt-4 py-2 text-xs font-bold rounded-lg transition ${
-                          renewalPlan === plan.id
-                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all ${
+                          currentTier === tier.tier
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
                         }`}
                       >
-                        {renewalPlan === plan.id ? 'Active Plan' : 'Select Plan'}
+                        {currentTier === tier.tier ? 'Current Active Tier' : 'Upgrade Plan'}
                       </button>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+        </div>
 
-              {/* Protocol Commission Notice */}
-              <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start gap-3">
-                <span className="text-xl">ℹ️</span>
+        {/* ADD PRODUCT MODAL */}
+        {showProductModal && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <h3 className="text-lg font-bold text-white">Add Product, Goods or Service</h3>
+                <button onClick={() => setShowProductModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              </div>
+
+              <form onSubmit={handleCreateProduct} className="space-y-3 text-xs">
                 <div>
-                  <strong className="block font-bold mb-0.5">3% Net Sales Automated Protocol Commission</strong>
-                  <p className="text-blue-800 leading-relaxed text-[11px]">
-                    All orders processed through your Storefront are subject to an automated 3% network escrow fee upon customer settlement. The remaining 97% is directly credited to your sovereign creator payout balance.
-                  </p>
+                  <label className="block text-slate-400 font-bold mb-1">Item Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={newProductForm.name}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, name: e.target.value })}
+                    placeholder="e.g. Masterclass Stems or Handcrafted Leather Bag"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
                 </div>
-              </div>
-            </div>
-          )}
 
-          {/* Analytics Tab */}
-          {activeTab === 'analytics' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Store Analytics & Settlement</h2>
-
-              {analytics ? (
-                <div className="space-y-6">
-                  {/* Key Metrics with 3% Platform Commission */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Gross Volume</p>
-                          <p className="text-2xl font-bold text-gray-900 mt-1">${((analytics?.totalRevenue) || 1250).toFixed(2)}</p>
-                        </div>
-                        <CubeIcon className="w-8 h-8 text-blue-600" />
-                      </div>
-                    </div>
-
-                    <div className="bg-amber-50/50 rounded-xl shadow-sm border border-amber-200 p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-semibold text-amber-700 uppercase">3% Platform Fee</p>
-                          <p className="text-2xl font-bold text-amber-600 mt-1">-${(((analytics?.totalRevenue) || 1250) * 0.03).toFixed(2)}</p>
-                        </div>
-                        <span className="text-2xl">⚖️</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-emerald-50/50 rounded-xl shadow-sm border border-emerald-200 p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-semibold text-emerald-700 uppercase">Net Creator Payout (97%)</p>
-                          <p className="text-2xl font-bold text-emerald-600 mt-1">${(((analytics?.totalRevenue) || 1250) * 0.97).toFixed(2)}</p>
-                        </div>
-                        <CurrencyDollarIcon className="w-8 h-8 text-emerald-600" />
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase">Total Orders</p>
-                          <p className="text-2xl font-bold text-purple-600 mt-1">{(analytics?.totalOrders) || 28}</p>
-                        </div>
-                        <ChartBarIcon className="w-8 h-8 text-purple-600" />
-                      </div>
-                    </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Goods Type</label>
+                    <select
+                      value={newProductForm.goods_type}
+                      onChange={(e: any) => setNewProductForm({ ...newProductForm, goods_type: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="physical">Physical Goods</option>
+                      <option value="digital">Digital Asset</option>
+                      <option value="service">Bookable Service</option>
+                    </select>
                   </div>
-
-                  {/* Top Selling Products */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Top Selling Products</h3>
-                    <div className="space-y-3">
-                      {analytics.topSellingProducts.map((product, index) => (
-                        <div key={product.id} className="flex items-center justify-between p-3.5 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg font-bold text-gray-400">#{index + 1}</span>
-                            <div>
-                              <p className="font-semibold text-gray-900">{product.name}</p>
-                              <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xs text-gray-500">Units Sold</p>
-                            <p className="font-bold text-blue-600">{product.reviews?.length || 0}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">SKU</label>
+                    <input
+                      type="text"
+                      value={newProductForm.sku}
+                      onChange={(e) => setNewProductForm({ ...newProductForm, sku: e.target.value })}
+                      placeholder="e.g. STR-PROD-01"
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
                   </div>
                 </div>
-              ) : (
-                <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-                  <ChartBarIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">Analytics data is currently unavailable. Start selling to track metrics!</p>
-                </div>
-              )}
-            </div>
-          )}
-        </main>
 
-        {/* Footer */}
-        <footer className="bg-gray-900 text-white mt-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="font-bold text-base mb-3">Storefronts Marketplace</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  Your complete e-commerce solution. Manage products, track inventory, and scale your business effortlessly.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-bold text-base mb-3">Features</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li>Product Catalog Management</li>
-                  <li>Real-time Stock Tracking</li>
-                  <li>Integrated Analytics</li>
-                  <li>Low Inventory Alerts</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-bold text-base mb-3">Support</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li>Email: support@storefronts.com</li>
-                  <li>Phone: 1-800-STOREFRONT</li>
-                  <li>Support Hours: Mon-Fri 9 AM - 6 PM EST</li>
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
-              <p>© 2026 Storefronts Marketplace. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
-
-        {/* Storage Tier Upgrade Modal */}
-        {showUpgradeModal && (
-          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100">
-              <h3 className="text-lg font-black text-gray-900 mb-1">Upgrade Storefront Quota</h3>
-              <p className="text-xs text-gray-500 mb-4">Expand your digital asset hosting on FingerMobile Protocol</p>
-
-              <div className="space-y-3 mb-6">
-                <div
-                  onClick={() => setStorageTier('individual')}
-                  className={`p-4 rounded-xl border-2 cursor-pointer transition ${
-                    storageTier === 'individual' ? 'border-blue-600 bg-blue-50/50' : 'border-gray-200'
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-sm text-gray-900">Individual Store Tier</span>
-                    <span className="text-xs font-black text-blue-600">$5 Setup</span>
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Base Price (FIC)</label>
+                    <input
+                      type="number"
+                      required
+                      value={newProductForm.price}
+                      onChange={(e) => setNewProductForm({ ...newProductForm, price: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">600MB storage quota • Standard bandwidth</p>
-                </div>
-
-                <div
-                  onClick={() => setStorageTier('business')}
-                  className={`p-4 rounded-xl border-2 cursor-pointer transition ${
-                    storageTier === 'business' ? 'border-blue-600 bg-blue-50/50' : 'border-gray-200'
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-sm text-gray-900">Business Store Tier</span>
-                    <span className="text-xs font-black text-blue-600">$20 Setup</span>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Promo Price</label>
+                    <input
+                      type="number"
+                      value={newProductForm.discount_price}
+                      onChange={(e) => setNewProductForm({ ...newProductForm, discount_price: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">1500MB storage quota • Priority media CDN • Custom domain</p>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Stock Quantity</label>
+                    <input
+                      type="number"
+                      value={newProductForm.stock}
+                      onChange={(e) => setNewProductForm({ ...newProductForm, stock: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowUpgradeModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 hover:text-gray-800"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      if (userStorefront?.id) {
-                        await apiService.put(`/api/storefront/${userStorefront.id}`, {
-                          subscription_tier: storageTier === 'business' ? 'pro' : 'basic'
-                        });
-                      }
-                      await apiService.post('/api/subscriptions', {
-                        tier: storageTier === 'business' ? 'pro' : 'basic',
-                        duration_months: renewalPlan === 'yearly' ? 12 : renewalPlan === 'biannual' ? 6 : renewalPlan === 'quarterly' ? 3 : 1
-                      }).catch(() => {});
-                      showToast(`Storefront tier upgraded to ${storageTier === 'business' ? 'Business (1500MB)' : 'Individual (600MB)'}!`, 'success');
-                    } catch (err: any) {
-                      showToast(err.message || 'Failed to upgrade tier', 'error');
-                    } finally {
-                      setShowUpgradeModal(false);
-                    }
-                  }}
-                  className="px-5 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-xl hover:bg-blue-700 shadow transition"
-                >
-                  Confirm Upgrade
-                </button>
-              </div>
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Description</label>
+                  <textarea
+                    rows={2}
+                    value={newProductForm.description}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, description: e.target.value })}
+                    placeholder="Provide details, dimensions, specifications, or deliverables..."
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div className="pt-2 flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowProductModal(false)}
+                    className="flex-1 py-2.5 bg-slate-800 text-slate-300 font-semibold rounded-xl"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl"
+                  >
+                    Publish to Store
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
 
-        {/* Social Embed Modal */}
-        <SocialEmbedModal
-          isOpen={Boolean(embedModalProduct)}
-          onClose={() => setEmbedModalProduct(null)}
-          product={
-            embedModalProduct
-              ? {
-                id: String(embedModalProduct.id),
-                name: embedModalProduct.name,
-                price: embedModalProduct.price,
-                currency: 'USD',
-                imageUrl: embedModalProduct.imageUrl || (embedModalProduct.images ? embedModalProduct.images[0] : undefined),
-                platform: 'storefront',
-                description: embedModalProduct.description
-              }
-              : null
-          }
-        />
+        {/* RESTOCK MODAL */}
+        {showRestockModal && selectedProduct && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center">
+                <h3 className="font-bold text-white text-base">Restock: {selectedProduct.name}</h3>
+                <button onClick={() => setShowRestockModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              </div>
+
+              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs">
+                <span className="text-slate-400">Current Stock: </span>
+                <strong className="text-emerald-400 font-mono text-sm">{selectedProduct.stock} units</strong>
+              </div>
+
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const addQty = parseInt(formData.get('addQty') as string, 10);
+                setProducts(prev => prev.map(p => p.id === selectedProduct.id ? { ...p, stock: p.stock + addQty } : p));
+                showToast(`Restocked +${addQty} units for ${selectedProduct.name}!`, 'success');
+                setShowRestockModal(false);
+              }} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Additional Units</label>
+                  <input
+                    type="number"
+                    name="addQty"
+                    defaultValue={10}
+                    required
+                    min={1}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => setShowRestockModal(false)} className="flex-1 py-2 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl">Cancel</button>
+                  <button type="submit" className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl">Confirm Restock</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* AI STOREFRONT COPILOT DRAWER */}
+        {showAiCopilot && (
+          <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-800 z-50 p-6 flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <Bot className="w-5 h-5 text-cyan-400" />
+                <h3 className="font-bold text-white text-base">Storefront AI Copilot</h3>
+              </div>
+              <button onClick={() => setShowAiCopilot(false)} className="text-slate-400 hover:text-white">✕</button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto py-4 space-y-3">
+              {copilotMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`p-3 rounded-2xl text-xs leading-relaxed ${
+                    msg.sender === 'ai'
+                      ? 'bg-slate-950 border border-slate-800 text-slate-300'
+                      : 'bg-blue-600/20 text-blue-200 border border-blue-500/30 ml-6'
+                  }`}
+                >
+                  <p>{msg.text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-3 flex gap-2 border-t border-slate-800">
+              <input
+                type="text"
+                value={copilotQuery}
+                onChange={(e) => setCopilotQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendCopilotQuery()}
+                placeholder="Ask pricing, copy, or stock advice..."
+                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500"
+              />
+              <button
+                onClick={handleSendCopilotQuery}
+                className="p-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

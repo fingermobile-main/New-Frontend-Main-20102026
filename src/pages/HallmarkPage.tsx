@@ -88,7 +88,7 @@ const HallmarkPage: React.FC = () => {
 
   useEffect(() => {
     let mounted = true;
-    hallmarksService.getAllHallmarks().then((res) => {
+    hallmarksService.getAllHallmarks().then((res: any) => {
       if (mounted && res.data && res.data.length > 0) {
         const mapped = res.data.map((h: any) => ({
           id: h.id,
@@ -103,7 +103,7 @@ const HallmarkPage: React.FC = () => {
         setAchievements(mapped);
       }
     // eslint-disable-next-line no-console
-    }).catch(err => console.warn('Failed to load live hallmarks in HallmarkPage:', err));
+    }).catch((err: any) => console.warn('Failed to load live hallmarks in HallmarkPage:', err));
     return () => { mounted = false; };
   }, []);
 

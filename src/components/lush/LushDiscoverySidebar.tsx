@@ -1,15 +1,20 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import {
-  SparklesIcon,
   GiftIcon,
   ArrowPathIcon,
   ChatBubbleLeftRightIcon,
   QuestionMarkCircleIcon,
   ShoppingBagIcon,
-  VideoCameraIcon
+  VideoCameraIcon,
+  ShieldCheckIcon,
+  LockClosedIcon,
+  KeyIcon,
+  XCircleIcon,
 } from '@heroicons/react/24/outline';
 import SwipeDeck from '../SwipeDeck';
 import { VerificationBadge } from '../verification/VerificationBadge';
+import { PinQuotaInfo } from './LushPinPackagesModal';
 
 export interface ActiveMatchItem {
   id: string;
@@ -20,26 +25,42 @@ export interface ActiveMatchItem {
   isOnline: boolean;
   hasUnread: boolean;
   pinExchanged: boolean;
+  bio?: string;
+  headline?: string;
+  location?: string;
+  intentTag?: string;
 }
 
 interface LushDiscoverySidebarProps {
   userId: number;
   matches: ActiveMatchItem[];
+  pinQuota?: PinQuotaInfo;
   onOpenCatalog: () => void;
-  onOpenIcebreakerModal: () => void;
-  onOpenChat: (matchId: string) => void;
-  onStartVideoCall: (matchId: string) => void;
+  onOpenLapidaireModal: () => void;
+  onOpenChat: (_matchId: string) => void;
+  onStartVideoCall: (_matchId: string) => void;
   onReverseSwipe?: () => void;
+  onOpenCommitTracker?: (_matchId: string) => void;
+  onOpenPinPackages?: () => void;
+  onOpenMemberProfile?: (_match: ActiveMatchItem) => void;
+  onRevokePin?: (_matchId: string) => void;
+  onExchangePin?: (_matchId: string) => void;
 }
 
 export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
   userId,
   matches,
+  pinQuota,
   onOpenCatalog,
-  onOpenIcebreakerModal,
+  onOpenLapidaireModal,
   onOpenChat,
   onStartVideoCall,
-  onReverseSwipe
+  onReverseSwipe,
+  onOpenCommitTracker,
+  onOpenPinPackages,
+  onOpenMemberProfile,
+  onRevokePin,
+  onExchangePin,
 }) => {
   const [dailyAnswer, setDailyAnswer] = useState('');
   const [hasAnsweredToday, setHasAnsweredToday] = useState(false);
@@ -49,14 +70,15 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
       id: 'plush_01',
       name: 'Chinchilla Luxury Throw',
       price: 240,
-      image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300'
+      image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300',
     },
     {
       id: 'plush_02',
       name: 'Lush Velvet Cloud Robe',
       price: 180,
-      image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=300'
-    }
+      image:
+        'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=300',
+    },
   ];
 
   const handleAnswerSubmit = (e: React.FormEvent) => {
@@ -91,12 +113,12 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
         </div>
 
         {/* Embedded Swipe Deck Component */}
-        <div className="min-h-[360px] flex items-center justify-center">
-          <SwipeDeck userId={userId} />
+        <div className="min-h-[380px] flex items-center justify-center">
+          <SwipeDeck userId={userId} compact={true} />
         </div>
       </div>
 
-      {/* 2. Icebreaker Spotlight Card (Daily 30-Question Prompt) */}
+      {/* 2.Lapidaire Spotlight Card (Daily 30-Question Prompt) */}
       <div className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -137,7 +159,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
               </button>
               <button
                 type="button"
-                onClick={onOpenIcebreakerModal}
+                onClick={onOpenLapidaireModal}
                 className="py-1.5 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded-xl text-xs transition"
                 title="Browse all 30 Questions"
               >
@@ -176,14 +198,18 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                 alt={plush.name}
                 className="w-full h-20 rounded-lg object-cover mb-1.5 group-hover:scale-102 transition duration-300"
               />
-              <p className="text-[11px] font-bold text-gray-900 truncate">{plush.name}</p>
-              <p className="text-[10px] font-extrabold text-[#DC582A]">{plush.price} FIC</p>
+              <p className="text-[11px] font-bold text-gray-900 truncate">
+                {plush.name}
+              </p>
+              <p className="text-[10px] font-extrabold text-[#DC582A]">
+                {plush.price} FIC
+              </p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 4. Active Matches & Direct Chat */}
+      {/* 4. Active Matches & 6-Digit PIN Exchange Section */}
       <div className="bg-white rounded-2xl border border-emerald-100/80 shadow-xs p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -195,6 +221,34 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
           </span>
         </div>
 
+        {/* 6-Digit PIN Quota Bar */}
+        {pinQuota && (
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/90 text-xs">
+            <div className="flex items-center gap-1.5">
+              <KeyIcon className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div>
+                <span className="font-semibold text-emerald-950">PIN Quota: </span>
+                <span className="font-bold font-mono text-emerald-700">
+                  {pinQuota.isUnlimited
+                    ? '∞ Unlimited'
+                    : `${pinQuota.generationsRemaining}/${pinQuota.totalAllocated}`}
+                </span>
+                <span className="text-[10px] text-gray-500 ml-1">Left</span>
+              </div>
+            </div>
+            {onOpenPinPackages && (
+              <button
+                type="button"
+                onClick={onOpenPinPackages}
+                className="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] transition shadow-2xs"
+                title="Purchase PIN Packages"
+              >
+                + Buy PINs
+              </button>
+            )}
+          </div>
+        )}
+
         {matches.length === 0 ? (
           <div className="text-center py-4 text-xs text-gray-500 italic">
             Swipe right on matches to start conversations!
@@ -204,46 +258,125 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
             {matches.map((match) => (
               <div
                 key={match.id}
-                className="flex items-center justify-between p-2 rounded-xl hover:bg-[#F5F9F6] transition border border-transparent hover:border-emerald-100"
+                className={`p-2.5 rounded-xl transition border ${
+                  match.pinExchanged
+                    ? 'border-emerald-100 hover:border-emerald-200 hover:bg-[#F5F9F6]'
+                    : 'border-amber-100 bg-amber-50/30 hover:bg-amber-50/60'
+                }`}
               >
-                <div
-                  onClick={() => onOpenChat(match.id)}
-                  className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0"
-                >
-                  <div className="relative flex-shrink-0">
-                    <img
-                      src={match.avatar}
-                      alt={match.name}
-                      className="w-9 h-9 rounded-full object-cover border border-emerald-200"
-                    />
-                    {match.isOnline && (
-                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full" />
+                <div className="flex items-center justify-between">
+                  <div
+                    onClick={() => {
+                      if (match.pinExchanged && onOpenMemberProfile) {
+                        onOpenMemberProfile(match);
+                      } else if (!match.pinExchanged && onExchangePin) {
+                        onExchangePin(match.id);
+                      } else {
+                        onOpenChat(match.id);
+                      }
+                    }}
+                    className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0"
+                    title={
+                      match.pinExchanged
+                        ? 'Click to view full unlocked profile'
+                        : '6-Digit PIN Exchange required to unlock profile'
+                    }
+                  >
+                    <div className="relative shrink-0">
+                      <img
+                        src={match.avatar}
+                        alt={match.name}
+                        className={`w-10 h-10 rounded-full object-cover border-2 ${
+                          match.pinExchanged
+                            ? 'border-emerald-500'
+                            : 'border-amber-400 opacity-90'
+                        }`}
+                      />
+                      {match.isOnline && (
+                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-xs font-bold text-gray-900 truncate">
+                          {match.name}
+                        </p>
+                        <VerificationBadge level={4} size="small" />
+                        {match.pinExchanged ? (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800">
+                            <ShieldCheckIcon className="w-2.5 h-2.5 text-emerald-600" />
+                            Unlocked
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800">
+                            <LockClosedIcon className="w-2.5 h-2.5 text-amber-600" />
+                            PIN Locked
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-gray-500 truncate mt-0.5">
+                        {match.pinExchanged
+                          ? match.lastMessage
+                          : 'Exchange PIN to unlock full profile & direct messaging'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 ml-2 shrink-0">
+                    {match.pinExchanged ? (
+                      <>
+                        {onOpenCommitTracker && (
+                          <button
+                            onClick={() => onOpenCommitTracker(match.id)}
+                            className="p-1.5 rounded-lg text-amber-700 hover:bg-amber-100 transition"
+                            title="View 5-Month Commitment Milestone"
+                          >
+                            <span className="text-xs">💍</span>
+                          </button>
+                        )}
+                        <button
+                          onClick={() => onStartVideoCall(match.id)}
+                          className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
+                          title="Start Lush WebRTC Video Call"
+                        >
+                          <VideoCameraIcon className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => onOpenChat(match.id)}
+                          className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
+                          title="Send Message"
+                        >
+                          <ChatBubbleLeftRightIcon className="w-4 h-4" />
+                        </button>
+                        {onRevokePin && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onRevokePin(match.id);
+                            }}
+                            className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition"
+                            title="Revoke 6-Digit PIN (Closes Connection & Locks Profile)"
+                          >
+                            <XCircleIcon className="w-4 h-4" />
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      onExchangePin && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onExchangePin(match.id);
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] transition shadow-2xs flex items-center gap-1"
+                          title="Exchange 6-Digit PIN to Unlock Profile"
+                        >
+                          <KeyIcon className="w-3 h-3" />
+                          <span>Exchange PIN</span>
+                        </button>
+                      )
                     )}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1">
-                      <p className="text-xs font-bold text-gray-900 truncate">{match.name}</p>
-                      <VerificationBadge level={4} size="small" />
-                    </div>
-                    <p className="text-[11px] text-gray-500 truncate">{match.lastMessage}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1 ml-2 flex-shrink-0">
-                  <button
-                    onClick={() => onStartVideoCall(match.id)}
-                    className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
-                    title="Start Lush WebRTC Video Call"
-                  >
-                    <VideoCameraIcon className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => onOpenChat(match.id)}
-                    className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
-                    title="Send Message"
-                  >
-                    <ChatBubbleLeftRightIcon className="w-4 h-4" />
-                  </button>
                 </div>
               </div>
             ))}

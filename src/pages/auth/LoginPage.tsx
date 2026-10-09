@@ -200,7 +200,7 @@ const LoginPage = () => {
               FingerMobile<span className="text-[#ff6b00]">™</span>
             </h1>
             <p className="text-sm font-semibold tracking-wide uppercase text-gray-500 dark:text-gray-400 mt-1">
-              Protocol Platform Sign In
+              Protocol Sign In
             </p>
           </div>
 

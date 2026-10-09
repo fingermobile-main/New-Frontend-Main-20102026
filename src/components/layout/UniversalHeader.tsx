@@ -121,10 +121,10 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
             <button
               type="button"
               onClick={() => setIsBurgerOpen(!isBurgerOpen)}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-300 border border-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-orange-500/20 text-[#ff6b00] border border-orange-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-orange-500"
               aria-label="Toggle Canary Global Drawer"
             >
-              {isBurgerOpen ? <XIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+              {isBurgerOpen ? <XIcon className="w-5 h-5 text-[#ff6b00]" /> : <MenuIcon className="w-5 h-5 text-[#ff6b00]" />}
             </button>
           </div>
         </div>

@@ -768,7 +768,7 @@ export const SettingsPage: React.FC = () => {
                         className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white"
                       >
                         <option value="FIC">FIC (Fingercoin Protocol Native)</option>
-                        <option value="NGN">NGN (Nigerian Naira - Lendsqr Integrated)</option>
+                        <option value="NGN">NGN (Nigerian Naira - LoanSqr Integrated)</option>
                         <option value="USD">USD (US Dollar)</option>
                         <option value="EUR">EUR (Euro)</option>
                       </select>

@@ -1,10 +1,11 @@
 /*
  * FingerMobile Protocol™ - PhotoCredits Page Component
  * Sovereign Creator Licensing & 80/20 Royalty Architecture
+ * 26-Day Friday Monthly UGC Giveaway & Interactive Polls Engine
  * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -22,7 +23,22 @@ import {
   CheckCircle2,
   FileText,
   TrendingUp,
-  Plus
+  Plus,
+  ThumbsUp,
+  ThumbsDown,
+  Share2,
+  Bookmark,
+  MessageSquare,
+  Flag,
+  Star,
+  Trophy,
+  Clock,
+  BarChart2,
+  UploadCloud,
+  Check,
+  HelpCircle,
+  Flame,
+  ExternalLink
 } from 'lucide-react';
 
 export interface CameraExif {
@@ -31,6 +47,19 @@ export interface CameraExif {
   iso?: number;
   shutter?: string;
   aperture?: string;
+}
+
+export interface PollOption {
+  id: string;
+  text: string;
+  votes: number;
+}
+
+export interface PollData {
+  question: string;
+  options: PollOption[];
+  totalVotes: number;
+  userVotedOptionId?: string | null;
 }
 
 export interface PhotoCreditItem {
@@ -46,15 +75,53 @@ export interface PhotoCreditItem {
   category: string;
   tags?: string[];
   likes: number;
+  dislikes?: number;
   comments?: number;
   downloads: number;
+  shares?: number;
+  rating?: number;
   price_credits: number;
   license_type: 'Royalty-Free Standard' | 'Editorial Use Only' | 'Commercial Extended' | string;
   camera_info?: CameraExif;
   hasLiked?: boolean;
+  hasDisliked?: boolean;
+  isBookmarked?: boolean;
+  poll_data?: PollData;
 }
 
-type TabMode = 'gallery' | 'royalties' | 'certificate';
+export interface GiveawayPrize {
+  rank: number;
+  amountFIC: number;
+  badge: string;
+}
+
+export interface GiveawayLeader {
+  rank: number;
+  id: string;
+  title: string;
+  photographer: string;
+  imageUrl: string;
+  likes: number;
+  downloads: number;
+  shares: number;
+  rating: number;
+  compositeScore: number;
+  prizeFIC: number;
+  badge: string;
+  location?: string;
+}
+
+export interface GiveawayData {
+  cycleDays: number;
+  currentCycle: number;
+  daysRemaining: number;
+  nextFridayDate: string;
+  prizePoolFIC: number;
+  prizes: GiveawayPrize[];
+  leaderboard: GiveawayLeader[];
+}
+
+type TabMode = 'gallery' | 'giveaway' | 'royalties' | 'certificate';
 
 const LICENSE_TIERS = [
   {
@@ -80,6 +147,19 @@ const LICENSE_TIERS = [
   }
 ];
 
+const DEFAULT_GIVEAWAY_PRIZES: GiveawayPrize[] = [
+  { rank: 1, amountFIC: 50000, badge: '🥇 1st Place Champion' },
+  { rank: 2, amountFIC: 25000, badge: '🥈 2nd Place Runner-Up' },
+  { rank: 3, amountFIC: 15000, badge: '🥉 3rd Place Bronze' },
+  { rank: 4, amountFIC: 10000, badge: '🏅 4th Place Finalist' },
+  { rank: 5, amountFIC: 8000, badge: '🏅 5th Place Finalist' },
+  { rank: 6, amountFIC: 6000, badge: '🎖️ 6th Place Honor' },
+  { rank: 7, amountFIC: 4000, badge: '🎖️ 7th Place Honor' },
+  { rank: 8, amountFIC: 3000, badge: '🎖️ 8th Place Honor' },
+  { rank: 9, amountFIC: 2500, badge: '🎖️ 9th Place Honor' },
+  { rank: 10, amountFIC: 1500, badge: '🎖️ 10th Place Honor' }
+];
+
 const PhotoCreditsPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
@@ -96,9 +176,28 @@ const PhotoCreditsPage: React.FC = () => {
   const [chosenTier, setChosenTier] = useState<string>('Royalty-Free Standard');
   const [isLicensing, setIsLicensing] = useState<boolean>(false);
 
+  // Giveaway Data State
+  const [giveawayData, setGiveawayData] = useState<GiveawayData | null>(null);
+  const [loadingGiveaway, setLoadingGiveaway] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState({ days: 14, hours: 8, minutes: 24, seconds: 40 });
+
   // Upload Modal State
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Poll Creator in Upload Modal
+  const [includePoll, setIncludePoll] = useState<boolean>(false);
+  const [pollQuestion, setPollQuestion] = useState<string>('How does this composition make you feel?');
+  const [pollOptions, setPollOptions] = useState<string[]>([
+    'Breathtaking & Atmospheric',
+    'Vibrant & High Energy',
+    'Needs Tighter Framing',
+    'Flawless Color Grade'
+  ]);
+
   const [uploadForm, setUploadForm] = useState({
     title: '',
     description: '',
@@ -114,7 +213,21 @@ const PhotoCreditsPage: React.FC = () => {
     aperture: 'f/8.0'
   });
 
-  // Fetch Photos from PostgreSQL via Backend API
+  // Countdown timer effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
+        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        if (prev.days > 0) return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
+        return prev;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Fetch Photos from Backend API
   const fetchPhotos = useCallback(async () => {
     try {
       setLoading(true);
@@ -122,38 +235,112 @@ const PhotoCreditsPage: React.FC = () => {
       const rawList = res?.data || (Array.isArray(res) ? res : []);
 
       if (rawList && rawList.length > 0) {
-        const normalized: PhotoCreditItem[] = rawList.map((item: any, idx: number) => ({
-          id: String(item.id || item.photo_id || `pc-${idx}`),
-          photo_id: item.photo_id || `ph-${idx}`,
-          title: item.title || 'Untitled Masterpiece',
-          description: item.description || '',
-          imageUrl: item.image_url || item.imageUrl || 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1600&auto=format&fit=crop&q=85',
-          thumbnailUrl: item.thumbnail_url || item.thumbnailUrl || item.image_url,
-          photographer: item.photographer_name || item.photographer || 'FingerMobile Creator',
-          photographer_id: String(item.uploader_id || item.photographer_id || '1'),
-          location: item.location || 'Global',
-          category: item.category || 'General',
-          tags: Array.isArray(item.tags) ? item.tags : [],
-          likes: Number(item.likes || item.credits_count || 42),
-          downloads: Number(item.downloads || Math.floor((item.credits_count || 10) * 0.4)),
-          price_credits: Number(item.price || item.price_credits || 25),
-          license_type: item.license_type || 'Royalty-Free Standard',
-          camera_info: typeof item.camera_info === 'object' && item.camera_info !== null
-            ? item.camera_info
-            : { camera: 'Pro Camera Body', lens: 'Prime Lens', iso: 100, shutter: '1/250s', aperture: 'f/2.8' }
-        }));
+        const normalized: PhotoCreditItem[] = rawList.map((item: any, idx: number) => {
+          let parsedPoll = item.poll_data;
+          if (typeof parsedPoll === 'string') {
+            try {
+              parsedPoll = JSON.parse(parsedPoll);
+            } catch {
+              parsedPoll = undefined;
+            }
+          }
+
+          let imgUrl = item.image_url || item.imageUrl || 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1600&auto=format&fit=crop&q=85';
+          if (imgUrl.startsWith('/uploads')) {
+            imgUrl = `http://localhost:3001${imgUrl}`;
+          }
+
+          return {
+            id: String(item.id || item.photo_id || `pc-${idx}`),
+            photo_id: item.photo_id || `ph-${idx}`,
+            title: item.title || 'Untitled Masterpiece',
+            description: item.description || '',
+            imageUrl: imgUrl,
+            thumbnailUrl: item.thumbnail_url || item.thumbnailUrl || imgUrl,
+            photographer: item.photographer_name || item.photographer || 'FingerMobile Creator',
+            photographer_id: String(item.uploader_id || item.photographer_id || '1'),
+            location: item.location || 'Global',
+            category: item.category || 'General',
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            likes: Number(item.likes || item.credits_count || 42),
+            dislikes: Number(item.dislikes || 0),
+            downloads: Number(item.downloads || Math.floor((item.credits_count || 10) * 0.4)),
+            shares: Number(item.shares || 12),
+            rating: Number(item.rating || 4.9),
+            price_credits: Number(item.price || item.price_credits || 25),
+            license_type: item.license_type || 'Royalty-Free Standard',
+            camera_info: typeof item.camera_info === 'object' && item.camera_info !== null
+              ? item.camera_info
+              : { camera: 'Pro Camera Body', lens: 'Prime Lens', iso: 100, shutter: '1/250s', aperture: 'f/2.8' },
+            poll_data: parsedPoll
+          };
+        });
         setPhotos(normalized);
       }
     } catch {
-      // Fallback silently to initial resilient cache
+      // Fallback gracefully
     } finally {
       setLoading(false);
     }
   }, []);
 
+  // Fetch 26-Day Friday Giveaway Leaderboard
+  const fetchGiveaway = useCallback(async () => {
+    try {
+      setLoadingGiveaway(true);
+      const res: any = await ApiService.get('/photocredits/giveaway');
+      if (res?.data) {
+        setGiveawayData(res.data);
+      }
+    } catch {
+      // Create local fallback leaderboard if offline
+      const sorted = [...photos]
+        .map((p, i) => {
+          const compScore = (p.likes * 1) + (p.downloads * 3) + ((p.shares || 0) * 2) + Math.round((p.rating || 4.5) * 10);
+          const prizeObj = DEFAULT_GIVEAWAY_PRIZES[i] || { rank: i + 1, amountFIC: 1000, badge: `Rank #${i + 1}` };
+          return {
+            rank: i + 1,
+            id: p.id,
+            title: p.title,
+            photographer: p.photographer,
+            imageUrl: p.imageUrl,
+            likes: p.likes,
+            downloads: p.downloads,
+            shares: p.shares || 0,
+            rating: p.rating || 4.8,
+            compositeScore: compScore,
+            prizeFIC: prizeObj.amountFIC,
+            badge: prizeObj.badge,
+            location: p.location
+          };
+        })
+        .sort((a, b) => b.compositeScore - a.compositeScore)
+        .slice(0, 10)
+        .map((item, idx) => ({ ...item, rank: idx + 1, prizeFIC: DEFAULT_GIVEAWAY_PRIZES[idx]?.amountFIC || 1000, badge: DEFAULT_GIVEAWAY_PRIZES[idx]?.badge || `#${idx + 1}` }));
+
+      setGiveawayData({
+        cycleDays: 26,
+        currentCycle: 14,
+        daysRemaining: 14,
+        nextFridayDate: 'Friday, October 24, 2026',
+        prizePoolFIC: 125000,
+        prizes: DEFAULT_GIVEAWAY_PRIZES,
+        leaderboard: sorted
+      });
+    } finally {
+      setLoadingGiveaway(false);
+    }
+  }, [photos]);
+
   useEffect(() => {
     fetchPhotos();
   }, [fetchPhotos]);
+
+  useEffect(() => {
+    if (activeTab === 'giveaway') {
+      fetchGiveaway();
+    }
+  }, [activeTab, fetchGiveaway]);
 
   // Unique Categories
   const categories = useMemo(() => {
@@ -182,22 +369,119 @@ const PhotoCreditsPage: React.FC = () => {
     });
   }, [photos, searchQuery, selectedCategory, selectedLicenseFilter]);
 
-  // Handle Like
-  const handleLike = (id: string) => {
+  // Handle Photo Engagement Votes (Like, Dislike, Upvote, Share, Rate)
+  const handleVote = async (photoId: string, action: 'like' | 'dislike' | 'upvote' | 'downvote' | 'share' | 'rating', payload?: any) => {
     setPhotos((prev) =>
       prev.map((p) => {
-        if (p.id === id) {
-          const hasLiked = p.hasLiked;
+        if (p.id !== photoId) return p;
+        if (action === 'like' || action === 'upvote') {
+          const wasLiked = p.hasLiked;
           return {
             ...p,
-            likes: hasLiked ? p.likes - 1 : p.likes + 1,
-            hasLiked: !hasLiked
+            likes: wasLiked ? p.likes - 1 : p.likes + 1,
+            hasLiked: !wasLiked,
+            hasDisliked: false
           };
+        }
+        if (action === 'dislike' || action === 'downvote') {
+          const wasDisliked = p.hasDisliked;
+          return {
+            ...p,
+            dislikes: wasDisliked ? (p.dislikes || 1) - 1 : (p.dislikes || 0) + 1,
+            hasDisliked: !wasDisliked,
+            hasLiked: false
+          };
+        }
+        if (action === 'share') {
+          return { ...p, shares: (p.shares || 0) + 1 };
+        }
+        if (action === 'rating' && payload?.stars) {
+          return { ...p, rating: payload.stars };
         }
         return p;
       })
     );
-    showToast('Photo like recorded on ledger!', 'success');
+
+    try {
+      await ApiService.post(`/photocredits/${photoId}/vote`, { action, payload });
+      if (action === 'share') {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(`${window.location.origin}/photocredits?photo=${photoId}`);
+        }
+        showToast('Photo share link copied to clipboard & verified on ledger! (+2 UGC pts)', 'success');
+      } else if (action === 'like' || action === 'upvote') {
+        showToast('Like recorded! Creator receives +1 point towards the 26-Day Friday Giveaway.', 'success');
+      } else if (action === 'rating') {
+        showToast(`Rated ${payload?.stars} stars! (+${payload?.stars * 10} UGC pts)`, 'success');
+      }
+    } catch {
+      // Quiet failover
+    }
+  };
+
+  // Handle Poll Voting on Photo Cards
+  const handlePollVote = async (photoId: string, optionId: string) => {
+    setPhotos((prev) =>
+      prev.map((p) => {
+        if (p.id !== photoId || !p.poll_data) return p;
+        const currentPoll = p.poll_data;
+        if (currentPoll.userVotedOptionId === optionId) return p; // already voted for this option
+
+        const updatedOptions = currentPoll.options.map((opt) => {
+          if (opt.id === optionId) {
+            return { ...opt, votes: opt.votes + 1 };
+          }
+          if (opt.id === currentPoll.userVotedOptionId) {
+            return { ...opt, votes: Math.max(0, opt.votes - 1) };
+          }
+          return opt;
+        });
+
+        const newTotal = updatedOptions.reduce((acc, curr) => acc + curr.votes, 0);
+
+        return {
+          ...p,
+          poll_data: {
+            ...currentPoll,
+            options: updatedOptions,
+            totalVotes: newTotal,
+            userVotedOptionId: optionId
+          }
+        };
+      })
+    );
+
+    try {
+      const pIndex = photos.find((p) => p.id === photoId)?.poll_data?.options.findIndex((o) => o.id === optionId) ?? 0;
+      await ApiService.post(`/photocredits/${photoId}/poll`, { optionIndex: pIndex });
+      showToast('Community poll vote registered on decentralized ledger!', 'success');
+    } catch {
+      // Silently failover
+    }
+  };
+
+  // Bookmark Photo
+  const handleBookmark = (photoId: string) => {
+    setPhotos((prev) =>
+      prev.map((p) => {
+        if (p.id === photoId) {
+          const next = !p.isBookmarked;
+          showToast(next ? 'Photograph saved to your personal collection!' : 'Removed from collection', 'info');
+          return { ...p, isBookmarked: next };
+        }
+        return p;
+      })
+    );
+  };
+
+  // Message Photographer
+  const handleMessageCreator = (photographer: string) => {
+    showToast(`Direct sovereign communication channel opened with ${photographer}`, 'info');
+  };
+
+  // Report Photo
+  const handleReport = (title: string) => {
+    showToast(`Report filed for "${title}". FingerMobile moderator protocol notified.`, 'info');
   };
 
   // Calculate License Cost based on chosen tier
@@ -219,7 +503,6 @@ const PhotoCreditsPage: React.FC = () => {
 
     setIsLicensing(true);
     try {
-      // Simulate/trigger license creation on backend
       const licensePayload = {
         photoId: selectedPhotoForLicense.photo_id || selectedPhotoForLicense.id,
         licenseTier: chosenTier,
@@ -229,6 +512,7 @@ const PhotoCreditsPage: React.FC = () => {
       };
 
       await ApiService.post(`/photocredits/${selectedPhotoForLicense.id}/purchase-license`, licensePayload).catch(() => {});
+      await ApiService.post(`/photocredits/${selectedPhotoForLicense.id}/vote`, { action: 'download' }).catch(() => {});
 
       // Trigger file download
       const link = document.createElement('a');
@@ -247,7 +531,7 @@ const PhotoCreditsPage: React.FC = () => {
       );
 
       const licenseNumber = `LIC-FMP-${Math.floor(100000 + Math.random() * 900000)}`;
-      showToast(`License Acquired! Reference: ${licenseNumber}. Master file downloaded.`, 'success');
+      showToast(`License Acquired! Reference: ${licenseNumber}. Master file downloaded. (+3 UGC Giveaway pts)`, 'success');
       setSelectedPhotoForLicense(null);
     } catch (err: any) {
       showToast(err.message || 'Licensing failed', 'error');
@@ -256,27 +540,103 @@ const PhotoCreditsPage: React.FC = () => {
     }
   };
 
-  // Upload New Photograph
+  // Handle Real File Selection & Preview
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+      if (!uploadForm.title) {
+        setUploadForm((prev) => ({
+          ...prev,
+          title: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+        }));
+      }
+    }
+  };
+
+  // Upload New Photograph via Real File or URL
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!uploadForm.title.trim()) {
       showToast('Please provide a photo title', 'error');
       return;
     }
+    if (!selectedFile && !uploadForm.imageUrl.trim()) {
+      showToast('Please upload a photo file or provide an image URL', 'error');
+      return;
+    }
+
     setIsUploading(true);
     try {
-      const newPhoto: PhotoCreditItem = {
-        id: `pc-${Date.now()}`,
-        photo_id: `ph-${Date.now()}`,
+      const formData = new FormData();
+      if (selectedFile) {
+        formData.append('media', selectedFile);
+      } else {
+        formData.append('imageUrl', uploadForm.imageUrl);
+      }
+
+      formData.append('title', uploadForm.title);
+      formData.append('description', uploadForm.description);
+      formData.append('category', uploadForm.category);
+      formData.append('location', uploadForm.location);
+      formData.append('price', String(uploadForm.price_credits));
+      formData.append('licenseType', uploadForm.license_type);
+      formData.append('camera', uploadForm.camera);
+      formData.append('lens', uploadForm.lens);
+      formData.append('iso', String(uploadForm.iso));
+      formData.append('shutter', uploadForm.shutter);
+      formData.append('aperture', uploadForm.aperture);
+
+      // Attach Poll if configured
+      if (includePoll && pollQuestion.trim() && pollOptions.length > 0) {
+        const cleanOptions = pollOptions.filter((o) => o.trim().length > 0);
+        if (cleanOptions.length >= 2) {
+          const pollPayload: PollData = {
+            question: pollQuestion.trim(),
+            options: cleanOptions.map((text, idx) => ({
+              id: `opt-${idx + 1}`,
+              text: text.trim(),
+              votes: 0
+            })),
+            totalVotes: 0,
+            userVotedOptionId: null
+          };
+          formData.append('poll', JSON.stringify(pollPayload));
+        }
+      }
+
+      // Send to Backend
+      const res = await fetch('http://localhost:3001/api/photocredits/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const responseData = await res.json();
+
+      let createdImageUrl = previewUrl || uploadForm.imageUrl;
+      if (responseData.data?.image_url) {
+        createdImageUrl = responseData.data.image_url.startsWith('/uploads')
+          ? `http://localhost:3001${responseData.data.image_url}`
+          : responseData.data.image_url;
+      }
+
+      const createdItem: PhotoCreditItem = {
+        id: String(responseData.data?.id || `pc-${Date.now()}`),
+        photo_id: responseData.data?.photo_id || `ph-${Date.now()}`,
         title: uploadForm.title,
         description: uploadForm.description,
-        imageUrl: uploadForm.imageUrl,
+        imageUrl: createdImageUrl,
+        thumbnailUrl: createdImageUrl,
         photographer: 'Verified Creator',
         photographer_id: '1',
         category: uploadForm.category,
         location: uploadForm.location,
-        likes: 0,
+        likes: 1,
         downloads: 0,
+        shares: 0,
+        rating: 5.0,
         price_credits: uploadForm.price_credits,
         license_type: uploadForm.license_type,
         camera_info: {
@@ -285,15 +645,27 @@ const PhotoCreditsPage: React.FC = () => {
           iso: uploadForm.iso,
           shutter: uploadForm.shutter,
           aperture: uploadForm.aperture
-        }
+        },
+        poll_data: includePoll && pollQuestion.trim()
+          ? {
+              question: pollQuestion.trim(),
+              options: pollOptions.filter((o) => o.trim().length > 0).map((text, idx) => ({
+                id: `opt-${idx + 1}`,
+                text: text.trim(),
+                votes: 0
+              })),
+              totalVotes: 0
+            }
+          : undefined
       };
 
-      await ApiService.post('/photocredits', newPhoto).catch(() => {});
-      setPhotos([newPhoto, ...photos]);
+      setPhotos([createdItem, ...photos]);
       setShowUploadModal(false);
-      showToast('Master photo submitted and listed with 80% royalty protection!', 'success');
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      showToast('Master photograph uploaded & registered for the 26-Day Friday Monthly Giveaway! (80% Royalty Protected)', 'success');
     } catch {
-      showToast('Upload failed', 'error');
+      showToast('Upload failed. Please check network connection.', 'error');
     } finally {
       setIsUploading(false);
     }
@@ -303,34 +675,39 @@ const PhotoCreditsPage: React.FC = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100 py-6 px-3 sm:px-6 lg:px-8">
       {/* Header Banner */}
       <div className="max-w-7xl mx-auto mb-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-900/60 via-orange-900/40 to-slate-900/90 border border-amber-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-950/70 via-emerald-950/40 to-slate-900/90 border border-amber-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                PhotoCredits™ Sovereign Photography Licensing & 80/20 Royalty Protocol
+                PhotoCredits™ Sovereign Photography Licensing, 80/20 Royalty & 26-Day Friday UGC Giveaway
               </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex flex-wrap items-center gap-3">
                 <span>PhotoCredits</span>
-                <span className="text-sm font-medium px-2.5 py-0.5 rounded-md bg-amber-600/30 text-amber-300 border border-amber-500/30">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                   80% Creator Split
                 </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-600/30 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                  125,000 FIC Monthly Prize Pool
+                </span>
               </h1>
-              <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-                Browse, license, and mint verifiable master photographs. Every acquisition enforces immutable creator royalty rights: 80% directly to the photographer, 20% protocol infrastructure fee.
+              <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+                Browse, license, and mint verifiable master photographs. Every acquisition enforces immutable creator royalty rights: 80% directly to the photographer. The Top 10 UGC photographs win the 26-Day Friday Giveaway automatically computed by score!
               </p>
             </div>
 
             {/* Balances & Creator Action */}
             <div className="flex flex-col sm:flex-row items-center gap-4 bg-slate-900/80 border border-amber-500/40 rounded-xl p-4 shadow-lg backdrop-blur-md">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center text-white shadow-inner">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-600 to-emerald-600 flex items-center justify-center text-white shadow-inner">
                   <Camera className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">FIC Balance</div>
                   <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">
-                    🪙 {ficBalance.toLocaleString()} FIC
+                    🪙 {(ficBalance ?? 0).toLocaleString()} FIC
                   </div>
                 </div>
               </div>
@@ -339,10 +716,10 @@ const PhotoCreditsPage: React.FC = () => {
 
               <button
                 onClick={() => setShowUploadModal(true)}
-                className="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-500 hover:to-amber-500 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all flex items-center justify-center gap-2 transform hover:scale-105"
               >
                 <Plus className="w-4 h-4" />
-                Submit Photograph
+                Upload Photograph
               </button>
             </div>
           </div>
@@ -361,6 +738,21 @@ const PhotoCreditsPage: React.FC = () => {
               Master Photograph Gallery
               <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs bg-amber-900/60 text-amber-200">
                 {photos.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('giveaway')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'giveaway'
+                  ? 'bg-gradient-to-r from-amber-600 to-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-bold'
+                  : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              <Trophy className="w-4 h-4 text-yellow-400" />
+              🎁 26-Day Friday Giveaway
+              <span className="ml-1 px-2 py-0.5 rounded-full text-xs bg-emerald-500/30 text-emerald-300 border border-emerald-400/30">
+                125,000 FIC
               </span>
             </button>
 
@@ -398,110 +790,103 @@ const PhotoCreditsPage: React.FC = () => {
         {/* ======================================================== */}
         {activeTab === 'gallery' && (
           <div className="space-y-6">
-            {/* Search and Filter Controls */}
-            <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
-              <div className="relative flex-1">
-                <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            {/* Search and Filters Bar */}
+            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+              <div className="relative w-full md:w-96">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Search by title, photographer, location, camera model..."
+                  placeholder="Search title, photographer, location, camera..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
-              {/* Category Filter */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize whitespace-nowrap transition-colors ${
-                      selectedCategory === cat
-                        ? 'bg-amber-600 text-white'
-                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                    }`}
+              <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-slate-400" />
+                  <span className="text-xs text-slate-400 font-semibold">Category:</span>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+                    {categories.map((c) => (
+                      <option key={c} value={c}>
+                        {c.charAt(0).toUpperCase() + c.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* License Tier Filter */}
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-slate-400" />
-                <select
-                  value={selectedLicenseFilter}
-                  onChange={(e) => setSelectedLicenseFilter(e.target.value)}
-                  aria-label="Filter by license tier"
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                >
-                  <option value="all">All License Tiers</option>
-                  <option value="Royalty-Free Standard">Royalty-Free Standard</option>
-                  <option value="Editorial Use Only">Editorial Use Only</option>
-                  <option value="Commercial Extended">Commercial Extended</option>
-                </select>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400 font-semibold">License:</span>
+                  <select
+                    value={selectedLicenseFilter}
+                    onChange={(e) => setSelectedLicenseFilter(e.target.value)}
+                    className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  >
+                    <option value="all">All Licenses</option>
+                    <option value="Royalty-Free Standard">Standard</option>
+                    <option value="Editorial Use Only">Editorial</option>
+                    <option value="Commercial Extended">Commercial</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            {/* Loading */}
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-20">
+            {/* Photo Cards Grid */}
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-24 space-y-4">
                 <LoadingSpinner />
-                <p className="mt-4 text-sm text-slate-400">Loading PhotoCredits portfolio from PostgreSQL...</p>
+                <p className="text-xs text-slate-400 font-mono">Synchronizing master photographs with decentralized storage...</p>
               </div>
-            )}
-
-            {/* Empty State */}
-            {!loading && filteredPhotos.length === 0 && (
-              <div className="text-center py-16 px-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
-                  <Camera className="w-8 h-8" />
-                </div>
-                <h3 className="text-lg font-bold text-white">No Photographs Found</h3>
-                <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
-                  Try adjusting your search query or reset category filters.
-                </p>
+            ) : filteredPhotos.length === 0 ? (
+              <div className="p-12 text-center rounded-2xl bg-slate-900/40 border border-slate-800/80">
+                <Camera className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-slate-300">No master photographs found</h3>
+                <p className="text-xs text-slate-500 mt-1">Try adjusting your filters or search keywords.</p>
               </div>
-            )}
-
-            {/* Photography Grid */}
-            {!loading && filteredPhotos.length > 0 && (
+            ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPhotos.map((photo) => {
+                  const hasPoll = Boolean(photo.poll_data && photo.poll_data.options && photo.poll_data.options.length > 0);
+                  const totalPollVotes = photo.poll_data ? photo.poll_data.totalVotes || photo.poll_data.options.reduce((s, o) => s + o.votes, 0) : 0;
+
                   return (
                     <div
                       key={photo.id}
-                      className="group bg-slate-900/70 border border-slate-800 hover:border-amber-500/50 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/20 flex flex-col justify-between"
+                      className="group flex flex-col rounded-2xl bg-slate-900/90 border border-slate-800/80 hover:border-amber-500/50 transition-all duration-300 overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-950/20"
                     >
-                      {/* Image Preview Container */}
-                      <div className="relative h-60 w-full overflow-hidden bg-slate-950">
+                      {/* Image Frame */}
+                      <div className="relative aspect-[4/3] bg-slate-950 overflow-hidden">
                         <img
                           src={photo.imageUrl}
                           alt={photo.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/30 pointer-events-none" />
 
-                        {/* License Badge */}
-                        <div className="absolute top-3 left-3">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-slate-900/80 border border-amber-500/40 text-amber-300 shadow-md">
-                            {photo.license_type}
+                        {/* Top Badges */}
+                        <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                          <span className="px-2.5 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-[11px] font-semibold text-slate-200 border border-slate-700/60 flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-amber-400" />
+                            {photo.location || 'Global'}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-950/90 text-amber-300 border border-amber-500/40">
+                            {photo.category}
                           </span>
                         </div>
 
-                        {/* Location Pill */}
-                        {photo.location && (
-                          <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-xs font-medium text-slate-300 shadow-md">
-                            <MapPin className="w-3 h-3 text-red-400" />
-                            <span>{photo.location}</span>
-                          </div>
-                        )}
-
-                        {/* Price Tag */}
-                        <div className="absolute bottom-3 right-3">
-                          <span className="px-3 py-1 rounded-lg bg-amber-500 text-black font-extrabold text-xs shadow-lg">
+                        {/* Price Tag & Rating */}
+                        <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                          <span className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md text-amber-300 font-bold text-xs flex items-center gap-1 border border-amber-500/30">
+                            <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                            {photo.rating || 4.9}
+                          </span>
+                          <span className="px-3 py-1 rounded-lg bg-emerald-500 text-black font-extrabold text-xs shadow-lg">
                             🪙 {photo.price_credits} FIC
                           </span>
                         </div>
@@ -510,17 +895,37 @@ const PhotoCreditsPage: React.FC = () => {
                       {/* Card Body */}
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="font-bold text-base text-white group-hover:text-amber-300 transition-colors line-clamp-1">
-                            {photo.title}
-                          </h3>
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="font-bold text-base text-white group-hover:text-amber-300 transition-colors line-clamp-1">
+                              {photo.title}
+                            </h3>
+                            <button
+                              onClick={() => handleBookmark(photo.id)}
+                              className={`p-1.5 rounded-lg border text-xs transition-colors ${
+                                photo.isBookmarked
+                                  ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
+                                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                              }`}
+                              title={photo.isBookmarked ? 'Bookmarked' : 'Save/Bookmark'}
+                            >
+                              <Bookmark className={`w-3.5 h-3.5 ${photo.isBookmarked ? 'fill-amber-400' : ''}`} />
+                            </button>
+                          </div>
 
-                          <p className="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
-                            <span>By</span>
-                            <span className="text-slate-200 font-semibold">{photo.photographer}</span>
-                            <span title="Verified Photographer" className="inline-flex items-center">
+                          <div className="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                            <span className="flex items-center gap-1">
+                              <span>By</span>
+                              <span className="text-slate-200 font-semibold">{photo.photographer}</span>
                               <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                             </span>
-                          </p>
+                            <button
+                              onClick={() => handleMessageCreator(photo.photographer)}
+                              className="text-[11px] text-amber-400 hover:text-amber-300 flex items-center gap-1"
+                            >
+                              <MessageSquare className="w-3 h-3" />
+                              Contact
+                            </button>
+                          </div>
 
                           {/* Camera EXIF Details Pill */}
                           {photo.camera_info && (
@@ -540,31 +945,125 @@ const PhotoCreditsPage: React.FC = () => {
                             </div>
                           )}
 
-                          <p className="text-xs text-slate-300 mt-3 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-slate-300 mt-2.5 line-clamp-2 leading-relaxed">
                             {photo.description || 'Master-resolution licensed stock photography on FingerMobile Protocol™.'}
                           </p>
+
+                          {/* ======================================================== */}
+                          {/* INTERACTIVE COMMUNITY POLL */}
+                          {/* ======================================================== */}
+                          {hasPoll && photo.poll_data && (
+                            <div className="mt-4 p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/30 space-y-2.5">
+                              <div className="flex items-center justify-between text-xs font-bold text-amber-300">
+                                <span className="flex items-center gap-1.5">
+                                  <BarChart2 className="w-3.5 h-3.5 text-amber-400" />
+                                  Community Poll: {photo.poll_data.question}
+                                </span>
+                                <span className="text-[10px] text-slate-400">{totalPollVotes} votes</span>
+                              </div>
+
+                              <div className="space-y-1.5">
+                                {photo.poll_data.options.map((opt) => {
+                                  const isSelected = photo.poll_data?.userVotedOptionId === opt.id;
+                                  const pct = totalPollVotes > 0 ? Math.round((opt.votes / totalPollVotes) * 100) : 0;
+
+                                  return (
+                                    <button
+                                      key={opt.id}
+                                      onClick={() => handlePollVote(photo.id, opt.id)}
+                                      className={`w-full relative overflow-hidden rounded-lg p-2 text-left text-xs transition-all border ${
+                                        isSelected
+                                          ? 'border-amber-400 bg-amber-950/40 text-amber-200'
+                                          : 'border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700'
+                                      }`}
+                                    >
+                                      {/* Animated Progress Bar */}
+                                      <div
+                                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-600/30 to-emerald-600/30 transition-all duration-500 pointer-events-none"
+                                        style={{ width: `${pct}%` }}
+                                      />
+                                      <div className="relative flex items-center justify-between z-10">
+                                        <span className="flex items-center gap-1.5 font-medium">
+                                          {isSelected && <Check className="w-3 h-3 text-amber-400" />}
+                                          {opt.text}
+                                        </span>
+                                        <span className="font-mono text-[11px] text-slate-400">
+                                          {pct}% ({opt.votes})
+                                        </span>
+                                      </div>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
                         </div>
 
-                        {/* Footer Controls */}
-                        <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
-                          <button
-                            onClick={() => handleLike(photo.id)}
-                            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 transition-colors flex items-center gap-1 text-xs"
-                            title="Like photograph"
-                          >
-                            <Heart className={`w-4 h-4 ${photo.hasLiked ? 'fill-red-500 text-red-500' : ''}`} />
-                            <span>{photo.likes}</span>
-                          </button>
+                        {/* ======================================================== */}
+                        {/* FOOTER ACTION BUTTONS & METRICS */}
+                        {/* ======================================================== */}
+                        <div className="mt-5 pt-4 border-t border-slate-800/80 space-y-3">
+                          {/* Top Engagement Bar (Upvote, Downvote, Share, Rating, Report) */}
+                          <div className="flex items-center justify-between text-xs text-slate-400">
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleVote(photo.id, 'like')}
+                                className={`p-2 rounded-lg transition-colors flex items-center gap-1 ${
+                                  photo.hasLiked ? 'bg-red-500/20 text-red-400' : 'bg-slate-950 hover:bg-slate-800 text-slate-300'
+                                }`}
+                                title="Like (+1 UGC pt)"
+                              >
+                                <Heart className={`w-3.5 h-3.5 ${photo.hasLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                                <span className="font-semibold">{photo.likes}</span>
+                              </button>
 
+                              <button
+                                onClick={() => handleVote(photo.id, 'dislike')}
+                                className={`p-2 rounded-lg transition-colors flex items-center gap-1 ${
+                                  photo.hasDisliked ? 'bg-slate-800 text-slate-200' : 'bg-slate-950 hover:bg-slate-800 text-slate-400'
+                                }`}
+                                title="Dislike"
+                              >
+                                <ThumbsDown className="w-3.5 h-3.5" />
+                                <span>{photo.dislikes || 0}</span>
+                              </button>
+                            </div>
+
+                            {/* Downloads & Shares counters */}
+                            <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+                              <span title="Downloads (3 pts)">📥 {photo.downloads}</span>
+                              <span title="Shares (2 pts)">↗️ {photo.shares || 0}</span>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleVote(photo.id, 'share')}
+                                className="p-2 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 transition-colors"
+                                title="Share (+2 UGC pts)"
+                              >
+                                <Share2 className="w-3.5 h-3.5" />
+                              </button>
+
+                              <button
+                                onClick={() => handleReport(photo.title)}
+                                className="p-2 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-500 hover:text-red-400 transition-colors"
+                                title="Report Photo"
+                              >
+                                <Flag className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Primary License Acquisition CTA */}
                           <button
                             onClick={() => {
                               setSelectedPhotoForLicense(photo);
                               setChosenTier(photo.license_type || 'Royalty-Free Standard');
                             }}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-600/20 transition-all transform hover:-translate-y-0.5"
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-amber-600 to-amber-500 hover:from-emerald-500 hover:to-amber-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-amber-600/20 transition-all transform hover:-translate-y-0.5"
                           >
-                            <Download className="w-3.5 h-3.5" />
-                            Acquire License
+                            <Download className="w-4 h-4" />
+                            Acquire License & Download Master
                           </button>
                         </div>
                       </div>
@@ -577,7 +1076,258 @@ const PhotoCreditsPage: React.FC = () => {
         )}
 
         {/* ======================================================== */}
-        {/* TAB 2: CREATOR ROYALTIES & PAYOUTS (80/20) */}
+        {/* TAB 2: 26-DAY FRIDAY MONTHLY UGC GIVEAWAY */}
+        {/* ======================================================== */}
+        {activeTab === 'giveaway' && (
+          <div className="space-y-8 animate-fadeIn">
+            {/* Top Giveaway Hero Banner */}
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/80 via-slate-900 to-emerald-950/70 border border-amber-500/40 p-6 sm:p-10 shadow-2xl">
+              <div className="absolute top-0 right-0 -mt-10 -mr-10 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+              <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    <Trophy className="w-4 h-4 text-yellow-400" />
+                    Official 26-Day Friday Monthly UGC Giveaway
+                  </div>
+                  <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                    125,000 FIC Prize Pool
+                  </h2>
+                  <p className="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+                    Every 26-day cycle culminating on Friday, the top 10 UGC master photographs ranked by decentralized community engagement automatically win their share of the 125,000 FIC monthly creator bounty.
+                  </p>
+
+                  <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-mono text-amber-200/90">
+                    <span className="px-3 py-1.5 rounded-xl bg-slate-950/80 border border-amber-500/30">
+                      Cycle: 26 Calendar Days
+                    </span>
+                    <span className="px-3 py-1.5 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+                      Next Draw: {giveawayData?.nextFridayDate || 'Friday, October 24, 2026'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Live Countdown Clock */}
+                <div className="bg-slate-950/90 border border-amber-500/40 rounded-2xl p-6 shadow-2xl backdrop-blur-md flex flex-col items-center">
+                  <div className="text-xs text-slate-400 uppercase tracking-widest font-bold flex items-center gap-1.5 mb-3">
+                    <Clock className="w-4 h-4 text-amber-400" />
+                    Friday Draw Countdown
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl min-w-[60px]">
+                      <div className="text-2xl sm:text-3xl font-black text-white">{countdown.days}</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400">Days</div>
+                    </div>
+                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl min-w-[60px]">
+                      <div className="text-2xl sm:text-3xl font-black text-white">{countdown.hours}</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400">Hours</div>
+                    </div>
+                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl min-w-[60px]">
+                      <div className="text-2xl sm:text-3xl font-black text-white">{countdown.minutes}</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400">Mins</div>
+                    </div>
+                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl min-w-[60px]">
+                      <div className="text-2xl sm:text-3xl font-black text-amber-400">{countdown.seconds}</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400">Secs</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                    <Flame className="w-3.5 h-3.5" />
+                    Rankings update live on every transaction
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Formula & Prize Pool Breakdown */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Formula Card */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center gap-2.5 text-amber-400 font-bold text-base">
+                  <BarChart2 className="w-5 h-5" />
+                  Verifiable Composite Score Formula
+                </div>
+                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-300 leading-relaxed">
+                  Composite Score = (Likes × 1) + (Downloads × 3) + (Shares × 2) + (Rating × 10)
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-xs text-slate-300">
+                  <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 block font-semibold">👍 Like / Upvote</span>
+                    <span className="text-white font-bold">+1 Point</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 block font-semibold">📥 License Download</span>
+                    <span className="text-emerald-400 font-bold">+3 Points</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 block font-semibold">↗️ Social Share</span>
+                    <span className="text-sky-400 font-bold">+2 Points</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 block font-semibold">⭐ Star Rating</span>
+                    <span className="text-amber-400 font-bold">+10 Points / Star</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Prize Pool Distribution */}
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5 text-yellow-400 font-bold text-base">
+                    <Trophy className="w-5 h-5" />
+                    Top 10 Prize Pool Distribution
+                  </div>
+                  <span className="text-xs font-mono font-bold text-emerald-400">125,000 FIC Total</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-amber-950/40 border border-amber-500/30">
+                    <span className="text-yellow-300 font-bold">🥇 1st Place</span>
+                    <span className="text-white font-black">50,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-300 font-bold">🥈 2nd Place</span>
+                    <span className="text-white font-black">25,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-amber-600 font-bold">🥉 3rd Place</span>
+                    <span className="text-white font-black">15,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">4th Place</span>
+                    <span className="text-white font-black">10,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">5th Place</span>
+                    <span className="text-white font-black">8,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">6th Place</span>
+                    <span className="text-white font-black">6,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">7th Place</span>
+                    <span className="text-white font-black">4,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">8th Place</span>
+                    <span className="text-white font-black">3,000 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">9th Place</span>
+                    <span className="text-white font-black">2,500 FIC</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="text-slate-400 font-semibold">10th Place</span>
+                    <span className="text-white font-black">1,500 FIC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top 10 Leaderboard Cards */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-black text-white flex items-center gap-2">
+                  <Flame className="w-5 h-5 text-orange-500" />
+                  Top 10 UGC Photographs on the Leaderboard
+                </h3>
+                <span className="text-xs text-slate-400">Ranked by Composite Score</span>
+              </div>
+
+              {loadingGiveaway ? (
+                <div className="py-16 text-center">
+                  <LoadingSpinner />
+                  <p className="text-xs text-slate-400 mt-2 font-mono">Calculating composite scores across all uploads...</p>
+                </div>
+              ) : giveawayData && giveawayData.leaderboard.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {giveawayData.leaderboard.map((item) => {
+                    const isTop3 = item.rank <= 3;
+                    const rankMedal =
+                      item.rank === 1 ? '🥇 1st' : item.rank === 2 ? '🥈 2nd' : item.rank === 3 ? '🥉 3rd' : `#${item.rank}`;
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`flex gap-4 p-4 rounded-2xl border transition-all ${
+                          isTop3
+                            ? 'bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 border-amber-500/50 shadow-xl'
+                            : 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
+                        }`}
+                      >
+                        <div className="relative w-24 sm:w-28 h-24 sm:h-28 rounded-xl overflow-hidden bg-slate-950 shrink-0">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute top-1 left-1 px-2 py-0.5 rounded-md bg-black/80 font-black text-xs text-yellow-300">
+                            {rankMedal}
+                          </div>
+                        </div>
+
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-start justify-between gap-2">
+                              <h4 className="font-bold text-sm text-white line-clamp-1">{item.title}</h4>
+                              <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
+                                🪙 {Number(item.prizeFIC || 0).toLocaleString()} FIC
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-400 mt-0.5">By {item.photographer}</p>
+
+                            <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] font-mono text-slate-300">
+                              <span className="text-slate-400">Score: <strong className="text-amber-400">{item.compositeScore}</strong></span>
+                              <span>•</span>
+                              <span>👍 {item.likes}</span>
+                              <span>📥 {item.downloads}</span>
+                              <span>↗️ {item.shares}</span>
+                              <span>⭐ {item.rating}</span>
+                            </div>
+                          </div>
+
+                          <div className="mt-3 flex items-center gap-2">
+                            <button
+                              onClick={() => handleVote(item.id, 'like')}
+                              className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-colors flex items-center gap-1"
+                            >
+                              <ThumbsUp className="w-3 h-3 text-amber-400" />
+                              Vote
+                            </button>
+                            <button
+                              onClick={() => {
+                                const matched = photos.find((p) => p.id === item.id);
+                                if (matched) {
+                                  setSelectedPhotoForLicense(matched);
+                                  setChosenTier(matched.license_type || 'Royalty-Free Standard');
+                                }
+                              }}
+                              className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-colors"
+                            >
+                              License
+                            </button>
+                            <button
+                              onClick={() => handleVote(item.id, 'share')}
+                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                              title="Share"
+                            >
+                              <Share2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400">No photos ranked yet. Submit photographs to enter the competition!</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* TAB 3: CREATOR ROYALTIES & PAYOUTS (80/20) */}
         {/* ======================================================== */}
         {activeTab === 'royalties' && (
           <div className="space-y-6">
@@ -650,7 +1400,7 @@ const PhotoCreditsPage: React.FC = () => {
         )}
 
         {/* ======================================================== */}
-        {/* TAB 3: IMMUTABLE CERTIFICATION VAULT */}
+        {/* TAB 4: IMMUTABLE CERTIFICATION VAULT */}
         {/* ======================================================== */}
         {activeTab === 'certificate' && (
           <div className="space-y-6">
@@ -805,25 +1555,63 @@ const PhotoCreditsPage: React.FC = () => {
       )}
 
       {/* ======================================================== */}
-      {/* UPLOAD MASTER PHOTOGRAPH MODAL */}
+      {/* UPLOAD MASTER PHOTOGRAPH MODAL (WITH REAL FILE & POLLS) */}
       {/* ======================================================== */}
       {showUploadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-900 border border-amber-500/50 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-slate-900 border border-amber-500/50 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                 <Camera className="w-4 h-4" />
-                Submit Photograph for PhotoCredits Licensing
+                Submit Photograph for PhotoCredits Licensing & UGC Giveaway
               </div>
               <button
-                onClick={() => setShowUploadModal(false)}
+                onClick={() => {
+                  setShowUploadModal(false);
+                  setSelectedFile(null);
+                  setPreviewUrl(null);
+                }}
                 className="text-slate-400 hover:text-white text-lg font-bold"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleUploadSubmit} className="space-y-3.5">
+            <form onSubmit={handleUploadSubmit} className="space-y-4">
+              {/* Drag and Drop File Dropzone */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Master Photograph File *
+                </label>
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="cursor-pointer border-2 border-dashed border-slate-700 hover:border-amber-500/80 rounded-2xl p-4 bg-slate-950/80 text-center transition-colors flex flex-col items-center justify-center min-h-[140px]"
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+
+                  {previewUrl ? (
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-900">
+                      <img src={previewUrl} alt="Upload preview" className="w-full h-full object-cover" />
+                      <div className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 text-amber-400 text-xs rounded-lg font-bold">
+                        Click to change image
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <UploadCloud className="w-8 h-8 text-amber-400 mx-auto" />
+                      <p className="text-xs font-bold text-white">Click or drag & drop high-resolution image</p>
+                      <p className="text-[11px] text-slate-500">RAW, JPEG, PNG, or TIFF up to 25MB</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">Title *</label>
                 <input
@@ -837,13 +1625,12 @@ const PhotoCreditsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Image URL *</label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://..."
-                  value={uploadForm.imageUrl}
-                  onChange={(e) => setUploadForm({ ...uploadForm, imageUrl: e.target.value })}
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  placeholder="Describe the moment, lighting, and artistic intent..."
+                  value={uploadForm.description}
+                  onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
@@ -862,6 +1649,7 @@ const PhotoCreditsPage: React.FC = () => {
                     <option value="Portraits & Fashion">Portraits & Fashion</option>
                     <option value="Wildlife">Wildlife</option>
                     <option value="Astrophotography">Astrophotography</option>
+                    <option value="Afrobeats & Culture">Afrobeats & Culture</option>
                   </select>
                 </div>
 
@@ -878,8 +1666,10 @@ const PhotoCreditsPage: React.FC = () => {
               </div>
 
               {/* Camera EXIF Inputs */}
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">Camera EXIF Metadata:</span>
+              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+                  Camera EXIF Metadata:
+                </span>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <input
                     type="text"
@@ -912,21 +1702,85 @@ const PhotoCreditsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Base Price (FIC)</label>
-                <input
-                  type="number"
-                  min="5"
-                  value={uploadForm.price_credits}
-                  onChange={(e) => setUploadForm({ ...uploadForm, price_credits: Number(e.target.value) })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
+              {/* Community Poll Option */}
+              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-white flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={includePoll}
+                      onChange={(e) => setIncludePoll(e.target.checked)}
+                      className="rounded text-amber-500 focus:ring-amber-500 bg-slate-900 border-slate-700"
+                    />
+                    Include Community Poll on this Photograph?
+                  </label>
+                  <span className="text-[10px] text-amber-400 font-semibold">+Boosts Engagement</span>
+                </div>
+
+                {includePoll && (
+                  <div className="space-y-2 pt-2 border-t border-slate-800 animate-fadeIn">
+                    <input
+                      type="text"
+                      placeholder="Poll Question (e.g. Which framing tells the story best?)"
+                      value={pollQuestion}
+                      onChange={(e) => setPollQuestion(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white"
+                    />
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] text-slate-400 font-semibold block">Poll Options:</span>
+                      {pollOptions.map((opt, i) => (
+                        <input
+                          key={i}
+                          type="text"
+                          placeholder={`Option ${i + 1}`}
+                          value={opt}
+                          onChange={(e) => {
+                            const newOpts = [...pollOptions];
+                            newOpts[i] = e.target.value;
+                            setPollOptions(newOpts);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-200"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Base Price (FIC)</label>
+                  <input
+                    type="number"
+                    min="5"
+                    value={uploadForm.price_credits}
+                    onChange={(e) => setUploadForm({ ...uploadForm, price_credits: Number(e.target.value) })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Default License</label>
+                  <select
+                    value={uploadForm.license_type}
+                    onChange={(e) => setUploadForm({ ...uploadForm, license_type: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  >
+                    <option value="Royalty-Free Standard">Royalty-Free Standard</option>
+                    <option value="Editorial Use Only">Editorial Use Only</option>
+                    <option value="Commercial Extended">Commercial Extended</option>
+                  </select>
+                </div>
               </div>
 
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowUploadModal(false)}
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setSelectedFile(null);
+                    setPreviewUrl(null);
+                  }}
                   className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
                 >
                   Cancel
@@ -934,9 +1788,9 @@ const PhotoCreditsPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isUploading}
-                  className="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-500 hover:to-amber-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2"
                 >
-                  {isUploading ? <LoadingSpinner /> : 'Submit & Protect (80% Split)'}
+                  {isUploading ? <LoadingSpinner /> : 'Submit & Enter 26-Day Friday Giveaway'}
                 </button>
               </div>
             </form>

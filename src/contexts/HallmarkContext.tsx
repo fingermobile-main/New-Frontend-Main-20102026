@@ -32,7 +32,7 @@ export const HallmarkProvider: React.FC<HallmarkProviderProps> = ({
 
   useEffect(() => {
     let mounted = true;
-    hallmarksService.getAllHallmarks().then((res) => {
+    hallmarksService.getAllHallmarks().then((res: any) => {
       if (mounted && res.data && Array.isArray(res.data)) {
         const mapped = res.data.map((h: any) => ({
           id: String(h.id),
@@ -55,7 +55,7 @@ export const HallmarkProvider: React.FC<HallmarkProviderProps> = ({
         }));
         setHallmarks(mapped);
       }
-    }).catch(err => {
+    }).catch((err: any) => {
       console.warn('Failed to load hallmarks from API:', err);
     });
     return () => { mounted = false; };

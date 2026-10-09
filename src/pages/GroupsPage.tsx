@@ -8,6 +8,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import groupsService, { Group, CreateGroupRequest } from '../services/groupsService';
+import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import {
   Users,
   Search,
@@ -27,6 +28,7 @@ import {
   Heart,
   ChevronRight
 } from 'lucide-react';
+
 
 type TabType = 'my-groups' | 'discover' | 'guides' | 'powertools';
 type PrivacyTier = 'all' | 'public' | 'private' | 'secret';
@@ -354,6 +356,14 @@ const GroupsPage: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+          {/* Top Left ProfileCard Column */}
+          <div className="lg:col-span-1 space-y-4">
+            <UniversalProfileCard />
+          </div>
+
+          {/* Main Content Tabs Column */}
+          <div className="lg:col-span-3 space-y-6">
         {/* ======================================================== */}
         {/* TAB 1 & 2: DISCOVER & MY GROUPS */}
         {/* ======================================================== */}
@@ -826,6 +836,8 @@ const GroupsPage: React.FC = () => {
             </div>
           </div>
         )}
+          </div>
+        </div>
       </div>
 
       {/* ======================================================== */}

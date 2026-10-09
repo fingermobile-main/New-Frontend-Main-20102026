@@ -47,7 +47,6 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
   onOpenAddFranchise
 }) => {
   const [franchises, setFranchises] = useState<Franchise[]>([]);
-  const [locations, setLocations] = useState<FranchiseLocation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'franchises' | 'locations' | 'payouts'>('franchises');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -236,6 +235,24 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
             >
               <ArrowPathIcon className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
+            {onOpenAddFranchise && (
+              <button
+                onClick={onOpenAddFranchise}
+                title="Add Franchise"
+                className="p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+              >
+                <PlusIcon className="w-5 h-5" />
+              </button>
+            )}
+            {onOpenAddLocation && (
+              <button
+                onClick={onOpenAddLocation}
+                title="Add Location"
+                className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              >
+                <MapPinIcon className="w-5 h-5" />
+              </button>
+            )}
           </div>
         </div>
 

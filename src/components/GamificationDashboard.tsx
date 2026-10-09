@@ -101,8 +101,8 @@ const GamificationDashboard: React.FC = () => {
     },
     {
       id: '8',
-      title: 'Icebreaker Pro',
-      description: 'Answer 20 icebreaker questions',
+      title: 'Lapidaire Pro',
+      description: 'Answer 20lapidaire questions',
       points: 250,
       icon: '❓',
       completed: false

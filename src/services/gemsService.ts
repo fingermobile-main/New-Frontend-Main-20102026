@@ -32,7 +32,14 @@ class GemsService {
 
   constructor() {
     this.api.interceptors.request.use((config) => {
-      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+      const token =
+        localStorage.getItem('authToken') ||
+        localStorage.getItem('accessToken') ||
+        localStorage.getItem('fingermobile_token') ||
+        localStorage.getItem('token') ||
+        sessionStorage.getItem('authToken') ||
+        sessionStorage.getItem('accessToken') ||
+        sessionStorage.getItem('token');
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -210,7 +217,28 @@ class GemsService {
     }
   }
 
-  // 空行分隔类方法
+  async purchaseGems(
+    gemAmount: number,
+    costFic: number,
+    packName: string = 'Gem Pack',
+    paymentMethod: string = 'FIC'
+  ): Promise<{ success: boolean; message: string; newBalance?: number; data?: any }> {
+    try {
+      const response = await this.api.post('/gems/purchase', {
+        gemAmount,
+        costFic,
+        packName,
+        paymentMethod
+      });
+      return response.data;
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to complete gem purchase'
+      };
+    }
+  }
+
   async searchGems(query: string, limit: number = 20, offset: number = 0): Promise<GemsResponse> {
     try {
       // For now, we'll just fetch all gems and filter on the frontend

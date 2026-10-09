@@ -37,6 +37,14 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         badge: { text: 'Feed', type: 'primary' }
       },
       {
+        id: 'forum-draft',
+        title: 'Forum Page (09/10/2026 Draft)',
+        description: 'Modernized 3-Column Sovereign Streamlined Layout',
+        path: '/forum-draft',
+        icon: 'Sparkles',
+        badge: { text: 'Draft', type: 'info' }
+      },
+      {
         id: 'hallmark',
         title: 'Hallmark',
         description: 'Mega-communities hosting up to 250,000 members',

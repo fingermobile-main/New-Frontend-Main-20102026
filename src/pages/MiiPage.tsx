@@ -16,6 +16,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { MiiStoriesBar } from '../components/MiiStoriesBar';
+import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import {
   MiiPinExchangeModal,
   MiiFingerOrbitModal,
@@ -192,11 +193,20 @@ const MiiPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tab 1: Moments & Live ShowCase */}
-      {activeTab === 'moments' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Content Area with UniversalProfileCard on Top Left */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start mt-6">
+        {/* Top Left ProfileCard Column */}
+        <div className="lg:col-span-1 space-y-4">
+          <UniversalProfileCard />
+        </div>
+
+        {/* Main Tabs Content Column */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Tab 1: Moments & Live ShowCase */}
+          {activeTab === 'moments' && (
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
           {/* Live ShowCase Sync Panel */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="xl:col-span-5 space-y-6">
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
@@ -465,6 +475,8 @@ const MiiPage: React.FC = () => {
           </form>
         </div>
       )}
+        </div>
+      </div>
 
       {/* Global Modals */}
       <CreatePubliciteeShortsModal

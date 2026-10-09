@@ -1,86 +1,220 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import LushPressiesPage from './LushPressiesPage';
 
 describe('LushPressiesPage Component', () => {
-  it('renders Lush Pressies title, tabs, and profiles after loading', async () => {
-    render(<LushPressiesPage />);
-
-    // Wait for mock data loading to resolve
-    await waitFor(() => {
-      expect(screen.getByText('Lush Pressies')).toBeInTheDocument();
-    });
-
-    expect(screen.getByText('Alex Johnson, 28')).toBeInTheDocument();
-    expect(screen.getByText('Discover')).toBeInTheDocument();
-    expect(screen.getByText('Gifts')).toBeInTheDocument();
-    expect(screen.getByText('Settings')).toBeInTheDocument();
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('lush_pressies_consent', 'true');
+    localStorage.setItem('lush_pressies_user_pin', '749102');
   });
 
-  it('allows opening and interacting with the Private PIN Exchange modal', async () => {
-    render(<LushPressiesPage />);
+  it('renders user profile and LinkedIn-style feed channels', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('Taylor Swift, 33')).toBeInTheDocument();
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
     });
 
-    // Taylor Swift has isPinProtected: true
-    const pinButtons = screen.getAllByRole('button', { name: /PIN/i });
-    expect(pinButtons.length).toBeGreaterThan(0);
-    fireEvent.click(pinButtons[0]);
-
-    // Modal should be open
-    expect(screen.getByText('Private PIN Exchange')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('••••••')).toBeInTheDocument();
-
-    const pinInput = screen.getByPlaceholderText('••••••');
-    fireEvent.change(pinInput, { target: { value: '123456' } });
-
-    const unlockButton = screen.getByRole('button', { name: /Verify & Unlock/i });
-    expect(unlockButton).toBeEnabled();
-    fireEvent.click(unlockButton);
-
-    expect(screen.getByText('Cryptographic Key Verified!')).toBeInTheDocument();
+    expect(screen.getByText('@alex_lush')).toBeInTheDocument();
+    expect(screen.getByText('Lush-Pressies Feed')).toBeInTheDocument();
+    expect(screen.getAllByText(/Encore™ \(3–5★\)/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Discover Deck').length).toBeGreaterThan(0);
+    expect(screen.getByText('Discovery Deck')).toBeInTheDocument();
+    expect(screen.getByText('Mutual Matches')).toBeInTheDocument();
   });
 
-  it('allows opening and submitting the Escrow Icebreaker Gifting modal', async () => {
-    render(<LushPressiesPage />);
+  it('navigates to Encore tab and displays 3-5 star member highscores', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('Alex Johnson, 28')).toBeInTheDocument();
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
     });
 
-    const escrowButtons = screen.getAllByRole('button', { name: /Escrow Icebreaker/i });
-    expect(escrowButtons.length).toBeGreaterThan(0);
-    fireEvent.click(escrowButtons[0]);
+    const encoreButtons = screen.getAllByRole('button', { name: /Encore™/i });
+    expect(encoreButtons.length).toBeGreaterThan(0);
+    fireEvent.click(encoreButtons[0]);
 
-    // Modal open
-    expect(screen.getByText('Escrow Icebreaker Gift')).toBeInTheDocument();
-    expect(screen.getByText('Smart Escrow Guarantee')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText('Exclusive 3–5 Star Members & FingerLux Expeditions')
+      ).toBeInTheDocument();
+    });
 
-    // Select amount
-    const fiftyDollarBtn = screen.getByRole('button', { name: '$50' });
-    fireEvent.click(fiftyDollarBtn);
-
-    const submitBtn = screen.getByRole('button', { name: /Bond & Dispatch Escrow \(\$50\)/i });
-    fireEvent.click(submitBtn);
-
-    expect(screen.getByText('Escrow Deposit Locked!')).toBeInTheDocument();
+    expect(screen.getAllByText('Propose Meet').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Luxury Gift').length).toBeGreaterThan(0);
   });
 
-  it('renders Sovereign Member Privacy & Incognito Engine in Settings tab', async () => {
-    render(<LushPressiesPage />);
+  it('allows opening Gamification Dashboard modal from rewards section', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('Settings')).toBeInTheDocument();
+      expect(screen.getByText('View Badges & Leaderboard')).toBeInTheDocument();
     });
 
-    const settingsTab = screen.getByRole('button', { name: /Settings/i });
-    fireEvent.click(settingsTab);
+    fireEvent.click(screen.getByText('View Badges & Leaderboard'));
 
-    expect(screen.getByText('Sovereign Member Privacy & Incognito Engine')).toBeInTheDocument();
-    expect(screen.getByText('Incognito Browsing Mode')).toBeInTheDocument();
-    expect(screen.getByText('Hide from Global Search')).toBeInTheDocument();
-    expect(screen.getByText('Mask Profile Behind 6-Digit PIN')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText('Lush Gamification, Streaks & Leaderboard')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('allows opening Activity Heatmap modal', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Activity Heatmap')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Activity Heatmap'));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Member Activity Heatmap & Peak Hours')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('allows opening 5-Month Commitment Milestone modal', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('5-Month Commitment')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('5-Month Commitment'));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('5-Month Commitment Milestone')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('allows opening Lush Plushies luxury gift catalog modal', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Catalog')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Catalog'));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Lush Plushies Luxury Gift Catalog')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('allows opening Edit Profile modal and modifying bio', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+    });
+
+    const editProfileBtn = screen.getByTitle('Edit Bio, Headline, Avatars & Banners');
+    fireEvent.click(editProfileBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Edit Lush Pressies Profile')
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Display Name')).toBeInTheDocument();
+    expect(screen.getByText('Bio & Lifestyle Statement')).toBeInTheDocument();
+  });
+
+  it('displays PIN Quota gauge and allows opening PIN Packages modal', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+    });
+
+    // Check PIN Quota indicators
+    expect(screen.getAllByText(/PIN Quota/i).length).toBeGreaterThan(0);
+
+    const buyPinsBtn = screen.getByRole('button', { name: /\+ Buy PINs/i });
+    fireEvent.click(buyPinsBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('6-Digit PIN Generation Packages & Quota')
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Starter Connector Pack')).toBeInTheDocument();
+    expect(screen.getByText('Elite Matchmaker Pack')).toBeInTheDocument();
+  });
+
+  it('allows opening unlocked member profile and revoking 6-digit PIN', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+    });
+
+    // Nia Adebayo is an unlocked match with pinExchanged: true in Mutual Matches
+    const niaMatches = screen.getAllByText('Nia Adebayo');
+    // The match card is the second one in the discovery sidebar
+    fireEvent.click(niaMatches[niaMatches.length - 1]);
+
+    await waitFor(() => {
+      expect(screen.getByText('6-Digit PIN Exchanged')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Change of Mind / Mismatch?')).toBeInTheDocument();
+    const revokeBtn = screen.getByRole('button', { name: /Revoke PIN/i });
+    fireEvent.click(revokeBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Revoke PIN & Close Connection')
+      ).toBeInTheDocument();
+    });
   });
 });
+

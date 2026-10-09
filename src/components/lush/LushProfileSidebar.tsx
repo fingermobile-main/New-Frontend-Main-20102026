@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   SparklesIcon,
@@ -10,15 +11,22 @@ import {
   HeartIcon,
   GiftIcon,
   ChatBubbleLeftEllipsisIcon,
-  HashtagIcon
+  HashtagIcon,
+  StarIcon,
+  Square2StackIcon,
+  ChartBarIcon,
+  TrophyIcon,
+  PencilSquareIcon,
 } from '@heroicons/react/24/outline';
 import { VerificationBadge } from '../verification/VerificationBadge';
+import { PinQuotaInfo } from './LushPinPackagesModal';
 
 export interface LushUserProfile {
   id: string;
   name: string;
   username: string;
   headline: string;
+  bio?: string;
   location: string;
   avatar: string;
   coverImage?: string;
@@ -37,23 +45,38 @@ export interface LushUserProfile {
 interface LushProfileSidebarProps {
   user: LushUserProfile;
   activeFeedTab: string;
-  onSelectFeedTab: (tab: string) => void;
+  pinQuota?: PinQuotaInfo;
+  onSelectFeedTab: (_tab: string) => void;
   onToggleIncognito: () => void;
   onToggleRadiate: () => void;
   onOpenPreferences: () => void;
   onOpenPinModal: () => void;
+  onOpenGamification?: () => void;
+  onOpenHeatmap?: () => void;
+  onOpenCommitTracker?: () => void;
+  onOpenEditProfile?: () => void;
+  onOpenPinPackages?: () => void;
 }
 
 export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
   user,
   activeFeedTab,
+  pinQuota,
   onSelectFeedTab,
   onToggleIncognito,
   onToggleRadiate,
   onOpenPreferences,
-  onOpenPinModal
+  onOpenPinModal,
+  onOpenGamification,
+  onOpenHeatmap,
+  onOpenCommitTracker,
+  onOpenEditProfile,
+  onOpenPinPackages,
 }) => {
-  const xpPercent = Math.min(100, Math.round((user.xpCurrent / user.xpMax) * 100));
+  const xpPercent = Math.min(
+    100,
+    Math.round((user.xpCurrent / user.xpMax) * 100)
+  );
 
   return (
     <aside className="space-y-4">
@@ -64,7 +87,11 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           className="h-24 bg-gradient-to-r from-emerald-600 via-teal-700 to-[#DC582A] relative"
           style={
             user.coverImage
-              ? { backgroundImage: `url(${user.coverImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+              ? {
+                backgroundImage: `url(${user.coverImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }
               : undefined
           }
         >
@@ -92,16 +119,45 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
                 <EyeSlashIcon className="w-3.5 h-3.5" />
               </span>
             )}
+            {onOpenEditProfile && (
+              <button
+                type="button"
+                onClick={onOpenEditProfile}
+                className="absolute top-0 right-0 p-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-sm transition"
+                title="Edit Profile & Bio"
+              >
+                <PencilSquareIcon className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           <div className="mt-2.5 flex items-center justify-center gap-1.5">
-            <h2 className="text-base font-bold text-gray-900 tracking-tight">{user.name}</h2>
+            <h2 className="text-base font-bold text-gray-900 tracking-tight">
+              {user.name}
+            </h2>
             <VerificationBadge level={user.verificationLevel} size="small" />
           </div>
 
           <p className="text-xs text-gray-500 font-mono">@{user.username}</p>
-          <p className="text-xs text-emerald-800 font-medium mt-1">{user.headline}</p>
+          <p className="text-xs text-emerald-800 font-medium mt-1">
+            {user.headline}
+          </p>
           <p className="text-[11px] text-gray-500 mt-0.5">{user.location}</p>
+
+          {/* Edit Profile Action Button */}
+          {onOpenEditProfile && (
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={onOpenEditProfile}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/90 transition shadow-2xs"
+                title="Edit Bio, Headline, Avatars & Banners"
+              >
+                <PencilSquareIcon className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Edit Profile</span>
+              </button>
+            </div>
+          )}
 
           {/* Membership & PIN Pill */}
           <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-full text-xs text-emerald-900">
@@ -113,9 +169,35 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               title="Click to view or change PIN"
             >
               <LockClosedIcon className="w-3 h-3" />
-              PIN: {user.pinNumber ? `••••${user.pinNumber.slice(-2)}` : 'Active'}
+              PIN:{' '}
+              {user.pinNumber ? `••••${user.pinNumber.slice(-2)}` : 'Active'}
             </button>
           </div>
+
+          {/* 6-Digit PIN Generation Quota Indicator */}
+          {pinQuota && (
+            <div className="mt-2.5 flex items-center justify-between px-3 py-1.5 bg-[#F5F9F6] border border-emerald-200/80 rounded-xl text-xs">
+              <div className="flex items-center gap-1.5 text-gray-700">
+                <span className="font-semibold text-emerald-900">PIN Quota:</span>
+                <span className="font-mono font-bold text-emerald-700">
+                  {pinQuota.isUnlimited
+                    ? '∞ Unlimited'
+                    : `${pinQuota.generationsRemaining}/${pinQuota.totalAllocated}`}
+                </span>
+                <span className="text-[10px] text-gray-500 font-medium">Left</span>
+              </div>
+              {onOpenPinPackages && (
+                <button
+                  type="button"
+                  onClick={onOpenPinPackages}
+                  className="text-[11px] font-bold text-[#DC582A] hover:text-orange-700 hover:underline transition"
+                  title="Purchase PIN Packages"
+                >
+                  + Packages
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Matching Intent Tag */}
           <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
@@ -143,7 +225,9 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         <div>
           <div className="flex justify-between text-[11px] text-gray-500 mb-1">
             <span>XP Progress</span>
-            <span>{user.xpCurrent} / {user.xpMax} XP</span>
+            <span>
+              {user.xpCurrent} / {user.xpMax} XP
+            </span>
           </div>
           <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
             <div
@@ -176,6 +260,16 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           </div>
         </div>
 
+        {onOpenGamification && (
+          <button
+            onClick={onOpenGamification}
+            className="w-full py-1.5 px-3 rounded-xl text-[11px] font-bold text-[#DC582A] bg-orange-50 hover:bg-orange-100/80 border border-orange-200/60 flex items-center justify-center gap-1.5 transition"
+          >
+            <TrophyIcon className="w-3.5 h-3.5" />
+            <span>View Badges & Leaderboard</span>
+          </button>
+        )}
+
         {/* Quick Toggles: Radiate & Incognito */}
         <div className="space-y-2 pt-2 border-t border-gray-100">
           <button
@@ -190,7 +284,9 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               <RadioIcon className="w-4 h-4" />
               Radiate Radar
             </span>
-            <span className="text-[11px] font-bold">{user.isRadiating ? 'ON' : 'OFF'}</span>
+            <span className="text-[11px] font-bold">
+              {user.isRadiating ? 'ON' : 'OFF'}
+            </span>
           </button>
 
           <button
@@ -205,7 +301,9 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
               <EyeSlashIcon className="w-4 h-4" />
               Sovereign Incognito
             </span>
-            <span className="text-[11px] font-bold">{user.isIncognito ? 'ACTIVE' : 'OFF'}</span>
+            <span className="text-[11px] font-bold">
+              {user.isIncognito ? 'ACTIVE' : 'OFF'}
+            </span>
           </button>
         </div>
       </div>
@@ -226,26 +324,65 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
         >
           <span className="flex items-center gap-2">
             <HeartIcon className="w-4 h-4" />
-            Lush-Pressies
+            Lush-Pressies Feed
           </span>
-          <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-            activeFeedTab === 'feed' ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-600'
-          }`}>
+          <span
+            className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+              activeFeedTab === 'feed'
+                ? 'bg-emerald-500 text-white'
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
             Live
           </span>
         </button>
 
         <button
-          onClick={() => onSelectFeedTab('icebreakers')}
+          onClick={() => onSelectFeedTab('encore')}
           className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
-            activeFeedTab === 'icebreakers'
+            activeFeedTab === 'encore'
+              ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-xs'
+              : 'text-amber-950 bg-amber-50/60 hover:bg-amber-100 hover:text-amber-950 border border-amber-200/50'
+          }`}
+          title="Scroll 3-5 Star Members, Propose Meets & Expeditions, Send OwnIt/Flamingo Gifts"
+        >
+          <span className="flex items-center gap-2">
+            <StarIcon className="w-4 h-4 text-amber-500" />
+            Encore™ (3–5★)
+          </span>
+          <span className="text-[10px] bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded-full font-bold">
+            VIP Bonds
+          </span>
+        </button>
+
+        <button
+          onClick={() => onSelectFeedTab('discover')}
+          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+            activeFeedTab === 'discover'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Square2StackIcon className="w-4 h-4 text-emerald-600" />
+            Discover Deck
+          </span>
+          <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full font-bold">
+            Swipe
+          </span>
+        </button>
+
+        <button
+          onClick={() => onSelectFeedTab('lapidaires')}
+          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+            activeFeedTab === 'lapidaires' || activeFeedTab === 'lapidaires'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900'
           }`}
         >
           <span className="flex items-center gap-2">
             <ChatBubbleLeftEllipsisIcon className="w-4 h-4" />
-            Icebreaker Q&A
+            <span>Lapidaire Q&A</span>
           </span>
           <span className="text-[10px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-full">
             30 Prompts
@@ -283,7 +420,27 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
           </span>
         </button>
 
-        <div className="pt-2 border-t border-gray-100">
+        <div className="pt-2 border-t border-gray-100 space-y-1">
+          {onOpenHeatmap && (
+            <button
+              onClick={onOpenHeatmap}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
+            >
+              <ChartBarIcon className="w-4 h-4 text-emerald-600" />
+              Activity Heatmap
+            </button>
+          )}
+
+          {onOpenCommitTracker && (
+            <button
+              onClick={onOpenCommitTracker}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"
+            >
+              <TrophyIcon className="w-4 h-4 text-amber-600" />
+              5-Month Commitment
+            </button>
+          )}
+
           <button
             onClick={onOpenPreferences}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 hover:bg-emerald-50/70 hover:text-emerald-900 transition"

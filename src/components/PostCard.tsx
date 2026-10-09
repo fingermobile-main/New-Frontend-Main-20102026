@@ -2,15 +2,12 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 /*
  * FingerMobile Protocol™ - Post Card Component
- * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
+ * Copyright © 2026 Mbah Israel Obinna. All rights reserved.
  * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
  * which are the sole and exclusive property of Mbah Israel Obinna.
- *
- * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
  */
 
-
-import { Post } from '../types'; // Updated types file should now include likes property
+import { Post } from '../types';
 import { HeartIcon } from '../icons';
 
 export interface AiAssistData {
@@ -33,11 +30,15 @@ interface PostCardProps {
   post: Post;
   onLike?: (postId: string) => void;
   onDislike?: (postId: string) => void;
-  onAddComment?: (postId: string, comment: string) => void; // Un-prefixed
-  onShare?: (postId: string) => void; // Un-prefixed
-  onView?: (postId: string) => void; // Un-prefixed
+  onAddComment?: (postId: string, comment: string) => void;
+  onShare?: (postId: string) => void;
+  onView?: (postId: string) => void;
   onVote?: (postId: string, voteType: unknown) => void;
   onOpenPollModal?: (postId: string) => void;
+  onVotePoll?: (postId: string, optionIndex: number) => void;
+  onBookmark?: (postId: string) => void;
+  onReport?: (postId: string) => void;
+  onMessage?: (postId: string) => void;
   onOpenGiftModal?: (postId: string) => void;
   onOpenGiftcardModal?: (postId: string) => void;
   onOpenPaylinkModal?: (postId: string) => void;
@@ -53,7 +54,6 @@ interface PostCardProps {
   ficBalance?: number;
   showToast?: (message: string, type?: 'success' | 'error' | 'info' | 'warning') => void;
 
-  // Keep the old prefixed props optional so it doesn't break everything instantly
   _onAddComment?: (postId: string, comment: string) => void;
   _onShare?: (postId: string) => void;
   _onView?: (postId: string) => void;
@@ -69,45 +69,115 @@ const PostCard: React.FC<PostCardProps> = ({
   onView,
   onVote,
   onOpenPollModal,
+  onVotePoll,
+  onBookmark,
+  onReport,
+  onMessage,
   onOpenGiftModal,
   onOpenGiftcardModal,
   onOpenPaylinkModal,
   onOpenProductModal,
   onOpenGemModal,
   onOpenMarketplaceModal,
+  handleDeletePost,
+  handleTokenizePost,
+  showToast,
   _onAddComment,
   _onShare,
   _onView
 }) => {
-  const [showMoreActions, setShowMoreActions] = useState(false);
+  const [showMoreActions, setShowMoreActions] = useState(true);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>((post as any).isBookmarked || false);
+  const [isReported, setIsReported] = useState<boolean>(false);
 
-  // Define missing functions that were referenced in the component
-  const handleTokenizePost = async (postId: string) => {
-    try {
-      alert(`Post ${postId} tokenized successfully`);
-    } catch {
-      alert('Failed to tokenize post');
+  // Poll state handling
+  const rawPoll = (post as any).poll;
+  const rawPollOptions = (post as any).pollOptions;
+
+  const [selectedPollOption, setSelectedPollOption] = useState<number | null>(() => {
+    if (rawPoll?.userVotedIndex !== undefined) return rawPoll.userVotedIndex;
+    if (rawPoll?.votedOption !== undefined) {
+      const idx = rawPoll.options?.findIndex((o: string) => o === rawPoll.votedOption);
+      return idx >= 0 ? idx : null;
     }
+    return null;
+  });
+
+  const [pollData, setPollData] = useState(() => {
+    if (rawPoll?.options && Array.isArray(rawPoll.options)) {
+      return {
+        question: rawPoll.question || 'Community Consensus Poll',
+        options: rawPoll.options.map((opt: any) =>
+          typeof opt === 'string'
+            ? { text: opt, votes: Math.floor(Math.random() * 25) + 3 }
+            : { text: opt.text || opt.title, votes: Number(opt.votes) || 0 }
+        )
+      };
+    }
+    if (Array.isArray(rawPollOptions) && rawPollOptions.length > 0) {
+      return {
+        question: (post as any).title || 'Community Poll',
+        options: rawPollOptions.map((opt: any) => ({
+          text: opt.text || opt.title || String(opt),
+          votes: Number(opt.votes) || 0
+        }))
+      };
+    }
+    return null;
+  });
+
+  const totalPollVotes = pollData
+    ? pollData.options.reduce((sum: number, opt: any) => sum + (opt.votes || 0), 0)
+    : 0;
+
+  const handleVotePollOption = (idx: number) => {
+    if (selectedPollOption !== null) {
+      showToast?.('You have already voted on this poll.', 'info');
+      return;
+    }
+    setSelectedPollOption(idx);
+    setPollData((prev: any) => {
+      if (!prev) return null;
+      const updated = prev.options.map((opt: any, i: number) =>
+        i === idx ? { ...opt, votes: (opt.votes || 0) + 1 } : opt
+      );
+      return { ...prev, options: updated };
+    });
+    showToast?.('Vote cast successfully on sovereign ledger! ✓', 'success');
+    onVotePoll?.(String(post.id), idx);
   };
 
-  const handleDeletePost = async (postId: string) => {
-    try {
-      if (window.confirm('Are you sure you want to delete this post?')) {
-        alert(`Post ${postId} deleted successfully`);
-      }
-    } catch {
-      alert('Failed to delete post');
-    }
+  const handleToggleBookmark = () => {
+    const next = !isBookmarked;
+    setIsBookmarked(next);
+    showToast?.(next ? 'Post bookmarked to your library!' : 'Bookmark removed', 'info');
+    onBookmark?.(String(post.id));
   };
 
-  // Helper function to calculate likes display value
+  const handleReportPost = () => {
+    setIsReported(true);
+    showToast?.('Post flagged for Community Moderator council review.', 'warning');
+    onReport?.(String(post.id));
+  };
+
+  const handleMessageAuthor = () => {
+    showToast?.(`Opening direct encrypted message with ${post.author?.name || 'Author'}...`, 'info');
+    onMessage?.(String(post.id));
+  };
+
+  const onTokenize = handleTokenizePost || (async (postId?: string) => {
+    alert(`Post ${postId} tokenized successfully`);
+  });
+
+  const onDelete = handleDeletePost || (async (postId?: string) => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      alert(`Post ${postId} deleted successfully`);
+    }
+  });
+
   const getLikesDisplay = (): number => {
-    if (post.likesCount != null) {
-      return post.likesCount;
-    }
-    if (typeof post.likes === 'number') {
-      return post.likes;
-    }
+    if (post.likesCount != null) return post.likesCount;
+    if (typeof post.likes === 'number') return post.likes;
     if (typeof post.likes === 'string') {
       const parsed = parseInt(post.likes, 10);
       return isNaN(parsed) ? 0 : parsed;
@@ -120,38 +190,110 @@ const PostCard: React.FC<PostCardProps> = ({
     return 0;
   };
 
-  // Use either new un-prefixed or old prefixed props
   const handleComment = onAddComment || _onAddComment;
   const handleShare = onShare || _onShare;
   const handleView = onView || _onView;
 
   return (
-    <div className="post-card glass rounded-2xl p-6 border border-white/40 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all mb-5 group">
+    <div className="post-card glass rounded-2xl p-6 border border-white/40 dark:border-gray-800 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all mb-5 group bg-white/95 dark:bg-gray-900/90">
+      {/* Post Header */}
       <div className="flex justify-between items-start gap-3">
         <Link to={`/post/${post.id}`} className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 group-hover:text-brand-blue transition-colors">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors">
             {post.title || 'Untitled Post'}
           </h3>
         </Link>
-        {((post as any).is_ai_generated || (post as any).isAiGenerated) && (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-800 border border-purple-200 shadow-xs flex-shrink-0">
-            🤖 {((post as any).ai_badge_label || (post as any).aiBadgeLabel || 'AI Synthetic')}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {pollData && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs">
+              📊 Live Poll
+            </span>
+          )}
+          {((post as any).is_ai_generated || (post as any).isAiGenerated) && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-800 border border-purple-200 shadow-xs flex-shrink-0">
+              🤖 {((post as any).ai_badge_label || (post as any).aiBadgeLabel || 'AI Synthetic')}
+            </span>
+          )}
+        </div>
       </div>
-      <p className="mt-3 text-gray-600 text-sm leading-relaxed">
-        {post.excerpt || post.content?.substring(0, 100) + '...' || 'No content available'}
+
+      <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+        {post.excerpt || post.content?.substring(0, 160) + '...' || 'No content available'}
       </p>
+
+      {/* Interactive Poll Component (LushPressies Standard) */}
+      {pollData && (
+        <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-teal-50/40 to-slate-50/60 dark:from-emerald-950/30 dark:via-gray-800/60 dark:to-gray-900 border border-emerald-200/90 dark:border-emerald-800/50 shadow-xs">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold tracking-wider uppercase">
+                Poll
+              </span>
+              <h4 className="font-bold text-sm text-gray-900 dark:text-white">
+                {pollData.question}
+              </h4>
+            </div>
+            <span className="text-[11px] font-mono text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full">
+              {totalPollVotes} votes
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {pollData.options.map((opt: any, idx: number) => {
+              const percent = totalPollVotes > 0 ? Math.round((opt.votes / totalPollVotes) * 100) : 0;
+              const isSelected = selectedPollOption === idx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleVotePollOption(idx)}
+                  className={`w-full text-left relative overflow-hidden rounded-xl border p-2.5 transition-all text-xs font-semibold ${
+                    isSelected
+                      ? 'border-emerald-500 bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-950 dark:text-emerald-200 ring-2 ring-emerald-400/50'
+                      : 'border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/80 hover:border-emerald-300 text-gray-800 dark:text-gray-200'
+                  }`}
+                >
+                  <div
+                    className={`absolute top-0 bottom-0 left-0 transition-all duration-500 ${
+                      isSelected
+                        ? 'bg-emerald-400/30 dark:bg-emerald-500/40'
+                        : 'bg-emerald-200/40 dark:bg-emerald-900/30'
+                    }`}
+                    style={{ width: `${percent}%` }}
+                  />
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      {isSelected ? (
+                        <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold">
+                          ✓
+                        </span>
+                      ) : (
+                        <span className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center text-[10px] text-gray-400">
+                          {idx + 1}
+                        </span>
+                      )}
+                      <span>{opt.text}</span>
+                    </span>
+                    <span className="font-mono text-[11px] font-bold text-gray-700 dark:text-gray-300">
+                      {percent}% ({opt.votes})
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Postcard Attachments Section */}
       {Array.isArray((post as any).attachments) && (post as any).attachments.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-2">
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 flex flex-wrap gap-2">
           {(post as any).attachments.map((att: any, idx: number) => (
             <div
               key={idx}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-700 shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-700 dark:text-gray-300 shadow-xs"
             >
-              <span className="font-bold text-gray-900 capitalize">{att.type?.replace('_', ' ')}</span>
+              <span className="font-bold text-gray-900 dark:text-white capitalize">{att.type?.replace('_', ' ')}</span>
               {att.data?.amount && (
                 <span className="text-emerald-600 font-mono font-bold">({att.data.amount} {att.data.currency || 'FIC'})</span>
               )}
@@ -163,15 +305,16 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
       )}
 
-      <div className="mt-5 flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+      {/* Author and Date */}
+      <div className="mt-5 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3 mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-blue to-blue-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
             {(post.author?.name || 'U').charAt(0).toUpperCase()}
           </div>
           <div className="text-xs text-gray-500">
-            <span className="font-bold text-gray-800">{post.author?.name || 'Unknown'}</span>
+            <span className="font-bold text-gray-800 dark:text-gray-200">{post.author?.name || 'Unknown Member'}</span>
             <span className="mx-1.5">&middot;</span>
-            {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown date'}
+            {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Active Protocol'}
           </div>
         </div>
 
@@ -187,15 +330,15 @@ const PostCard: React.FC<PostCardProps> = ({
         </button>
       </div>
 
+      {/* Primary Engagement Actions (Upvote, Downvote, Like, Dislike, Comment, Share, Bookmark, Message, Report) */}
       <div className="flex flex-wrap gap-2 items-center">
-        {/* Primary Engagement Actions */}
         {onLike && (
           <button
             onClick={() => onLike(String(post.id))}
             className={`flex items-center space-x-1.5 px-3 py-1.5 border rounded-full transition-all text-xs font-bold ${
               post.isLiked
                 ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100'
-                : 'bg-white/60 text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-red-500 hover:border-red-200'
+                : 'bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:text-red-500 hover:border-red-200'
             }`}
           >
             <HeartIcon className={post.isLiked ? 'text-red-500' : ''} />
@@ -209,17 +352,26 @@ const PostCard: React.FC<PostCardProps> = ({
             className={`flex items-center space-x-1.5 px-3 py-1.5 border rounded-full transition-all text-xs font-bold ${
               post.isDisliked
                 ? 'bg-gray-200 text-gray-800 border-gray-300'
-                : 'bg-white/60 text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-800'
+                : 'bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:text-gray-900'
             }`}
           >
             <span>👎 {getDislikesDisplay()}</span>
           </button>
         )}
 
+        {onVote && (
+          <button
+            onClick={() => onVote(String(post.id), 'up')}
+            className="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold"
+          >
+            ▲ Upvote
+          </button>
+        )}
+
         {handleComment && (
           <button
             onClick={() => handleComment(String(post.id), '')}
-            className="px-3 py-1.5 bg-white/60 text-gray-600 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             💬 Comment
           </button>
@@ -228,27 +380,53 @@ const PostCard: React.FC<PostCardProps> = ({
         {handleShare && (
           <button
             onClick={() => handleShare(String(post.id))}
-            className="px-3 py-1.5 bg-white/60 text-gray-600 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             📤 Share
           </button>
         )}
 
+        {/* Bookmark / Save */}
+        <button
+          onClick={handleToggleBookmark}
+          className={`px-3 py-1.5 border rounded-full transition-colors text-xs font-bold ${
+            isBookmarked
+              ? 'bg-amber-50 text-amber-700 border-amber-200'
+              : 'bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:text-amber-600'
+          }`}
+          title="Save to personal bookmarks"
+        >
+          {isBookmarked ? '🔖 Saved' : '🔖 Bookmark'}
+        </button>
+
+        {/* Direct Encrypted Message */}
+        <button
+          onClick={handleMessageAuthor}
+          className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 hover:text-emerald-600 transition-colors text-xs font-bold"
+          title="Message Creator"
+        >
+          ✉️ Message
+        </button>
+
+        {/* Report Action */}
+        <button
+          onClick={handleReportPost}
+          className={`px-3 py-1.5 border rounded-full transition-colors text-xs font-bold ${
+            isReported
+              ? 'bg-rose-50 text-rose-700 border-rose-200'
+              : 'bg-white/60 dark:bg-gray-800 text-gray-500 border-gray-200 dark:border-gray-700 hover:text-rose-600'
+          }`}
+          title="Report inappropriate content"
+        >
+          {isReported ? 'Flagged' : '⚠️ Report'}
+        </button>
+
         {handleView && (
           <button
             onClick={() => handleView(String(post.id))}
-            className="px-3 py-1.5 bg-white/60 text-gray-600 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             👁️ View
-          </button>
-        )}
-
-        {onVote && (
-          <button
-            onClick={() => onVote(String(post.id), 'up')}
-            className="px-3 py-1.5 bg-green-50 text-green-600 border border-green-100 rounded-full hover:bg-green-100 transition-colors text-xs font-bold"
-          >
-            Vote
           </button>
         )}
 
@@ -257,14 +435,14 @@ const PostCard: React.FC<PostCardProps> = ({
             onClick={() => onOpenPollModal(String(post.id))}
             className="px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full hover:bg-blue-100 transition-colors text-xs font-bold"
           >
-            📊 Poll
+            📊 Create Poll
           </button>
         )}
       </div>
 
-      {/* Secondary Actions / Add & Send Items (Toggleable to save space) */}
+      {/* Secondary Actions / Add & Send Items (Toggleable) */}
       {showMoreActions && (
-        <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-2 items-center animate-fade-in">
+        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex flex-wrap gap-2 items-center animate-fade-in">
           {onOpenGiftModal && (
             <button onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-600 border border-yellow-100 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold">
               🎁 Gift
@@ -295,10 +473,10 @@ const PostCard: React.FC<PostCardProps> = ({
               🔗 Paylink
             </button>
           )}
-          <button onClick={() => handleTokenizePost(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold">
+          <button onClick={() => onTokenize(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold">
             Tokenize
           </button>
-          <button onClick={() => handleDeletePost(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-100 transition-colors text-xs font-bold">
+          <button onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-100 transition-colors text-xs font-bold">
             Delete
           </button>
         </div>

@@ -1,59 +1,39 @@
-import React, {} from 'react';
-import { useAppContext } from '../contexts/AppContext';
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import LushPressiesPage from '../pages/LushPressiesPage';
 
-// Mock the icons from heroicons
-jest.mock('../components/icons', () => ({
-  memberIcon: () => <div>member Icon</div>,
-  HeartIcon: () => <div>Heart Icon</div>,
-  GiftIcon: () => <div>Gift Icon</div>,
-  ChatBubbleLeftRightIcon: () => <div>Chat Icon</div>,
-  ChartBarIcon: () => <div>Chart Icon</div>,
-  CogIcon: () => <div>Cog Icon</div>,
-  MagnifyingGlassIcon: () => <div>Search Icon</div>}));
-
-describe('LushPressiesPage', () => {
-  it('renders without crashing', async () => {
-    render(<LushPressiesPage />);
-    expect(
-      await screen.findByText('Discover Matches', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
+describe('LushPressiesPage Integration', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('lush_pressies_consent', 'true');
+    localStorage.setItem('lush_pressies_user_pin', '749102');
   });
 
-  it('displays the main tab navigation', async () => {
-    render(<LushPressiesPage />);
-
-    expect(
-      await screen.findByText('member Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText('Heart Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText('Gift Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText('Chat Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText('Chart Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText('Cog Icon', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
+  it('renders without crashing with Sovereign Feed and Discovery Deck', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Alexandria Chen')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Discovery Deck')).toBeInTheDocument();
+    expect(screen.getByText('Mutual Matches')).toBeInTheDocument();
   });
 
-  it('renders the discover tab by default', async () => {
-    render(<LushPressiesPage />);
-    // Check that elements specific to the discover tab are present
-    expect(
-      await screen.findByText('Discover Matches', undefined, { timeout: 2000 }),
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByPlaceholderText('Search matches...', undefined, {
-        timeout: 2000}),
-    ).toBeInTheDocument();
+  it('displays feed navigation and mutual matches section', async () => {
+    render(
+      <MemoryRouter>
+        <LushPressiesPage />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Lush-Pressies Feed')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Mutual Matches')).toBeInTheDocument();
   });
 });
+

@@ -21,9 +21,15 @@ import { MiiPinExchangeModal, MiiFingerOrbitModal, MiiMiniStoreModal } from '../
 import UniversalHeader from '../components/layout/UniversalHeader';
 import H2AdBucket from '../components/layout/H2AdBucket';
 import CanaryAdPlacementWidget from '../components/canary/CanaryAdPlacementWidget';
+import UniversalProfileCard from '../components/common/UniversalProfileCard';
 
 import P2PStatusIndicator from '../components/P2PStatusIndicator';
 import voiceLineServiceInstance from '../services/VoiceLineService';
+import RichTextEditor, { sanitizeHtmlContent } from '../components/editor/RichTextEditor';
+import MediaUploadAndEditorModal from '../components/editor/MediaUploadAndEditorModal';
+import type { ProcessedMedia } from '../components/editor/MediaUploadAndEditorModal';
+import PostSettingsPanel, { DEFAULT_POST_SETTINGS } from '../components/editor/PostSettingsPanel';
+import type { PostSettings } from '../components/editor/PostSettingsPanel';
 
 const MainNavigationTabBar = () => {
   const [activeTab, setActiveTab] = useState('trends');
@@ -230,6 +236,16 @@ type ForumPostExtended = Omit<ForumPost, 'author' | 'attachments'> & {
   attachments?: any[];
   feeling?: FeelingActivity;
   mediaUrls?: string[];
+  hasPoll?: boolean;
+  poll?: {
+    question: string;
+    options: any[];
+    votes: Record<string, number>;
+    userVotedIndex?: number | null;
+    expiresAt?: string;
+  };
+  isBookmarked?: boolean;
+  isReported?: boolean;
 };
 
 // Fallback categories list to guarantee categories never fail to load
@@ -292,10 +308,21 @@ const ForumPage: React.FC = () => {
     visualEffect: 'NONE',
     interactionRule: 'NONE'
   });
+  const [isRichTextMode, setIsRichTextMode] = useState(false);
+  const [isMediaStudioOpen, setIsMediaStudioOpen] = useState(false);
+  const [postSettings, setPostSettings] = useState<PostSettings>(DEFAULT_POST_SETTINGS);
+  const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
 
   // Action handlers state: Photo/Video
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachments, setAttachments] = useState<MediaAttachment[]>([]);
+
+  // Poll creation & voting state
+  const [isPollComposerOpen, setIsPollComposerOpen] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptionInputs, setPollOptionInputs] = useState(['', '']);
+  const [pollDurationDays, setPollDurationDays] = useState(7);
+  const [userPollVotes, setUserPollVotes] = useState<Record<string, number>>({});
 
   // Action handlers state: Feeling/Activity
   const [isFeelingModalOpen, setIsFeelingModalOpen] = useState(false);
@@ -407,7 +434,13 @@ const ForumPage: React.FC = () => {
       updatedAt: thread.updatedAt,
       isApproved: true,
       spamScore: 0,
-      moderationStatus: 'approved'
+      moderationStatus: 'approved',
+      hasPoll: Boolean(thread.hasPoll || thread.poll),
+      poll: thread.poll ? {
+        question: thread.poll.question || thread.title,
+        options: Array.isArray(thread.poll.options) ? thread.poll.options : ['Strongly Agree', 'Neutral', 'Disagree'],
+        votes: thread.poll.votes || {}
+      } : undefined
     };
   }, []);
 
@@ -538,9 +571,21 @@ const ForumPage: React.FC = () => {
       });
   }, [forumPosts, searchTerm, sortBy]);
 
-  // Handler: Photo / Video Select
+  // Handler: Media Studio & Upload
   const handlePhotoVideoClick = () => {
-    fileInputRef.current?.click();
+    setIsMediaStudioOpen(true);
+  };
+
+  const handleMediaStudioSave = (media: ProcessedMedia) => {
+    const newAttachment: MediaAttachment = {
+      id: media.id || Math.random().toString(36).substring(2, 9),
+      file: new File([], media.name),
+      preview: media.url,
+      type: media.type === 'video' ? 'video' : 'image',
+      name: media.name
+    };
+    setAttachments(prev => [...prev, newAttachment]);
+    showToast(`Added ${media.name} to post media`, 'success');
   };
 
   const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -635,6 +680,22 @@ const ForumPage: React.FC = () => {
       if (selectedFeeling) {
         appliedTags.push(`activity:${selectedFeeling.emoji} ${selectedFeeling.label}`);
       }
+      // Section 2 Post Distribution Tags
+      if (postSettings.postCategory) {
+        appliedTags.push(`category:${postSettings.postCategory}`);
+      }
+      if (postSettings.audienceGender !== 'everyone') {
+        appliedTags.push(`audience:gender:${postSettings.audienceGender}`);
+      }
+      if (postSettings.audienceAgeBracket !== 'everyone') {
+        appliedTags.push(`audience:age:${postSettings.audienceAgeBracket}`);
+      }
+      if (postSettings.whoCanComment !== 'everyone') {
+        appliedTags.push(`comments:${postSettings.whoCanComment}`);
+      }
+      if (postSettings.isScheduled) {
+        appliedTags.push(`scheduled:${postSettings.scheduleMonth}-${postSettings.scheduleDay}@${postSettings.scheduleTime}`);
+      }
 
       const postTitle = newPostContent.trim()
         ? (newPostContent.substring(0, 50) + (newPostContent.length > 50 ? '...' : ''))
@@ -686,7 +747,15 @@ const ForumPage: React.FC = () => {
           isApproved: true,
           spamScore: 0,
           moderationStatus: 'approved',
-          censorship: censorshipOptions
+          censorship: censorshipOptions,
+          hasPoll: isPollComposerOpen && pollQuestion.trim().length > 0,
+          poll: isPollComposerOpen && pollQuestion.trim().length > 0 ? {
+            question: pollQuestion.trim(),
+            options: pollOptionInputs.map(o => o.trim()).filter(Boolean).length >= 2
+              ? pollOptionInputs.map(o => o.trim()).filter(Boolean)
+              : ['Agree', 'Disagree'],
+            votes: {}
+          } : undefined
         };
 
         setForumPosts(prev => [newPost, ...prev]);
@@ -696,6 +765,9 @@ const ForumPage: React.FC = () => {
         setAttachments([]);
         setSelectedFeeling(null);
         setCensorshipOptions({ tags: [], visualEffect: 'NONE', interactionRule: 'NONE' });
+        setIsPollComposerOpen(false);
+        setPollQuestion('');
+        setPollOptionInputs(['', '']);
       } else {
         showToast(result.error || 'Failed to create post', 'error');
       }
@@ -850,6 +922,86 @@ const ForumPage: React.FC = () => {
     }
   };
 
+  const handleVoteThreadPoll = (postId: string, optionIndex: number) => {
+    if (userPollVotes[postId] !== undefined) {
+      showToast('You have already voted on this poll.', 'info');
+      return;
+    }
+    setUserPollVotes(prev => ({ ...prev, [postId]: optionIndex }));
+    setForumPosts(prev =>
+      prev.map(p => {
+        if (p.id === postId && p.poll) {
+          const rawOpts = p.poll.options;
+          const optKey = typeof rawOpts[optionIndex] === 'string'
+            ? rawOpts[optionIndex]
+            : (rawOpts[optionIndex] as any)?.text || String(optionIndex);
+          const currentVotes = p.poll.votes?.[optKey] || 0;
+          return {
+            ...p,
+            poll: {
+              ...p.poll,
+              votes: {
+                ...p.poll.votes,
+                [optKey]: currentVotes + 1
+              }
+            }
+          };
+        }
+        return p;
+      })
+    );
+    showToast('Poll vote recorded on the sovereign ledger! ✓', 'success');
+  };
+
+  const handleBookmark = (postId: string) => {
+    setForumPosts(prev =>
+      prev.map(p => {
+        if (p.id === postId) {
+          const next = !p.isBookmarked;
+          showToast(next ? 'Thread saved to bookmarks!' : 'Bookmark removed', 'info');
+          return { ...p, isBookmarked: next };
+        }
+        return p;
+      })
+    );
+  };
+
+  const handleVoteThread = (postId: string, type: 'up' | 'down') => {
+    setForumPosts(prev =>
+      prev.map(p => {
+        if (p.id === postId) {
+          const delta = type === 'up' ? 1 : -1;
+          showToast(`Vote ${type === 'up' ? '▲ Upvote' : '▼ Downvote'} recorded!`, 'success');
+          return { ...p, likes: Math.max(0, p.likes + delta) };
+        }
+        return p;
+      })
+    );
+  };
+
+  const handleDislike = (postId: string) => {
+    setForumPosts(prevPosts =>
+      prevPosts.map(post => {
+        if (post.id === postId) {
+          const isCurrentlyDisliked = post.isDisliked;
+          return {
+            ...post,
+            dislikesCount: isCurrentlyDisliked ? Math.max(0, (post.dislikesCount || 0) - 1) : ((post.dislikesCount || 0) + 1),
+            isDisliked: !isCurrentlyDisliked
+          };
+        }
+        return post;
+      })
+    );
+    showToast('Dislike recorded on the thread', 'info');
+  };
+
+  const handleMessageAuthor = (post: ForumPostExtended) => {
+    const authorName = typeof post.author === 'string' ? post.author : (post.author as any)?.name || 'Member';
+    showToast(`Opening secure sovereign chat with @${authorName}...`, 'info');
+    navigate(`/chat?user=${encodeURIComponent(authorName)}`);
+  };
+
   if (loading && forumPosts.length === 0) {
     return <LoadingSpinner />;
   }
@@ -876,6 +1028,8 @@ const ForumPage: React.FC = () => {
         {/* Left Column Navigation MENU (Members Area & Status - NO Load More Button) */}
         <div className="w-80 flex-shrink-0 hidden md:block pr-8">
           <div className="sticky top-24 space-y-4">
+            {/* Sovereign Identity ProfileCard (Always on/by Top Left Corner) */}
+            <UniversalProfileCard />
             <CanaryAdsWidget />
             <ProfileCompletionCard />
             <AdvertisementCard />
@@ -941,10 +1095,10 @@ const ForumPage: React.FC = () => {
                   <span className="text-xs text-gray-400">📸</span>
                 </li>
                 <li
-                  onClick={() => navigate('/lendsqr')}
+                  onClick={() => navigate('/loansqr')}
                   className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-500 cursor-pointer py-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
                 >
-                  <span>Lendsqr</span>
+                  <span>LoanSqr</span>
                   <span className="text-xs text-gray-400">💳</span>
                 </li>
               </ul>
@@ -1087,40 +1241,113 @@ const ForumPage: React.FC = () => {
               </div>
             )}
 
-            <div className="flex items-center">
-              <img
-                src={authState.user?.avatar || 'https://via.placeholder.com/48x48'}
-                alt="User Avatar"
-                className="w-10 h-10 rounded-full mr-4 object-cover border border-gray-200"
-              />
-              <div className="flex-1 flex space-x-2">
-                <input
-                  type="text"
-                  value={newPostContent}
-                  onChange={(e) => setNewPostContent(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleCreatePost();
-                    }
-                  }}
-                  disabled={isCreatingPost}
-                  placeholder="Share Your Moments, Create a New Post..."
-                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white text-sm"
-                />
+            {/* Rich Editor Mode Switcher & Settings */}
+            <div className="flex items-center justify-between flex-wrap gap-2 mb-3 pb-2 border-b border-gray-100 dark:border-gray-700/60">
+              <button
+                type="button"
+                onClick={() => setIsRichTextMode(!isRichTextMode)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs ${
+                  isRichTextMode
+                    ? 'bg-[#ff6b00] text-white shadow-sm'
+                    : 'bg-orange-50 dark:bg-orange-950/40 text-[#ff6b00] border border-orange-200 dark:border-orange-800 hover:bg-orange-100'
+                }`}
+              >
+                <span>✨</span>
+                <span>{isRichTextMode ? 'Switch to Quick Single-Line' : 'Rich Text Editor (RTE) & Visual Styler'}</span>
+              </button>
+
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={handleCreatePost}
-                  disabled={isCreatingPost || (!newPostContent.trim() && attachments.length === 0)}
-                  className={`px-5 py-2.5 rounded-full font-semibold text-white text-sm transition whitespace-nowrap shadow-sm ${
-                    isCreatingPost || (!newPostContent.trim() && attachments.length === 0)
-                      ? 'bg-orange-300 cursor-not-allowed'
-                      : 'bg-orange-500 hover:bg-orange-600'
-                  }`}
+                  type="button"
+                  onClick={() => setIsMediaStudioOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-gray-700 hover:bg-orange-50 hover:text-[#ff6b00] text-gray-700 dark:text-gray-300 transition"
+                  title="Upload and edit photos, videos, and audio"
                 >
-                  {isCreatingPost ? 'Posting...' : 'Post'}
+                  <span>🎨</span>
+                  <span>Media Studio</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
+                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-300 transition"
+                >
+                  <span>⚙️ Post Settings</span>
+                  <span className="text-[10px]">{showSettingsDrawer ? '▲' : '▼'}</span>
                 </button>
               </div>
             </div>
+
+            {/* Section 2 Post Settings Collapsible Drawer */}
+            {showSettingsDrawer && (
+              <div className="mb-4 animate-fade-in">
+                <PostSettingsPanel
+                  settings={postSettings}
+                  onChange={setPostSettings}
+                />
+              </div>
+            )}
+
+            {isRichTextMode ? (
+              <div className="space-y-3 mb-3 animate-fade-in">
+                <RichTextEditor
+                  value={newPostContent}
+                  onChange={(out) => setNewPostContent(out.html || out.text)}
+                  placeholder="Compose your structured discussion, format text visually with bold, italics, font colors, lists, tables, and media embeds..."
+                  onOpenMediaModal={() => setIsMediaStudioOpen(true)}
+                />
+                <div className="flex items-center justify-between pt-1">
+                  <div className="text-xs text-gray-500">
+                    Structured Rich Postcard • Sanitized Markup Output
+                  </div>
+                  <button
+                    onClick={handleCreatePost}
+                    disabled={isCreatingPost || (!newPostContent.trim() && attachments.length === 0)}
+                    className={`px-6 py-2 rounded-xl font-bold text-white text-xs transition shadow-sm ${
+                      isCreatingPost || (!newPostContent.trim() && attachments.length === 0)
+                        ? 'bg-orange-300 cursor-not-allowed'
+                        : 'bg-[#ff6b00] hover:bg-[#e05e00]'
+                    }`}
+                  >
+                    {isCreatingPost ? 'Publishing Post...' : 'Publish Formatted Post →'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <img
+                  src={authState.user?.avatar || 'https://via.placeholder.com/48x48'}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full mr-4 object-cover border border-gray-200"
+                />
+                <div className="flex-1 flex space-x-2">
+                  <input
+                    type="text"
+                    value={newPostContent}
+                    onChange={(e) => setNewPostContent(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleCreatePost();
+                      }
+                    }}
+                    disabled={isCreatingPost}
+                    placeholder="Share Your Moments, Create a New Post (or toggle Rich Text Mode above)..."
+                    className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 dark:text-white text-sm"
+                  />
+                  <button
+                    onClick={handleCreatePost}
+                    disabled={isCreatingPost || (!newPostContent.trim() && attachments.length === 0)}
+                    className={`px-5 py-2.5 rounded-full font-semibold text-white text-sm transition whitespace-nowrap shadow-sm ${
+                      isCreatingPost || (!newPostContent.trim() && attachments.length === 0)
+                        ? 'bg-orange-300 cursor-not-allowed'
+                        : 'bg-orange-500 hover:bg-orange-600'
+                    }`}
+                  >
+                    {isCreatingPost ? 'Posting...' : 'Post'}
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Media Attachment Previews */}
             {attachments.length > 0 && (
@@ -1150,6 +1377,91 @@ const ForumPage: React.FC = () => {
               </div>
             )}
 
+            {/* Interactive Poll Composer Drawer */}
+            {isPollComposerOpen && (
+              <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/80 via-teal-50/40 to-slate-50 dark:from-emerald-950/30 dark:to-gray-800 border border-emerald-300 dark:border-emerald-700 shadow-sm space-y-3 animate-fade-in">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold tracking-wider uppercase">
+                      📊 Poll Creator
+                    </span>
+                    <h4 className="font-bold text-xs text-gray-900 dark:text-white uppercase tracking-wider">
+                      Conduct Community Consensus Poll
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsPollComposerOpen(false)}
+                    className="text-gray-400 hover:text-gray-600 text-sm font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-gray-700 dark:text-gray-300 mb-1">
+                    Poll Question *
+                  </label>
+                  <input
+                    type="text"
+                    value={pollQuestion}
+                    onChange={(e) => setPollQuestion(e.target.value)}
+                    placeholder="e.g. Which BeatwaveNG artist flow mix should headline Friday's stream?"
+                    className="w-full px-3 py-2 text-xs bg-white dark:bg-gray-700 border border-emerald-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-bold text-gray-700 dark:text-gray-300">
+                    Poll Options (Min 2)
+                  </label>
+                  {pollOptionInputs.map((opt, oIdx) => (
+                    <div key={oIdx} className="flex items-center gap-2">
+                      <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 w-5">
+                        {oIdx + 1}.
+                      </span>
+                      <input
+                        type="text"
+                        value={opt}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setPollOptionInputs(prev => prev.map((item, idx) => idx === oIdx ? val : item));
+                        }}
+                        placeholder={`Option ${oIdx + 1}`}
+                        className="flex-1 px-3 py-1.5 text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                      {pollOptionInputs.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() => setPollOptionInputs(prev => prev.filter((_, idx) => idx !== oIdx))}
+                          className="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {pollOptionInputs.length < 6 && (
+                    <button
+                      type="button"
+                      onClick={() => setPollOptionInputs(prev => [...prev, ''])}
+                      className="text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline flex items-center gap-1 pt-1"
+                    >
+                      + Add Option
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-emerald-200/60 dark:border-gray-700 text-xs">
+                  <span className="text-gray-500 text-[11px]">Duration: 7 Days Sovereign Cycle</span>
+                  <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                    {pollOptionInputs.filter(o => o.trim()).length} options ready
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Post Action Buttons with Live Working Handlers */}
             <div className="flex justify-between flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
               <button
@@ -1171,7 +1483,7 @@ const ForumPage: React.FC = () => {
                 <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 dark:group-hover:bg-gray-600 transition mr-2">
                   <CameraIcon className="h-4 w-4" />
                 </div>
-                <span className="text-sm font-medium">Photo/Video</span>
+                <span className="text-sm font-medium">Media</span>
               </button>
 
               <button
@@ -1194,6 +1506,26 @@ const ForumPage: React.FC = () => {
                   <PlayIcon className="h-4 w-4" />
                 </div>
                 <span className="text-sm font-medium">Live Stream</span>
+              </button>
+
+              {/* Conduct Poll Action Button */}
+              <button
+                type="button"
+                onClick={() => setIsPollComposerOpen(!isPollComposerOpen)}
+                className={`flex items-center font-semibold group transition ${
+                  isPollComposerOpen
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600'
+                }`}
+              >
+                <div className={`p-2 rounded-full transition mr-2 ${
+                  isPollComposerOpen
+                    ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600'
+                    : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-emerald-100'
+                }`}>
+                  <span className="text-sm">📊</span>
+                </div>
+                <span className="text-sm font-medium">Conduct Poll</span>
               </button>
             </div>
           </div>
@@ -1329,9 +1661,84 @@ const ForumPage: React.FC = () => {
                               }
                             }
                           >
-                            <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                            {post.content && post.content.includes('<') && post.content.includes('>') ? (
+                              <div
+                                className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed rich-post-view [&_h1]:text-lg [&_h1]:font-bold [&_h2]:text-base [&_h2]:font-bold [&_p]:mb-2 [&_ul]:list-disc [&_ul]:ml-5 [&_ol]:list-decimal [&_ol]:ml-5 [&_blockquote]:border-l-4 [&_blockquote]:border-orange-500 [&_blockquote]:pl-3 [&_blockquote]:italic [&_table]:border-collapse [&_table]:w-full [&_td]:border [&_td]:p-1.5 [&_th]:border [&_th]:p-1.5 [&_a]:text-orange-600 [&_a]:underline"
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(post.content) }}
+                              />
+                            ) : (
+                              <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                            )}
                           </CensoredPostWrapper>
                         </div>
+
+                        {/* Interactive Poll Rendering (LushPressies Standard) */}
+                        {post.poll && (
+                          <div className="mt-3.5 p-3.5 rounded-xl bg-gradient-to-br from-emerald-50/70 via-teal-50/40 to-slate-50/60 dark:from-emerald-950/30 dark:via-gray-800/60 dark:to-gray-900 border border-emerald-200/90 dark:border-emerald-800/50 shadow-xs">
+                            <div className="flex items-center justify-between mb-2.5">
+                              <div className="flex items-center gap-1.5">
+                                <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold tracking-wider uppercase">
+                                  Poll
+                                </span>
+                                <span className="font-bold text-xs text-gray-900 dark:text-white">
+                                  {post.poll.question}
+                                </span>
+                              </div>
+                              <span className="text-[10px] font-mono text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full">
+                                {Object.values(post.poll.votes || {}).reduce((a: number, b: any) => a + (Number(b) || 0), 0)} votes
+                              </span>
+                            </div>
+
+                            <div className="space-y-1.5">
+                              {post.poll.options.map((opt: any, optIdx: number) => {
+                                const optText = typeof opt === 'string' ? opt : opt?.text || String(opt);
+                                const votesCount = post.poll?.votes?.[optText] || 0;
+                                const totalVotes = Object.values(post.poll?.votes || {}).reduce((a: number, b: any) => a + (Number(b) || 0), 0);
+                                const percent = totalVotes > 0 ? Math.round((votesCount / totalVotes) * 100) : 0;
+                                const isSelected = userPollVotes[post.id] === optIdx;
+
+                                return (
+                                  <button
+                                    key={optIdx}
+                                    type="button"
+                                    onClick={() => handleVoteThreadPoll(post.id, optIdx)}
+                                    className={`w-full text-left relative overflow-hidden rounded-lg border p-2 transition-all text-xs font-semibold ${
+                                      isSelected
+                                        ? 'border-emerald-500 bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-950 dark:text-emerald-200 ring-2 ring-emerald-400/50'
+                                        : 'border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/80 hover:border-emerald-300 text-gray-800 dark:text-gray-200'
+                                    }`}
+                                  >
+                                    <div
+                                      className={`absolute top-0 bottom-0 left-0 transition-all duration-500 ${
+                                        isSelected
+                                          ? 'bg-emerald-400/30 dark:bg-emerald-500/40'
+                                          : 'bg-emerald-200/40 dark:bg-emerald-900/30'
+                                      }`}
+                                      style={{ width: `${percent}%` }}
+                                    />
+                                    <div className="relative z-10 flex items-center justify-between">
+                                      <span className="flex items-center gap-1.5">
+                                        {isSelected ? (
+                                          <span className="w-3.5 h-3.5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px] font-bold">
+                                            ✓
+                                          </span>
+                                        ) : (
+                                          <span className="w-3.5 h-3.5 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center text-[9px] text-gray-400">
+                                            {optIdx + 1}
+                                          </span>
+                                        )}
+                                        <span>{optText}</span>
+                                      </span>
+                                      <span className="font-mono text-[10px] font-bold text-gray-700 dark:text-gray-300">
+                                        {percent}% ({votesCount})
+                                      </span>
+                                    </div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Attached Media Rendering */}
                         {post.attachments && post.attachments.length > 0 && (
@@ -1355,54 +1762,120 @@ const ForumPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 space-x-4 text-gray-500 dark:text-gray-400 text-xs">
+                    {/* Full Action Buttons Bar: Like, Dislike, Upvote, Downvote, Comment, Share, Bookmark/Save, Message, Report, Delete */}
+                    <div className="flex flex-wrap items-center mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 gap-1.5 text-gray-500 dark:text-gray-400 text-xs">
+                      {/* Like */}
                       <button
                         onClick={() => handleLike(post.id)}
-                        className={`flex items-center font-medium group transition ${post.isLiked ? 'text-orange-500' : 'hover:text-orange-500'}`}
+                        className={`flex items-center px-2.5 py-1 rounded-full font-medium transition ${
+                          post.isLiked
+                            ? 'bg-red-50 text-red-600 border border-red-200'
+                            : 'bg-gray-50 dark:bg-gray-700/60 hover:bg-red-50 hover:text-red-500'
+                        }`}
+                        title="Like this thread"
                       >
-                        <div className={`p-1.5 rounded-full transition mr-1.5 ${post.isLiked ? 'bg-orange-100 text-orange-500' : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100'}`}>
-                          <HeartIcon className="h-3.5 w-3.5" />
-                        </div>
+                        <HeartIcon className="h-3.5 w-3.5 mr-1" />
                         <span>{post.likes}</span>
                       </button>
 
+                      {/* Dislike */}
+                      <button
+                        onClick={() => handleDislike(post.id)}
+                        className={`flex items-center px-2.5 py-1 rounded-full font-medium transition ${
+                          post.isDisliked
+                            ? 'bg-gray-200 text-gray-800 border border-gray-300'
+                            : 'bg-gray-50 dark:bg-gray-700/60 hover:bg-gray-100 hover:text-gray-800'
+                        }`}
+                        title="Dislike this thread"
+                      >
+                        <span className="mr-1">👎</span>
+                        <span>{post.dislikesCount || 0}</span>
+                      </button>
+
+                      {/* Upvote */}
+                      <button
+                        onClick={() => handleVoteThread(post.id, 'up')}
+                        className="flex items-center px-2.5 py-1 rounded-full font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition text-[11px]"
+                        title="Upvote on the sovereign protocol"
+                      >
+                        <span>▲ Upvote</span>
+                      </button>
+
+                      {/* Downvote */}
+                      <button
+                        onClick={() => handleVoteThread(post.id, 'down')}
+                        className="flex items-center px-2.5 py-1 rounded-full font-medium bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition text-[11px]"
+                        title="Downvote"
+                      >
+                        <span>▼ Downvote</span>
+                      </button>
+
+                      {/* Comment / Reply */}
                       <button
                         onClick={() => handleReply(post.id)}
-                        className="flex items-center font-medium hover:text-orange-500 group"
+                        className="flex items-center px-2.5 py-1 rounded-full font-medium bg-gray-50 dark:bg-gray-700/60 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 transition"
                       >
-                        <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-1.5">
-                          <MessageIcon className="h-3.5 w-3.5" />
-                        </div>
+                        <MessageIcon className="h-3.5 w-3.5 mr-1" />
                         <span>{post.comments}</span>
                       </button>
 
+                      {/* Share */}
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(`${window.location.origin}/forum/post/${post.id}`);
-                          showToast('Link copied to clipboard!', 'success');
+                          showToast('Link copied to clipboard! 📋', 'success');
                         }}
-                        className="flex items-center font-medium hover:text-orange-500 group"
+                        className="flex items-center px-2.5 py-1 rounded-full font-medium bg-gray-50 dark:bg-gray-700/60 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 transition"
+                        title="Share thread link"
                       >
-                        <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-orange-100 transition mr-1.5">
-                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                          </svg>
-                        </div>
+                        <svg className="h-3.5 w-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
                         <span>Share</span>
                       </button>
 
+                      {/* Bookmark / Save */}
                       <button
-                        onClick={() => handleDelete(post.id)}
-                        className="flex items-center font-medium hover:text-red-500 group ml-auto"
+                        onClick={() => handleBookmark(post.id)}
+                        className={`flex items-center px-2.5 py-1 rounded-full font-medium transition ${
+                          post.isBookmarked
+                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                            : 'bg-gray-50 dark:bg-gray-700/60 hover:bg-amber-50 hover:text-amber-700'
+                        }`}
+                        title="Bookmark & Save"
                       >
-                        <span>Delete</span>
+                        <span className="mr-1">🔖</span>
+                        <span>{post.isBookmarked ? 'Saved' : 'Save'}</span>
                       </button>
 
+                      {/* Message Author */}
+                      <button
+                        onClick={() => handleMessageAuthor(post)}
+                        className="flex items-center px-2.5 py-1 rounded-full font-medium bg-gray-50 dark:bg-gray-700/60 hover:bg-emerald-50 hover:text-emerald-600 transition text-[11px]"
+                        title="Message Creator directly"
+                      >
+                        <span className="mr-1">✉️</span>
+                        <span>Message</span>
+                      </button>
+
+                      {/* Report */}
                       <button
                         onClick={() => handleReport(post.id)}
-                        className="flex items-center font-medium hover:text-yellow-500 group ml-3"
+                        className="flex items-center px-2 py-1 rounded-full font-medium bg-gray-50 dark:bg-gray-700/60 hover:bg-yellow-50 hover:text-yellow-600 transition text-[11px] ml-auto"
+                        title="Report inappropriate content"
                       >
+                        <span className="mr-1">🚩</span>
                         <span>Report</span>
+                      </button>
+
+                      {/* Delete */}
+                      <button
+                        onClick={() => handleDelete(post.id)}
+                        className="flex items-center px-2 py-1 rounded-full font-medium bg-gray-50 dark:bg-gray-700/60 hover:bg-red-50 hover:text-red-600 transition text-[11px]"
+                        title="Delete post"
+                      >
+                        <span className="mr-1">🗑️</span>
+                        <span>Delete</span>
                       </button>
                     </div>
                   </div>
@@ -1768,6 +2241,11 @@ const ForumPage: React.FC = () => {
         isOpen={showMiniStoreModal}
         onClose={() => setShowMiniStoreModal(false)}
         showToast={showToast}
+      />
+      <MediaUploadAndEditorModal
+        isOpen={isMediaStudioOpen}
+        onClose={() => setIsMediaStudioOpen(false)}
+        onSaveMedia={handleMediaStudioSave}
       />
     </div>
   );

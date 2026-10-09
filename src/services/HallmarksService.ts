@@ -214,6 +214,138 @@ class HallmarksService {
       };
     }
   }
+
+  async getQuota(): Promise<{ success: boolean; data?: any; message?: string }> {
+    try {
+      const response = await this.api.get('/hallmarks/quota');
+      return {
+        success: response.data.success || true,
+        data: response.data.data
+      };
+    } catch (error) {
+      console.error('Error fetching hallmarks quota:', error);
+      return { success: false, message: 'Failed to fetch hallmarks quota' };
+    }
+  }
+
+  async deleteHallmark(id: number | string): Promise<{ success: boolean; message?: string }> {
+    try {
+      const response = await this.api.delete(`/hallmarks/${id}`);
+      return {
+        success: response.data.success || true,
+        message: response.data.message
+      };
+    } catch (error: any) {
+      console.error('Error deleting hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to delete hallmark'
+      };
+    }
+  }
+
+  async warnHallmark(id: number | string, reason: string): Promise<{ success: boolean; message?: string; data?: any }> {
+    try {
+      const response = await this.api.post(`/hallmarks/${id}/warn`, { reason });
+      return {
+        success: response.data.success || true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('Error issuing warning to hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to issue warning'
+      };
+    }
+  }
+
+  async suspendHallmark(id: number | string, durationDays: number, reason: string): Promise<{ success: boolean; message?: string; data?: any; remainingPins?: number }> {
+    try {
+      const response = await this.api.post(`/hallmarks/${id}/suspend`, { durationDays, reason });
+      return {
+        success: response.data.success || true,
+        message: response.data.message,
+        data: response.data.data,
+        remainingPins: response.data.remainingPins
+      };
+    } catch (error: any) {
+      console.error('Error suspending hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to suspend hallmark'
+      };
+    }
+  }
+
+  async freezeHallmark(id: number | string, reason: string): Promise<{ success: boolean; message?: string; data?: any; remainingPins?: number }> {
+    try {
+      const response = await this.api.post(`/hallmarks/${id}/freeze`, { reason });
+      return {
+        success: response.data.success || true,
+        message: response.data.message,
+        data: response.data.data,
+        remainingPins: response.data.remainingPins
+      };
+    } catch (error: any) {
+      console.error('Error freezing hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to freeze hallmark'
+      };
+    }
+  }
+
+  async unfreezeHallmark(id: number | string): Promise<{ success: boolean; message?: string; data?: any }> {
+    try {
+      const response = await this.api.post(`/hallmarks/${id}/unfreeze`);
+      return {
+        success: response.data.success || true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('Error unfreezing hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to unfreeze'
+      };
+    }
+  }
+
+  async unsuspendHallmark(id: number | string): Promise<{ success: boolean; message?: string; data?: any }> {
+    try {
+      const response = await this.api.post(`/hallmarks/${id}/unsuspend`);
+      return {
+        success: response.data.success || true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('Error unsuspending hallmark:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to unsuspend'
+      };
+    }
+  }
+
+  async getModerationAudit(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+    try {
+      const response = await this.api.get('/hallmarks/moderation/audit');
+      return {
+        success: response.data.success || true,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('Error fetching moderation audit:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to fetch audit log'
+      };
+    }
+  }
 }
 
 export const hallmarksService = new HallmarksService();

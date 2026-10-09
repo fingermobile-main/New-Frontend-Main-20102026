@@ -28,9 +28,9 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
       <div className="fixed top-4 left-4 z-50 md:hidden">
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 shadow-lg"
+          className="p-2 rounded-md text-[#ff6b00] bg-white dark:bg-gray-800 shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700"
         >
-          <Bars3Icon className="h-6 w-6" />
+          <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
         </button>
       </div>
 

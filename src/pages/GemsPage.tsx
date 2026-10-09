@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import gemsService, { GemItem } from '../services/gemsService';
+import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import {
   Sparkles,
   Radio,
@@ -14,19 +15,18 @@ import {
   AlertCircle,
   Heart,
   BookOpen,
-  HelpCircle,
   Zap,
   RefreshCw,
   ShoppingCart,
-  Info,
-  Flame,
-  Award,
   Clock,
   Layers,
   ChevronRight,
   Sliders,
   Send,
-  Filter
+  Filter,
+  X,
+  CreditCard,
+  Coins
 } from 'lucide-react';
 
 type TabType = 'marketplace' | 'broadcast' | 'powertools' | 'guides';
@@ -71,7 +71,7 @@ const SAMPLE_GUIDES = [
 ];
 
 const GemsPage: React.FC = () => {
-  const { showToast, user } = useAppContext();
+  const { showToast, ficBalance = 500 } = useAppContext();
 
   // Tab & Navigation State
   const [activeTab, setActiveTab] = useState<TabType>('marketplace');
@@ -90,6 +90,19 @@ const GemsPage: React.FC = () => {
   const [selectedItemForPurchase, setSelectedItemForPurchase] = useState<GemItem | null>(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
 
+  // Add Gems Purchase Gateway State
+  const [isAddGemsModalOpen, setIsAddGemsModalOpen] = useState(false);
+  const [selectedGemPack, setSelectedGemPack] = useState({
+    id: 'creator',
+    name: 'Creator Pack',
+    gems: 500,
+    fic: 45,
+    bonus: '+10% Bonus',
+    tag: 'MOST POPULAR'
+  });
+  const [gemPaymentMethod, setGemPaymentMethod] = useState<'FIC' | 'CARD' | 'CRYPTO'>('FIC');
+  const [isAcquiringGems, setIsAcquiringGems] = useState(false);
+
   // Broadcast Channels State
   const [broadcastPosts, setBroadcastPosts] = useState<BroadcastPost[]>([]);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
@@ -99,7 +112,7 @@ const GemsPage: React.FC = () => {
 
   // Admin Power Tools State
   const [anonymousPostingEnabled, setAnonymousPostingEnabled] = useState(false);
-  const [membershipQuestions, setMembershipQuestions] = useState<string[]>([
+  const [membershipQuestions] = useState<string[]>([
     'What specific value or expertise do you bring to this Gem community?',
     'Do you agree to uphold the 4 Platform Principles (Authenticity, Safety, Privacy, Dignity)?',
     'Are you willing to participate in daily peer-to-peer discussions without link dumping?'
@@ -120,8 +133,8 @@ const GemsPage: React.FC = () => {
       if (res.success) {
         setUserBalance(res.balance);
       }
-    } catch (err) {
-      console.warn('Could not fetch gem balance:', err);
+    } catch {
+      // Non-fatal balance fetch fallback
     }
   }, []);
 
@@ -134,7 +147,7 @@ const GemsPage: React.FC = () => {
       if (res && res.data) {
         setAllGems(res.data);
       }
-    } catch (err) {
+    } catch {
       setErrorState('Failed to load gems marketplace items from database');
     } finally {
       setLoadingState(false);
@@ -148,8 +161,8 @@ const GemsPage: React.FC = () => {
       if (res && res.data) {
         setBroadcastPosts(res.data);
       }
-    } catch (err) {
-      console.warn('Could not fetch broadcast feed:', err);
+    } catch {
+      // Non-fatal broadcast feed fallback
     }
   }, []);
 
@@ -243,6 +256,31 @@ const GemsPage: React.FC = () => {
     }
   };
 
+  // Handle Gem Acquisition / Purchase
+  const handleConfirmPurchaseGems = async () => {
+    setIsAcquiringGems(true);
+    try {
+      const res = await gemsService.purchaseGems(
+        selectedGemPack.gems,
+        selectedGemPack.fic,
+        selectedGemPack.name,
+        gemPaymentMethod
+      );
+      if (res.success) {
+        setUserBalance(res.newBalance != null ? res.newBalance : userBalance + selectedGemPack.gems);
+        showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
+        setIsAddGemsModalOpen(false);
+        refreshBalance();
+      } else {
+        showToast(res.message || 'Failed to acquire gems', 'error');
+      }
+    } catch (err: any) {
+      showToast(err?.message || 'Error processing gem acquisition', 'error');
+    } finally {
+      setIsAcquiringGems(false);
+    }
+  };
+
   // Handle Broadcast Submission
   const handlePostBroadcast = async () => {
     if (!newBroadcastText.trim()) return;
@@ -293,7 +331,7 @@ const GemsPage: React.FC = () => {
                 FingerMobile Protocol™ Virtual Economy & Broadcast Architecture
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
-                <span>Gems Protocol Hub</span>
+                <span>Gems</span>
                 <span className="text-sm font-medium px-2.5 py-0.5 rounded-md bg-purple-600/30 text-purple-300 border border-purple-500/30">
                   v2.6 Enterprise
                 </span>
@@ -328,11 +366,10 @@ const GemsPage: React.FC = () => {
                   <RefreshCw className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => {
-                    showToast('Opening Flamingo instant Gem purchase gateway...', 'info');
-                  }}
-                  className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all transform hover:scale-[1.02]"
+                  onClick={() => setIsAddGemsModalOpen(true)}
+                  className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all transform hover:scale-[1.02] cursor-pointer active:scale-95 flex items-center gap-1.5"
                 >
+                  <Coins className="w-3.5 h-3.5" />
                   + Add Gems
                 </button>
               </div>
@@ -400,6 +437,14 @@ const GemsPage: React.FC = () => {
 
       {/* Main Content Sections */}
       <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+          {/* Top Left ProfileCard Column */}
+          <div className="lg:col-span-1 space-y-4">
+            <UniversalProfileCard />
+          </div>
+
+          {/* Main Content Tabs Column */}
+          <div className="lg:col-span-3 space-y-6">
         {/* ======================================================== */}
         {/* TAB 1: MARKETPLACE & STORE */}
         {/* ======================================================== */}
@@ -581,8 +626,8 @@ const GemsPage: React.FC = () => {
                               itemPrivacy === 'public'
                                 ? 'bg-emerald-950/80 border border-emerald-500/40 text-emerald-300'
                                 : itemPrivacy === 'private_visible'
-                                ? 'bg-indigo-950/80 border border-indigo-500/40 text-indigo-300'
-                                : 'bg-amber-950/80 border border-amber-500/40 text-amber-300'
+                                  ? 'bg-indigo-950/80 border border-indigo-500/40 text-indigo-300'
+                                  : 'bg-amber-950/80 border border-amber-500/40 text-amber-300'
                             }`}
                           >
                             {itemPrivacy === 'public' && <Globe className="w-3 h-3" />}
@@ -1008,6 +1053,8 @@ const GemsPage: React.FC = () => {
             </div>
           </div>
         )}
+          </div>
+        </div>
       </div>
 
       {/* ======================================================== */}
@@ -1085,6 +1132,142 @@ const GemsPage: React.FC = () => {
               >
                 {isPurchasing ? <LoadingSpinner /> : 'Confirm & Unlock'}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add / Purchase Gems Gateway Modal */}
+      {isAddGemsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-lg bg-slate-900 border border-purple-500/30 rounded-3xl p-6 shadow-2xl overflow-hidden text-white">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-600 shadow-lg shadow-purple-500/20">
+                  <Coins className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Acquire Sovereign Gems 💎</h3>
+                  <p className="text-xs text-slate-400">
+                    Virtual micro-currency for tipping, unlockable collectibles, and badges
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsAddGemsModalOpen(false)}
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="py-5 space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+                  Select Gem Tier
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { id: 'starter', name: 'Starter Pack', gems: 100, fic: 10, bonus: 'Basic' },
+                    { id: 'creator', name: 'Creator Pack', gems: 500, fic: 45, bonus: '+10% Extra', tag: 'POPULAR' },
+                    { id: 'master', name: 'Master Guild', gems: 1000, fic: 80, bonus: '+20% Extra', tag: 'BEST VALUE' },
+                    { id: 'vault', name: 'Sovereign Vault', gems: 5000, fic: 350, bonus: '+30% Extra', tag: 'MAX VALUE' }
+                  ].map((pack) => {
+                    const isSelected = selectedGemPack.id === pack.id;
+                    return (
+                      <button
+                        key={pack.id}
+                        type="button"
+                        onClick={() => setSelectedGemPack(pack as any)}
+                        className={`p-3.5 rounded-2xl border text-left transition relative cursor-pointer ${
+                          isSelected
+                            ? 'border-purple-500 bg-purple-950/40 ring-2 ring-purple-500/30 shadow-lg shadow-purple-900/20'
+                            : 'border-slate-800 bg-slate-800/40 hover:bg-slate-800/80'
+                        }`}
+                      >
+                        {pack.tag && (
+                          <span className="absolute top-2 right-2 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-purple-600 text-white shadow-xs">
+                            {pack.tag}
+                          </span>
+                        )}
+                        <div className="text-xl mb-1">💎 {pack.gems.toLocaleString()}</div>
+                        <div className="font-bold text-xs text-slate-200">{pack.name}</div>
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-700/50">
+                          <span className="text-xs font-extrabold text-pink-400">{pack.fic} FIC</span>
+                          <span className="text-[10px] text-emerald-400 font-semibold">{pack.bonus}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                  Payment Method
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'FIC', label: 'FIC Balance', icon: '🪙' },
+                    { id: 'CARD', label: 'Flamingo Card', icon: '💳' },
+                    { id: 'CRYPTO', label: 'Paylink Crypto', icon: '⚡' }
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setGemPaymentMethod(m.id as any)}
+                      className={`p-2.5 rounded-xl border text-center text-xs font-semibold transition cursor-pointer flex flex-col items-center gap-1 ${
+                        gemPaymentMethod === m.id
+                          ? 'border-pink-500 bg-pink-950/30 text-white'
+                          : 'border-slate-800 bg-slate-800/40 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <span className="text-base">{m.icon}</span>
+                      <span>{m.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60 text-xs space-y-2">
+                <div className="flex items-center justify-between text-slate-400">
+                  <span>Current Gem Balance:</span>
+                  <span className="font-bold text-white">💎 {userBalance.toLocaleString()} Gems</span>
+                </div>
+                <div className="flex items-center justify-between text-slate-400">
+                  <span>Your Available FIC:</span>
+                  <span className="font-bold text-purple-400">{ficBalance.toFixed(2)} FIC</span>
+                </div>
+                <div className="h-px bg-slate-700/60 my-1" />
+                <div className="flex items-center justify-between font-bold">
+                  <span className="text-slate-200">Balance After Deposit:</span>
+                  <span className="text-emerald-400">
+                    💎 {(userBalance + selectedGemPack.gems).toLocaleString()} Gems
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddGemsModalOpen(false)}
+                  className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmPurchaseGems}
+                  disabled={isAcquiringGems}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-purple-600/30 transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {isAcquiringGems ? (
+                    <LoadingSpinner />
+                  ) : (
+                    `Acquire ${selectedGemPack.gems.toLocaleString()} Gems (${selectedGemPack.fic} FIC) →`
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

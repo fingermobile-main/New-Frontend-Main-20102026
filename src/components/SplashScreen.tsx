@@ -8,27 +8,26 @@ interface SplashScreenProps {
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({
-  isLoading = true,
+  isLoading = false,
   message = 'Initializing FingerMobile Protocol...',
   onFinish,
-  minDurationMs = 4000,
+  minDurationMs = 3500,
 }) => {
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setFading(true);
-        const fadeTimer = setTimeout(() => {
-          setVisible(false);
-          if (onFinish) onFinish();
-        }, 500);
-        return () => clearTimeout(fadeTimer);
-      }, minDurationMs);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading, minDurationMs, onFinish]);
+    // Hold splash screen for 3.5 seconds to allow all security and microservices to load
+    const timer = setTimeout(() => {
+      setFading(true);
+      const fadeTimer = setTimeout(() => {
+        setVisible(false);
+        if (onFinish) onFinish();
+      }, 500);
+      return () => clearTimeout(fadeTimer);
+    }, minDurationMs);
+    return () => clearTimeout(timer);
+  }, [minDurationMs, onFinish]);
 
   if (!visible) return null;
 
@@ -52,9 +51,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
       {/* Glassmorphic Crystal Card Container */}
       <div
-        className="relative flex flex-col items-center p-8 sm:p-12 rounded-3xl max-w-sm w-full mx-4 border border-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.06),0_1px_3px_rgba(255,255,255,0.9)_inset] transition-all"
+        className="relative flex flex-col items-center p-8 sm:p-10 rounded-3xl max-w-sm w-full mx-4 border border-white/70 shadow-[0_20px_50px_rgba(0,0,0,0.06),0_1px_3px_rgba(255,255,255,0.9)_inset] transition-all"
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.65) 100%)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.75) 100%)',
           backdropFilter: 'blur(30px)',
           WebkitBackdropFilter: 'blur(30px)',
         }}
@@ -62,32 +61,48 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         {/* Crystal Shimmer Border Highlight */}
         <div className="absolute inset-0 rounded-3xl pointer-events-none border border-white/80" />
 
-        {/* Logo Container with Smooth Floating / Breathing Effect */}
-        <div className="relative mb-6 flex items-center justify-center">
+        {/* Graphic Section: Top Header, Big Center Icon, Bottom Tagline */}
+        <div className="relative mb-5 flex flex-col items-center justify-center">
           <div className="absolute inset-0 rounded-full bg-orange-400/20 blur-xl scale-125 animate-pulse" />
+          
+          {/* Top header: "FingerMobile" (in serif typeface) */}
+          <span
+            className="relative text-2xl sm:text-3xl font-normal tracking-tight text-gray-900 mb-1 select-none font-serif"
+            style={{ fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif" }}
+          >
+            FingerMobile
+          </span>
+
+          {/* Big Center icon: The orange diamond-lattice fingerprint emblem */}
           <img
-            src="/assets/branding/fingermobile/FRONT copy.webp"
-            alt="FingerMobile Protocol"
-            className="relative w-28 h-28 sm:w-32 sm:h-32 object-contain drop-shadow-[0_10px_20px_rgba(255,107,0,0.2)] animate-bounce duration-1000"
+            src="/assets/branding/fingermobile/fingermobile_emblem.png"
+            alt="FingerMobile Protocol Emblem"
+            className="relative w-28 h-28 sm:w-32 sm:h-32 object-contain drop-shadow-[0_10px_20px_rgba(255,107,0,0.2)] animate-bounce duration-1000 my-1"
             style={{ animationDuration: '3s' }}
             onError={(e) => {
-              // Fallback to logo.png or alternative alias if webp fails
               const target = e.currentTarget;
-              if (target.src.indexOf('FRONT%20copy.webp') !== -1 || target.src.indexOf('FRONT copy.webp') !== -1) {
-                target.src = '/assets/branding/fingermobile/drawer-splash-logo.webp';
-              } else {
-                target.src = '/assets/branding/fingermobile/logo.png';
-              }
+              target.onerror = null;
+              target.src = '/assets/branding/fingermobile/FRONT copy.webp';
             }}
           />
+
+          {/* Bottom tagline: "Join Us, Share your Moments!" (in cursive/script calligraphy) */}
+          <span
+            className="relative text-base sm:text-lg text-gray-800 tracking-wide mt-1 select-none"
+            style={{ fontFamily: "'Dancing Script', 'Caveat', 'Great Vibes', 'Brush Script MT', cursive", fontWeight: 600 }}
+          >
+            Join Us, Share your Moments!
+          </span>
         </div>
 
-        {/* Brand Title */}
-        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-gray-900 mb-1 text-center font-sans">
+        {/* Directly underneath that graphic */}
+        {/* Title: FingerMobile™ */}
+        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-gray-900 mb-0.5 text-center font-sans">
           FingerMobile<span className="text-orange-500">™</span>
         </h1>
-        <p className="text-xs font-semibold text-gray-500 tracking-wider uppercase mb-6 text-center">
-          Next-Gen Protocol Communication
+        {/* Subtitle: Protocol */}
+        <p className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4 text-center">
+          Protocol
         </p>
 
         {/* Crystal Progress Loading Bar */}
@@ -108,6 +123,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       </div>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
         @keyframes splashBar {
           0% { transform: translateX(-100%); width: 30%; }
           50% { transform: translateX(50%); width: 75%; }

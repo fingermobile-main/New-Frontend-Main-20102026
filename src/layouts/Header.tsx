@@ -35,11 +35,11 @@ const Header: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           type="button"
-          className="text-gray-600 hover:text-gray-900 p-1.5 rounded-lg hover:bg-gray-100 transition mr-2"
+          className="text-[#ff6b00] hover:text-[#e05e00] p-1.5 rounded-lg hover:bg-orange-50 transition mr-2"
           onClick={onToggleSidebar}
           aria-label="Open navigation menu"
         >
-          <Bars3Icon className="w-6 h-6" aria-hidden="true" />
+          <Bars3Icon className="w-6 h-6 text-[#ff6b00]" aria-hidden="true" />
         </button>
         <div className="flex items-center">
           <div className="relative flex items-center">

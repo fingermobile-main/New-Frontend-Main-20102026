@@ -94,6 +94,8 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ profile, onSwipe, isTop, stackInd
   const style: React.CSSProperties = {
     position: 'absolute',
     width: '100%',
+    height: '100%',
+    maxHeight: '100%',
     transform: `translate(${tx}px, ${ty}px) rotate(${rotation}deg) scale(${1 - stackIndex * 0.04})`,
     top: `${stackIndex * 8}px`,
     transition: exited

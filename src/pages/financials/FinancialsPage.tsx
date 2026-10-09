@@ -18,7 +18,8 @@ const FinancialsPage = () => {
     { name: 'Monetization', path: '/financials/monetization', icon: <EarningsIcon /> },
     { name: 'Referrals', path: '/financials/referrals', icon: <ReferralIcon /> },
     { name: 'Loyalty', path: '/financials/loyalty', icon: <LoyaltyIcon /> },
-    { name: 'Gift Cards', path: '/financials/giftcards', icon: <GiftCardIcon /> }
+    { name: 'Gift Cards', path: '/financials/giftcards', icon: <GiftCardIcon /> },
+    { name: 'LoanSqr Micro-Finance', path: '/loansqr', icon: <CreditCardIcon /> }
   ];
 
   const activeLinkClass = 'border-brand-blue text-brand-blue';

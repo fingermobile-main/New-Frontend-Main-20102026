@@ -76,9 +76,9 @@ const MemberLayout: React.FC<MemberLayoutProps> = ({ children, title, subtitle, 
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 text-slate-600 hover:bg-slate-200 rounded-full transition-colors"
+              className="md:hidden p-2 text-[#ff6b00] hover:bg-orange-50 rounded-full transition-colors"
             >
-              <Bars3Icon className="w-6 h-6" />
+              <Bars3Icon className="w-6 h-6 text-[#ff6b00]" />
             </button>
             <div className="flex flex-col">
               <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{displayTitle}</h1>

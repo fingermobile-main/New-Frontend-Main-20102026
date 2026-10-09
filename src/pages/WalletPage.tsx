@@ -1,8 +1,5 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
 import { Button } from '../components/ui/Button';
@@ -198,239 +195,230 @@ const WalletPage: React.FC = () => {
     <MainLayout pageTitle="Wallet">
       <div className="bg-white min-h-screen text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Left Sidebar */}
-            <div className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-20 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h3 className="font-bold text-gray-900 mb-2">My Live Wallet</h3>
-                <p className="text-sm text-gray-500 mb-4">Manage your funds, track PostgreSQL transactions, and make secure transfers.</p>
-                {walletAddress && (
-                  <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                    <p className="text-xs text-gray-400 uppercase font-semibold">Your Wallet Address</p>
-                    <p className="text-xs font-mono text-gray-700 truncate mt-1">{walletAddress}</p>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(walletAddress);
-                        toast({ title: 'Copied', description: 'Address copied to clipboard' });
-                      }}
-                      className="mt-2 text-xs text-blue-600 font-bold hover:underline"
-                    >
-                      Copy Address
-                    </button>
-                  </div>
-                )}
+          <div className="w-full">
+            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-extrabold text-gray-900 mb-1">Live Protocol Wallet & Vault</h1>
+                <p className="text-sm text-gray-600">
+                  Manage your funds, track PostgreSQL transactions, and make instant sovereign transfers.
+                </p>
               </div>
+              {walletAddress && (
+                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200/80 flex items-center gap-3 shadow-2xs">
+                  <div>
+                    <p className="text-[10px] text-emerald-800 uppercase font-bold tracking-wider">Protocol Wallet Address</p>
+                    <p className="text-xs font-mono text-gray-700 truncate max-w-xs">{walletAddress}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(walletAddress);
+                      toast({ title: 'Copied', description: 'Address copied to clipboard' });
+                    }}
+                    className="text-xs text-emerald-800 bg-white px-2.5 py-1 rounded-lg border border-emerald-300 font-bold hover:bg-emerald-100 transition shadow-2xs"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Center Content */}
-            <div className="lg:col-span-9">
-              <div className="w-full">
-                <div className="mb-8 text-center sm:text-left">
-                  <h1 className="text-4xl font-bold text-gray-800 mb-2">Wallet</h1>
-                  <p className="text-lg text-gray-600 max-w-2xl">
-                    Manage your funds, track transactions, and make instant on-chain payments
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                  <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-md">
-                      <CardHeader className="pb-2">
-                        <CardDescription className="text-blue-100 font-medium">Total Balance</CardDescription>
-                        <CardTitle className="text-3xl font-extrabold">{ficBalance.toLocaleString()} FIC</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex justify-between text-sm text-blue-100">
-                          <span>Fiat Value: ${fiatBalance.toFixed(2)} USD</span>
-                          <span>Status: Live Active</span>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <div className="flex space-x-3">
-                          <Button variant="secondary" size="sm" className="bg-white text-blue-700 hover:bg-blue-50 font-bold" onClick={() => setShowFundModal(true)}>
-                            <PlusIcon className="w-4 h-4 mr-1" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-md">
+                  <CardHeader className="pb-2">
+                    <CardDescription className="text-blue-100 font-medium">Total Balance</CardDescription>
+                    <CardTitle className="text-3xl font-extrabold">{ficBalance.toLocaleString()} FIC</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between text-sm text-blue-100">
+                      <span>Fiat Value: ${fiatBalance.toFixed(2)} USD</span>
+                      <span>Status: Live Active</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <div className="flex space-x-3">
+                      <Button variant="secondary" size="sm" className="bg-white text-blue-700 hover:bg-blue-50 font-bold" onClick={() => setShowFundModal(true)}>
+                        <PlusIcon className="w-4 h-4 mr-1" />
                             Fund
-                          </Button>
-                          <Button variant="secondary" size="sm" className="bg-blue-800/80 hover:bg-blue-800 text-white font-bold" onClick={() => setShowWithdrawModal(true)}>
+                      </Button>
+                      <Button variant="secondary" size="sm" className="bg-blue-800/80 hover:bg-blue-800 text-white font-bold" onClick={() => setShowWithdrawModal(true)}>
                             Withdraw
-                          </Button>
-                        </div>
-                      </CardFooter>
-                    </Card>
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center text-lg">
-                          <WalletIcon className="w-5 h-5 mr-2 text-indigo-600" />
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-lg">
+                      <WalletIcon className="w-5 h-5 mr-2 text-indigo-600" />
                           Quick Actions
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="grid grid-cols-2 gap-4">
-                        <Button variant="outline" className="flex flex-col items-center p-4 hover:border-blue-500 hover:bg-blue-50" onClick={() => setShowSendModal(true)}>
-                          <ArrowUpIcon className="w-6 h-6 mb-2 text-green-500" />
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-2 gap-4">
+                    <Button variant="outline" className="flex flex-col items-center p-4 hover:border-blue-500 hover:bg-blue-50" onClick={() => setShowSendModal(true)}>
+                      <ArrowUpIcon className="w-6 h-6 mb-2 text-green-500" />
                           Send
-                        </Button>
-                        <Button variant="outline" className="flex flex-col items-center p-4 hover:border-blue-500 hover:bg-blue-50" onClick={() => setShowReceiveModal(true)}>
-                          <ArrowDownIcon className="w-6 h-6 mb-2 text-blue-500" />
+                    </Button>
+                    <Button variant="outline" className="flex flex-col items-center p-4 hover:border-blue-500 hover:bg-blue-50" onClick={() => setShowReceiveModal(true)}>
+                      <ArrowDownIcon className="w-6 h-6 mb-2 text-blue-500" />
                           Receive
-                        </Button>
-                        <Link to="/financials/vault" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
-                          <CurrencyDollarIcon className="w-6 h-6 mb-2 text-purple-500" />
-                          <span className="text-sm font-medium">Vault</span>
-                        </Link>
-                        <Link to="/financials/giftcards" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
-                          <GiftIcon className="w-6 h-6 mb-2 text-pink-500" />
-                          <span className="text-sm font-medium">Gift Cards</span>
-                        </Link>
-                      </CardContent>
-                    </Card>
-                  </div>
+                    </Button>
+                    <Link to="/financials/vault" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
+                      <CurrencyDollarIcon className="w-6 h-6 mb-2 text-purple-500" />
+                      <span className="text-sm font-medium">Vault</span>
+                    </Link>
+                    <Link to="/financials/giftcards" className="inline-flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700">
+                      <GiftIcon className="w-6 h-6 mb-2 text-pink-500" />
+                      <span className="text-sm font-medium">Gift Cards</span>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
-                        <ChartBarIcon className="w-5 h-5 mr-2 text-indigo-600" />
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-lg">
+                    <ChartBarIcon className="w-5 h-5 mr-2 text-indigo-600" />
                         Recent Activity
-                      </CardTitle>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {transactions.length === 0 ? (
+                      <p className="text-sm text-gray-500 py-4 text-center">No recent transactions recorded.</p>
+                    ) : (
+                      transactions.slice(0, 3).map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between pb-3 border-b border-gray-100 last:border-0 last:pb-0">
+                          <div>
+                            <p className="font-medium text-sm">
+                              {transaction.type === 'received' ? `From: ${transaction.from || 'Platform'}` : `To: ${transaction.to || 'Transfer'}`}
+                            </p>
+                            <p className="text-xs text-gray-500">{transaction.description || 'Transaction'} • {transaction.date}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className={`font-bold text-sm ${transaction.type === 'received' ? 'text-green-600' : 'text-red-600'}`}>
+                              {transaction.type === 'received' ? '+' : '-'}{transaction.amount} FIC
+                            </p>
+                            <p className="text-xs text-gray-400 capitalize">{transaction.status || 'completed'}</p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Link to="/financials/wallet" className="w-full text-center py-2 px-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs font-medium text-gray-700">
+                        Full Financials Portal
+                  </Link>
+                </CardFooter>
+              </Card>
+            </div>
+
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-8">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="transactions">Transactions ({transactions.length})</TabsTrigger>
+                <TabsTrigger value="settings">Wallet Settings</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardDescription className="text-gray-500">Live FIC Balance</CardDescription>
+                      <CardTitle className="text-2xl font-bold">{ficBalance.toLocaleString()} FIC</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-4">
-                        {transactions.length === 0 ? (
-                          <p className="text-sm text-gray-500 py-4 text-center">No recent transactions recorded.</p>
-                        ) : (
-                          transactions.slice(0, 3).map((transaction) => (
-                            <div key={transaction.id} className="flex items-center justify-between pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-                              <div>
-                                <p className="font-medium text-sm">
-                                  {transaction.type === 'received' ? `From: ${transaction.from || 'Platform'}` : `To: ${transaction.to || 'Transfer'}`}
-                                </p>
-                                <p className="text-xs text-gray-500">{transaction.description || 'Transaction'} • {transaction.date}</p>
-                              </div>
-                              <div className="text-right">
-                                <p className={`font-bold text-sm ${transaction.type === 'received' ? 'text-green-600' : 'text-red-600'}`}>
-                                  {transaction.type === 'received' ? '+' : '-'}{transaction.amount} FIC
-                                </p>
-                                <p className="text-xs text-gray-400 capitalize">{transaction.status || 'completed'}</p>
-                              </div>
-                            </div>
-                          ))
-                        )}
+                      <div className="flex items-center text-sm text-green-600">
+                        <ArrowUpIcon className="w-4 h-4 mr-1" />
+                            Live PostgreSQL Synced
                       </div>
                     </CardContent>
-                    <CardFooter>
-                      <Link to="/financials/wallet" className="w-full text-center py-2 px-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs font-medium text-gray-700">
-                        Full Financials Portal
-                      </Link>
-                    </CardFooter>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardDescription className="text-gray-500">Estimated USD Value</CardDescription>
+                      <CardTitle className="text-2xl font-bold">${fiatBalance.toFixed(2)} USD</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-sm text-gray-500">
+                            1 FIC ≈ $0.10 USD
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardDescription className="text-gray-500">Total Transactions</CardDescription>
+                      <CardTitle className="text-2xl font-bold">{transactions.length}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-sm text-blue-600">
+                            Verified on Database
+                      </div>
+                    </CardContent>
                   </Card>
                 </div>
+              </TabsContent>
 
-                <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-8">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="transactions">Transactions ({transactions.length})</TabsTrigger>
-                    <TabsTrigger value="settings">Wallet Settings</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="overview" className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <Card>
-                        <CardHeader className="pb-2">
-                          <CardDescription className="text-gray-500">Live FIC Balance</CardDescription>
-                          <CardTitle className="text-2xl font-bold">{ficBalance.toLocaleString()} FIC</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex items-center text-sm text-green-600">
-                            <ArrowUpIcon className="w-4 h-4 mr-1" />
-                            Live PostgreSQL Synced
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader className="pb-2">
-                          <CardDescription className="text-gray-500">Estimated USD Value</CardDescription>
-                          <CardTitle className="text-2xl font-bold">${fiatBalance.toFixed(2)} USD</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-sm text-gray-500">
-                            1 FIC ≈ $0.10 USD
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader className="pb-2">
-                          <CardDescription className="text-gray-500">Total Transactions</CardDescription>
-                          <CardTitle className="text-2xl font-bold">{transactions.length}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-sm text-blue-600">
-                            Verified on Database
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="transactions" className="space-y-6">
-                    <Card>
-                      <CardContent className="p-0">
-                        <div className="divide-y divide-gray-200">
-                          {transactions.length === 0 ? (
-                            <p className="text-center py-8 text-gray-500">No transactions found.</p>
-                          ) : (
-                            transactions.map((tx) => (
-                              <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                                <div className="flex items-center gap-3">
-                                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                                    tx.type === 'received' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                                  }`}>
-                                    {tx.type === 'received' ? '↓' : '↑'}
-                                  </div>
-                                  <div>
-                                    <p className="font-semibold text-gray-900 text-sm">{tx.description || 'Transaction'}</p>
-                                    <p className="text-xs text-gray-500">{tx.date} • Ref: {String(tx.id)}</p>
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <p className={`font-bold text-sm ${tx.type === 'received' ? 'text-green-600' : 'text-red-600'}`}>
-                                    {tx.type === 'received' ? '+' : '-'}{tx.amount} FIC
-                                  </p>
-                                  <span className="inline-block text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full capitalize">
-                                    {tx.status || 'completed'}
-                                  </span>
-                                </div>
+              <TabsContent value="transactions" className="space-y-6">
+                <Card>
+                  <CardContent className="p-0">
+                    <div className="divide-y divide-gray-200">
+                      {transactions.length === 0 ? (
+                        <p className="text-center py-8 text-gray-500">No transactions found.</p>
+                      ) : (
+                        transactions.map((tx) => (
+                          <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                                tx.type === 'received' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                              }`}>
+                                {tx.type === 'received' ? '↓' : '↑'}
                               </div>
-                            ))
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
+                              <div>
+                                <p className="font-semibold text-gray-900 text-sm">{tx.description || 'Transaction'}</p>
+                                <p className="text-xs text-gray-500">{tx.date} • Ref: {String(tx.id)}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className={`font-bold text-sm ${tx.type === 'received' ? 'text-green-600' : 'text-red-600'}`}>
+                                {tx.type === 'received' ? '+' : '-'}{tx.amount} FIC
+                              </p>
+                              <span className="inline-block text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full capitalize">
+                                {tx.status || 'completed'}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-                  <TabsContent value="settings" className="space-y-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Wallet Details</CardTitle>
-                        <CardDescription>Security and cryptographic identifier</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                          <label className="text-sm font-semibold text-gray-700">Wallet Public Identifier</label>
-                          <input
-                            type="text"
-                            readOnly
-                            value={walletAddress || 'fm_wallet_live'}
-                            className="mt-1 w-full p-2 bg-gray-100 border border-gray-200 rounded-md font-mono text-sm text-gray-700"
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            </div>
+              <TabsContent value="settings" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Wallet Details</CardTitle>
+                    <CardDescription>Security and cryptographic identifier</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700">Wallet Public Identifier</label>
+                      <input
+                        type="text"
+                        readOnly
+                        value={walletAddress || 'fm_wallet_live'}
+                        className="mt-1 w-full p-2 bg-gray-100 border border-gray-200 rounded-md font-mono text-sm text-gray-700"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>

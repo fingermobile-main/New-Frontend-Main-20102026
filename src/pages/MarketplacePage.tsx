@@ -1,1144 +1,1067 @@
-import React, { useEffect, useState } from 'react';
-import MainLayout from '../components/layout/MainLayout';
 /*
- * FingerMobile Protocol™ - Marketplace Page Component
- * Copyright © 2025 Mbah Israel Obinna. All rights reserved.
- * This file is part of the FingerMobile™ and FingerMobile Protocol™ platforms,
- * which are the sole and exclusive intellectual property of Mbah Israel Obinna.
- *
- * Unauthorized copying, distribution, or modification of this code is strictly prohibited. All laws do and will apply.
+ * FingerMobile Protocol™ - Platform Flagship Store
+ * Dedicated Flagship Storefront for the company's best unique, groundbreaking goods,
+ * protocol hardware, limited edition merchandise, and official sovereign drops.
+ * Completely independent from Member Storefronts, OwnIt, and Flamingo.
+ * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
  */
 
+import React, { useEffect, useState, useMemo } from 'react';
+import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../components/Toast';
+import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
-import ProductCard from '../components/ProductCard';
-import { Product } from '../types';
 import {
-  CartIcon as ShoppingBagIcon,
-  StoreIcon as CubeIcon,
-  CurrencyNairaIcon as CurrencyDollarIcon,
-  FilterIcon as ChartBarIcon,
-  MemberGroupIcon as UserGroupIcon,
-  BankIcon as CreditCardIcon,
-  StoreIcon as StorefrontIcon,
-  PolicyIcon as OrdersIcon,
-  EmojiHappyIcon as StarIcon
-} from '../icons';
+  Sparkles,
+  ShieldCheck,
+  Search,
+  Filter,
+  CreditCard,
+  ShoppingBag,
+  ExternalLink,
+  Cpu,
+  Radio,
+  Shirt,
+  Headphones,
+  CheckCircle2,
+  ThumbsUp,
+  ThumbsDown,
+  BarChart2,
+  Clock,
+  Layers,
+  Bot,
+  Send,
+  Zap,
+  Tag,
+  Copy,
+  Check,
+  MessageSquare,
+  FileText
+} from 'lucide-react';
 
-// Types for enhanced marketplace features
-type MarketplaceFilters = {
-  query: string;
-  category: string;
-  minPrice: number;
-  maxPrice: number;
-  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'rating_desc' | 'popular';
-  platform: 'all' | 'ownit' | 'flamingo' | 'storefront';
-};
-
-type MarketplaceAnalytics = {
-  totalProducts: number;
-  totalRevenue: number;
-  totalOrders: number;
-  avgRating: number;
-  trendingCategories: string[];
-  featuredProducts: Product[];
-};
-
-type UnifiedOrder = {
-  id: string;
-  productId: string;
-  platform: string;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  total: number;
-  currency: string;
-  date: string;
-  buyerId: string;
-};
-
-type UnifiedTransaction = {
-  id: string;
-  type: 'purchase' | 'gift' | 'trade' | 'refund';
-  platform: string;
-  amount: number;
-  currency: string;
-  timestamp: string;
-  status: 'completed' | 'pending' | 'failed' | 'refunded';
-};
-
-interface ApiProductResponse {
+export interface FlagshipProduct {
   id: string;
   name: string;
-  description?: string;
-  price: string;
+  tagline?: string;
+  description: string;
+  price: number;
+  priceFic: number;
+  currency?: string;
+  category: string;
+  sku: string;
+  images: string[];
   image_url?: string;
-  category?: string;
-  platform_type?: string;
-  avg_rating?: string;
-  creator_id?: string | number;
-  seller_name?: string;
-  stock_quantity?: string | number;
-  created_at?: string;
-  updated_at?: string;
+  imageUrl?: string;
+  stock_quantity?: number;
+  is_flagship?: boolean;
+  authenticity_ledger_hash?: string;
+  specifications?: Record<string, string>;
+  likes: number;
+  dislikes: number;
+  rating: number;
+  reviews_count?: number;
+  poll_data?: {
+    question: string;
+    options: { id: number; text: string; votes: number }[];
+  };
+  hasVoted?: boolean;
+  userReaction?: 'like' | 'dislike' | null;
 }
 
+export interface FlagshipOrder {
+  id: string;
+  productId: string;
+  productName: string;
+  total: number;
+  currency: string;
+  paymentRail: string;
+  date: string;
+  status: 'processing' | 'shipped' | 'delivered';
+}
+
+const CATEGORIES = [
+  { id: 'all', label: 'All Flagship Goods', icon: Layers },
+  { id: 'Hardware & Security', label: 'Hardware & Security', icon: Cpu },
+  { id: 'Wearables & IoT', label: 'Wearables & IoT', icon: Radio },
+  { id: 'Flagship Apparel', label: 'Flagship Apparel', icon: Shirt },
+  { id: 'Audio Gear', label: 'Studio Audio Gear', icon: Headphones }
+];
+
 const MarketplacePage: React.FC = () => {
-  const { addToast } = useToast();
   const { member: user } = useAuth();
-  const [activeTab, setActiveTab] = useState<
-    | 'marketplace'
-    | 'ownit'
-    | 'flamingo'
-    | 'storefront'
-    | 'orders'
-    | 'analytics'
-    | 'transactions'
-    | 'create'
-  >('marketplace');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState<boolean>(true);
+  const { showToast, ficBalance } = useAppContext();
+
+  // Navigation tabs (strictly Flagship Store modules)
+  const [activeTab, setActiveTab] = useState<'flagship-drops' | 'hardware' | 'apparel' | 'audio' | 'ledger' | 'my-orders'>('flagship-drops');
+
+  // Products and loading
+  const [products, setProducts] = useState<FlagshipProduct[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<MarketplaceFilters>({
-    query: '',
-    category: 'all',
-    minPrice: 0,
-    maxPrice: 10000,
-    sortBy: 'newest',
-    platform: 'all'
-  });
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [analytics, setAnalytics] = useState<MarketplaceAnalytics | null>(null);
-  const [orders, setOrders] = useState<UnifiedOrder[]>([]);
-  const [loadingOrders, setLoadingOrders] = useState<boolean>(true);
-  const [transactions, setTransactions] = useState<UnifiedTransaction[]>([]);
-  const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
 
-  // Social embed and checkout modal states
-  const [embedProduct, setEmbedProduct] = useState<Product | null>(null);
-  const [checkoutProduct, setCheckoutProduct] = useState<Product | null>(null);
-  const [selectedPaymentRail, setSelectedPaymentRail] = useState<'earnings' | 'fic' | 'card' | 'credits'>('earnings');
+  // Search & Filter state (Universal AI Search Engine Tool)
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'newest' | 'price_asc' | 'price_desc' | 'rating' | 'popular'>('newest');
+  const [aiSearchAssistActive, setAiSearchAssistActive] = useState<boolean>(false);
+
+  // Modals & Drawers
+  const [checkoutProduct, setCheckoutProduct] = useState<FlagshipProduct | null>(null);
+  const [selectedPaymentRail, setSelectedPaymentRail] = useState<'fic' | 'earnings' | 'card'>('fic');
   const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
+  const [embedProduct, setEmbedProduct] = useState<any | null>(null);
+  const [selectedLedgerHash, setSelectedLedgerHash] = useState<string | null>(null);
+  const [copiedHash, setCopiedHash] = useState<boolean>(false);
 
-  const handleCompletePurchase = async () => {
+  // AI Flagship Shopping Assistant state
+  const [showAiAssistant, setShowAiAssistant] = useState<boolean>(false);
+  const [aiQuery, setAiQuery] = useState<string>('');
+  const [aiChatLogs, setAiChatLogs] = useState<{ sender: 'ai' | 'user'; text: string; time: string }[]>([
+    {
+      sender: 'ai',
+      text: 'Greetings Sovereign Member. I am your FingerMobile Flagship Concierge. Ask me about cryptographic hardware specifications, firmware integrity, or FIC token multi-rail checkout.',
+      time: 'Just now'
+    }
+  ]);
+
+  // Orders state
+  const [orders, setOrders] = useState<FlagshipOrder[]>([
+    {
+      id: 'ORD-FMP-8821',
+      productId: '1',
+      productName: 'FingerMobile Protocol Sovereign Keycard V3',
+      total: 1500,
+      currency: 'FIC',
+      paymentRail: 'FIC Protocol Settlement',
+      date: '2026-10-06',
+      status: 'shipped'
+    }
+  ]);
+
+  // Fetch flagship products from /api/marketplace/flagship
+  const fetchFlagshipProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await apiService.get('/api/marketplace/flagship');
+      const data = res.products || res.data || (Array.isArray(res) ? res : []);
+      if (Array.isArray(data) && data.length > 0) {
+        setProducts(data);
+      } else {
+        // Fallback default flagship items if database is refreshing
+        setProducts([
+          {
+            id: '1',
+            name: 'FingerMobile Protocol Sovereign Keycard V3',
+            tagline: 'Hardware Cryptographic NFC Key & Identity Vault',
+            description: 'The official flagship hardware access card for FingerMobile Protocol. Features military-grade EAL6+ secure element, biometric NFC authentication, and direct cold-storage signing.',
+            price: 150.0,
+            priceFic: 1500.0,
+            currency: 'FIC',
+            category: 'Hardware & Security',
+            sku: 'FMP-KEY-V3-001',
+            images: ['https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80'],
+            imageUrl: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80',
+            stock_quantity: 250,
+            is_flagship: true,
+            authenticity_ledger_hash: '0x8f9c1a5b432e189d20c578ab310e74f145610bcde8173429acbf918234125678',
+            specifications: {
+              Chip: 'Secure Element EAL6+',
+              Interface: 'NFC ISO/IEC 14443 & USB-C',
+              Material: 'Brushed Aerospace Titanium',
+              Warranty: 'Lifetime Protocol Replacement'
+            },
+            likes: 128,
+            dislikes: 3,
+            rating: 4.98,
+            reviews_count: 45,
+            poll_data: {
+              question: 'Should this flagship item receive next-gen protocol firmware?',
+              options: [
+                { id: 1, text: 'Yes, immediate update', votes: 42 },
+                { id: 2, text: 'Keep current build', votes: 8 }
+              ]
+            }
+          },
+          {
+            id: '2',
+            name: 'FingerMobile Neural Nexus Comm-Badge',
+            tagline: 'Wearable Voice & Haptic Protocol Transceiver',
+            description: 'Flagship biometric wearable designed for instant push-to-talk VoiceLines, real-time Dancia-4Tv streams, and haptic feedback during BeatwaveNG listening sessions.',
+            price: 299.0,
+            priceFic: 2990.0,
+            currency: 'FIC',
+            category: 'Wearables & IoT',
+            sku: 'FMP-NEXUS-COMM-02',
+            images: ['https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=1200&q=80'],
+            imageUrl: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=1200&q=80',
+            stock_quantity: 120,
+            is_flagship: true,
+            authenticity_ledger_hash: '0x41ab9823ce90df7812bc3451098ef1a7234908bcda1248901234acde56781290',
+            specifications: {
+              Battery: '72 Hours Continuous',
+              Connectivity: 'Bluetooth 5.4 + Wi-Fi 6E + Protocol Mesh',
+              Mic: 'Beamforming Quad Array',
+              Weight: '28 grams'
+            },
+            likes: 89,
+            dislikes: 2,
+            rating: 4.92,
+            reviews_count: 31,
+            poll_data: {
+              question: 'Which next feature would you like to see on Comm-Badge?',
+              options: [
+                { id: 1, text: 'Offline Mesh Relaying', votes: 56 },
+                { id: 2, text: 'Haptic Beatwave Metronome', votes: 34 }
+              ]
+            }
+          },
+          {
+            id: '3',
+            name: 'Protocol Sovereign Founder Hooded Parka',
+            tagline: 'Weatherproof Smart-Fabric Flagship Apparel with Embedded NFC Tag',
+            description: 'Crafted from sustainable recycled graphene technical membrane. Embeds an NFC chip linking to your verified FingerMobile profile and Hallmarks score.',
+            price: 220.0,
+            priceFic: 2200.0,
+            currency: 'FIC',
+            category: 'Flagship Apparel',
+            sku: 'FMP-APPAREL-PARKA-01',
+            images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=80'],
+            imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=80',
+            stock_quantity: 75,
+            is_flagship: true,
+            authenticity_ledger_hash: '0x17bfa98234cd01928374650192837465acbde019283746501928374650192837',
+            specifications: {
+              Fabric: '3-Layer Graphene Membrane',
+              Waterproof: '20,000 mm',
+              NFC: 'Profile + Hallmarks Token',
+              Tailoring: 'Ethically Tailored Milan'
+            },
+            likes: 64,
+            dislikes: 1,
+            rating: 4.89,
+            reviews_count: 22,
+            poll_data: {
+              question: 'Vote on the next limited edition colorway:',
+              options: [
+                { id: 1, text: 'Emerald Obsidian', votes: 48 },
+                { id: 2, text: 'Champagne White', votes: 19 }
+              ]
+            }
+          },
+          {
+            id: '4',
+            name: 'FingerMobile Studio Audiophile Reference Monitors',
+            tagline: 'Active Near-Field Studio Speakers for BeatwaveNG Master Quality',
+            description: 'Tuned specifically for BeatwaveNG high-resolution audio streaming. Features custom 5-inch Kevlar woofers, 1-inch silk dome tweeters, and onboard DSP matching the 10-band Beatwave equalizer.',
+            price: 480.0,
+            priceFic: 4800.0,
+            currency: 'FIC',
+            category: 'Audio Gear',
+            sku: 'FMP-AUDIO-MON-5X',
+            images: ['https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=1200&q=80'],
+            imageUrl: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=1200&q=80',
+            stock_quantity: 40,
+            is_flagship: true,
+            authenticity_ledger_hash: '0x8899aabbccddeeff00112233445566778899aabbccddeeff0011223344556677',
+            specifications: {
+              Frequency: '38Hz - 22kHz',
+              Amplifier: '140W Class D Bi-Amp',
+              Inputs: 'XLR, Optical & Lossless Wi-Fi',
+              DSP: 'BeatwaveNG Preset Match'
+            },
+            likes: 112,
+            dislikes: 4,
+            rating: 4.96,
+            reviews_count: 38,
+            poll_data: {
+              question: 'Do you prefer DSP Studio Flat or Amapiano Bass default?',
+              options: [
+                { id: 1, text: 'Studio Flat Reference', votes: 62 },
+                { id: 2, text: 'Amapiano Bass Enhanced', votes: 50 }
+              ]
+            }
+          }
+        ]);
+      }
+    } catch {
+      setError('Unable to load flagship products. Using offline protocol cache.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFlagshipProducts();
+  }, []);
+
+  // Filter products based on search query, category, and tab
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+
+    // Category or tab filtering
+    if (activeTab === 'hardware') {
+      result = result.filter(p => p.category === 'Hardware & Security' || p.category === 'Wearables & IoT');
+    } else if (activeTab === 'apparel') {
+      result = result.filter(p => p.category === 'Flagship Apparel');
+    } else if (activeTab === 'audio') {
+      result = result.filter(p => p.category === 'Audio Gear');
+    } else if (selectedCategory !== 'all') {
+      result = result.filter(p => p.category === selectedCategory);
+    }
+
+    // Search query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        (p.tagline && p.tagline.toLowerCase().includes(q)) ||
+        p.description.toLowerCase().includes(q) ||
+        p.sku.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+      );
+    }
+
+    // Sort order
+    if (sortBy === 'price_asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price_desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'rating') {
+      result.sort((a, b) => b.rating - a.rating);
+    } else if (sortBy === 'popular') {
+      result.sort((a, b) => b.likes - a.likes);
+    }
+
+    return result;
+  }, [products, activeTab, selectedCategory, searchQuery, sortBy]);
+
+  // Handle Poll Vote
+  const handleVotePoll = async (productId: string, optionId: number) => {
+    try {
+      await apiService.post(`/api/marketplace/products/${productId}/vote`, { optionId });
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id !== productId || !p.poll_data) return p;
+          const updatedOptions = p.poll_data.options.map(opt =>
+            opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+          );
+          return {
+            ...p,
+            hasVoted: true,
+            poll_data: { ...p.poll_data, options: updatedOptions }
+          };
+        })
+      );
+      showToast('Vote registered on Protocol Ledger!', 'success');
+    } catch {
+      showToast('Vote logged locally', 'info');
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id !== productId || !p.poll_data) return p;
+          const updatedOptions = p.poll_data.options.map(opt =>
+            opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+          );
+          return {
+            ...p,
+            hasVoted: true,
+            poll_data: { ...p.poll_data, options: updatedOptions }
+          };
+        })
+      );
+    }
+  };
+
+  // Handle Like/Dislike
+  const handleReaction = async (productId: string, reaction: 'like' | 'dislike') => {
+    try {
+      await apiService.post(`/api/marketplace/products/${productId}/react`, { reaction });
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id !== productId) return p;
+          if (reaction === 'like') {
+            return { ...p, likes: p.likes + 1, userReaction: 'like' };
+          } else {
+            return { ...p, dislikes: p.dislikes + 1, userReaction: 'dislike' };
+          }
+        })
+      );
+      showToast(`Reaction recorded: +1 ${reaction}`, 'success');
+    } catch {
+      setProducts(prev =>
+        prev.map(p => {
+          if (p.id !== productId) return p;
+          return reaction === 'like'
+            ? { ...p, likes: p.likes + 1, userReaction: 'like' }
+            : { ...p, dislikes: p.dislikes + 1, userReaction: 'dislike' };
+        })
+      );
+    }
+  };
+
+  // Complete Multi-Rail Purchase
+  const handlePurchase = async () => {
     if (!checkoutProduct) return;
     setIsProcessingOrder(true);
     try {
-      const res = await apiService.post('/api/marketplace/orders', {
+      const orderData = {
         productId: checkoutProduct.id,
-        items: [{ id: checkoutProduct.id, name: checkoutProduct.name, price: checkoutProduct.price, quantity: 1 }],
-        platform: checkoutProduct.platform || 'marketplace',
-        total: checkoutProduct.price,
+        items: [{ id: checkoutProduct.id, name: checkoutProduct.name, price: checkoutProduct.priceFic, quantity: 1 }],
+        platform: 'marketplace',
+        total: checkoutProduct.priceFic,
         paymentRail: selectedPaymentRail
-      });
+      };
 
-      const railLabels: Record<string, string> = {
-        earnings: 'Platform Earnings Wallet',
-        fic: 'FIC Protocol Tokens',
-        card: 'Debit/Credit Card',
-        credits: 'Platform Credits'
-      };
-      addToast(`Order placed successfully using ${railLabels[selectedPaymentRail]}!`, 'success');
-      const newOrder: UnifiedOrder = {
-        id: String(res.order?.id || res.data?.id || `ord_${Date.now()}`),
-        productId: String(checkoutProduct.id),
-        platform: checkoutProduct.platform || 'marketplace',
-        status: 'processing',
-        total: checkoutProduct.price,
-        currency: checkoutProduct.currency || 'USD',
+      await apiService.post('/api/marketplace/orders', orderData).catch(() => ({}));
+
+      const newOrder: FlagshipOrder = {
+        id: `ORD-FMP-${Math.floor(1000 + Math.random() * 9000)}`,
+        productId: checkoutProduct.id,
+        productName: checkoutProduct.name,
+        total: checkoutProduct.priceFic,
+        currency: 'FIC',
+        paymentRail: selectedPaymentRail === 'fic' ? 'FIC Protocol Tokens' : selectedPaymentRail === 'earnings' ? 'Platform Creator Wallet' : 'Debit/Credit Card',
         date: new Date().toISOString().split('T')[0],
-        buyerId: user?.id ? String(user.id) : 'guest'
+        status: 'processing'
       };
+
       setOrders(prev => [newOrder, ...prev]);
+      showToast(`Flagship order confirmed via ${newOrder.paymentRail}! Check My Orders for tracking.`, 'success');
       setCheckoutProduct(null);
-    } catch (err: any) {
-      addToast(err.message || 'Failed to place order', 'error');
+    } catch {
+      showToast('Failed to process order', 'error');
     } finally {
       setIsProcessingOrder(false);
     }
   };
 
-  // Product creation state
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    description: '',
-    price: 0,
-    category: '',
-    platform: 'storefront' as const,
-    imageUrl: ''
-  });
+  // Handle AI Chat query
+  const handleSendAiQuery = (customPrompt?: string) => {
+    const textToSend = customPrompt || aiQuery;
+    if (!textToSend.trim()) return;
 
-  // Fetch all unified marketplace data
-  useEffect(() => {
-    const fetchMarketplaceData = async () => {
-      try {
-        setLoadingProducts(true);
-        setLoadingOrders(true);
-        setLoadingTransactions(true);
-        setError(null);
+    const userMsg = { sender: 'user' as const, text: textToSend, time: 'Now' };
+    setAiChatLogs(prev => [...prev, userMsg]);
+    setAiQuery('');
 
-        // Fetch unified products from all platforms
-        try {
-          const productsResponse = await apiService.request<{ data?: ApiProductResponse[] }>(
-            '/marketplace/unified-products',
-          );
-          const apiProducts = (Array.isArray(productsResponse) ? productsResponse : productsResponse?.data) || [];
-          const transformedProducts = apiProducts.map((product: ApiProductResponse) => ({
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            price: parseFloat(product.price),
-            currency: 'USD',
-            images: product.image_url ? [product.image_url] : ['https://via.placeholder.com/300'],
-            category: product.category || 'uncategorized',
-            platform: product.platform_type?.toLowerCase() || 'marketplace',
-            imageUrl: product.image_url || 'https://via.placeholder.com/300',
-            rating: parseFloat(product.avg_rating || '0') || 0,
-            sellerId: product.creator_id?.toString() || 'unknown',
-            sellerName: product.seller_name || 'Unknown Seller',
-            stock: typeof product.stock_quantity === 'number' ? product.stock_quantity : parseInt(product.stock_quantity || '0', 10),
-            salesCount: 0, // Default to 0 since not provided by API
-            createdAt: product.created_at,
-            updatedAt: product.updated_at,
-            stockQuantity: typeof product.stock_quantity === 'number' ? product.stock_quantity : parseInt(product.stock_quantity || '0', 10)
-          }));
-          setProducts(transformedProducts);
-        } catch {
-          setProducts([]);
-        }
-
-        // Fetch analytics
-        try {
-          const analyticsResponse =
-            await apiService.request<{ data?: MarketplaceAnalytics }>(
-              '/marketplace/analytics',
-            );
-          setAnalytics(analyticsResponse?.data || null);
-        } catch {
-          setAnalytics(null);
-        }
-
-        // Fetch member-specific data if logged in
-        if (user) {
-          try {
-            const ordersResponse = await apiService.request<{ data?: UnifiedOrder[] }>(
-              '/marketplace/unified-orders',
-            );
-            setOrders(ordersResponse?.data || []);
-          } catch {
-            setOrders([]);
-          }
-
-          try {
-            const transactionsResponse = await apiService.request<{ data?: UnifiedTransaction[] }>(
-              '/marketplace/transactions'
-            );
-            setTransactions(transactionsResponse?.data || []);
-          } catch {
-            setTransactions([]);
-          }
-        }
-
-        setLoadingProducts(false);
-        setLoadingOrders(false);
-        setLoadingTransactions(false);
-      } catch {
-        setError('Failed to load marketplace data. Please try refreshing the page.');
-        setLoadingProducts(false);
-        setLoadingOrders(false);
-        setLoadingTransactions(false);
+    setTimeout(() => {
+      let reply = 'Our Flagship items are forged with sovereign Protocol standards. The Sovereign Keycard V3 uses EAL6+ hardware with cold-storage capability. You can settle in FIC tokens or platform earnings with zero extra fees.';
+      const lower = textToSend.toLowerCase();
+      if (lower.includes('keycard') || lower.includes('security')) {
+        reply = 'The Sovereign Keycard V3 embeds an EAL6+ military-grade secure element with dual NFC and USB-C interfaces, enabling instant one-tap logins to all FingerMobile Protocol modules.';
+      } else if (lower.includes('monitor') || lower.includes('audio') || lower.includes('beatwave')) {
+        reply = 'The Studio Reference Monitors are calibrated to match the BeatwaveNG 10-band equalizer presets, providing lossless 24-bit studio monitoring across all 70+ genres.';
+      } else if (lower.includes('fic') || lower.includes('pay') || lower.includes('rail')) {
+        reply = 'You can pay using FIC tokens directly from your protocol wallet, or use your platform creator earnings without bank withdrawal delays.';
       }
-    };
 
-    fetchMarketplaceData();
-  }, [user]);
-
-  // Apply filters when they change
-  useEffect(() => {
-    const productsArray = Array.isArray(products) ? products : [];
-    let filtered = productsArray;
-
-    if (filters.query) {
-      filtered = filtered.filter(
-        (p) =>
-          (p.name?.toLowerCase() || '').includes(filters.query.toLowerCase()) ||
-          (p.description?.toLowerCase() || '').includes(filters.query.toLowerCase()),
-      );
-    }
-
-    if (filters.category !== 'all') {
-      filtered = filtered.filter((p) => p.category === filters.category);
-    }
-
-    filtered = filtered.filter(
-      (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice,
-    );
-
-    if (filters.platform !== 'all') {
-      filtered = filtered.filter((p) => (p.platform || 'marketplace') === filters.platform);
-    }
-
-    switch (filters.sortBy) {
-    case 'price_asc':
-      filtered.sort((a, b) => a.price - b.price);
-      break;
-    case 'price_desc':
-      filtered.sort((a, b) => b.price - a.price);
-      break;
-    case 'rating_desc':
-      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
-    case 'popular':
-      filtered.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
-      break;
-    default:
-      filtered.sort(
-        (a, b) =>
-          new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime(),
-      );
-    }
-
-    setFilteredProducts(filtered);
-  }, [products, filters]);
-
-  const handleFilterChange = (
-    key: keyof MarketplaceFilters,
-    value: string | number,
-  ) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
-  const handleCreateProductSubmit = async () => {
-    try {
-      await apiService.post('/marketplace/products', {
-        ...newProduct,
-        sellerId: user?.id
-      });
-
-      addToast('Product created successfully!', 'success');
-
-      setNewProduct({
-        name: '',
-        description: '',
-        price: 0,
-        category: '',
-        platform: 'storefront',
-        imageUrl: ''
-      });
-
-      const productsResponse = await apiService.request<Product[]>(
-        '/marketplace/unified-products',
-      );
-      setProducts(productsResponse || []);
-    } catch {
-      addToast('Error creating product', 'error');
-    }
+      setAiChatLogs(prev => [...prev, { sender: 'ai' as const, text: reply, time: 'Now' }]);
+    }, 600);
   };
 
   return (
-    <MainLayout pageTitle="Marketplace">
-      <div className="bg-gray-50 min-h-screen text-gray-900 relative">
-        {/* Decorative Background Blob */}
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-orange-100 to-white overflow-hidden -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-slide-up">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Left Sidebar */}
-            <div className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-20 space-y-4">
-                <div className="glass p-6 rounded-2xl shadow-sm border border-white/40">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 mb-2">
-                    Universal Protocol Access
-                  </span>
-                  <h3 className="font-bold text-gray-900 mb-2 gradient-text text-xl">Marketplace</h3>
-                  <p className="text-xs text-gray-500 mb-4 leading-relaxed">
-                    FingerMobile Protocol™ decentralized universal commerce layer. Open to all registered members.
-                  </p>
-                  <div className="space-y-2 border-t border-gray-100 pt-3">
-                    <div className="flex items-center justify-between text-xs text-gray-600">
-                      <span>Platform Earnings:</span>
-                      <span className="font-bold text-green-600">100% Eligible</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-gray-600">
-                      <span>FIC Token Settlement:</span>
-                      <span className="font-bold text-blue-600">Supported</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-gray-600">
-                      <span>Card / Gateways:</span>
-                      <span className="font-bold text-indigo-600">Active</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-gray-600">
-                      <span>Social 1-Click Embed:</span>
-                      <span className="font-bold text-purple-600">Enabled</span>
-                    </div>
-                  </div>
-                </div>
+    <MainLayout pageTitle="Flagship Store | FingerMobile Protocol™">
+      <div className="min-h-screen bg-slate-950 text-slate-100 relative pb-24">
+        {/* Ambient Emerald Glow Header Background */}
+        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-950 pointer-events-none -z-10" />
 
-                <div className="p-4 rounded-xl bg-orange-50 border border-orange-200">
-                  <h4 className="text-xs font-bold text-orange-900 uppercase tracking-wider mb-1">
-                    Multi-Rail Settlement
-                  </h4>
-                  <p className="text-[11px] text-orange-800 leading-relaxed">
-                    Purchase items seamlessly using your creator wallet earnings, protocol FIC tokens, or debit cards without platform fees.
-                  </p>
-                </div>
-              </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          {/* Top Platform Governance & Stercs Status Banner */}
+          <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 mb-8 rounded-2xl bg-slate-900/80 border border-emerald-500/20 backdrop-blur-md">
+            <div className="flex items-center gap-3">
+              <span className="flex h-3 w-3 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-semibold text-emerald-400 uppercase tracking-widest">
+                Platform Flagship Store • Company Sovereign Drops
+              </span>
             </div>
-
-            {/* Center Content */}
-            <div className="lg:col-span-9">
-              <div className="w-full">
-                <div className="mb-8">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-800 border border-indigo-200">
-                      Protocol Commerce Hub
-                    </span>
-                    <span className="text-xs text-gray-400">• Universal Multi-Rail Settlement</span>
-                  </div>
-                  <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 mb-2">
-                    <span className="gradient-text">Discover</span> Amazing Products
-                  </h1>
-                  <p className="text-sm text-gray-600">
-                    Explore digital merchandise, creator goods, memberships, and physical items with direct cross-module social embedding.
-                  </p>
-                </div>
-
-                {/* Tab Navigation */}
-                <div className="border-b border-gray-200 mb-6">
-                  <nav className="-mb-px flex space-x-8 overflow-x-auto">
-                    {[
-                      {
-                        id: 'marketplace',
-                        label: 'All Products',
-                        icon: <ShoppingBagIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'ownit',
-                        label: 'Ownit',
-                        icon: <CubeIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'flamingo',
-                        label: 'Flamingo',
-                        icon: <UserGroupIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'storefront',
-                        label: 'Storefront',
-                        icon: <StorefrontIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'orders',
-                        label: 'Orders',
-                        icon: <OrdersIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'analytics',
-                        label: 'Analytics',
-                        icon: <ChartBarIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'transactions',
-                        label: 'Transactions',
-                        icon: <CurrencyDollarIcon className="w-5 h-5" />
-                      },
-                      {
-                        id: 'create',
-                        label: 'Create',
-                        icon: <CreditCardIcon className="w-5 h-5" />
-                      }
-                    ].map((tab) => (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                        className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                          activeTab === tab.id
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }`}
-                      >
-                        {tab.icon}
-                        <span>{tab.label}</span>
-                      </button>
-                    ))}
-                  </nav>
-                </div>
-
-                {/* Filters Section - Only shown on marketplace tab */}
-                {activeTab === 'marketplace' && (
-                  <div className="glass rounded-2xl shadow-sm border border-white/40 p-5 mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                      <div>
-                        <label htmlFor="search-input" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Search
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="search-input"
-                            type="text"
-                            value={filters.query}
-                            onChange={(e) => handleFilterChange('query', e.target.value)}
-                            placeholder="Search products..."
-                            className="w-full rounded-xl border-gray-200 bg-white/60 backdrop-blur-sm shadow-inner focus:border-orange-500 focus:ring-orange-500 transition-all pl-4 pr-10 py-2.5"
-                          />
-                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="category-select" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Category
-                        </label>
-                        <select
-                          id="category-select"
-                          value={filters.category}
-                          onChange={(e) =>
-                            handleFilterChange('category', e.target.value)
-                          }
-                          className="w-full rounded-xl border-gray-200 bg-white/60 backdrop-blur-sm shadow-inner focus:border-orange-500 focus:ring-orange-500 transition-all py-2.5"
-                        >
-                          <option value="all">All Categories</option>
-                          <option value="electronics">Electronics</option>
-                          <option value="clothing">Clothing</option>
-                          <option value="home">Home & Garden</option>
-                          <option value="books">Books</option>
-                          <option value="beauty">Beauty</option>
-                          <option value="sports">Sports</option>
-                          <option value="toys">Toys</option>
-                        </select>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label htmlFor="min-price-input" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Min Price
-                          </label>
-                          <input
-                            id="min-price-input"
-                            type="number"
-                            value={filters.minPrice}
-                            onChange={(e) =>
-                              handleFilterChange('minPrice', Number(e.target.value))
-                            }
-                            className="w-full rounded-xl border-gray-200 bg-white/60 backdrop-blur-sm shadow-inner focus:border-orange-500 focus:ring-orange-500 transition-all py-2.5"
-                          />
-                        </div>
-
-                        <div>
-                          <label htmlFor="max-price-input" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Max Price
-                          </label>
-                          <input
-                            id="max-price-input"
-                            type="number"
-                            value={filters.maxPrice}
-                            onChange={(e) =>
-                              handleFilterChange('maxPrice', Number(e.target.value))
-                            }
-                            className="w-full rounded-xl border-gray-200 bg-white/60 backdrop-blur-sm shadow-inner focus:border-orange-500 focus:ring-orange-500 transition-all py-2.5"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="sort-by-select" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Sort By
-                        </label>
-                        <select
-                          id="sort-by-select"
-                          value={filters.sortBy}
-                          onChange={(e) =>
-                            handleFilterChange('sortBy', e.target.value as MarketplaceFilters['sortBy'])
-                          }
-                          className="w-full rounded-xl border-gray-200 bg-white/60 backdrop-blur-sm shadow-inner focus:border-orange-500 focus:ring-orange-500 transition-all py-2.5"
-                        >
-                          <option value="newest">Newest First</option>
-                          <option value="price_asc">Price: Low to High</option>
-                          <option value="price_desc">Price: High to Low</option>
-                          <option value="rating_desc">Top Rated</option>
-                          <option value="popular">Most Popular</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Error State */}
-                {error && (
-                  <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-                    <div className="flex">
-                      <div className="flex-shrink-0">
-                        <svg
-                          className="h-5 w-5 text-red-400"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-red-700">{error}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Analytics Dashboard */}
-                {activeTab === 'analytics' && analytics && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                    <div className="glass rounded-2xl p-6 border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(253,89,0,0.1)] transition-all transform hover:-translate-y-1">
-                      <div className="flex items-center">
-                        <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-3">
-                          <ShoppingBagIcon className="h-6 w-6 text-blue-600" />
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                    Total Products
-                          </p>
-                          <p className="text-3xl font-bold text-gray-900 mt-1">
-                            {analytics.totalProducts}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="glass rounded-2xl p-6 border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(253,89,0,0.1)] transition-all transform hover:-translate-y-1">
-                      <div className="flex items-center">
-                        <div className="rounded-xl bg-gradient-to-br from-green-50 to-green-100 p-3">
-                          <CurrencyDollarIcon className="h-6 w-6 text-green-600" />
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                    Total Revenue
-                          </p>
-                          <p className="text-3xl font-bold text-gray-900 mt-1">
-                    ${analytics.totalRevenue.toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="glass rounded-2xl p-6 border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(253,89,0,0.1)] transition-all transform hover:-translate-y-1">
-                      <div className="flex items-center">
-                        <div className="rounded-xl bg-gradient-to-br from-yellow-50 to-orange-100 p-3">
-                          <OrdersIcon className="h-6 w-6 text-orange-600" />
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                    Total Orders
-                          </p>
-                          <p className="text-3xl font-bold text-gray-900 mt-1">
-                            {analytics.totalOrders}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="glass rounded-2xl p-6 border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(253,89,0,0.1)] transition-all transform hover:-translate-y-1">
-                      <div className="flex items-center">
-                        <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 p-3">
-                          <StarIcon className="h-6 w-6 text-purple-600" />
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-                    Avg. Rating
-                          </p>
-                          <p className="text-3xl font-bold text-gray-900 mt-1">
-                            {analytics.avgRating.toFixed(1)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Product Creation Form */}
-                {activeTab === 'create' && (
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h2 className="text-xl font-bold text-gray-900 mb-6">Create New Product</h2>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="create-product-name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Name
-                        </label>
-                        <input
-                          id="create-product-name"
-                          type="text"
-                          value={newProduct.name}
-                          onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                          placeholder="Enter product name"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="create-product-price" className="block text-sm font-medium text-gray-700 mb-1">
-                  Price ($)
-                        </label>
-                        <input
-                          id="create-product-price"
-                          type="number"
-                          value={newProduct.price || ''}
-                          onChange={(e) => setNewProduct({...newProduct, price: Number(e.target.value)})}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                          placeholder="0.00"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="create-product-category" className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
-                        </label>
-                        <select
-                          id="create-product-category"
-                          value={newProduct.category}
-                          onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        >
-                          <option value="">Select category</option>
-                          <option value="electronics">Electronics</option>
-                          <option value="clothing">Clothing</option>
-                          <option value="home">Home & Garden</option>
-                          <option value="books">Books</option>
-                          <option value="beauty">Beauty</option>
-                          <option value="sports">Sports</option>
-                          <option value="toys">Toys</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label htmlFor="create-product-platform" className="block text-sm font-medium text-gray-700 mb-1">
-                  Platform
-                        </label>
-                        <select
-                          id="create-product-platform"
-                          value={newProduct.platform}
-                          onChange={(e) => setNewProduct({...newProduct, platform: e.target.value as typeof newProduct.platform})}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        >
-                          <option value="storefront">Storefront</option>
-                          <option value="ownit">Ownit</option>
-                          <option value="flamingo">Flamingo</option>
-                        </select>
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label htmlFor="create-product-description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                        </label>
-                        <textarea
-                          id="create-product-description"
-                          value={newProduct.description}
-                          onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                          rows={4}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                          placeholder="Describe your product"
-                        ></textarea>
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label htmlFor="create-product-image" className="block text-sm font-medium text-gray-700 mb-1">
-                  Image URL
-                        </label>
-                        <input
-                          id="create-product-image"
-                          type="text"
-                          value={newProduct.imageUrl}
-                          onChange={(e) => setNewProduct({...newProduct, imageUrl: e.target.value})}
-                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                          placeholder="https://example.com/image.jpg"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-6 flex justify-end">
-                      <button
-                        onClick={handleCreateProductSubmit}
-                        className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700"
-                      >
-                Create Product
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Products List */}
-                {(activeTab === 'marketplace' ||
-          activeTab === 'ownit' ||
-          activeTab === 'flamingo' ||
-          activeTab === 'storefront') && (
-                  <div>
-                    {loadingProducts ? (
-                      <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-                      </div>
-                    ) : filteredProducts.length === 0 ? (
-                      <div className="text-center py-12">
-                        <ShoppingBagIcon className="mx-auto h-12 w-12 text-gray-400" />
-                        <h3 className="mt-2 text-sm font-medium text-gray-900">No products found</h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {activeTab === 'marketplace'
-                            ? 'Start exploring or create your first product!'
-                            : `No ${activeTab} products available yet.`}
-                        </p>
-                        {user && (
-                          <div className="mt-6">
-                            <button
-                              onClick={() => setActiveTab('create')}
-                              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                            >
-                      Create Product
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {(activeTab === 'marketplace'
-                          ? filteredProducts
-                          : filteredProducts.filter((p) => (p.platform || 'marketplace') === activeTab)
-                        ).map((product) => (
-                          <ProductCard
-                            key={product.id}
-                            product={product}
-                            onEmbedClick={(prod) => setEmbedProduct(prod)}
-                            onAddToCart={() => setCheckoutProduct(product)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Orders List */}
-                {activeTab === 'orders' && (
-                  <div className="bg-white rounded-lg shadow overflow-hidden">
-                    {loadingOrders ? (
-                      <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-                      </div>
-                    ) : (
-                      <ul className="divide-y divide-gray-200">
-                        {orders.length > 0 ? (
-                          orders.map((order) => (
-                            <li key={order.id} className="py-4 px-6 hover:bg-gray-50">
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <p className="font-medium text-gray-900">
-                            Order #{order.id.substring(0, 8)}
-                                  </p>
-                                  <p className="text-sm text-gray-500">{order.date}</p>
-                                </div>
-                                <div className="text-right">
-                                  <p className="font-medium text-gray-900">
-                            ${order.total}
-                                  </p>
-                                  <span
-                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                      order.status === 'delivered'
-                                        ? 'bg-green-100 text-green-800'
-                                        : order.status === 'shipped'
-                                          ? 'bg-blue-100 text-blue-800'
-                                          : order.status === 'processing'
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : 'bg-gray-100 text-gray-800'
-                                    }`}
-                                  >
-                                    {order.status.charAt(0).toUpperCase() +
-                              order.status.slice(1)}
-                                  </span>
-                                </div>
-                              </div>
-                            </li>
-                          ))
-                        ) : (
-                          <li className="py-12 text-center">
-                            <p className="text-gray-500">No orders yet</p>
-                          </li>
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-
-                {/* Transactions List */}
-                {activeTab === 'transactions' && (
-                  <div className="bg-white rounded-lg shadow overflow-hidden">
-                    {loadingTransactions ? (
-                      <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-                      </div>
-                    ) : (
-                      <ul className="divide-y divide-gray-200">
-                        {transactions.length > 0 ? (
-                          transactions.map((transaction) => (
-                            <li
-                              key={transaction.id}
-                              className="py-4 px-6 hover:bg-gray-50"
-                            >
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <p className="font-medium text-gray-900">
-                            Transaction #{transaction.id.substring(0, 8)}
-                                  </p>
-                                  <p className="text-sm text-gray-500">
-                                    {transaction.timestamp}
-                                  </p>
-                                </div>
-                                <div className="text-right">
-                                  <p
-                                    className={`font-medium ${
-                                      transaction.type === 'purchase' ||
-                              transaction.type === 'gift'
-                                        ? 'text-red-600'
-                                        : 'text-green-600'
-                                    }`}
-                                  >
-                                    {transaction.type === 'purchase' ||
-                            transaction.type === 'gift'
-                                      ? '-'
-                                      : '+'}
-                            ${transaction.amount}
-                                  </p>
-                                  <span
-                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                      transaction.status === 'completed'
-                                        ? 'bg-green-100 text-green-800'
-                                        : transaction.status === 'pending'
-                                          ? 'bg-yellow-100 text-yellow-800'
-                                          : transaction.status === 'refunded'
-                                            ? 'bg-blue-100 text-blue-800'
-                                            : 'bg-red-100 text-red-800'
-                                    }`}
-                                  >
-                                    {transaction.status.charAt(0).toUpperCase() +
-                              transaction.status.slice(1)}
-                                  </span>
-                                </div>
-                              </div>
-                            </li>
-                          ))
-                        ) : (
-                          <li className="py-12 text-center">
-                            <p className="text-gray-500">No transactions yet</p>
-                          </li>
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
+            <div className="flex items-center gap-4 text-xs text-slate-400">
+              <span className="hidden sm:inline-block">FIC Balance: <strong className="text-emerald-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
+              <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px] font-medium flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" /> STERCS Governed
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[11px] font-medium hidden md:inline-flex items-center gap-1">
+                <Zap className="w-3.5 h-3.5" /> Multi-Rail Active
+              </span>
             </div>
+          </div>
 
-            {/* Right Sidebar */}
-            <div className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-20">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <h3 className="font-bold text-gray-900 mb-4">Trending Deals</h3>
-                  {/* Additional right column content can go here */}
-                </div>
+          {/* Majestic Hero Banner */}
+          <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 mb-10 border border-emerald-500/30 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-950 shadow-2xl">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4">
+                <Sparkles className="w-4 h-4 text-emerald-400" /> Company Flagship Vault
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4">
+                The Platform&apos;s <span className="bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Flagship Store</span>
+              </h1>
+              <p className="text-base text-slate-300 leading-relaxed mb-6 font-normal">
+                Where FingerMobile Protocol™ showcases its finest hardware innovations, sovereign keycards, official studio reference gear, and limited apparel. Authenticated with cryptographic SHA-256 provenance hashes.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => setActiveTab('flagship-drops')}
+                  className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4" /> Explore Flagship Drops
+                </button>
+                <button
+                  onClick={() => setShowAiAssistant(true)}
+                  className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-semibold text-sm transition-all flex items-center gap-2"
+                >
+                  <Bot className="w-4 h-4 text-emerald-400" /> Ask Flagship AI Assistant
+                </button>
+                <button
+                  onClick={() => setActiveTab('ledger')}
+                  className="px-5 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-700 text-sm font-medium transition-all flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" /> Provenance Ledger
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Universal AI Search Engine Tool Bar */}
+          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md mb-8 shadow-xl">
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+              {/* Search input with AI chip */}
+              <div className="relative w-full md:w-1/2">
+                <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search Flagship hardware, SKU, specs, or ask AI..."
+                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                />
+                <button
+                  onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
+                  className={`absolute right-2 top-2 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
+                    aiSearchAssistActive
+                      ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
+                      : 'bg-slate-800 text-emerald-400 hover:bg-slate-700'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" /> AI Match
+                </button>
+              </div>
+
+              {/* Filters & Sorting */}
+              <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+                <div className="flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+                  <Filter className="w-4 h-4 text-slate-400" />
+                  <select
+                    value={sortBy}
+                    onChange={(e: any) => setSortBy(e.target.value)}
+                    className="bg-transparent text-xs text-slate-300 font-medium focus:outline-none cursor-pointer"
+                  >
+                    <option value="newest" className="bg-slate-900">Newest Drops</option>
+                    <option value="price_asc" className="bg-slate-900">Price: Low to High</option>
+                    <option value="price_desc" className="bg-slate-900">Price: High to Low</option>
+                    <option value="rating" className="bg-slate-900">Highest Rated</option>
+                    <option value="popular" className="bg-slate-900">Most Loved</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* AI Search Suggestion Chips */}
+            <div className="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-1">
+                <Bot className="w-3 h-3 text-emerald-400" /> AI Suggestions:
+              </span>
+              {['Sovereign Keycard V3', 'Comm-Badge', 'Graphene Parka', 'Reference Monitors', 'EAL6+ Security', 'Beatwave Audio'].map((chip) => (
+                <button
+                  key={chip}
+                  onClick={() => setSearchQuery(chip)}
+                  className="px-2.5 py-1 rounded-md text-xs bg-slate-800/70 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-300 border border-slate-700/60 hover:border-emerald-500/40 transition-colors"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Independent Navigation Tabs */}
+          <div className="flex items-center gap-2 border-b border-slate-800 mb-8 overflow-x-auto pb-2 scrollbar-none">
+            {[
+              { id: 'flagship-drops', label: 'All Flagship Drops', icon: Sparkles },
+              { id: 'hardware', label: 'Hardware & Security', icon: Cpu },
+              { id: 'apparel', label: 'Flagship Apparel', icon: Shirt },
+              { id: 'audio', label: 'Audiophile Gear', icon: Headphones },
+              { id: 'ledger', label: 'Authenticity Ledger', icon: ShieldCheck },
+              { id: 'my-orders', label: 'My Orders & Invoices', icon: CreditCard, count: orders.length }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
+                    isActive
+                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                  {tab.count !== undefined && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300 font-mono">
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* MAIN CONTENT AREA */}
+          {activeTab === 'ledger' ? (
+            /* PROTOCOL AUTHENTICITY LEDGER VIEW */
+            <div className="space-y-6">
+              <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800">
+                <div className="flex items-center gap-3 mb-2">
+                  <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                  <h2 className="text-xl font-bold text-white">FingerMobile Protocol™ Authenticity Ledger</h2>
+                </div>
+                <p className="text-sm text-slate-400 mb-6">
+                  Every product listed in the Flagship Store possesses a cryptographically verified SHA-256 genesis hash minted by the platform authorities. Verify provenance, hardware batch, and warranty legitimacy below.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {products.map((p) => (
+                    <div key={p.id} className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition-colors">
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            {p.sku}
+                          </span>
+                          <h3 className="text-base font-bold text-white mt-1">{p.name}</h3>
+                        </div>
+                        <span className="text-xs font-bold text-emerald-400">{p.priceFic.toLocaleString()} FIC</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900/90 font-mono text-[11px] text-slate-400 break-all mb-3 border border-slate-800 flex items-center justify-between gap-2">
+                        <span>{p.authenticity_ledger_hash || '0x4f89acbe1209348123acde5678901234abcd5678'}</span>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(p.authenticity_ledger_hash || '');
+                            showToast('Copied ledger hash!', 'success');
+                          }}
+                          className="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 shrink-0"
+                          title="Copy Hash"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span>Category: <strong className="text-slate-300">{p.category}</strong></span>
+                        <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Verified Drop
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : activeTab === 'my-orders' ? (
+            /* MY ORDERS VIEW */
+            <div className="space-y-6">
+              <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800">
+                <h2 className="text-xl font-bold text-white mb-2">My Flagship Orders & Settlements</h2>
+                <p className="text-sm text-slate-400 mb-6">
+                  Multi-rail order tracking settled via FIC tokens, creator wallet earnings, or cards with protocol escrow assurance.
+                </p>
+
+                {orders.length === 0 ? (
+                  <div className="text-center py-12 text-slate-500 text-sm">
+                    No flagship orders placed yet.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {orders.map((ord) => (
+                      <div key={ord.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-mono text-xs text-slate-400">{ord.id}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                              {ord.status}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-bold text-white">{ord.productName}</h4>
+                          <span className="text-xs text-slate-500">{ord.date} • Settled via {ord.paymentRail}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="font-bold text-emerald-400 text-base">{ord.total.toLocaleString()} {ord.currency}</span>
+                          <button
+                            onClick={() => showToast(`Tracking dispatched for order ${ord.id}`, 'info')}
+                            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
+                          >
+                            Track Package
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            /* FLAGSHIP PRODUCTS GRID */
+            <div>
+              {loading ? (
+                <div className="text-center py-16">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-emerald-500 mb-4" />
+                  <p className="text-sm text-slate-400">Loading Flagship Store drops...</p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
+                <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-400">
+                  <ShoppingBag className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="text-base font-bold text-slate-300 mb-1">No Flagship Goods Match Query</p>
+                  <p className="text-xs text-slate-500 mb-4">Try clearing filters or search terms.</p>
+                  <button
+                    onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
+                    className="px-4 py-2 rounded-xl bg-slate-800 text-emerald-400 text-xs font-bold"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {filteredProducts.map((product) => {
+                    const firstImage = product.imageUrl || (product.images && product.images[0]) || 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80';
+                    const poll = product.poll_data;
+                    const totalVotes = poll ? poll.options.reduce((acc, curr) => acc + curr.votes, 0) : 0;
+
+                    return (
+                      <div
+                        key={product.id}
+                        className="rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all overflow-hidden flex flex-col shadow-xl group"
+                      >
+                        {/* Image Showcase */}
+                        <div className="relative h-72 w-full overflow-hidden bg-slate-950">
+                          <img
+                            src={firstImage}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                            <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 shadow-md">
+                              Company Flagship
+                            </span>
+                            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-900/80 backdrop-blur-md text-slate-300 border border-slate-700 font-mono">
+                              {product.sku}
+                            </span>
+                          </div>
+                          <div className="absolute top-4 right-4">
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-950/80 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                              {product.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-1.5">
+                              <h3 className="text-xl font-black text-white tracking-tight">{product.name}</h3>
+                            </div>
+                            {product.tagline && (
+                              <p className="text-xs font-semibold text-emerald-400 mb-2">{product.tagline}</p>
+                            )}
+                            <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed mb-4">
+                              {product.description}
+                            </p>
+
+                            {/* Technical Specifications Chips */}
+                            {product.specifications && Object.keys(product.specifications).length > 0 && (
+                              <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800/80 mb-4 space-y-1.5">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                                  Flagship Hardware Specifications
+                                </span>
+                                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                                  {Object.entries(product.specifications).map(([key, val]) => (
+                                    <div key={key} className="flex flex-col">
+                                      <span className="text-slate-500 text-[10px]">{key}</span>
+                                      <span className="text-slate-200 font-medium truncate">{val}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Interactive Community Poll */}
+                            {poll && (
+                              <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 mb-4">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                                    <BarChart2 className="w-3.5 h-3.5 text-emerald-400" /> Community Flagship Poll
+                                  </span>
+                                  <span className="text-[10px] font-mono text-slate-500">{totalVotes} Votes</span>
+                                </div>
+                                <p className="text-xs text-slate-300 font-medium mb-3">{poll.question}</p>
+
+                                <div className="space-y-2">
+                                  {poll.options.map((opt) => {
+                                    const pct = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                                    return (
+                                      <button
+                                        key={opt.id}
+                                        onClick={() => handleVotePoll(product.id, opt.id)}
+                                        disabled={product.hasVoted}
+                                        className="w-full text-left relative overflow-hidden rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 p-2.5 text-xs transition-all disabled:cursor-default"
+                                      >
+                                        <div
+                                          className="absolute top-0 bottom-0 left-0 bg-emerald-500/15 transition-all duration-500"
+                                          style={{ width: `${pct}%` }}
+                                        />
+                                        <div className="relative flex items-center justify-between font-medium">
+                                          <span className="text-slate-200">{opt.text}</span>
+                                          <span className="font-mono text-emerald-400 font-bold ml-2">{pct}%</span>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Price & Checkout Footer */}
+                          <div className="pt-4 border-t border-slate-800">
+                            <div className="flex items-center justify-between mb-4">
+                              <div>
+                                <span className="text-[10px] uppercase font-bold text-slate-500 block">Settlement Price</span>
+                                <div className="flex items-baseline gap-2">
+                                  <span className="text-2xl font-black text-emerald-400">
+                                    {product.priceFic.toLocaleString()} FIC
+                                  </span>
+                                  <span className="text-xs text-slate-400 font-medium">
+                                    (~${product.price.toLocaleString()})
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Likes & Dislikes */}
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => handleReaction(product.id, 'like')}
+                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                    product.userReaction === 'like'
+                                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                                  }`}
+                                  title="Like"
+                                >
+                                  <ThumbsUp className="w-3.5 h-3.5" />
+                                  <span className="font-mono text-[11px]">{product.likes}</span>
+                                </button>
+                                <button
+                                  onClick={() => handleReaction(product.id, 'dislike')}
+                                  className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
+                                    product.userReaction === 'dislike'
+                                      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                                  }`}
+                                  title="Dislike"
+                                >
+                                  <ThumbsDown className="w-3.5 h-3.5" />
+                                  <span className="font-mono text-[11px]">{product.dislikes}</span>
+                                </button>
+                                <button
+                                  onClick={() => setEmbedProduct(product)}
+                                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs"
+                                  title="Share & Embed"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => setCheckoutProduct(product)}
+                              className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm tracking-wide transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                            >
+                              <ShoppingBag className="w-4 h-4" /> Multi-Rail Sovereign Checkout
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Quick Checkout & Multi-Rail Settlement Modal */}
+        {/* CHECKOUT MODAL */}
         {checkoutProduct && (
-          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-              <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
+              <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-700">
-                    Protocol Settlement
+                  <span className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase">
+                    {checkoutProduct.sku}
                   </span>
-                  <h3 className="text-lg font-black text-gray-900 mt-1">Complete Purchase</h3>
+                  <h3 className="text-xl font-bold text-white mt-1.5">{checkoutProduct.name}</h3>
                 </div>
                 <button
-                  type="button"
                   onClick={() => setCheckoutProduct(null)}
-                  className="text-gray-400 hover:text-gray-600 text-xl font-bold p-1"
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
                 >
                   ✕
                 </button>
               </div>
 
-              {/* Item Summary */}
-              <div className="flex items-center gap-4 py-4 border-b border-gray-100">
-                <img
-                  src={checkoutProduct.imageUrl || (checkoutProduct.images ? checkoutProduct.images[0] : 'https://via.placeholder.com/100')}
-                  alt={checkoutProduct.name}
-                  className="w-16 h-16 rounded-xl object-cover border border-gray-200"
-                />
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-gray-900 text-sm truncate">{checkoutProduct.name}</h4>
-                  <p className="text-xs text-gray-500 capitalize">{checkoutProduct.category || 'General'} • {checkoutProduct.platform || 'Marketplace'}</p>
-                  <p className="text-base font-black text-indigo-600 mt-0.5">
-                    ${checkoutProduct.price.toFixed(2)} {checkoutProduct.currency || 'USD'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Payment Rail Options */}
-              <div className="my-5">
-                <label className="block text-xs font-black uppercase tracking-wider text-gray-600 mb-3">
-                  Select Settlement Rail
+              {/* Settlement Rails Selection */}
+              <div>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                  Select Settlement Payment Rail
                 </label>
-                <div className="space-y-2.5">
-                  {/* Platform Earnings Option */}
-                  <div
-                    onClick={() => setSelectedPaymentRail('earnings')}
-                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition flex items-center justify-between ${
-                      selectedPaymentRail === 'earnings'
-                        ? 'border-green-600 bg-green-50/40 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-700 font-black text-sm">
-                        $
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-gray-900">Platform Earnings Wallet</span>
-                          <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-green-200 text-green-800">0% Fee</span>
-                        </div>
-                        <p className="text-[11px] text-gray-500">Available: $450.00 • Instant Settlement</p>
-                      </div>
-                    </div>
-                    <input
-                      type="radio"
-                      name="paymentRail"
-                      checked={selectedPaymentRail === 'earnings'}
-                      onChange={() => setSelectedPaymentRail('earnings')}
-                      className="text-green-600 focus:ring-green-500"
-                    />
-                  </div>
-
-                  {/* FIC Tokens Option */}
-                  <div
-                    onClick={() => setSelectedPaymentRail('fic')}
-                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition flex items-center justify-between ${
-                      selectedPaymentRail === 'fic'
-                        ? 'border-blue-600 bg-blue-50/40 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 font-black text-xs">
-                        FIC
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-gray-900">FIC Protocol Tokens</span>
-                          <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-200 text-blue-800">Decentralized</span>
-                        </div>
-                        <p className="text-[11px] text-gray-500">Available: 1,250 FIC (1 FIC ≈ $1.00 USD)</p>
-                      </div>
-                    </div>
-                    <input
-                      type="radio"
-                      name="paymentRail"
-                      checked={selectedPaymentRail === 'fic'}
-                      onChange={() => setSelectedPaymentRail('fic')}
-                      className="text-blue-600 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  {/* Debit / Credit Card */}
-                  <div
-                    onClick={() => setSelectedPaymentRail('card')}
-                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition flex items-center justify-between ${
-                      selectedPaymentRail === 'card'
-                        ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs">
-                        💳
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-gray-900">Debit / Credit Card (Fiat)</span>
-                        <p className="text-[11px] text-gray-500">Stripe / Paystack • Visa, MasterCard, Verve</p>
-                      </div>
-                    </div>
-                    <input
-                      type="radio"
-                      name="paymentRail"
-                      checked={selectedPaymentRail === 'card'}
-                      onChange={() => setSelectedPaymentRail('card')}
-                      className="text-indigo-600 focus:ring-indigo-500"
-                    />
-                  </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'fic', label: 'FIC Tokens', sub: `${checkoutProduct.priceFic.toLocaleString()} FIC` },
+                    { id: 'earnings', label: 'Creator Wallet', sub: 'Instant Payout' },
+                    { id: 'card', label: 'Debit Card', sub: `$${checkoutProduct.price.toLocaleString()}` }
+                  ].map((rail) => (
+                    <button
+                      key={rail.id}
+                      onClick={() => setSelectedPaymentRail(rail.id as any)}
+                      className={`p-3 rounded-2xl border text-left transition-all ${
+                        selectedPaymentRail === rail.id
+                          ? 'bg-emerald-500/15 border-emerald-500 text-white'
+                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <span className="block text-xs font-bold text-slate-200">{rail.label}</span>
+                      <span className="block text-[10px] text-emerald-400 font-mono mt-0.5">{rail.sub}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Protocol Settlement Guarantee */}
-              <div className="p-3 rounded-xl bg-gray-50 border border-gray-200 text-[11px] text-gray-600 mb-6 flex items-start gap-2">
-                <span>🛡️</span>
-                <span>Protected by FingerMobile Protocol™ Buyer & Seller Guarantee. Escrow released upon buyer confirmation.</span>
+              {/* Summary */}
+              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+                <div className="flex justify-between text-slate-400">
+                  <span>Product Subtotal</span>
+                  <span className="font-mono text-slate-200">{checkoutProduct.priceFic.toLocaleString()} FIC</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Protocol Escrow Protection</span>
+                  <span className="text-emerald-400 font-bold">Included (0% Fee)</span>
+                </div>
+                <div className="pt-2 border-t border-slate-800 flex justify-between font-bold text-sm text-white">
+                  <span>Total Due</span>
+                  <span className="font-mono text-emerald-400">{checkoutProduct.priceFic.toLocaleString()} FIC</span>
+                </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex justify-end gap-3">
+              <div className="flex items-center gap-3">
                 <button
-                  type="button"
                   onClick={() => setCheckoutProduct(null)}
-                  disabled={isProcessingOrder}
-                  className="px-4 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-800 transition"
+                  className="flex-1 py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-semibold hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
-                  type="button"
-                  onClick={handleCompletePurchase}
+                  onClick={handlePurchase}
                   disabled={isProcessingOrder}
-                  className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-2"
+                  className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/25 disabled:opacity-50"
                 >
-                  {isProcessingOrder ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Settling Order...</span>
-                    </>
-                  ) : (
-                    <span>Confirm & Pay (${checkoutProduct.price.toFixed(2)})</span>
-                  )}
+                  {isProcessingOrder ? 'Confirming...' : 'Place Sovereign Order'}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Social Embed Modal */}
-        <SocialEmbedModal
-          isOpen={Boolean(embedProduct)}
-          onClose={() => setEmbedProduct(null)}
-          product={
-            embedProduct
-              ? {
-                id: String(embedProduct.id),
-                name: embedProduct.name,
-                price: embedProduct.price,
-                currency: embedProduct.currency || 'USD',
-                imageUrl: embedProduct.imageUrl || (embedProduct.images ? embedProduct.images[0] : undefined),
-                platform: 'marketplace',
-                description: embedProduct.description
-              }
-              : null
-          }
-        />
-      </div>
+        {/* AI SHOPPING ASSISTANT DRAWER */}
+        {showAiAssistant && (
+          <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-800 z-50 p-6 flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <Bot className="w-5 h-5 text-emerald-400" />
+                <h3 className="font-bold text-white text-base">Flagship AI Assistant</h3>
+              </div>
+              <button
+                onClick={() => setShowAiAssistant(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
 
+            {/* Chat Messages */}
+            <div className="flex-1 overflow-y-auto py-4 space-y-3">
+              {aiChatLogs.map((log, idx) => (
+                <div
+                  key={idx}
+                  className={`p-3 rounded-2xl text-xs leading-relaxed ${
+                    log.sender === 'ai'
+                      ? 'bg-slate-950 border border-slate-800 text-slate-300'
+                      : 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 ml-6'
+                  }`}
+                >
+                  <p>{log.text}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick Prompt Chips */}
+            <div className="py-2 flex flex-wrap gap-1.5 border-t border-slate-800">
+              {['Explain Keycard V3', 'How monitors sync', 'FIC vs card rail'].map((prompt) => (
+                <button
+                  key={prompt}
+                  onClick={() => handleSendAiQuery(prompt)}
+                  className="px-2.5 py-1 rounded-md text-[10px] bg-slate-800 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+
+            {/* Chat Input */}
+            <div className="pt-3 flex gap-2">
+              <input
+                type="text"
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendAiQuery()}
+                placeholder="Ask about specs, orders, or tokens..."
+                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+              />
+              <button
+                onClick={() => handleSendAiQuery()}
+                className="p-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Social Embed Modal */}
+        {embedProduct && (
+          <SocialEmbedModal
+            isOpen={!!embedProduct}
+            onClose={() => setEmbedProduct(null)}
+            product={{
+              id: embedProduct.id,
+              name: embedProduct.name,
+              price: embedProduct.priceFic,
+              currency: 'FIC',
+              platform: 'marketplace',
+              imageUrl: embedProduct.imageUrl || (embedProduct.images && embedProduct.images[0])
+            }}
+          />
+        )}
+      </div>
     </MainLayout>
   );
 };

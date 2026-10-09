@@ -60,7 +60,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
             onClick={onLeftMenuToggle}
             className="lg:hidden p-2 hover:bg-gray-700 rounded-lg transition-colors"
           >
-            <MenuIcon className="w-6 h-6 text-white" />
+            <MenuIcon className="w-6 h-6 text-[#ff6b00]" />
           </button>
 
           <Link to="/" className="flex items-center gap-2 group">

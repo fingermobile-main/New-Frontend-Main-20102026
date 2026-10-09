@@ -18,15 +18,15 @@ const BurgerMenu: React.FC<BurgerMenuProps> = ({ isOpen, toggleMenu }) => {
     <button
       onClick={toggleMenu}
       onKeyDown={handleKeyDown}
-      className="text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      className="text-[#ff6b00] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
       aria-label={isOpen ? 'Close menu' : 'Open menu'}
       aria-expanded={isOpen}
       aria-controls="main-navigation-menu"
     >
       {isOpen ? (
-        <XIcon className="w-6 h-6" />
+        <XIcon className="w-6 h-6 text-[#ff6b00]" />
       ) : (
-        <MenuIcon className="w-6 h-6" />
+        <MenuIcon className="w-6 h-6 text-[#ff6b00]" />
       )}
     </button>
   );

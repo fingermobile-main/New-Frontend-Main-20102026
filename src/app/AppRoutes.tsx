@@ -119,7 +119,8 @@ const WalletFundingPage = lazy(() => import('../pages/WalletFundingPage'));
 const PaylinksPage = lazy(() => import('../pages/PaylinksPage'));
 const FinancialsPage = lazy(() => import('../pages/financials/FinancialsPage'));
 const FICVaultPage = lazy(() => import('../pages/FICVaultPage'));
-const LendsqrPage = lazy(() => import('../pages/LendsqrPage'));
+const LoanSqrPage = lazy(() => import('../pages/LoanSqrPage'));
+const LoansqrPage = LoanSqrPage;
 
 // Module 9: E-Learning, Education & Programs
 const ELearningPage = lazy(() => import('../pages/ELearningPage'));
@@ -159,6 +160,7 @@ const FlamingoTrackingPage = lazy(() => import('../pages/FlamingoTrackingPage'))
 const OwnitPage = lazy(() => import('../pages/OwnitPage'));
 const OwnitTrackingPage = lazy(() => import('../pages/OwnitTrackingPage'));
 const BusinessOfficesPage = lazy(() => import('../pages/BusinessOfficesPage'));
+const FranchisePage = lazy(() => import('../pages/FranchisePage'));
 const FranchiseManagementPage = lazy(() => import('../pages/dashboard/FranchiseManagementPage'));
 const OrganizeThesePage = lazy(() => import('../pages/OrganizeThesePage'));
 const PermanencePage = lazy(() => import('../pages/PermanencePage'));
@@ -211,6 +213,9 @@ const TermsAndConditionsPage = lazy(() => import('../pages/TermsAndConditionsPag
 const CookiePolicyPage = lazy(() => import('../pages/CookiePolicyPage'));
 const DataSubjectRequestPage = lazy(() => import('../pages/DataSubjectRequestPage'));
 const MarketingPage = lazy(() => import('../pages/MarketingPage'));
+const FAQPage = lazy(() => import('../pages/info/FAQPage'));
+const ContactSupportPage = lazy(() => import('../pages/support/ContactSupportPage'));
+const HelpPage = lazy(() => import('../pages/support/HelpPage'));
 
 // Module 15: Legacy Utility and Feature Routes kept for backwards compatibility
 const ProfileEnhancement = lazy(() => import('../components/ProfileEnhancement'));
@@ -348,7 +353,7 @@ export const routes: RouteObject[] = [
       { path: '/business-offices', element: redirectTo('/businessoffices') },
       { path: '/business/offices', element: redirectTo('/businessoffices') },
       { path: '/businessoffices', element: <BusinessOfficesPage /> },
-      { path: '/franchise', element: redirectTo('/franchisemanagement') },
+      { path: '/franchise', element: <FranchisePage /> },
       { path: '/ugc-dashboard', element: redirectTo('/ugcdashboard') },
       { path: '/my-downloads', element: redirectTo('/mydownloads') },
       { path: '/downloads', element: redirectTo('/mydownloads') },
@@ -431,7 +436,10 @@ export const routes: RouteObject[] = [
           { path: '/paylinks', element: <PaylinksPage /> },
           { path: '/earnings', element: redirectTo('/memberearning') },
           { path: '/memberearning', element: <MemberEarningPage /> },
-          { path: '/lendsqr', element: <LendsqrPage /> },
+          { path: '/loansqr', element: <LoanSqrPage /> },
+          { path: '/loansq', element: <LoanSqrPage /> },
+          { path: '/Loansqr', element: <LoanSqrPage /> },
+          { path: '/lendsq', element: <LoanSqrPage /> },
           { path: '/my-learning', element: redirectTo('/mylearning') },
           { path: '/mylearning', element: <MyLearningPage /> },
           { path: '/nysc', element: <NyscPage /> },

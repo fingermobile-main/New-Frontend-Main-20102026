@@ -6,7 +6,7 @@ The Lush Pressies frontend is a modern, responsive dating application built with
 
 - **LinkedIn-style 3-column layout**: Clean and professional interface
 - **Advanced Privacy Controls**: PIN exchange, private content sharing, and incognito mode
-- **Escrow Icebreaker Gifting**: Secure gift exchange system
+- **EscrowLapidaire Gifting**: Secure gift exchange system
 - **Sovereign Member Privacy**: Granular privacy settings and controls
 - **Incognito Engine**: Advanced anonymity features
 - **Real-time Chat**: With typing indicators and read receipts
