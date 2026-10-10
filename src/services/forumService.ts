@@ -1,6 +1,8 @@
 import ApiService from './api';
 import { ForumPost, ForumCategory, ForumThread } from '../types/forum';
 
+export type { ForumPost, ForumCategory, ForumThread };
+
 interface CreateForumPostData {
   content: string;
   threadId: string;

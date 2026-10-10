@@ -38,16 +38,25 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
 
           {/* COLUMN 2: Search bar, FIC, Live Wallet Balance, Profile image with dropdown */}
           <div className="flex-1 flex items-center justify-center max-w-xl mx-2 gap-3">
-            <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xs sm:max-w-sm">
+            <div className="relative w-full max-w-xs sm:max-w-sm">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
                 placeholder="Search Canary, audio, tags..."
-                className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-800/80 border border-slate-700 rounded-full text-slate-200 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full pl-9 pr-14 py-1.5 text-xs bg-slate-800/80 border border-slate-700 rounded-full text-slate-200 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all cursor-pointer"
               />
-            </form>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 hover:text-white bg-slate-700/60 rounded border border-slate-600/60 transition"
+                title="Universal AI Search (Cmd+K)"
+              >
+                ⌘K
+              </button>
+            </div>
 
 
 

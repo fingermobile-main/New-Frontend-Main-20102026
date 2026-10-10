@@ -1,556 +1,1271 @@
-/*
- * FingerMobile Protocol™ - Global Communities & Hubs
- * Peer-to-Peer Micro-Communities, Discussions & Collaborative Spaces
- * Copyright © 2026 FingerMobile Protocol™. All rights reserved.
- */
-
-import React, { useEffect, useState, useMemo } from 'react';
-import MainLayout from '../components/layout/MainLayout';
-import { useAppContext } from '../contexts/AppContext';
-import api from '../services/api';
+import React, { useState, useEffect } from 'react';
 import {
-  UserGroupIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  CheckCircleIcon,
-  XMarkIcon,
-  SparklesIcon,
-  HashtagIcon
-} from '../icons';
+  Users,
+  MessageSquare,
+  Flag,
+  Eye,
+  EyeOff,
+  Lock,
+  Globe,
+  Settings,
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  CheckCircle,
+  XCircle,
+  UserPlus,
+  TrendingUp,
+  Activity,
+  BarChart3,
+  Ban,
+  Shield,
+  MessageCircle,
+  Heart,
+  Share2,
+  ChevronLeft,
+  ChevronRight,
+  PinIcon
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface Community {
-  id: string;
+interface CommunityGroup {
+  id: number;
   name: string;
   description: string;
+  creatorId: number;
+  creatorName: string;
   memberCount: number;
-  isJoined: boolean;
-  category: string;
-  tags?: string[];
-  bannerUrl?: string;
+  postCount: number;
+  privacy: 'public' | 'private' | 'restricted';
+  status: 'active' | 'inactive' | 'suspended';
+  createdAt: string;
+  updatedAt: string;
 }
 
-const DEFAULT_COMMUNITIES: Community[] = [
-  {
-    id: 'comm-01',
-    name: 'Tech Innovators Guild',
-    description: 'Software engineers, protocol designers, and Web3 developers building on the FingerMobile SDK and decentralized infrastructure.',
-    memberCount: 1420,
-    isJoined: true,
-    category: 'Technology',
-    tags: ['Web3', 'React', 'DevOps', 'TypeScript']
-  },
-  {
-    id: 'comm-02',
-    name: 'Creative Visual Minds',
-    description: 'Documentary photographers, street lens masters, and digital artists licensing works across PhotoCredits and Catalogue.',
-    memberCount: 980,
-    isJoined: true,
-    category: 'Arts & Media',
-    tags: ['Photography', 'Design', 'PhotoCredits', 'Art']
-  },
-  {
-    id: 'comm-03',
-    name: 'African Sound Architects',
-    description: 'Afrobeats producers, audio mixing engineers, and composers sharing stems and rhythm templates on BeatwaveNG.',
-    memberCount: 2150,
-    isJoined: false,
-    category: 'Music & Audio',
-    tags: ['Afrobeats', 'Beatwave', 'Music', 'Audio']
-  },
-  {
-    id: 'comm-04',
-    name: 'Sovereign Business Syndicate',
-    description: 'Entrepreneurs, merchant storefront operators, and franchise hub leaders collaborating on global commercial expansion.',
-    memberCount: 1680,
-    isJoined: false,
-    category: 'Business',
-    tags: ['Franchise', 'Commerce', 'Storefronts', 'Startup']
-  },
-  {
-    id: 'comm-05',
-    name: 'Metaverse & Hologram Labs',
-    description: '3D modelers, Mii avatar riggers, and interactive virtual environment creators designing cyber wearables.',
-    memberCount: 840,
-    isJoined: false,
-    category: 'Technology',
-    tags: ['Mii', '3D', 'Metaverse', 'VR']
-  }
-];
+interface ForumThread {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+  authorName: string;
+  groupId: number;
+  groupName: string;
+  replyCount: number;
+  viewCount: number;
+  isPinned: boolean;
+  isLocked: boolean;
+  lastReplyAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CommunityInteraction {
+  id: number;
+  userId: number;
+  userName: string;
+  type: 'post' | 'comment' | 'reaction' | 'share';
+  content: string;
+  targetId: number;
+  targetType: 'group' | 'thread' | 'post';
+  timestamp: string;
+  status: 'active' | 'deleted';
+}
 
 const CommunityPage: React.FC = () => {
-  const { showToast } = useAppContext();
-  const [communities, setCommunities] = useState<Community[]>(DEFAULT_COMMUNITIES);
-  const [activeTab, setActiveTab] = useState<'my' | 'discover'>('discover');
+  const [activeTab, setActiveTab] = useState<'groups' | 'threads' | 'interactions' | 'moderation' | 'analytics'>('groups');
+  const [communityGroups, setCommunityGroups] = useState<CommunityGroup[]>([]);
+  const [forumThreads, setForumThreads] = useState<ForumThread[]>([]);
+  const [interactions, setInteractions] = useState<CommunityInteraction[]>([]);
+  const [filteredGroups, setFilteredGroups] = useState<CommunityGroup[]>([]);
+  const [filteredThreads, setFilteredThreads] = useState<ForumThread[]>([]);
+  const [filteredInteractions, setFilteredInteractions] = useState<CommunityInteraction[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
-  // Create Modal
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [createForm, setCreateForm] = useState({
+  const [filterPrivacy, setFilterPrivacy] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [communityStats, setCommunityStats] = useState<any>(null);
+  const [moderationData, setModerationData] = useState<any>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newGroup, setNewGroup] = useState({
     name: '',
     description: '',
-    category: 'Technology',
-    tags: 'Web3, Community'
+    privacy: 'public' as 'public' | 'private' | 'restricted'
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const navigate = useNavigate();
+  const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
+
+  // Simulate loading community data
   useEffect(() => {
-    let mounted = true;
-    const fetchCommunities = async () => {
-      try {
-        const res = await api.get('/communities');
-        const raw = res.data?.data || res.data?.communities || (Array.isArray(res.data) ? res.data : []);
-        if (mounted && Array.isArray(raw) && raw.length > 0) {
-          setCommunities(raw.map((c: any, index: number) => ({
-            id: String(c.id),
-            name: c.name,
-            description: c.description || 'Community space for active collaborative members.',
-            memberCount: c.members_count || 120,
-            isJoined: index % 2 === 0,
-            category: c.category || 'Technology',
-            tags: c.tags || ['Community', 'General']
-          })));
-        }
-      } catch {
-        // Retain default robust community directory
-      }
+    const fetchCommunityData = async () => {
+      setLoading(true);
+      // Simulating API call
+      setTimeout(() => {
+        const mockGroups: CommunityGroup[] = [
+          {
+            id: 1,
+            name: 'Developer Community',
+            description: 'A place for developers to share ideas and solutions',
+            creatorId: 1,
+            creatorName: 'John Doe',
+            memberCount: 1250,
+            postCount: 3420,
+            privacy: 'public',
+            status: 'active',
+            createdAt: '2024-01-15T10:30:00Z',
+            updatedAt: '2024-10-09T10:30:00Z'
+          },
+          {
+            id: 2,
+            name: 'Design Enthusiasts',
+            description: 'Discuss design trends and techniques',
+            creatorId: 2,
+            creatorName: 'Jane Smith',
+            memberCount: 890,
+            postCount: 2100,
+            privacy: 'public',
+            status: 'active',
+            createdAt: '2024-02-20T14:20:00Z',
+            updatedAt: '2024-10-08T15:45:00Z'
+          },
+          {
+            id: 3,
+            name: 'Project Collaboration',
+            description: 'Find collaborators for your projects',
+            creatorId: 3,
+            creatorName: 'Bob Johnson',
+            memberCount: 420,
+            postCount: 980,
+            privacy: 'private',
+            status: 'active',
+            createdAt: '2024-03-10T09:15:00Z',
+            updatedAt: '2024-10-07T11:30:00Z'
+          },
+          {
+            id: 4,
+            name: 'Photography Club',
+            description: 'Share your photography tips and work',
+            creatorId: 4,
+            creatorName: 'Alice Williams',
+            memberCount: 650,
+            postCount: 1800,
+            privacy: 'public',
+            status: 'suspended',
+            createdAt: '2024-04-05T16:45:00Z',
+            updatedAt: '2024-10-06T12:20:00Z'
+          }
+        ];
+
+        const mockThreads: ForumThread[] = [
+          {
+            id: 1,
+            title: 'Best practices for React development',
+            content: 'What are your favorite React patterns?',
+            authorId: 1,
+            authorName: 'John Doe',
+            groupId: 1,
+            groupName: 'Developer Community',
+            replyCount: 24,
+            viewCount: 1250,
+            isPinned: true,
+            isLocked: false,
+            lastReplyAt: '2024-10-09T10:30:00Z',
+            createdAt: '2024-10-01T08:15:00Z',
+            updatedAt: '2024-10-09T10:30:00Z'
+          },
+          {
+            id: 2,
+            title: 'UI/UX design trends for 2024',
+            content: 'Share your thoughts on the latest trends',
+            authorId: 2,
+            authorName: 'Jane Smith',
+            groupId: 2,
+            groupName: 'Design Enthusiasts',
+            replyCount: 18,
+            viewCount: 890,
+            isPinned: false,
+            isLocked: false,
+            lastReplyAt: '2024-10-09T09:45:00Z',
+            createdAt: '2024-10-05T14:20:00Z',
+            updatedAt: '2024-10-09T09:45:00Z'
+          },
+          {
+            id: 3,
+            title: 'Looking for a Vue.js developer',
+            content: 'Need help with a Vue project',
+            authorId: 3,
+            authorName: 'Bob Johnson',
+            groupId: 3,
+            groupName: 'Project Collaboration',
+            replyCount: 7,
+            viewCount: 210,
+            isPinned: false,
+            isLocked: false,
+            lastReplyAt: '2024-10-08T16:30:00Z',
+            createdAt: '2024-10-07T11:45:00Z',
+            updatedAt: '2024-10-08T16:30:00Z'
+          }
+        ];
+
+        const mockInteractions: CommunityInteraction[] = [
+          {
+            id: 1,
+            userId: 1,
+            userName: 'John Doe',
+            type: 'post',
+            content: 'Just launched my new project!',
+            targetId: 1,
+            targetType: 'thread',
+            timestamp: '2024-10-09T10:30:00Z',
+            status: 'active'
+          },
+          {
+            id: 2,
+            userId: 2,
+            userName: 'Jane Smith',
+            type: 'comment',
+            content: 'Great idea, thanks for sharing!',
+            targetId: 1,
+            targetType: 'thread',
+            timestamp: '2024-10-09T09:45:00Z',
+            status: 'active'
+          },
+          {
+            id: 3,
+            userId: 3,
+            userName: 'Bob Johnson',
+            type: 'reaction',
+            content: 'liked',
+            targetId: 1,
+            targetType: 'thread',
+            timestamp: '2024-10-09T08:30:00Z',
+            status: 'active'
+          }
+        ];
+
+        const mockStats = {
+          totalGroups: 42,
+          totalMembers: 15250,
+          totalThreads: 32400,
+          totalReplies: 125000,
+          newGroupsThisMonth: 8,
+          newMembersThisMonth: 1250,
+          activeUsersToday: 2450,
+          engagementRate: 68.5
+        };
+
+        const mockModeration = {
+          totalReports: 125,
+          pendingReports: 8,
+          resolvedReports: 117,
+          activeWarnings: 15,
+          suspendedAccounts: 3,
+          flaggedContent: 24
+        };
+
+        setCommunityGroups(mockGroups);
+        setForumThreads(mockThreads);
+        setInteractions(mockInteractions);
+        setFilteredGroups(mockGroups);
+        setFilteredThreads(mockThreads);
+        setFilteredInteractions(mockInteractions);
+        setCommunityStats(mockStats);
+        setModerationData(mockModeration);
+        setLoading(false);
+      }, 1000);
     };
-    fetchCommunities();
-    return () => { mounted = false; };
+
+    fetchCommunityData();
   }, []);
 
-  const joinCommunity = async (id: string, name: string) => {
+  // Filter data based on active tab and filters
+  useEffect(() => {
+    if (activeTab === 'groups') {
+      let result = communityGroups;
+
+      if (searchTerm) {
+        result = result.filter(item =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      if (filterPrivacy !== 'all') {
+        result = result.filter(item => item.privacy === filterPrivacy);
+      }
+
+      if (filterStatus !== 'all') {
+        result = result.filter(item => item.status === filterStatus);
+      }
+
+      setFilteredGroups(result);
+      setCurrentPage(1); // Reset to first page when filtering
+    } else if (activeTab === 'threads') {
+      let result = forumThreads;
+
+      if (searchTerm) {
+        result = result.filter(item =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.content.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      setFilteredThreads(result);
+      setCurrentPage(1); // Reset to first page when filtering
+    } else if (activeTab === 'interactions') {
+      let result = interactions;
+
+      if (searchTerm) {
+        result = result.filter(item =>
+          item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.userName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      setFilteredInteractions(result);
+      setCurrentPage(1); // Reset to first page when filtering
+    }
+  }, [searchTerm, filterPrivacy, filterStatus, activeTab, communityGroups, forumThreads, interactions]);
+
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  let currentItems: any[] = [];
+  let totalPages = 0;
+
+  if (activeTab === 'groups') {
+    currentItems = filteredGroups.slice(indexOfFirstItem, indexOfLastItem);
+    totalPages = Math.ceil(filteredGroups.length / itemsPerPage);
+  } else if (activeTab === 'threads') {
+    currentItems = filteredThreads.slice(indexOfFirstItem, indexOfLastItem);
+    totalPages = Math.ceil(filteredThreads.length / itemsPerPage);
+  } else if (activeTab === 'interactions') {
+    currentItems = filteredInteractions.slice(indexOfFirstItem, indexOfLastItem);
+    totalPages = Math.ceil(filteredInteractions.length / itemsPerPage);
+  }
+
+  const handleCreateGroup = async () => {
     try {
-      await api.post(`/communities/${id}/join`).catch(() => {});
-      setCommunities((prev) =>
-        prev.map((comm) =>
-          comm.id === id
-            ? { ...comm, isJoined: true, memberCount: comm.memberCount + 1 }
-            : comm
-        )
-      );
-      showToast(`Joined "${name}"! Welcome to the digital space.`, 'success');
-    } catch {
-      showToast('Joined community locally', 'info');
+      // In a real implementation, this would call the API to create a group
+      console.log('Creating group:', newGroup);
+      setShowCreateModal(false);
+      // Reset form
+      setNewGroup({
+        name: '',
+        description: '',
+        privacy: 'public'
+      });
+    } catch (error) {
+      console.error('Error creating group:', error);
     }
   };
 
-  const leaveCommunity = async (id: string, name: string) => {
+  const handleSuspendGroup = async (groupId: number) => {
     try {
-      await api.post(`/communities/${id}/leave`).catch(() => {});
-      setCommunities((prev) =>
-        prev.map((comm) =>
-          comm.id === id
-            ? { ...comm, isJoined: false, memberCount: Math.max(0, comm.memberCount - 1) }
-            : comm
-        )
-      );
-      showToast(`Left "${name}"`, 'info');
-    } catch {
-      showToast('Left community', 'info');
+      // In a real implementation, this would call the API to suspend a group
+      console.log('Suspending group:', groupId);
+      setCommunityGroups(communityGroups.map(group =>
+        group.id === groupId ? {...group, status: 'suspended'} : group
+      ));
+      setFilteredGroups(filteredGroups.map(group =>
+        group.id === groupId ? {...group, status: 'suspended'} : group
+      ));
+    } catch (error) {
+      console.error('Error suspending group:', error);
     }
   };
 
-  const handleCreateCommunitySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!createForm.name) {
-      showToast('Please provide a community name', 'error');
-      return;
-    }
-
+  const handleActivateGroup = async (groupId: number) => {
     try {
-      setIsSubmitting(true);
-      await new Promise((res) => setTimeout(res, 600));
-
-      const newComm: Community = {
-        id: `comm-${Date.now()}`,
-        name: createForm.name,
-        description: createForm.description || 'A dedicated sovereign community micro-hub on FingerMobile.',
-        category: createForm.category,
-        memberCount: 1,
-        isJoined: true,
-        tags: createForm.tags.split(',').map((t) => t.trim()).filter(Boolean)
-      };
-
-      setCommunities([newComm, ...communities]);
-      setIsCreateModalOpen(false);
-      setCreateForm({ name: '', description: '', category: 'Technology', tags: 'Web3, Community' });
-      showToast(`Community "${newComm.name}" created successfully!`, 'success');
-    } catch {
-      showToast('Failed to create community', 'error');
-    } finally {
-      setIsSubmitting(false);
+      // In a real implementation, this would call the API to activate a group
+      console.log('Activating group:', groupId);
+      setCommunityGroups(communityGroups.map(group =>
+        group.id === groupId ? {...group, status: 'active'} : group
+      ));
+      setFilteredGroups(filteredGroups.map(group =>
+        group.id === groupId ? {...group, status: 'active'} : group
+      ));
+    } catch (error) {
+      console.error('Error activating group:', error);
     }
   };
 
-  const filteredCommunities = useMemo(() => {
-    return communities.filter((comm) => {
-      const matchesTab = activeTab === 'my' ? comm.isJoined : true;
-      const matchesSearch =
-        comm.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        comm.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        comm.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (comm.tags && comm.tags.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase())));
+  const getPrivacyIcon = (privacy: string) => {
+    switch (privacy) {
+      case 'public': return <Globe className="h-4 w-4 text-green-500" />;
+      case 'private': return <Lock className="h-4 w-4 text-blue-500" />;
+      case 'restricted': return <Shield className="h-4 w-4 text-yellow-500" />;
+      default: return <Globe className="h-4 w-4 text-gray-500" />;
+    }
+  };
 
-      const matchesCategory = selectedCategory === 'All' || comm.category === selectedCategory;
-      const matchesTag = !selectedTag || (comm.tags && comm.tags.includes(selectedTag));
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'inactive': return 'bg-gray-100 text-gray-800';
+      case 'suspended': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
-      return matchesTab && matchesSearch && matchesCategory && matchesTag;
-    });
-  }, [communities, activeTab, searchTerm, selectedCategory, selectedTag]);
-
-  const allTags = useMemo(() => {
-    const set = new Set<string>();
-    communities.forEach((c) => {
-      if (c.tags) c.tags.forEach((t) => set.add(t));
-    });
-    return Array.from(set);
-  }, [communities]);
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'post': return 'bg-blue-100 text-blue-800';
+      case 'comment': return 'bg-green-100 text-green-800';
+      case 'reaction': return 'bg-purple-100 text-purple-800';
+      case 'share': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
-    <MainLayout pageTitle="Communities">
-      <div className="min-h-screen bg-slate-50 text-gray-900 pb-16">
-        {/* Header Hero */}
-        <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-blue-950 text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-indigo-900/40">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-3 border border-indigo-500/30">
-                <UserGroupIcon className="w-4 h-4 text-indigo-400" />
-                Digital Living Rooms & Micro-Communities
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-                Platform Communities
-              </h1>
-              <p className="mt-2 text-indigo-200 text-sm max-w-2xl">
-                Dedicated spaces for creators, engineers, musicians, and entrepreneurs to collaborate, solve problems, and connect around shared passions.
-              </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-blue-500" />
+              <h1 className="text-2xl font-bold text-gray-900 ml-3">Community Management</h1>
             </div>
-
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl text-sm font-bold shadow-xl shadow-blue-600/30 flex items-center gap-2 transition-transform hover:scale-105"
-            >
-              <PlusIcon className="w-5 h-5" />
-              Start a Community
-            </button>
-          </div>
-        </div>
-
-        {/* Toolbar Deck */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-5 space-y-4">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3.5 top-3" />
-                <input
-                  type="text"
-                  placeholder="Search communities by name, topic, or tags..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all"
-                />
-              </div>
-
-              {/* Tab Pills */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setActiveTab('discover')}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                    activeTab === 'discover'
-                      ? 'bg-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  Discover All ({communities.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('my')}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                    activeTab === 'my'
-                      ? 'bg-indigo-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  My Hubs ({communities.filter((c) => c.isJoined).length})
-                </button>
-              </div>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-gray-100">
-              {['All', 'Technology', 'Arts & Media', 'Music & Audio', 'Business'].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
-                    selectedCategory === cat
-                      ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-
-              {selectedTag && (
-                <button
-                  onClick={() => setSelectedTag(null)}
-                  className="ml-auto flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold"
-                >
-                  <span>Tag: #{selectedTag}</span>
-                  <XMarkIcon className="w-3.5 h-3.5" />
-                </button>
-              )}
+            <div className="flex items-center space-x-4">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                onClick={() => setShowCreateModal(true)}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Create Group
+              </button>
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Content Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Community Cards List (8 Cols) */}
-            <div className="lg:col-span-8 space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-                  <SparklesIcon className="w-5 h-5 text-indigo-600" />
-                  Active Micro-Communities ({filteredCommunities.length})
-                </h2>
-                <span className="text-xs text-gray-500 font-semibold">
-                  Zero Spam & Admin Assist Moderated
-                </span>
-              </div>
-
-              {filteredCommunities.length === 0 ? (
-                <div className="bg-white rounded-3xl p-12 text-center border border-gray-200 shadow-sm">
-                  <UserGroupIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <h3 className="text-base font-bold text-gray-800">No communities match your search</h3>
-                  <p className="text-xs text-gray-500 mt-1">Try resetting the tag or category filter to discover more spaces.</p>
-                  <button
-                    onClick={() => {
-                      setSearchTerm('');
-                      setSelectedCategory('All');
-                      setSelectedTag(null);
-                    }}
-                    className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
-                  >
-                    Reset Filters
-                  </button>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Overview */}
+        {communityStats && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-blue-100">
+                  <Users className="h-6 w-6 text-blue-600" />
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {filteredCommunities.map((comm) => (
-                    <div
-                      key={comm.id}
-                      className="bg-white rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-xl transition-all p-6 flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex justify-between items-start gap-2 mb-3">
-                          <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100">
-                            {comm.category}
-                          </span>
-                          <span className="text-xs text-gray-400 font-semibold">
-                            {comm.memberCount.toLocaleString()} members
-                          </span>
-                        </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Groups</p>
+                  <p className="text-2xl font-semibold text-gray-900">{communityStats.totalGroups}</p>
+                </div>
+              </div>
+            </div>
 
-                        <h3 className="text-lg font-black text-gray-900 leading-snug">{comm.name}</h3>
-                        <p className="text-xs text-gray-600 mt-2 leading-relaxed line-clamp-3">
-                          {comm.description}
-                        </p>
+            <div className="bg-white rounded-xl shadow p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-green-100">
+                  <UserPlus className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Members</p>
+                  <p className="text-2xl font-semibold text-gray-900">{communityStats.totalMembers.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
 
-                        {/* Tag Chips */}
-                        {comm.tags && comm.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-4">
-                            {comm.tags.map((tag) => (
-                              <button
-                                key={tag}
-                                onClick={() => setSelectedTag(tag)}
-                                className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition-colors ${
-                                  selectedTag === tag
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                }`}
-                              >
-                                #{tag}
-                              </button>
-                            ))}
-                          </div>
-                        )}
+            <div className="bg-white rounded-xl shadow p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-purple-100">
+                  <MessageSquare className="h-6 w-6 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Threads</p>
+                  <p className="text-2xl font-semibold text-gray-900">{communityStats.totalThreads.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-yellow-100">
+                  <TrendingUp className="h-6 w-6 text-yellow-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Engagement Rate</p>
+                  <p className="text-2xl font-semibold text-gray-900">{communityStats.engagementRate}%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tabs */}
+        <div className="border-b border-gray-200 mb-6">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveTab('groups')}
+              className={`${
+                activeTab === 'groups'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+              <Users className="h-4 w-4 mr-2" />
+              Groups
+            </button>
+            <button
+              onClick={() => setActiveTab('threads')}
+              className={`${
+                activeTab === 'threads'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Threads
+            </button>
+            <button
+              onClick={() => setActiveTab('interactions')}
+              className={`${
+                activeTab === 'interactions'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+              <Activity className="h-4 w-4 mr-2" />
+              Interactions
+            </button>
+            <button
+              onClick={() => setActiveTab('moderation')}
+              className={`${
+                activeTab === 'moderation'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+              <Shield className="h-4 w-4 mr-2" />
+              Moderation
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className={`${
+                activeTab === 'analytics'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+            >
+              <BarChart3 className="h-4 w-4 mr-2" />
+              Analytics
+            </button>
+          </nav>
+        </div>
+
+        {/* Filters and Search */}
+        <div className="bg-white rounded-xl shadow p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder={`Search ${activeTab}...`}
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            {activeTab === 'groups' && (
+              <>
+                <select
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value={filterPrivacy}
+                  onChange={(e) => setFilterPrivacy(e.target.value)}
+                >
+                  <option value="all">All Privacy Levels</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                  <option value="restricted">Restricted</option>
+                </select>
+
+                <select
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </>
+            )}
+
+            <div className="flex items-center">
+              <span className="text-sm text-gray-700 mr-2">
+                {activeTab === 'groups' ? `${filteredGroups.length} groups` :
+                 activeTab === 'threads' ? `${filteredThreads.length} threads` :
+                 `${filteredInteractions.length} interactions`}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            {/* Community Groups Tab */}
+            {activeTab === 'groups' && (
+              <div className="bg-white rounded-xl shadow overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Group
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Creator
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Members
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Posts
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Privacy
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentItems.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                            No community groups found
+                          </td>
+                        </tr>
+                      ) : (
+                        (currentItems as CommunityGroup[]).map((group) => (
+                          <tr key={group.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{group.name}</div>
+                              <div className="text-sm text-gray-500 truncate max-w-xs">{group.description}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{group.creatorName}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {group.memberCount.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {group.postCount.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <div className="flex items-center">
+                                {getPrivacyIcon(group.privacy)}
+                                <span className="ml-1 capitalize">{group.privacy}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(group.status)}`}>
+                                {group.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex space-x-2">
+                                <button
+                                  className="text-blue-600 hover:text-blue-900"
+                                  onClick={() => history.push(`/dashboard/community/groups/${group.id}/details`)}
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                {group.status === 'active' ? (
+                                  <button
+                                    className="text-red-600 hover:text-red-900"
+                                    onClick={() => handleSuspendGroup(group.id)}
+                                  >
+                                    <Ban className="h-4 w-4" />
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="text-green-600 hover:text-green-900"
+                                    onClick={() => handleActivateGroup(group.id)}
+                                  >
+                                    <CheckCircle className="h-4 w-4" />
+                                  </button>
+                                )}
+                                <div className="relative">
+                                  <button className="text-gray-600 hover:text-gray-900">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </button>
+                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/groups/${group.id}/members`)}
+                                    >
+                                      Manage Members
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/groups/${group.id}/posts`)}
+                                    >
+                                      View Posts
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/groups/${group.id}/reports`)}
+                                    >
+                                      View Reports
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Forum Threads Tab */}
+            {activeTab === 'threads' && (
+              <div className="bg-white rounded-xl shadow overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Thread
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Author
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Group
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Replies
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Views
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Last Reply
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentItems.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                            No forum threads found
+                          </td>
+                        </tr>
+                      ) : (
+                        (currentItems as ForumThread[]).map((thread) => (
+                          <tr key={thread.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4">
+                              <div className="text-sm font-medium text-gray-900 flex items-center">
+                                {thread.isPinned && <PinIcon className="h-4 w-4 text-yellow-500 mr-1" />}
+                                {thread.title}
+                              </div>
+                              <div className="text-sm text-gray-500 truncate max-w-xs">{thread.content}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{thread.authorName}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {thread.groupName}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {thread.replyCount}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {thread.viewCount.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {new Date(thread.lastReplyAt).toLocaleDateString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex space-x-2">
+                                <button
+                                  className="text-blue-600 hover:text-blue-900"
+                                  onClick={() => history.push(`/dashboard/community/threads/${thread.id}/view`)}
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                <div className="relative">
+                                  <button className="text-gray-600 hover:text-gray-900">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </button>
+                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/threads/${thread.id}/moderate`)}
+                                    >
+                                      Moderate Thread
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => thread.isPinned ?
+                                        console.log('Unpin thread', thread.id) :
+                                        console.log('Pin thread', thread.id)
+                                      }
+                                    >
+                                      {thread.isPinned ? 'Unpin Thread' : 'Pin Thread'}
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => thread.isLocked ?
+                                        console.log('Unlock thread', thread.id) :
+                                        console.log('Lock thread', thread.id)
+                                      }
+                                    >
+                                      {thread.isLocked ? 'Unlock Thread' : 'Lock Thread'}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Interactions Tab */}
+            {activeTab === 'interactions' && (
+              <div className="bg-white rounded-xl shadow overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          User
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Type
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Content
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Target
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Timestamp
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentItems.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                            No interactions found
+                          </td>
+                        </tr>
+                      ) : (
+                        (currentItems as CommunityInteraction[]).map((interaction) => (
+                          <tr key={interaction.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{interaction.userName}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeColor(interaction.type)}`}>
+                                {interaction.type}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                              {interaction.content}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {interaction.targetType} #{interaction.targetId}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {new Date(interaction.timestamp).toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${interaction.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                {interaction.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex space-x-2">
+                                <button
+                                  className="text-blue-600 hover:text-blue-900"
+                                  onClick={() => history.push(`/dashboard/community/interactions/${interaction.id}/details`)}
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                <button
+                                  className="text-red-600 hover:text-red-900"
+                                  onClick={() => {
+                                    // Delete interaction
+                                    console.log('Deleting interaction:', interaction.id);
+                                  }}
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                </button>
+                                <div className="relative">
+                                  <button className="text-gray-600 hover:text-gray-900">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </button>
+                                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/interactions/${interaction.id}/moderate`)}
+                                    >
+                                      Moderate Content
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                      onClick={() => history.push(`/dashboard/community/interactions/${interaction.id}/user-profile`)}
+                                    >
+                                      View User Profile
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Moderation Tab */}
+            {activeTab === 'moderation' && moderationData && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-lg bg-red-100">
+                        <Flag className="h-6 w-6 text-red-600" />
                       </div>
-
-                      <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                        {comm.isJoined ? (
-                          <button
-                            onClick={() => leaveCommunity(comm.id, comm.name)}
-                            className="w-full py-2.5 border border-gray-200 hover:bg-rose-50 hover:text-rose-600 text-gray-600 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-                          >
-                            <CheckCircleIcon className="w-4 h-4 text-emerald-600" />
-                            <span>Joined (Click to Leave)</span>
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => joinCommunity(comm.id, comm.name)}
-                            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all flex items-center justify-center gap-1.5"
-                          >
-                            <UserGroupIcon className="w-4 h-4" />
-                            <span>Join Community</span>
-                          </button>
-                        )}
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">Total Reports</p>
+                        <p className="text-2xl font-semibold text-gray-900">{moderationData.totalReports}</p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                  </div>
 
-            {/* Sidebar (4 Cols) */}
-            <div className="lg:col-span-4 space-y-6">
-              {/* Stats Card */}
-              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
-                <h3 className="font-black text-gray-900 text-sm mb-4">Your Community Activity</h3>
-                <div className="space-y-3 text-xs">
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-50">
-                    <span className="text-gray-500">Communities Joined:</span>
-                    <strong className="text-gray-900">{communities.filter((c) => c.isJoined).length}</strong>
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-lg bg-yellow-100">
+                        <MessageSquare className="h-6 w-6 text-yellow-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">Pending Reports</p>
+                        <p className="text-2xl font-semibold text-gray-900">{moderationData.pendingReports}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-50">
-                    <span className="text-gray-500">Peer Discussions:</span>
-                    <strong className="text-gray-900">42 Threads</strong>
+
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-lg bg-green-100">
+                        <CheckCircle className="h-6 w-6 text-green-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">Resolved Reports</p>
+                        <p className="text-2xl font-semibold text-gray-900">{moderationData.resolvedReports}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500">Trust Reputation:</span>
-                    <strong className="text-emerald-600 font-black">98.4% Verified</strong>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Moderation Actions</h3>
+                    <div className="space-y-3">
+                      {moderationData.moderationActions?.map((action: any, index: number) => (
+                        <div key={index} className="flex justify-between">
+                          <span className="text-sm text-gray-600 capitalize">{action.action.replace(/_/g, ' ')}</span>
+                          <span className="text-sm font-medium">{action.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Top Violations</h3>
+                    <div className="space-y-3">
+                      {moderationData.topViolations?.map((violation: any, index: number) => (
+                        <div key={index} className="flex justify-between">
+                          <span className="text-sm text-gray-600">{violation.violation}</span>
+                          <span className="text-sm font-medium">{violation.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Reports</h3>
+                  <div className="h-64 flex items-center justify-center">
+                    <Flag className="h-16 w-16 text-gray-300" />
+                    <p className="ml-4 text-gray-500">Recent reports list would appear here</p>
                   </div>
                 </div>
               </div>
+            )}
 
-              {/* Trending Topics / Tags */}
-              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
-                <h3 className="font-black text-gray-900 text-sm mb-3 flex items-center gap-1.5">
-                  <HashtagIcon className="w-4 h-4 text-indigo-600" />
-                  Trending Topics
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.map((tag) => (
+            {/* Analytics Tab */}
+            {activeTab === 'analytics' && communityStats && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Growth Metrics</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">New Groups (This Month)</span>
+                        <span className="font-medium">{communityStats.newGroupsThisMonth}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">New Members (This Month)</span>
+                        <span className="font-medium">{communityStats.newMembersThisMonth.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Active Users (Today)</span>
+                        <span className="font-medium">{communityStats.activeUsersToday.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Growth Rate</span>
+                        <span className="font-medium">12.3%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Popular Groups</h3>
+                    <div className="space-y-3">
+                      {communityStats.popularGroups?.map((group: any, index: number) => (
+                        <div key={index} className="flex justify-between">
+                          <span className="text-sm text-gray-600 truncate">{group.name}</span>
+                          <span className="font-medium">{group.memberCount.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Weekly Activity</h3>
+                    <div className="h-32 flex items-end space-x-1">
+                      {communityStats.weeklyActivity?.map((day: any, index: number) => (
+                        <div key={index} className="flex flex-col items-center flex-1">
+                          <div
+                            className="w-full bg-blue-500 rounded-t"
+                            style={{ height: `${(day.posts / Math.max(...communityStats.weeklyActivity.map((d: any) => d.posts))) * 100}%` }}
+                          ></div>
+                          <span className="text-xs mt-1">{day.day}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl shadow p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Engagement Overview</h3>
+                    <div className="h-32 flex items-center justify-center">
+                      <BarChart3 className="h-12 w-12 text-gray-300" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Community Insights</h3>
+                  <div className="h-64 flex items-center justify-center">
+                    <TrendingUp className="h-16 w-16 text-gray-300" />
+                    <p className="ml-4 text-gray-500">Community insights visualization would appear here</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Pagination */}
+        {['groups', 'threads', 'interactions'].includes(activeTab) && totalPages > 1 && (
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+            <div className="flex-1 flex justify-between sm:hidden">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+                  currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+                  currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Next
+              </button>
+            </div>
+            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-gray-700">
+                  Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
+                  <span className="font-medium">{Math.min(indexOfLastItem, (activeTab === 'groups' ? filteredGroups : activeTab === 'threads' ? filteredThreads : filteredInteractions).length)}</span> of{' '}
+                  <span className="font-medium">{(activeTab === 'groups' ? filteredGroups : activeTab === 'threads' ? filteredThreads : filteredInteractions).length}</span> results
+                </p>
+              </div>
+              <div>
+                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-1" aria-label="Pagination">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
+                      currentPage === 1 ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="sr-only">Previous</span>
+                    <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                  </button>
+
+                  {[...Array(totalPages)].map((_, i) => (
                     <button
-                      key={tag}
-                      onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                        selectedTag === tag
-                          ? 'bg-indigo-600 text-white shadow-sm'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      key={i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                        currentPage === i + 1
+                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                       }`}
                     >
-                      #{tag}
+                      {i + 1}
                     </button>
                   ))}
-                </div>
-              </div>
 
-              {/* Create Community Callout */}
-              <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl p-6 border border-indigo-100">
-                <h3 className="font-black text-gray-900 text-base">Start a Micro-Community</h3>
-                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Bring your niche together with automatic keyword assist, structured guides, and private discussion lounges.
-                </p>
-                <button
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="mt-4 w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 flex items-center justify-center gap-1.5"
-                >
-                  <PlusIcon className="w-4 h-4" />
-                  Create New Space
-                </button>
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
+                      currentPage === totalPages ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="sr-only">Next</span>
+                    <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </nav>
               </div>
             </div>
           </div>
-        </div>
+        )}
+      </main>
 
-        {/* Create Community Modal */}
-        {isCreateModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-start pb-4 border-b border-gray-100">
-                <div>
-                  <h3 className="text-xl font-black text-gray-900">Create a New Community</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">Design a digital living room for focused peer collaboration</p>
-                </div>
-                <button onClick={() => setIsCreateModalOpen(false)} className="text-gray-400 hover:text-gray-600">
-                  <XMarkIcon className="w-5 h-5" />
+      {/* Create Group Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium text-gray-900">Create New Community Group</h3>
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  <XCircle className="h-6 w-6" />
                 </button>
               </div>
 
-              <form onSubmit={handleCreateCommunitySubmit} className="mt-5 space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Community Name</label>
+              <form onSubmit={(e) => { e.preventDefault(); handleCreateGroup(); }}>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                    Group Name
+                  </label>
                   <input
                     type="text"
+                    id="name"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={newGroup.name}
+                    onChange={(e) => setNewGroup({...newGroup, name: e.target.value})}
                     required
-                    placeholder="e.g. Vintage Camera Collectors or Lagos FinTech Hub"
-                    value={createForm.name}
-                    onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={newGroup.description}
+                    onChange={(e) => setNewGroup({...newGroup, description: e.target.value})}
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="privacy">
+                    Privacy Setting
+                  </label>
                   <select
-                    value={createForm.category}
-                    onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    id="privacy"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={newGroup.privacy}
+                    onChange={(e) => setNewGroup({...newGroup, privacy: e.target.value as any})}
                   >
-                    <option value="Technology">Technology</option>
-                    <option value="Arts & Media">Arts & Media</option>
-                    <option value="Music & Audio">Music & Audio</option>
-                    <option value="Business">Business</option>
+                    <option value="public">Public - Anyone can join</option>
+                    <option value="private">Private - Approval required</option>
+                    <option value="restricted">Restricted - Invite only</option>
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Purpose & Description</label>
-                  <textarea
-                    rows={3}
-                    placeholder="Explain the identity, goals, and who belongs in this micro-community..."
-                    value={createForm.description}
-                    onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Tags (Comma Separated)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Photography, Film, Vintage, Studio"
-                    value={createForm.tags}
-                    onChange={(e) => setCreateForm({ ...createForm, tags: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
-                  />
-                </div>
-
-                <div className="flex gap-3 pt-3 border-t border-gray-100">
+                <div className="flex justify-end space-x-3 mt-6">
                   <button
                     type="button"
-                    onClick={() => setIsCreateModalOpen(false)}
-                    className="flex-1 py-2.5 border border-gray-300 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+                    onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/30"
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
                   >
-                    {isSubmitting ? 'Establishing Space...' : 'Launch Community'}
+                    Create Group
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        )}
-      </div>
-    </MainLayout>
+        </div>
+      )}
+    </div>
   );
 };
 

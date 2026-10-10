@@ -1,0 +1,1860 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Shield,
+  ShieldCheck,
+  Zap,
+  Activity,
+  Layers,
+  Cpu,
+  Lock,
+  Globe,
+  Database,
+  BarChart3,
+  Sparkles,
+  Palette,
+  Scissors,
+  Mic,
+  Video,
+  FileEdit,
+  FileImage,
+  Sliders,
+  Settings,
+  RefreshCw,
+  Download,
+  Share2,
+  ExternalLink,
+  ChevronRight,
+  ChevronDown,
+  Search,
+  Filter,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  Clock,
+  ArrowUpRight,
+  ArrowDownRight,
+  TrendingUp,
+  Brain,
+  Bot,
+  Briefcase,
+  Users,
+  Coins,
+  FileText,
+  DollarSign,
+  Building,
+  Key,
+  Eye,
+  Server,
+  Terminal,
+  Workflow,
+  Radio,
+  X,
+  Play,
+  RotateCcw
+} from 'lucide-react';
+import dashboardService from '../services/dashboardService';
+import { SystemMetric } from '../types/dashboard';
+
+interface StercsModule {
+  id: string;
+  title: string;
+  category: 'Security' | 'Creation' | 'Governance' | 'Intelligence';
+  icon: React.ComponentType<any>;
+  description: string;
+  status: 'online' | 'optimal' | 'syncing' | 'maintenance' | 'warning';
+  version: string;
+  lastUpdated: string;
+  responseTime: number;
+  healthScore: number;
+  route: string;
+  trend: number[];
+  requests24h: string;
+}
+
+interface GovernancePolicy {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Content Safety' | 'AI Ethics' | 'Data Privacy' | 'Financial/ERP' | 'Cryptographic';
+  status: 'active' | 'review' | 'draft';
+  complianceLevel: 'strict' | 'moderate' | 'light';
+  lastUpdated: string;
+  passedPercent: number;
+  route: string;
+}
+
+interface ComplianceCheck {
+  id: string;
+  name: string;
+  category: string;
+  status: 'passed' | 'warning' | 'failed';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  lastRun: string;
+  details: string;
+  score: number;
+}
+
+interface DepartmentRole {
+  id: string;
+  department: string;
+  title: string;
+  head: string;
+  clearance: string;
+  activeAgents: number;
+  status: 'operational' | 'review' | 'escalation';
+}
+
+const StercsDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<'overview' | 'modules' | 'controls' | 'governance' | 'erp-crm' | 'roles'>('overview');
+  const [timeRange, setTimeRange] = useState('7d');
+  const [selectedCluster, setSelectedCluster] = useState('Global Production [Enclave Alpha]');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [metrics, setMetrics] = useState<SystemMetric[]>([]);
+  
+  // Interactive Modals State
+  const [selectedModuleForDrawer, setSelectedModuleForDrawer] = useState<StercsModule | null>(null);
+  const [isAiAgentModalOpen, setIsAiAgentModalOpen] = useState(false);
+  const [isErpModalOpen, setIsErpModalOpen] = useState(false);
+  const [isRolesModalOpen, setIsRolesModalOpen] = useState(false);
+  const [aiTestPrompt, setAiTestPrompt] = useState('Audit user-generated media #FM-9842 for compliance with Sovereign Policy SEC-09.');
+  const [aiSimulatedOutput, setAiSimulatedOutput] = useState<string | null>(null);
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [copiedSummary, setCopiedSummary] = useState(false);
+
+  // 12 Specialized STERCS Modules
+  const stercsModules: StercsModule[] = useMemo(() => [
+    {
+      id: 'sentient-control',
+      title: 'Sentient Control',
+      category: 'Intelligence',
+      icon: Brain,
+      description: 'Autonomous neural watchdog and heuristic cognitive threat isolator',
+      status: 'online',
+      version: 'v3.2.1-prod',
+      lastUpdated: '2 mins ago',
+      responseTime: 42,
+      healthScore: 99.2,
+      route: '/stercs/sentient-control',
+      trend: [32, 45, 52, 48, 42, 38, 42],
+      requests24h: '4.8M'
+    },
+    {
+      id: 'guardian-ai',
+      title: 'Guardian AI Core',
+      category: 'Security',
+      icon: ShieldCheck,
+      description: 'Zero-trust perimeter protection, deepfake mitigation & sybil defense',
+      status: 'online',
+      version: 'v4.0.8-sovereign',
+      lastUpdated: 'Just now',
+      responseTime: 36,
+      healthScore: 99.8,
+      route: '/stercs/guardian-ai',
+      trend: [40, 38, 35, 39, 36, 34, 36],
+      requests24h: '8.2M'
+    },
+    {
+      id: 'stercs-core',
+      title: 'STERCS Control Core',
+      category: 'Governance',
+      icon: Zap,
+      description: 'Consensus engine, cryptographic proof verification and ledger authority',
+      status: 'online',
+      version: 'v2.8.4',
+      lastUpdated: '10 mins ago',
+      responseTime: 50,
+      healthScore: 97.5,
+      route: '/stercs/core',
+      trend: [60, 58, 54, 52, 49, 53, 50],
+      requests24h: '12.1M'
+    },
+    {
+      id: 'stercs-curation',
+      title: 'STERCS Curation Engine',
+      category: 'Intelligence',
+      icon: Sparkles,
+      description: 'Real-time multi-modal quality ranking, toxicity scrub & virality index',
+      status: 'online',
+      version: 'v2.1.0',
+      lastUpdated: '14 mins ago',
+      responseTime: 64,
+      healthScore: 95.8,
+      route: '/stercs/curation',
+      trend: [72, 68, 65, 70, 66, 62, 64],
+      requests24h: '3.4M'
+    },
+    {
+      id: 'stercs-editor',
+      title: 'STERCS Site & Code IDE',
+      category: 'Creation',
+      icon: FileEdit,
+      description: 'Full developer web IDE, live layout compilation and GitHub syncer',
+      status: 'optimal',
+      version: 'v2.4.2',
+      lastUpdated: '1 hour ago',
+      responseTime: 58,
+      healthScore: 96.0,
+      route: '/stercs/editor',
+      trend: [50, 52, 56, 62, 59, 55, 58],
+      requests24h: '890k'
+    },
+    {
+      id: 'stercs-media-library',
+      title: 'STERCS Media Asset Core',
+      category: 'Creation',
+      icon: FileImage,
+      description: 'Decentralized IPFS/S3 asset registry, deduplication & CDN pipeline',
+      status: 'online',
+      version: 'v1.9.4',
+      lastUpdated: '25 mins ago',
+      responseTime: 40,
+      healthScore: 98.4,
+      route: '/stercs/media-library',
+      trend: [45, 42, 44, 40, 39, 41, 40],
+      requests24h: '18.4M'
+    },
+    {
+      id: 'stercs-theme-designer',
+      title: 'STERCS Theme Designer',
+      category: 'Creation',
+      icon: Palette,
+      description: 'System UI tokens, dark/light theme compiler & CSS glassmorphism studio',
+      status: 'optimal',
+      version: 'v1.6.2',
+      lastUpdated: '2 hours ago',
+      responseTime: 48,
+      healthScore: 97.1,
+      route: '/stercs/theme-designer',
+      trend: [48, 49, 52, 50, 46, 47, 48],
+      requests24h: '420k'
+    },
+    {
+      id: 'stercs-video-editor',
+      title: 'STERCS Video Studio',
+      category: 'Creation',
+      icon: Scissors,
+      description: 'GPU-accelerated video transcode, trim, effects & HLS streaming parser',
+      status: 'online',
+      version: 'v2.2.0',
+      lastUpdated: '40 mins ago',
+      responseTime: 72,
+      healthScore: 94.2,
+      route: '/stercs/video-editor',
+      trend: [80, 75, 78, 74, 76, 70, 72],
+      requests24h: '1.2M'
+    },
+    {
+      id: 'stercs-audio-editor',
+      title: 'STERCS Audio & Voice Core',
+      category: 'Creation',
+      icon: Mic,
+      description: 'Audio waveforms, BeatwaveNG master compression & stem separation',
+      status: 'syncing',
+      version: 'v1.3.1',
+      lastUpdated: '15 mins ago',
+      responseTime: 84,
+      healthScore: 91.5,
+      route: '/dashboard/content',
+      trend: [92, 88, 90, 86, 85, 82, 84],
+      requests24h: '780k'
+    },
+    {
+      id: 'stercs-translation',
+      title: 'Multilingual AI Translator',
+      category: 'Intelligence',
+      icon: Globe,
+      description: 'Low-latency neural translation across 48 sovereign dialects',
+      status: 'online',
+      version: 'v3.1.5',
+      lastUpdated: '5 mins ago',
+      responseTime: 55,
+      healthScore: 96.7,
+      route: '/dashboard/content',
+      trend: [58, 62, 59, 57, 54, 53, 55],
+      requests24h: '5.1M'
+    },
+    {
+      id: 'stercs-security',
+      title: 'Enterprise Security Mesh',
+      category: 'Security',
+      icon: Lock,
+      description: 'HSM key isolation, biometric token validation and access firewall',
+      status: 'online',
+      version: 'v4.1.2',
+      lastUpdated: 'Just now',
+      responseTime: 32,
+      healthScore: 99.9,
+      route: '/stercs/security',
+      trend: [34, 35, 33, 31, 30, 32, 32],
+      requests24h: '24.9M'
+    },
+    {
+      id: 'stercs-analytics',
+      title: 'Deep Telemetry Analytics',
+      category: 'Governance',
+      icon: BarChart3,
+      description: 'Real-time telemetry, retention funnel modeling & clickstream logs',
+      status: 'online',
+      version: 'v3.5.0',
+      lastUpdated: '12 mins ago',
+      responseTime: 46,
+      healthScore: 98.0,
+      route: '/stercs/analytics',
+      trend: [48, 50, 46, 44, 47, 45, 46],
+      requests24h: '16.7M'
+    }
+  ], []);
+
+  // Governance Policies
+  const governancePolicies: GovernancePolicy[] = useMemo(() => [
+    {
+      id: 'POL-01',
+      title: 'Autonomous Content Moderation Standard',
+      description: 'Zero-tolerance filter for harassment, hate speech, and illicit content generation.',
+      category: 'Content Safety',
+      status: 'active',
+      complianceLevel: 'strict',
+      lastUpdated: '2026-10-09',
+      passedPercent: 99.4,
+      route: '/stercs/compliance'
+    },
+    {
+      id: 'POL-02',
+      title: 'AI Decision Explainability & Auditability',
+      description: 'Mandates full step-by-step heuristic reasoning logging for autonomous enforcement actions.',
+      category: 'AI Ethics',
+      status: 'active',
+      complianceLevel: 'strict',
+      lastUpdated: '2026-10-08',
+      passedPercent: 98.7,
+      route: '/stercs/compliance'
+    },
+    {
+      id: 'POL-03',
+      title: 'GDPR / NDPR Sovereign Data Residency',
+      description: 'Strict geographical cryptographic anchoring of member personally identifiable data.',
+      category: 'Data Privacy',
+      status: 'active',
+      complianceLevel: 'strict',
+      lastUpdated: '2026-10-07',
+      passedPercent: 100.0,
+      route: '/stercs/compliance'
+    },
+    {
+      id: 'POL-04',
+      title: 'ERP Financial Settlement & Reconciliation',
+      description: 'Automated double-entry reconciliation between Infinity Coin ledgers and fiat gateways.',
+      category: 'Financial/ERP',
+      status: 'active',
+      complianceLevel: 'strict',
+      lastUpdated: '2026-10-09',
+      passedPercent: 99.8,
+      route: '/stercs/compliance'
+    },
+    {
+      id: 'POL-05',
+      title: 'Zero-Trust Enclave Isolation (Camus Defense)',
+      description: 'Micro-segmented execution environments for third-party plug-ins and marketplace scripts.',
+      category: 'Cryptographic',
+      status: 'active',
+      complianceLevel: 'strict',
+      lastUpdated: '2026-10-09',
+      passedPercent: 99.9,
+      route: '/stercs/compliance'
+    }
+  ], []);
+
+  // Compliance Checks
+  const complianceChecks: ComplianceCheck[] = useMemo(() => [
+    {
+      id: 'CHK-101',
+      name: 'Cryptographic Enclave Attestation',
+      category: 'Zero-Trust Architecture',
+      status: 'passed',
+      severity: 'critical',
+      lastRun: '12 mins ago',
+      details: 'All 1,280 hardware security enclave signatures validated cleanly.',
+      score: 100
+    },
+    {
+      id: 'CHK-102',
+      name: 'Autonomous AI Bias Variance Scan',
+      category: 'AI Governance',
+      status: 'passed',
+      severity: 'high',
+      lastRun: '35 mins ago',
+      details: 'Parity score of 0.994 achieved across all age, demographic and linguistic cohorts.',
+      score: 99.4
+    },
+    {
+      id: 'CHK-103',
+      name: 'ERP Double-Entry Ledger Reconciliation',
+      category: 'Fiscal Integrity',
+      status: 'passed',
+      severity: 'critical',
+      lastRun: '50 mins ago',
+      details: 'Zero discrepancy found between fiat merchant settlements and Infinity Coin reserves.',
+      score: 100
+    },
+    {
+      id: 'CHK-104',
+      name: 'WCAG 2.2 AA Accessibility & Screen Reader Audit',
+      category: 'UX Inclusivity',
+      status: 'warning',
+      severity: 'medium',
+      lastRun: '2 hours ago',
+      details: '3 contrast warnings detected on custom neon community theme variants.',
+      score: 94.2
+    },
+    {
+      id: 'CHK-105',
+      name: 'Camus Intrusion Probe & Penetration Simulation',
+      category: 'Sovereign Security',
+      status: 'passed',
+      severity: 'critical',
+      lastRun: '1 hour ago',
+      details: 'Zero buffer overflows or memory leakage detected under 100k simulated hostile probes.',
+      score: 100
+    }
+  ], []);
+
+  // 19 Departmental Executive Roles Matrix (from specs)
+  const departmentalRoles: DepartmentRole[] = useMemo(() => [
+    { id: 'ROL-01', department: 'Corporate Secretarial', title: 'Group Company Secretary', head: 'Dr. A. E. Okoye', clearance: 'L5-Executive', activeAgents: 12, status: 'operational' },
+    { id: 'ROL-02', department: 'Risk & Legal Affairs', title: 'Group Head, Risk, Credit & Legal', head: 'Barr. M. C. Danjuma', clearance: 'L5-Executive', activeAgents: 18, status: 'operational' },
+    { id: 'ROL-03', department: 'Treasury & Fiscal Policy', title: 'Group Chief Finance Officer & Fiscal Policy', head: 'Chief E. V. Adeleke', clearance: 'L5-Executive', activeAgents: 24, status: 'operational' },
+    { id: 'ROL-04', department: 'Consumer Products', title: 'Group Head, Consumer Products & Storefronts', head: 'K. O. Mensah', clearance: 'L4-Operational', activeAgents: 14, status: 'operational' },
+    { id: 'ROL-05', department: 'Audit & Internal Affairs', title: 'Group Chief, Audit & Internal Affairs', head: 'S. N. Al-Mansoor', clearance: 'L5-Executive', activeAgents: 9, status: 'operational' },
+    { id: 'ROL-06', department: 'Policy Compliance', title: 'Group Chief, Policy Compliance Officer', head: 'Elena Rostova', clearance: 'L5-Executive', activeAgents: 22, status: 'operational' },
+    { id: 'ROL-07', department: 'Strategic Business', title: 'Group Head, Strategic Business Group', head: 'Marcus Thorne', clearance: 'L4-Operational', activeAgents: 15, status: 'operational' },
+    { id: 'ROL-08', department: 'Franchise Services', title: 'Group Head, Franchise Business Services', head: 'Tariq Al-Fassi', clearance: 'L4-Operational', activeAgents: 11, status: 'operational' },
+    { id: 'ROL-09', department: 'Corporate Comms & PR', title: 'Group Head, Corporate Communications & Marketing', head: 'Amara Nwosu', clearance: 'L4-Operational', activeAgents: 30, status: 'operational' },
+    { id: 'ROL-10', department: 'Media Channels', title: 'Group Head, Media & Sales Channels (Dancia-4Tv / BeatwaveNG)', head: 'Devon Vance', clearance: 'L4-Operational', activeAgents: 28, status: 'operational' },
+    { id: 'ROL-11', department: 'Information Tech', title: 'Group Head, Information Technology & Enclave Ops', head: 'Kenji Takahashi', clearance: 'L5-Executive', activeAgents: 45, status: 'operational' },
+    { id: 'ROL-12', department: 'Operations & Planning', title: 'Group Head, Operations, Budget, Products & Planning', head: 'Claire Dupont', clearance: 'L4-Operational', activeAgents: 19, status: 'operational' },
+    { id: 'ROL-13', department: 'International Treasury', title: 'Executive Director, International Treasury', head: 'Hon. O. B. Mbah', clearance: 'L5-Board', activeAgents: 16, status: 'operational' },
+    { id: 'ROL-14', department: 'Finance & Risk', title: 'Executive Director, Finance & Risk Management', head: 'A. I. Bello', clearance: 'L5-Board', activeAgents: 21, status: 'operational' },
+    { id: 'ROL-15', department: 'Protocol & IP Resources', title: 'Executive Director, Protocol, Logistics & IP Resources', head: 'IP Office Overseer', clearance: 'L5-Board', activeAgents: 35, status: 'operational' },
+    { id: 'ROL-16', department: 'Human Resources', title: 'Executive Director, Human Resources & Compliance', head: 'Fatima Zahra', clearance: 'L5-Board', activeAgents: 14, status: 'operational' },
+    { id: 'ROL-17', department: 'Procurement', title: 'Executive Director, Supply Chain & Procurement', head: 'Kwame Asante', clearance: 'L5-Board', activeAgents: 13, status: 'operational' },
+    { id: 'ROL-18', department: 'Blockchain Core', title: 'Executive Director, Blockchain & Infinity Coin', head: 'Dr. Satoshi Sterling', clearance: 'L5-Board', activeAgents: 52, status: 'operational' },
+    { id: 'ROL-19', department: 'Internal Affairs', title: 'Inspector General, Internal Affairs & Protocol Ethics', head: 'Special Envoy Group', clearance: 'L5-Board', activeAgents: 8, status: 'operational' },
+  ], []);
+
+  // Filtered modules based on search
+  const filteredModules = useMemo(() => {
+    if (!searchQuery.trim()) return stercsModules;
+    const q = searchQuery.toLowerCase();
+    return stercsModules.filter(m => 
+      m.title.toLowerCase().includes(q) ||
+      m.description.toLowerCase().includes(q) ||
+      m.category.toLowerCase().includes(q)
+    );
+  }, [stercsModules, searchQuery]);
+
+  // Load telemetry metrics
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        setLoading(true);
+        const data = await dashboardService.getAdminDashboardData(timeRange);
+        setMetrics(data);
+      } catch (err) {
+        console.error('Failed to load metrics:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMetrics();
+  }, [timeRange]);
+
+  // AI Prompt simulation
+  const handleExecuteAiTest = () => {
+    setIsGeneratingAi(true);
+    setTimeout(() => {
+      setAiSimulatedOutput(
+        `[STERCS AI ENGINE v4.2 • EXECUTION REPORT]\n\n` +
+        `• Target Subject: User-generated Media #FM-9842\n` +
+        `• Policy Reference: Sovereign Policy SEC-09 (Child Protection & Content Integrity)\n` +
+        `• Multimodal Heuristics Scan: Passed (0.000% Toxicity, 0.000% Illicit Signatures)\n` +
+        `• Perceptual Hash Alignment: Verified against Sovereign Clean DB\n` +
+        `• Automated Action: Approved for Global CDN Edge Distribution with Fast-Route Token #AGY-8841.\n` +
+        `• Confidence Rating: 99.98% • Latency: 24ms`
+      );
+      setIsGeneratingAi(false);
+    }, 900);
+  };
+
+  const handleCopySummary = () => {
+    const summaryText = `STERCS Sovereign Intelligence Summary: Cluster Enclave Alpha operates at 97.4% Health Index with 1,280 validated hardware enclaves and 0 security breaches across 14.8k hourly automated ERP/CRM workflows.`;
+    navigator.clipboard?.writeText(summaryText);
+    setCopiedSummary(true);
+    setTimeout(() => setCopiedSummary(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F4F5F8] text-[#1E293B] font-sans antialiased">
+      {/* 1. SEMrush Standard Breadcrumb & Project Control Bar */}
+      <div className="bg-white border-b border-[#E2E8F0] sticky top-0 z-30 shadow-xs">
+        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 py-3">
+            {/* Left: Breadcrumbs & Cluster Switcher */}
+            <div className="flex items-center space-x-3 text-sm">
+              <span className="font-semibold text-blue-600 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-blue-600" />
+                STERCS™ Platform
+              </span>
+              <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+              <span className="text-gray-500 font-medium">Sovereign Control Core</span>
+              <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+              <div className="relative inline-block">
+                <select
+                  value={selectedCluster}
+                  onChange={(e) => setSelectedCluster(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-800 font-semibold text-xs rounded-md pl-2.5 pr-8 py-1.5 hover:bg-gray-100 transition-colors cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                >
+                  <option>Global Production [Enclave Alpha]</option>
+                  <option>Regional Failover [US-East Sovereign]</option>
+                  <option>EU-Frankfurt Sovereign Vault</option>
+                  <option>Sandbox Staging Enclave</option>
+                </select>
+              </div>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live Enclave Sync
+              </span>
+            </div>
+
+            {/* Right: Date Picker & Global Action Suite */}
+            <div className="flex items-center flex-wrap gap-2">
+              {/* Date Filter Pills */}
+              <div className="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5 text-xs font-medium">
+                {(['24h', '7d', '30d', '90d'] as const).map((range) => (
+                  <button
+                    key={range}
+                    onClick={() => setTimeRange(range)}
+                    className={`px-3 py-1 rounded transition-colors ${
+                      timeRange === range
+                        ? 'bg-white text-blue-600 font-semibold shadow-xs'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {range === '24h' ? 'Today' : `Last ${range}`}
+                  </button>
+                ))}
+              </div>
+
+              {/* Universal AI Search Trigger */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-2xs"
+                title="Universal AI Search (Cmd+K)"
+              >
+                <Search className="w-3.5 h-3.5 text-cyan-600" />
+                <span>Universal Search</span>
+                <kbd className="px-1 py-0.2 text-[9px] font-mono bg-gray-100 border border-gray-300 rounded text-gray-500">⌘K</kbd>
+              </button>
+
+              {/* Master Dashboard Link */}
+              <button
+                onClick={() => navigate('/master-dashboard')}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-2xs"
+              >
+                <Activity className="w-3.5 h-3.5 text-blue-500" />
+                Master Dashboard
+              </button>
+
+              {/* Agentic AI Trigger */}
+              <button
+                onClick={() => setIsAiAgentModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-md hover:bg-purple-100 transition-colors shadow-2xs"
+              >
+                <Bot className="w-3.5 h-3.5 text-purple-600" />
+                Agentic AI Engine
+              </button>
+
+              {/* ERP / CRM Bridge */}
+              <button
+                onClick={() => setIsErpModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md hover:bg-emerald-100 transition-colors shadow-2xs"
+              >
+                <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
+                ERP & CRM Suite
+              </button>
+
+              {/* Export to PDF */}
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors shadow-2xs"
+              >
+                <Download className="w-3.5 h-3.5 text-gray-500" />
+                Export Audit PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* 2. Top SEMrush Hero Domain Analytics / Authority KPI Bar (5 Columns) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {/* Card 1: STERCS Trust Index */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span className="font-semibold uppercase tracking-wider text-gray-600">STERCS Trust Index</span>
+              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+                <ArrowUpRight className="w-3 h-3 mr-0.5" /> +1.8%
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">97.4</span>
+              <span className="text-sm font-semibold text-gray-400">/ 100</span>
+            </div>
+            {/* SVG Semicircle Micro-gauge */}
+            <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden mb-2">
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full" style={{ width: '97.4%' }} />
+            </div>
+            <p className="text-[11px] text-gray-500 flex items-center justify-between">
+              <span>Sovereign Enclave Status</span>
+              <span className="font-medium text-emerald-600">Hardware Attested</span>
+            </p>
+          </div>
+
+          {/* Card 2: Consensus Proof Velocity */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span className="font-semibold uppercase tracking-wider text-gray-600">Proof Velocity</span>
+              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+                <ArrowUpRight className="w-3 h-3 mr-0.5" /> +12.4%
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">48.6k</span>
+              <span className="text-xs font-semibold text-gray-500">proofs/s</span>
+            </div>
+            {/* Mini SVG Area Sparkline */}
+            <div className="h-6 w-full">
+              <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="gradVelocity" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,18 Q20,15 35,12 T70,8 T100,4 L100,24 L0,24 Z" fill="url(#gradVelocity)" />
+                <path d="M0,18 Q20,15 35,12 T70,8 T100,4" fill="none" stroke="#10B981" strokeWidth="2" />
+              </svg>
+            </div>
+            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+              <span>Sub-second Finality</span>
+              <span className="font-medium text-gray-700">18.4 ms avg</span>
+            </p>
+          </div>
+
+          {/* Card 3: Active Sovereign Enclaves */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span className="font-semibold uppercase tracking-wider text-gray-600">Enclave Nodes</span>
+              <span className="text-xs text-emerald-600 font-semibold">99.69%</span>
+            </div>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">1,280</span>
+              <span className="text-xs font-medium text-gray-400">/ 1,284 total</span>
+            </div>
+            {/* Mini SVG Area Sparkline */}
+            <div className="h-6 w-full">
+              <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="gradNodes" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,12 Q25,8 50,10 T80,6 T100,4 L100,24 L0,24 Z" fill="url(#gradNodes)" />
+                <path d="M0,12 Q25,8 50,10 T80,6 T100,4" fill="none" stroke="#3B82F6" strokeWidth="2" />
+              </svg>
+            </div>
+            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+              <span>Camus Isolation</span>
+              <span className="font-medium text-emerald-600">0 Leaks</span>
+            </p>
+          </div>
+
+          {/* Card 4: Threat Neutralization Ratio */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span className="font-semibold uppercase tracking-wider text-gray-600">Threat Mitigation</span>
+              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+                Active
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">99.98%</span>
+            </div>
+            {/* Multi-segment mini bar */}
+            <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden flex mb-2">
+              <div className="bg-emerald-500 h-full" style={{ width: '99.98%' }} />
+              <div className="bg-rose-500 h-full" style={{ width: '0.02%' }} />
+            </div>
+            <p className="text-[11px] text-gray-500 flex items-center justify-between">
+              <span>Deflected Threats (24h)</span>
+              <span className="font-semibold text-gray-800">4,129 blocked</span>
+            </p>
+          </div>
+
+          {/* Card 5: Autonomous ERP & CRM Workflows */}
+          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span className="font-semibold uppercase tracking-wider text-gray-600">ERP / CRM Tasks</span>
+              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+                <ArrowUpRight className="w-3 h-3 mr-0.5" /> +8.5%
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">14.8k</span>
+              <span className="text-xs font-semibold text-gray-500">runs/hour</span>
+            </div>
+            {/* Mini SVG Area Sparkline */}
+            <div className="h-6 w-full">
+              <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="gradErp" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,16 Q30,18 55,10 T85,6 T100,2 L100,24 L0,24 Z" fill="url(#gradErp)" />
+                <path d="M0,16 Q30,18 55,10 T85,6 T100,2" fill="none" stroke="#8B5CF6" strokeWidth="2" />
+              </svg>
+            </div>
+            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+              <span>Auto-Reconciled</span>
+              <span className="font-medium text-purple-700">100.0% accuracy</span>
+            </p>
+          </div>
+        </div>
+
+        {/* 3. Executive AI Summary Card ("Summary beta" SEMrush Standard) */}
+        <div className="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 rounded-xl p-5 text-white shadow-md relative overflow-hidden border border-blue-800">
+          <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 bg-blue-500/20 rounded-lg border border-blue-400/30 text-blue-300 shrink-0">
+                <Sparkles className="w-6 h-6 text-blue-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-base font-bold text-white tracking-tight">STERCS Sovereign Intelligence Summary</h3>
+                  <span className="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-blue-500 text-white rounded">
+                    Beta
+                  </span>
+                  <span className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded">
+                    ENCLAVE SECURE • ZERO ZERO-DAY EXPOSURE
+                  </span>
+                </div>
+                <p className="text-sm text-blue-100/90 leading-relaxed max-w-4xl">
+                  Cluster Enclave Alpha reports an aggregate <strong>97.4% Health Index</strong> across all 12 operational modules.
+                  Camus micro-segmentation successfully contained 4,129 malicious probes with zero leakage. All 19 departmental leadership
+                  oversight protocols are live, with double-entry ERP reconciliation recording $0 variance across Infinity Coin ledgers.
+                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-3">
+                  <button
+                    onClick={() => setIsAiAgentModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded transition-colors shadow-xs"
+                  >
+                    <Bot className="w-3.5 h-3.5" />
+                    Open Autonomous Agent Console
+                  </button>
+                  <button
+                    onClick={() => setIsRolesModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/20 text-blue-100 text-xs font-medium rounded transition-colors"
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    View 19 Departmental Leadership Matrix
+                  </button>
+                  <button
+                    onClick={handleCopySummary}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/20 text-blue-100 text-xs font-medium rounded transition-colors"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    {copiedSummary ? 'Copied to Clipboard!' : 'Copy Executive Report'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto shrink-0 border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
+              <span className="text-xs text-blue-300">Epoch Timestamp</span>
+              <span className="text-sm font-mono font-semibold text-white">2026-10-09 13:01 UTC</span>
+              <span className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                Next Epoch in 04:58
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Tab Navigation Strip */}
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8 -mb-px">
+            {[
+              { id: 'overview', label: 'Enclave Overview', icon: Activity },
+              { id: 'modules', label: 'Module Consoles (12)', icon: Layers },
+              { id: 'controls', label: 'Feature Flags & Security', icon: Sliders },
+              { id: 'governance', label: 'Governance & Audits', icon: ShieldCheck },
+              { id: 'erp-crm', label: 'ERP & CRM Suite', icon: Briefcase },
+              { id: 'roles', label: '19 Executive Roles Matrix', icon: Users }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-blue-600 text-blue-600 font-semibold'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'}`} />
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* TAB 1: OVERVIEW */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Visual Analytics Grid: SEMrush Semicircle Dial, Stacked Toxicity Bar, and Policy Donut */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Box 1: Semicircle Site Health & Enclave Integrity Dial */}
+              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Sovereign Enclave Health</h3>
+                  <span className="text-xs text-blue-600 font-semibold hover:underline cursor-pointer">
+                    Inspect 1,280 Nodes
+                  </span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-2">
+                  {/* SVG Semicircle Dial */}
+                  <div className="relative w-48 h-26 flex items-center justify-center">
+                    <svg className="w-48 h-24" viewBox="0 0 200 100">
+                      <path
+                        d="M 20 90 A 80 80 0 0 1 180 90"
+                        fill="none"
+                        stroke="#F1F5F9"
+                        strokeWidth="20"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M 20 90 A 80 80 0 0 1 180 90"
+                        fill="none"
+                        stroke="url(#dialGradient)"
+                        strokeWidth="20"
+                        strokeDasharray="251.2"
+                        strokeDashoffset="6.5"
+                        strokeLinecap="round"
+                      />
+                      <defs>
+                        <linearGradient id="dialGradient" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#3B82F6" />
+                          <stop offset="100%" stopColor="#10B981" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <div className="absolute bottom-0 text-center">
+                      <span className="text-3xl font-extrabold text-gray-900">97%</span>
+                      <span className="block text-[11px] font-semibold text-emerald-600 uppercase">Optimal Health</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 text-center">
+                  <div className="p-2 rounded bg-emerald-50">
+                    <span className="block text-xs font-semibold text-emerald-700">1,276</span>
+                    <span className="text-[10px] text-emerald-600 uppercase">Flawless</span>
+                  </div>
+                  <div className="p-2 rounded bg-amber-50">
+                    <span className="block text-xs font-semibold text-amber-700">4</span>
+                    <span className="text-[10px] text-amber-600 uppercase">Syncing</span>
+                  </div>
+                  <div className="p-2 rounded bg-rose-50">
+                    <span className="block text-xs font-semibold text-rose-700">0</span>
+                    <span className="text-[10px] text-rose-600 uppercase">Faulted</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Box 2: Toxicity & Camus Intrusion Protection Bar */}
+              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Camus Security & Content Filtering</h3>
+                  <span className="text-xs text-gray-500 font-medium">Last 24 Hours</span>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-xs mb-1.5 font-medium">
+                      <span className="text-gray-700">Aggregated Traffic Cleanliness</span>
+                      <span className="text-emerald-600 font-bold">99.4% Verified Clean</span>
+                    </div>
+                    {/* Stacked 4-segment distribution bar */}
+                    <div className="w-full h-4 rounded-full overflow-hidden flex bg-gray-100 shadow-inner">
+                      <div className="bg-emerald-500 h-full hover:opacity-90 transition-opacity" style={{ width: '92.4%' }} title="Clean: 92.4%" />
+                      <div className="bg-blue-500 h-full hover:opacity-90 transition-opacity" style={{ width: '5.2%' }} title="Heuristics Scanned: 5.2%" />
+                      <div className="bg-amber-400 h-full hover:opacity-90 transition-opacity" style={{ width: '2.1%' }} title="Quarantined: 2.1%" />
+                      <div className="bg-rose-500 h-full hover:opacity-90 transition-opacity" style={{ width: '0.3%' }} title="Threat Blocked: 0.3%" />
+                    </div>
+                  </div>
+
+                  {/* Legend Breakdown */}
+                  <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                      <span className="text-gray-600">Clean Payload:</span>
+                      <span className="font-semibold text-gray-900 ml-auto">92.4%</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                      <span className="text-gray-600">AI Verified:</span>
+                      <span className="font-semibold text-gray-900 ml-auto">5.2%</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                      <span className="text-gray-600">Quarantined:</span>
+                      <span className="font-semibold text-gray-900 ml-auto">2.1%</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                      <span className="text-gray-600">Hostile Drops:</span>
+                      <span className="font-semibold text-rose-600 ml-auto">0.3%</span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs text-gray-600 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-blue-600" />
+                      <span>Zero-Day Intrusion Signature Engine:</span>
+                    </div>
+                    <span className="font-bold text-emerald-600">Active & Enforcing</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Box 3: 150-Rule Governance Policy Donut Chart */}
+              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Active Policy Frameworks (150 Rules)</h3>
+                  <span className="text-xs text-blue-600 font-semibold hover:underline cursor-pointer" onClick={() => setActiveTab('governance')}>
+                    View All Rules
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  {/* SVG Multi-Colored Donut */}
+                  <div className="relative w-28 h-28 shrink-0">
+                    <svg className="w-28 h-28 -rotate-90" viewBox="0 0 36 36">
+                      {/* Segment 1: Content Safety (45%) */}
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#3B82F6" strokeWidth="5" strokeDasharray="45 55" strokeDashoffset="0" />
+                      {/* Segment 2: AI Ethics (25%) */}
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#10B981" strokeWidth="5" strokeDasharray="25 75" strokeDashoffset="-45" />
+                      {/* Segment 3: Privacy (15%) */}
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#8B5CF6" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-70" />
+                      {/* Segment 4: Financial (15%) */}
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#F59E0B" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-85" />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                      <span className="text-base font-extrabold text-gray-900">150</span>
+                      <span className="text-[9px] text-gray-500 uppercase font-semibold">Rules</span>
+                    </div>
+                  </div>
+
+                  {/* Donut Legend */}
+                  <div className="space-y-1.5 text-xs flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                        Content Safety
+                      </span>
+                      <span className="font-semibold text-gray-900">68 rules</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                        AI Ethics & Bias
+                      </span>
+                      <span className="font-semibold text-gray-900">38 rules</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-purple-500" />
+                        Data Privacy / GDPR
+                      </span>
+                      <span className="font-semibold text-gray-900">22 rules</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-amber-500" />
+                        ERP & Financial
+                      </span>
+                      <span className="font-semibold text-gray-900">22 rules</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="text-gray-500">Autonomous Compliance:</span>
+                  <span className="font-bold text-emerald-600">99.7% Enforced</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 12 STERCS Modules Grid */}
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">12 Specialized STERCS Consoles</h2>
+                  <p className="text-xs text-gray-500">
+                    Direct access to specialized governance, creative suites, media engines, and sovereign security layers.
+                  </p>
+                </div>
+                {/* Search Bar */}
+                <div className="relative">
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search module or tool..."
+                    className="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-md text-xs text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 w-64 shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredModules.map((mod) => (
+                  <div
+                    key={mod.id}
+                    className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs hover:shadow-md hover:border-blue-400 transition-all flex flex-col justify-between group"
+                  >
+                    <div>
+                      {/* Top Bar of Module Card */}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className={`p-2 rounded-md ${
+                            mod.category === 'Security' ? 'bg-rose-50 text-rose-600' :
+                            mod.category === 'Creation' ? 'bg-purple-50 text-purple-600' :
+                            mod.category === 'Intelligence' ? 'bg-blue-50 text-blue-600' :
+                            'bg-amber-50 text-amber-600'
+                          }`}>
+                            <mod.icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                              {mod.title}
+                            </h3>
+                            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+                              {mod.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${
+                          mod.status === 'online' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                          mod.status === 'optimal' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                          mod.status === 'syncing' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full mr-1 ${
+                            mod.status === 'online' ? 'bg-emerald-500' :
+                            mod.status === 'optimal' ? 'bg-blue-500' :
+                            mod.status === 'syncing' ? 'bg-amber-500' :
+                            'bg-gray-400'
+                          }`} />
+                          {mod.status}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-gray-500 line-clamp-2 mb-3 min-h-[32px]">
+                        {mod.description}
+                      </p>
+
+                      {/* Health & Latency Row */}
+                      <div className="flex items-center justify-between text-xs py-1.5 px-2 bg-gray-50 rounded border border-gray-100 mb-3">
+                        <span className="text-gray-500">Latency: <strong className="text-gray-800">{mod.responseTime}ms</strong></span>
+                        <span className="text-gray-500">Score: <strong className="text-emerald-600">{mod.healthScore}%</strong></span>
+                        <span className="text-gray-400 font-mono text-[10px]">{mod.requests24h}</span>
+                      </div>
+
+                      {/* Mini Area Sparkline */}
+                      <div className="h-7 w-full mb-3">
+                        <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+                          <path
+                            d={`M 0,${24 - mod.trend[0] / 4} Q 25,${24 - mod.trend[2] / 4} 50,${24 - mod.trend[4] / 4} T 100,${24 - mod.trend[6] / 4} L 100,24 L 0,24 Z`}
+                            fill="#E0E7FF"
+                            opacity="0.6"
+                          />
+                          <path
+                            d={`M 0,${24 - mod.trend[0] / 4} Q 25,${24 - mod.trend[2] / 4} 50,${24 - mod.trend[4] / 4} T 100,${24 - mod.trend[6] / 4}`}
+                            fill="none"
+                            stroke="#4F46E5"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons: Launch Console & Quick Telemetry */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                      <button
+                        onClick={() => navigate(mod.route)}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded transition-colors shadow-2xs"
+                      >
+                        Launch Console
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setSelectedModuleForDrawer(mod)}
+                        title="View Telemetry Drawer"
+                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 border border-gray-200 rounded transition-colors"
+                      >
+                        <Activity className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Compliance Table Preview */}
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Active Compliance Checks (Automated Watchdog)</h3>
+                  <p className="text-xs text-gray-500">Live cryptographic, ethical, accessibility and financial integrity scans.</p>
+                </div>
+                <button
+                  onClick={() => setActiveTab('governance')}
+                  className="text-xs font-semibold text-blue-600 hover:underline inline-flex items-center gap-1"
+                >
+                  Run Full Suite <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-xs">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Check Name</th>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Category</th>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Severity</th>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Last Execution</th>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Score</th>
+                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Status</th>
+                      <th className="px-4 py-2.5 text-right font-semibold text-gray-600">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {complianceChecks.map((chk) => (
+                      <tr key={chk.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3 font-semibold text-gray-900 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          {chk.name}
+                        </td>
+                        <td className="px-4 py-3 text-gray-600">{chk.category}</td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            chk.severity === 'critical' ? 'bg-rose-100 text-rose-700' :
+                            chk.severity === 'high' ? 'bg-amber-100 text-amber-700' :
+                            'bg-blue-100 text-blue-700'
+                          }`}>
+                            {chk.severity}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-gray-500">{chk.lastRun}</td>
+                        <td className="px-4 py-3 font-semibold text-gray-800">{chk.score}%</td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            {chk.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <button
+                            onClick={() => navigate('/stercs/compliance')}
+                            className="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline"
+                          >
+                            Audit Logs
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 2: MODULES MANAGEMENT */}
+        {activeTab === 'modules' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-base font-bold text-gray-900">STERCS Modular Control Plane</h3>
+                  <p className="text-xs text-gray-500">Configure, monitor, update and restart sovereign engine modules.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => navigate('/stercs/modules')}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                  >
+                    Dedicated Modules Hub
+                  </button>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-xs">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Module</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Category</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Version</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Response</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Health</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">24h Volume</th>
+                      <th className="px-4 py-3 text-right font-semibold text-gray-600">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {stercsModules.map((m) => (
+                      <tr key={m.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3.5 font-bold text-gray-900 flex items-center gap-2.5">
+                          <div className="p-1.5 bg-blue-50 text-blue-600 rounded">
+                            <m.icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div>{m.title}</div>
+                            <div className="text-[10px] font-normal text-gray-400">{m.description}</div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-gray-600 font-medium">{m.category}</td>
+                        <td className="px-4 py-3 text-gray-500 font-mono text-[11px]">{m.version}</td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            {m.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 font-semibold text-gray-800">{m.responseTime} ms</td>
+                        <td className="px-4 py-3 font-semibold text-emerald-600">{m.healthScore}%</td>
+                        <td className="px-4 py-3 text-gray-500 font-mono">{m.requests24h}</td>
+                        <td className="px-4 py-3 text-right space-x-2">
+                          <button
+                            onClick={() => navigate(m.route)}
+                            className="px-2.5 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded font-semibold text-xs transition-colors"
+                          >
+                            Launch
+                          </button>
+                          <button
+                            onClick={() => setSelectedModuleForDrawer(m)}
+                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-medium text-xs transition-colors"
+                          >
+                            Telemetry
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: CONTROLS & FEATURE FLAGS */}
+        {activeTab === 'controls' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <h3 className="text-base font-bold text-gray-900 mb-2">Automated Security & Governance Policies</h3>
+              <p className="text-xs text-gray-500 mb-4">Toggle autonomous enforcement thresholds across cluster nodes.</p>
+
+              <div className="space-y-3">
+                {[
+                  { name: 'Autonomous Heuristic Content Flagging', desc: 'Real-time NLP and visual deepfake scan prior to feed dispatch', active: true },
+                  { name: 'Camus Hardware Enclave Memory Lock', desc: 'Hardware-level isolated memory paging for execution modules', active: true },
+                  { name: 'Infinity Coin Ledger Double-Entry Verifier', desc: 'Live block proof cross-matching with database transaction logs', active: true },
+                  { name: 'Child Safety & Minor Persona Shield', desc: 'Restrict unverified contacts and blur unrated media automatically', active: true },
+                  { name: 'DDoS & Rate Limiter Sovereign Throttle', desc: 'Auto-ban IPs exceeding 2,500 socket requests per second', active: true },
+                  { name: 'GDPR / NDPR Zero-Knowledge Deletion', desc: 'Cryptographically wipe revoked personal data within 100ms', active: false },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
+                    <div>
+                      <div className="font-semibold text-xs text-gray-900">{item.name}</div>
+                      <div className="text-[11px] text-gray-500">{item.desc}</div>
+                    </div>
+                    <span className={`px-2.5 py-1 rounded text-xs font-bold uppercase ${
+                      item.active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'
+                    }`}>
+                      {item.active ? 'Enforced' : 'Standby'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <h3 className="text-base font-bold text-gray-900 mb-2">Emergency Protocols & Sovereign Killswitches</h3>
+              <p className="text-xs text-gray-500 mb-4">Cryptographically signed fail-safe actions for super-administrators.</p>
+
+              <div className="space-y-4">
+                <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-amber-900">Enclave Memory Flush & Cache Eviction</h4>
+                    <p className="text-[11px] text-amber-800 mt-0.5">Clears distributed memory caching across all 1,280 enclaves without session drop.</p>
+                    <button
+                      onClick={() => alert('Enclave memory flushed cleanly.')}
+                      className="mt-2 px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded shadow-2xs"
+                    >
+                      Trigger Safe Memory Flush
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-lg bg-rose-50 border border-rose-200 flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-rose-900">Sovereign Cluster Quarantine Mode</h4>
+                    <p className="text-[11px] text-rose-800 mt-0.5">Isolates public traffic to readonly view while autonomous security probes execute.</p>
+                    <button
+                      onClick={() => alert('Quarantine mode standby. Requires multi-sig approval.')}
+                      className="mt-2 px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded shadow-2xs"
+                    >
+                      Request Multi-Sig Quarantine
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-lg bg-blue-50 border border-blue-200 flex items-start gap-3">
+                  <RefreshCw className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-blue-900">Rotate Hardware Enclave Keys</h4>
+                    <p className="text-[11px] text-blue-800 mt-0.5">Automated rolling re-encryption of all active sessions and symmetric channel keys.</p>
+                    <button
+                      onClick={() => alert('Key rotation initialized successfully.')}
+                      className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                    >
+                      Rotate Ephemeral Keys
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: GOVERNANCE & COMPLIANCE */}
+        {activeTab === 'governance' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-base font-bold text-gray-900">150-Rule Governance & Compliance Suite</h3>
+                  <p className="text-xs text-gray-500">Autonomous evaluation matrix covering content integrity, ethics, and sovereign law.</p>
+                </div>
+                <button
+                  onClick={() => navigate('/stercs/compliance')}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                >
+                  Open Legal Compliance Hub
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {governancePolicies.map((pol) => (
+                  <div key={pol.id} className="p-4 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50/30 transition-all">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-blue-600">{pol.id}</span>
+                        <h4 className="font-bold text-sm text-gray-900">{pol.title}</h4>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-gray-700">
+                          {pol.category}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold text-emerald-600">{pol.passedPercent}% Compliance</span>
+                    </div>
+                    <p className="text-xs text-gray-600 mb-2">{pol.description}</p>
+                    <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-100">
+                      <span>Enforcement: <strong className="text-gray-800 capitalize">{pol.complianceLevel}</strong></span>
+                      <span>Last Reviewed: {pol.lastUpdated}</span>
+                      <button
+                        onClick={() => navigate(pol.route)}
+                        className="text-blue-600 hover:underline font-semibold"
+                      >
+                        Edit Rule Definition
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 5: ERP & CRM SUITE */}
+        {activeTab === 'erp-crm' && (
+          <div className="space-y-6">
+            {/* Header info */}
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-bold text-gray-900">ERP & CRM Autonomous Operations Core</h3>
+                  <p className="text-xs text-gray-500">
+                    Automating core operations: Accounting, Procurement, Human Capital, Supply Chain, and Customer Pipelines.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsErpModalOpen(true)}
+                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded shadow-2xs"
+                >
+                  Launch Full ERP/CRM Console
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Box 1: Financial & Ledgers */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <DollarSign className="w-4 h-4 text-emerald-600" />
+                    Finance & Ledgers
+                  </span>
+                  <span className="text-emerald-600 font-bold">100% Synced</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">Reconciliation across Infinity Coin and fiat bank accounts.</p>
+                <div className="text-2xl font-extrabold text-gray-900 mb-1">$4,892,140</div>
+                <div className="text-[11px] text-gray-500">Total Treasury Balance (Audit Complete)</div>
+              </div>
+
+              {/* Box 2: Supply Chain & Procurement */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <Building className="w-4 h-4 text-blue-600" />
+                    Procurement & Logistics
+                  </span>
+                  <span className="text-blue-600 font-bold">48 Orders</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">Automated vendor purchase orders, logistics and tracking.</p>
+                <div className="text-2xl font-extrabold text-gray-900 mb-1">99.2%</div>
+                <div className="text-[11px] text-gray-500">On-Time Vendor Fulfillment</div>
+              </div>
+
+              {/* Box 3: Human Capital & Payroll */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-purple-600" />
+                    Human Capital & Payroll
+                  </span>
+                  <span className="text-purple-600 font-bold">342 Staff</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">Smart contract payouts, performance reviews & recruitment.</p>
+                <div className="text-2xl font-extrabold text-gray-900 mb-1">Zero Delays</div>
+                <div className="text-[11px] text-gray-500">Next Payroll Epoch in 12 days</div>
+              </div>
+
+              {/* Box 4: CRM Pipeline & Leads */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <Workflow className="w-4 h-4 text-amber-600" />
+                    CRM Pipeline & Leads
+                  </span>
+                  <span className="text-amber-600 font-bold">12.4k Leads</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-3">Lead scoring, automated replies, segmentation & support.</p>
+                <div className="text-2xl font-extrabold text-gray-900 mb-1">28.4%</div>
+                <div className="text-[11px] text-gray-500">High-Intent Conversion Rate</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: 19 DEPARTMENTAL EXECUTIVE ROLES MATRIX */}
+        {activeTab === 'roles' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-base font-bold text-gray-900">19 Departmental Leadership Roles & Clearances</h3>
+                  <p className="text-xs text-gray-500">
+                    Comprehensive organizational matrix and agentic permissions hierarchy specified by Protocol Leadership.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsRolesModalOpen(true)}
+                  className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                >
+                  Expand Full Matrix Detail
+                </button>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-xs">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">ID</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Department</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Designated Officer / Role</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Officer Lead</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Clearance</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Active AI Agents</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
+                      <th className="px-4 py-3 text-right font-semibold text-gray-600">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {departmentalRoles.map((r) => (
+                      <tr key={r.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3 font-mono text-gray-500 font-semibold">{r.id}</td>
+                        <td className="px-4 py-3 font-bold text-gray-900">{r.department}</td>
+                        <td className="px-4 py-3 text-gray-700">{r.title}</td>
+                        <td className="px-4 py-3 text-blue-600 font-medium">{r.head}</td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            r.clearance.includes('Board') ? 'bg-purple-100 text-purple-800' :
+                            r.clearance.includes('Executive') ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {r.clearance}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 font-semibold text-gray-800">{r.activeAgents} agents</td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            {r.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <button
+                            onClick={() => navigate('/dashboard/roles')}
+                            className="text-blue-600 hover:underline font-semibold"
+                          >
+                            Permissions
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* MODAL 1: AUTONOMOUS AGENTIC AI ENGINE MODAL */}
+      {isAiAgentModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-2xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Bot className="w-5 h-5 text-purple-400" />
+                <h3 className="font-bold text-sm">Automated Generative & Agentic AI Engine</h3>
+              </div>
+              <button
+                onClick={() => setIsAiAgentModalOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4 overflow-y-auto flex-1">
+              <p className="text-xs text-gray-600">
+                Test and execute autonomous multilingual agent workflows, conversational AI dispatchers, and automated policy enforcers.
+              </p>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Active Sovereign Model
+                </label>
+                <select className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-xs font-medium">
+                  <option>Gemini 2.5 Sovereign Flash (Sub-50ms Heuristic Engine)</option>
+                  <option>Gemini 2.5 Pro Neural Auditor (Multi-Modal Deep Inspector)</option>
+                  <option>Camus Heuristic Isolator v4.2</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Dispatch Prompt / Policy Verification Objective
+                </label>
+                <textarea
+                  rows={3}
+                  value={aiTestPrompt}
+                  onChange={(e) => setAiTestPrompt(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-300 rounded p-2.5 text-xs text-gray-800 focus:outline-hidden focus:ring-1 focus:ring-blue-500 font-mono"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <button
+                  disabled={isGeneratingAi}
+                  onClick={handleExecuteAiTest}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded transition-colors shadow-xs disabled:opacity-50"
+                >
+                  {isGeneratingAi ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      Evaluating Heuristics...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5" />
+                      Execute Agentic Inspection
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {aiSimulatedOutput && (
+                <div className="mt-4 p-3.5 bg-slate-900 text-emerald-400 rounded-lg font-mono text-xs whitespace-pre-wrap border border-slate-800">
+                  {aiSimulatedOutput}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
+              <span className="text-gray-500">Autonomous Heuristic Accuracy: <strong>99.98%</strong></span>
+              <button
+                onClick={() => setIsAiAgentModalOpen(false)}
+                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+              >
+                Close Engine
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: ERP & CRM OPERATIONS MODAL */}
+      {isErpModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-3xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-emerald-800 text-white p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Briefcase className="w-5 h-5 text-emerald-300" />
+                <h3 className="font-bold text-sm">ERP & CRM Enterprise Autonomous Bridge</h3>
+              </div>
+              <button
+                onClick={() => setIsErpModalOpen(false)}
+                className="text-emerald-200 hover:text-white p-1 rounded"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4 overflow-y-auto flex-1 text-xs">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3.5 bg-gray-50 rounded border border-gray-200">
+                  <h4 className="font-bold text-gray-900 mb-1">Financial Ledgers & Double-Entry</h4>
+                  <p className="text-gray-500 mb-2">Automated accounts payable, receivables & tax reconciliation.</p>
+                  <div className="text-lg font-extrabold text-emerald-600">$4,892,140.00</div>
+                  <div className="text-[10px] text-gray-400">Zero delta vs Infinity Coin reserves</div>
+                </div>
+                <div className="p-3.5 bg-gray-50 rounded border border-gray-200">
+                  <h4 className="font-bold text-gray-900 mb-1">Procurement & Sourcing</h4>
+                  <p className="text-gray-500 mb-2">Vendor purchase orders, inventory and supply chain tracking.</p>
+                  <div className="text-lg font-extrabold text-blue-600">142 Inbound Shipments</div>
+                  <div className="text-[10px] text-gray-400">All vendors verified</div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded border border-gray-200 space-y-2">
+                <h4 className="font-bold text-gray-900">CRM Customer Pipeline & Automated Dispatch</h4>
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Total Contacts & Leads Managed:</span>
+                  <strong className="text-gray-900">12,480 Active Records</strong>
+                </div>
+                <div className="flex justify-between py-1 border-b border-gray-200">
+                  <span className="text-gray-600">Autonomous Email & Support Dispatch:</span>
+                  <strong className="text-emerald-600">4,120 replies sent today (0 wait time)</strong>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-gray-600">Lead Scoring Engine:</span>
+                  <strong className="text-purple-600">Active (Multi-modal heuristic)</strong>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  onClick={() => alert('Full ERP/CRM ledger synchronization completed.')}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-xs"
+                >
+                  Run Full Enterprise Sync
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-end">
+              <button
+                onClick={() => setIsErpModalOpen(false)}
+                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: 19 DEPARTMENTAL ROLES EXPANDED MODAL */}
+      {isRolesModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-4xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Users className="w-5 h-5 text-blue-400" />
+                <h3 className="font-bold text-sm">19 Corporate Departmental Leadership Structure</h3>
+              </div>
+              <button
+                onClick={() => setIsRolesModalOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 overflow-y-auto flex-1">
+              <p className="text-xs text-gray-600 mb-4">
+                Full protocol governance structure mapping departmental executive directors, heads of service, and clearance boundaries.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                {departmentalRoles.map((r) => (
+                  <div key={r.id} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-mono text-[11px] font-bold text-blue-600">{r.id}</span>
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                        {r.clearance}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-gray-900">{r.title}</h4>
+                    <p className="text-gray-500 text-[11px]">Department: {r.department}</p>
+                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-200 text-[11px]">
+                      <span className="text-gray-600">Officer: <strong>{r.head}</strong></span>
+                      <span className="text-emerald-600 font-semibold">{r.activeAgents} Agents Active</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
+              <button
+                onClick={() => navigate('/dashboard/roles')}
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Manage Permissions in Role Management Console →
+              </button>
+              <button
+                onClick={() => setIsRolesModalOpen(false)}
+                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DRAWER: MODULE TELEMETRY INSPECTION DRAWER */}
+      {selectedModuleForDrawer && (
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-2xs flex justify-end">
+          <div className="bg-white w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto animate-in slide-in-from-right duration-200">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-blue-50 text-blue-600 rounded">
+                  <selectedModuleForDrawer.icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-gray-900">{selectedModuleForDrawer.title}</h3>
+                  <span className="text-xs text-gray-500">{selectedModuleForDrawer.category}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedModuleForDrawer(null)}
+                className="text-gray-400 hover:text-gray-700 p-1 rounded"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 flex-1 text-xs">
+              <div>
+                <h4 className="font-bold text-gray-700 uppercase tracking-wider text-[10px] mb-1">Description</h4>
+                <p className="text-gray-600">{selectedModuleForDrawer.description}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <span className="text-gray-500 block">Version</span>
+                  <strong className="text-gray-900 font-mono">{selectedModuleForDrawer.version}</strong>
+                </div>
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <span className="text-gray-500 block">Health Score</span>
+                  <strong className="text-emerald-600 text-sm">{selectedModuleForDrawer.healthScore}%</strong>
+                </div>
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <span className="text-gray-500 block">Socket Latency</span>
+                  <strong className="text-gray-900">{selectedModuleForDrawer.responseTime} ms</strong>
+                </div>
+                <div className="p-3 bg-gray-50 rounded border border-gray-200">
+                  <span className="text-gray-500 block">24h Requests</span>
+                  <strong className="text-gray-900 font-mono">{selectedModuleForDrawer.requests24h}</strong>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-gray-700 uppercase tracking-wider text-[10px] mb-2">Live Enclave Socket Activity</h4>
+                <div className="bg-slate-900 text-emerald-400 p-3 rounded font-mono text-[11px] space-y-1">
+                  <div>[OK] Socket connected: wss://stercs.enclave.alpha</div>
+                  <div>[OK] TLS 1.3 handshake verified (256-bit AES-GCM)</div>
+                  <div>[OK] Hardware attestation digest validated</div>
+                  <div>[OK] Camus isolation: 0 boundaries penetrated</div>
+                  <div>[OK] Memory usage: 142MB / 512MB allocated</div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => {
+                    navigate(selectedModuleForDrawer.route);
+                    setSelectedModuleForDrawer(null);
+                  }}
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded transition-colors shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  Launch Full Dedicated Console
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default StercsDashboardPage;

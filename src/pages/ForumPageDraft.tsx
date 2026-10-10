@@ -42,6 +42,11 @@ import {
   ArrowPathIcon,
   CheckIcon,
   ExclamationCircleIcon,
+  CodeBracketIcon,
+  ListBulletIcon,
+  PaperAirplaneIcon,
+  ArrowTopRightOnSquareIcon,
+  HandThumbUpIcon,
 } from '@heroicons/react/24/outline';
 import {
   HeartIcon as HeartSolidIcon,
@@ -51,6 +56,8 @@ import {
 } from '@heroicons/react/24/solid';
 import ForumService from '../services/forumService';
 import { ForumCategory, ForumThread } from '../types/forum';
+import WebRtcStudioDrawer from '../components/streaming/WebRtcStudioDrawer';
+import UniversalProfileCard from '../components/common/UniversalProfileCard';
 
 // =============================================================================
 // MINI DRAWER / DROPDOWN MENU ENTITIES
@@ -89,11 +96,11 @@ interface SubNavEntity {
 
 const SUB_NAV_ITEMS: SubNavEntity[] = [
   { id: 'home', name: 'Home Feeds', path: '/forum-draft' },
-  { id: 'lushpressies', name: 'Lush Pressies', path: '/lushpressies', badge: 'Escrow', badgeColor: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
-  { id: 'dancia4tv', name: 'Dancia-4tv', path: '/dancia4tv', badge: 'Live', badgeColor: 'bg-purple-50 text-purple-600 border-purple-200' },
-  { id: 'marketplace', name: 'Marketplace', path: '/marketplace', badge: 'Shop', badgeColor: 'bg-blue-50 text-blue-600 border-blue-200' },
-  { id: 'photocredits', name: 'PhotoCredits', path: '/luminagallery', badge: 'Art', badgeColor: 'bg-amber-50 text-amber-600 border-amber-200' },
-  { id: 'beatwaveng', name: 'BeatwaveNG', path: '/beatwaveng', badge: 'Lossless', badgeColor: 'bg-orange-50 text-orange-600 border-orange-200' },
+  { id: 'lushpressies', name: 'Lush Pressies', path: '/lushpressies' },
+  { id: 'dancia4tv', name: 'Dancia-4tv', path: '/dancia4tv' },
+  { id: 'marketplace', name: 'Marketplace', path: '/marketplace' },
+  { id: 'photocredits', name: 'PhotoCredits', path: '/photocredits' },
+  { id: 'beatwaveng', name: 'BeatwaveNG', path: '/beatwaveng' },
 ];
 
 // =============================================================================
@@ -227,6 +234,45 @@ const PRODUCT_CATALOG_OPTIONS = [
   { id: 'prod-sf-1', platform: 'Storefront', name: 'Lossless Master Stem Pack (BeatwaveNG)', price: '50 FIC' },
 ];
 
+// Rich Feed Sub-Entities
+export interface FeedComment {
+  id: string;
+  authorName: string;
+  authorHandle: string;
+  authorAvatar: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface FeedPoll {
+  question: string;
+  options: { text: string; votes: number }[];
+  userVotedIndex?: number;
+  totalVotes: number;
+  durationDays: number;
+}
+
+export interface FeedEvent {
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  rsvpCount: number;
+  isRsvpd?: boolean;
+}
+
+export interface FeedFileAttachment {
+  name: string;
+  size: string;
+  type: string;
+}
+
+export interface FeedLinkEmbed {
+  url: string;
+  title: string;
+  domain: string;
+}
+
 // Fallback Forum Posts
 interface FeedPost {
   id: string;
@@ -246,12 +292,19 @@ interface FeedPost {
   tags: string[];
   mediaUrl?: string;
   audioPreview?: string;
+  videoStreamUrl?: string;
   isVerified?: boolean;
+  poll?: FeedPoll;
+  event?: FeedEvent;
+  fileAttachment?: FeedFileAttachment;
+  linkEmbed?: FeedLinkEmbed;
+  locationTag?: string;
   taggedProduct?: {
     platform: string;
     name: string;
     price: string;
   };
+  commentsList?: FeedComment[];
 }
 
 const DEFAULT_POSTS: FeedPost[] = [
@@ -266,14 +319,44 @@ const DEFAULT_POSTS: FeedPost[] = [
     categoryName: 'BeatwaveNG Stems & Licensing',
     createdAt: '25m ago',
     likesCount: 142,
-    commentsCount: 38,
+    commentsCount: 2,
     sharesCount: 19,
     isLiked: false,
     isBookmarked: false,
     tags: ['BeatwaveNG', 'Amapiano', 'SpatialAudio', 'Licensing'],
     mediaUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1000',
+    audioPreview: 'BeatwaveNG Lossless 128BPM Spatial Stem Pack',
     isVerified: true,
+    locationTag: 'Victoria Island Studio Hub, Lagos',
     taggedProduct: { platform: 'Storefront', name: 'Lossless Master Stem Pack (BeatwaveNG)', price: '50 FIC' },
+    poll: {
+      question: 'Have you verified your audio stem stems on testnet?',
+      options: [
+        { text: 'Yes, audio quality is pristine 🎵', votes: 84 },
+        { text: 'Testing stem minting today ⚡', votes: 42 },
+        { text: 'Need tutorial whitepaper 📄', votes: 16 }
+      ],
+      totalVotes: 142,
+      durationDays: 3
+    },
+    commentsList: [
+      {
+        id: 'c-1',
+        authorName: 'Amara Kalu',
+        authorHandle: '@amara_beats',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+        text: 'The sub-bass clarity on the 2.4 lossless stem is incredible! Already minting my EP licensing contracts.',
+        createdAt: '12m ago'
+      },
+      {
+        id: 'c-2',
+        authorName: 'Tunde Adeleke',
+        authorHandle: '@tunde_dev',
+        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+        text: 'Zero-latency sync with the NFC keycard works flawlessly on physical hardware.',
+        createdAt: '5m ago'
+      }
+    ]
   },
   {
     id: 'post-102',
@@ -286,13 +369,32 @@ const DEFAULT_POSTS: FeedPost[] = [
     categoryName: 'Sovereign Hardware & NFC',
     createdAt: '2h ago',
     likesCount: 89,
-    commentsCount: 22,
+    commentsCount: 1,
     sharesCount: 14,
     isLiked: true,
     isBookmarked: true,
     tags: ['KeycardV3', 'Security', 'Hardware', 'BioFace'],
     isVerified: true,
+    locationTag: 'Abuja Central Sovereign Hub',
     taggedProduct: { platform: 'Marketplace', name: 'Sovereign Hardware Keycard V3', price: '250 FIC' },
+    event: {
+      title: 'Physical Keycard V3 Sovereign Onboarding Workshop',
+      date: 'Oct 15, 2026',
+      time: '14:00 WAT',
+      location: 'FingerMobile Innovation Hub, Victoria Island',
+      rsvpCount: 68,
+      isRsvpd: false
+    },
+    commentsList: [
+      {
+        id: 'c-3',
+        authorName: 'David Obi',
+        authorHandle: '@david_tech',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+        text: 'Received mine this morning in Abuja. Hardware pairing was instant!',
+        createdAt: '1h ago'
+      }
+    ]
   },
   {
     id: 'post-103',
@@ -631,6 +733,74 @@ export const ForumPageDraft: React.FC = () => {
   const [visualGlow, setVisualGlow] = useState<boolean>(false);
   const [composerError, setComposerError] = useState<string | null>(null);
 
+  // Rich Text Editor State: Write vs Preview
+  const [composerTab, setComposerTab] = useState<'write' | 'preview'>('write');
+
+  // Advanced Tools Interactive Panels State (Replacing Alert Duds)
+  const [activeComposerTool, setActiveComposerTool] = useState<
+    'media' | 'poll' | 'event' | 'file' | 'link' | 'location' | 'emoji' | 'beatwave' | 'dancia' | null
+  >(null);
+
+  // Active Tool Attachment Data
+  const [attachedMedia, setAttachedMedia] = useState<string | null>(null);
+  const [mediaInputUrl, setMediaInputUrl] = useState<string>('');
+  const [attachedPoll, setAttachedPoll] = useState<FeedPoll | null>(null);
+  const [pollDraft, setPollDraft] = useState<{
+    question: string;
+    opt1: string;
+    opt2: string;
+    opt3: string;
+    opt4: string;
+    days: number;
+  }>({
+    question: '',
+    opt1: '',
+    opt2: '',
+    opt3: '',
+    opt4: '',
+    days: 3,
+  });
+  const [attachedEvent, setAttachedEvent] = useState<FeedEvent | null>(null);
+  const [eventDraft, setEventDraft] = useState<{
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+  }>({
+    title: '',
+    date: '',
+    time: '',
+    location: '',
+  });
+  const [attachedFile, setAttachedFile] = useState<FeedFileAttachment | null>(null);
+  const [fileDraftName, setFileDraftName] = useState<string>('');
+  const [attachedLink, setAttachedLink] = useState<FeedLinkEmbed | null>(null);
+  const [linkInputUrl, setLinkInputUrl] = useState<string>('');
+  const [linkInputTitle, setLinkInputTitle] = useState<string>('');
+  const [attachedLocation, setAttachedLocation] = useState<string | null>(null);
+  const [attachedStem, setAttachedStem] = useState<string | null>(null);
+  const [attachedStream, setAttachedStream] = useState<string | null>(null);
+
+  // Live Streaming Studio Drawer State
+  const [isLiveStudioOpen, setIsLiveStudioOpen] = useState<boolean>(false);
+
+  // Expanded Post Comments & Inline Comment Reply State
+  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({ 'post-101': true });
+  const [commentInputTexts, setCommentInputTexts] = useState<Record<string, string>>({});
+
+  // Toast Feedback State
+  const [toastNotification, setToastNotification] = useState<{
+    message: string;
+    type: 'success' | 'info' | 'error';
+  } | null>(null);
+
+  const triggerToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
+    setToastNotification({ message, type });
+    setTimeout(() => {
+      setToastNotification(null);
+    }, 3500);
+  };
+
   // Feed State
   const [posts, setPosts] = useState<FeedPost[]>(DEFAULT_POSTS);
   const [apiCategories, setApiCategories] = useState<{ id: string; name: string; icon: string }[]>(MASTER_CATEGORIES_CATALOG);
@@ -677,7 +847,35 @@ export const ForumPageDraft: React.FC = () => {
     });
   }, [posts, searchQuery, selectedCategoryId]);
 
-  // Handle Post Creation with Mandated Category Selection
+  // Markdown Toolbar Inserter
+  const insertMarkdownSyntax = (syntax: 'bold' | 'italic' | 'heading' | 'quote' | 'bullet' | 'code' | 'link') => {
+    switch (syntax) {
+      case 'bold':
+        setComposerContent((prev) => prev + ' **bold text** ');
+        break;
+      case 'italic':
+        setComposerContent((prev) => prev + ' *italic text* ');
+        break;
+      case 'heading':
+        setComposerContent((prev) => (prev ? prev + '\n\n### Heading Title\n' : '### Heading Title\n'));
+        break;
+      case 'quote':
+        setComposerContent((prev) => (prev ? prev + '\n\n> Quoted statement\n' : '> Quoted statement\n'));
+        break;
+      case 'bullet':
+        setComposerContent((prev) => (prev ? prev + '\n- Item one\n- Item two\n' : '- Item one\n- Item two\n'));
+        break;
+      case 'code':
+        setComposerContent((prev) => prev + ' `inline_code()` ');
+        break;
+      case 'link':
+        setComposerContent((prev) => prev + ' [Resource Link](https://fingermobile.io) ');
+        break;
+    }
+    triggerToast(`Inserted markdown ${syntax}`, 'info');
+  };
+
+  // Handle Post Creation with Mandated Category Selection & Attachments
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
     setComposerError(null);
@@ -702,8 +900,8 @@ export const ForumPageDraft: React.FC = () => {
       id: `post-${Date.now()}`,
       title: composerTitle.trim() || 'Community Discussion',
       content: composerContent.trim(),
-      authorName: 'Mock User',
-      authorHandle: '@mockuser',
+      authorName: 'Israel Mbah',
+      authorHandle: '@israel_protocol',
       authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
       authorRole: 'Protocol Architect',
       categoryName: categoryLabel,
@@ -717,9 +915,18 @@ export const ForumPageDraft: React.FC = () => {
         ? composerTags.split(',').map((t) => t.trim()).filter(Boolean)
         : ['Community'],
       isVerified: true,
+      mediaUrl: attachedMedia || undefined,
+      poll: attachedPoll || undefined,
+      event: attachedEvent || undefined,
+      fileAttachment: attachedFile || undefined,
+      linkEmbed: attachedLink || undefined,
+      locationTag: attachedLocation || undefined,
+      audioPreview: attachedStem || undefined,
+      videoStreamUrl: attachedStream || undefined,
       taggedProduct: matchedProd
         ? { platform: matchedProd.platform, name: matchedProd.name, price: matchedProd.price }
         : undefined,
+      commentsList: [],
     };
 
     setPosts([newPost, ...posts]);
@@ -728,20 +935,48 @@ export const ForumPageDraft: React.FC = () => {
     setComposerCategory('');
     setComposerTags('');
     setTaggedProduct('');
+    setAttachedMedia(null);
+    setAttachedPoll(null);
+    setAttachedEvent(null);
+    setAttachedFile(null);
+    setAttachedLink(null);
+    setAttachedLocation(null);
+    setAttachedStem(null);
+    setAttachedStream(null);
+    setActiveComposerTool(null);
     setShowAdvancedTools(false);
     setShowSettingsAccordion(false);
     setComposerError(null);
+    triggerToast(`Post published to ${categoryLabel} successfully!`, 'success');
+
+    // Asynchronous backend dispatch
+    ForumService.createThread({
+      title: newPost.title,
+      content: newPost.content,
+      categoryId: composerCategory,
+      tags: newPost.tags,
+      mediaUrls: attachedMedia ? [attachedMedia] : undefined,
+    }).catch((err) => console.log('Async forum service dispatch:', err));
   };
 
+  // Like Toggle with optimistic update + backend dispatch
   const handleToggleLike = (postId: string) => {
     setPosts((prev) =>
       prev.map((p) => {
         if (p.id === postId) {
           const isLiked = !p.isLiked;
+          const newLikes = isLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1);
+          if (isLiked) {
+            ForumService.likePost(postId).catch(() => {});
+            triggerToast('Added to liked posts', 'info');
+          } else {
+            ForumService.unlikePost(postId).catch(() => {});
+            triggerToast('Removed from liked posts', 'info');
+          }
           return {
             ...p,
             isLiked,
-            likesCount: isLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1),
+            likesCount: newLikes,
           };
         }
         return p;
@@ -749,10 +984,143 @@ export const ForumPageDraft: React.FC = () => {
     );
   };
 
+  // Bookmark Toggle with optimistic update + backend dispatch
   const handleToggleBookmark = (postId: string) => {
     setPosts((prev) =>
-      prev.map((p) => (p.id === postId ? { ...p, isBookmarked: !p.isBookmarked } : p))
+      prev.map((p) => {
+        if (p.id === postId) {
+          const isBookmarked = !p.isBookmarked;
+          if (isBookmarked) {
+            ForumService.savePost(postId).catch(() => {});
+            triggerToast('Post bookmarked to library', 'success');
+          } else {
+            ForumService.unsavePost(postId).catch(() => {});
+            triggerToast('Removed from bookmarks', 'info');
+          }
+          return { ...p, isBookmarked };
+        }
+        return p;
+      })
     );
+  };
+
+  // Share Post handler
+  const handleSharePost = (post: FeedPost) => {
+    const url = `${window.location.origin}/forum-draft#${post.id}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        triggerToast('Thread link copied to clipboard!', 'success');
+      });
+    } else {
+      triggerToast('Share URL: ' + url, 'info');
+    }
+  };
+
+  // Toggle comments section
+  const handleToggleComments = (postId: string) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
+  // Add Comment Reply to a Feed Post
+  const handlePostComment = (postId: string) => {
+    const commentText = (commentInputTexts[postId] || '').trim();
+    if (!commentText) return;
+
+    const newComment: FeedComment = {
+      id: `comment-${Date.now()}`,
+      authorName: 'Israel Mbah',
+      authorHandle: '@israel_protocol',
+      authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150',
+      text: commentText,
+      createdAt: 'Just now',
+    };
+
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          const currentComments = p.commentsList || [];
+          return {
+            ...p,
+            commentsCount: p.commentsCount + 1,
+            commentsList: [newComment, ...currentComments],
+          };
+        }
+        return p;
+      })
+    );
+
+    setCommentInputTexts((prev) => ({ ...prev, [postId]: '' }));
+    triggerToast('Comment posted successfully!', 'success');
+
+    // Async backend post dispatch
+    ForumService.createPost({
+      content: commentText,
+      threadId: postId,
+    }).catch(() => {});
+  };
+
+  // Vote on Poll in Feed Card
+  const handleVotePoll = (postId: string, optionIdx: number) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId && p.poll && p.poll.userVotedIndex === undefined) {
+          const updatedOptions = p.poll.options.map((opt, idx) =>
+            idx === optionIdx ? { ...opt, votes: opt.votes + 1 } : opt
+          );
+          triggerToast('Vote recorded on sovereign poll!', 'success');
+          return {
+            ...p,
+            poll: {
+              ...p.poll,
+              options: updatedOptions,
+              totalVotes: p.poll.totalVotes + 1,
+              userVotedIndex: optionIdx,
+            },
+          };
+        }
+        return p;
+      })
+    );
+  };
+
+  // RSVP to Event in Feed Card
+  const handleRsvpEvent = (postId: string) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId && p.event) {
+          const isRsvpd = !p.event.isRsvpd;
+          triggerToast(isRsvpd ? 'RSVP Confirmed! Calendar invitation added.' : 'RSVP Cancelled', 'info');
+          return {
+            ...p,
+            event: {
+              ...p.event,
+              isRsvpd,
+              rsvpCount: isRsvpd ? p.event.rsvpCount + 1 : Math.max(0, p.event.rsvpCount - 1),
+            },
+          };
+        }
+        return p;
+      })
+    );
+  };
+
+  // Product Navigation Handler
+  const handleProductNavigate = (platform: string) => {
+    const plat = platform.toLowerCase();
+    if (plat.includes('flamingo')) {
+      navigate('/flamingo');
+    } else if (plat.includes('ownit')) {
+      navigate('/ownit');
+    } else if (plat.includes('fingerlux')) {
+      navigate('/fingerlux');
+    } else if (plat.includes('storefront')) {
+      navigate('/storefront');
+    } else {
+      navigate('/marketplace');
+    }
   };
 
   return (
@@ -1004,77 +1372,31 @@ export const ForumPageDraft: React.FC = () => {
           {/* LEFT RAIL (3 cols): IDENTITY, PRIVACY, REWARDS & #LIVESTREAM            */}
           {/* ======================================================================= */}
           <div className="lg:col-span-3 space-y-4">
-            {/* 1. Member Identity Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-              <div className="h-16 bg-gradient-to-r from-slate-800 via-indigo-900 to-slate-900 relative" />
+            {/* 1. Sovereign Universal ProfileCard */}
+            <UniversalProfileCard />
 
-              <div className="px-4 pb-4 relative">
-                <div className="relative -mt-8 mb-2 inline-block">
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
-                    alt="Mock User"
-                    className="w-14 h-14 rounded-2xl border-2 border-white shadow-md object-cover"
-                  />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white" />
-                </div>
-
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="text-sm font-black text-slate-900 flex items-center gap-1">
-                      Mock User
-                      <CheckCircleSolidIcon className="w-3.5 h-3.5 text-blue-500" />
-                    </h3>
-                    <p className="text-xs text-slate-400 font-medium">@mockuser</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 mt-2.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-50 text-orange-600 rounded-md border border-orange-100">
-                    Protocol Architect
-                  </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-md border border-indigo-100">
-                    Sovereign Creator
+            {/* #Livestream Link Visible Under Profile Cards (As Requested) */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-3">
+              <button
+                onClick={() => setIsLiveStudioOpen(true)}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-gradient-to-r from-rose-500/10 to-orange-500/10 hover:from-rose-500/20 hover:to-orange-500/20 border border-rose-200/50 transition group cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
+                  <span className="text-xs font-black text-rose-600 group-hover:text-rose-700">
+                    #Livestream UGC Studio
                   </span>
                 </div>
-
-                {/* Member Statistics Grid */}
-                <div className="grid grid-cols-4 gap-1 text-center mt-3 pt-3 border-t border-slate-100">
-                  <div>
-                    <div className="text-xs font-black text-slate-900">204</div>
-                    <div className="text-[9px] text-slate-400 font-bold uppercase">Followers</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-black text-slate-900">182</div>
-                    <div className="text-[9px] text-slate-400 font-bold uppercase">Following</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-black text-slate-900">87</div>
-                    <div className="text-[9px] text-slate-400 font-bold uppercase">Posts</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-black text-slate-900">12</div>
-                    <div className="text-[9px] text-slate-400 font-bold uppercase">Groups</div>
-                  </div>
-                </div>
-
-                {/* #Livestream Link Visible Under Profile Cards (As Requested) */}
-                <div className="mt-3 pt-3 border-t border-slate-100">
-                  <button
-                    onClick={() => navigate('/live-streaming')}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-gradient-to-r from-rose-500/10 to-orange-500/10 hover:from-rose-500/20 hover:to-orange-500/20 border border-rose-200/50 transition group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
-                      <span className="text-xs font-black text-rose-600 group-hover:text-rose-700">
-                        #Livestream UGC Studio
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-bold bg-rose-500 text-white px-2 py-0.5 rounded-full shadow-xs">
-                      GO LIVE
-                    </span>
-                  </button>
-                </div>
-              </div>
+                <span className="text-[10px] font-bold bg-rose-500 text-white px-2 py-0.5 rounded-full shadow-xs">
+                  GO LIVE
+                </span>
+              </button>
+              <button
+                onClick={() => navigate('/live-streaming')}
+                className="w-full mt-2 text-[10px] font-semibold text-slate-400 hover:text-slate-600 text-center transition"
+              >
+                Or open dedicated streaming hub →
+              </button>
             </div>
 
             {/* 2. Privacy & Security Card */}
@@ -1305,7 +1627,28 @@ export const ForumPageDraft: React.FC = () => {
                     <SparklesIcon className="w-4 h-4 text-orange-500" />
                     CREATE A POST.
                   </h4>
-                  <span className="text-[10px] text-slate-400 font-semibold">Rich Text Editor & Visual Styler</span>
+                  {/* Write vs Preview Mode Toggle */}
+                  <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => setComposerTab('write')}
+                      className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition ${
+                        composerTab === 'write' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      Write
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setComposerTab('preview')}
+                      className={`px-2.5 py-1 text-[11px] font-bold rounded-md transition flex items-center gap-1 ${
+                        composerTab === 'preview' ? 'bg-white text-orange-600 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      <EyeIcon className="w-3 h-3" />
+                      Preview
+                    </button>
+                  </div>
                 </div>
 
                 {/* Validation Error Banner */}
@@ -1316,54 +1659,227 @@ export const ForumPageDraft: React.FC = () => {
                   </div>
                 )}
 
-                {/* Main Content Area */}
-                <div className="flex items-start gap-3">
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
-                    alt="Current Member"
-                    className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
-                  />
-                  <div className="w-full space-y-2">
-                    <input
-                      type="text"
-                      placeholder="Discussion Title..."
-                      value={composerTitle}
-                      onChange={(e) => setComposerTitle(e.target.value)}
-                      className="w-full px-3 py-1.5 text-xs font-bold bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500"
-                    />
-
-                    <textarea
-                      rows={showAdvancedTools ? 4 : 2}
-                      placeholder="Join Us, Share Your Moments..."
-                      value={composerContent}
-                      onChange={(e) => {
-                        setComposerContent(e.target.value);
-                        if (composerError) setComposerError(null);
-                      }}
-                      className={`w-full px-3 py-2 text-xs text-slate-800 bg-slate-50 rounded-xl border focus:outline-none resize-none transition ${
-                        visualGlow ? 'ring-2 ring-orange-400 border-orange-400' : 'border-slate-200 focus:border-orange-500'
-                      }`}
-                    />
-                  </div>
-                </div>
-
-                {/* Tagged Product Pill (if selected) */}
-                {taggedProduct && (
-                  <div className="flex items-center justify-between p-2 bg-orange-50 border border-orange-200 rounded-xl text-xs">
-                    <span className="font-bold text-orange-800 flex items-center gap-1.5">
-                      <ShoppingBagIcon className="w-4 h-4 text-orange-600" />
-                      Tagged: {PRODUCT_CATALOG_OPTIONS.find((p) => p.id === taggedProduct)?.name} (
-                      {PRODUCT_CATALOG_OPTIONS.find((p) => p.id === taggedProduct)?.price})
-                    </span>
+                {/* Markdown Formatting Quick Bar (Visible in Write Mode) */}
+                {composerTab === 'write' && (
+                  <div className="flex flex-wrap items-center gap-1 py-1 px-2 bg-slate-50 border border-slate-200/80 rounded-xl text-slate-600">
+                    <span className="text-[10px] font-mono font-bold text-slate-400 mr-1 uppercase">Markdown:</span>
                     <button
                       type="button"
-                      onClick={() => setTaggedProduct('')}
-                      className="text-orange-600 hover:text-orange-800 text-xs font-bold"
+                      onClick={() => insertMarkdownSyntax('bold')}
+                      className="px-1.5 py-0.5 rounded text-xs font-bold hover:bg-slate-200 transition"
+                      title="Bold (**text**)"
                     >
-                      Remove
+                      B
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('italic')}
+                      className="px-1.5 py-0.5 rounded text-xs italic font-serif hover:bg-slate-200 transition"
+                      title="Italic (*text*)"
+                    >
+                      I
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('heading')}
+                      className="px-1.5 py-0.5 rounded text-xs font-black hover:bg-slate-200 transition"
+                      title="H3 Heading (### text)"
+                    >
+                      H
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('quote')}
+                      className="px-1.5 py-0.5 rounded text-xs font-serif hover:bg-slate-200 transition"
+                      title="Quote (> text)"
+                    >
+                      “ ”
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('bullet')}
+                      className="px-1.5 py-0.5 rounded text-xs hover:bg-slate-200 transition"
+                      title="Bullet list (- item)"
+                    >
+                      <ListBulletIcon className="w-3.5 h-3.5 inline" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('code')}
+                      className="px-1.5 py-0.5 rounded text-xs font-mono hover:bg-slate-200 transition"
+                      title="Inline Code (`code`)"
+                    >
+                      <CodeBracketIcon className="w-3.5 h-3.5 inline" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdownSyntax('link')}
+                      className="px-1.5 py-0.5 rounded text-xs hover:bg-slate-200 transition"
+                      title="Link ([title](url))"
+                    >
+                      <LinkIcon className="w-3 h-3 inline" />
                     </button>
                   </div>
                 )}
+
+                {/* Main Content Area: Write vs Preview */}
+                {composerTab === 'write' ? (
+                  <div className="flex items-start gap-3">
+                    <img
+                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+                      alt="Current Member"
+                      className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
+                    />
+                    <div className="w-full space-y-2">
+                      <input
+                        type="text"
+                        placeholder="Discussion Title..."
+                        value={composerTitle}
+                        onChange={(e) => setComposerTitle(e.target.value)}
+                        className="w-full px-3 py-1.5 text-xs font-bold bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500"
+                      />
+
+                      <textarea
+                        rows={showAdvancedTools ? 4 : 3}
+                        placeholder="Join Us, Share Your Moments..."
+                        value={composerContent}
+                        onChange={(e) => {
+                          setComposerContent(e.target.value);
+                          if (composerError) setComposerError(null);
+                        }}
+                        className={`w-full px-3 py-2 text-xs text-slate-800 bg-slate-50 rounded-xl border focus:outline-none resize-none transition font-sans ${
+                          visualGlow ? 'ring-2 ring-orange-400 border-orange-400' : 'border-slate-200 focus:border-orange-500'
+                        }`}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  /* LIVE MARKDOWN PREVIEW TAB */
+                  <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 min-h-[140px]">
+                    <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                      Live Markdown Preview
+                    </div>
+                    {composerTitle && (
+                      <h3 className="text-base font-black text-slate-900 border-b border-slate-200 pb-1">
+                        {composerTitle}
+                      </h3>
+                    )}
+                    {composerContent ? (
+                      <div className="text-xs text-slate-700 space-y-2 whitespace-pre-wrap leading-relaxed">
+                        {composerContent.split('\n\n').map((block, bIdx) => {
+                          if (block.startsWith('### ')) {
+                            return (
+                              <h4 key={bIdx} className="text-sm font-black text-orange-600 mt-2">
+                                {block.replace('### ', '')}
+                              </h4>
+                            );
+                          }
+                          if (block.startsWith('> ')) {
+                            return (
+                              <blockquote key={bIdx} className="border-l-4 border-orange-500 pl-3 italic text-slate-600 my-1">
+                                {block.replace('> ', '')}
+                              </blockquote>
+                            );
+                          }
+                          if (block.startsWith('- ')) {
+                            return (
+                              <ul key={bIdx} className="list-disc list-inside space-y-0.5 text-slate-800">
+                                {block.split('\n').map((line, lIdx) => (
+                                  <li key={lIdx}>{line.replace(/^- /, '')}</li>
+                                ))}
+                              </ul>
+                            );
+                          }
+                          return <p key={bIdx}>{block}</p>;
+                        })}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-slate-400 italic">No content written yet. Switch to Write tab to compose.</p>
+                    )}
+
+                    {/* Preview of Attachments in Preview Mode */}
+                    {attachedMedia && (
+                      <div className="rounded-xl overflow-hidden max-h-48 border border-slate-200 mt-2">
+                        <img src={attachedMedia} alt="Preview Attachment" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Active Attached Badges Container */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  {attachedMedia && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-sky-50 border border-sky-200 text-sky-700 rounded-lg text-[11px] font-bold">
+                      <CameraIcon className="w-3.5 h-3.5" />
+                      <span>Photo/Video Attached</span>
+                      <button type="button" onClick={() => setAttachedMedia(null)} className="hover:text-sky-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedPoll && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 text-purple-700 rounded-lg text-[11px] font-bold">
+                      <ChartBarIcon className="w-3.5 h-3.5" />
+                      <span>Poll: {attachedPoll.question}</span>
+                      <button type="button" onClick={() => setAttachedPoll(null)} className="hover:text-purple-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedEvent && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-[11px] font-bold">
+                      <CalendarIcon className="w-3.5 h-3.5" />
+                      <span>Event: {attachedEvent.title} ({attachedEvent.date})</span>
+                      <button type="button" onClick={() => setAttachedEvent(null)} className="hover:text-emerald-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedFile && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg text-[11px] font-bold">
+                      <PaperClipIcon className="w-3.5 h-3.5" />
+                      <span>File: {attachedFile.name} ({attachedFile.size})</span>
+                      <button type="button" onClick={() => setAttachedFile(null)} className="hover:text-indigo-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedLink && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg text-[11px] font-bold">
+                      <LinkIcon className="w-3.5 h-3.5" />
+                      <span>Link: {attachedLink.title || attachedLink.url}</span>
+                      <button type="button" onClick={() => setAttachedLink(null)} className="hover:text-blue-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedLocation && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg text-[11px] font-bold">
+                      <MapPinIcon className="w-3.5 h-3.5" />
+                      <span>{attachedLocation}</span>
+                      <button type="button" onClick={() => setAttachedLocation(null)} className="hover:text-rose-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedStem && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-orange-50 border border-orange-200 text-orange-700 rounded-lg text-[11px] font-bold">
+                      <MusicalNoteIcon className="w-3.5 h-3.5" />
+                      <span>Stem: {attachedStem}</span>
+                      <button type="button" onClick={() => setAttachedStem(null)} className="hover:text-orange-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {attachedStream && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-fuchsia-50 border border-fuchsia-200 text-fuchsia-700 rounded-lg text-[11px] font-bold">
+                      <TvIcon className="w-3.5 h-3.5" />
+                      <span>Stream: {attachedStream}</span>
+                      <button type="button" onClick={() => setAttachedStream(null)} className="hover:text-fuchsia-900 font-black ml-1">✕</button>
+                    </div>
+                  )}
+
+                  {taggedProduct && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-[11px] font-bold">
+                      <ShoppingBagIcon className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Tagged: {PRODUCT_CATALOG_OPTIONS.find((p) => p.id === taggedProduct)?.name}</span>
+                      <button type="button" onClick={() => setTaggedProduct('')} className="hover:text-amber-950 font-black ml-1">✕</button>
+                    </div>
+                  )}
+                </div>
 
                 {/* Advanced Tool Row 1: Action Icons */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
@@ -1371,8 +1887,10 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Camera Icon for Photo / Video */}
                     <button
                       type="button"
-                      onClick={() => alert('Media Studio: Photo & Video selector launched.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'media' ? null : 'media')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'media' ? 'bg-orange-500 text-white' : 'hover:bg-slate-100 hover:text-orange-500'
+                      }`}
                       title="Camera (Photo/Video)"
                     >
                       <CameraIcon className="w-4 h-4" />
@@ -1381,9 +1899,11 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Poll */}
                     <button
                       type="button"
-                      onClick={() => alert('Poll Creator: Add options & voting duration.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
-                      title="Poll"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'poll' ? null : 'poll')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'poll' ? 'bg-purple-600 text-white' : 'hover:bg-slate-100 hover:text-purple-600'
+                      }`}
+                      title="Poll Creator"
                     >
                       <ChartBarIcon className="w-4 h-4" />
                     </button>
@@ -1391,9 +1911,11 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Event */}
                     <button
                       type="button"
-                      onClick={() => alert('Event Scheduler: Set RSVP date and location.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
-                      title="Event"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'event' ? null : 'event')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'event' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100 hover:text-emerald-600'
+                      }`}
+                      title="Event Scheduler"
                     >
                       <CalendarIcon className="w-4 h-4" />
                     </button>
@@ -1401,8 +1923,10 @@ export const ForumPageDraft: React.FC = () => {
                     {/* File */}
                     <button
                       type="button"
-                      onClick={() => alert('File Attachment: Upload documents or whitepapers.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'file' ? null : 'file')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'file' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 hover:text-indigo-600'
+                      }`}
                       title="File Attachment"
                     >
                       <PaperClipIcon className="w-4 h-4" />
@@ -1411,9 +1935,11 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Links */}
                     <button
                       type="button"
-                      onClick={() => alert('Link Inserter: Enter external URL with rich preview.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
-                      title="Links"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'link' ? null : 'link')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'link' ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 hover:text-blue-600'
+                      }`}
+                      title="Link Inserter"
                     >
                       <LinkIcon className="w-4 h-4" />
                     </button>
@@ -1421,9 +1947,11 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Location */}
                     <button
                       type="button"
-                      onClick={() => alert('Location Tag: Pin geographic hub.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
-                      title="Location"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'location' ? null : 'location')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'location' ? 'bg-rose-600 text-white' : 'hover:bg-slate-100 hover:text-rose-600'
+                      }`}
+                      title="Location Tag"
                     >
                       <MapPinIcon className="w-4 h-4" />
                     </button>
@@ -1431,9 +1959,11 @@ export const ForumPageDraft: React.FC = () => {
                     {/* 5D Icons / Smileys / GIFs */}
                     <button
                       type="button"
-                      onClick={() => alert('5D Smileys & GIFs: Open reactive animation drawer.')}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg hover:text-orange-500 transition"
-                      title="5D Icons / Smileys / GIFs"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'emoji' ? null : 'emoji')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'emoji' ? 'bg-amber-500 text-white' : 'hover:bg-slate-100 hover:text-amber-500'
+                      }`}
+                      title="5D Smileys & Reactions"
                     >
                       <FaceSmileIcon className="w-4 h-4" />
                     </button>
@@ -1441,8 +1971,10 @@ export const ForumPageDraft: React.FC = () => {
                     {/* BeatwaveNG Audio Embed */}
                     <button
                       type="button"
-                      onClick={() => alert('BeatwaveNG: Audio stem and lossless stream tagged.')}
-                      className="p-1.5 hover:bg-orange-50 rounded-lg text-orange-600 hover:text-orange-700 transition"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'beatwave' ? null : 'beatwave')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'beatwave' ? 'bg-orange-600 text-white' : 'hover:bg-orange-50 text-orange-600'
+                      }`}
                       title="BeatwaveNG Track"
                     >
                       <MusicalNoteIcon className="w-4 h-4" />
@@ -1451,8 +1983,10 @@ export const ForumPageDraft: React.FC = () => {
                     {/* Dancia-4Tv Video Stream Embed */}
                     <button
                       type="button"
-                      onClick={() => alert('Dancia-4Tv: Live dance performance tagged.')}
-                      className="p-1.5 hover:bg-purple-50 rounded-lg text-purple-600 hover:text-purple-700 transition"
+                      onClick={() => setActiveComposerTool(activeComposerTool === 'dancia' ? null : 'dancia')}
+                      className={`p-1.5 rounded-lg transition ${
+                        activeComposerTool === 'dancia' ? 'bg-purple-600 text-white' : 'hover:bg-purple-50 text-purple-600'
+                      }`}
                       title="Dancia-4Tv Stream"
                     >
                       <TvIcon className="w-4 h-4" />
@@ -1482,6 +2016,7 @@ export const ForumPageDraft: React.FC = () => {
                                 onClick={() => {
                                   setTaggedProduct(prod.id);
                                   setShowProductDropdown(false);
+                                  triggerToast(`Tagged product: ${prod.name}`, 'info');
                                 }}
                                 className="w-full text-left p-1.5 rounded-lg hover:bg-orange-50 text-xs font-semibold text-slate-800 flex justify-between items-center"
                               >
@@ -1497,6 +2032,438 @@ export const ForumPageDraft: React.FC = () => {
                       )}
                     </div>
                   </div>
+
+                {/* ================================================================= */}
+                {/* INTERACTIVE TOOL SUB-PANELS (Replacing Alert Duds)                */}
+                {/* ================================================================= */}
+                {activeComposerTool === 'media' && (
+                  <div className="p-3 bg-sky-50/70 border border-sky-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-sky-900 flex items-center gap-1.5">
+                        <CameraIcon className="w-4 h-4 text-sky-600" />
+                        Attach Media Image or Video URL
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-sky-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        placeholder="Paste image/media URL (https://...)"
+                        value={mediaInputUrl}
+                        onChange={(e) => setMediaInputUrl(e.target.value)}
+                        className="flex-1 px-3 py-1.5 bg-white border border-sky-200 rounded-lg text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (mediaInputUrl.trim()) {
+                            setAttachedMedia(mediaInputUrl.trim());
+                            setMediaInputUrl('');
+                            setActiveComposerTool(null);
+                            triggerToast('Media attached to post!', 'success');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-sky-600 text-white font-bold rounded-lg hover:bg-sky-700"
+                      >
+                        Attach
+                      </button>
+                    </div>
+                    <div className="flex gap-2 pt-1">
+                      <span className="text-[10px] text-sky-600 font-semibold">Presets:</span>
+                      {[
+                        { label: 'Studio Stems', url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1000' },
+                        { label: 'Keycard NFC', url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000' },
+                        { label: 'Escrow Gift', url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1000' },
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => {
+                            setAttachedMedia(preset.url);
+                            setActiveComposerTool(null);
+                            triggerToast(`Attached preset: ${preset.label}`, 'success');
+                          }}
+                          className="text-[10px] bg-white px-2 py-0.5 rounded border border-sky-200 text-sky-800 hover:bg-sky-100"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'poll' && (
+                  <div className="p-3 bg-purple-50/70 border border-purple-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-purple-900 flex items-center gap-1.5">
+                        <ChartBarIcon className="w-4 h-4 text-purple-600" />
+                        Create Sovereign Community Poll
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-purple-600 font-bold">✕ Close</button>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Poll Question (e.g. Which feature should we prioritize next?)"
+                      value={pollDraft.question}
+                      onChange={(e) => setPollDraft({ ...pollDraft, question: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        placeholder="Option 1"
+                        value={pollDraft.opt1}
+                        onChange={(e) => setPollDraft({ ...pollDraft, opt1: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Option 2"
+                        value={pollDraft.opt2}
+                        onChange={(e) => setPollDraft({ ...pollDraft, opt2: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Option 3 (Optional)"
+                        value={pollDraft.opt3}
+                        onChange={(e) => setPollDraft({ ...pollDraft, opt3: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Option 4 (Optional)"
+                        value={pollDraft.opt4}
+                        onChange={(e) => setPollDraft({ ...pollDraft, opt4: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center gap-1 text-[11px] text-purple-700">
+                        <span>Duration:</span>
+                        <select
+                          value={pollDraft.days}
+                          onChange={(e) => setPollDraft({ ...pollDraft, days: Number(e.target.value) })}
+                          className="bg-white border border-purple-200 rounded px-1.5 py-0.5 text-xs font-semibold"
+                        >
+                          <option value={1}>24 Hours</option>
+                          <option value={3}>3 Days</option>
+                          <option value={7}>7 Days</option>
+                        </select>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (pollDraft.question.trim() && pollDraft.opt1.trim() && pollDraft.opt2.trim()) {
+                            const optionsList = [pollDraft.opt1.trim(), pollDraft.opt2.trim()];
+                            if (pollDraft.opt3.trim()) optionsList.push(pollDraft.opt3.trim());
+                            if (pollDraft.opt4.trim()) optionsList.push(pollDraft.opt4.trim());
+                            setAttachedPoll({
+                              question: pollDraft.question.trim(),
+                              options: optionsList.map((t) => ({ text: t, votes: 0 })),
+                              totalVotes: 0,
+                              durationDays: pollDraft.days,
+                            });
+                            setActiveComposerTool(null);
+                            triggerToast('Community poll attached!', 'success');
+                          } else {
+                            triggerToast('Please provide a question and at least 2 options.', 'error');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700"
+                      >
+                        Attach Poll
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'event' && (
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-emerald-900 flex items-center gap-1.5">
+                        <CalendarIcon className="w-4 h-4 text-emerald-600" />
+                        Schedule Community Event / RSVP
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-emerald-600 font-bold">✕ Close</button>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Event Title (e.g. Sovereign Keycard Onboarding Workshop)"
+                      value={eventDraft.title}
+                      onChange={(e) => setEventDraft({ ...eventDraft, title: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-xs"
+                    />
+                    <div className="grid grid-cols-3 gap-2">
+                      <input
+                        type="text"
+                        placeholder="Date (e.g. Oct 15, 2026)"
+                        value={eventDraft.date}
+                        onChange={(e) => setEventDraft({ ...eventDraft, date: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Time (e.g. 18:00 WAT)"
+                        value={eventDraft.time}
+                        onChange={(e) => setEventDraft({ ...eventDraft, time: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Location / Link"
+                        value={eventDraft.location}
+                        onChange={(e) => setEventDraft({ ...eventDraft, location: e.target.value })}
+                        className="px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-xs"
+                      />
+                    </div>
+                    <div className="flex justify-end pt-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (eventDraft.title.trim()) {
+                            setAttachedEvent({
+                              title: eventDraft.title.trim(),
+                              date: eventDraft.date.trim() || 'Upcoming',
+                              time: eventDraft.time.trim() || 'TBA',
+                              location: eventDraft.location.trim() || 'Online Stream',
+                              rsvpCount: 1,
+                              isRsvpd: true,
+                            });
+                            setActiveComposerTool(null);
+                            triggerToast('Event scheduled and attached!', 'success');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700"
+                      >
+                        Attach Event
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'file' && (
+                  <div className="p-3 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-indigo-900 flex items-center gap-1.5">
+                        <PaperClipIcon className="w-4 h-4 text-indigo-600" />
+                        Attach Document or Sovereign Whitepaper
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-indigo-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Document Name (e.g. FingerMobile_Protocol_Whitepaper_v2.4.pdf)"
+                        value={fileDraftName}
+                        onChange={(e) => setFileDraftName(e.target.value)}
+                        className="flex-1 px-3 py-1.5 bg-white border border-indigo-200 rounded-lg text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (fileDraftName.trim()) {
+                            setAttachedFile({
+                              name: fileDraftName.trim(),
+                              size: '3.4 MB',
+                              type: 'PDF',
+                            });
+                            setFileDraftName('');
+                            setActiveComposerTool(null);
+                            triggerToast('Document file attached!', 'success');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700"
+                      >
+                        Attach File
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'link' && (
+                  <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-blue-900 flex items-center gap-1.5">
+                        <LinkIcon className="w-4 h-4 text-blue-600" />
+                        Embed External Resource Link
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-blue-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="url"
+                        placeholder="URL (https://fingermobile.io/...)"
+                        value={linkInputUrl}
+                        onChange={(e) => setLinkInputUrl(e.target.value)}
+                        className="px-3 py-1.5 bg-white border border-blue-200 rounded-lg text-xs"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Link Title (e.g. Sovereign Keycard Specs)"
+                        value={linkInputTitle}
+                        onChange={(e) => setLinkInputTitle(e.target.value)}
+                        className="px-3 py-1.5 bg-white border border-blue-200 rounded-lg text-xs"
+                      />
+                    </div>
+                    <div className="flex justify-end pt-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (linkInputUrl.trim()) {
+                            try {
+                              const parsed = new URL(linkInputUrl.trim());
+                              setAttachedLink({
+                                url: linkInputUrl.trim(),
+                                title: linkInputTitle.trim() || parsed.hostname,
+                                domain: parsed.hostname,
+                              });
+                            } catch {
+                              setAttachedLink({
+                                url: linkInputUrl.trim(),
+                                title: linkInputTitle.trim() || 'External Resource',
+                                domain: 'external',
+                              });
+                            }
+                            setLinkInputUrl('');
+                            setLinkInputTitle('');
+                            setActiveComposerTool(null);
+                            triggerToast('Rich link preview attached!', 'success');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700"
+                      >
+                        Attach Link
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'location' && (
+                  <div className="p-3 bg-rose-50/70 border border-rose-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-rose-900 flex items-center gap-1.5">
+                        <MapPinIcon className="w-4 h-4 text-rose-600" />
+                        Select Geographic Hub or Metaverse Node
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-rose-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        'Victoria Island Studio Hub, Lagos',
+                        'Abuja Central Sovereign Node',
+                        'Soho Creative Quarter, London',
+                        'Brooklyn Cyber Alley, New York',
+                        'Sovereign Meshnet Global #1',
+                      ].map((loc) => (
+                        <button
+                          key={loc}
+                          type="button"
+                          onClick={() => {
+                            setAttachedLocation(loc);
+                            setActiveComposerTool(null);
+                            triggerToast(`Location pinned: ${loc}`, 'success');
+                          }}
+                          className="px-2.5 py-1 bg-white border border-rose-200 rounded-lg text-rose-800 hover:bg-rose-100 font-semibold text-[11px]"
+                        >
+                          {loc}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'emoji' && (
+                  <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-amber-900 flex items-center gap-1.5">
+                        <FaceSmileIcon className="w-4 h-4 text-amber-600" />
+                        5D Reactive Smileys & Protocol Reactions
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-amber-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-xl p-2 bg-white rounded-xl border border-amber-200">
+                      {['🔥', '🚀', '💎', '🇳🇬', '🎵', '🕺', '👑', '✨', '⚡', '🛡️', '🌐', '💼', '🎧', '🌟', '🎙️', '💡'].map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => {
+                            setComposerContent((prev) => prev + ` ${emoji} `);
+                            triggerToast(`Added ${emoji}`, 'info');
+                          }}
+                          className="hover:scale-125 transition transform p-1"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'beatwave' && (
+                  <div className="p-3 bg-orange-50/70 border border-orange-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-orange-900 flex items-center gap-1.5">
+                        <MusicalNoteIcon className="w-4 h-4 text-orange-600" />
+                        BeatwaveNG Audio Stem & Spatial Waveform Selector
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-orange-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="space-y-1">
+                      {[
+                        'BeatwaveNG Lossless 128BPM Spatial Stem Pack',
+                        'Amapiano 118BPM Log Drum & Sub-Bass Master',
+                        'Highlife Fusion 120BPM Guitars & Horns Stem',
+                      ].map((stem) => (
+                        <button
+                          key={stem}
+                          type="button"
+                          onClick={() => {
+                            setAttachedStem(stem);
+                            setActiveComposerTool(null);
+                            triggerToast(`Attached stem: ${stem}`, 'success');
+                          }}
+                          className="w-full text-left p-2 bg-white border border-orange-200 rounded-lg hover:bg-orange-100 font-semibold text-orange-900 text-xs flex justify-between"
+                        >
+                          <span>{stem}</span>
+                          <span className="text-[10px] text-orange-600 font-bold uppercase">24-Bit FLAC</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeComposerTool === 'dancia' && (
+                  <div className="p-3 bg-purple-50/70 border border-purple-200 rounded-xl space-y-2 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-purple-900 flex items-center gap-1.5">
+                        <TvIcon className="w-4 h-4 text-purple-600" />
+                        Dancia-4Tv Live Stage Broadcast Embed
+                      </span>
+                      <button type="button" onClick={() => setActiveComposerTool(null)} className="text-purple-600 font-bold">✕ Close</button>
+                    </div>
+                    <div className="space-y-1">
+                      {[
+                        'Dancia-4Tv Live Stage #1: Street Dance Championship',
+                        'Afrobeat Choreography Showcase (Live 4K WebRTC)',
+                      ].map((stream) => (
+                        <button
+                          key={stream}
+                          type="button"
+                          onClick={() => {
+                            setAttachedStream(stream);
+                            setActiveComposerTool(null);
+                            triggerToast(`Attached stream: ${stream}`, 'success');
+                          }}
+                          className="w-full text-left p-2 bg-white border border-purple-200 rounded-lg hover:bg-purple-100 font-semibold text-purple-900 text-xs flex justify-between"
+                        >
+                          <span>{stream}</span>
+                          <span className="text-[10px] text-purple-600 font-bold uppercase">LIVE FEED</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                   {/* Toggle Advanced Post Settings */}
                   <button
@@ -1717,16 +2684,197 @@ export const ForumPageDraft: React.FC = () => {
                       </button>
                     </div>
 
+                    {/* Location Pin Tag (if present) */}
+                    {post.locationTag && (
+                      <div className="flex items-center gap-1.5 mt-2 text-[11px] font-semibold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-lg border border-rose-100 w-fit">
+                        <MapPinIcon className="w-3.5 h-3.5" />
+                        <span>{post.locationTag}</span>
+                      </div>
+                    )}
+
                     {/* Post Content */}
                     <div className="mt-3">
                       <h3 className="text-sm font-black text-slate-900 leading-snug">{post.title}</h3>
-                      <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{post.content}</p>
+                      <p className="text-xs text-slate-600 mt-1.5 leading-relaxed whitespace-pre-wrap">{post.content}</p>
                     </div>
 
                     {/* Media Image Embed (if present) */}
                     {post.mediaUrl && (
                       <div className="mt-3 rounded-xl overflow-hidden max-h-72 border border-slate-100">
                         <img src={post.mediaUrl} alt={post.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+
+                    {/* INTERACTIVE POLL COMPONENT (if present) */}
+                    {post.poll && (
+                      <div className="mt-3 p-3.5 bg-gradient-to-br from-purple-50/60 to-slate-50 border border-purple-200/80 rounded-xl space-y-2.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-purple-950 flex items-center gap-1.5">
+                            <ChartBarIcon className="w-4 h-4 text-purple-600" />
+                            {post.poll.question}
+                          </span>
+                          <span className="text-[10px] text-purple-700 bg-purple-100/70 px-2 py-0.5 rounded-full font-semibold">
+                            {post.poll.totalVotes} votes • {post.poll.durationDays}d left
+                          </span>
+                        </div>
+                        <div className="space-y-1.5">
+                          {post.poll.options.map((opt, optIdx) => {
+                            const isSelected = post.poll?.userVotedIndex === optIdx;
+                            const percentage = post.poll && post.poll.totalVotes > 0
+                              ? Math.round((opt.votes / post.poll.totalVotes) * 100)
+                              : 0;
+
+                            return (
+                              <button
+                                key={optIdx}
+                                type="button"
+                                disabled={post.poll?.userVotedIndex !== undefined}
+                                onClick={() => handleVotePoll(post.id, optIdx)}
+                                className={`w-full text-left p-2 rounded-xl text-xs font-semibold relative overflow-hidden transition border ${
+                                  isSelected
+                                    ? 'border-purple-500 bg-purple-100/80 text-purple-950 font-bold'
+                                    : 'border-slate-200 bg-white hover:bg-purple-50/50 text-slate-800'
+                                }`}
+                              >
+                                {post.poll?.userVotedIndex !== undefined && (
+                                  <div
+                                    className="absolute inset-y-0 left-0 bg-purple-200/50 transition-all duration-500"
+                                    style={{ width: `${percentage}%` }}
+                                  />
+                                )}
+                                <div className="relative flex items-center justify-between z-10">
+                                  <span>{opt.text}</span>
+                                  {post.poll?.userVotedIndex !== undefined && (
+                                    <span className="font-mono text-[11px] font-bold text-purple-700">
+                                      {percentage}% ({opt.votes})
+                                    </span>
+                                  )}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* INTERACTIVE EVENT COMPONENT (if present) */}
+                    {post.event && (
+                      <div className="mt-3 p-3.5 bg-gradient-to-r from-emerald-50/70 to-slate-50 border border-emerald-200/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2.5 bg-emerald-100 text-emerald-800 rounded-xl font-bold flex flex-col items-center justify-center min-w-[50px]">
+                            <CalendarIcon className="w-5 h-5 text-emerald-700 mb-0.5" />
+                            <span className="text-[10px] uppercase tracking-wider">EVENT</span>
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-black text-slate-900">{post.event.title}</h4>
+                            <div className="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-2">
+                              <span>📅 {post.event.date} • {post.event.time}</span>
+                              <span>📍 {post.event.location}</span>
+                            </div>
+                            <div className="text-[10px] font-semibold text-emerald-700 mt-1">
+                              {post.event.rsvpCount} members attending
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRsvpEvent(post.id)}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-xs flex-shrink-0 ${
+                            post.event.isRsvpd
+                              ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                              : 'bg-white border border-emerald-300 text-emerald-700 hover:bg-emerald-50'
+                          }`}
+                        >
+                          {post.event.isRsvpd ? 'Attending ✓' : 'RSVP Now'}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* DOCUMENT ATTACHMENT BADGE (if present) */}
+                    {post.fileAttachment && (
+                      <div className="mt-3 p-2.5 bg-indigo-50/70 border border-indigo-200 rounded-xl flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2">
+                          <PaperClipIcon className="w-4 h-4 text-indigo-600" />
+                          <div>
+                            <div className="font-bold text-slate-900">{post.fileAttachment.name}</div>
+                            <div className="text-[10px] text-slate-500">{post.fileAttachment.size} • {post.fileAttachment.type}</div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => triggerToast(`Downloading ${post.fileAttachment?.name}...`, 'info')}
+                          className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition"
+                        >
+                          Download
+                        </button>
+                      </div>
+                    )}
+
+                    {/* RICH LINK EMBED CARD (if present) */}
+                    {post.linkEmbed && (
+                      <a
+                        href={post.linkEmbed.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-3 p-3 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 rounded-xl flex items-center justify-between group transition block text-xs"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <LinkIcon className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+                          <div>
+                            <div className="font-bold text-slate-900 group-hover:text-blue-700 transition">
+                              {post.linkEmbed.title}
+                            </div>
+                            <div className="text-[10px] text-slate-400 font-mono">{post.linkEmbed.domain}</div>
+                          </div>
+                        </div>
+                        <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition" />
+                      </a>
+                    )}
+
+                    {/* BEATWAVENG AUDIO STEM EMBED (if present) */}
+                    {post.audioPreview && (
+                      <div className="mt-3 p-3 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2.5">
+                          <div className="p-2 bg-orange-500 text-white rounded-lg shadow-xs">
+                            <MusicalNoteIcon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-orange-950">{post.audioPreview}</div>
+                            <div className="text-[10px] text-orange-700 font-semibold">BeatwaveNG 24-Bit Spatial Audio Stem</div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => triggerToast(`Playing preview: ${post.audioPreview}`, 'info')}
+                          className="px-3 py-1 bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-bold rounded-lg transition flex items-center gap-1"
+                        >
+                          <PlayIcon className="w-3.5 h-3.5 inline" /> Play
+                        </button>
+                      </div>
+                    )}
+
+                    {/* DANCIA-4TV VIDEO STREAM EMBED (if present) */}
+                    {post.videoStreamUrl && (
+                      <div className="mt-3 p-3 bg-gradient-to-r from-purple-900 to-indigo-950 text-white rounded-xl flex items-center justify-between text-xs border border-purple-800">
+                        <div className="flex items-center gap-2.5">
+                          <div className="p-2 bg-rose-500 rounded-lg text-white animate-pulse">
+                            <TvIcon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-white">{post.videoStreamUrl}</div>
+                            <div className="text-[10px] text-purple-200 flex items-center gap-1">
+                              <span className="w-2 h-2 rounded-full bg-rose-500" />
+                              Live Broadcast Feed (Dancia-4Tv)
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => navigate('/dancia4tv')}
+                          className="px-3 py-1 bg-white text-purple-900 hover:bg-purple-100 text-[11px] font-bold rounded-lg transition"
+                        >
+                          Watch Live
+                        </button>
                       </div>
                     )}
 
@@ -1745,7 +2893,8 @@ export const ForumPageDraft: React.FC = () => {
                             {post.taggedProduct.price}
                           </span>
                           <button
-                            onClick={() => navigate('/marketplace')}
+                            type="button"
+                            onClick={() => handleProductNavigate(post.taggedProduct?.platform || 'marketplace')}
                             className="px-2 py-1 text-[10px] font-bold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
                           >
                             View Product
@@ -1769,6 +2918,7 @@ export const ForumPageDraft: React.FC = () => {
                     <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500">
                       <div className="flex items-center gap-4">
                         <button
+                          type="button"
                           onClick={() => handleToggleLike(post.id)}
                           className={`flex items-center gap-1.5 transition font-semibold ${
                             post.isLiked ? 'text-rose-500' : 'hover:text-rose-500'
@@ -1778,24 +2928,107 @@ export const ForumPageDraft: React.FC = () => {
                           <span>{post.likesCount}</span>
                         </button>
 
-                        <button className="flex items-center gap-1.5 hover:text-slate-800 transition font-semibold">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComments(post.id)}
+                          className={`flex items-center gap-1.5 transition font-semibold ${
+                            expandedComments[post.id] ? 'text-orange-500 font-bold' : 'hover:text-slate-800'
+                          }`}
+                        >
                           <ChatBubbleLeftRightIcon className="w-4 h-4" />
                           <span>{post.commentsCount}</span>
                         </button>
 
-                        <button className="flex items-center gap-1.5 hover:text-slate-800 transition font-semibold">
+                        <button
+                          type="button"
+                          onClick={() => handleSharePost(post)}
+                          className="flex items-center gap-1.5 hover:text-slate-800 transition font-semibold"
+                        >
                           <ShareIcon className="w-4 h-4" />
                           <span>{post.sharesCount}</span>
                         </button>
                       </div>
 
                       <button
+                        type="button"
                         onClick={() => handleToggleBookmark(post.id)}
                         className={`transition ${post.isBookmarked ? 'text-orange-500' : 'hover:text-slate-800'}`}
                       >
                         {post.isBookmarked ? <BookmarkSolidIcon className="w-4 h-4" /> : <BookmarkIcon className="w-4 h-4" />}
                       </button>
                     </div>
+
+                    {/* EXPANDABLE COMMENTS SECTION */}
+                    {expandedComments[post.id] && (
+                      <div className="mt-3 pt-3 border-t border-slate-100 space-y-3 animate-in fade-in duration-150">
+                        {/* New Comment Input */}
+                        <div className="flex items-start gap-2">
+                          <img
+                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+                            alt="Current Member"
+                            className="w-7 h-7 rounded-lg object-cover flex-shrink-0"
+                          />
+                          <div className="flex-1 flex gap-2">
+                            <input
+                              type="text"
+                              placeholder="Write a sovereign comment / reply..."
+                              value={commentInputTexts[post.id] || ''}
+                              onChange={(e) =>
+                                setCommentInputTexts({
+                                  ...commentInputTexts,
+                                  [post.id]: e.target.value,
+                                })
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handlePostComment(post.id);
+                                }
+                              }}
+                              className="flex-1 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handlePostComment(post.id)}
+                              className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl transition flex items-center gap-1 shadow-xs"
+                            >
+                              <PaperAirplaneIcon className="w-3.5 h-3.5" />
+                              Reply
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* List of Comments */}
+                        <div className="space-y-2 pt-1">
+                          {(post.commentsList && post.commentsList.length > 0) ? (
+                            post.commentsList.map((comment) => (
+                              <div
+                                key={comment.id}
+                                className="flex items-start gap-2 p-2.5 bg-slate-50/70 rounded-xl border border-slate-100 text-xs"
+                              >
+                                <img
+                                  src={comment.authorAvatar}
+                                  alt={comment.authorName}
+                                  className="w-6 h-6 rounded-lg object-cover flex-shrink-0 mt-0.5"
+                                />
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-bold text-slate-900">{comment.authorName}</span>
+                                    <span className="text-[10px] text-slate-400">{comment.createdAt}</span>
+                                  </div>
+                                  <div className="text-[10px] text-slate-400">{comment.authorHandle}</div>
+                                  <p className="text-slate-700 mt-1 leading-relaxed">{comment.text}</p>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-[11px] text-slate-400 italic text-center py-1">
+                              No comments yet. Be the first to start the discussion!
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* ================================================================= */}
@@ -2156,6 +3389,27 @@ export const ForumPageDraft: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* WebRTC Live Broadcast Studio Drawer */}
+      <WebRtcStudioDrawer
+        isOpen={isLiveStudioOpen}
+        onClose={() => setIsLiveStudioOpen(false)}
+      />
+
+      {/* Floating Action Feedback Toast */}
+      {toastNotification && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl border text-sm font-semibold flex items-center gap-2 animate-in slide-in-from-bottom-5 duration-200 ${
+            toastNotification.type === 'error'
+              ? 'bg-rose-900/95 text-white border-rose-700'
+              : toastNotification.type === 'success'
+              ? 'bg-slate-900/95 text-emerald-400 border-slate-700'
+              : 'bg-slate-900/95 text-orange-400 border-slate-700'
+          }`}
+        >
+          <span>{toastNotification.message}</span>
+        </div>
+      )}
     </div>
   );
 };

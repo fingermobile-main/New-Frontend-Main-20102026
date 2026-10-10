@@ -3,6 +3,7 @@ import { User } from './user';
 export interface ForumCategory {
   id: string;
   name: string;
+  slug?: string;
   description: string;
   icon?: string;
   color?: string;

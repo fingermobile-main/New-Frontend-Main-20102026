@@ -1,463 +1,372 @@
-import React, { lazy, Suspense } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
-import { GlobalProviders } from './contexts/GlobalProviders';
-import ProtectedRoute from './components/ProtectedRoute';
-import MainLayout from './layouts/MainLayout';
-import LoadingSpinner from './components/LoadingSpinner';
-
-// Core Auth & Common Pages
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { GlobalProviders } from './components/GlobalProviders'; // Import GlobalProviders
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/profile/ProfilePage';
+import SettingsPage from './pages/settings/SettingsPage';
+import NotificationsPage from './pages/NotificationsPage';
+import MessagesPage from './pages/messages/MessagesPage';
+import GroupsPage from './pages/GroupsPage';
+import MarketplacePage from './pages/MarketplacePage';
+import DiscoverPage from './pages/DiscoverPage';
+import MyWalletPage from './pages/financials/MyWalletPage';
+import FinancialsPage from './pages/financials/FinancialsPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import ContentPage from './pages/ContentPage';
+import CommercePage from './pages/CommercePage';
+import CommunityPage from './pages/CommunityPage';
+import MonetizationPage from './pages/MonetizationPage';
+import LiveStreamingPage from './pages/LiveStreamingPage';
+import AIGovernancePage from './pages/AiGovernancePage';
+import CompliancePage from './pages/CompliancePage';
+import GuardianAiPage from './pages/GuardianAiPage';
+import MembersPage from './pages/MembersPage';
+import SecurityPage from './pages/SecurityPage';
+import StercsDashboardPage from './pages/StercsDashboardPage';
+import MasterDashboardPage from './pages/MasterDashboardPage';
+import StercsModulesPage from './pages/StercsModulesPage';
+import StercsPoliciesPage from './pages/StercsPoliciesPage';
+import StercsPage from './pages/StercsPage';
+import ForumPage from './pages/ForumPage';
+import ForumPageDraft from './pages/ForumPageDraft';
+import PhotoCreditsPage from './pages/PhotoCreditsPage';
+import GalleryPage from './pages/GalleryPage';
+import StercsCurationDashboard from './pages/super-admin/StercsCurationDashboard';
+import ConnectorArtifactConsole from './components/dashboard/ConnectorArtifactConsole';
 import OnboardingPage from './pages/OnboardingPage';
+import AboutPage from './pages/about/AboutPage';
+import SupportPage from './pages/SupportPage';
+import PrivacyPolicyPage from './pages/legal/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/legal/TermsOfServicePage';
+import PlatformServiceOfUsePage from './pages/legal/PlatformServiceOfUsePage';
+import LegalPage from './pages/legal/LegalPage';
 import NotFoundPage from './pages/common/NotFoundPage';
-import SplashPage from './pages/common/SplashPage';
-import SuccessPage from './pages/common/SuccessPage';
+import UserManagementPage from './pages/UserManagementPage';
+import ContentManagementPage from './pages/ContentManagementPage';
+import EcommercePage from './pages/EcommercePage';
+import BusinessOfficesPage from './pages/BusinessOfficesPage';
+import CamusPage from './pages/CamusPage';
+import FingerShortsPage from './pages/FingerShortsPage';
+import PubliciteePage from './pages/PubliciteePage';
+import DPOPage from './pages/DPOPage';
+import BeatwaveNGPage from './pages/BeatwaveNGPage';
+import LoanSqrPage from './pages/LoanSqrPage';
+import OwnitPage from './pages/OwnitPage';
+import FlamingoPage from './pages/FlamingoPage';
+import StorefrontPage from './pages/StorefrontPage';
+import StorefrontsPage from './pages/StorefrontsPage';
+import MiiPage from './pages/MiiPage';
+import GemsPage from './pages/GemsPage';
+import HallmarksPage from './pages/HallmarksPage';
+import BlogsPage from './pages/BlogsPage';
+import TrendsPage from './pages/TrendsPage';
+import ProgramsPage from './pages/ProgramsPage';
+import EventsPage from './pages/EventsPage';
+import FranchisePage from './pages/FranchisePage'; // Correct import
+import CataloguePage from './pages/CataloguePage';
+import PortfolioPage from './pages/PortfolioPage';
+import UGCDashboardPage from './pages/UGCDashboardPage';
+import UniversalSearchModal from './components/common/UniversalSearchModal';
+import SuccessPage from './pages/common/SuccessPage'; // Import SuccessPage
 
-// Lazy-loaded Drawer Menu Target Pages
-const ForumPage = lazy(() => import('./pages/ForumPage'));
-const ForumPageDraft = lazy(() => import('./pages/ForumPageDraft'));
-const HallmarkPage = lazy(() => import('./pages/HallmarkPage'));
-const HallmarksPage = lazy(() => import('./pages/HallmarksPage'));
-const GemsPage = lazy(() => import('./pages/GemsPage'));
-const BlogsPage = lazy(() => import('./pages/BlogsPage'));
-const GroupsPage = lazy(() => import('./pages/GroupsPage'));
-const CommunityPage = lazy(() => import('./pages/CommunityPage'));
-const MiiPage = lazy(() => import('./pages/MiiPage'));
-const PermanencePage = lazy(() => import('./pages/PermanencePage'));
-const LoanSqrPage = lazy(() => import('./pages/LoanSqrPage'));
-const LoansqrPage = LoanSqrPage;
+// Aliases for route mapping
+const LandingPage = HomePage;
+const ContactPage = SupportPage;
+const FriendsPage = MembersPage;
+const TransactionsPage = FinancialsPage;
+const WithdrawalsPage = FinancialsPage;
+const EarningsPage = MonetizationPage;
+const SubscriptionsPage = MonetizationPage;
 
-const TrendsPage = lazy(() => import('./pages/TrendsPage'));
-const BeatwaveNGPage = lazy(() => import('./pages/BeatwaveNGPage'));
-const Dancia4TvPage = lazy(() => import('./pages/Dancia4TvPage'));
-const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
-const EventsPage = lazy(() => import('./pages/EventsPage'));
-const GalleryPage = lazy(() => import('./pages/GalleryPage'));
-const LushPressiesPage = lazy(() => import('./pages/LushPressiesPage'));
+function App() {
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
-const MarketplacePage = lazy(() => import('./pages/MarketplacePage'));
-const StorefrontPage = lazy(() => import('./pages/StorefrontPage'));
-const MyStorefrontPage = lazy(() => import('./pages/StorefrontPage'));
-const OwnitPage = lazy(() => import('./pages/OwnitPage'));
-const FlamingoPage = lazy(() => import('./pages/FlamingoPage'));
-const StorefrontsPage = lazy(() => import('./pages/StorefrontPage'));
-const SubscriptionsPage = lazy(
-  () => import('./pages/financials/SubscriptionsPage')
-);
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    const handleOpenSearch = () => setIsSearchOpen(true);
 
-const PhotoCreditsPage = lazy(() => import('./pages/PhotoCreditsPage'));
-const PhotosPage = lazy(() => import('./pages/PhotosPage'));
-const MyDownloadsPage = lazy(() => import('./pages/MyDownloadsPage'));
-const FingerLuxPage = lazy(() => import('./pages/FingerLuxPage'));
-const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
-const CataloguePage = lazy(() => import('./pages/CataloguePage'));
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('open-universal-search', handleOpenSearch);
 
-const WalletPage = lazy(() => import('./pages/WalletPage'));
-const PaylinksPage = lazy(() => import('./pages/PaylinksPage'));
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
-const FranchisePage = lazy(() => import('./pages/FranchisePage'));
-const BusinessOfficesPage = lazy(() => import('./pages/BusinessOfficesPage'));
-const MonetizationDashboardPage = lazy(
-  () => import('./pages/MonetizationDashboardPage')
-);
-const FICVaultPage = lazy(() => import('./pages/FICVaultPage'));
-const FinancialsPage = lazy(() => import('./pages/financials/FinancialsPage'));
-const GiftCardsPage = lazy(() => import('./pages/financials/GiftCardsPage'));
-const UGCDashboardPage = lazy(() => import('./pages/UGCDashboardPage'));
-const AdvancedGiftingPage = lazy(() => import('./pages/AdvancedGiftingPage'));
-const GiftsShopPage = lazy(() => import('./pages/GiftsShopPage'));
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('open-universal-search', handleOpenSearch);
+    };
+  }, []);
 
-const GameOnPage = lazy(() => import('./pages/GameOnPage'));
-const FingerWarsPage = lazy(() => import('./pages/FingerWarsPage'));
-const CanaryAdsPage = lazy(() => import('./pages/CanaryAdsPage'));
-const CanaryPage = lazy(() => import('./pages/CanaryPage'));
-const CanaryAdMakerPage = lazy(() => import('./pages/CanaryAdMakerPage'));
-const CouponsPage = lazy(() => import('./pages/CouponsPage'));
-const SettingsPage = lazy(() => import('./pages/settings/SettingsPage'));
-const SupportPage = lazy(() => import('./pages/SupportPage'));
-const ProfilePage = lazy(() => import('./pages/profile/ProfilePage'));
-
-// Legal & Compliance Pages
-const LegalPage = lazy(() => import('./pages/legal/LegalPage'));
-const LegalIndexPage = lazy(() => import('./pages/legal/IndexPage'));
-const PrivacyPolicyPage = lazy(() => import('./pages/legal/PrivacyPolicyPage'));
-const TermsOfServicePage = lazy(
-  () => import('./pages/legal/TermsOfServicePage')
-);
-const CommunityGuidelinesPage = lazy(
-  () => import('./pages/legal/CommunityGuidelinesPage')
-);
-const CSAEPolicyPage = lazy(() => import('./pages/legal/CSAEPolicyPage'));
-const WhitePaperPage = lazy(() => import('./pages/legal/WhitePaperPage'));
-
-// Verification Pages
-const VerificationPage = lazy(() => import('./pages/VerificationPage'));
-const OfficialVerificationPage = lazy(
-  () => import('./pages/OfficialVerificationPage')
-);
-
-const DataSubjectRequestPage = lazy(
-  () => import('./pages/DataSubjectRequestPage')
-);
-const AccountDeletionPage = lazy(() => import('./pages/AccountDeletionPage'));
-const DPOPage = lazy(() => import('./pages/DPOPage'));
-const GuardianProtectionPage = lazy(
-  () => import('./pages/GuardianProtectionPage')
-);
-const PubliciteePage = lazy(() => import('./pages/PubliciteePage'));
-const FingerShortsPage = lazy(() => import('./pages/FingerShortsPage'));
-const CamusPage = lazy(() => import('./pages/CamusPage'));
-const CamusDashboardPage = lazy(() => import('./pages/CamusDashboardPage'));
-
-// Help, FAQs, Support & Admin Canary Pages
-const FAQPage = lazy(() => import('./pages/info/FAQPage'));
-const CanaryAdsManagementPage = lazy(
-  () => import('./pages/admin/CanaryAdsManagementPage')
-);
-const ContactSupportPage = lazy(
-  () => import('./pages/support/ContactSupportPage')
-);
-const HelpPage = lazy(() => import('./pages/support/HelpPage'));
-
-const App: React.FC = () => {
   return (
-    <GlobalProviders>
+    <GlobalProviders> {/* Wrap the entire app with GlobalProviders */}
       <Router>
-        <div className="App">
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              {/* Public auth & legal routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/splash" element={<SplashPage />} />
-              <Route path="/success" element={<SuccessPage />} />
-              <Route path="/onboarding" element={<OnboardingPage />} />
-              <Route path="/legal" element={<LegalIndexPage />} />
-              <Route path="/legal/hub" element={<LegalPage />} />
-              <Route
-                path="/legal/privacy-policy"
-                element={<PrivacyPolicyPage />}
-              />
-              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-              <Route
-                path="/legal/terms-of-service"
-                element={<TermsOfServicePage />}
-              />
-              <Route
-                path="/terms-of-service"
-                element={<TermsOfServicePage />}
-              />
-              <Route
-                path="/legal/community-guidelines"
-                element={<CommunityGuidelinesPage />}
-              />
-              <Route
-                path="/community-guidelines"
-                element={<CommunityGuidelinesPage />}
-              />
-              <Route path="/legal/csae-policy" element={<CSAEPolicyPage />} />
-              <Route path="/csae-policy" element={<CSAEPolicyPage />} />
-              <Route path="/legal/whitepaper" element={<WhitePaperPage />} />
-              <Route path="/verification" element={<VerificationPage />} />
-              <Route
-                path="/official-verification"
-                element={<OfficialVerificationPage />}
-              />
-              <Route
-                path="/privacy/data-subject-request"
-                element={<DataSubjectRequestPage />}
-              />
-              <Route
-                path="/data-subject-request"
-                element={<DataSubjectRequestPage />}
-              />
-              <Route path="/account/delete" element={<AccountDeletionPage />} />
-              <Route
-                path="/account-deletion"
-                element={<AccountDeletionPage />}
-              />
+        <div className="App relative min-h-screen">
+          <UniversalSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+          {/* Floating Quick Search Hotkey Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen(true)}
+            className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-400 bg-zinc-900/90 border border-emerald-500/30 rounded-full shadow-lg backdrop-blur hover:bg-zinc-800 hover:border-emerald-400 transition-all focus:outline-none"
+            title="Search Platform Screens & Dashboards (Cmd+K / Ctrl+K)"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Search (Cmd+K)</span>
+          </button>
 
-              {/* Public Help, FAQs, Support, Canary & Wallet Direct Routes */}
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/faqs" element={<FAQPage />} />
-              <Route path="/help" element={<HelpPage />} />
-              <Route path="/help-center" element={<HelpPage />} />
-              <Route path="/contact-support" element={<ContactSupportPage />} />
-              <Route path="/contact" element={<ContactSupportPage />} />
-              <Route path="/support/contact" element={<ContactSupportPage />} />
-              <Route path="/admin/canary" element={<CanaryAdsManagementPage />} />
-              <Route path="/canary/ad-maker" element={<ProtectedRoute><MainLayout><CanaryAdMakerPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/canary-ad-maker" element={<ProtectedRoute><MainLayout><CanaryAdMakerPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/ad-maker" element={<ProtectedRoute><MainLayout><CanaryAdMakerPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/canary" element={<ProtectedRoute><MainLayout><CanaryPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/canary/*" element={<ProtectedRoute><MainLayout><CanaryPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/fic/wallet" element={<WalletPage />} />
-              <Route path="/wallet" element={<WalletPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/profile/:id" element={<ProfilePage />} />
-              <Route path="/business" element={<ProtectedRoute><MainLayout><BusinessOfficesPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/business/*" element={<ProtectedRoute><MainLayout><BusinessOfficesPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/dpo" element={<ProtectedRoute><MainLayout><DPOPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/dpo/*" element={<ProtectedRoute><MainLayout><DPOPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/privacy/dpo" element={<ProtectedRoute><MainLayout><DPOPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/guardian-protection" element={<ProtectedRoute><MainLayout><GuardianProtectionPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/guardian-protection/*" element={<ProtectedRoute><MainLayout><GuardianProtectionPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/guardian" element={<ProtectedRoute><MainLayout><GuardianProtectionPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/guardian/*" element={<ProtectedRoute><MainLayout><GuardianProtectionPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/publicitee" element={<ProtectedRoute><PubliciteePage /></ProtectedRoute>} />
-              <Route path="/publicitee/*" element={<ProtectedRoute><PubliciteePage /></ProtectedRoute>} />
-              <Route path="/fingershorts" element={<ProtectedRoute><FingerShortsPage /></ProtectedRoute>} />
-              <Route path="/fingershorts/*" element={<ProtectedRoute><FingerShortsPage /></ProtectedRoute>} />
-              <Route path="/beatwaveng" element={<ProtectedRoute><MainLayout><BeatwaveNGPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/beatwaveng/*" element={<ProtectedRoute><MainLayout><BeatwaveNGPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/dancia4tv" element={<ProtectedRoute><MainLayout><Dancia4TvPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/dancia4tv/*" element={<ProtectedRoute><MainLayout><Dancia4TvPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/fingerwars" element={<ProtectedRoute><MainLayout><FingerWarsPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/fingerwars/*" element={<ProtectedRoute><MainLayout><FingerWarsPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/camus" element={<ProtectedRoute><CamusPage /></ProtectedRoute>} />
-              <Route path="/camus/*" element={<ProtectedRoute><CamusPage /></ProtectedRoute>} />
-              <Route path="/camus-dashboard" element={<ProtectedRoute><CamusDashboardPage /></ProtectedRoute>} />
-              <Route path="/marketplace" element={<ProtectedRoute><MainLayout><MarketplacePage /></MainLayout></ProtectedRoute>} />
-              <Route path="/storefront" element={<ProtectedRoute><MainLayout><StorefrontPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/storefronts" element={<ProtectedRoute><MainLayout><StorefrontPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/my-storefront" element={<ProtectedRoute><MainLayout><StorefrontPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/ownit" element={<ProtectedRoute><MainLayout><OwnitPage /></MainLayout></ProtectedRoute>} />
-              <Route path="/flamingo" element={<ProtectedRoute><MainLayout><FlamingoPage /></MainLayout></ProtectedRoute>} />
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/success" element={<SuccessPage />} /> {/* Add the success route */}
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/terms" element={<TermsOfServicePage />} />
+            <Route path="/platform-service-of-use" element={<PlatformServiceOfUsePage />} />
+            <Route path="/platformserviceofuse" element={<PlatformServiceOfUsePage />} />
+            <Route path="/service-of-use" element={<PlatformServiceOfUsePage />} />
+            <Route path="/serviceofuse" element={<PlatformServiceOfUsePage />} />
+            <Route path="/terms-of-use" element={<PlatformServiceOfUsePage />} />
+            <Route path="/termsofuse" element={<PlatformServiceOfUsePage />} />
+            <Route path="/legal" element={<LegalPage />} />
+            <Route path="/legal/platform-service-of-use" element={<PlatformServiceOfUsePage />} />
+            <Route path="/legal/service-of-use" element={<PlatformServiceOfUsePage />} />
+            <Route path="/legal/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/legal/privacy-policy" element={<PrivacyPolicyPage />} />
 
-              {/* Financials Direct Routes */}
-              <Route path="/financials" element={<ProtectedRoute><MainLayout><FinancialsPage /></MainLayout></ProtectedRoute>}>
-                <Route index element={<Navigate to="wallet" replace />} />
-                <Route path="wallet" element={<WalletPage />} />
-                <Route path="vault" element={<FICVaultPage />} />
-                <Route path="fic-vault" element={<FICVaultPage />} />
-                <Route path="giftcards" element={<GiftCardsPage />} />
-                <Route path="gift-cards" element={<GiftCardsPage />} />
-                <Route path="subscriptions" element={<SubscriptionsPage />} />
-                <Route path="monetization" element={<MonetizationDashboardPage />} />
-                <Route path="referrals" element={<MonetizationDashboardPage />} />
-              </Route>
+            {/* Protected Routes */}
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/messages" element={<MessagesPage />} />
+            <Route path="/friends" element={<FriendsPage />} />
+            <Route path="/groups" element={<GroupsPage />} />
+            <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/discover" element={<DiscoverPage />} />
+            <Route path="/my-wallet" element={<MyWalletPage />} />
+            <Route path="/financials" element={<FinancialsPage />} />
+            <Route path="/transactions" element={<TransactionsPage />} />
+            <Route path="/withdrawals" element={<WithdrawalsPage />} />
+            <Route path="/earnings" element={<EarningsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="/commerce" element={<CommercePage />} />
+            <Route path="/security" element={<SecurityPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/monetization" element={<MonetizationPage />} />
+            <Route path="/live-streaming" element={<LiveStreamingPage />} />
+            <Route path="/ai-governance" element={<AIGovernancePage />} />
+            <Route path="/compliance" element={<CompliancePage />} />
+            <Route path="/guardian" element={<GuardianAiPage />} />
+            <Route path="/dashboard/members" element={<MembersPage />} />
+            <Route path="/dashboard/content" element={<ContentManagementPage />} />
+            <Route path="/dashboard/commerce" element={<CommercePage />} />
+            <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
+            <Route path="/dashboard/security" element={<SecurityPage />} />
+            <Route path="/dashboard/community" element={<CommunityPage />} />
+            <Route path="/dashboard/monetization" element={<MonetizationPage />} />
+            <Route path="/dashboard/live-streaming" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/streaming" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/ai-governance" element={<AIGovernancePage />} />
+            <Route path="/dashboard/compliance" element={<CompliancePage />} />
+            <Route path="/dashboard/guardian" element={<GuardianAiPage />} />
+            <Route path="/stercs-dashboard" element={<StercsDashboardPage />} />
+            <Route path="/master-dashboard" element={<MasterDashboardPage />} />
+            <Route path="/stercs/modules" element={<StercsModulesPage />} />
+            <Route path="/stercs/policies" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/sentient-control" element={<StercsModulesPage />} />
+            <Route path="/stercs/guardian-ai" element={<GuardianAiPage />} />
+            <Route path="/dashboard/security" element={<SecurityPage />} />
+            <Route path="/stercs/core" element={<StercsModulesPage />} />
+            <Route path="/stercs/curation" element={<StercsModulesPage />} />
+            <Route path="/stercs/editor" element={<StercsModulesPage />} />
+            <Route path="/stercs/media-library" element={<StercsModulesPage />} />
+            <Route path="/stercs/theme-designer" element={<StercsModulesPage />} />
+            <Route path="/stercs/video-editor" element={<StercsModulesPage />} />
+            <Route path="/stercs/audio-editor" element={<StercsModulesPage />} />
+            <Route path="/stercs/translation" element={<StercsModulesPage />} />
+            <Route path="/stercs/analytics" element={<AnalyticsPage />} />
+            <Route path="/stercs/security" element={<SecurityPage />} />
+            <Route path="/stercs/policies/content-moderation" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/features/ai-filtering" element={<AIGovernancePage />} />
+            <Route path="/stercs/compliance/gdpr" element={<CompliancePage />} />
+            <Route path="/stercs/features/spend-cap" element={<MonetizationPage />} />
+            <Route path="/stercs/settings/inactivity" element={<SettingsPage />} />
+            <Route path="/stercs/policies/verification" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/controls/compliance-checks" element={<CompliancePage />} />
+            <Route path="/stercs/features/real-time-monitoring" element={<AnalyticsPage />} />
+            <Route path="/dashboard/guardian" element={<GuardianAiPage />} />
+            <Route path="/stercs/policies/ai-transparency" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/policies/data-privacy" element={<StercsPoliciesPage />} />
+            <Route path="/dashboard/compliance" element={<CompliancePage />} />
+            <Route path="/reports/analytics" element={<AnalyticsPage />} />
+            <Route path="/stercs/policies/community-guidelines" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/policies/accessibility" element={<StercsPoliciesPage />} />
+            <Route path="/stercs/compliance/checks/gdpr" element={<CompliancePage />} />
+            <Route path="/stercs/compliance/checks/content-moderation" element={<CompliancePage />} />
+            <Route path="/stercs/compliance/checks/ai-bias" element={<CompliancePage />} />
+            <Route path="/stercs/compliance/checks/accessibility" element={<CompliancePage />} />
+            <Route path="/stercs/compliance/checks/security" element={<CompliancePage />} />
+            <Route path="/dashboard/users" element={<UserManagementPage />} />
+            <Route path="/dashboard/users/:id/activity" element={<UserManagementPage />} />
+            {/* Additional routes based on the requirements document */}
+            <Route path="/dashboard/forum" element={<CommunityPage />} />
+            <Route path="/dashboard/gems" element={<CommunityPage />} />
+            <Route path="/dashboard/hallmarks" element={<CommunityPage />} />
+            <Route path="/dashboard/groups" element={<CommunityPage />} />
+            <Route path="/dashboard/blogs" element={<CommunityPage />} />
+            <Route path="/dashboard/mi" element={<AnalyticsPage />} />
+            <Route path="/dashboard/trends" element={<CommunityPage />} />
+            <Route path="/dashboard/fingerlux" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/fingerwars" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/publicitee" element={<MonetizationPage />} />
+            <Route path="/dashboard/discovery" element={<DiscoverPage />} />
+            <Route path="/dashboard/storefronts" element={<MarketplacePage />} />
+            <Route path="/dashboard/flamingo" element={<MarketplacePage />} />
+            <Route path="/dashboard/ownit" element={<MarketplacePage />} />
+            <Route path="/dashboard/photocredits" element={<ContentPage />} />
+            <Route path="/dashboard/gallery" element={<ContentPage />} />
+            <Route path="/dashboard/beatwaven" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/dancia4tv" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/member-pages" element={<MembersPage />} />
+            <Route path="/dashboard/contacts" element={<MembersPage />} />
+            <Route path="/dashboard/profiles" element={<ProfilePage />} />
+            <Route path="/dashboard/site-editor" element={<SettingsPage />} />
+            <Route path="/dashboard/animations" element={<ContentPage />} />
+            <Route path="/dashboard/image-tools" element={<ContentPage />} />
+            <Route path="/dashboard/videobox" element={<LiveStreamingPage />} />
+            <Route path="/dashboard/ecommerce" element={<EcommercePage />} />
+            <Route path="/dashboard/ecommerce/products/:id/view" element={<EcommercePage />} />
+            <Route path="/dashboard/ecommerce/products/:id/edit" element={<EcommercePage />} />
+            <Route path="/dashboard/ecommerce/products/:id/analytics" element={<EcommercePage />} />
+            <Route path="/dashboard/ecommerce/orders/:id/view" element={<EcommercePage />} />
+            <Route path="/dashboard/ecommerce/orders/:id/analytics" element={<EcommercePage />} />
+            <Route path="/dashboard/marketing" element={<MonetizationPage />} />
+            <Route path="/dashboard/seo" element={<AnalyticsPage />} />
+            <Route path="/dashboard/ai-tools" element={<AIGovernancePage />} />
+            <Route path="/dashboard/templates" element={<SettingsPage />} />
+            <Route path="/dashboard/forms" element={<SettingsPage />} />
+            <Route path="/dashboard/collaboration" element={<SettingsPage />} />
+            <Route path="/dashboard/content/:id/view" element={<ContentManagementPage />} />
+            <Route path="/dashboard/content/:id/edit" element={<ContentManagementPage />} />
+            <Route path="/dashboard/content/:id/analytics" element={<ContentManagementPage />} />
 
-              {/* Protected Main App Layout with Drawer Menu */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <MainLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Navigate to="/forum" replace />} />
-                {/* 1. Community & Social Hub */}
-                <Route path="forum" element={<ForumPage />} />
-                <Route path="forum-draft" element={<ForumPageDraft />} />
-                <Route path="home-feed" element={<ForumPage />} />
-                <Route path="hallmark" element={<HallmarkPage />} />
-                <Route path="hallmark/*" element={<HallmarkPage />} />
-                <Route path="hallmarks" element={<HallmarksPage />} />
-                <Route path="hallmarks/*" element={<HallmarksPage />} />
-                <Route path="gems" element={<GemsPage />} />
-                <Route path="blog" element={<BlogsPage />} />
-                <Route path="blog/*" element={<BlogsPage />} />
-                <Route path="blogs" element={<BlogsPage />} />
-                <Route path="blogs/*" element={<BlogsPage />} />
-                <Route path="groups" element={<GroupsPage />} />
-                <Route path="groups/*" element={<GroupsPage />} />
-                <Route path="group/*" element={<GroupsPage />} />
-                <Route path="community" element={<CommunityPage />} />
-                <Route path="mii" element={<MiiPage />} />
-                <Route path="mii/*" element={<MiiPage />} />
-                <Route path="permanence" element={<PermanencePage />} />
-                <Route path="permanence/*" element={<PermanencePage />} />
+            {/* Forum, Media & Curation Controls */}
+            <Route path="/forum" element={<ForumPage />} />
+            <Route path="/forum-draft" element={<ForumPageDraft />} />
+            <Route path="/photocredits" element={<PhotoCreditsPage />} />
+            <Route path="/photo-credits" element={<PhotoCreditsPage />} />
+            <Route path="/luminagallery" element={<GalleryPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/stercs" element={<StercsPage />} />
+            <Route path="/super-admin/stercs-curation" element={<StercsCurationDashboard />} />
+            <Route path="/dashboard/connectors" element={<div className="p-6 max-w-7xl mx-auto"><ConnectorArtifactConsole /></div>} />
+            <Route path="/connectors" element={<div className="p-6 max-w-7xl mx-auto"><ConnectorArtifactConsole /></div>} />
 
-                {/* 2. Media, Entertainment & Discovery */}
-                <Route path="trends" element={<TrendsPage />} />
-                <Route path="beatwave-ng" element={<BeatwaveNGPage />} />
-                <Route path="beatwaveng" element={<BeatwaveNGPage />} />
-                <Route path="beatwaveng/*" element={<BeatwaveNGPage />} />
-                <Route path="dancia-4tv" element={<Dancia4TvPage />} />
-                <Route path="dancia4tv" element={<Dancia4TvPage />} />
-                <Route path="dancia4tv/*" element={<Dancia4TvPage />} />
-                <Route path="publicitee" element={<PubliciteePage />} />
-                <Route path="publicitee/*" element={<PubliciteePage />} />
-                <Route path="fingershorts" element={<FingerShortsPage />} />
-                <Route path="fingershorts/*" element={<FingerShortsPage />} />
-                <Route path="fingerwars" element={<FingerWarsPage />} />
-                <Route path="finger-wars" element={<FingerWarsPage />} />
-                <Route path="camus" element={<CamusPage />} />
-                <Route path="camus/*" element={<CamusPage />} />
-                <Route path="camus-dashboard" element={<CamusDashboardPage />} />
-                <Route path="programs" element={<ProgramsPage />} />
-                <Route path="events" element={<EventsPage />} />
-                <Route path="gallery" element={<GalleryPage />} />
-                <Route path="lushpressies" element={<LushPressiesPage />} />
-                <Route path="lushpressies/*" element={<LushPressiesPage />} />
-                <Route path="lush-pressies" element={<LushPressiesPage />} />
-                <Route path="lush-pressies/*" element={<LushPressiesPage />} />
-                <Route path="messages" element={<LushPressiesPage />} />
+            {/* Autonomous Governance, AI & Sovereign Security */}
+            <Route path="/guardian-protection" element={<GuardianAiPage />} />
+            <Route path="/guardian-ai" element={<GuardianAiPage />} />
 
-                {/* 3. Commerce & Storefronts */}
-                <Route path="marketplace" element={<MarketplacePage />} />
-                <Route path="marketplace/*" element={<MarketplacePage />} />
-                <Route path="storefront" element={<StorefrontPage />} />
-                <Route path="storefront/*" element={<StorefrontPage />} />
-                <Route path="storefronts" element={<StorefrontPage />} />
-                <Route path="storefronts/*" element={<StorefrontPage />} />
-                <Route path="my-storefront" element={<StorefrontPage />} />
-                <Route path="my-storefront/*" element={<StorefrontPage />} />
-                <Route path="ownit" element={<OwnitPage />} />
-                <Route path="ownit/*" element={<OwnitPage />} />
-                <Route path="flamingo" element={<FlamingoPage />} />
-                <Route path="flamingo/*" element={<FlamingoPage />} />
-                <Route path="subscriptions" element={<SubscriptionsPage />} />
+            {/* Business & Corporate Hubs */}
+            <Route path="/business" element={<BusinessOfficesPage />} />
+            <Route path="/business-offices" element={<BusinessOfficesPage />} />
+            <Route path="/businessoffices" element={<BusinessOfficesPage />} />
 
-                {/* 4. Creative Studio & UGC Monetization */}
-                <Route path="photocredits" element={<PhotoCreditsPage />} />
-                <Route path="photocredits/*" element={<PhotoCreditsPage />} />
-                <Route path="photo-credits" element={<PhotoCreditsPage />} />
-                <Route path="photo-credits/*" element={<PhotoCreditsPage />} />
-                <Route path="photos" element={<PhotosPage />} />
-                <Route path="my-downloads" element={<MyDownloadsPage />} />
-                <Route path="mydownloads" element={<MyDownloadsPage />} />
-                <Route path="fingerlux" element={<FingerLuxPage />} />
-                <Route path="portfolio" element={<PortfolioPage />} />
-                <Route path="catalogue" element={<CataloguePage />} />
+            {/* Camus & Systems Intelligence */}
+            <Route path="/camus" element={<CamusPage />} />
+            <Route path="/camus/dashboard" element={<CamusPage />} />
+            <Route path="/camusdashboard" element={<CamusPage />} />
 
-                {/* 5. Finance & Monetization Ops */}
-                <Route path="pricing" element={<MonetizationDashboardPage />} />
-                <Route path="paylinks" element={<PaylinksPage />} />
-                <Route
-                  path="referrals"
-                  element={<MonetizationDashboardPage />}
-                />
-                <Route path="loyalty" element={<MonetizationDashboardPage />} />
-                <Route path="gift-cards" element={<AdvancedGiftingPage />} />
-                <Route
-                  path="advanced-gifting"
-                  element={<AdvancedGiftingPage />}
-                />
-                <Route path="gifts" element={<GiftsShopPage />} />
-                <Route path="gifts/shop" element={<GiftsShopPage />} />
-                <Route path="gifts/*" element={<GiftsShopPage />} />
-                <Route path="services" element={<ServicesPage />} />
-                <Route path="franchise" element={<FranchisePage />} />
-                <Route path="franchise/*" element={<FranchisePage />} />
-                <Route
-                  path="business"
-                  element={<BusinessOfficesPage />}
-                />
-                <Route
-                  path="business/*"
-                  element={<BusinessOfficesPage />}
-                />
-                <Route
-                  path="business-offices"
-                  element={<BusinessOfficesPage />}
-                />
-                <Route
-                  path="businessoffices"
-                  element={<BusinessOfficesPage />}
-                />
-                <Route
-                  path="dpo"
-                  element={<DPOPage />}
-                />
-                <Route
-                  path="dpo/*"
-                  element={<DPOPage />}
-                />
-                <Route
-                  path="guardian-protection"
-                  element={<GuardianProtectionPage />}
-                />
-                <Route
-                  path="guardian-protection/*"
-                  element={<GuardianProtectionPage />}
-                />
-                <Route
-                  path="guardian"
-                  element={<GuardianProtectionPage />}
-                />
-                <Route
-                  path="guardian/*"
-                  element={<GuardianProtectionPage />}
-                />
-                <Route
-                  path="monetization-dashboard"
-                  element={<MonetizationDashboardPage />}
-                />
-                <Route path="fic-vault" element={<FICVaultPage />} />
-                <Route path="infinite-coins" element={<FICVaultPage />} />
-                <Route path="wallet" element={<WalletPage />} />
-                <Route path="ugc-dashboard" element={<UGCDashboardPage />} />
-                <Route path="payouts" element={<WalletPage />} />
-                <Route path="loansqr" element={<LoanSqrPage />} />
-                <Route path="loansqr/*" element={<LoanSqrPage />} />
-                <Route path="loansq" element={<LoanSqrPage />} />
-                <Route path="loansq/*" element={<LoanSqrPage />} />
-                <Route path="Loansqr" element={<LoanSqrPage />} />
-                <Route path="Loansqr/*" element={<LoanSqrPage />} />
-                <Route path="lendsq" element={<LoanSqrPage />} />
-                <Route path="lendsq/*" element={<LoanSqrPage />} />
+            {/* Entertainment, Video & Shorts */}
+            <Route path="/fingershorts" element={<FingerShortsPage />} />
+            <Route path="/shorts" element={<FingerShortsPage />} />
 
-                {/* Financials Nested Routes */}
-                <Route path="financials" element={<FinancialsPage />}>
-                  <Route index element={<Navigate to="wallet" replace />} />
-                  <Route path="wallet" element={<WalletPage />} />
-                  <Route path="vault" element={<FICVaultPage />} />
-                  <Route path="fic-vault" element={<FICVaultPage />} />
-                  <Route path="giftcards" element={<GiftCardsPage />} />
-                  <Route path="gift-cards" element={<GiftCardsPage />} />
-                  <Route path="subscriptions" element={<SubscriptionsPage />} />
-                  <Route path="monetization" element={<MonetizationDashboardPage />} />
-                  <Route path="referrals" element={<MonetizationDashboardPage />} />
-                  <Route path="loyalty" element={<MonetizationDashboardPage />} />
-                </Route>
-                <Route path="financials/giftcards" element={<GiftCardsPage />} />
-                <Route path="financials/giftcards/*" element={<GiftCardsPage />} />
-                <Route path="financials/gift-cards" element={<GiftCardsPage />} />
-                <Route path="financials/gift-cards/*" element={<GiftCardsPage />} />
-                <Route path="financials/vault" element={<FICVaultPage />} />
-                <Route path="financials/vault/*" element={<FICVaultPage />} />
-                <Route path="financials/wallet" element={<WalletPage />} />
-                <Route path="financials/wallet/*" element={<WalletPage />} />
-                <Route path="financials/subscriptions" element={<SubscriptionsPage />} />
-                <Route path="financials/subscriptions/*" element={<SubscriptionsPage />} />
+            {/* Advertising & Monetization Portals */}
+            <Route path="/publicitee" element={<PubliciteePage />} />
+            <Route path="/dpo" element={<DPOPage />} />
+            <Route path="/admin/dpo" element={<DPOPage />} />
 
-                {/* 6. Gamification, Campaigns & System */}
-                <Route path="game-on" element={<GameOnPage />} />
-                <Route path="game-on/*" element={<GameOnPage />} />
-                <Route path="gameon" element={<GameOnPage />} />
-                <Route path="gameon/*" element={<GameOnPage />} />
-                <Route path="finger-wars" element={<FingerWarsPage />} />
-                <Route path="canary-ads" element={<CanaryAdsPage />} />
-                <Route path="canaryads" element={<CanaryAdsPage />} />
-                <Route path="canary" element={<CanaryPage />} />
-                <Route path="canary/*" element={<CanaryPage />} />
-                <Route path="canary/ad-maker" element={<CanaryAdMakerPage />} />
-                <Route path="canary-ad-maker" element={<CanaryAdMakerPage />} />
-                <Route path="ad-maker" element={<CanaryAdMakerPage />} />
-                <Route path="coupons" element={<CouponsPage />} />
-                <Route path="settings" element={<SettingsPage />} />
-                <Route path="support" element={<SupportPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="profile/:id" element={<ProfilePage />} />
-              </Route>
+            {/* Audio, Radio & Streaming Hub */}
+            <Route path="/beatwave-ng" element={<BeatwaveNGPage />} />
+            <Route path="/beatwave" element={<BeatwaveNGPage />} />
+            <Route path="/beatwaven" element={<BeatwaveNGPage />} />
+            <Route path="/beatwaveng" element={<BeatwaveNGPage />} />
 
-              {/* 404 Route */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </Suspense>
+            {/* Lush Pressies & Feed Routes */}
+            <Route path="/lush-pressies" element={<LushPressiesPage />} />
+            <Route path="/lushpressies" element={<LushPressiesPage />} />
+            <Route path="/feed" element={<CategoryFeedPage />} />
+            <Route path="/trends-feed" element={<TrendsFeedPage />} />
+
+            {/* Wallet Routes */}
+            <Route path="/wallet" element={<WalletPage />} />
+            <Route path="/my-wallet" element={<MyWalletPage />} />
+
+            {/* Dancia4TV Route */}
+            <Route path="/dancia4tv" element={<Dancia4TvPage />} />
+
+            {/* Micro-Financing & SME Float */}
+            <Route path="/loansqr" element={<LoanSqrPage />} />
+            <Route path="/loansq" element={<LoanSqrPage />} />
+            <Route path="/Loansqr" element={<LoanSqrPage />} />
+            <Route path="/admin/loansqr" element={<LoanSqrPage />} />
+
+            {/* Financials with nested routes */}
+            <Route path="/financials" element={<FinancialsPage />}>
+              <Route path="wallet" element={<WalletPage />} />
+              <Route path="vault" element={<div>Vault section would go here</div>} />
+              <Route path="subscriptions" element={<SubscriptionsPage />} />
+              <Route path="monetization" element={<MonetizationPage />} />
+              <Route path="referrals" element={<div>Referrals section would go here</div>} />
+              <Route path="loyalty" element={<div>Loyalty section would go here</div>} />
+              <Route path="giftcards" element={<div>Gift Cards section would go here</div>} />
+            </Route>
+
+            {/* Quad-Separation Luxury & Merchant E-Commerce */}
+            <Route path="/ownit" element={<OwnitPage />} />
+            <Route path="/ownit/tracking" element={<OwnitPage />} />
+            <Route path="/flamingo" element={<FlamingoPage />} />
+            <Route path="/flamingo/tracking" element={<FlamingoPage />} />
+            <Route path="/storefront" element={<StorefrontPage />} />
+            <Route path="/storefronts" element={<StorefrontsPage />} />
+
+            {/* Social Micro-Features & Community */}
+            <Route path="/mii" element={<MiiPage />} />
+            <Route path="/gems" element={<GemsPage />} />
+            <Route path="/hallmarks" element={<HallmarksPage />} />
+            <Route path="/blogs" element={<BlogsPage />} />
+
+            {/* Content Discovery & Creator Economy */}
+            <Route path="/trends" element={<TrendsPage />} />
+            <Route path="/trending" element={<TrendsPage />} />
+            <Route path="/programs" element={<ProgramsPage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/franchise" element={<FranchisePage />} />
+            <Route path="/catalogue" element={<CataloguePage />} />
+            <Route path="/catalog" element={<CataloguePage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/ugc-dashboard" element={<UGCDashboardPage />} />
+            <Route path="/ugc" element={<UGCDashboardPage />} />
+            <Route path="/subscriptions" element={<SubscriptionsPage />} />
+
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </div>
       </Router>
     </GlobalProviders>
   );
-};
+}
 
 export default App;

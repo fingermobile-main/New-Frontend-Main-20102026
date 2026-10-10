@@ -14,7 +14,7 @@ src/pages/auth/ is confirmed as your source of truth for all authentication logi
 
 ## Platform Policy: Zero Error Margin
 - No TypeScript errors
-- No syntax errors  
+- No syntax errors
 - No lint errors
 - No problems or warnings whatsoever
 - No trailing spaces
@@ -69,7 +69,7 @@ Development Servers: Both the backend (npm run dev in apps/backend) and frontend
 The infrastructure is heavily leaning towards a multi-service architecture (with 85+ total services and a host of database services defined),
 
 #### MAIN APP: ONLY focus on the main platform located at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps.
-#### the structure of the main platform at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps is clear. It contains numerous MICROSERVICES, INDEPENDENT ENTITIES AND SERVICES, with subdirectories, likely representing various microservices, games, or features. 
+#### the structure of the main platform at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps is clear. It contains numerous MICROSERVICES, INDEPENDENT ENTITIES AND SERVICES, with subdirectories, likely representing various microservices, games, or features.
 
 Crucially, see the following directories that are candidates for the main platform's core frontend and backend:
 
@@ -82,12 +82,12 @@ fingermobile-desktop/:This is the desktop application (yet to be built ).
 the correct location of the main platform and the frontend is at FingerMobile Protocol/apps/frontend-main/ and the backend  is at FingerMobile Protocol/backend/
 
 #### Docker
-/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/docker-compose.yml 
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/docker-compose.yml
 App/Website: Do not start docker compose up,. unless specifically asked to start docker compose up. read the below instructions properly. open all the paths and study them to have a better understanding of the FingerMobile Social Media Platform.
 
 only start the production development servers: open the FingerMobile Website/App., on google chrome browser and IDE Preview so we can start testing the develeopment live, tessting, and debugging pages, pages, and features, compilation and runtime errors, and bugs etc.
 
-#### Start-Up Information:- check that file for general instructions., 
+#### Start-Up Information:- check that file for general instructions.,
 Routing Architecture Analysis & Resolution
 I have audited the Next.js routing structure in apps/frontend-main/ to resolve page location conflicts while preserving all 293 remediated screens (including PIN login, security, discovery, and Lush Pressies features).
 
@@ -96,24 +96,24 @@ In apps/frontend-main/:
 
 Single Source of Truth (src/pages/):
 
-All 293 UI screens across Clusters 1 through 12 live in 
+All 293 UI screens across Clusters 1 through 12 live in
 
 src/pages/
 .
 This includes LushPressiesPage.tsx, LoginPage.tsx, DiscoveryPage.tsx, SecuritySetupPage.tsx, and all other protocol screens.
 Next.js Catch-All Bridge (pages/[[...slug]].tsx):
 
-The root 
+The root
 
 pages/[[...slug]].tsx
  dynamically loads src/App.tsx and src/app/AppRoutes.tsx.
 AppRoutes.tsx handles client-side routing across all 293 screens via React Router within Next.js.
 Next.js Page File Clean-up (pages/):
 
-To prevent duplicate code maintenance or divergent state between pages/ and src/pages/, top-level route files in pages/ (such as 
+To prevent duplicate code maintenance or divergent state between pages/ and src/pages/, top-level route files in pages/ (such as
 
 pages/lush-pressies.tsx
- and 
+ and
 
 pages/lushpressies.tsx
 ) are structured as clean re-export wrappers of src/pages/LushPressiesPage.
@@ -145,11 +145,11 @@ What is the FingerMobile Business and Monetization Suite?
 Analysis of the FingerMobile Business and Monetization Suite.
 The FingerMobile Business and Monetization Suite is an independent standalone microservice that provides monetization and revenue management features for creators, businesses, and affiliates. It is connected to the main platform for member use cases but operates as a separate system with its own database, API, and UI.
 
-please Note that /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite *"is not"* the platform or website or application etc but a standalone, independent entity also connected to the plaform for its members use case only. 
+please Note that /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite *"is not"* the platform or website or application etc but a standalone, independent entity also connected to the plaform for its members use case only.
 
-The main platform (Website and App) is located here /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps (Frontend-Main) and never /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite 
+The main platform (Website and App) is located here /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps (Frontend-Main) and never /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite
 
-OR 
+OR
 
 /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business, please Note that /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite is not the platform website etc but a standalone, independent entity/micoservice that is also connected to the plaform for its members use case., with its own Suite/db/init-database.ts so do not get confused.
 
@@ -171,7 +171,7 @@ Use Google Chrome & IDE Preview to test features, verify DOM states, and fix com
 
 ## Platform Policy: Zero Error Margin
 - No TypeScript errors
-- No syntax errors  
+- No syntax errors
 - No lint errors
 - No problems or warnings whatsoever
 - No trailing spaces
@@ -185,8 +185,8 @@ Use Google Chrome & IDE Preview to test features, verify DOM states, and fix com
 ```
 /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps
 ```
-To understand the Production setup, you need to read/investigate/understand the microservices and see that they are funtionally ready 
- 
+To understand the Production setup, you need to read/investigate/understand the microservices and see that they are funtionally ready
+
  /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/docker-compose.yml
 
  #### /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/docker-compose.yml
@@ -289,7 +289,7 @@ Migration `035_cluster_12_legal_compliance_governance_support.sql` applied and v
 
 #### B. Backend Controllers & API Routes
 - **LegalController.js & routes/legal.js** mounted at `/api/legal`
-- **SupportController.js & routes/support.js** mounted at `/api/support` 
+- **SupportController.js & routes/support.js** mounted at `/api/support`
 - **GovernanceController.js & routes/governance.js** mounted at `/api/governance`
 
 #### C. Backend Integration Test Results
@@ -427,54 +427,54 @@ Used for restoring components, backend microservice integration, and schema veri
 Hosts API handlers and database schemas.
 2. Breakdown of Pages in Each Directory
 A. In apps/frontend-main/src/pages/ (Source of Truth)
-Lush Pressies Core: 
+Lush Pressies Core:
 
 LushPressiesPage.tsx
-, 
+,
 
 LushChatPage.tsx
-Core Social & Communities: 
+Core Social & Communities:
 
 HomePage.tsx
-, 
+,
 
 ForumPage.tsx
-, 
+,
 
 GroupsPage.tsx
-, 
+,
 
 CommunitiesPage.tsx
-Media & Entertainment: 
+Media & Entertainment:
 
 BeatwaveNGPage.tsx
-, 
+,
 
 Dancia4TvPage.tsx
-, 
+,
 
 FingerShortsPage.tsx
-Commerce & Financials: 
+Commerce & Financials:
 
 MarketplacePage.tsx
-, 
+,
 
 WalletPage.tsx
-, 
+,
 
 StorefrontPage.tsx
-Admin & Safety: 
+Admin & Safety:
 
 AdminControlDashboard.tsx
-, 
+,
 
 GuardianProtectionPage.tsx
 B. In apps/frontend-main/pages/ (Next.js Root Folder)
-Bridge File: 
+Bridge File:
 
 [[...slug]].tsx
  (Delegates client-side rendering to src/App.tsx).
-Global Layout: 
+Global Layout:
 
 _app.tsx
 .
@@ -567,3 +567,89 @@ Clean up .bak, .disabled, (1) file duplicates across src/.
 Phase 4: Dev Server Launch Verification
 
 Launch the single unified server and verify that page updates reload instantly.
+
+ForumPageDraft.tsx
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 1. GLOBAL APPLICATION HEADER                                                 │
+│ Hamburger | Search | Notifications | Member | Wallet                         │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ 2. H2-Large: 3 Column/Card PROMOTION/MONETIZATION HERO                                       │
+│
+### Card 1
+Sponsored content | Programmatic ad                                          |
+ The current hero advertising area
+_______________________________________________________________________________|
+### Card 2
+Canary Sponsor
+> Summer Mega Sale - Up to 70% Off
+HD Programmatic
+> AdSense / AdMob Verified
+
+### Card 3
+Live Vault (toggle visibility, not to be always visible)
+> FIC Tokens
+> Live Wallet
+> Pending Earn│ [Manage Wallet]
+├──────────────────────────────────────────────────────────────────────────────┤
+
+
+Then i need you to Replace these navigation: Following → Communities → Discover → Trending
+
+With > Lush Pressies → Dancia-4tv → Marketplace → PhotoCredits → BeatwaveNG
+
+---
+The tiny dropdown arrow/menu/mini drawer with the items/navigation below
+
+> Blog | Gems | Hallmarks | Groups | LoanSqr | Camus
+
+---
+
+Categories: we have a list of categories in the Database (check and see how they are called and used.)
+Business Logic: To create a Post., Members actually mandated and are supposed to select from a drop down the list of 53 categories they intend to post/publish in (this invariably separates the comsumer/audience into various reading interest groups, as some members may only derive interest and passion in just a handful of categories that they had sellected from during the onboarding process,
+or from the settings panel, where they can add or remove the categories of interest to them at any time, or from time to time as their interests change befor they POST/PUBLISH A POST).)
+
+---
+
+Mii was renamed Monents., please revert/go back and rename it back to "Mii(™®©℠)".
+
+# Go back and rename/relabel "Moments" to "Mii(™®©℠)"
+
+```text "Mii(™®©℠)"
+
+─────────────────────────────────────
+
+
+## Category: /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/Assets/CSV Files/FingerMobile Forum Categories (1).csv
+## /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/Assets/CSV Files/FingerMobile FullData Members (1).csv
+
+─────────────────────────────────────
+then we have
+Post Settings:
+Censor Post: Censorship & Tags
+Media Studio
+Visual Styler
+
+### Recommended:
+
+```text
+┌──────────────────────────────────────────────┐
+│ CREATE A POST.                               │
+│                                              │
+│ [Join Us, Share Your Moments...]             │
+│                                              |
+|### The one post card is the Rich Text Editor |
+|### Advanced tools appear after.              │
+│ + use Camera Icon for the photo/Video, + Poll + Event
+│ + File + Links + Location  + ▼ Marketplace/Flamingo/Ownit/Storefront/FingerLux Items/Products │
+│ + 5D Icons/Smileys, GIFs, Mentions/Tags      │
+│ + BeatwaveNg  + Dancia-4Tv                   │
+│ Category ▼     Set Privacy ▼       [Post]    │
+└──────────────────────────────────────────────┘
+
+```
+
+This dramatically improves usability.
+
+---

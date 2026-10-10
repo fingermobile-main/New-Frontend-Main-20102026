@@ -41,7 +41,11 @@ import {
   ThumbsUp,
   ThumbsDown,
   ArrowRight,
-  HardDrive
+  HardDrive,
+  Pencil,
+  Trash2,
+  Download,
+  SlidersHorizontal
 } from 'lucide-react';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 
@@ -172,8 +176,12 @@ const StorefrontPage: React.FC = () => {
   const [totalStorageMB, setTotalStorageMB] = useState<number>(25600); // 25 GB
   const [showProductModal, setShowProductModal] = useState<boolean>(false);
   const [showRestockModal, setShowRestockModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [editingProduct, setEditingProduct] = useState<StorefrontProductItem | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<StorefrontProductItem | null>(null);
   const [embedModalProduct, setEmbedModalProduct] = useState<any | null>(null);
+  const [inventorySearch, setInventorySearch] = useState<string>('');
+  const [inventoryFilter, setInventoryFilter] = useState<'all' | 'low-stock' | 'physical' | 'digital' | 'service'>('all');
 
   // Product Form state
   const [newProductForm, setNewProductForm] = useState({
@@ -431,6 +439,74 @@ const StorefrontPage: React.FC = () => {
     setShowProductModal(false);
     showToast(`Added "${newProd.name}" to your Storefront!`, 'success');
   };
+
+  // Quick stock adjustment (+/-)
+  const handleQuickAdjustStock = (productId: string, delta: number) => {
+    setProducts(prev => prev.map(p => {
+      if (p.id === productId) {
+        const newStock = Math.max(0, p.stock + delta);
+        return { ...p, stock: newStock, quantity: newStock };
+      }
+      return p;
+    }));
+    showToast(`Stock adjusted (${delta > 0 ? '+' : ''}${delta})`, 'info');
+  };
+
+  // Open Edit Product Modal
+  const handleOpenEditProduct = (prod: StorefrontProductItem) => {
+    setEditingProduct({ ...prod });
+    setShowEditModal(true);
+  };
+
+  // Save Product Updates
+  const handleUpdateProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+    setProducts(prev => prev.map(p => p.id === editingProduct.id ? editingProduct : p));
+    setShowEditModal(false);
+    showToast(`Updated "${editingProduct.name}" successfully!`, 'success');
+  };
+
+  // Delete Product Listing
+  const handleDeleteProduct = (productId: string, productName: string) => {
+    if (window.confirm(`Are you sure you want to remove "${productName}" from your store?`)) {
+      setProducts(prev => prev.filter(p => p.id !== productId));
+      showToast(`Removed "${productName}" from storefront inventory`, 'info');
+    }
+  };
+
+  // Export Inventory CSV
+  const handleExportInventoryCsv = () => {
+    const headers = ['SKU,Name,Category,Type,Price (FIC),Stock,Reorder Point,Sales Count'];
+    const rows = products.map(p =>
+      `"${p.sku}","${p.name.replace(/"/g, '""')}","${p.category}","${p.goods_type}",${p.price},${p.stock},${p.reorder_point || 5},${p.sales_count || 0}`
+    );
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `storefront_inventory_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('Exported inventory ledger CSV!', 'success');
+  };
+
+  // Filtered inventory list
+  const filteredInventoryProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(inventorySearch.toLowerCase()) ||
+        p.sku.toLowerCase().includes(inventorySearch.toLowerCase()) ||
+        p.category.toLowerCase().includes(inventorySearch.toLowerCase());
+
+      if (!matchesSearch) return false;
+      if (inventoryFilter === 'low-stock') return p.stock <= (p.reorder_point || 5);
+      if (inventoryFilter === 'physical') return p.goods_type === 'physical';
+      if (inventoryFilter === 'digital') return p.goods_type === 'digital';
+      if (inventoryFilter === 'service') return p.goods_type === 'service';
+      return true;
+    });
+  }, [products, inventorySearch, inventoryFilter]);
 
   // AI Copilot Query Handler
   const handleSendCopilotQuery = () => {
@@ -772,15 +848,32 @@ const StorefrontPage: React.FC = () => {
                           <span className="text-lg font-black text-white">{p.price} FIC</span>
                         )}
                       </div>
-                      <button
-                        onClick={() => {
-                          setSelectedProduct(p);
-                          setShowRestockModal(true);
-                        }}
-                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold"
-                      >
-                        Restock
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(p);
+                            setShowRestockModal(true);
+                          }}
+                          className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 text-xs font-semibold"
+                          title="Restock"
+                        >
+                          Restock
+                        </button>
+                        <button
+                          onClick={() => handleOpenEditProduct(p)}
+                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+                          title="Edit Details"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProduct(p.id, p.name)}
+                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-400 transition"
+                          title="Delete Listing"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -791,46 +884,209 @@ const StorefrontPage: React.FC = () => {
           {/* TAB 4: INVENTORY & STOCK ALERTS */}
           {activeTab === 'inventory' && (
             <div className="space-y-6">
-              <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800">
-                <h3 className="text-lg font-bold text-white mb-2">Inventory Levels & Reorder Thresholds</h3>
-                <p className="text-xs text-slate-400 mb-6">
-                  Set minimum safe thresholds for goods to receive automated inventory restock alerts.
-                </p>
+              {/* Top Inventory Metrics Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Total SKUs</span>
+                  <div className="text-xl font-black text-white">{products.length}</div>
+                  <span className="text-[10px] text-slate-500">Active catalog items</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Total Stock</span>
+                  <div className="text-xl font-black text-emerald-400">
+                    {products.reduce((acc, p) => acc + (p.stock || 0), 0)}
+                  </div>
+                  <span className="text-[10px] text-emerald-500/80">Available units</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Low Stock Alerts</span>
+                  <div className="text-xl font-black text-amber-400">
+                    {products.filter(p => p.stock <= (p.reorder_point || 5) && p.stock > 0).length}
+                  </div>
+                  <span className="text-[10px] text-amber-500/80">At or below reorder threshold</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Out of Stock</span>
+                  <div className="text-xl font-black text-rose-400">
+                    {products.filter(p => (p.stock || 0) === 0).length}
+                  </div>
+                  <span className="text-[10px] text-rose-500/80">Needs immediate replenishment</span>
+                </div>
+              </div>
 
+              {/* Inventory Management Table & Controls */}
+              <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1">Merchant Inventory Self-Management</h3>
+                    <p className="text-xs text-slate-400">
+                      Real-time SKU tracking, quick stock adjustments, and automated reorder threshold alerts.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleExportInventoryCsv}
+                      className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition flex items-center gap-2"
+                      title="Export CSV"
+                    >
+                      <Download className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Export CSV</span>
+                    </button>
+                    <button
+                      onClick={() => setShowProductModal(true)}
+                      className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-xs"
+                    >
+                      <PlusIcon className="w-3.5 h-3.5" />
+                      <span>Add Product</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Search & Filter Bar */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <div className="relative flex-1">
+                    <SearchIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={inventorySearch}
+                      onChange={(e) => setInventorySearch(e.target.value)}
+                      placeholder="Search by SKU, item name, or category..."
+                      className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                    {(['all', 'low-stock', 'physical', 'digital', 'service'] as const).map((filterKey) => (
+                      <button
+                        key={filterKey}
+                        onClick={() => setInventoryFilter(filterKey)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition capitalize ${
+                          inventoryFilter === filterKey
+                            ? 'bg-blue-600 text-white shadow-xs'
+                            : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                        }`}
+                      >
+                        {filterKey === 'all' ? 'All Items' : filterKey.replace('-', ' ')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Items List */}
                 <div className="space-y-3">
-                  {products.map((p) => {
-                    const isLow = p.stock <= (p.reorder_point || 5);
-                    return (
-                      <div key={p.id} className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-mono text-xs text-slate-400">{p.sku}</span>
-                            {isLow && (
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                                Low Stock Alert
-                              </span>
-                            )}
+                  {filteredInventoryProducts.length === 0 ? (
+                    <div className="p-8 text-center bg-slate-900/50 rounded-2xl border border-slate-800/80">
+                      <p className="text-slate-400 text-xs">No inventory items match your current filter or search criteria.</p>
+                    </div>
+                  ) : (
+                    filteredInventoryProducts.map((p) => {
+                      const isLow = p.stock <= (p.reorder_point || 5) && p.stock > 0;
+                      const isOut = (p.stock || 0) === 0;
+                      return (
+                        <div
+                          key={p.id}
+                          className="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:border-slate-700 transition"
+                        >
+                          <div className="flex items-start gap-3 flex-1 min-w-0">
+                            <img
+                              src={p.image_url || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=120&q=80'}
+                              alt={p.name}
+                              className="w-12 h-12 rounded-xl object-cover border border-slate-800 flex-shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <span className="font-mono text-xs font-bold text-slate-300">{p.sku}</span>
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-400 border border-slate-700">
+                                  {p.goods_type}
+                                </span>
+                                {isOut ? (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                                    Out of Stock
+                                  </span>
+                                ) : isLow ? (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                    Low Stock Alert
+                                  </span>
+                                ) : (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    Optimal
+                                  </span>
+                                )}
+                              </div>
+                              <h4 className="text-sm font-bold text-white truncate">{p.name}</h4>
+                              <div className="flex items-center gap-3 text-xs text-slate-500 mt-1">
+                                <span>Price: <strong className="text-slate-300 font-mono">{p.price} FIC</strong></span>
+                                <span>Reorder threshold: <strong className="text-slate-400 font-mono">{p.reorder_point || 5} units</strong></span>
+                                <span>Sales: <strong className="text-slate-400 font-mono">{p.sales_count || 0}</strong></span>
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="text-sm font-bold text-white">{p.name}</h4>
-                          <span className="text-xs text-slate-500">Reorder threshold: {p.reorder_point || 5} units</span>
+
+                          <div className="flex flex-wrap items-center gap-3 justify-between lg:justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800">
+                            {/* Stock Indicator */}
+                            <div className="text-right mr-2">
+                              <span className="text-[10px] text-slate-500 block uppercase font-bold">In Stock</span>
+                              <span className={`text-base font-black font-mono ${isOut ? 'text-rose-400' : isLow ? 'text-amber-400' : 'text-emerald-400'}`}>
+                                {p.stock} units
+                              </span>
+                            </div>
+
+                            {/* Quick Adjust Buttons */}
+                            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                              <button
+                                onClick={() => handleQuickAdjustStock(p.id, -1)}
+                                disabled={p.stock <= 0}
+                                className="px-2 py-1 bg-slate-900 hover:bg-slate-800 disabled:opacity-30 text-slate-300 rounded-lg text-xs font-mono font-bold transition"
+                                title="Decrease stock by 1"
+                              >
+                                -1
+                              </button>
+                              <button
+                                onClick={() => handleQuickAdjustStock(p.id, 5)}
+                                className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-lg text-xs font-mono font-bold transition"
+                                title="Increase stock by 5"
+                              >
+                                +5
+                              </button>
+                              <button
+                                onClick={() => handleQuickAdjustStock(p.id, 10)}
+                                className="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-lg text-xs font-mono font-bold transition"
+                                title="Increase stock by 10"
+                              >
+                                +10
+                              </button>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => {
+                                  setSelectedProduct(p);
+                                  setShowRestockModal(true);
+                                }}
+                                className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition"
+                              >
+                                Restock
+                              </button>
+                              <button
+                                onClick={() => handleOpenEditProduct(p)}
+                                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+                                title="Edit Product Details"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteProduct(p.id, p.name)}
+                                className="p-2 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-400 transition"
+                                title="Delete Listing"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <span className={`text-base font-black ${isLow ? 'text-amber-400' : 'text-emerald-400'}`}>
-                            {p.stock} in stock
-                          </span>
-                          <button
-                            onClick={() => {
-                              setSelectedProduct(p);
-                              setShowRestockModal(true);
-                            }}
-                            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold"
-                          >
-                            Restock Units
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>
@@ -1103,7 +1359,7 @@ const StorefrontPage: React.FC = () => {
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
                 const addQty = parseInt(formData.get('addQty') as string, 10);
-                setProducts(prev => prev.map(p => p.id === selectedProduct.id ? { ...p, stock: p.stock + addQty } : p));
+                setProducts(prev => prev.map(p => p.id === selectedProduct.id ? { ...p, stock: p.stock + addQty, quantity: p.stock + addQty } : p));
                 showToast(`Restocked +${addQty} units for ${selectedProduct.name}!`, 'success');
                 setShowRestockModal(false);
               }} className="space-y-4">
@@ -1121,6 +1377,133 @@ const StorefrontPage: React.FC = () => {
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setShowRestockModal(false)} className="flex-1 py-2 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl">Cancel</button>
                   <button type="submit" className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl">Confirm Restock</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* EDIT PRODUCT MODAL */}
+        {showEditModal && editingProduct && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <h3 className="text-lg font-bold text-white">Edit Listing: {editingProduct.name}</h3>
+                <button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateProduct} className="space-y-3 text-xs">
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Item Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingProduct.name}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Goods Type</label>
+                    <select
+                      value={editingProduct.goods_type}
+                      onChange={(e: any) => setEditingProduct({ ...editingProduct, goods_type: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="physical">Physical Goods</option>
+                      <option value="digital">Digital Asset</option>
+                      <option value="service">Bookable Service</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">SKU</label>
+                    <input
+                      type="text"
+                      value={editingProduct.sku}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500 font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Price (FIC)</label>
+                    <input
+                      type="number"
+                      required
+                      value={editingProduct.price}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Promo Price</label>
+                    <input
+                      type="number"
+                      value={editingProduct.discount_price || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, discount_price: e.target.value ? Number(e.target.value) : undefined })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Current Stock</label>
+                    <input
+                      type="number"
+                      value={editingProduct.stock}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, stock: Number(e.target.value), quantity: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Reorder Point Threshold</label>
+                    <input
+                      type="number"
+                      value={editingProduct.reorder_point || 5}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, reorder_point: Number(e.target.value) })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold mb-1">Category</label>
+                    <input
+                      type="text"
+                      value={editingProduct.category}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Description</label>
+                  <textarea
+                    rows={2}
+                    value={editingProduct.description}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div className="pt-2 flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowEditModal(false)}
+                    className="flex-1 py-2.5 bg-slate-800 text-slate-300 font-semibold rounded-xl"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl"
+                  >
+                    Save Changes
+                  </button>
                 </div>
               </form>
             </div>

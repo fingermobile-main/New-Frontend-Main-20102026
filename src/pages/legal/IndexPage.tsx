@@ -14,6 +14,13 @@ import {
 const LegalIndexPage: React.FC = () => {
   const legalDocuments = [
     {
+      icon: <DocumentIcon className="w-8 h-8 text-emerald-600" />,
+      title: 'Platform Service of Use',
+      description: 'Statutory agreement: GraceLink Ltd., Singapore governing law, FIC token rules, and AI creation.',
+      link: '/platform-service-of-use',
+      badge: 'v2.2.0'
+    },
+    {
       icon: <PolicyIcon className="w-8 h-8 text-blue-600" />,
       title: 'Privacy Policy',
       description: 'NDPA 2023 & GDPR compliance, zero unauthorized sharing, sovereign cryptographic data handling.',

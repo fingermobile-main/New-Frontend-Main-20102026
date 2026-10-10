@@ -84,6 +84,7 @@ const GroupsPage = lazy(() => import('../pages/GroupsPage')); // Consolidated st
 const GroupDetailPage = lazy(() => import('../pages/groups/GroupDetailPage')); // Consolidated standard
 const CreateGroupPage = lazy(() => import('../pages/CreateGroupPage'));
 const ForumPage = lazy(() => import('../pages/ForumPage'));
+const ForumPageDraft = lazy(() => import('../pages/ForumPageDraft'));
 const ConferencePage = lazy(() => import('../pages/ConferencePage'));
 const LiveStreamingPage = lazy(() => import('../pages/LiveStreamingPage'));
 const EventsPage = lazy(() => import('../pages/EventsPage'));
@@ -120,7 +121,6 @@ const PaylinksPage = lazy(() => import('../pages/PaylinksPage'));
 const FinancialsPage = lazy(() => import('../pages/financials/FinancialsPage'));
 const FICVaultPage = lazy(() => import('../pages/FICVaultPage'));
 const LoanSqrPage = lazy(() => import('../pages/LoanSqrPage'));
-const LoansqrPage = LoanSqrPage;
 
 // Module 9: E-Learning, Education & Programs
 const ELearningPage = lazy(() => import('../pages/ELearningPage'));
@@ -179,6 +179,9 @@ const ModerationQueuePage = lazy(() => import('../pages/ModerationQueuePage'));
 const UserReportsPage = lazy(() => import('../pages/UserReportsPage'));
 const UGCDashboardPage = lazy(() => import('../pages/UGCDashboardPage'));
 const RbacManagementPage = lazy(() => import('../pages/RbacManagementPage'));
+const MasterDashboardPage = lazy(() => import('../pages/MasterDashboardPage'));
+const StercsDashboardPage = lazy(() => import('../pages/StercsDashboardPage'));
+const GuardianAiPage = lazy(() => import('../pages/GuardianAiPage'));
 
 // Module 13: Systems Engineering, Data, Dev & Cloud Infrastructure
 const DeveloperPortalPage = lazy(() => import('../pages/dashboard/DeveloperPortalPage'));
@@ -209,6 +212,9 @@ const InvestorRelationsPage = lazy(() => import('../pages/InvestorRelationsPage'
 const ServicesPage = lazy(() => import('../pages/ServicesPage'));
 const PrivacyPolicyPage = lazy(() => import('../pages/legal/PrivacyPolicyPage'));
 const TermsOfServicePage = lazy(() => import('../pages/legal/TermsOfServicePage'));
+const PlatformServiceOfUsePage = lazy(() => import('../pages/legal/PlatformServiceOfUsePage'));
+const LegalPage = lazy(() => import('../pages/legal/LegalPage'));
+const LegalIndexPage = lazy(() => import('../pages/legal/IndexPage'));
 const TermsAndConditionsPage = lazy(() => import('../pages/TermsAndConditionsPage'));
 const CookiePolicyPage = lazy(() => import('../pages/CookiePolicyPage'));
 const DataSubjectRequestPage = lazy(() => import('../pages/DataSubjectRequestPage'));
@@ -270,6 +276,9 @@ export const routes: RouteObject[] = [
       { path: '/contact', element: redirectTo('/contactus') },
       { path: '/contactus', element: <ContactUsPage /> },
       { path: '/support', element: <SupportPage /> },
+      { path: '/contact-support', element: <ContactSupportPage /> },
+      { path: '/help', element: <HelpPage /> },
+      { path: '/faq', element: <FAQPage /> },
       { path: '/investors', element: redirectTo('/investorrelations') },
       { path: '/investorrelations', element: <InvestorRelationsPage /> },
       { path: '/services', element: <ServicesPage /> },
@@ -279,6 +288,21 @@ export const routes: RouteObject[] = [
       { path: '/privacy', element: redirectTo('/privacypolicy') },
       { path: '/privacy-policy', element: redirectTo('/privacypolicy') },
       { path: '/privacypolicy', element: <PrivacyPolicyPage /> },
+      { path: '/platform-service-of-use', element: <PlatformServiceOfUsePage /> },
+      { path: '/platformserviceofuse', element: <PlatformServiceOfUsePage /> },
+      { path: '/service-of-use', element: redirectTo('/platform-service-of-use') },
+      { path: '/serviceofuse', element: redirectTo('/platform-service-of-use') },
+      { path: '/terms-of-use', element: redirectTo('/platform-service-of-use') },
+      { path: '/termsofuse', element: redirectTo('/platform-service-of-use') },
+      { path: '/legal/service-of-use', element: redirectTo('/platform-service-of-use') },
+      { path: '/legal/platform-service-of-use', element: redirectTo('/platform-service-of-use') },
+      { path: '/legal', element: <LegalPage /> },
+      { path: '/legal/hub', element: <LegalPage /> },
+      { path: '/legal/index', element: <LegalIndexPage /> },
+      { path: '/legal/terms-of-service', element: redirectTo('/termsofservice') },
+      { path: '/legal/terms', element: redirectTo('/termsofservice') },
+      { path: '/legal/privacy', element: redirectTo('/privacypolicy') },
+      { path: '/legal/privacy-policy', element: redirectTo('/privacypolicy') },
       { path: '/terms', element: redirectTo('/termsofservice') },
       { path: '/terms-of-service', element: redirectTo('/termsofservice') },
       { path: '/termsofservice', element: <TermsOfServicePage /> },
@@ -341,6 +365,7 @@ export const routes: RouteObject[] = [
       { path: '/communities', element: <CommunitiesPage /> },
       { path: '/community', element: <CommunityPage /> },
       { path: '/forum', element: <ForumPage /> },
+      { path: '/forum-draft', element: <ForumPageDraft /> },
       { path: '/events', element: <EventsPage /> },
       { path: '/fingerwars', element: <FingerWarsPage /> },
       { path: '/finger-wars', element: redirectTo('/fingerwars') },
@@ -350,9 +375,16 @@ export const routes: RouteObject[] = [
       { path: '/canary-ads', element: redirectTo('/canaryads') },
       { path: '/photo-credits', element: redirectTo('/photocredits') },
       { path: '/photocredits', element: <PhotoCreditsPage /> },
+      { path: '/luminagallery', element: <GalleryPage /> },
+      { path: '/business', element: <BusinessOfficesPage /> },
       { path: '/business-offices', element: redirectTo('/businessoffices') },
       { path: '/business/offices', element: redirectTo('/businessoffices') },
       { path: '/businessoffices', element: <BusinessOfficesPage /> },
+      { path: '/guardian-protection', element: <GuardianAiPage /> },
+      { path: '/guardian-ai', element: <GuardianAiPage /> },
+      { path: '/guardian', element: <GuardianAiPage /> },
+      { path: '/master-dashboard', element: <MasterDashboardPage /> },
+      { path: '/stercs-dashboard', element: <StercsDashboardPage /> },
       { path: '/franchise', element: <FranchisePage /> },
       { path: '/ugc-dashboard', element: redirectTo('/ugcdashboard') },
       { path: '/my-downloads', element: redirectTo('/mydownloads') },

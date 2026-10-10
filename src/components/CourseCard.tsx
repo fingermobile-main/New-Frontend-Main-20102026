@@ -8,7 +8,7 @@ interface CourseCardProps {
   instructor: string;
   duration: string;
   level: string;
-  price: number;
+  price?: number;
   enrolled: number;
 }
 
@@ -32,7 +32,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           <p className="text-xs">Instructor: {instructor}</p>
           <p className="text-xs">Duration: {duration}</p>
           <p className="text-xs">Level: {level}</p>
-          <p className="text-sm font-semibold mt-2">${price.toFixed(2)}</p>
+          <p className="text-sm font-semibold mt-2">${typeof price === 'number' ? price.toFixed(2) : '0.00'}</p>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col">

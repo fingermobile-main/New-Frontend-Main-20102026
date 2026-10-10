@@ -203,6 +203,14 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
     description: 'PhotoCredits, HD media uploads, folders & luxury showcases',
     items: [
       {
+        id: 'livestream-ugc',
+        title: '#Livestream',
+        description: 'Creator UGC Live Streaming Studio & Broadcast',
+        path: '/live-streaming',
+        icon: 'Video',
+        badge: { text: 'UGC', type: 'danger' }
+      },
+      {
         id: 'photocredits',
         title: 'PhotoCredits',
         description: 'Upload & download HD media for instant monetization',
