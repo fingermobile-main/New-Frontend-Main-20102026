@@ -1,0 +1,8 @@
+{
+  "preset": "jest-puppeteer",
+  "testEnvironment": "node",
+  "setupFilesAfterEnv": ["expect-puppeteer/lib/setup.js"],
+  "testMatch": [
+    "**/tests/**/*.test.js"
+  ]
+}
