@@ -1,0 +1,105 @@
+# ==============================================================================
+# FingerMobile Protocol - Plunk & Self-Hosted Email Deliverability Infrastructure
+# ==============================================================================
+# Headless Open-Source Email Platform (Alternative to Resend / SendGrid)
+# Paired with Stalwart Mail Server (Rust-based High Performance MTA for DKIM/SPF/DMARC)
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Plunk Headless Email Engine (AGPL-3.0)
+  # Provides Transactional REST API, Marketing Broadcasts, Templates & Webhooks
+  # ----------------------------------------------------------------------------
+  plunk:
+    image: useplunk/plunk:latest
+    container_name: fingermobile_plunk
+    restart: unless-stopped
+    ports:
+      - "${PLUNK_PORT:-9000}:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-plunk_user}:${POSTGRES_PASSWORD:-plunk_secure_password}@plunk_db:5432/${POSTGRES_DB:-plunk_db}?sslmode=disable
+      - REDIS_URL=redis://plunk_redis:6379
+      - SECRET=${PLUNK_SECRET:-fingermobile_protocol_super_secure_plunk_secret_key_2026}
+      - API_URL=${PLUNK_API_URL:-http://localhost:9000}
+      - APP_URL=${PLUNK_APP_URL:-http://localhost:9000}
+      # Outbound SMTP Bridge -> Routes through Stalwart MTA for DKIM/SPF/PTR handling
+      - SMTP_HOST=${SMTP_HOST:-stalwart}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURE=${SMTP_SECURE:-false}
+      - SMTP_USER=${SMTP_USER:-postmaster@fingermobile.com}
+      - SMTP_PASS=${SMTP_PASS:-stalwart_smtp_password}
+      - EMAIL_FROM=${EMAIL_FROM:-notifications@fingermobile.com}
+      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME:-FingerMobile Protocol}
+    depends_on:
+      - plunk_db
+      - plunk_redis
+      - stalwart
+    networks:
+      - email_network
+
+  # ----------------------------------------------------------------------------
+  # 2. Redis - Queue & Rate-Limiting Engine for Plunk
+  # ----------------------------------------------------------------------------
+  plunk_redis:
+    image: redis:7-alpine
+    container_name: fingermobile_plunk_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secure_pass_2026}
+    volumes:
+      - plunk_redis_data:/data
+    networks:
+      - email_network
+
+  # ----------------------------------------------------------------------------
+  # 3. PostgreSQL Database for Plunk Contacts, Campaigns & Event Logs
+  # ----------------------------------------------------------------------------
+  plunk_db:
+    image: postgres:15-alpine
+    container_name: fingermobile_plunk_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-plunk_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-plunk_secure_password}
+      - POSTGRES_DB=${POSTGRES_DB:-plunk_db}
+    volumes:
+      - plunk_pg_data:/var/lib/postgresql/data
+    networks:
+      - email_network
+
+  # ----------------------------------------------------------------------------
+  # 4. Stalwart Mail Server - Production MTA & Deliverability Gateway
+  # Handles Outbound Port 25, Cryptographic DKIM 2048-bit Signing, SPF & DMARC
+  # ----------------------------------------------------------------------------
+  stalwart:
+    image: stalwartlabs/mail-server:latest
+    container_name: fingermobile_stalwart_mta
+    restart: unless-stopped
+    ports:
+      # Outbound SMTP submission (internal & relay)
+      - "587:587"
+      # Secure SMTPS submission
+      - "465:465"
+      # Direct MTA Port 25 (Requires Unblocked VPS like Contabo / Bare-Metal)
+      - "25:25"
+      # JMAP / WebAdmin UI
+      - "8080:8080"
+    environment:
+      - STALWART_HOSTNAME=${MAIL_DOMAIN:-mail.fingermobile.com}
+      - STALWART_ADMIN_USER=${STALWART_ADMIN_USER:-admin}
+      - STALWART_ADMIN_PASS=${STALWART_ADMIN_PASS:-stalwart_admin_secret_2026}
+    volumes:
+      - stalwart_data:/opt/stalwart-mail
+    networks:
+      - email_network
+
+volumes:
+  plunk_redis_data:
+  plunk_pg_data:
+  stalwart_data:
+
+networks:
+  email_network:
+    driver: bridge

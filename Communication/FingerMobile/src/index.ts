@@ -10,6 +10,7 @@ import { connectDatabase } from './config/database';
 import communicationRoutes from './routes/communicationRoutes';
 import broadcastRoutes from './routes/broadcastRoutes';
 import mediaRoutes from './routes/mediaRoutes'; // New route for media uploads
+import emailRoutes from './routes/emailRoutes'; // Plunk & Deliverability email routes
 
 // Import middleware
 import { authenticateToken, requireSuperAdmin } from './middleware/auth';
@@ -44,6 +45,7 @@ app.use('/api/uploads', authenticateToken); // Media uploads also require auth
 app.use('/api/communications', communicationRoutes);
 app.use('/api/broadcasts', requireSuperAdmin, broadcastRoutes); // Broadcast routes require superadmin access
 app.use('/api/media', mediaRoutes); // New media routes
+app.use('/api/emails', emailRoutes); // Plunk & Deliverability email routes
 
 // Health check endpoint (no authentication required)
 app.get('/health', (req: Request, res: Response) => {
