@@ -1,11 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
       colors: {
+        // Boost low-end grays so legacy code won't disappear on white
+        gray: {
+          300: '#94a3b8',
+          400: '#64748b', // Shifted from faint slate to readable mid-tone
+          500: '#475569', // Passes 4.5:1 WCAG AA on white
+          600: '#334155', // Passes 7:1 WCAG AAA
+          700: '#1e293b',
+        },
+        slate: {
+          400: '#64748b',
+          500: '#475569',
+          600: '#334155',
+        },
+        zinc: {
+          400: '#71717a',
+          500: '#52525b',
+          600: '#3f3f46',
+        },
         'lush-primary': '#4F46E5', // Indigo color for primary actions
         'lush-secondary': '#EC4899', // Pink color for accents
         'lush-success': '#10B981', // Green for success states

@@ -17,7 +17,8 @@
     --secondary: 227 100% 47%;
     --secondary-foreground: 0 0% 100%;
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* FIXED: Adjusted muted-foreground from 46.9% lightness down to 32% */
+    --muted-foreground: 215.4 25% 32%;    /* #3d4a5d (~7:1 contrast on white) */
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
@@ -68,139 +69,42 @@
       --foreground: 222.2 84% 4.9%;
     }
   }
+}
 
-  /* Universal input / textarea / select contrast and visibility rules */
-  input, textarea, select {
+@layer utilities {
+  /* Enforce readable muted colors in light mode regardless of container nesting */
+  html:not(.dark):not(.black-theme) {
+    /* Baseline colors for faint utility classes on light backgrounds */
+    .text-gray-400,
+    .text-slate-400,
+    .text-zinc-400,
+    .text-neutral-400 {
+      color: #4b5563 !important; /* Gray-600: 4.6:1 contrast ratio */
+    }
+
+    .text-gray-500,
+    .text-slate-500,
+    .text-zinc-500,
+    .text-neutral-500 {
+      color: #374151 !important; /* Gray-700: 6.8:1 contrast ratio */
+    }
+
+    /* Subtitles, labels, and small descriptions */
+    .text-muted-foreground {
+      color: hsl(var(--muted-foreground)) !important;
+    }
+  }
+
+  /* Form controls */
+  html:not(.dark):not(.black-theme) input,
+  html:not(.dark):not(.black-theme) textarea,
+  html:not(.dark):not(.black-theme) select {
     color: #111827;
   }
 
-  .dark input, .dark textarea, .dark select,
-  .black-theme input, .black-theme textarea, .black-theme select {
-    color: #f9fafb;
-  }
-
-  /* When inputs, textareas, or selects are placed inside light containers or have light background classes, enforce dark visible text */
-  input[class*="bg-white"],
-  input[class*="bg-gray-50"],
-  input[class*="bg-gray-100"],
-  input[class*="bg-emerald-50"],
-  input[class*="bg-slate-50"],
-  textarea[class*="bg-white"],
-  textarea[class*="bg-gray-50"],
-  textarea[class*="bg-gray-100"],
-  textarea[class*="bg-emerald-50"],
-  select[class*="bg-white"],
-  select[class*="bg-gray-50"],
-  select[class*="bg-gray-100"] {
-    color: #111827 !important;
-  }
-
-  /* ============================================================
-     GLOBAL GRAY TEXT CONTRAST FIX
-     Fix: faint gray / slate / zinc / neutral text is invisible
-     on white or light (bg-gray-50, bg-slate-50) backgrounds.
-     Applies to ALL elements (p, span, div, label, td, th, li, h*)
-     on any white or light container across the platform.
-     ============================================================ */
-
-  /* --- on pure white bg-white containers --- */
-  .bg-white .text-gray-300, .bg-white .text-gray-400, .bg-white .text-gray-500,
-  .bg-white .text-gray-600, .bg-white .text-gray-700,
-  .bg-white .text-slate-300, .bg-white .text-slate-400, .bg-white .text-slate-500,
-  .bg-white .text-slate-600, .bg-white .text-slate-700,
-  .bg-white .text-zinc-300,  .bg-white .text-zinc-400,  .bg-white .text-zinc-500,
-  .bg-white .text-zinc-600,  .bg-white .text-zinc-700,
-  .bg-white .text-neutral-300, .bg-white .text-neutral-400, .bg-white .text-neutral-500,
-  .bg-white .text-neutral-600, .bg-white .text-neutral-700,
-  /* --- on bg-gray-50, bg-gray-100 (nearly white panels) --- */
-  .bg-gray-50 .text-gray-300, .bg-gray-50 .text-gray-400, .bg-gray-50 .text-gray-500,
-  .bg-gray-50 .text-gray-600, .bg-gray-50 .text-gray-700,
-  .bg-gray-50 .text-slate-300, .bg-gray-50 .text-slate-400, .bg-gray-50 .text-slate-500,
-  .bg-gray-50 .text-slate-600, .bg-gray-50 .text-slate-700,
-  .bg-gray-50 .text-zinc-300,  .bg-gray-50 .text-zinc-400,  .bg-gray-50 .text-zinc-500,
-  .bg-gray-50 .text-zinc-600,  .bg-gray-50 .text-zinc-700,
-  .bg-gray-50 .text-neutral-300, .bg-gray-50 .text-neutral-400, .bg-gray-50 .text-neutral-500,
-  .bg-gray-100 .text-gray-300, .bg-gray-100 .text-gray-400, .bg-gray-100 .text-gray-500,
-  .bg-gray-100 .text-gray-600, .bg-gray-100 .text-gray-700,
-  .bg-gray-100 .text-slate-300, .bg-gray-100 .text-slate-400, .bg-gray-100 .text-slate-500,
-  .bg-gray-100 .text-slate-600, .bg-gray-100 .text-slate-700,
-  .bg-gray-100 .text-zinc-300,  .bg-gray-100 .text-zinc-400,  .bg-gray-100 .text-zinc-500,
-  .bg-gray-100 .text-zinc-600,  .bg-gray-100 .text-zinc-700,
-  /* --- on bg-slate-50 / bg-slate-100 panels --- */
-  .bg-slate-50 .text-gray-300, .bg-slate-50 .text-gray-400, .bg-slate-50 .text-gray-500,
-  .bg-slate-50 .text-gray-600, .bg-slate-50 .text-gray-700,
-  .bg-slate-50 .text-slate-300, .bg-slate-50 .text-slate-400, .bg-slate-50 .text-slate-500,
-  .bg-slate-50 .text-slate-600, .bg-slate-50 .text-slate-700,
-  .bg-slate-50 .text-zinc-300, .bg-slate-50 .text-zinc-400, .bg-slate-50 .text-zinc-500,
-  .bg-slate-50 .text-zinc-600, .bg-slate-50 .text-zinc-700,
-  .bg-slate-100 .text-gray-300, .bg-slate-100 .text-gray-400, .bg-slate-100 .text-gray-500,
-  .bg-slate-100 .text-gray-600, .bg-slate-100 .text-gray-700,
-  .bg-slate-100 .text-slate-300, .bg-slate-100 .text-slate-400, .bg-slate-100 .text-slate-500,
-  .bg-slate-100 .text-slate-600, .bg-slate-100 .text-slate-700,
-  .bg-slate-100 .text-zinc-300, .bg-slate-100 .text-zinc-400, .bg-slate-100 .text-zinc-500,
-  /* --- on bg-emerald-50 / bg-blue-50 / bg-amber-50 card tints --- */
-  .bg-emerald-50 .text-gray-400, .bg-emerald-50 .text-gray-500, .bg-emerald-50 .text-gray-600,
-  .bg-emerald-50 .text-slate-400, .bg-emerald-50 .text-slate-500, .bg-emerald-50 .text-slate-600,
-  .bg-emerald-50 .text-zinc-400, .bg-emerald-50 .text-zinc-500, .bg-emerald-50 .text-zinc-600,
-  .bg-blue-50 .text-gray-400, .bg-blue-50 .text-gray-500, .bg-blue-50 .text-gray-600,
-  .bg-blue-50 .text-slate-400, .bg-blue-50 .text-slate-500, .bg-blue-50 .text-slate-600,
-  .bg-blue-50 .text-zinc-400, .bg-blue-50 .text-zinc-500, .bg-blue-50 .text-zinc-600,
-  .bg-amber-50 .text-gray-400, .bg-amber-50 .text-gray-500, .bg-amber-50 .text-gray-600,
-  .bg-amber-50 .text-slate-400, .bg-amber-50 .text-slate-500, .bg-amber-50 .text-slate-600,
-  .bg-amber-50 .text-zinc-400, .bg-amber-50 .text-zinc-500, .bg-amber-50 .text-zinc-600,
-  .bg-rose-50 .text-gray-400, .bg-rose-50 .text-gray-500, .bg-rose-50 .text-gray-600,
-  .bg-rose-50 .text-slate-400, .bg-rose-50 .text-slate-500, .bg-rose-50 .text-slate-600,
-  .bg-rose-50 .text-zinc-400, .bg-rose-50 .text-zinc-500, .bg-rose-50 .text-zinc-600,
-  .bg-indigo-50 .text-gray-400, .bg-indigo-50 .text-gray-500, .bg-indigo-50 .text-gray-600,
-  .bg-indigo-50 .text-slate-400, .bg-indigo-50 .text-slate-500, .bg-indigo-50 .text-slate-600,
-  .bg-purple-50 .text-gray-400, .bg-purple-50 .text-gray-500, .bg-purple-50 .text-gray-600,
-  .bg-purple-50 .text-slate-400, .bg-purple-50 .text-slate-500, .bg-purple-50 .text-slate-600 {
-    color: #1a1a2e !important; /* deep near-black for full legibility */
-  }
-
-  /* --- Standalone gray/zinc text elements NOT inside dark containers --- */
-  /* Catch any element directly using gray classes on the root light background */
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-gray-400,
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-gray-500,
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-slate-400,
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-slate-500,
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-zinc-400,
-  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-zinc-500 {
-    color: #374151 !important; /* dark gray-700 equivalent - readable on any light bg */
-  }
-
-  /* Legacy class-selector fallback for generic bg-white containers (ensures backward compat) */
-  [class*="bg-white"] p[class*="text-gray-"],
-  [class*="bg-white"] p[class*="text-slate-"],
-  [class*="bg-white"] p[class*="text-zinc-"],
-  [class*="bg-white"] span[class*="text-gray-"],
-  [class*="bg-white"] span[class*="text-slate-"],
-  [class*="bg-white"] span[class*="text-zinc-"],
-  [class*="bg-white"] div[class*="text-gray-"],
-  [class*="bg-white"] div[class*="text-slate-"],
-  [class*="bg-white"] div[class*="text-zinc-"],
-  [class*="bg-white"] label[class*="text-gray-"],
-  [class*="bg-white"] label[class*="text-slate-"],
-  [class*="bg-white"] label[class*="text-zinc-"],
-  [class*="bg-white"] td[class*="text-gray-"],
-  [class*="bg-white"] td[class*="text-slate-"],
-  [class*="bg-white"] td[class*="text-zinc-"],
-  [class*="bg-white"] th[class*="text-gray-"],
-  [class*="bg-white"] th[class*="text-slate-"],
-  [class*="bg-white"] th[class*="text-zinc-"],
-  [class*="bg-white"] li[class*="text-gray-"],
-  [class*="bg-white"] li[class*="text-slate-"],
-  [class*="bg-white"] li[class*="text-zinc-"],
-  [class*="bg-white"] h1[class*="text-gray-"],
-  [class*="bg-white"] h2[class*="text-gray-"],
-  [class*="bg-white"] h3[class*="text-gray-"],
-  [class*="bg-white"] h4[class*="text-gray-"],
-  [class*="bg-white"] h5[class*="text-gray-"] {
-    color: #0f172a !important;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: #9ca3af;
+  html:not(.dark):not(.black-theme) input::placeholder,
+  html:not(.dark):not(.black-theme) textarea::placeholder {
+    color: #6b7280; /* Gray-500: readable placeholder */
   }
 }
 
