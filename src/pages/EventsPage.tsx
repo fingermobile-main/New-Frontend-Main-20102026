@@ -256,7 +256,7 @@ const EventsPage: React.FC = () => {
   const handleCreatePaylink = (e: React.FormEvent) => {
     e.preventDefault();
     if (!paylinkEvent) return;
-    showToast(`Paylink generated: https://fingermobile.org/pay/event/${paylinkEvent.id}`, 'success');
+    showToast(`Paylink generated: https://fingermobileprotocol.com/pay/event/${paylinkEvent.id}`, 'success');
     setPaylinkEvent(null);
     setPaylinkDescription('');
   };

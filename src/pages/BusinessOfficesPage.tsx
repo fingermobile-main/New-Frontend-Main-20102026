@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { apiService } from '../services/apiService';
 import MainLayout from '../components/layout/MainLayout';
 import {
   Building2,
@@ -47,7 +48,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: '#Gilbert Nwanna Crescent, Kubwa',
     city: 'Abuja, F.C.T.',
     phone: '+234 801 234 5678',
-    email: 'admin@fingermobile.org',
+    email: 'info@fingermobileprotocol.com',
     isHeadquarters: true,
     isVirtual: false,
     hours: 'Mon - Fri: 8:00 AM - 6:00 PM (WAT)',
@@ -68,7 +69,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: '#7307, Branford Park Ln',
     city: 'Richmond, Texas 77407',
     phone: '+1 (832) 555-0199',
-    email: 'usa@fingermobile.org',
+    email: 'fingermobileprotocol@gmail.com',
     isHeadquarters: true,
     isVirtual: false,
     hours: 'Mon - Fri: 9:00 AM - 5:00 PM (CST)',
@@ -89,7 +90,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: '123 Victoria Island Commercial Corridor',
     city: 'Lagos',
     phone: '+234 800 123 4567',
-    email: 'lagos@fingermobile.org',
+    email: 'lagos@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: false,
     hours: '24/7 Creator Operations',
@@ -110,7 +111,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: 'Level 24, One Canada Square, Canary Wharf',
     city: 'London E14 5AA',
     phone: '+44 20 7946 0912',
-    email: 'london@fingermobile.org',
+    email: 'london@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: false,
     hours: 'Mon - Fri: 9:00 AM - 5:30 PM (GMT)',
@@ -131,7 +132,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: '7 Independence Avenue, Airport City',
     city: 'Accra',
     phone: '+233 30 274 5800',
-    email: 'ghana@fingermobile.org',
+    email: 'ghana@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: false,
     hours: 'Mon - Fri: 8:30 AM - 5:30 PM (GMT)',
@@ -152,7 +153,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: 'The Mirage, Tower 2, Chiromo Road, Westlands',
     city: 'Nairobi',
     phone: '+254 20 765 4321',
-    email: 'nairobi@fingermobile.org',
+    email: 'nairobi@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: false,
     hours: 'Mon - Fri: 8:30 AM - 6:00 PM (EAT)',
@@ -173,7 +174,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: '150 West Street, Sandton',
     city: 'Johannesburg 2196',
     phone: '+27 11 883 0000',
-    email: 'safrica@fingermobile.org',
+    email: 'safrica@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: false,
     hours: 'Mon - Fri: 8:30 AM - 5:00 PM (SAST)',
@@ -194,7 +195,7 @@ const CORPORATE_OFFICES: CorporateOffice[] = [
     address: 'Node #001 (Web3 / Global RPC Cluster)',
     city: 'Decentralized Protocol',
     phone: 'Protocol VOIP / Discord SIP',
-    email: 'protocol@fingermobile.org',
+    email: 'protocol@fingermobileprotocol.com',
     isHeadquarters: false,
     isVirtual: true,
     hours: '24/7/365 Autonomous Protocol Uptime',
@@ -239,25 +240,39 @@ export const BusinessOfficesPage: React.FC = () => {
     });
   }, [selectedRegion, searchQuery]);
 
-  const handleBookVisit = (e: React.FormEvent) => {
+  const handleBookVisit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingName || !bookingEmail || !bookingDate) {
       showToast('Please fill in all booking fields', 'error');
       return;
     }
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const response = await apiService.post('/business/offices/book', {
+        officeId: selectedOffice?.id,
+        name: bookingName,
+        email: bookingEmail,
+        date: bookingDate,
+        purpose: bookingPurpose,
+        attendees: attendeeCount
+      });
+
+      if (response && response.success) {
+        showToast(
+          `Appointment confirmed for ${bookingName} at ${selectedOffice?.name}! Check ${bookingEmail} for your VIP Security Pass.`,
+          'success'
+        );
+        setSelectedOffice(null);
+        setBookingName('');
+        setBookingEmail('');
+        setBookingDate('');
+        setAttendeeCount('1');
+      }
+    } catch (err) {
+      showToast('Failed to schedule visit. Please try again.', 'error');
+    } finally {
       setIsSubmitting(false);
-      showToast(
-        `Appointment confirmed for ${bookingName} at ${selectedOffice?.name}! Check ${bookingEmail} for your VIP Security Pass.`,
-        'success'
-      );
-      setSelectedOffice(null);
-      setBookingName('');
-      setBookingEmail('');
-      setBookingDate('');
-      setAttendeeCount('1');
-    }, 600);
+    }
   };
 
   return (

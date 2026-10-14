@@ -20,6 +20,8 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '../services/apiService';
+import { useAppContext } from '../contexts/AppContext';
 
 interface ContentItem {
   id: number;
@@ -36,6 +38,7 @@ interface ContentItem {
 }
 
 const ContentManagementPage: React.FC = () => {
+  const { showToast } = useAppContext();
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [filteredContent, setFilteredContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,79 +59,26 @@ const ContentManagementPage: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const history = { push: (path: string) => navigate(path), replace: (path: string) => navigate(path, { replace: true }) };
 
   // Fetch content from API
   useEffect(() => {
     const fetchContent = async () => {
+      setLoading(true);
       try {
-        // Simulating API call - in real implementation, this would call the backend
-        const mockContent: ContentItem[] = [
-          {
-            id: 1,
-            title: 'Introduction to FingerMobile Protocol',
-            description: 'An overview of the FingerMobile Protocol and its features',
-            authorId: 1,
-            authorName: 'John Doe',
-            status: 'published',
-            category: 'tutorial',
-            tags: ['protocol', 'introduction', 'overview'],
-            content: 'This is the content body...',
-            createdAt: '2024-01-01T00:00:00Z',
-            updatedAt: '2024-10-09T10:30:00Z'
-          },
-          {
-            id: 2,
-            title: 'Advanced Features Guide',
-            description: 'Deep dive into advanced features of the platform',
-            authorId: 2,
-            authorName: 'Jane Smith',
-            status: 'draft',
-            category: 'guide',
-            tags: ['advanced', 'features', 'guide'],
-            content: 'This is the content body...',
-            createdAt: '2024-02-01T00:00:00Z',
-            updatedAt: '2024-10-08T15:30:00Z'
-          },
-          {
-            id: 3,
-            title: 'User Management Best Practices',
-            description: 'How to effectively manage users on the platform',
-            authorId: 3,
-            authorName: 'Bob Johnson',
-            status: 'pending',
-            category: 'best-practices',
-            tags: ['user', 'management', 'best-practices'],
-            content: 'This is the content body...',
-            createdAt: '2024-03-01T00:00:00Z',
-            updatedAt: '2024-10-07T12:15:00Z'
-          },
-          {
-            id: 4,
-            title: 'Security Guidelines',
-            description: 'Essential security guidelines for platform administrators',
-            authorId: 1,
-            authorName: 'John Doe',
-            status: 'rejected',
-            category: 'security',
-            tags: ['security', 'guidelines', 'admin'],
-            content: 'This is the content body...',
-            createdAt: '2024-04-01T00:00:00Z',
-            updatedAt: '2024-10-06T09:45:00Z'
-          }
-        ];
-        
-        setContentItems(mockContent);
-        setFilteredContent(mockContent);
-        setLoading(false);
+        const response = await apiService.get('/content');
+        if (response && Array.isArray(response.data)) {
+          setContentItems(response.data);
+          setFilteredContent(response.data);
+        }
       } catch (error) {
-        console.error('Error fetching content:', error);
+        showToast?.('Error fetching content items', 'error');
+      } finally {
         setLoading(false);
       }
     };
 
     fetchContent();
-  }, []);
+  }, [showToast]);
 
   // Filter content based on search term and filters
   useEffect(() => {
@@ -162,62 +112,59 @@ const ContentManagementPage: React.FC = () => {
 
   const handleCreateContent = async () => {
     try {
-      // In a real implementation, this would call the API to create content
-      console.log('Creating content:', newContent);
-      setShowCreateModal(false);
-      // Reset form
-      setNewContent({
-        title: '',
-        description: '',
-        content: '',
-        authorId: 1,
-        status: 'draft',
-        category: 'general',
-        tags: ''
-      });
+      const response = await apiService.post('/content', newContent);
+      if (response && response.success) {
+        showToast?.('Content created successfully!', 'success');
+        setContentItems([response.data, ...contentItems]);
+        setShowCreateModal(false);
+        // Reset form
+        setNewContent({
+          title: '',
+          description: '',
+          content: '',
+          authorId: 1,
+          status: 'draft',
+          category: 'general',
+          tags: ''
+        });
+      }
     } catch (error) {
-      console.error('Error creating content:', error);
+      showToast?.('Error creating content', 'error');
     }
   };
 
   const handleDeleteContent = async (contentId: number) => {
+    if (!window.confirm('Are you sure you want to delete this content?')) return;
     try {
-      // In a real implementation, this would call the API to delete content
-      console.log('Deleting content:', contentId);
+      await apiService.delete(`/content/${contentId}`);
+      showToast?.('Content deleted successfully', 'success');
       setContentItems(contentItems.filter(content => content.id !== contentId));
-      setFilteredContent(filteredContent.filter(content => content.id !== contentId));
     } catch (error) {
-      console.error('Error deleting content:', error);
+      showToast?.('Error deleting content', 'error');
     }
   };
 
   const handleApproveContent = async (contentId: number) => {
     try {
-      // In a real implementation, this would call the API to approve content
-      console.log('Approving content:', contentId);
+      await apiService.post(`/content/${contentId}/approve`);
+      showToast?.('Content approved!', 'success');
       setContentItems(contentItems.map(content => 
         content.id === contentId ? {...content, status: 'published'} : content
       ));
-      setFilteredContent(filteredContent.map(content => 
-        content.id === contentId ? {...content, status: 'published'} : content
-      ));
     } catch (error) {
-      console.error('Error approving content:', error);
+      showToast?.('Error approving content', 'error');
     }
   };
 
   const handleRejectContent = async (contentId: number) => {
     try {
-      // In a real implementation, this would call the API to reject content
-      console.log('Rejecting content:', contentId);
+      await apiService.post(`/content/${contentId}/reject`);
+      showToast?.('Content rejected', 'success');
       setContentItems(contentItems.map(content => 
         content.id === contentId ? {...content, status: 'rejected'} : content
       ));
-      setFilteredContent(filteredContent.map(content => 
-        content.id === contentId ? {...content, status: 'rejected'} : content
-      ));
     } catch (error) {
-      console.error('Error rejecting content:', error);
+      showToast?.('Error rejecting content', 'error');
     }
   };
 
@@ -406,16 +353,13 @@ const ContentManagementPage: React.FC = () => {
                         <div className="flex space-x-2">
                           <button 
                             className="text-blue-600 hover:text-blue-900"
-                            onClick={() => history.push(`/dashboard/content/${item.id}/view`)}
+                            onClick={() => navigate(`/dashboard/content/${item.id}/view`)}
                           >
                             <Eye className="h-4 w-4" />
                           </button>
                           <button 
                             className="text-green-600 hover:text-green-900"
-                            onClick={() => {
-                              // Edit content
-                              console.log('Edit content:', item.id);
-                            }}
+                            onClick={() => navigate(`/dashboard/content/${item.id}/edit`)}
                           >
                             <Edit3 className="h-4 w-4" />
                           </button>
@@ -441,20 +385,20 @@ const ContentManagementPage: React.FC = () => {
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
-                          <div className="relative">
+                          <div className="relative group/actions">
                             <button className="text-gray-600 hover:text-gray-900">
                               <MoreHorizontal className="h-4 w-4" />
                             </button>
-                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover/actions:block">
                               <button 
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                onClick={() => history.push(`/dashboard/content/${item.id}/edit`)}
+                                onClick={() => navigate(`/dashboard/content/${item.id}/edit`)}
                               >
                                 Edit Content
                               </button>
                               <button 
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                onClick={() => history.push(`/dashboard/content/${item.id}/analytics`)}
+                                onClick={() => navigate(`/dashboard/content/${item.id}/analytics`)}
                               >
                                 View Analytics
                               </button>

@@ -63,7 +63,7 @@ const ProfilePage: React.FC = () => {
         setProfile({
           ...res,
           name: res.name || (id ? 'Lush Member' : member?.name || ''),
-          email: res.email || (id ? `${id}@fingermobile.network` : member?.email || ''),
+          email: res.email || (id ? `${id}@fingermobileprotocol.com` : member?.email || ''),
           username: res.username || (id ? id : (member as any)?.username || ''),
           bio: res.bio || 'Verified Sovereign FingerMobile Protocol member.',
           headline: res.headline || 'Active Protocol Contributor',
@@ -78,7 +78,7 @@ const ProfilePage: React.FC = () => {
         setProfile({
           id,
           name: id === 'mock-user-1' ? 'Zainab Al-Mansoor' : `Member ${id}`,
-          email: `${id}@fingermobile.network`,
+          email: `${id}@fingermobileprotocol.com`,
           username: id === 'mock-user-1' ? 'zainab_luxury' : id,
           bio: id === 'mock-user-1'
             ? 'Haute couture curator, digital asset architect, and sovereign protocol enthusiast based between Dubai and Lagos. Passionate about curated gifting and luxury craftsmanship.'
@@ -87,7 +87,7 @@ const ProfilePage: React.FC = () => {
           avatarUrl: id === 'mock-user-1'
             ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
             : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
-          website: 'https://fingermobile.com',
+          website: 'https://fingermobileprotocol.com',
           location: 'Dubai & Lagos',
           skills: ['Haute Horology', 'Curated Gifting', 'Digital Identity', 'FIC Protocol'],
           certifications: ['Verified Sovereign PIN Holder', 'Lush VIP 5-Star']

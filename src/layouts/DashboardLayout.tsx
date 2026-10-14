@@ -24,11 +24,13 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   // Rest of the component implementation...
   return (
     <div className={`flex h-screen ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
-      {/* Mobile sidebar toggle */}
-      <div className="fixed top-4 left-4 z-50 md:hidden">
+      {/* Sidebar toggle button */}
+      <div className={`fixed top-4 left-4 z-50 ${sidebarOpen ? 'hidden md:hidden' : ''}`}>
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-md text-[#ff6b00] bg-white dark:bg-gray-800 shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700"
+          className="p-2 rounded-xl text-[#ff6b00] bg-white dark:bg-gray-800 shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition cursor-pointer"
+          aria-label="Toggle Dashboard Navigation"
+          title="Toggle Navigation"
         >
           <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
         </button>

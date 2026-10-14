@@ -1,0 +1,126 @@
+{
+  "assets": {
+    "attachments": {
+      "main_color": {
+        "type": "color"
+      }
+    },
+    "images": {
+      "text": {
+        "type": "text_texture",
+        "font": "NotoSans-Regular.ttf",
+        "width": 1024,
+        "height": 768,
+        "text": "0.0 sm"
+      },
+      "camera": {
+        "type": "procedural_texture",
+        "algorithm": "camera_composer"
+      }
+    },
+
+    "materials": {
+      "bg": {
+        "samplers": [
+          {
+            "name": "s_text",
+            "image": "text"
+          }
+        ],
+        "state": {
+          "blend": "alpha",
+          "backfaces": false,
+          "colorwrite": true,
+          "ztest": false,
+          "zwrite": false
+        }
+      },
+      "$builtin$materials/copy_pixels.0": {
+        "parameters": {},
+        "samplers": [
+          {
+            "image": "camera",
+            "name": "tex_src"
+          }
+        ],
+        "state": {
+          "backfaces": true,
+          "blend": "off",
+          "colorwrite": true,
+          "ztest": false,
+          "zwrite": false
+        }
+      }
+    },
+
+    "meshes": {
+      "quad_surface": "quad.bsm2"
+    }
+  },
+
+  "components": {
+    "copy_camera": {
+      "materials": ["$builtin$materials/copy_pixels.0"],
+      "mesh": "quad_surface",
+      "type": "mesh_instance"
+    },
+    "text_surface": {
+      "materials": ["bg"],
+      "mesh": "quad_surface",
+      "type": "mesh_instance"
+    }
+  },
+
+  "entities": {
+    "copy_camera": {
+      "components": [
+        "copy_camera"
+      ],
+      "layer": "camera"
+    },
+    "text_surface": {
+      "components": [
+        "text_surface"
+      ],
+      "layer": "text"
+    }
+  },
+
+  "hierarchy": {
+    "root": [
+      "text_surface",
+      "copy_camera"
+    ]
+  },
+
+  "layers": {
+    "text": {},
+    "camera": {}
+  },
+
+  "render_list": {
+    "default": [
+      {
+        "layer": "camera",
+        "render_target": "Main"
+      },
+      {
+        "layer": "text",
+        "render_target": "Main"
+      }
+    ]
+  },
+
+  "render_targets": {
+    "Main": [
+      "main_color"
+    ]
+  },
+
+
+  "scene": "test_ruler",
+  "script": {
+    "type": "latest",
+    "entry_point": "config.js"
+  }
+}

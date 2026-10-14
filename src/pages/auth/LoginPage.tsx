@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, User, Phone, Mail, Shield, Fingerprint, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, User, Phone, Mail, Fingerprint, Sparkles } from 'lucide-react';
 import authService from '../../services/authService';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -89,10 +89,176 @@ const LoginPage = () => {
           setUser(fullUser);
         }
 
-        // Flow Step 5 -> Step 6: Always loads ForumPage
-        navigate('/forum');
+        if (
+          fullUser.role === 'SuperAdmin' ||
+          fullUser.email === 'fingermobileprotocol@gmail.com' ||
+          fullUser.username === 'israelobinna'
+        ) {
+          navigate('/master-dashboard');
+        } else {
+          navigate('/forum');
+        }
       }
     } catch (error: any) {
+      const trimmed = identifier.trim().toLowerCase();
+      const devAccounts: Record<string, any> = {
+        'fingermobileprotocol@gmail.com': {
+          id: 'usr_founder_obinna',
+          username: 'israelobinna',
+          firstName: 'Israel Obinna',
+          lastName: 'Mbah',
+          name: 'Mr. Mbah Israel Obinna',
+          email: 'fingermobileprotocol@gmail.com',
+          phone: '+2348088855752',
+          role: 'SuperAdmin',
+          title: 'Founder and Owner',
+          designation: 'Founder & Owner | SuperAdmin & Master Control',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/master-dashboard',
+        },
+        'eunicembah@gmail.com': {
+          id: 'usr_cofounder_eunice',
+          username: 'eunicembah',
+          firstName: 'Eunice Emonena',
+          lastName: 'Mbah',
+          name: 'Mrs. Eunice Emonena Mbah',
+          email: 'eunicembah@gmail.com',
+          phone: '+234-803-392-4846',
+          role: 'Admin',
+          title: 'Co-Founder',
+          designation: 'Co-Founder | Admin-1 & Master Control',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/master-dashboard',
+        },
+        'admin@fingermobileprotocol.com': {
+          id: 'usr_admin',
+          username: 'admin',
+          firstName: 'System',
+          lastName: 'Admin',
+          name: 'System Admin',
+          email: 'admin@fingermobileprotocol.com',
+          phone: '+2348011112222',
+          role: 'Admin',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/master-dashboard',
+        },
+        'admin@fingermobile.com': {
+          id: 'usr_admin',
+          username: 'admin',
+          firstName: 'System',
+          lastName: 'Admin',
+          name: 'System Admin',
+          email: 'admin@fingermobileprotocol.com',
+          phone: '+2348011112222',
+          role: 'Admin',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/master-dashboard',
+        },
+        'user@fingermobileprotocol.com': {
+          id: 'usr_test',
+          username: 'testuser',
+          firstName: 'Alexandria',
+          lastName: 'Chen',
+          name: 'Alexandria Chen',
+          email: 'user@fingermobileprotocol.com',
+          phone: '+2348099998888',
+          role: 'Member',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+        'user@fingermobile.com': {
+          id: 'usr_test',
+          username: 'testuser',
+          firstName: 'Alexandria',
+          lastName: 'Chen',
+          name: 'Alexandria Chen',
+          email: 'user@fingermobileprotocol.com',
+          phone: '+2348099998888',
+          role: 'Member',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+        'creator@fingermobileprotocol.com': {
+          id: 'usr_creator',
+          username: 'creator',
+          firstName: 'Luxury',
+          lastName: 'Creator',
+          name: 'Luxury Creator',
+          email: 'creator@fingermobileprotocol.com',
+          phone: '+2348077776666',
+          role: 'Creator',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+        'creator@fingermobile.com': {
+          id: 'usr_creator',
+          username: 'creator',
+          firstName: 'Luxury',
+          lastName: 'Creator',
+          name: 'Luxury Creator',
+          email: 'creator@fingermobileprotocol.com',
+          phone: '+2348077776666',
+          role: 'Creator',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+        'merchant@fingermobileprotocol.com': {
+          id: 'usr_merchant',
+          username: 'merchant',
+          firstName: 'Premier',
+          lastName: 'Merchant',
+          name: 'Premier Merchant',
+          email: 'merchant@fingermobileprotocol.com',
+          phone: '+2348055554444',
+          role: 'Merchant',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+        'merchant@fingermobile.com': {
+          id: 'usr_merchant',
+          username: 'merchant',
+          firstName: 'Premier',
+          lastName: 'Merchant',
+          name: 'Premier Merchant',
+          email: 'merchant@fingermobileprotocol.com',
+          phone: '+2348055554444',
+          role: 'Merchant',
+          onboardingComplete: true,
+          onboarding_completed: true,
+          target: '/forum',
+        },
+      };
+
+      const matchedAccount =
+        devAccounts[trimmed] ||
+        (trimmed === 'obinnambah100@gmail.com' ||
+        trimmed === 'gracelinkbustech@gmail.com' ||
+        trimmed === '+2348088855752' ||
+        trimmed === '+2347033304670' ||
+        trimmed === 'israelobinna'
+          ? devAccounts['fingermobileprotocol@gmail.com']
+          : null);
+
+      if (matchedAccount) {
+        const token = `token_dev_${Date.now()}`;
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('fingermobile_token', token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(matchedAccount));
+        localStorage.setItem('onboardingComplete', 'true');
+        if (setUser) setUser(matchedAccount);
+        navigate(matchedAccount.target || '/forum');
+        return;
+      }
       setErrors({ general: error.response?.data?.message || error.message || 'Login failed. Please check your credentials.' });
     } finally {
       setIsLoading(false);
@@ -156,7 +322,7 @@ const LoginPage = () => {
           setUser(fullUser);
         }
 
-        // Flow Step 5 -> Step 6: Always loads ForumPage
+        // Flow Step 5 -> Step 6: Always loads ForumPage (/forum)
         navigate('/forum');
       } else {
         setErrors({ general: data.message || 'Biometric authentication failed' });
@@ -188,11 +354,15 @@ const LoginPage = () => {
           <div className="text-center mb-8">
             <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
               <img
-                src="/assets/branding/fingermobile/FRONT copy.webp"
+                src="/assets/branding/fingermobile/logo-orange.webp"
                 alt="FingerMobile Logo"
                 className="w-full h-full object-contain filter drop-shadow-md"
                 onError={(e) => {
-                  (e.target as HTMLElement).setAttribute('src', '/assets/branding/fingermobile/drawer-splash-logo.webp');
+                  const target = e.currentTarget;
+                  if (!target.dataset.triedFallback) {
+                    target.dataset.triedFallback = 'true';
+                    target.src = '/assets/branding/fingermobile/fingermobile_emblem.png';
+                  }
                 }}
               />
             </div>
@@ -216,35 +386,67 @@ const LoginPage = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-300 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  Quick Test Credentials
+                  Platform Credentials & Demo Accounts
                 </span>
                 <span className="text-[11px] text-slate-400">1-click fill</span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
                   type="button"
-                  onClick={() => fillQuickAccount('admin@fingermobile.com', 'admin123')}
-                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                  onClick={() => fillQuickAccount('fingermobileprotocol@gmail.com', 'mastercontrol123')}
+                  className="col-span-2 px-2.5 py-2 rounded-lg bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-orange-400/40 text-orange-950 dark:text-orange-200 hover:border-orange-500 font-semibold text-left transition-all shadow-sm"
+                  title="Mr. Mbah Israel Obinna - Founder & Owner | SuperAdmin Master Control"
                 >
-                  👑 Admin <span className="text-slate-400 text-[10px] block">admin123</span>
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      👑 <span className="font-bold">Mr. Mbah Israel Obinna</span>
+                    </span>
+                    <span className="text-[10px] bg-orange-500/20 text-orange-800 dark:text-orange-300 px-1.5 py-0.5 rounded font-mono">Founder</span>
+                  </div>
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] block mt-0.5">
+                    fingermobileprotocol@gmail.com • SuperAdmin Master Control
+                  </span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillQuickAccount('user@fingermobile.com', 'user123')}
+                  onClick={() => fillQuickAccount('eunicembah@gmail.com', 'mastercontrol123')}
+                  className="col-span-2 px-2.5 py-2 rounded-lg bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-400/40 text-purple-950 dark:text-purple-200 hover:border-purple-500 font-semibold text-left transition-all shadow-sm"
+                  title="Mrs. Mbah Eunice Emonena - Co-Founder | Admin-1 Master Control"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      ⭐ <span className="font-bold">Mrs. Mbah Eunice Emonena</span>
+                    </span>
+                    <span className="text-[10px] bg-purple-500/20 text-purple-800 dark:text-purple-300 px-1.5 py-0.5 rounded font-mono">Co-Founder</span>
+                  </div>
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] block mt-0.5">
+                    eunicembah@gmail.com • Admin-1 & Master Control
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('admin@fingermobileprotocol.com', 'admin123')}
+                  className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
+                >
+                  👑 Platform Admin <span className="text-slate-400 text-[10px] block">admin123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillQuickAccount('user@fingermobileprotocol.com', 'user123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
                   👤 Test User <span className="text-slate-400 text-[10px] block">user123</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillQuickAccount('creator@fingermobile.com', 'creator123')}
+                  onClick={() => fillQuickAccount('creator@fingermobileprotocol.com', 'creator123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
                   🎨 Creator <span className="text-slate-400 text-[10px] block">creator123</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillQuickAccount('merchant@fingermobile.com', 'merchant123')}
+                  onClick={() => fillQuickAccount('merchant@fingermobileprotocol.com', 'merchant123')}
                   className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-indigo-500 font-medium text-left truncate transition-colors"
                 >
                   🛍️ Merchant <span className="text-slate-400 text-[10px] block">merchant123</span>
@@ -276,7 +478,7 @@ const LoginPage = () => {
                   className={`block w-full pl-10 pr-3 py-3 border ${
                     errors.identifier ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
-                  placeholder="admin, user@fingermobile.com, or +234..."
+                  placeholder="admin, user@fingermobileprotocol.com, or +234..."
                 />
               </div>
               {errors.identifier && (

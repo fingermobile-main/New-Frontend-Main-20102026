@@ -641,6 +641,126 @@ class ForumService {
       };
     }
   }
+
+  // ─── Sovereign Feed Persistent Methods (PostgreSQL) ─────────────────────────
+  static async getAllPosts(params?: { category?: string; feedMode?: string; search?: string }): Promise<ApiResponse<{ posts: any[]; total: number }>> {
+    try {
+      const response = await ApiService.get('/forums/posts', { params });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Posts retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve posts',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async createFeedPost(postData: any): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post('/forums/posts', postData);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Post created and persisted in PostgreSQL',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to create post',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async votePoll(postId: string, optionIndex: number): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post(`/forums/posts/${postId}/poll/vote`, { optionIndex });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Vote recorded and persisted in PostgreSQL',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to vote on poll',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async rsvpEvent(postId: string): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post(`/forums/posts/${postId}/event/rsvp`, {});
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'RSVP recorded and persisted in PostgreSQL',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to RSVP',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async addComment(postId: string, content: string): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post(`/forums/posts/${postId}/comments`, { content });
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Comment added and persisted in PostgreSQL',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to add comment',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async getComments(postId: string): Promise<ApiResponse<any[]>> {
+    try {
+      const response = await ApiService.get(`/forums/posts/${postId}/comments`);
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Comments retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve comments',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  static async sharePost(postId: string): Promise<ApiResponse<any>> {
+    try {
+      const response = await ApiService.post(`/forums/posts/${postId}/share`, {});
+      return {
+        success: true,
+        data: response.data.data || response.data,
+        message: 'Share recorded and persisted in PostgreSQL',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to share post',
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
 }
 
 export default ForumService;

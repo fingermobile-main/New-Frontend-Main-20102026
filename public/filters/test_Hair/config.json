@@ -1,0 +1,152 @@
+{
+    "assets": {
+        "attachments": {
+            "camera_color": {
+                "type": "color",
+                "generate_mipmaps": true,
+                "filtering": "trilinear"
+            },
+            "hair_mask": {
+                "type": "color"
+            }
+        },
+        "images": {
+            "hair_nn": {
+                "type": "segmentation_mask",
+                "active": true,
+                "recognizer_feature_name": "hair"
+            },
+            "camera: tex_y": {
+                "type" : "camera",
+                "format": "y"
+            },
+            "camera: tex_uv": {
+                "type" : "camera",
+                "format": "uv"
+            },
+            "camera: tex_rgb": {
+                "type" : "camera",
+                "format": "rgba"
+            }
+        },
+        "materials": {
+            "hair": {
+                "samplers": [
+                    {
+                        "name": "s_bg",
+                        "image": "camera_color"
+                    },
+                    {
+                        "name": "s_segmentation_mask",
+                        "image": "hair_nn"
+                    }
+                ],
+                "state": {
+                    "blend": "off",
+                    "backfaces": false,
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "hair_color": { "type": "vec4", "value": [0, 0, 0, 0] },
+                    "color_params": { "type": "vec4", "value": [0, 0, 0, 0] }
+                }
+            },
+            "$builtin$materials/camera": {
+                "samplers": [
+                    {
+                        "name": "tex_y",
+                        "image": "camera: tex_y"
+                    },
+                    {
+                        "name": "tex_uv",
+                        "image": "camera: tex_uv"
+                    },
+                    {
+                        "name": "tex_rgb",
+                        "image": "camera: tex_rgb"
+                    }
+                ],
+                "state": {
+                    "backfaces": true,
+                    "blend": "off",
+                    "colorwrite": true,
+                    "ztest": false,
+                    "zwrite": false
+                },
+                "parameters": {
+                    "bnb_camera_scale": {
+                        "type": "vec4",
+                        "value": [1, 0, 0, 1]
+                    },
+                    "bnb_view_width_fraction": {
+                        "type": "vec4",
+                        "value": [1, 0, 0, 0]
+                    }
+                }
+            }
+        },
+        "meshes": {
+            "plane_surface": "$builtin$meshes/fs_tri",
+            "quad_surface": "quad.bsm2"
+        }
+    },
+    "components": {
+        "camera_tri": {
+            "materials": ["$builtin$materials/camera"],
+            "mesh": "plane_surface",
+            "type": "mesh_instance"
+        },
+        "hair_surface": {
+            "materials": ["hair"],
+            "mesh": "quad_surface",
+            "type": "mesh_instance"
+        }
+    },
+    "entities": {
+        "camera": {
+            "components": [
+                "camera_tri"
+            ],
+            "layer": "composer_pre"
+        },
+        "hair_surface": {
+            "components": [
+                "hair_surface"
+            ],
+            "layer": "hair"
+        }
+    },
+    "hierarchy": {
+        "root": [
+            "camera",
+            "hair_surface"
+        ]
+    },
+    "render_list": {
+        "default": [
+            {
+                "layer": "composer_pre",
+                "render_target": "ComposerRT"
+            },
+            {
+                "layer": "hair",
+                "render_target": "hairRT"
+            }
+        ]
+    },
+    "render_targets": {
+        "ComposerRT": [
+            "camera_color"
+        ],
+        "hairRT": [
+            "hair_mask"
+        ]
+    },
+    "script": {
+        "entry_point": "config.js",
+        "type": "latest"
+    },
+    "scene": "hair_nn"
+}

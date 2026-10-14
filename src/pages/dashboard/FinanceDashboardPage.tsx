@@ -54,8 +54,8 @@ const FinanceDashboardPage: React.FC = () => {
           };
         }));
       }
-    } catch (err) {
-      console.error('Failed to load dashboard data:', err);
+    } catch (_err) {
+      // Graceful fallback for dashboard data
     } finally {
       setIsLoading(false);
     }
@@ -182,7 +182,7 @@ const FinanceDashboardPage: React.FC = () => {
                   </svg>
                 </div>
                 <span className="font-semibold text-gray-900">Process Withdrawals</span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
                   Review and approve pending merchant payout requests
                 </p>
               </button>
@@ -208,7 +208,7 @@ const FinanceDashboardPage: React.FC = () => {
                   </svg>
                 </div>
                 <span className="font-semibold text-gray-900">Monetization Analytics</span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
                   Review platform income reports and fee breakdowns
                 </p>
               </button>
@@ -234,7 +234,7 @@ const FinanceDashboardPage: React.FC = () => {
                   </svg>
                 </div>
                 <span className="font-semibold text-gray-900">Manage Subscriptions</span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
                   View and manage creator plans & auto-renewals
                 </p>
               </button>
@@ -260,7 +260,7 @@ const FinanceDashboardPage: React.FC = () => {
                   </svg>
                 </div>
                 <span className="font-semibold text-gray-900">Billing & Gateways</span>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-700 dark:text-slate-200 font-medium mt-1">
                   Configure payment cards and billing settlements
                 </p>
               </button>

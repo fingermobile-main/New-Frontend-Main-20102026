@@ -32,7 +32,7 @@ const MembersPage: React.FC = () => {
       const mapped: MemberItem[] = rawList.map((u: any) => ({
         id: String(u.id),
         name: u.username || u.name || 'Member',
-        email: u.email || `${u.username || 'user'}@fingermobile.io`,
+        email: u.email || `${u.username || 'user'}@fingermobileprotocol.com`,
         role: (u.role || 'Member').charAt(0).toUpperCase() + (u.role || 'Member').slice(1),
         status: u.status || 'Active',
         lastActive: u.updated_at ? new Date(u.updated_at).toLocaleDateString() : 'Recently active'

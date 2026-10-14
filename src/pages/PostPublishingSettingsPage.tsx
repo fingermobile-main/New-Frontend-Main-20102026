@@ -3,10 +3,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { usePostPublishing } from '../contexts/PostPublishingContext';
 import { useAuth } from '../contexts/AuthContext';
 import MainLayout from '../components/layout/MainLayout';
-
-
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const PostPublishingSettingsPage: React.FC = () => {
   const { settings, updateSettings, resetSettings, applyAIRecommendations, saveSettings } = usePostPublishing();
@@ -446,4 +443,11 @@ const PostPublishingSettingsPage: React.FC = () => {
     </MainLayout>
   );
 };
-export default PostPublishingSettingsPage;
+
+const SafePostPublishingSettingsPage: React.FC = () => (
+  <ErrorBoundary fallback={<div className="min-h-screen flex items-center justify-center p-6 text-slate-500">Post publishing settings temporarily unavailable</div>}>
+    <PostPublishingSettingsPage />
+  </ErrorBoundary>
+);
+
+export default SafePostPublishingSettingsPage;

@@ -39,14 +39,14 @@ const MOCK_COMMENTS_CSV = '"Downvote Count","Edited Date","ID","Reply Count","Pa
 const MOCK_BLOG_CATEGORIES_CSV = `"Post Count","Category Page URL","Posts","Description","ID","Label","Translation ID","Slug","Category Page Slug","Cover Image","Language"
 1,"/blog/categories/lifestyles","[""65b2320d02dcae0b2123d51e""]","","65b2328df5cebb7ba4c6b77f","Lifestyles","","lifestyles","/categories/lifestyles","","en"
 0,"/blog/categories/gossip-lifestyle-and-media","","Celebrity Gossip Lifestyle and Media","645cea9a236b6bc2e2b370bc","Gossip Lifestyle and Media","","gossip-lifestyle-and-media","/categories/gossip-lifestyle-and-media",",
-https://static.wixstatic.com/media/9a1209_cc0c360594fe481b9fab2001fb8be31a~mv2.jpg","en"`;
+https://cdn.fingermobileprotocol.com/media/9a1209_cc0c360594fe481b9fab2001fb8be31a~mv2.jpg","en"`;
 
 const MOCK_FORUM_CATEGORIES_CSV = `"Write Protected","Post Count","Header Text Color","Name","Description","Header Type","ID","Page URL","Rank","Header Background Color","Slug","Post View Count","Header Image Overlay Color","Header Image","Parent ID","Header Title"
 false,752,"{""color"":""#FFFFFF"",""opacity"":1}","General Discussion","Share your stories, ideas, pictures, videos and a lot more!
 Explore your Creativity.","IMAGE","638f7ece81ba080012b79320","/news-feed/general-discussion",0,"{""color"":""#FFFFFF"",""opacity"":1}","general-discussion",3523,"{""color"":""#000000"",""opacity"":0}",",
-https://static.wixstatic.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg","","Leadership Tips"
+https://cdn.fingermobileprotocol.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg","","Leadership Tips"
 false,79,"{""color"":""#FFFFFF"",""opacity"":1}","Questions & Answers","A talk, especially an informal one, between two or more people, in which news and ideas. Get answers and share knowledge","IMAGE","638f7ece81ba080012b79321","/news-feed/questions-answers",1,"{""color"":""#FFFFFF"",""opacity"":1}","questions-answers",386,"{""color"":""#000000"",""opacity"":0}",",
-https://static.wixstatic.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg","","Questions & Answers"`;
+https://cdn.fingermobileprotocol.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg","","Questions & Answers"`;
 
 interface ImportedData {members: Member[];
   posts: Post[];

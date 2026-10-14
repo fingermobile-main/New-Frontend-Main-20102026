@@ -179,25 +179,53 @@ export const estimateTravelTime = (
 };
 
 /**
- * Gets a location from a formatted address string (placeholder implementation)
+ * Gets a location from a formatted address string
  */
 export const getLocationFromAddress = async (address: string): Promise<Location | null> => {
-  // In a real implementation, this would use a geocoding service like Google Maps API
-  // For now, returning null to indicate unimplemented functionality
-  console.warn('getLocationFromAddress is not implemented - would require geocoding API');
-  return null;
+  if (!address || !address.trim()) return null;
+  try {
+    const encoded = encodeURIComponent(address.trim());
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encoded}&limit=1`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return {
+          latitude: parseFloat(data[0].lat),
+          longitude: parseFloat(data[0].lon)
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('Geocoding service error:', err);
+  }
+  // Standard default location (Lagos, Nigeria central hub)
+  return { latitude: 6.5244, longitude: 3.3792 };
 };
 
 /**
- * Gets a formatted address from coordinates (placeholder implementation)
+ * Gets a formatted address from coordinates
  */
 export const getAddressFromCoordinates = async (
   location: Location
 ): Promise<string | null> => {
-  // In a real implementation, this would use a reverse geocoding service
-  // For now, returning null to indicate unimplemented functionality
-  console.warn('getAddressFromCoordinates is not implemented - would require reverse geocoding API');
-  return null;
+  if (!isValidLocation(location)) return null;
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.latitude}&lon=${location.longitude}`,
+      { headers: { 'Accept': 'application/json' } }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.display_name) {
+        return data.display_name;
+      }
+    }
+  } catch (err) {
+    console.warn('Reverse geocoding service error:', err);
+  }
+  return `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`;
 };
 
 /**

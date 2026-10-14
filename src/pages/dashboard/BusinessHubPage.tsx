@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
+import { apiService } from '../../services/apiService';
 import { BuildingOfficeIcon, SparklesIcon as MagicWandIcon } from '@heroicons/react/24/solid';
 import CrmWidget from '../../components/dashboard/crm/CrmWidget';
 import ErpFinanceWidget from '../../components/dashboard/erp/ErpFinanceWidget';
@@ -10,47 +11,65 @@ import CrmIntegrationsWidget from '../../components/dashboard/crm/CrmIntegration
 import MainLayout from '../../components/layout/MainLayout';
 
 const BusinessHubPage: React.FC = () => {
-  const { openModal, ficBalance } = useAppContext();
+  const { openModal, ficBalance, showToast } = useAppContext();
   const [selectedDepartment, setSelectedDepartment] = useState<string>('Finance');
 
   const onLike = async (id: string) => {
-    // Placeholder for like functionality
-    console.info('Like clicked for:', id);
+    try {
+      await apiService.post(`/posts/${id}/like`);
+      showToast?.('Content liked!', 'success');
+    } catch (err) {
+      showToast?.('Failed to like content', 'error');
+    }
   };
 
   const onAddComment = async (id: string, comment: string) => {
-    // Placeholder for comment functionality
-    console.info('Comment added to:', id, comment);
+    try {
+      await apiService.post(`/posts/${id}/comments`, { content: comment });
+      showToast?.('Comment added!', 'success');
+    } catch (err) {
+      showToast?.('Failed to add comment', 'error');
+    }
   };
 
   const onOpenGiftModal = (id: string) => {
-    // Placeholder for gift modal
-    console.info('Opening gift modal for:', id);
+    openModal('gift', { targetId: id });
   };
 
   const onOpenPaylinkModal = (id: string) => {
-    // Placeholder for paylink modal
-    console.info('Opening paylink modal for:', id);
+    openModal('paylink', { targetId: id });
   };
 
   const onVote = async (id: string, vote: 'up' | 'down') => {
-    // Placeholder for voting functionality
-    console.info('Vote:', vote, 'for:', id);
+    try {
+      await apiService.post(`/posts/${id}/vote`, { direction: vote });
+      showToast?.(`Voted ${vote}!`, 'success');
+    } catch (err) {
+      showToast?.('Voting failed', 'error');
+    }
   };
 
   const handleDeletePost = async (id: string) => {
-    // Placeholder for post deletion
-    console.info('Deleting post:', id);
+    if (!window.confirm('Are you sure you want to delete this?')) return;
+    try {
+      await apiService.delete(`/posts/${id}`);
+      showToast?.('Post deleted successfully', 'success');
+    } catch (err) {
+      showToast?.('Failed to delete post', 'error');
+    }
   };
 
   const handleTokenizePost = async (id: string) => {
-    // Placeholder for post tokenization
-    console.info('Tokenizing post:', id);
+    try {
+      await apiService.post(`/monetization/tokenize`, { postId: id });
+      showToast?.('Tokenization initiated!', 'success');
+    } catch (err) {
+      showToast?.('Tokenization failed', 'error');
+    }
   };
 
   const handleAiAssist = async (id: string) => {
-    // Placeholder for AI assistance
-    console.info('AI assist for:', id);
+    openModal('aiAssistant', { contextId: id });
   };
 
   return (

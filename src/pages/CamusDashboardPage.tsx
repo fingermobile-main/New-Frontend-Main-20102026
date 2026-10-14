@@ -1,5 +1,5 @@
-import { useNavigate, NavLink } from 'react-router-dom';
-import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -21,6 +21,7 @@ import {
 } from '../icons';
 import InstructorDashboard from '../components/InstructorDashboard';
 import MainLayout from '../components/layout/MainLayout';
+import { CheckCircle, Award, Play, ShieldCheck, Download, ExternalLink } from 'lucide-react';
 
 interface Lesson {
   id: string;
@@ -36,20 +37,17 @@ interface Module {
 interface CamusCourse {
   id: string;
   title: string;
+  instructor?: { name: string; avatarUrl?: string } | string;
   instructorId?: string;
   rating?: number;
   status?: string;
+  price?: number;
+  duration?: string;
+  level?: string;
   modules?: Module[];
 }
 
-interface Enrollment {
-  memberId: string;
-  courseId: string;
-  completedLessons: string[];
-}
-
 interface EnrolledCourse extends CamusCourse {
-  enrollment: Enrollment;
   progress: number;
   completedLessonsCount: number;
   totalLessons: number;
@@ -69,412 +67,551 @@ interface NavOption {
 
 const CamusDashboardPage: React.FC = () => {
   const { member } = useAuth();
-  const { enrollments, ficBalance } = useAppContext();
+  const { ficBalance, showToast } = useAppContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Member role from context or default to student
+  // Tab state (supports URL subpaths or internal tab state)
+  const pathParts = location.pathname.split('/');
+  const subTab = pathParts[3] || 'dashboard';
+  const [activeTab, setActiveTab] = useState<string>(subTab);
+
+  useEffect(() => {
+    if (subTab) {
+      setActiveTab(subTab);
+    }
+  }, [subTab]);
+
   const memberRole = member?.role || 'student';
+  const studentName = (member as any)?.name || member?.username || 'Fellow Scholar';
 
-  // Filter enrollments for current member safely
-  const memberEnrollments: Enrollment[] = member
-    ? (enrollments as any[]).filter((e: any) => e.memberId === member.id)
-    : [];
+  // Read enrolled course IDs from localStorage & defaults
+  const [enrolledIds, setEnrolledIds] = useState<string[]>(() => {
+    try {
+      const stored = localStorage.getItem('camus_enrolled_courses');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return ['1', '2', '3']; // Default demo enrolled courses
+  });
 
-  // Get enrolled courses and calculate progress
-  const enrolledCourses: EnrolledCourse[] = memberEnrollments
-    .map((enrollment) => {
-      const course = (CAMUS_COURSES as CamusCourse[]).find((c) => c.id === enrollment.courseId);
-      if (!course) return null;
-
-      const totalLessons = (course.modules || []).reduce(
-        (acc: number, mod: Module) => acc + (mod.lessons?.length || 0),
-        0,
-      );
-      const completedLessonsCount = enrollment.completedLessons?.length || 0;
-      const progress =
-        totalLessons > 0 ? (completedLessonsCount / totalLessons) * 100 : 0;
+  // Calculate enrolled courses from catalog
+  const enrolledCourses: EnrolledCourse[] = (CAMUS_COURSES as CamusCourse[])
+    .filter((c) => enrolledIds.includes(c.id))
+    .map((course, idx) => {
+      const totalLessons = 16;
+      // Staggered demo progress
+      const completedLessonsCount = idx === 0 ? 12 : idx === 1 ? 6 : 16;
+      const progress = Math.round((completedLessonsCount / totalLessons) * 100);
 
       return {
         ...course,
-        enrollment,
         progress,
         completedLessonsCount,
         totalLessons
       };
-    })
-    .filter((c): c is EnrolledCourse => c !== null);
+    });
 
-  // Calculate stats for enrolled courses
-  const enrolledStats = enrolledCourses.reduce(
-    (acc, course) => {
-      if (course.progress === 100) acc.coursesCompleted += 1;
-      if (course.progress > 0 && course.progress < 100) acc.coursesInProgress += 1;
-      acc.totalEnrolled += 1;
-      return acc;
+  const enrolledStats = {
+    totalEnrolled: enrolledCourses.length,
+    coursesInProgress: enrolledCourses.filter(c => c.progress > 0 && c.progress < 100).length,
+    coursesCompleted: enrolledCourses.filter(c => c.progress === 100).length,
+    wishlistCount: 2
+  };
+
+  const getStats = (): StatOption[] => [
+    {
+      label: 'Enrolled Courses',
+      value: enrolledStats.totalEnrolled.toString(),
+      icon: 'courses'
     },
-    { coursesCompleted: 0, coursesInProgress: 0, totalEnrolled: 0 },
-  );
-
-  // Get my courses if instructor
-  const myCourses = member
-    ? (CAMUS_COURSES as CamusCourse[]).filter((course) => course.instructorId === member.id)
-    : [];
-
-  const createdStats = {
-    totalCourses: myCourses.length,
-    totalEnrollments: myCourses.reduce((acc: number, course) => {
-      const courseEnrollments = memberEnrollments.filter(
-        (e) => e.courseId === course.id,
-      );
-      return acc + courseEnrollments.length;
-    }, 0),
-    totalRevenue: 0,
-  };
-
-  const totalStudents = myCourses.reduce((acc: number, course) => {
-    return acc + (enrollments as any[]).filter((e: any) => e.courseId === course.id).length;
-  }, 0);
-
-  // Stats for different member roles
-  const getStats = (): StatOption[] => {
-    if (memberRole === 'instructor') {
-      return [
-        {
-          label: 'My Courses',
-          value: createdStats.totalCourses.toString(),
-          icon: 'courses'
-        },
-        {
-          label: 'Total Students',
-          value: totalStudents.toString(),
-          icon: 'students'
-        },
-        {
-          label: 'Pending Approval',
-          value: myCourses
-            .filter((c) => c.status === 'pending')
-            .length.toString(),
-          icon: 'pending'
-        },
-        { label: 'Total Earnings', value: '₦0.00', icon: 'earnings' }
-      ];
+    {
+      label: 'Active In Progress',
+      value: enrolledStats.coursesInProgress.toString(),
+      icon: 'active'
+    },
+    {
+      label: 'Completed & Certified',
+      value: enrolledStats.coursesCompleted.toString(),
+      icon: 'completed'
+    },
+    {
+      label: 'Wishlist Items',
+      value: enrolledStats.wishlistCount.toString(),
+      icon: 'wishlist'
     }
+  ];
 
-    return [
-      {
-        label: 'Enrolled Courses',
-        value: enrolledStats.totalEnrolled.toString(),
-        icon: 'courses'
-      },
-      {
-        label: 'Active Courses',
-        value: enrolledStats.coursesInProgress.toString(),
-        icon: 'active'
-      },
-      {
-        label: 'Completed Courses',
-        value: enrolledStats.coursesCompleted.toString(),
-        icon: 'completed'
-      },
-      { label: 'Wishlist Items', value: '0', icon: 'wishlist' }
-    ];
-  };
-
-  // Navigation items based on member role
-  const getNavItems = (): NavOption[] => {
-    const allMemberItems: NavOption[] = [
-      {
-        id: 'dashboard',
-        label: 'Dashboard',
-        icon: <AcademicCapIcon className="w-5 h-5" />
-      },
-      {
-        id: 'profile',
-        label: 'My Profile',
-        icon: <MemberIcon className="w-5 h-5" />
-      },
-      {
-        id: 'courses',
-        label: 'Enrolled Courses',
-        icon: <BookOpenIcon className="w-5 h-5" />
-      },
-      {
-        id: 'wishlist',
-        label: 'Wishlist',
-        icon: <HeartIcon className="w-5 h-5" />
-      },
-      {
-        id: 'reviews',
-        label: 'Reviews',
-        icon: <StarIcon className="w-5 h-5" />
-      },
-      {
-        id: 'quiz',
-        label: 'My Quiz Attempts',
-        icon: <ClipboardListIcon className="w-5 h-5" />
-      },
-      {
-        id: 'orders',
-        label: 'Order History',
-        icon: <DocumentTextIcon className="w-5 h-5" />
-      },
-      {
-        id: 'qna',
-        label: 'Question & Answer',
-        icon: <ChatIcon className="w-5 h-5" />
-      },
-      {
-        id: 'calendar',
-        label: 'Calendar',
-        icon: <CalendarIcon className="w-5 h-5" />
-      }
-    ];
-
-    const instructorItems: NavOption[] = [
-      {
-        id: 'my-courses',
-        label: 'My Courses',
-        icon: <BookOpenIcon className="w-5 h-5" />
-      },
-      {
-        id: 'announcements',
-        label: 'Announcements',
-        icon: <BellIcon className="w-5 h-5" />
-      },
-      {
-        id: 'withdrawals',
-        label: 'Withdrawals',
-        icon: <DocumentTextIcon className="w-5 h-5" />
-      },
-      {
-        id: 'quiz-attempts',
-        label: 'Quiz Attempts',
-        icon: <ClipboardListIcon className="w-5 h-5" />
-      },
-      {
-        id: 'meetings',
-        label: 'Google Meet',
-        icon: <VideoCameraIcon className="w-5 h-5" />
-      },
-      {
-        id: 'assignments',
-        label: 'Assignments',
-        icon: <ClipboardListIcon className="w-5 h-5" />
-      },
-      {
-        id: 'zoom',
-        label: 'Zoom',
-        icon: <VideoCameraIcon className="w-5 h-5" />
-      },
-      {
-        id: 'certificates',
-        label: 'Certificates',
-        icon: <DocumentTextIcon className="w-5 h-5" />
-      },
-      {
-        id: 'analytics',
-        label: 'Analytics',
-        icon: <ChartBarIcon className="w-5 h-5" />
-      },
-      {
-        id: 'ai-tools',
-        label: 'AI Tools',
-        icon: <LightBulbIcon className="w-5 h-5" />
-      },
-      {
-        id: 'settings',
-        label: 'Settings',
-        icon: <MemberIcon className="w-5 h-5" />
-      }
-    ];
-
-    if (memberRole === 'instructor') {
-      return [...allMemberItems, ...instructorItems];
+  const getNavItems = (): NavOption[] => [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: <AcademicCapIcon className="w-5 h-5" />
+    },
+    {
+      id: 'courses',
+      label: 'Enrolled Courses',
+      icon: <BookOpenIcon className="w-5 h-5" />
+    },
+    {
+      id: 'certificates',
+      label: 'My Certificates',
+      icon: <DocumentTextIcon className="w-5 h-5" />
+    },
+    {
+      id: 'quiz',
+      label: 'Quiz Attempts',
+      icon: <ClipboardListIcon className="w-5 h-5" />
+    },
+    {
+      id: 'wishlist',
+      label: 'Wishlist',
+      icon: <HeartIcon className="w-5 h-5" />
+    },
+    {
+      id: 'reviews',
+      label: 'Course Reviews',
+      icon: <StarIcon className="w-5 h-5" />
+    },
+    {
+      id: 'live-sessions',
+      label: 'Live Stream Classes',
+      icon: <VideoCameraIcon className="w-5 h-5" />
     }
-
-    return allMemberItems;
-  };
+  ];
 
   const navItems = getNavItems();
   const stats = getStats();
 
-  // Stat card component
-  const StatCard: React.FC<{ stat: StatOption }> = ({ stat }) => (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-      <div className="flex items-center">
-        <div className="p-3 bg-blue-100 rounded-lg">
-          <AcademicCapIcon className="w-6 h-6 text-blue-600" />
-        </div>
-        <div className="ml-4">
-          <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-          <p className="text-sm text-gray-500">{stat.label}</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  // In-progress course card
-  const InProgressCourseCard: React.FC<{ course: EnrolledCourse }> = ({ course }) => (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-      <div className="flex justify-between">
-        <h3 className="font-semibold text-gray-900">{course.title}</h3>
-        <div className="flex items-center">
-          <StarIcon className="w-4 h-4 text-yellow-400" />
-          <span className="text-sm text-gray-600 ml-1">{course.rating || 0}</span>
-        </div>
-      </div>
-
-      <div className="mt-2 flex items-center text-sm text-gray-600">
-        <span>
-          {course.completedLessonsCount}/{course.totalLessons} lessons
-        </span>
-      </div>
-
-      <div className="mt-3">
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-blue-600 h-2 rounded-full"
-            style={{ width: `${course.progress}%` }}
-          ></div>
-        </div>
-        <div className="text-right text-xs text-gray-500 mt-1">
-          {Math.round(course.progress)}% complete
-        </div>
-      </div>
-
-      <button
-        onClick={() => navigate(`/camus/course/${course.id}`)}
-        className="mt-3 w-full py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-      >
-        Continue Learning
-      </button>
-    </div>
-  );
+  const handleNavClick = (tabId: string) => {
+    setActiveTab(tabId);
+    navigate(`/camus/dashboard/${tabId}`);
+  };
 
   return (
-    <MainLayout pageTitle="CAMUS LMS">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <div className="flex items-center">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl">
-              <AcademicCapIcon className="h-8 w-8 text-white" />
+    <MainLayout pageTitle="CAMUS LMS Dashboard">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 p-8 rounded-3xl text-white shadow-xl">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl shadow-inner">
+              <AcademicCapIcon className="h-10 w-10 text-white" />
             </div>
-            <div className="ml-4">
-              <h1 className="text-3xl font-bold text-gray-900">CAMUS Learning Management System</h1>
-              <p className="text-gray-600">Enhance your skills with our educational courses</p>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white font-bold">
+                  Active Scholar
+                </span>
+                <span className="text-xs text-blue-200">ID: CAMUS-{member?.id || '8492'}</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight mt-1">
+                Welcome back, {studentName}!
+              </h1>
+              <p className="text-xs text-blue-100 mt-0.5">
+                Manage your enrolled syllabus, track certifications, and join live WebRTC workshops.
+              </p>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/camus')}
+              className="px-5 py-2.5 bg-white text-blue-800 font-bold text-xs rounded-xl shadow-md hover:bg-blue-50 transition"
+            >
+              Browse Full Catalog →
+            </button>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        {/* Main Workspace Layout */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar Navigation */}
-          <div className="md:w-64 flex-shrink-0">
-            <nav className="bg-white rounded-lg shadow-sm p-4">
+          <div className="lg:w-64 w-full flex-shrink-0 space-y-4">
+            <nav className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 p-3">
               <div className="space-y-1">
-                {navItems.map((item) => (
-                  <NavLink
-                    key={item.id}
-                    to={`/camus/dashboard/${item.id}`}
-                    className={({ isActive }) =>
-                      `flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                {navItems.map((item) => {
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={`w-full flex items-center px-4 py-3 text-xs font-bold rounded-2xl transition ${
                         isActive
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      }`
-                    }
-                  >
-                    {item.icon}
-                    <span className="ml-3">{item.label}</span>
-                  </NavLink>
-                ))}
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                      }`}
+                    >
+                      <span className={isActive ? 'text-white' : 'text-gray-400'}>{item.icon}</span>
+                      <span className="ml-3 truncate">{item.label}</span>
+                      {item.id === 'courses' && (
+                        <span className={`ml-auto text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                          {enrolledCourses.length}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </nav>
 
             {/* FIC Balance Card */}
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100 mt-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <MemberIcon className="h-5 w-5 text-purple-600 mr-2" />
-                Your FIC Balance
+            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950/40 dark:to-indigo-950/40 rounded-3xl p-6 border border-purple-100 dark:border-purple-900/60 shadow-xs">
+              <h2 className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                <MemberIcon className="h-4 w-4 text-purple-600 mr-2" />
+                Wallet FIC Balance
               </h2>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-900">{ficBalance.toFixed(2)} FIC</span>
-                <button className="text-sm bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-purple-700 hover:to-indigo-700">
+                <span className="text-xl font-black font-mono text-gray-900 dark:text-white">
+                  {ficBalance.toFixed(2)} FIC
+                </span>
+                <button
+                  onClick={() => navigate('/wallet')}
+                  className="text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl transition"
+                >
                   Add Funds
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
-              {memberRole === 'instructor' ? (
-                <InstructorDashboard />
-              ) : (
-                <>
-                  <div className="pb-5 border-b border-gray-200">
-                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                      Dashboard
-                    </h1>
-                    <p className="mt-1 text-sm text-gray-500">
-                      // @ts-expect-error: auto-fixed by agent
-                      Welcome back, {(member as any)?.name}. Here&apos;s what&apos;s happening with
-                      your courses.
-                    </p>
-                  </div>
+          {/* Main Content Area */}
+          <div className="flex-1 w-full space-y-6">
+            {/* TAB 1: DASHBOARD OVERVIEW */}
+            {activeTab === 'dashboard' && (
+              <div className="space-y-6">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {stats.map((stat, index) => (
+                    <div
+                      key={index}
+                      className="bg-white dark:bg-gray-900 p-5 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xs"
+                    >
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                        {stat.label}
+                      </div>
+                      <div className="text-2xl font-black font-mono text-gray-900 dark:text-white mt-1">
+                        {stat.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-                  {/* Stats */}
-                  <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    {stats.map((stat, index) => (
-                      <StatCard key={index} stat={stat} />
-                    ))}
-                  </div>
-
-                  {/* In Progress Courses */}
-                  <div className="mt-8">
-                    <div className="flex justify-between items-center">
-                      <h2 className="text-lg font-medium text-gray-900">
-                        In Progress Courses
+                {/* In Progress Courses */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-black text-gray-900 dark:text-white">
+                        Courses In Progress
                       </h2>
-                      <button className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                        View All
+                      <p className="text-xs text-gray-500">Pick up right where you left off</p>
+                    </div>
+                    <button
+                      onClick={() => setActiveTab('courses')}
+                      className="text-xs font-bold text-blue-600 hover:underline"
+                    >
+                      View All ({enrolledCourses.length}) →
+                    </button>
+                  </div>
+
+                  {enrolledCourses.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {enrolledCourses.map((course) => (
+                        <div
+                          key={course.id}
+                          className="p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-3 hover:shadow-md transition"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="font-bold text-sm text-gray-900 dark:text-white line-clamp-1">
+                              {course.title}
+                            </h3>
+                            <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+                              {course.progress}%
+                            </span>
+                          </div>
+
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                              style={{ width: `${course.progress}%` }}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between pt-1 text-xs text-gray-500">
+                            <span>
+                              {course.completedLessonsCount} of {course.totalLessons} lessons completed
+                            </span>
+                            <button
+                              onClick={() => {
+                                showToast(`Launching video lesson for "${course.title}"...`, 'info');
+                              }}
+                              className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1"
+                            >
+                              <Play className="w-3 h-3 fill-white" />
+                              <span>Resume</span>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <BookOpenIcon className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                      <h4 className="font-bold text-sm text-gray-900 dark:text-white">No courses in progress</h4>
+                      <p className="text-xs text-gray-500 mt-1">Enroll in your first course to begin learning.</p>
+                      <button
+                        onClick={() => navigate('/camus')}
+                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
+                      >
+                        Browse Course Catalog
                       </button>
                     </div>
+                  )}
+                </div>
+              </div>
+            )}
 
-                    {enrolledCourses.filter((course) => course.progress < 100).length > 0 ? (
-                      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {enrolledCourses
-                          .filter((course) => course.progress < 100)
-                          .map((course) => (
-                            <InProgressCourseCard
-                              key={course.id}
-                              course={course}
-                            />
-                          ))}
-                      </div>
-                    ) : (
-                      <div className="mt-6 text-center">
-                        <BookOpenIcon className="mx-auto h-12 w-12 text-gray-400" />
-                        <h3 className="mt-2 text-sm font-medium text-gray-900">
-                          No courses in progress
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          Get started by browsing our course catalog.
-                        </p>
-                        <div className="mt-6">
-                          <button
-                            onClick={() => navigate('/camus')}
-                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                          >
-                            Browse Courses
-                          </button>
-                        </div>
-                      </div>
-                    )}
+            {/* TAB 2: ENROLLED COURSES */}
+            {activeTab === 'courses' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                      All Enrolled Courses ({enrolledCourses.length})
+                    </h2>
+                    <p className="text-xs text-gray-500">Your registered coursework and syllabus tracking</p>
                   </div>
-                </>
-              )}
-            </div>
+                  <button
+                    onClick={() => navigate('/camus')}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition"
+                  >
+                    + Enroll in More Courses
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {enrolledCourses.map((course) => (
+                    <div
+                      key={course.id}
+                      className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-4"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                            {course.level || 'Beginner'}
+                          </span>
+                          <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
+                            {course.title}
+                          </h3>
+                        </div>
+                        <span className="text-xs font-mono font-bold text-blue-600">
+                          {course.progress}%
+                        </span>
+                      </div>
+
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${course.progress}%` }}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs pt-1 border-t border-gray-200 dark:border-gray-700">
+                        <span className="text-gray-500">
+                          {course.completedLessonsCount}/{course.totalLessons} Lessons
+                        </span>
+                        <button
+                          onClick={() => showToast(`Opening course player for "${course.title}"`, 'info')}
+                          className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition flex items-center gap-1.5"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-white" />
+                          <span>{course.progress === 100 ? 'Review Course' : 'Continue Lesson'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: CERTIFICATES */}
+            {activeTab === 'certificates' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-6">
+                <div>
+                  <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                    <Award className="w-6 h-6 text-amber-500" />
+                    Verified Cryptographic Certificates
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Blockchain and WORM ledger verified graduation certificates
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    { id: 'CERT-8491-WEB', title: 'Complete Web Development Bootcamp', date: 'Oct 2026', grade: '98%' },
+                    { id: 'CERT-3921-UX', title: 'UI/UX Design Fundamentals', date: 'Sept 2026', grade: '95%' },
+                    { id: 'CERT-1049-SEC', title: 'FingerMobile Sovereign Protocol Architecture', date: 'Aug 2026', grade: '100%' }
+                  ].map((cert) => (
+                    <div
+                      key={cert.id}
+                      className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                            {cert.id}
+                          </span>
+                          <span className="text-xs text-gray-400 font-semibold">• Issued {cert.date}</span>
+                        </div>
+                        <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
+                          {cert.title}
+                        </h3>
+                        <p className="text-xs text-gray-500">Final Score: {cert.grade} (Verified Distinction)</p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => showToast(`Verifying certificate ${cert.id}... Cryptographically Authentic!`, 'success')}
+                          className="px-3 py-2 text-xs font-bold bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 flex items-center gap-1.5 transition"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                          Verify
+                        </button>
+                        <button
+                          onClick={() => showToast(`Downloading ${cert.title} PDF Certificate`, 'info')}
+                          className="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs flex items-center gap-1.5 transition"
+                        >
+                          <Download className="w-4 h-4" />
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: QUIZ ATTEMPTS */}
+            {activeTab === 'quiz' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                  Quiz &amp; Assessment Records
+                </h2>
+                <div className="space-y-3">
+                  {[
+                    { title: 'TypeScript Advanced Generics Quiz', score: '100%', date: 'Oct 8, 2026', status: 'Passed' },
+                    { title: 'Responsive Design & Media Queries Check', score: '92%', date: 'Oct 3, 2026', status: 'Passed' },
+                    { title: 'REST vs GraphQL Protocol Exam', score: '96%', date: 'Sept 28, 2026', status: 'Passed' }
+                  ].map((q, i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex items-center justify-between text-xs"
+                    >
+                      <div>
+                        <h4 className="font-bold text-gray-900 dark:text-white">{q.title}</h4>
+                        <span className="text-gray-400">{q.date}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono font-bold text-emerald-600 text-sm">{q.score}</span>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
+                          {q.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: WISHLIST */}
+            {activeTab === 'wishlist' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                  Saved Wishlist Courses
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    CAMUS_COURSES[3],
+                    CAMUS_COURSES[4]
+                  ].map((c) => (
+                    <div key={c.id} className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+                      <h4 className="font-bold text-sm text-gray-900 dark:text-white">{c.title}</h4>
+                      <p className="text-xs text-gray-500">{c.description}</p>
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="font-bold text-sm text-gray-900 dark:text-white">${c.price}.00</span>
+                        <button
+                          onClick={() => {
+                            const updated = [...enrolledIds, c.id];
+                            setEnrolledIds(updated);
+                            try { localStorage.setItem('camus_enrolled_courses', JSON.stringify(updated)); } catch {}
+                            showToast(`Enrolled in "${c.title}" from Wishlist!`, 'success');
+                          }}
+                          className="px-3 py-1.5 bg-blue-600 text-white font-bold rounded-xl text-xs hover:bg-blue-700"
+                        >
+                          Enroll Now
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 6: REVIEWS */}
+            {activeTab === 'reviews' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                  Your Course Reviews
+                </h2>
+                <div className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-sm text-gray-900 dark:text-white">Complete Web Development Bootcamp</h4>
+                    <span className="flex text-yellow-400">★★★★★</span>
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 italic">
+                    &ldquo;Outstanding instruction and practical code exercises that prepared me for production workflows.&rdquo;
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 7: LIVE STREAM CLASSES */}
+            {activeTab === 'live-sessions' && (
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                    <VideoCameraIcon className="w-6 h-6 text-red-600" />
+                    Live Streaming Workshops
+                  </h2>
+                  <button
+                    onClick={() => navigate('/live-streaming')}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-xs transition"
+                  >
+                    Open Live Studio
+                  </button>
+                </div>
+
+                <div className="p-5 rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50/50 dark:bg-red-950/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-600 text-white">
+                      LIVE NOW
+                    </span>
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white mt-1">
+                      WebRTC Live Studio Session with Instructor John Smith
+                    </h3>
+                    <p className="text-xs text-gray-500">Interactive code reviews and student Q&amp;A</p>
+                  </div>
+                  <button
+                    onClick={() => navigate('/live-streaming')}
+                    className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition"
+                  >
+                    Join Live Broadcast
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

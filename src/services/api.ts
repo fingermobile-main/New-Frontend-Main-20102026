@@ -4,7 +4,18 @@ import axios, { AxiosInstance as InternalAxiosInstance } from 'axios';
 type AxiosInstance = InternalAxiosInstance;
 
 // Base API configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const getApiBaseUrl = () => {
+  const envUrl = process.env.REACT_APP_API_URL;
+  if (envUrl && !envUrl.includes(':3001')) {
+    return envUrl;
+  }
+  if (typeof window !== 'undefined' && window.location.port === '8000') {
+    return '/api';
+  }
+  return 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Create axios instance with defaults
 const api: AxiosInstance = axios.create({

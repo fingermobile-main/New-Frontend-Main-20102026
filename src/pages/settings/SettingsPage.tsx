@@ -44,7 +44,7 @@ export const SettingsPage: React.FC = () => {
   const [profile, setProfile] = useState({
     name: user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : 'Alice Smith',
     username: user?.username || 'alicesmith',
-    email: user?.email || 'alice@fingermobile.org',
+    email: user?.email || 'alice@fingermobileprotocol.com',
     phone: (user as any)?.phone || '+234 801 234 5678',
     bio: (user as any)?.bio || 'Digital creator, photographer, and music enthusiast exploring Web3 storytelling on FingerMobile.',
     avatarUrl: user?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80',

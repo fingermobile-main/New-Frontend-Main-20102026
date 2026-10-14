@@ -7,52 +7,32 @@ import {
   Zap,
   Activity,
   Layers,
-  Cpu,
   Lock,
   Globe,
-  Database,
   BarChart3,
   Sparkles,
   Palette,
   Scissors,
   Mic,
-  Video,
   FileEdit,
   FileImage,
   Sliders,
-  Settings,
   RefreshCw,
   Download,
-  Share2,
-  ExternalLink,
   ChevronRight,
-  ChevronDown,
   Search,
-  Filter,
   CheckCircle2,
   AlertTriangle,
-  XCircle,
-  Clock,
   ArrowUpRight,
-  ArrowDownRight,
-  TrendingUp,
   Brain,
   Bot,
   Briefcase,
   Users,
-  Coins,
-  FileText,
   DollarSign,
   Building,
-  Key,
-  Eye,
-  Server,
-  Terminal,
   Workflow,
-  Radio,
   X,
-  Play,
-  RotateCcw
+  Play
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
@@ -533,6 +513,57 @@ const StercsDashboardPage: React.FC = () => {
     );
   }, [stercsModules, searchQuery]);
 
+  const getModuleCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Security':
+        return 'bg-rose-50 text-rose-600';
+      case 'Creation':
+        return 'bg-purple-50 text-purple-600';
+      case 'Intelligence':
+        return 'bg-blue-50 text-blue-600';
+      default:
+        return 'bg-amber-50 text-amber-600';
+    }
+  };
+
+  const getModuleStatusBadge = (status: string) => {
+    switch (status) {
+      case 'online':
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+      case 'optimal':
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
+      case 'syncing':
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getModuleStatusDot = (status: string) => {
+    switch (status) {
+      case 'online':
+        return 'bg-emerald-500';
+      case 'optimal':
+        return 'bg-blue-500';
+      case 'syncing':
+        return 'bg-amber-500';
+      default:
+        return 'bg-gray-400';
+    }
+  };
+
+  const getCheckSeverityBadge = (severity: string) => {
+    if (severity === 'critical') return 'bg-rose-100 text-rose-700';
+    if (severity === 'high') return 'bg-amber-100 text-amber-700';
+    return 'bg-blue-100 text-blue-700';
+  };
+
+  const getClearanceBadge = (clearance: string) => {
+    if (clearance.includes('Board')) return 'bg-purple-100 text-purple-800';
+    if (clearance.includes('Executive')) return 'bg-blue-100 text-blue-800';
+    return 'bg-gray-100 text-gray-800';
+  };
+
   // Load telemetry metrics
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -541,6 +572,7 @@ const StercsDashboardPage: React.FC = () => {
         const data = await dashboardService.getAdminDashboardData(timeRange);
         setMetrics(data);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load metrics:', err);
       } finally {
         setLoading(false);
@@ -554,20 +586,20 @@ const StercsDashboardPage: React.FC = () => {
     setIsGeneratingAi(true);
     setTimeout(() => {
       setAiSimulatedOutput(
-        `[STERCS AI ENGINE v4.2 • EXECUTION REPORT]\n\n` +
-        `• Target Subject: User-generated Media #FM-9842\n` +
-        `• Policy Reference: Sovereign Policy SEC-09 (Child Protection & Content Integrity)\n` +
-        `• Multimodal Heuristics Scan: Passed (0.000% Toxicity, 0.000% Illicit Signatures)\n` +
-        `• Perceptual Hash Alignment: Verified against Sovereign Clean DB\n` +
-        `• Automated Action: Approved for Global CDN Edge Distribution with Fast-Route Token #AGY-8841.\n` +
-        `• Confidence Rating: 99.98% • Latency: 24ms`
+        '[STERCS AI ENGINE v4.2 • EXECUTION REPORT]\n\n' +
+        '• Target Subject: User-generated Media #FM-9842\n' +
+        '• Policy Reference: Sovereign Policy SEC-09 (Child Protection & Content Integrity)\n' +
+        '• Multimodal Heuristics Scan: Passed (0.000% Toxicity, 0.000% Illicit Signatures)\n' +
+        '• Perceptual Hash Alignment: Verified against Sovereign Clean DB\n' +
+        '• Automated Action: Approved for Global CDN Edge Distribution with Fast-Route Token #AGY-8841.\n' +
+        '• Confidence Rating: 99.98% • Latency: 24ms'
       );
       setIsGeneratingAi(false);
     }, 900);
   };
 
   const handleCopySummary = () => {
-    const summaryText = `STERCS Sovereign Intelligence Summary: Cluster Enclave Alpha operates at 97.4% Health Index with 1,280 validated hardware enclaves and 0 security breaches across 14.8k hourly automated ERP/CRM workflows.`;
+    const summaryText = 'STERCS Sovereign Intelligence Summary: Cluster Enclave Alpha operates at 97.4% Health Index with 1,280 validated hardware enclaves and 0 security breaches across 14.8k hourly automated ERP/CRM workflows.';
     navigator.clipboard?.writeText(summaryText);
     setCopiedSummary(true);
     setTimeout(() => setCopiedSummary(false), 2000);
@@ -601,8 +633,8 @@ const StercsDashboardPage: React.FC = () => {
                 </select>
               </div>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Live Enclave Sync
+                <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-500 animate-spin' : 'bg-emerald-500 animate-pulse'}`} />
+                {loading ? 'Syncing Telemetry...' : `Live Enclave Sync (${metrics.length || 12} Nodes)`}
               </span>
             </div>
 
@@ -1155,12 +1187,7 @@ const StercsDashboardPage: React.FC = () => {
                       {/* Top Bar of Module Card */}
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <div className={`p-2 rounded-md ${
-                            mod.category === 'Security' ? 'bg-rose-50 text-rose-600' :
-                            mod.category === 'Creation' ? 'bg-purple-50 text-purple-600' :
-                            mod.category === 'Intelligence' ? 'bg-blue-50 text-blue-600' :
-                            'bg-amber-50 text-amber-600'
-                          }`}>
+                          <div className={`p-2 rounded-md ${getModuleCategoryColor(mod.category)}`}>
                             <mod.icon className="w-4 h-4" />
                           </div>
                           <div>
@@ -1173,18 +1200,8 @@ const StercsDashboardPage: React.FC = () => {
                           </div>
                         </div>
 
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${
-                          mod.status === 'online' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                          mod.status === 'optimal' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                          mod.status === 'syncing' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          <span className={`w-1.5 h-1.5 rounded-full mr-1 ${
-                            mod.status === 'online' ? 'bg-emerald-500' :
-                            mod.status === 'optimal' ? 'bg-blue-500' :
-                            mod.status === 'syncing' ? 'bg-amber-500' :
-                            'bg-gray-400'
-                          }`} />
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${getModuleStatusBadge(mod.status)}`}>
+                          <span className={`w-1.5 h-1.5 rounded-full mr-1 ${getModuleStatusDot(mod.status)}`} />
                           {mod.status}
                         </span>
                       </div>
@@ -1277,11 +1294,7 @@ const StercsDashboardPage: React.FC = () => {
                         </td>
                         <td className="px-4 py-3 text-gray-600">{chk.category}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                            chk.severity === 'critical' ? 'bg-rose-100 text-rose-700' :
-                            chk.severity === 'high' ? 'bg-amber-100 text-amber-700' :
-                            'bg-blue-100 text-blue-700'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getCheckSeverityBadge(chk.severity)}`}>
                             {chk.severity}
                           </span>
                         </td>
@@ -1469,6 +1482,22 @@ const StercsDashboardPage: React.FC = () => {
                     >
                       {isRotatingKeys && <RefreshCw className="w-3 h-3 animate-spin" />}
                       {isRotatingKeys ? 'Rotating Enclave Keys...' : 'Rotate Ephemeral Keys'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-lg bg-indigo-50 border border-indigo-200 flex items-start gap-3">
+                  <Activity className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-indigo-900">Throughput Surge Circuit Breaker</h4>
+                    <p className="text-[11px] text-indigo-800 mt-0.5">Simulates automated circuit trip during severe traffic surges to protect database persistence.</p>
+                    <button
+                      onClick={handleToggleCircuitBreaker}
+                      className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
+                        circuitBreakerTripped ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'
+                      }`}
+                    >
+                      {circuitBreakerTripped ? 'Reset Circuit Breaker (Closed)' : 'Engage Trip Test (Open)'}
                     </button>
                   </div>
                 </div>
@@ -1662,11 +1691,7 @@ const StercsDashboardPage: React.FC = () => {
                         <td className="px-4 py-3 text-gray-700">{r.title}</td>
                         <td className="px-4 py-3 text-blue-600 font-medium">{r.head}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            r.clearance.includes('Board') ? 'bg-purple-100 text-purple-800' :
-                            r.clearance.includes('Executive') ? 'bg-blue-100 text-blue-800' :
-                            'bg-gray-100 text-gray-800'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getClearanceBadge(r.clearance)}`}>
                             {r.clearance}
                           </span>
                         </td>

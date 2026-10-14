@@ -108,7 +108,7 @@ const RegisterPage = () => {
         email.trim() ||
         `user_${
           cleanPhone.replace(/[^0-9]/g, '') || Date.now()
-        }@fingermobile.com`;
+        }@fingermobileprotocol.com`;
 
       const registerResponse: any = await authService.register({
         name: `${firstName} ${lastName}`.trim(),
@@ -168,16 +168,17 @@ const RegisterPage = () => {
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+            <div className="mx-auto w-24 h-24 mb-4 flex items-center justify-center rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md p-1">
               <img
-                src="/assets/branding/fingermobile/FRONT copy.webp"
+                src="/assets/branding/fingermobile/logo-white.webp"
                 alt="FingerMobile Logo"
-                className="w-full h-full object-contain filter drop-shadow-md"
+                className="w-full h-full object-contain"
                 onError={(e) => {
-                  (e.target as HTMLElement).setAttribute(
-                    'src',
-                    '/assets/branding/fingermobile/drawer-splash-logo.webp'
-                  );
+                  const target = e.currentTarget;
+                  if (!target.dataset.triedFallback) {
+                    target.dataset.triedFallback = 'true';
+                    target.src = '/assets/branding/fingermobile/FingerMobile White Logo FRONT.webp';
+                  }
                 }}
               />
             </div>

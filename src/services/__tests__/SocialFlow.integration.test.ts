@@ -35,9 +35,16 @@ describe('Social Interaction Flow Integration Tests', () => {
       expect(mockedAxios.create().delete).toHaveBeenCalledWith('/follow/target-user-123');
     });
 
-    it('should check if following a user (mocked manually since isFollowing is not in service yet)', async () => {
-      // isFollowing is not implemented in UserService yet, so this test is a placeholder for future implementation
-      expect(true).toBe(true);
+    it('should check if following a user', async () => {
+      (mockedAxios.create().get as jest.Mock).mockResolvedValue({
+        data: {
+          success: true,
+          data: { isFollowing: true }
+        }
+      });
+
+      const res = await (userService as any).isFollowing('target-user-123');
+      expect(res.data.isFollowing).toBe(true);
     });
   });
 

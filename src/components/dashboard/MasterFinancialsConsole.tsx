@@ -34,10 +34,8 @@ import { CbnNfemControllerPanel } from './CbnNfemControllerPanel';
 import EnterpriseFinancialEcosystemConsole from './EnterpriseFinancialEcosystemConsole';
 import apiService from '../../services/apiService';
 import {
-  DEDICATED_TREASURY_RAIL,
   PLATFORM_OWNERSHIP,
-  FINANCIAL_ROLES_TAXONOMY,
-  AccountingRole
+  FINANCIAL_ROLES_TAXONOMY
 } from '../../constants/platformOwnership';
 
 export interface FICAllocationEvent {
@@ -473,6 +471,7 @@ export const MasterFinancialsConsole: React.FC = () => {
         setLiveVaults(vRes.vaults);
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('Failed to sync live treasury data in MasterFinancialsConsole', e);
     }
   };

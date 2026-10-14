@@ -1,0 +1,117 @@
+{
+	"assets": {
+		"attachments": {
+			"base_main_color": { "clear": [ 0, 0, 0, 1 ], "load_state": "dont_care", "store_state": "save", "type": "color" },
+
+			"cmass": { "clear": [ 0, 0, 0, 0 ], "load_state": "dont_care", "store_state": "save", "type": "color","format": "rgba16f", "width": 128, "height": 64, "filtering": "linear", "generate_mipmaps": true },
+			"eye_coords":      { "clear": [ 0.35, 0.0, 0.3, 1.0 ], "load_state": "clear", "store_state": "save", "type": "color", "format": "rgba16f" },
+			"eye_mask_t_prev": { "clear": [ 0.35, 0.0, 0.3, 1.0 ], "load_state": "clear", "store_state": "save", "type": "color", "format": "rgba16f" }
+		},
+		"images": {
+			"camera: tex_y": { "type" : "camera", "format": "y" },
+			"camera: tex_uv": { "type" : "camera", "format": "uv" },
+			"camera: tex_u": { "type" : "camera", "format": "u" },
+			"camera: tex_v": { "type" : "camera", "format": "v" },
+			"camera: tex_rgb": { "type" : "camera", "format": "rgba" },
+
+			"left_eye_nn": { "active": true, "recognizer_feature_name": "left_eye", "type": "segmentation_mask"},
+			"right_eye_nn": { "active": true, "recognizer_feature_name": "right_eye", "type": "segmentation_mask"},
+			"left_eye_corneosclera_nn": { "active": true, "recognizer_feature_name": "left_eye_corneosclera", "type": "segmentation_mask"},
+			"right_eye_corneosclera_nn": { "active": true, "recognizer_feature_name": "right_eye_corneosclera", "type": "segmentation_mask"},
+			"left_eye_pupil_nn": { "active": true, "recognizer_feature_name": "left_eye_pupil", "type": "segmentation_mask"},
+			"right_eye_pupil_nn": { "active": true, "recognizer_feature_name": "right_eye_pupil", "type": "segmentation_mask"},
+			
+			"target.png": { "file_name": "images/target.png", "type": "texture" }
+		},
+		"materials": {
+			"$builtin$materials/camera": {
+				"samplers": [
+					{ "name": "tex_y", "image": "camera: tex_y" },
+					{ "name": "tex_u", "image": "camera: tex_u" },
+					{ "name": "tex_v", "image": "camera: tex_v" },
+					{ "name": "tex_uv", "image": "camera: tex_uv" },
+					{ "name": "tex_rgb", "image": "camera: tex_rgb" }
+				],
+				"state": { "backfaces": true, "blend": "off", "colorwrite": true, "ztest": false, "zwrite": false },
+				"parameters": {
+					"bnb_camera_orientation": { "type": "vec4", "value": [ 1, 0, 0, 1 ] },
+					"bnb_camera_scale": { "type": "vec4", "value": [ 1, 0, 0, 1 ] },
+					"bnb_view_width_fraction": { "type": "vec4", "value": [ 1, 0, 0, 0 ]
+					}
+				}
+			},
+			"shaders/cmass": {
+				"samplers": [
+					{ "name": "glfx_L_EYE_MASK", "image": "left_eye_nn" },
+					{ "name": "glfx_R_EYE_MASK", "image": "right_eye_nn" }
+				],
+				"state": { "backfaces": true, "blend": "off", "colorwrite": true, "ztest": false, "zwrite": false }
+			},
+			"shaders/bounds": {
+				"samplers": [
+					{ "name": "glfx_L_EYE_MASK", "image": "left_eye_nn" },
+					{ "name": "glfx_R_EYE_MASK", "image": "right_eye_nn" },
+					{ "name": "eye_mask_t_prev", "image": "eye_mask_t_prev" },
+					{ "name": "cmass", "image": "cmass" }
+				],
+				"state": { "backfaces": true, "blend": "off", "colorwrite": true, "ztest": false, "zwrite": false }
+			},
+			"shaders/quads": {
+				"samplers": [
+					{ "name": "eye_tex", "image": "target.png" },
+					{ "name": "glfx_L_EYE_MASK",          "image": "left_eye_nn" },
+					{ "name": "glfx_L_PUPIL_MASK",        "image": "left_eye_pupil_nn" },
+					{ "name": "glfx_L_CORNEOSCLERA_MASK", "image": "left_eye_corneosclera_nn" },
+					{ "name": "glfx_R_EYE_MASK",          "image": "right_eye_nn" },
+					{ "name": "glfx_R_PUPIL_MASK",        "image": "right_eye_pupil_nn" },
+					{ "name": "glfx_R_CORNEOSCLERA_MASK", "image": "right_eye_corneosclera_nn" },
+					{ "name": "eye_coords", "image": "eye_coords" }
+				],
+				"state": { "backfaces": true, "blend": "screen", "colorwrite": true, "ztest": false, "zwrite": false }
+			},
+			"$builtin$materials/copy_pixels": {
+				"samplers": [
+					{ "name": "tex_src", "image": "eye_coords" }
+				],
+				"state": { "backfaces": true, "blend": "off", "colorwrite": true, "ztest": false, "zwrite": false }
+			}
+		},
+		"meshes": {
+			"fs_tri": "$builtin$meshes/fs_tri",
+			"quads": "meshes/quads.bsm2"
+		}
+	},
+	"components": {},
+	"entities": {
+		"camera": { "components": { "mesh_instance":{ "mesh": "fs_tri", "materials": [ "$builtin$materials/camera" ]}}, "layer": "camera" },
+
+		"cmass": { "components": { "mesh_instance":{ "mesh": "fs_tri", "materials": [ "shaders/cmass" ]}}, "layer": "cmass" },
+		"bounds": { "components": { "mesh_instance":{ "mesh": "fs_tri", "materials": [ "shaders/bounds" ]}}, "layer": "bounds" },
+		"mask_t_copy": { "components": { "mesh_instance":{ "mesh": "fs_tri", "materials": [ "$builtin$materials/copy_pixels" ]}}, "layer": "mask_t_copy" },
+
+		"quads": { "components": { "mesh_instance":{ "mesh": "quads", "materials": [ "shaders/quads" ]}}, "layer": "quads" }
+	},
+	"hierarchy": {
+		"root": [
+			"camera", "cmass", "bounds", "mask_t_copy", "quads"
+		]
+	},
+	"render_list": {
+		"default": [
+			{ "layer": "cmass", "render_target": "cmass_RT" },
+			{ "layer": "bounds", "render_target": "bounds_RT" },
+			{ "layer": "mask_t_copy", "render_target": "mask_t_copy_RT" },
+
+			{ "layer": "camera", "render_target": "base_rt" },
+			{ "layer": "quads", "render_target": "base_rt" }
+		]
+	},
+	"render_targets": {
+		"base_rt": [ "base_main_color" ],
+
+		"bounds_RT": { "attachments": [ "eye_coords" ], "width": 2, "height": 2 },
+		"cmass_RT": { "attachments": [ "cmass" ], "width": 128, "height": 64 },
+		"mask_t_copy_RT": { "attachments": [ "eye_mask_t_prev" ], "width": 2, "height": 2 }
+	},
+	"scene": "eye_tex"
+}

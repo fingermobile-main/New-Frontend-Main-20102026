@@ -12,6 +12,7 @@ import apiService from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
+import { CURATED_FLAGSHIP_PRODUCTS } from '../data/curatedMarketplaceData';
 import {
   Sparkles,
   ShieldCheck,
@@ -149,144 +150,12 @@ const MarketplacePage: React.FC = () => {
       if (Array.isArray(data) && data.length > 0) {
         setProducts(data);
       } else {
-        // Fallback default flagship items if database is refreshing
-        setProducts([
-          {
-            id: '1',
-            name: 'FingerMobile Protocol Sovereign Keycard V3',
-            tagline: 'Hardware Cryptographic NFC Key & Identity Vault',
-            description: 'The official flagship hardware access card for FingerMobile Protocol. Features military-grade EAL6+ secure element, biometric NFC authentication, and direct cold-storage signing.',
-            price: 150.0,
-            priceFic: 1500.0,
-            currency: 'FIC',
-            category: 'Hardware & Security',
-            sku: 'FMP-KEY-V3-001',
-            images: ['https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80'],
-            imageUrl: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&q=80',
-            stock_quantity: 250,
-            is_flagship: true,
-            authenticity_ledger_hash: '0x8f9c1a5b432e189d20c578ab310e74f145610bcde8173429acbf918234125678',
-            specifications: {
-              Chip: 'Secure Element EAL6+',
-              Interface: 'NFC ISO/IEC 14443 & USB-C',
-              Material: 'Brushed Aerospace Titanium',
-              Warranty: 'Lifetime Protocol Replacement'
-            },
-            likes: 128,
-            dislikes: 3,
-            rating: 4.98,
-            reviews_count: 45,
-            poll_data: {
-              question: 'Should this flagship item receive next-gen protocol firmware?',
-              options: [
-                { id: 1, text: 'Yes, immediate update', votes: 42 },
-                { id: 2, text: 'Keep current build', votes: 8 }
-              ]
-            }
-          },
-          {
-            id: '2',
-            name: 'FingerMobile Neural Nexus Comm-Badge',
-            tagline: 'Wearable Voice & Haptic Protocol Transceiver',
-            description: 'Flagship biometric wearable designed for instant push-to-talk VoiceLines, real-time Dancia-4Tv streams, and haptic feedback during BeatwaveNG listening sessions.',
-            price: 299.0,
-            priceFic: 2990.0,
-            currency: 'FIC',
-            category: 'Wearables & IoT',
-            sku: 'FMP-NEXUS-COMM-02',
-            images: ['https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=1200&q=80'],
-            imageUrl: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=1200&q=80',
-            stock_quantity: 120,
-            is_flagship: true,
-            authenticity_ledger_hash: '0x41ab9823ce90df7812bc3451098ef1a7234908bcda1248901234acde56781290',
-            specifications: {
-              Battery: '72 Hours Continuous',
-              Connectivity: 'Bluetooth 5.4 + Wi-Fi 6E + Protocol Mesh',
-              Mic: 'Beamforming Quad Array',
-              Weight: '28 grams'
-            },
-            likes: 89,
-            dislikes: 2,
-            rating: 4.92,
-            reviews_count: 31,
-            poll_data: {
-              question: 'Which next feature would you like to see on Comm-Badge?',
-              options: [
-                { id: 1, text: 'Offline Mesh Relaying', votes: 56 },
-                { id: 2, text: 'Haptic Beatwave Metronome', votes: 34 }
-              ]
-            }
-          },
-          {
-            id: '3',
-            name: 'Protocol Sovereign Founder Hooded Parka',
-            tagline: 'Weatherproof Smart-Fabric Flagship Apparel with Embedded NFC Tag',
-            description: 'Crafted from sustainable recycled graphene technical membrane. Embeds an NFC chip linking to your verified FingerMobile profile and Hallmarks score.',
-            price: 220.0,
-            priceFic: 2200.0,
-            currency: 'FIC',
-            category: 'Flagship Apparel',
-            sku: 'FMP-APPAREL-PARKA-01',
-            images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=80'],
-            imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=80',
-            stock_quantity: 75,
-            is_flagship: true,
-            authenticity_ledger_hash: '0x17bfa98234cd01928374650192837465acbde019283746501928374650192837',
-            specifications: {
-              Fabric: '3-Layer Graphene Membrane',
-              Waterproof: '20,000 mm',
-              NFC: 'Profile + Hallmarks Token',
-              Tailoring: 'Ethically Tailored Milan'
-            },
-            likes: 64,
-            dislikes: 1,
-            rating: 4.89,
-            reviews_count: 22,
-            poll_data: {
-              question: 'Vote on the next limited edition colorway:',
-              options: [
-                { id: 1, text: 'Emerald Obsidian', votes: 48 },
-                { id: 2, text: 'Champagne White', votes: 19 }
-              ]
-            }
-          },
-          {
-            id: '4',
-            name: 'FingerMobile Studio Audiophile Reference Monitors',
-            tagline: 'Active Near-Field Studio Speakers for BeatwaveNG Master Quality',
-            description: 'Tuned specifically for BeatwaveNG high-resolution audio streaming. Features custom 5-inch Kevlar woofers, 1-inch silk dome tweeters, and onboard DSP matching the 10-band Beatwave equalizer.',
-            price: 480.0,
-            priceFic: 4800.0,
-            currency: 'FIC',
-            category: 'Audio Gear',
-            sku: 'FMP-AUDIO-MON-5X',
-            images: ['https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=1200&q=80'],
-            imageUrl: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=1200&q=80',
-            stock_quantity: 40,
-            is_flagship: true,
-            authenticity_ledger_hash: '0x8899aabbccddeeff00112233445566778899aabbccddeeff0011223344556677',
-            specifications: {
-              Frequency: '38Hz - 22kHz',
-              Amplifier: '140W Class D Bi-Amp',
-              Inputs: 'XLR, Optical & Lossless Wi-Fi',
-              DSP: 'BeatwaveNG Preset Match'
-            },
-            likes: 112,
-            dislikes: 4,
-            rating: 4.96,
-            reviews_count: 38,
-            poll_data: {
-              question: 'Do you prefer DSP Studio Flat or Amapiano Bass default?',
-              options: [
-                { id: 1, text: 'Studio Flat Reference', votes: 62 },
-                { id: 2, text: 'Amapiano Bass Enhanced', votes: 50 }
-              ]
-            }
-          }
-        ]);
+        // Fallback default curated flagship items (10 in each category, 40 total)
+        setProducts(CURATED_FLAGSHIP_PRODUCTS);
       }
     } catch {
       setError('Unable to load flagship products. Using offline protocol cache.');
+      setProducts(CURATED_FLAGSHIP_PRODUCTS);
     } finally {
       setLoading(false);
     }

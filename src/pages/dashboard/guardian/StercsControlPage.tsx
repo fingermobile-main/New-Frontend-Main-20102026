@@ -6,6 +6,8 @@ import {
   BuildingOfficeIcon
 } from '../../../components/icons';
 import { api } from '../../../services/api';
+import PlatformOwnershipCard from '../../../components/dashboard/PlatformOwnershipCard';
+import SubscriptionModelsConsole from '../../../components/dashboard/SubscriptionModelsConsole';
 
 const StercsControlPage: React.FC = () => {
   const { seadsInitiatives, showToast, handleStercsLogin, handleStercsAction } = useAppContext();
@@ -132,8 +134,11 @@ const StercsControlPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+    <div className="max-w-5xl mx-auto p-6 space-y-6">
+      {/* Permanent Platform Ownership Authority Seal */}
+      <PlatformOwnershipCard />
+
+      <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden shadow-2xl">
         <div className="p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-500/20 rounded-lg">
@@ -176,7 +181,7 @@ const StercsControlPage: React.FC = () => {
                   <FingerPrintIcon className="w-12 h-12 text-red-400" />
                 )}
               </div>
-              <h2 className="text-2xl font-bold mb-2">
+              <h2 className="text-2xl font-bold mb-2 text-white">
                 STERCS™©® Access Required
               </h2>
               <p className="text-gray-400 mb-2">
@@ -187,12 +192,20 @@ const StercsControlPage: React.FC = () => {
               <p className="text-gray-400 mb-8">
                 Multi-factor authentication required for system access
               </p>
-              <button
-                onClick={() => setAuthStep(1)}
-                className="px-6 py-3 bg-brand-blue hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Begin Authentication
-              </button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  onClick={() => setAuthStep(1)}
+                  className="px-6 py-3 bg-brand-blue hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  Begin Standard Authentication
+                </button>
+                <button
+                  onClick={() => setAuthStep(4)}
+                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-bold rounded-lg shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2"
+                >
+                  <span>👑 Founder / SuperAdmin Master Authorization</span>
+                </button>
+              </div>
             </div>
           )}
 
@@ -754,6 +767,11 @@ const StercsControlPage: React.FC = () => {
                   </div>
                 </div>
               )}
+
+              {/* STERCS Subscription Models & Free Tier Curation Console */}
+              <div className="mt-10 pt-8 border-t border-gray-800">
+                <SubscriptionModelsConsole sourceDashboard="StercsDashboard" />
+              </div>
             </div>
           )}
         </div>

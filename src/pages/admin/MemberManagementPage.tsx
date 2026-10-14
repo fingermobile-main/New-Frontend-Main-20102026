@@ -27,7 +27,7 @@ const MemberManagementPage: React.FC = () => {
 
       const mapped: Member[] = userList.map((u: any) => ({
         id: String(u.id),
-        email: u.email || `${u.username}@fingermobile.io`,
+        email: u.email || `${u.username}@fingermobileprotocol.com`,
         role: u.role || 'user',
         createdAt: u.createdAt || u.created_at || new Date().toISOString()
       }));

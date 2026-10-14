@@ -102,7 +102,7 @@ const CanaryAdsPage: React.FC = () => {
   // Form State
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [destinationUrl, setDestinationUrl] = useState('https://fingermobile.org');
+  const [destinationUrl, setDestinationUrl] = useState('https://fingermobileprotocol.com');
   const [campaignType, setCampaignType] = useState('traffic');
   const [selectedPlacements, setSelectedPlacements] = useState<string[]>(['feed-video']);
   const [budgetDays, setBudgetDays] = useState(7);

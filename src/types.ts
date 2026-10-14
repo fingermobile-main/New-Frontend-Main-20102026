@@ -256,6 +256,7 @@ export interface Notification {
 export interface Product {
   id: string;
   name: string;
+  tagline?: string;
   description?: string;
   price: number;
   currency: string;
@@ -265,6 +266,7 @@ export interface Product {
   stock?: number;
   sellerId?: string;
   seller?: any;
+  sellerName?: string;
   brand?: string;
   condition?: string;
   quantity?: number;
@@ -288,6 +290,8 @@ export interface Product {
     geoRestricted: boolean;
     contentRating: string;
   };
+  ageRestricted?: boolean;
+  contentRating?: string;
   isLiked?: boolean;
   likesCount?: number;
 }

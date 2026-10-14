@@ -172,7 +172,10 @@ const CookiePolicyPage: React.FC = () => {
                 contact us at:
               </p>
               <p className="text-gray-700 font-medium">
-                privacy@fingermobile.com
+                info@fingermobileprotocol.com | fingermobileprotocol@gmail.com
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                Official Web: https://fingermobileprotocol.com
               </p>
             </section>
           </div>

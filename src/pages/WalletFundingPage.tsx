@@ -3,12 +3,22 @@ import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import MainLayout from '../components/layout/MainLayout';
 import { GiftIcon, PaylinkIcon, CurrencyNairaIcon, UserCircleIcon, ArrowRightIcon } from '../icons';
+import { DEDICATED_TREASURY_RAIL } from '../constants/platformOwnership';
 
 const WalletFundingPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
   // Nigerian banks integration options
   const banks = [
+    {
+      id: 'alternative',
+      name: 'Alternative Bank',
+      icon: '🏛️',
+      dedicatedRail: true,
+      accountNumber: DEDICATED_TREASURY_RAIL.accountNumber,
+      accountName: DEDICATED_TREASURY_RAIL.accountName,
+      badge: 'Dedicated Protocol Treasury Rail'
+    },
     { id: 'zenith', name: 'Zenith Bank', icon: '🏦' },
     { id: 'gtb', name: 'Guaranty Trust Bank', icon: '🏦' },
     { id: 'uba', name: 'United Bank for Africa', icon: '🏦' },
@@ -204,6 +214,28 @@ const WalletFundingPage: React.FC = () => {
                         </button>
                       ))}
                     </div>
+
+                    {selectedBank === 'alternative' && (
+                      <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-950 font-mono space-y-2">
+                        <div className="flex justify-between items-center text-amber-900 font-bold">
+                          <span>{DEDICATED_TREASURY_RAIL.railTitle}</span>
+                          <span className="text-[10px] bg-amber-200 px-2 py-0.5 rounded-full font-bold">
+                            {DEDICATED_TREASURY_RAIL.licenseStatus}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm font-bold">
+                          <span>Account Number:</span>
+                          <span className="text-lg text-amber-900 tracking-wider">{DEDICATED_TREASURY_RAIL.accountNumber}</span>
+                        </div>
+                        <div className="text-[11px] text-amber-800">
+                          <span>Account Name: </span>
+                          <span className="font-semibold">{DEDICATED_TREASURY_RAIL.accountName}</span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 font-sans pt-1 border-t border-amber-200">
+                          Payments are confirmed by Treasury Staff (Account Staff 1-7) and approved by Executive CFO Mrs. Mbah Eunice Emonena.
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <button

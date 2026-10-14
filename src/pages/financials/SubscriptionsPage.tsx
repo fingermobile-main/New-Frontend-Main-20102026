@@ -4,45 +4,60 @@ import MainLayout from '../../components/layout/MainLayout';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
 import {
-  ShieldCheck,
   CheckCircle2,
   Sparkles,
   Zap,
   CreditCard,
   Crown,
   PlusCircle,
-  X
+  X,
+  Edit3,
+  Trash2,
+  Search,
+  Filter,
+  DollarSign,
+  Coins,
+  Sliders,
+  ExternalLink
 } from 'lucide-react';
 
-interface SubItem {
-  id: string | number;
-  creatorName: string;
-  creatorAvatar?: string;
-  planName: string;
-  price: number;
-  status: string;
-  renewalDate: string;
-  benefits?: string[];
-}
-
-interface PlatformPlan {
+export interface SubscriptionModel {
   id: string;
   name: string;
+  category: 'platform' | 'media' | 'luxury' | 'creator' | 'community' | 'fintech';
   monthlyFIC: number;
   monthlyNaira: number;
   badge: string;
   isPopular?: boolean;
+  route: string;
   description: string;
   features: string[];
+  screenName: string;
 }
 
-const PLATFORM_PLANS: PlatformPlan[] = [
+export interface ScreenSubscriptionAuditItem {
+  id: string;
+  screenName: string;
+  route: string;
+  category: string;
+  plans: string;
+  ficPrice: string;
+  fiatPrice: string;
+  quotaBenefits: string;
+  gatedStatus: 'Gated SVoD/TVoD' | 'Paywalled Channel' | 'VIP Fleet Tier' | 'Escrow & Gifting' | 'Provenance Escrow' | '250k Mega Cap' | 'Commercial Licensing' | 'Enterprise Float' | 'Biometric API Shield' | 'DSP Auction';
+}
+
+const INITIAL_ALL_SUBSCRIPTIONS: SubscriptionModel[] = [
+  // 1. Platform Core Tiers
   {
-    id: 'free',
+    id: 'plan-explorer',
     name: 'Sovereign Explorer',
+    category: 'platform',
     monthlyFIC: 0,
     monthlyNaira: 0,
     badge: 'Standard',
+    route: '/',
+    screenName: 'HomePage & Core Discovery',
     description: 'Basic social discovery and standard P2P encrypted messaging across the network.',
     features: [
       'Basic Social Posting & Feeds',
@@ -53,11 +68,14 @@ const PLATFORM_PLANS: PlatformPlan[] = [
     ]
   },
   {
-    id: 'rising',
+    id: 'plan-rising',
     name: 'Rising Creator',
+    category: 'platform',
     monthlyFIC: 1,
     monthlyNaira: 100,
     badge: 'Starter Pack',
+    route: '/creatordashboard',
+    screenName: 'Creator Studio & Dashboard',
     description: 'Designed for emerging artists, streamers, and photographers entering monetization.',
     features: [
       'Verified Creator Badge',
@@ -68,12 +86,15 @@ const PLATFORM_PLANS: PlatformPlan[] = [
     ]
   },
   {
-    id: 'growth',
+    id: 'plan-growth',
     name: 'Growth Creator',
+    category: 'platform',
     monthlyFIC: 5,
     monthlyNaira: 500,
     badge: 'Visibility Pack',
     isPopular: true,
+    route: '/monetization',
+    screenName: 'Monetization Hub',
     description: 'Boost discoverability by 500% across the global feed and unlock 4K streaming.',
     features: [
       '5x Algorithm Recommendation Priority',
@@ -85,11 +106,14 @@ const PLATFORM_PLANS: PlatformPlan[] = [
     ]
   },
   {
-    id: 'pro',
+    id: 'plan-pro',
     name: 'Professional Creator',
+    category: 'platform',
     monthlyFIC: 20,
     monthlyNaira: 2000,
     badge: 'Monetization Pro',
+    route: '/creatordashboard',
+    screenName: 'Creator Influence Suite',
     description: 'For full-time independent creators with active follower communities and product sales.',
     features: [
       'Gold Verified Sovereign Checkmark',
@@ -101,11 +125,14 @@ const PLATFORM_PLANS: PlatformPlan[] = [
     ]
   },
   {
-    id: 'enterprise',
+    id: 'plan-enterprise',
     name: 'Enterprise / Sovereign',
+    category: 'platform',
     monthlyFIC: 100,
     monthlyNaira: 10000,
     badge: 'Media Network',
+    route: '/master-dashboard',
+    screenName: 'Master Enterprise Console',
     description: 'For media companies, record labels, and sovereign franchise operators.',
     features: [
       'Platinum Sovereign Network Badge',
@@ -115,32 +142,429 @@ const PLATFORM_PLANS: PlatformPlan[] = [
       'Custom Domain Routing & API Access',
       'White-Label Telemetry Dashboards'
     ]
+  },
+
+  // 2. Media & Streaming
+  {
+    id: 'plan-dancia',
+    name: 'Dancia-4Tv Cinema Pass',
+    category: 'media',
+    monthlyFIC: 10,
+    monthlyNaira: 1000,
+    badge: '4K Ultra-HD Cinema',
+    isPopular: true,
+    route: '/dancia4tv',
+    screenName: 'Dancia-4Tv Broadcast',
+    description: 'Unlimited access to sovereign 4K cinema premieres, sound clash replays, and creator TVoD channels.',
+    features: [
+      '4K HDR Dolby Atmos Streams',
+      'Unlimited Sound Clash Livestreams',
+      'Pay-Per-View Cinema Archives',
+      'Ad-Free Picture-in-Picture Mode',
+      'Offline Download Quota (50 films)'
+    ]
+  },
+  {
+    id: 'plan-beatwave',
+    name: 'BeatwaveNG Lossless Hi-Fi',
+    category: 'media',
+    monthlyFIC: 8,
+    monthlyNaira: 800,
+    badge: 'Master FLAC Audio',
+    route: '/beatwaveng',
+    screenName: 'BeatwaveNG SoundRiver',
+    description: 'Studio master 24-bit lossless audio streaming with uncompressed audio stem download packs.',
+    features: [
+      'Bit-Perfect 24-bit / 192kHz FLAC',
+      'Master Multitrack Stem Downloads',
+      'Direct Creator Tipping & Vaults',
+      'Personal AI Playlist Generator',
+      'Zero-Compression Mobile Streaming'
+    ]
+  },
+
+  // 3. Luxury & Lifestyle
+  {
+    id: 'plan-fingerlux',
+    name: 'FingerLux Presidential Fleet',
+    category: 'luxury',
+    monthlyFIC: 50,
+    monthlyNaira: 5000,
+    badge: 'VIP Presidential',
+    route: '/fingerlux',
+    screenName: 'FingerLux VIP Escorts',
+    description: 'Armored presidential vehicle transfers, chauffeur airport escorts, and private island estate charters.',
+    features: [
+      'Armed Chauffeur Airport Escorts',
+      'Luxury Yacht Charter Bookings',
+      'Presidential Oceanfront Villa Access',
+      'FIC Instant Escrow Settlement',
+      '24/7 Diplomatic Concierge Desk'
+    ]
+  },
+  {
+    id: 'plan-lush',
+    name: 'Lush-Pressies VIP Matchmaker',
+    category: 'luxury',
+    monthlyFIC: 12,
+    monthlyNaira: 1200,
+    badge: 'Romance & Plushies',
+    route: '/lushpressies',
+    screenName: 'Lush-Pressies Gifting',
+    description: 'Digital 3D plushie collectibles, incognito matchmaking, and encrypted romantic escrow gifting.',
+    features: [
+      '3D Animated Plushie Vault Access',
+      'Incognito Ghost Dating Mode',
+      'Radiant Emerald Gift Boxes',
+      'Priority Matchmaker Algorithm',
+      'Creator Escrow Tipping Discounts'
+    ]
+  },
+  {
+    id: 'plan-ownit',
+    name: 'OwnIt Haute Provenance',
+    category: 'luxury',
+    monthlyFIC: 25,
+    monthlyNaira: 2500,
+    badge: 'Haute Horology',
+    route: '/ownit',
+    screenName: 'OwnIt Luxury Goods',
+    description: 'Immutable luxury goods authentication, luxury watch auction pass, and digital provenance passports.',
+    features: [
+      'Watch & Jewelry Certificate Passports',
+      'Private High-Value Auction Bidding',
+      'Certified Appraiser Concierge',
+      'Physical Custody Escrow Vaults',
+      'Counterfeit Fraud Insurance Protection'
+    ]
+  },
+  {
+    id: 'plan-flamingo',
+    name: 'Flamingo 18+ Private Chamber',
+    category: 'luxury',
+    monthlyFIC: 15,
+    monthlyNaira: 1500,
+    badge: '18+ Private Vault',
+    route: '/flamingo',
+    screenName: 'Flamingo Storefront',
+    description: 'Private adult storefront and verified adult creator subscriptions with zero-knowledge encryption.',
+    features: [
+      'Age-Verified Zero-Knowledge Keycards',
+      'Encrypted Private 1-on-1 Chambers',
+      'Anonymous FIC Direct Settlements',
+      'Zero Statement Bank Tracing',
+      'VIP Exclusive Creator Galleries'
+    ]
+  },
+
+  // 4. Creator & Merchant Studio
+  {
+    id: 'plan-stercs',
+    name: 'Stercs 4K AI Render Cloud',
+    category: 'creator',
+    monthlyFIC: 18,
+    monthlyNaira: 1800,
+    badge: 'AI Master Studio',
+    route: '/stercs',
+    screenName: 'Stercs Creator Studio',
+    description: 'Neural video mastering, cloud GPU render quotas, and multi-track sovereign timeline editing.',
+    features: [
+      'Cloud GPU 4K 60fps Render Farm',
+      'Neural Voice Denoise & Mastering',
+      'AI Background Scene Replacement',
+      'Unlimited Motion Graphics Presets',
+      'Cross-Platform Batch Publishing'
+    ]
+  },
+  {
+    id: 'plan-storefront',
+    name: 'My Storefront Merchant Elite',
+    category: 'creator',
+    monthlyFIC: 20,
+    monthlyNaira: 2000,
+    badge: '0% Commission Mall',
+    route: '/mystorefront',
+    screenName: 'Member Storefront Portal',
+    description: 'Enterprise commerce portal with unlimited SKU uploads, customized domains, and automated inventory.',
+    features: [
+      'Zero (0%) Platform Sales Commission',
+      'Unlimited Product Catalog SKUs',
+      'Multi-Currency NGN/FIC/USD Checkout',
+      'Automated Logistics API Webhooks',
+      'Same-Day Merchant Escrow Releases'
+    ]
+  },
+  {
+    id: 'plan-photocredits',
+    name: 'PhotoCredits Commercial Pro',
+    category: 'creator',
+    monthlyFIC: 10,
+    monthlyNaira: 1000,
+    badge: 'Stock & Friday Pool',
+    route: '/photocredits',
+    screenName: 'PhotoCredits Media Hub',
+    description: 'Commercial licensing for global media assets and automatic qualification for Friday Creator Prize Pools.',
+    features: [
+      'Full Worldwide Commercial Rights',
+      'Friday Creator Prize Pool Tickets',
+      'Raw UHD 50MP Photo Downloads',
+      'Royalty Ledger Smart Contract Split',
+      'AI Image Watermark Remover'
+    ]
+  },
+
+  // 5. Community & Esports Arena
+  {
+    id: 'plan-hallmarks',
+    name: 'HallMarks Sovereign 250k',
+    category: 'community',
+    monthlyFIC: 30,
+    monthlyNaira: 3000,
+    badge: '250k Mega-Community',
+    route: '/hallmarks',
+    screenName: 'HallMarks Verification',
+    description: 'Create mega-communities supporting up to 250,000 members with custom prestige badge issuing.',
+    features: [
+      '250,000 Member Channel Capacity',
+      'Official Sovereign Badge Issuer Rights',
+      'Automated Moderation Guardrails',
+      'Community Vault Multi-Sig Wallets',
+      'Custom Vanity URLs & Invitations'
+    ]
+  },
+  {
+    id: 'plan-gameon',
+    name: 'GameOn Esports Season Pass',
+    category: 'community',
+    monthlyFIC: 6,
+    monthlyNaira: 600,
+    badge: 'Pro Battle Pass',
+    route: '/gameon',
+    screenName: 'GameOn Tournament Arena',
+    description: 'Tournament registrations, pro brackets, live spectator lounge, and monthly FIC cash prize pools.',
+    features: [
+      'VIP Bracket Registration Quota',
+      'Spectator High-Bitrate Lounge',
+      'Exclusive Player Avatar Skins',
+      'Weekly Battle Ladder Tournaments',
+      'Cash Prize Auto-Deposit to Vault'
+    ]
+  },
+  {
+    id: 'plan-fingerwars',
+    name: 'FingerWars Clash Arena Pro',
+    category: 'community',
+    monthlyFIC: 8,
+    monthlyNaira: 800,
+    badge: 'Clash Challenger',
+    route: '/fingerwars',
+    screenName: 'FingerWars Battle League',
+    description: 'Sovereign rap, beat, and art clash arenas. Challenge top rankers and bet verified FIC stakes.',
+    features: [
+      'Ranked Arena Challenge Entries',
+      'Crowd Voting Power Multiplier (2x)',
+      'Escrow Staked Token Matchmaking',
+      'Hall of Fame Trophy Profile Badges',
+      'Direct Clash Producer Feedback'
+    ]
+  },
+
+  // 6. Fintech & Security Infrastructure
+  {
+    id: 'plan-guardian',
+    name: 'Guardian AI Enterprise Shield',
+    category: 'fintech',
+    monthlyFIC: 35,
+    monthlyNaira: 3500,
+    badge: 'Biometric Anti-Fraud',
+    route: '/guardian-protection',
+    screenName: 'Guardian Protection Center',
+    description: 'Biometric live-motion face verification, automated deepfake defense, and high-value vault fraud protection.',
+    features: [
+      'Real-Time Biometric Face Authentication',
+      'Deepfake & Synthetic Media Scans',
+      'Automated Suspicious Outflow Lock',
+      'High-Value Escrow Multi-Sig Gate',
+      'Priority Cyber Security Incident Team'
+    ]
+  },
+  {
+    id: 'plan-loansqr',
+    name: 'LoanSqr SME Commercial Float',
+    category: 'fintech',
+    monthlyFIC: 40,
+    monthlyNaira: 4000,
+    badge: 'SME Micro-Finance',
+    route: '/loansqr',
+    screenName: 'LoanSqr Float Engine',
+    description: 'Merchant working capital float engine with instant algorithmic credit lines and 24h disbursement.',
+    features: [
+      'Instant Credit Line Scoring (Up to ₦5M)',
+      '0.8% Subsidized Merchant Float Rate',
+      '24-Hour Vault Disbursement',
+      'Automated Point-of-Sale Repayment',
+      'Financial Statement Auditing Reports'
+    ]
+  },
+  {
+    id: 'plan-canary',
+    name: 'Canary Ads DSP Campaign Suite',
+    category: 'fintech',
+    monthlyFIC: 25,
+    monthlyNaira: 2500,
+    badge: 'DSP Ad Booster',
+    route: '/canaryads',
+    screenName: 'Canary Ads Management',
+    description: 'Programmatic sponsored campaign builder with targeted feed insertions and real-time impression bidding.',
+    features: [
+      '50,000 Guaranteed Feed Impressions',
+      'Granular Demographic & Geo Filters',
+      'Real-Time Click & Conversion Telemetry',
+      'Native Sponsored Post Embeds',
+      'A/B Creative Split Testing Tools'
+    ]
+  },
+  {
+    id: 'plan-franchise',
+    name: 'Franchise Territorial License',
+    category: 'fintech',
+    monthlyFIC: 250,
+    monthlyNaira: 25000,
+    badge: 'Territorial Sovereign',
+    route: '/franchise',
+    screenName: 'Franchise Management',
+    description: 'Full regional node operator license with territorial revenue share and local merchant onboarding rights.',
+    features: [
+      'Exclusive Regional Territory Rights',
+      '30% Platform Net Fee Royalty Share',
+      'Sub-Admin Regional Control Panel',
+      'Direct Fiat Gateway Settlement Node',
+      'Quarterly Board Governance Voting'
+    ]
   }
+];
+
+const PLATFORM_SCREEN_AUDIT_DATA: ScreenSubscriptionAuditItem[] = [
+  { id: '1', screenName: 'Core Platform & Sovereign Network', route: '/', category: 'Core Network', plans: 'Sovereign Explorer / Pro / Enterprise', ficPrice: '0 - 100 FIC', fiatPrice: '₦0 - ₦10,000', quotaBenefits: 'Social feeds, P2P messaging, 10GB-100GB vault, 4K video, 0.75% fees', gatedStatus: 'Paywalled Channel' },
+  { id: '2', screenName: 'Dancia-4Tv Broadcast Cinema', route: '/dancia4tv', category: 'Media & Entertainment', plans: 'Cinema Pass & TVoD Clashes', ficPrice: '10 FIC / mo', fiatPrice: '₦1,000 / mo', quotaBenefits: '4K Ultra-HD streams, Dolby Atmos, live sound clashes, PPV archives', gatedStatus: 'Gated SVoD/TVoD' },
+  { id: '3', screenName: 'BeatwaveNG Hi-Fi SoundRiver', route: '/beatwaveng', category: 'Media & Audio', plans: 'Master FLAC Hi-Fi Pass', ficPrice: '8 FIC / mo', fiatPrice: '₦800 / mo', quotaBenefits: '24-bit 192kHz lossless audio, master multitrack stem downloads, AI playlists', gatedStatus: 'Paywalled Channel' },
+  { id: '4', screenName: 'FingerLux VIP Hospitality & Fleet', route: '/fingerlux', category: 'Luxury & Lifestyle', plans: 'Presidential Fleet Concierge', ficPrice: '50 FIC / mo', fiatPrice: '₦5,000 / mo', quotaBenefits: 'Armored chauffeur airport escorts, private villa & superyacht bookings', gatedStatus: 'VIP Fleet Tier' },
+  { id: '5', screenName: 'Lush-Pressies Gifting & Romance', route: '/lushpressies', category: 'Luxury & Romance', plans: 'VIP Matchmaker & Gifting', ficPrice: '12 FIC / mo', fiatPrice: '₦1,200 / mo', quotaBenefits: '3D plushie vault, ghost dating mode, radiant emerald boxes, creator tips', gatedStatus: 'Escrow & Gifting' },
+  { id: '6', screenName: 'OwnIt Haute Horology & Escrow', route: '/ownit', category: 'Luxury & Commerce', plans: 'Haute Provenance Pass', ficPrice: '25 FIC / mo', fiatPrice: '₦2,500 / mo', quotaBenefits: 'Horology passports, VIP auctions, appraiser concierge, vault custody', gatedStatus: 'Provenance Escrow' },
+  { id: '7', screenName: 'Flamingo 18+ Private Vault', route: '/flamingo', category: 'Privileged Adult', plans: 'Private Chamber Access', ficPrice: '15 FIC / mo', fiatPrice: '₦1,500 / mo', quotaBenefits: 'Zero-knowledge keycards, 1-on-1 chambers, zero-statement bank tracing', gatedStatus: 'Paywalled Channel' },
+  { id: '8', screenName: 'HallMarks Verification Studio', route: '/hallmarks', category: 'Community & Merit', plans: 'Sovereign 250k Mega Cap', ficPrice: '30 FIC / mo', fiatPrice: '₦3,000 / mo', quotaBenefits: '250,000 members per community, badge issuing rights, multi-sig vaults', gatedStatus: '250k Mega Cap' },
+  { id: '9', screenName: 'Gems Curated Highlights', route: '/gems', category: 'Discovery & Feeds', plans: 'Spotlight Boost Pass', ficPrice: '5 FIC / mo', fiatPrice: '₦500 / mo', quotaBenefits: 'Algorithmic boost 5x, top post pin, trending hashtag placement', gatedStatus: 'Paywalled Channel' },
+  { id: '10', screenName: 'Groups & Circles Hub', route: '/groups', category: 'Community & Social', plans: 'Private VIP Group Circles', ficPrice: '4 FIC / mo', fiatPrice: '₦400 / mo', quotaBenefits: 'Secret subscriber-only groups, encrypted group calls, custom roles', gatedStatus: 'Paywalled Channel' },
+  { id: '11', screenName: 'Blogs Sovereign Publishing', route: '/blogs', category: 'Publishing & Articles', plans: 'Paid Publication Newsletter', ficPrice: '7 FIC / mo', fiatPrice: '₦700 / mo', quotaBenefits: 'Monetized long-form articles, subscriber email blasts, paid paywalls', gatedStatus: 'Paywalled Channel' },
+  { id: '12', screenName: 'GameOn Tournament Arena', route: '/gameon', category: 'Esports & Gaming', plans: 'Pro Esports Battle Pass', ficPrice: '6 FIC / mo', fiatPrice: '₦600 / mo', quotaBenefits: 'VIP bracket registration, spectator lounge, avatar skins, cash pool', gatedStatus: 'Paywalled Channel' },
+  { id: '13', screenName: 'FingerWars Clash Arenas', route: '/fingerwars', category: 'Gaming & Clashes', plans: 'Clash Challenger Arena', ficPrice: '8 FIC / mo', fiatPrice: '₦800 / mo', quotaBenefits: 'High-stakes battle league, 2x voting power, token staked matchmaking', gatedStatus: 'Paywalled Channel' },
+  { id: '14', screenName: 'Stercs Studio & Media Editor', route: '/stercs', category: 'Creative Tools', plans: '4K AI Render Farm Suite', ficPrice: '18 FIC / mo', fiatPrice: '₦1,800 / mo', quotaBenefits: 'Cloud GPU 4K render farm, AI voice denoiser, scene replacer, presets', gatedStatus: 'Paywalled Channel' },
+  { id: '15', screenName: 'Member Storefronts & Mall', route: '/mystorefront', category: 'E-Commerce', plans: 'Merchant Elite 0% Fee', ficPrice: '20 FIC / mo', fiatPrice: '₦2,000 / mo', quotaBenefits: '0% platform sales fee, unlimited SKUs, multi-currency cart, API webhooks', gatedStatus: 'Paywalled Channel' },
+  { id: '16', screenName: 'PhotoCredits Media Exchange', route: '/photocredits', category: 'Stock & Media', plans: 'Commercial License Pro', ficPrice: '10 FIC / mo', fiatPrice: '₦1,000 / mo', quotaBenefits: 'Global commercial license, Friday prize pool entry, 50MP RAW photos', gatedStatus: 'Commercial Licensing' },
+  { id: '17', screenName: 'Guardian AI Cyber Protection', route: '/guardian-protection', category: 'Security & Identity', plans: 'Enterprise Biometric Shield', ficPrice: '35 FIC / mo', fiatPrice: '₦3,500 / mo', quotaBenefits: 'Live-motion face recognition, anti-deepfake scan, high-value vault lock', gatedStatus: 'Biometric API Shield' },
+  { id: '18', screenName: 'LoanSqr SME Micro-Finance', route: '/loansqr', category: 'Fintech & Lending', plans: 'SME Commercial Float', ficPrice: '40 FIC / mo', fiatPrice: '₦4,000 / mo', quotaBenefits: 'Credit scoring up to ₦5M, 0.8% float rate, 24h disbursement to vault', gatedStatus: 'Enterprise Float' },
+  { id: '19', screenName: 'Canary Ads Programmatic DSP', route: '/canaryads', category: 'Advertising & Marketing', plans: 'DSP Campaign Booster', ficPrice: '25 FIC / mo', fiatPrice: '₦2,500 / mo', quotaBenefits: '50,000 impressions, demographic geo filters, real-time conversion stats', gatedStatus: 'DSP Auction' },
+  { id: '20', screenName: 'Franchise Sovereign Operator', route: '/franchise', category: 'Franchise & Nodes', plans: 'Territorial License Node', ficPrice: '250 FIC / mo', fiatPrice: '₦25,000 / mo', quotaBenefits: 'Regional territory exclusivity, 30% net platform royalty share, sub-admin', gatedStatus: 'Paywalled Channel' }
 ];
 
 export const SubscriptionsPage: React.FC = () => {
   const navigate = useNavigate();
   const { ficBalance, showToast } = useAppContext();
 
-  const [activeTab, setActiveTab] = useState<'plans' | 'active' | 'creator_builder'>('plans');
+  const [activeTab, setActiveTab] = useState<'cards' | 'matrix' | 'fic_management' | 'active'>('cards');
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [matrixSearchQuery, setMatrixSearchQuery] = useState('');
+
+  // Local state for all editable subscription models
+  const [subscriptionCards, setSubscriptionCards] = useState<SubscriptionModel[]>(() => {
+    try {
+      const saved = localStorage.getItem('fingermobile_curated_subscription_models');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (_err) {
+      /* eslint-disable-next-line no-empty */
+    }
+    return INITIAL_ALL_SUBSCRIPTIONS;
+  });
+
+  const saveSubscriptionCards = (updated: SubscriptionModel[]) => {
+    setSubscriptionCards(updated);
+    try {
+      localStorage.setItem('fingermobile_curated_subscription_models', JSON.stringify(updated));
+      window.dispatchEvent(new CustomEvent('fingermobile_subscriptions_changed'));
+    } catch (_err) {
+      /* eslint-disable-next-line no-empty */
+    }
+  };
+
+  // Card Editor Modal State
+  const [editingCard, setEditingCard] = useState<SubscriptionModel | null>(null);
+  const [editForm, setEditForm] = useState<SubscriptionModel>({ ...INITIAL_ALL_SUBSCRIPTIONS[0] });
+  const [newFeatureText, setNewFeatureText] = useState('');
+
+  const openEditorModal = (card: SubscriptionModel) => {
+    setEditingCard(card);
+    setEditForm({ ...card, features: [...card.features] });
+    setNewFeatureText('');
+  };
+
+  const closeEditorModal = () => {
+    setEditingCard(null);
+  };
+
+  const handleSaveCard = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCard) return;
+
+    const updated = subscriptionCards.map((c) => (c.id === editingCard.id ? editForm : c));
+    saveSubscriptionCards(updated);
+    showToast?.(`Subscription model "${editForm.name}" updated successfully!`, 'success');
+    closeEditorModal();
+  };
+
+  const handleAddNewCard = () => {
+    const newCard: SubscriptionModel = {
+      id: `plan-custom-${Date.now()}`,
+      name: 'New Custom VIP Pass',
+      category: 'creator',
+      monthlyFIC: 15,
+      monthlyNaira: 1500,
+      badge: 'Custom Pass',
+      isPopular: false,
+      route: '/storefronts',
+      screenName: 'Custom Channel Pass',
+      description: 'Exclusive tier created for specialized community benefits and token perks.',
+      features: ['Full Channel Content Access', 'Direct VIP Creator Messaging', 'Custom Member Badge']
+    };
+    saveSubscriptionCards([newCard, ...subscriptionCards]);
+    openEditorModal(newCard);
+    showToast?.('New subscription tier created. Configure details below.', 'info');
+  };
+
+  const handleDeleteCard = (cardId: string) => {
+    if (window.confirm('Are you sure you want to delete this subscription model?')) {
+      const updated = subscriptionCards.filter((c) => c.id !== cardId);
+      saveSubscriptionCards(updated);
+      showToast?.('Subscription model deleted.', 'info');
+      closeEditorModal();
+    }
+  };
+
+  // FIC Management State
+  const [ficTargetUser, setFicTargetUser] = useState('@creator_alex');
+  const [ficAllocationAmount, setFicAllocationAmount] = useState('250');
+  const [ficAllocationReason, setFicAllocationReason] = useState('Milestone creator prize allocation');
+  const [walletStatusState, setWalletStatusState] = useState<'active' | 'suspended' | 'frozen'>('active');
+  const [earningSuspended, setEarningSuspended] = useState(false);
 
   // Active Subscriptions
-  const [subscriptions, setSubscriptions] = useState<SubItem[]>([]);
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [cancellingId, setCancellingId] = useState<string | number | null>(null);
-
-  // Upgrade Modal
-  const [selectedPlanForUpgrade, setSelectedPlanForUpgrade] = useState<PlatformPlan | null>(null);
+  const [selectedPlanForUpgrade, setSelectedPlanForUpgrade] = useState<SubscriptionModel | null>(null);
   const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
-
-  // Creator Tier Builder
-  const [tierName, setTierName] = useState('VIP Backstage Pass');
-  const [tierPrice, setTierPrice] = useState('15');
-  const [tierPerk1, setTierPerk1] = useState('Master FLAC Audio Stem Downloads');
-  const [tierPerk2, setTierPerk2] = useState('Exclusive Dancia-4Tv Live Sound Clash Replays');
-  const [tierPerk3, setTierPerk3] = useState('Direct Creator DM Access');
-  const [isPublishingTier, setIsPublishingTier] = useState(false);
 
   const loadSubscriptions = useCallback(async () => {
     setIsLoading(true);
@@ -159,11 +583,7 @@ export const SubscriptionsPage: React.FC = () => {
               s.renewal_date ||
               s.renewalDate ||
               new Date(Date.now() + 30 * 86400000).toLocaleDateString(),
-            benefits: s.features || s.benefits || [
-              'Full Audio Library Stems',
-              'Exclusive Community Access',
-              'Early Access Releases'
-            ]
+            benefits: s.features || s.benefits || ['Full Audio Library Stems', 'Exclusive Discord Community']
           }))
         );
       } else {
@@ -202,22 +622,6 @@ export const SubscriptionsPage: React.FC = () => {
     loadSubscriptions();
   }, [loadSubscriptions]);
 
-  const handleCancel = async (sub: SubItem) => {
-    setCancellingId(sub.id);
-    try {
-      await apiService.post<any>(`/api/subscriptions/${sub.id}/cancel`);
-      showToast?.(`Subscription to ${sub.creatorName} has been cancelled.`, 'success');
-      await loadSubscriptions();
-    } catch {
-      showToast?.('Subscription cancellation processed on ledger.', 'info');
-      setSubscriptions((prev) =>
-        prev.map((s) => (s.id === sub.id ? { ...s, status: 'cancelled' } : s))
-      );
-    } finally {
-      setCancellingId(null);
-    }
-  };
-
   const handleUpgradePlan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPlanForUpgrade) return;
@@ -227,47 +631,35 @@ export const SubscriptionsPage: React.FC = () => {
       : selectedPlanForUpgrade.monthlyFIC;
 
     if (ficBalance < cost && cost > 0) {
-      showToast('Insufficient FIC balance for plan upgrade', 'error');
+      showToast?.('Insufficient FIC balance for plan upgrade', 'error');
       return;
     }
 
     setIsProcessingUpgrade(true);
     setTimeout(() => {
       setIsProcessingUpgrade(false);
-      showToast(`Account successfully upgraded to ${selectedPlanForUpgrade.name}!`, 'success');
+      showToast?.(`Account successfully subscribed to ${selectedPlanForUpgrade.name}!`, 'success');
       setSelectedPlanForUpgrade(null);
     }, 700);
   };
 
-  const handlePublishTier = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsPublishingTier(true);
-    try {
-      await apiService.post('/api/subscriptions', {
-        tier: tierName,
-        price: parseFloat(tierPrice) || 15,
-        features: [tierPerk1, tierPerk2, tierPerk3].filter(Boolean)
-      });
-      showToast(`Tier "${tierName}" published and live on your storefront!`, 'success');
-      setActiveTab('active');
-      loadSubscriptions();
-    } catch {
-      showToast(`Tier "${tierName}" published and live on your storefront!`, 'success');
-      setActiveTab('active');
-    } finally {
-      setIsPublishingTier(false);
-    }
-  };
+  const filteredCards = useMemo(() => {
+    if (selectedCategory === 'all') return subscriptionCards;
+    return subscriptionCards.filter((c) => c.category === selectedCategory);
+  }, [subscriptionCards, selectedCategory]);
 
-  const activeCount = useMemo(() => {
-    return subscriptions.filter((s) => s.status === 'active').length;
-  }, [subscriptions]);
-
-  const monthlyTotal = useMemo(() => {
-    return subscriptions
-      .filter((s) => s.status === 'active')
-      .reduce((sum, s) => sum + s.price, 0);
-  }, [subscriptions]);
+  const filteredAuditData = useMemo(() => {
+    if (!matrixSearchQuery.trim()) return PLATFORM_SCREEN_AUDIT_DATA;
+    const q = matrixSearchQuery.toLowerCase();
+    return PLATFORM_SCREEN_AUDIT_DATA.filter(
+      (item) =>
+        item.screenName.toLowerCase().includes(q) ||
+        item.route.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q) ||
+        item.plans.toLowerCase().includes(q) ||
+        item.quotaBenefits.toLowerCase().includes(q)
+    );
+  }, [matrixSearchQuery]);
 
   return (
     <MainLayout pageTitle="Platform Subscriptions & Sovereign Passes">
@@ -277,21 +669,30 @@ export const SubscriptionsPage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-800 pb-8">
             <div>
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-gradient-to-tr from-amber-500/20 via-amber-400/10 to-transparent border border-amber-500/30 shadow-lg shadow-amber-500/5">
+                <div className="p-3 rounded-2xl bg-gradient-to-tr from-amber-500/20 via-orange-500/15 to-transparent border border-amber-500/30 shadow-lg shadow-orange-500/10">
                   <Crown className="w-8 h-8 text-amber-400" />
                 </div>
                 <div>
                   <h1 className="text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                    Subscriptions & Sovereign Passes
+                    Subscriptions, Passes & FIC Management
                   </h1>
                   <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-                    Configure your platform membership tier, manage subscribed creator channels, and deploy custom VIP access passes for your audience.
+                    Centralized subscription studio for all 385 pages across 20 core platform modules. Manage graphical cards, audit gated screen matrices, configure FIC token allocation rules, and enforce FIAT settlement terms.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleAddNewCard}
+                className="px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition-all shadow-lg flex items-center gap-2 cursor-pointer"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>Create New Card</span>
+              </button>
+
               <div className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
                 <span className="text-slate-400">Vault Balance: </span>
                 <span className="font-mono font-bold text-amber-400">{ficBalance.toLocaleString()} FIC</span>
@@ -300,148 +701,237 @@ export const SubscriptionsPage: React.FC = () => {
           </div>
 
           {/* Navigation Mode Tabs */}
-          <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div className="flex items-center gap-2 border-b border-slate-800 pb-4 overflow-x-auto scrollbar-none">
             <button
               type="button"
-              onClick={() => setActiveTab('plans')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'plans'
-                  ? 'bg-amber-400 text-slate-950 shadow-md'
+              onClick={() => setActiveTab('cards')}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                activeTab === 'cards'
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
                   : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
               <Zap className="w-4 h-4" />
-              Platform Membership Plans
+              <span>Graphical Subscription Cards ({subscriptionCards.length})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('matrix')}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                activeTab === 'matrix'
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
+                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              }`}
+            >
+              <Sliders className="w-4 h-4" />
+              <span>Platform Screen Audit Matrix (20 Modules)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('fic_management')}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                activeTab === 'fic_management'
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
+                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              }`}
+            >
+              <Coins className="w-4 h-4" />
+              <span>FIC Management & FIAT Rules Console</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('active')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 activeTab === 'active'
-                  ? 'bg-amber-400 text-slate-950 shadow-md'
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
                   : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
               <Crown className="w-4 h-4" />
-              My Subscribed Passes ({subscriptions.length})
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab('creator_builder')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'creator_builder'
-                  ? 'bg-amber-400 text-slate-950 shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
-              }`}
-            >
-              <PlusCircle className="w-4 h-4" />
-              Creator Pass Architect
+              <span>My Subscribed Passes ({subscriptions.length})</span>
             </button>
           </div>
 
-          {/* TAB 1: PLATFORM MEMBERSHIP PLANS */}
-          {activeTab === 'plans' && (
+          {/* TAB 1: GRAPHICAL EDITABLE SUBSCRIPTION CARDS */}
+          {activeTab === 'cards' && (
             <div className="space-y-8">
-              {/* Billing Toggle */}
-              <div className="flex justify-center">
-                <div className="p-1 rounded-2xl bg-slate-900 border border-slate-800 flex items-center gap-1">
+              {/* Controls Bar: Category Filter & Billing Toggle */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                {/* Category Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
+                  <span className="text-xs text-slate-400 font-semibold mr-2 flex items-center gap-1">
+                    <Filter className="w-3.5 h-3.5" /> Domain:
+                  </span>
+                  {[
+                    { id: 'all', label: 'All Cards' },
+                    { id: 'platform', label: 'Platform Core' },
+                    { id: 'media', label: 'Media & Streaming' },
+                    { id: 'luxury', label: 'Luxury & VIP' },
+                    { id: 'creator', label: 'Creator & Store' },
+                    { id: 'community', label: 'Community & Arena' },
+                    { id: 'fintech', label: 'Fintech & Security' }
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                        selectedCategory === cat.id
+                          ? 'bg-orange-500 text-white shadow-md'
+                          : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Monthly / Annual Toggle */}
+                <div className="p-1 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-1 self-start md:self-auto shrink-0">
                   <button
                     type="button"
                     onClick={() => setBillingCycle('monthly')}
-                    className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       billingCycle === 'monthly'
                         ? 'bg-amber-400 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Monthly Billing
+                    Monthly
                   </button>
                   <button
                     type="button"
                     onClick={() => setBillingCycle('annual')}
-                    className={`px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                       billingCycle === 'annual'
                         ? 'bg-amber-400 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Annual Billing
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      SAVE 20%
+                    Annual
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                      -20%
                     </span>
                   </button>
                 </div>
               </div>
 
-              {/* Plans Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {PLATFORM_PLANS.map((plan) => {
-                  const isFree = plan.monthlyFIC === 0;
+              {/* Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredCards.map((card) => {
+                  const isFree = card.monthlyFIC === 0;
                   const displayCost = billingCycle === 'annual' && !isFree
-                    ? Math.round(plan.monthlyFIC * 12 * 0.8)
-                    : plan.monthlyFIC;
+                    ? Math.round(card.monthlyFIC * 12 * 0.8)
+                    : card.monthlyFIC;
+                  const displayNaira = billingCycle === 'annual' && !isFree
+                    ? Math.round(card.monthlyNaira * 12 * 0.8)
+                    : card.monthlyNaira;
 
                   return (
                     <div
-                      key={plan.id}
-                      className={`rounded-2xl p-6 border flex flex-col justify-between transition-all ${
-                        plan.isPopular
-                          ? 'bg-amber-950/20 border-amber-400/60 shadow-xl shadow-amber-950/20'
-                          : 'bg-slate-900 border-slate-800'
+                      key={card.id}
+                      className={`relative rounded-3xl p-6 border flex flex-col justify-between transition-all group backdrop-blur-xl ${
+                        card.isPopular
+                          ? 'bg-gradient-to-b from-orange-950/40 via-slate-900/90 to-slate-950 border-orange-500/50 shadow-2xl shadow-orange-500/10'
+                          : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 shadow-xl'
                       }`}
                     >
+                      {/* Top Badges & Edit Button */}
                       <div>
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-slate-950 text-amber-300 border border-slate-800">
-                            {plan.badge}
+                        <div className="flex justify-between items-start mb-3">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-slate-950/80 text-amber-300 border border-amber-500/30 shadow-xs">
+                            {card.badge}
                           </span>
+
+                          <button
+                            type="button"
+                            onClick={() => openEditorModal(card)}
+                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-orange-500 hover:text-white text-slate-400 transition-all cursor-pointer shadow-xs"
+                            title="Edit Subscription Card Details"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
 
-                        <h3 className="font-bold text-white text-base mt-2">{plan.name}</h3>
-                        <p className="text-xs text-slate-400 mt-1 min-h-[36px]">{plan.description}</p>
+                        {card.isPopular && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-400 uppercase tracking-widest">
+                              <Sparkles className="w-3 h-3 text-orange-400" /> Highly Recommended Tier
+                            </span>
+                          </div>
+                        )}
 
-                        <div className="mt-4 p-3 rounded-xl bg-slate-950 border border-slate-800/80 mb-6">
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-2xl font-mono font-extrabold text-amber-400">
+                        <h3 className="font-bold text-white text-lg tracking-tight group-hover:text-amber-300 transition-colors">
+                          {card.name}
+                        </h3>
+                        <p className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center gap-1">
+                          <span>Screen:</span>
+                          <span className="text-slate-300 font-semibold">{card.screenName}</span>
+                        </p>
+                        <p className="text-xs text-slate-400 mt-2 min-h-[48px] leading-relaxed">
+                          {card.description}
+                        </p>
+
+                        {/* Dual Currency Pricing Pill */}
+                        <div className="mt-4 p-4 rounded-2xl bg-slate-950/90 border border-slate-800/90 mb-5">
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-2xl font-mono font-black text-amber-400">
                               {isFree ? 'FREE' : `${displayCost} FIC`}
                             </span>
                             {!isFree && (
-                              <span className="text-[11px] text-slate-500">
+                              <span className="text-xs text-slate-500">
                                 /{billingCycle === 'annual' ? 'yr' : 'mo'}
                               </span>
                             )}
                           </div>
                           {!isFree && (
-                            <p className="text-[10px] text-slate-500 mt-0.5">
-                              ≈ ₦{(billingCycle === 'annual' ? plan.monthlyNaira * 12 * 0.8 : plan.monthlyNaira).toLocaleString()}
-                            </p>
+                            <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1 pt-1.5 border-t border-slate-800/60 font-mono">
+                              <span>FIAT Parity:</span>
+                              <span className="text-emerald-400 font-bold">₦{displayNaira.toLocaleString()} NGN</span>
+                            </div>
                           )}
                         </div>
 
-                        <div className="space-y-2.5 mb-6">
-                          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Features:</p>
-                          {plan.features.map((f, i) => (
-                            <div key={i} className="text-xs text-slate-300 flex items-start gap-2">
+                        {/* Features List */}
+                        <div className="space-y-2 mb-6">
+                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
+                            Gated Privileges & Quota:
+                          </p>
+                          {card.features.map((feature, idx) => (
+                            <div key={idx} className="text-xs text-slate-300 flex items-start gap-2">
                               <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                              <span>{f}</span>
+                              <span className="leading-snug">{feature}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPlanForUpgrade(plan)}
-                        className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all ${
-                          plan.isPopular
-                            ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-md'
-                            : 'bg-slate-800 hover:bg-slate-700 text-white'
-                        }`}
-                      >
-                        {isFree ? 'Current Tier' : `Select ${plan.name}`}
-                      </button>
+                      {/* Card Action Button */}
+                      <div className="pt-2 border-t border-slate-800/80 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedPlanForUpgrade(card)}
+                          className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs transition-all cursor-pointer ${
+                            card.isPopular
+                              ? 'bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 shadow-md shadow-orange-500/20'
+                              : 'bg-slate-800 hover:bg-slate-700 text-white'
+                          }`}
+                        >
+                          {isFree ? 'Current Tier' : 'Select Pass'}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => navigate(card.route)}
+                          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+                          title={`Navigate to ${card.screenName} (${card.route})`}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
@@ -449,41 +939,265 @@ export const SubscriptionsPage: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 2: ACTIVE SUBSCRIBED PASSES */}
-          {activeTab === 'active' && (
+          {/* TAB 2: PLATFORM SCREEN AUDIT MATRIX (20 MODULES) */}
+          {activeTab === 'matrix' && (
             <div className="space-y-6">
-              {/* Summary Metrics */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Creator Passes</p>
-                  <p className="text-3xl font-mono font-bold text-white mt-2">{activeCount}</p>
-                </div>
-
-                <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Monthly Pass Outflow</p>
-                  <p className="text-3xl font-mono font-bold text-amber-400 mt-2">
-                    {monthlyTotal} <span className="text-sm text-slate-500 font-normal">FIC / mo</span>
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white text-base">Platform Subscription Scope Audit</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Full architectural audit of every screen and module requiring gated subscriptions across the FingerMobile Protocol.
                   </p>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Settlement Engine</p>
-                  <p className="text-xl font-bold text-emerald-400 mt-2 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                    FingerMobile Auto-Vault
-                  </p>
+                <div className="relative w-full sm:w-72">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={matrixSearchQuery}
+                    onChange={(e) => setMatrixSearchQuery(e.target.value)}
+                    placeholder="Search screen, route, or tier..."
+                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                  />
                 </div>
               </div>
 
-              {/* Subscriptions List */}
+              {/* Table */}
+              <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/60 shadow-xl">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-800 bg-slate-900/90 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
+                      <th className="p-4">#</th>
+                      <th className="p-4">Screen / Module</th>
+                      <th className="p-4">Route</th>
+                      <th className="p-4">Domain Category</th>
+                      <th className="p-4">Subscription Tiers</th>
+                      <th className="p-4">Dual Price (FIC / FIAT)</th>
+                      <th className="p-4">Gated Privileges & Quota</th>
+                      <th className="p-4">Access Mechanism</th>
+                      <th className="p-4 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                    {filteredAuditData.map((item) => (
+                      <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="p-4 font-mono text-slate-500 font-bold">{item.id}</td>
+                        <td className="p-4 font-bold text-white whitespace-nowrap">{item.screenName}</td>
+                        <td className="p-4 font-mono text-amber-400 whitespace-nowrap">{item.route}</td>
+                        <td className="p-4 whitespace-nowrap">
+                          <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 text-[10px]">
+                            {item.category}
+                          </span>
+                        </td>
+                        <td className="p-4 font-semibold text-slate-200 whitespace-nowrap">{item.plans}</td>
+                        <td className="p-4 whitespace-nowrap">
+                          <div className="font-mono font-bold text-amber-400">{item.ficPrice}</div>
+                          <div className="font-mono text-[10px] text-emerald-400">{item.fiatPrice}</div>
+                        </td>
+                        <td className="p-4 max-w-xs truncate text-slate-400" title={item.quotaBenefits}>
+                          {item.quotaBenefits}
+                        </td>
+                        <td className="p-4 whitespace-nowrap">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-orange-950/60 text-orange-300 border border-orange-800/50">
+                            {item.gatedStatus}
+                          </span>
+                        </td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            type="button"
+                            onClick={() => navigate(item.route)}
+                            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-[11px] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                          >
+                            <span>Open</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: FIC MANAGEMENT & FIAT RULES CONSOLE */}
+          {activeTab === 'fic_management' && (
+            <div className="space-y-8">
+              {/* Management Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Panel 1: FIC Allocation, Earning & Balance Adjustment */}
+                <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      <Coins className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">FIC Token Allocation & Earning Rules</h3>
+                      <p className="text-xs text-slate-400">Mint, allocate, adjust creator earning quotas, and track settlement balances</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Target Account Handle / Address</label>
+                      <input
+                        type="text"
+                        value={ficTargetUser}
+                        onChange={(e) => setFicTargetUser(e.target.value)}
+                        placeholder="@username or 0x..."
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-semibold text-slate-300 block mb-1">FIC Amount</label>
+                        <input
+                          type="number"
+                          value={ficAllocationAmount}
+                          onChange={(e) => setFicAllocationAmount(e.target.value)}
+                          placeholder="250"
+                          className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-semibold text-slate-300 block mb-1">FIAT Equivalent (1 FIC = ₦100)</label>
+                        <div className="px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-emerald-400 font-mono font-bold flex items-center">
+                          ₦{(Number(ficAllocationAmount || 0) * 100).toLocaleString()} NGN
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Cryptographic Audit Reason</label>
+                      <input
+                        type="text"
+                        value={ficAllocationReason}
+                        onChange={(e) => setFicAllocationReason(e.target.value)}
+                        placeholder="e.g. Creator Incentive Pool Monthly Allocation"
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 space-y-2 text-xs">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Creator Earning Stream Status:</span>
+                        <span className={`font-bold ${earningSuspended ? 'text-rose-400' : 'text-emerald-400'}`}>
+                          {earningSuspended ? 'SUSPENDED' : 'ACTIVE (70% Net Share)'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Wallet State:</span>
+                        <span className={`font-bold uppercase ${walletStatusState === 'active' ? 'text-emerald-400' : walletStatusState === 'suspended' ? 'text-amber-400' : 'text-rose-500'}`}>
+                          {walletStatusState}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 flex flex-wrap gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          showToast?.(`Allocated ${ficAllocationAmount} FIC to ${ficTargetUser}. Ledger hash confirmed.`, 'success');
+                        }}
+                        className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition shadow-md cursor-pointer"
+                      >
+                        Allocate Tokens
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEarningSuspended(!earningSuspended);
+                          showToast?.(
+                            `Creator earning status for ${ficTargetUser} set to ${!earningSuspended ? 'SUSPENDED' : 'ACTIVE'}.`,
+                            'info'
+                          );
+                        }}
+                        className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition cursor-pointer"
+                      >
+                        {earningSuspended ? 'Resume Earning' : 'Suspend Earning'}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextState = walletStatusState === 'active' ? 'suspended' : walletStatusState === 'suspended' ? 'frozen' : 'active';
+                          setWalletStatusState(nextState);
+                          showToast?.(`Wallet status updated to ${nextState.toUpperCase()}.`, 'info');
+                        }}
+                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                          walletStatusState === 'active'
+                            ? 'bg-rose-950/60 text-rose-300 border border-rose-900/50 hover:bg-rose-900/60'
+                            : 'bg-emerald-950/60 text-emerald-300 border border-emerald-900/50 hover:bg-emerald-900/60'
+                        }`}
+                      >
+                        {walletStatusState === 'active' ? 'Suspend / Freeze Wallet' : 'Unfreeze Wallet'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Panel 2: FIAT Pegging, Settlement Rails & Legal Terms */}
+                <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <DollarSign className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">FIAT Settlement Rules & Legal T&Cs</h3>
+                      <p className="text-xs text-slate-400">Immutable protocol peg, AML regulatory limits, and payout rails</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3.5 text-xs">
+                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                      <span className="font-bold text-white block mb-1">1. Protocol Parity Peg Anchor</span>
+                      <p className="text-slate-400 leading-relaxed">
+                        1 FIC is formally anchored at <strong className="text-amber-400">₦100.00 NGN</strong> (Naira) and convertible at prevailing FX rates to USD ($0.065 USD). In-app passes must maintain synchronous FIC and FIAT parity.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                      <span className="font-bold text-white block mb-1">2. Payout Rails & Settlement Windows</span>
+                      <p className="text-slate-400 leading-relaxed">
+                        Approved settlement rails: <strong className="text-emerald-400">NIBSS Instant Payment (NIP), Paystack, Flutterwave, and Interswitch</strong>. Creator payouts clear automatically within 7 business days; Enterprise tiers clear within 3 business days.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                      <span className="font-bold text-white block mb-1">3. KYC Tier Limits & Anti-Money Laundering</span>
+                      <ul className="text-slate-400 space-y-1 mt-1 pl-4 list-disc">
+                        <li><strong>Tier 1 (Unverified):</strong> Maximum daily outflow of 200 FIC (₦20,000 NGN).</li>
+                        <li><strong>Tier 2 (Biometric Face Verified):</strong> Maximum daily outflow of 2,000 FIC (₦200,000 NGN).</li>
+                        <li><strong>Tier 3 (Government ID / Corporate):</strong> Maximum daily outflow of 20,000 FIC (₦2,000,000 NGN).</li>
+                      </ul>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                      <span className="font-bold text-white block mb-1">4. Refund, Dispute & Anti-Fraud Chargeback Shield</span>
+                      <p className="text-slate-400 leading-relaxed">
+                        All transactions exceeding 500 FIC require Guardian AI Live-Motion Face verification. Disputed payments trigger automatic smart-contract escrow hold for 48 hours pending peer arbitration.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: ACTIVE SUBSCRIBED PASSES */}
+          {activeTab === 'active' && (
+            <div className="space-y-6">
               {isLoading ? (
-                <div className="py-20 text-center text-slate-500">Loading your subscribed passes...</div>
+                <div className="py-20 text-center text-slate-400">Loading your subscribed passes...</div>
               ) : subscriptions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {subscriptions.map((sub) => (
                     <div
                       key={sub.id}
-                      className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between"
+                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex justify-between items-start mb-4">
@@ -492,10 +1206,10 @@ export const SubscriptionsPage: React.FC = () => {
                               <img
                                 src={sub.creatorAvatar}
                                 alt={sub.creatorName}
-                                className="w-12 h-12 rounded-xl object-cover border border-amber-400/40"
+                                className="w-12 h-12 rounded-2xl object-cover border border-amber-400/40"
                               />
                             ) : (
-                              <div className="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400 font-bold flex items-center justify-center text-lg border border-amber-400/30">
+                              <div className="w-12 h-12 rounded-2xl bg-amber-400/10 text-amber-400 font-bold flex items-center justify-center text-lg border border-amber-400/30">
                                 {sub.creatorName.charAt(0).toUpperCase()}
                               </div>
                             )}
@@ -516,17 +1230,17 @@ export const SubscriptionsPage: React.FC = () => {
                           </span>
                         </div>
 
-                        <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 mb-4 flex justify-between items-center">
+                        <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/80 mb-4 flex justify-between items-center text-xs">
                           <div>
                             <span className="text-base font-mono font-bold text-white">{sub.price} FIC</span>
-                            <span className="text-xs text-slate-500"> / month</span>
+                            <span className="text-slate-500"> / month</span>
                           </div>
-                          <span className="text-xs text-slate-400">Next Renewal: {sub.renewalDate}</span>
+                          <span className="text-slate-400">Next Renewal: {sub.renewalDate}</span>
                         </div>
 
                         {sub.benefits && (
                           <div className="space-y-1.5 mb-6">
-                            {sub.benefits.map((b, idx) => (
+                            {sub.benefits.map((b: string, idx: number) => (
                               <div key={idx} className="text-xs text-slate-300 flex items-center gap-2">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                                 <span>{b}</span>
@@ -540,161 +1254,271 @@ export const SubscriptionsPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => navigate('/storefronts')}
-                          className="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-all"
+                          className="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-all cursor-pointer"
                         >
                           Visit Storefront
                         </button>
-                        {sub.status === 'active' && (
-                          <button
-                            type="button"
-                            onClick={() => handleCancel(sub)}
-                            disabled={cancellingId === sub.id}
-                            className="py-2 px-4 rounded-xl bg-rose-950/40 hover:bg-rose-900/40 text-rose-300 font-semibold text-xs border border-rose-900/50 transition-all disabled:opacity-50"
-                          >
-                            {cancellingId === sub.id ? 'Processing...' : 'Cancel Pass'}
-                          </button>
-                        )}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="py-20 text-center bg-slate-900/60 rounded-2xl border border-slate-800 space-y-3">
+                <div className="py-20 text-center bg-slate-900/60 rounded-3xl border border-slate-800 space-y-3">
                   <Crown className="w-12 h-12 text-slate-600 mx-auto" />
                   <h3 className="text-lg font-bold text-white">No Active Creator Passes</h3>
                   <p className="text-xs text-slate-400 max-w-sm mx-auto">
                     Subscribe to your favorite music producers and streamers on Storefronts or BeatwaveNG to access exclusive stems and private livestreams.
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => navigate('/storefronts')}
-                    className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-md"
-                  >
-                    Explore Creator Storefronts
-                  </button>
                 </div>
               )}
             </div>
           )}
 
-          {/* TAB 3: CREATOR PASS BUILDER */}
-          {activeTab === 'creator_builder' && (
-            <div className="max-w-2xl mx-auto p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30">
-                  <Sparkles className="w-6 h-6 text-amber-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Design Your Channel VIP Pass</h3>
-                  <p className="text-xs text-slate-400">Monetize your follower community with recurring monthly FIC subscriptions</p>
-                </div>
-              </div>
-
-              <form onSubmit={handlePublishTier} className="space-y-4">
-                <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Pass Tier Title</label>
-                  <input
-                    type="text"
-                    required
-                    value={tierName}
-                    onChange={(e) => setTierName(e.target.value)}
-                    placeholder="e.g. VIP Backstage Pass"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly Price (FIC)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    required
-                    value={tierPrice}
-                    onChange={(e) => setTierPrice(e.target.value)}
-                    placeholder="15"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white font-mono focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <label className="text-xs font-semibold text-slate-300 block">Subscriber Exclusive Perks</label>
-                  <input
-                    type="text"
-                    required
-                    value={tierPerk1}
-                    onChange={(e) => setTierPerk1(e.target.value)}
-                    placeholder="Perk 1 (e.g. Master FLAC Audio Stem Downloads)"
-                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
-                  />
-                  <input
-                    type="text"
-                    required
-                    value={tierPerk2}
-                    onChange={(e) => setTierPerk2(e.target.value)}
-                    placeholder="Perk 2 (e.g. Early 4K Video Replays)"
-                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
-                  />
-                  <input
-                    type="text"
-                    value={tierPerk3}
-                    onChange={(e) => setTierPerk3(e.target.value)}
-                    placeholder="Perk 3 (e.g. Private Discord Role & Chat)"
-                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-
-                <div className="pt-4 flex justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('plans')}
-                    className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isPublishingTier}
-                    className="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold shadow-md flex items-center gap-2"
-                  >
-                    <CheckCircle2 className="w-4 h-4" />
-                    {isPublishingTier ? 'Publishing Pass...' : 'Publish VIP Pass'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* Upgrade Modal */}
-          {selectedPlanForUpgrade && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl relative">
+          {/* MODAL 1: CARD EDITOR MODAL (NANO BANANA STUDIO) */}
+          {editingCard && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[99999] p-4 overflow-y-auto">
+              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative my-8">
                 <button
                   type="button"
-                  onClick={() => setSelectedPlanForUpgrade(null)}
-                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+                  onClick={closeEditorModal}
+                  className="absolute top-5 right-5 p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
-                <h3 className="text-xl font-bold text-white mb-1">Upgrade to {selectedPlanForUpgrade.name}</h3>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                    <Edit3 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Edit Subscription Card</h3>
+                    <p className="text-xs text-slate-400">Modify title, pricing, features, and gated routing</p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSaveCard} className="space-y-4 text-xs">
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1">Plan / Card Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={editForm.name}
+                      onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Domain Category</label>
+                      <select
+                        value={editForm.category}
+                        onChange={(e) => setEditForm({ ...editForm, category: e.target.value as any })}
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                      >
+                        <option value="platform">Platform Core</option>
+                        <option value="media">Media & Streaming</option>
+                        <option value="luxury">Luxury & VIP</option>
+                        <option value="creator">Creator & Store</option>
+                        <option value="community">Community & Arena</option>
+                        <option value="fintech">Fintech & Security</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Badge Tag</label>
+                      <input
+                        type="text"
+                        value={editForm.badge}
+                        onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly FIC Price</label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={editForm.monthlyFIC}
+                        onChange={(e) => {
+                          const fic = Number(e.target.value);
+                          setEditForm({ ...editForm, monthlyFIC: fic, monthlyNaira: fic * 100 });
+                        }}
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly FIAT (₦ NGN)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={editForm.monthlyNaira}
+                        onChange={(e) => setEditForm({ ...editForm, monthlyNaira: Number(e.target.value) })}
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-emerald-400 font-mono font-bold focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1">Target Screen Route</label>
+                    <input
+                      type="text"
+                      value={editForm.route}
+                      onChange={(e) => setEditForm({ ...editForm, route: e.target.value })}
+                      placeholder="/dancia4tv"
+                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-amber-400 font-mono focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1">Description</label>
+                    <textarea
+                      rows={2}
+                      value={editForm.description}
+                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  {/* Features List Editing */}
+                  <div>
+                    <label className="text-xs font-semibold text-slate-300 block mb-1">Features / Gated Privileges</label>
+                    <div className="space-y-2 mb-2 max-h-36 overflow-y-auto pr-1">
+                      {editForm.features.map((feat, i) => (
+                        <div key={i} className="flex items-center gap-2 bg-slate-950 p-2 rounded-xl border border-slate-800">
+                          <input
+                            type="text"
+                            value={feat}
+                            onChange={(e) => {
+                              const updatedFeatures = [...editForm.features];
+                              updatedFeatures[i] = e.target.value;
+                              setEditForm({ ...editForm, features: updatedFeatures });
+                            }}
+                            className="flex-1 bg-transparent border-none text-white focus:outline-none text-xs"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updatedFeatures = editForm.features.filter((_, idx) => idx !== i);
+                              setEditForm({ ...editForm, features: updatedFeatures });
+                            }}
+                            className="text-rose-400 hover:text-rose-300 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newFeatureText}
+                        onChange={(e) => setNewFeatureText(e.target.value)}
+                        placeholder="Add new perk (e.g. 4K Stem Downloads)..."
+                        className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-amber-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newFeatureText.trim()) {
+                            setEditForm({ ...editForm, features: [...editForm.features, newFeatureText.trim()] });
+                            setNewFeatureText('');
+                          }
+                        }}
+                        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Popular Toggle */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="checkbox"
+                      id="isPopular"
+                      checked={!!editForm.isPopular}
+                      onChange={(e) => setEditForm({ ...editForm, isPopular: e.target.checked })}
+                      className="rounded bg-slate-950 border-slate-800 text-orange-500 focus:ring-0"
+                    />
+                    <label htmlFor="isPopular" className="text-xs text-slate-300 font-semibold cursor-pointer">
+                      Mark as "Recommended / Popular" Tier
+                    </label>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-800 flex justify-between items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCard(editingCard.id)}
+                      className="px-3.5 py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 font-bold transition flex items-center gap-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete Card</span>
+                    </button>
+
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={closeEditorModal}
+                        className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-bold shadow-md shadow-orange-500/20"
+                      >
+                        Save Card
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL 2: UPGRADE CONFIRMATION MODAL */}
+          {selectedPlanForUpgrade && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[99999] p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl relative">
+                <button
+                  type="button"
+                  onClick={() => setSelectedPlanForUpgrade(null)}
+                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <h3 className="text-xl font-bold text-white mb-1">Subscribe to {selectedPlanForUpgrade.name}</h3>
                 <p className="text-xs text-slate-400 mb-4">{selectedPlanForUpgrade.description}</p>
 
-                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 mb-4 text-xs">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 mb-4 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Billing Interval:</span>
                     <span className="text-white font-bold capitalize">{billingCycle}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Total Due Today:</span>
-                    <span className="text-amber-400 font-mono font-bold text-sm">
+                    <span className="text-amber-400 font-bold text-sm">
                       {billingCycle === 'annual'
                         ? `${Math.round(selectedPlanForUpgrade.monthlyFIC * 12 * 0.8)} FIC`
                         : `${selectedPlanForUpgrade.monthlyFIC} FIC`}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Available Vault:</span>
-                    <span className="text-emerald-400 font-mono">{ficBalance.toLocaleString()} FIC</span>
+                    <span className="text-slate-400">FIAT Value:</span>
+                    <span className="text-emerald-400 font-bold">
+                      ≈ ₦{(billingCycle === 'annual' ? selectedPlanForUpgrade.monthlyNaira * 12 * 0.8 : selectedPlanForUpgrade.monthlyNaira).toLocaleString()} NGN
+                    </span>
+                  </div>
+                  <div className="flex justify-between pt-1 border-t border-slate-800">
+                    <span className="text-slate-400">Vault Balance:</span>
+                    <span className="text-slate-200">{ficBalance.toLocaleString()} FIC</span>
                   </div>
                 </div>
 
@@ -702,7 +1526,7 @@ export const SubscriptionsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedPlanForUpgrade(null)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 rounded-xl hover:bg-slate-700"
+                    className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 rounded-xl hover:bg-slate-700 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -710,10 +1534,10 @@ export const SubscriptionsPage: React.FC = () => {
                     type="button"
                     onClick={handleUpgradePlan}
                     disabled={isProcessingUpgrade}
-                    className="px-5 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-md flex items-center gap-1.5"
+                    className="px-5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer"
                   >
                     <CreditCard className="w-3.5 h-3.5" />
-                    {isProcessingUpgrade ? 'Confirming...' : 'Confirm Upgrade'}
+                    {isProcessingUpgrade ? 'Confirming...' : 'Confirm Subscription'}
                   </button>
                 </div>
               </div>

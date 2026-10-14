@@ -6,10 +6,7 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import PostPublishingSettings from '../../components/posts/PostPublishingSettings';
 import { PostPublishingProvider, usePostPublishing } from '../../contexts/PostPublishingContext';
-
-
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
+import ErrorBoundary from '../../components/ErrorBoundary';
 
 const DemoContent: React.FC = () => {
   const [postContent, setPostContent] = useState('');
@@ -219,9 +216,11 @@ const DemoContent: React.FC = () => {
 
 const PostPublishingDemoPage: React.FC = () => {
   return (
-    <PostPublishingProvider>
-      <DemoContent />
-    </PostPublishingProvider>
+    <ErrorBoundary fallback={<div className="min-h-screen flex items-center justify-center p-6 text-slate-500">Post publishing demo temporarily unavailable</div>}>
+      <PostPublishingProvider>
+        <DemoContent />
+      </PostPublishingProvider>
+    </ErrorBoundary>
   );
 };
 

@@ -89,6 +89,51 @@ const PostCard: React.FC<PostCardProps> = ({
   const [showMoreActions, setShowMoreActions] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState<boolean>((post as any).isBookmarked || false);
   const [isReported, setIsReported] = useState<boolean>(false);
+  const [lightboxItem, setLightboxItem] = useState<{ url: string; type: 'image' | 'video'; filter?: string } | null>(null);
+
+  // Extract multi-attachment media items (Banuba/CapCut photos & videos)
+  const mediaItems = React.useMemo(() => {
+    const list: Array<{ url: string; type: 'image' | 'video'; filter?: string }> = [];
+
+    const rawUrls =
+      (post as any).media_urls ||
+      (post as any).mediaUrls ||
+      (post as any).media ||
+      (post.mediaUrl ? [post.mediaUrl] : []);
+    if (Array.isArray(rawUrls)) {
+      rawUrls.forEach((item: any) => {
+        if (typeof item === 'string' && item.trim()) {
+          const isVid = !!item.match(/\.(mp4|webm|ogg|mov)$/i);
+          list.push({ url: item, type: isVid ? 'video' : 'image' });
+        } else if (item && typeof item === 'object' && item.url) {
+          list.push({
+            url: item.url,
+            type: item.type === 'video' || item.mediaType === 'video' ? 'video' : 'image',
+            filter: item.filter
+          });
+        }
+      });
+    }
+
+    const rawAtts = (post as any).attachments;
+    if (Array.isArray(rawAtts)) {
+      rawAtts.forEach((att: any) => {
+        if (att?.data?.url && !list.some((l) => l.url === att.data.url)) {
+          const isVid =
+            att.data.mediaType === 'video' ||
+            att.type === 'video' ||
+            !!att.data.url.match(/\.(mp4|webm|ogg|mov)$/i);
+          list.push({
+            url: att.data.url,
+            type: isVid ? 'video' : 'image',
+            filter: att.data.filter
+          });
+        }
+      });
+    }
+
+    return list;
+  }, [post]);
 
   // Poll state handling
   const rawPoll = (post as any).poll;
@@ -221,6 +266,118 @@ const PostCard: React.FC<PostCardProps> = ({
         {post.excerpt || post.content?.substring(0, 160) + '...' || 'No content available'}
       </p>
 
+      {/* Multi-Attachment Media Grid (UHD Photos & CapCut/Banuba Video Clips) */}
+      {mediaItems.length > 0 && (
+        <div className="my-4">
+          {mediaItems.length === 1 ? (
+            mediaItems[0].type === 'video' ? (
+              <div className="relative rounded-2xl overflow-hidden aspect-video bg-black shadow-md border border-gray-100 dark:border-gray-800">
+                <video
+                  src={mediaItems[0].url}
+                  controls
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ) : (
+              <div
+                className="relative rounded-2xl overflow-hidden max-h-[420px] bg-slate-900 group/img cursor-pointer shadow-md border border-gray-100 dark:border-gray-800"
+                onClick={() => setLightboxItem(mediaItems[0])}
+              >
+                <img
+                  src={mediaItems[0].url}
+                  alt={post.title || 'Attached Media'}
+                  className="w-full h-auto max-h-[420px] object-cover group-hover/img:scale-[1.01] transition duration-300"
+                />
+                {mediaItems[0].filter && mediaItems[0].filter !== 'normal' && (
+                  <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold bg-indigo-600/90 text-white backdrop-blur-xs flex items-center gap-1 shadow-md">
+                    ✨ {mediaItems[0].filter}
+                  </span>
+                )}
+              </div>
+            )
+          ) : mediaItems.length === 2 ? (
+            <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
+              {mediaItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setLightboxItem(item)}
+                  className="relative aspect-square bg-slate-900 overflow-hidden cursor-pointer group/tile rounded-xl"
+                >
+                  {item.type === 'video' ? (
+                    <video src={item.url} className="w-full h-full object-cover" />
+                  ) : (
+                    <img
+                      src={item.url}
+                      alt={`Media ${idx + 1}`}
+                      className="w-full h-full object-cover group-hover/tile:scale-105 transition duration-300"
+                    />
+                  )}
+                  {item.type === 'video' && (
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-black/70 text-white">
+                      🎬 Video
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : mediaItems.length === 3 ? (
+            <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden">
+              {mediaItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setLightboxItem(item)}
+                  className="relative aspect-square bg-slate-900 overflow-hidden cursor-pointer group/tile rounded-xl"
+                >
+                  {item.type === 'video' ? (
+                    <video src={item.url} className="w-full h-full object-cover" />
+                  ) : (
+                    <img
+                      src={item.url}
+                      alt={`Media ${idx + 1}`}
+                      className="w-full h-full object-cover group-hover/tile:scale-105 transition duration-300"
+                    />
+                  )}
+                  {item.type === 'video' && (
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-black/70 text-white">
+                      🎬 Video
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
+              {mediaItems.slice(0, 4).map((item, idx) => {
+                const isLast = idx === 3 && mediaItems.length > 4;
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => setLightboxItem(item)}
+                    className="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer group/tile rounded-xl"
+                  >
+                    {item.type === 'video' ? (
+                      <video src={item.url} className="w-full h-full object-cover" />
+                    ) : (
+                      <img
+                        src={item.url}
+                        alt={`Media ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover/tile:scale-105 transition duration-300"
+                      />
+                    )}
+                    {isLast && (
+                      <div className="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white font-bold text-lg">
+                        +{mediaItems.length - 3} more
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Interactive Poll Component (LushPressies Standard) */}
       {pollData && (
         <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-teal-50/40 to-slate-50/60 dark:from-emerald-950/30 dark:via-gray-800/60 dark:to-gray-900 border border-emerald-200/90 dark:border-emerald-800/50 shadow-xs">
@@ -302,6 +459,30 @@ const PostCard: React.FC<PostCardProps> = ({
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Tagged Products Commerce Strip */}
+      {Array.isArray((post as any).tagged_products) && (post as any).tagged_products.length > 0 && (
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 mb-2">
+            <span>🛍️ Tagged Products ({ (post as any).tagged_products.length })</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(post as any).tagged_products.map((prod: any, pIdx: number) => (
+              <div
+                key={pIdx}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-2xs hover:border-emerald-400 transition"
+              >
+                {prod.image && <img src={prod.image} alt={prod.title} className="w-6 h-6 rounded-md object-cover" />}
+                <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">{prod.title}</span>
+                <span className="text-xs font-mono font-bold text-emerald-600">${prod.price}</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
+                  {prod.store}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -479,6 +660,46 @@ const PostCard: React.FC<PostCardProps> = ({
           <button onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-100 transition-colors text-xs font-bold">
             Delete
           </button>
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {lightboxItem && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setLightboxItem(null)}
+        >
+          <div
+            className="relative max-w-4xl max-h-[90vh] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setLightboxItem(null)}
+              className="absolute -top-12 right-0 px-3 py-1.5 text-white/90 hover:text-white rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold transition flex items-center gap-1"
+            >
+              ✕ Close
+            </button>
+            {lightboxItem.type === 'video' ? (
+              <video
+                src={lightboxItem.url}
+                controls
+                autoPlay
+                className="max-w-full max-h-[80vh] rounded-2xl shadow-2xl"
+              />
+            ) : (
+              <img
+                src={lightboxItem.url}
+                alt="Enlarged view"
+                className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              />
+            )}
+            {lightboxItem.filter && lightboxItem.filter !== 'normal' && (
+              <span className="mt-3 px-3 py-1 rounded-full text-xs font-bold bg-indigo-600 text-white shadow-lg">
+                ✨ {lightboxItem.filter}
+              </span>
+            )}
+          </div>
         </div>
       )}
     </div>

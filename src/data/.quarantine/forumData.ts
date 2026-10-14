@@ -15,7 +15,7 @@ forumCategoriesData: ForumCategory[] = [
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg",
   headerTitle: "Leadership Tips",
   headerTextColor: {
   color: "#FFFFFF",
@@ -42,7 +42,7 @@ priority: 0
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg",
   headerTitle: "Questions & Answers",
   headerTextColor: {
   color: "#FFFFFF",
@@ -65,7 +65,7 @@ priority: 1
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_800bf4c9f8a24d7898825d4198e8efab~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_800bf4c9f8a24d7898825d4198e8efab~mv2.jpg",
   headerTitle: "Verified Members",
   headerTextColor: {
   color: "#FFFFFF",
@@ -89,7 +89,7 @@ priority: 2
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_d1f670b6be6e40ec873f7c244ef26200~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_d1f670b6be6e40ec873f7c244ef26200~mv2.jpg",
   headerTitle: "The Private Room",
   headerTextColor: {
   color: "#FFFFFF",
@@ -113,7 +113,7 @@ priority: 3
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_7f089d318e074129a259dc44f43ac559~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_7f089d318e074129a259dc44f43ac559~mv2.jpg",
   headerTitle: "Dating",
   headerTextColor: {
   color: "#FFFFFF",
@@ -136,7 +136,7 @@ priority: 4
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_69c3a465ad7d482aa190be93287d4c1b~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_69c3a465ad7d482aa190be93287d4c1b~mv2.jpeg",
   headerTitle: "Sights N' Sounds",
   headerTextColor: {
   color: "#FFFFFF",
@@ -159,7 +159,7 @@ priority: 5
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_8caf098c1c6e4503ae97e07d79b6ba9e~mv2.webp",
+  https://cdn.fingermobileprotocol.com/media/9a1209_8caf098c1c6e4503ae97e07d79b6ba9e~mv2.webp",
   headerTitle: "Movies N' More",
   headerTextColor: {
   color: "#FFFFFF",
@@ -182,7 +182,7 @@ priority: 6
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_e92d18c95ae3434ba71fef3e36fc5a3d~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_e92d18c95ae3434ba71fef3e36fc5a3d~mv2.jpeg",
   headerTitle: "MirellaFacet®™©",
   headerTextColor: {
   color: "#FFFFFF",
@@ -208,7 +208,7 @@ priority: 7
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_05538b9303d04377b535faa5adea8537~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_05538b9303d04377b535faa5adea8537~mv2.jpeg",
   headerTitle: "Ketogenic",
   headerTextColor: {
   color: "#FFFFFF",
@@ -232,7 +232,7 @@ priority: 8
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_b557c4c74e054325850d17c3d23fb867~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_b557c4c74e054325850d17c3d23fb867~mv2.jpg",
   headerTitle: "Nostalgic Arts",
   headerTextColor: {
   color: "#FFFFFF",
@@ -257,7 +257,7 @@ priority: 9
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_4dd92e73f1654f9db86cb69decef3d9e~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_4dd92e73f1654f9db86cb69decef3d9e~mv2.jpg",
   headerTitle: "Music N' Concerts",
   headerTextColor: {
   color: "#FFFFFF",
@@ -282,7 +282,7 @@ priority: 10
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_8649b41fc25c46819f4dab41318b2787~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_8649b41fc25c46819f4dab41318b2787~mv2.jpg",
   headerTitle: "Fresh Out",
   headerTextColor: {
   color: "#FFFFFF",
@@ -306,7 +306,7 @@ priority: 11
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_3e41cb70bd504973a7d3ef9f034c69b6~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_3e41cb70bd504973a7d3ef9f034c69b6~mv2.jpg",
   headerTitle: "School Fees Grant",
   headerTextColor: {
   color: "#FFFFFF",
@@ -329,7 +329,7 @@ priority: 12
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_f0e4796ea3f7454dabe29d168342490d~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_f0e4796ea3f7454dabe29d168342490d~mv2.jpg",
   headerTitle: "College",
   headerTextColor: {
   color: "#FFFFFF",
@@ -356,7 +356,7 @@ priority: 13
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/11062b_77250f1db1cc45908e2c5efa3a565f79~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/11062b_77250f1db1cc45908e2c5efa3a565f79~mv2.jpg",
   headerTitle: "Give-Away",
   headerTextColor: {
   color: "#000000",
@@ -379,7 +379,7 @@ priority: 14
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_b12b5e2a40da4ed99a2a435aad96183e~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_b12b5e2a40da4ed99a2a435aad96183e~mv2.png",
   headerTitle: "",
   headerTextColor: {
   color: "#FFFFFF",
@@ -403,7 +403,7 @@ priority: 15
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_51a23d17e15f425093adc292099de66e~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_51a23d17e15f425093adc292099de66e~mv2.jpg",
   headerTitle: "Velvets N' Suedes",
   headerTextColor: {
   color: "#FFFFFF",
@@ -426,7 +426,7 @@ priority: 16
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_bca34f91ddd546fb91b393f4b6960597~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_bca34f91ddd546fb91b393f4b6960597~mv2.jpg",
   headerTitle: "Assured",
   headerTextColor: {
   color: "#FFFFFF",
@@ -453,7 +453,7 @@ priority: 17
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_c608fb95661d49fcae6e8f62cbf45a7d~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_c608fb95661d49fcae6e8f62cbf45a7d~mv2.png",
   headerTitle: "Untitled Category",
   headerTextColor: {
   color: "#0009FF",
@@ -477,7 +477,7 @@ priority: 18
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_161346d62a824ea39ee6b08c023362c9~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_161346d62a824ea39ee6b08c023362c9~mv2.jpg",
   headerTitle: "Professional Classified Assets",
   headerTextColor: {
   color: "#FFFFFF",
@@ -500,7 +500,7 @@ priority: 19
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_fca5b4387222407aaed0f17b794aa2b4~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_fca5b4387222407aaed0f17b794aa2b4~mv2.jpg",
   headerTitle: "Sell It - Buy It ",
   headerTextColor: {
   color: "#FFFFFF",
@@ -524,7 +524,7 @@ priority: 20
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_1d171457e47144b982aca9dd0916ec9c~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_1d171457e47144b982aca9dd0916ec9c~mv2.png",
   headerTitle: "Kitchen Orders",
   headerTextColor: {
   color: "#FFFFFF",
@@ -553,7 +553,7 @@ priority: 21
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_eb4c8427357a40fc8ecb9de5df871fa7~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_eb4c8427357a40fc8ecb9de5df871fa7~mv2.png",
   headerTitle: "Tech and Gadgets",
   headerTextColor: {
   color: "#FFFFFF",
@@ -578,7 +578,7 @@ priority: 22
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_9e51d7170e684fe9aed71712e875d61d~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_9e51d7170e684fe9aed71712e875d61d~mv2.jpg",
   headerTitle: "Lux",
   headerTextColor: {
   color: "#FFFFFF",
@@ -605,7 +605,7 @@ priority: 23
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_e8e2cd1077424500b5257be64e6bc950~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_e8e2cd1077424500b5257be64e6bc950~mv2.png",
   headerTitle: "Medical Health",
   headerTextColor: {
   color: "#FFFFFF",
@@ -629,7 +629,7 @@ priority: 24
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_ffaad2fc296a4c33a8f11270181110d0~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_ffaad2fc296a4c33a8f11270181110d0~mv2.png",
   headerTitle: "Telehealth MedCare Counseling",
   headerTextColor: {
   color: "#FFFFFF",
@@ -657,7 +657,7 @@ priority: 25
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_8bccd2d867f64d57a5f083d5e219a7b3~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_8bccd2d867f64d57a5f083d5e219a7b3~mv2.png",
   headerTitle: "National Updates",
   headerTextColor: {
   color: "#FFFFFF",
@@ -683,7 +683,7 @@ priority: 26
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_9c78ad2fdc374e67b7480512ed092cdb~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_9c78ad2fdc374e67b7480512ed092cdb~mv2.png",
   headerTitle: "Laffs with Gana",
   headerTextColor: {
   color: "#000000",
@@ -709,7 +709,7 @@ priority: 27
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_272a6ed4263d4b23ba3063103c8465a7~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_272a6ed4263d4b23ba3063103c8465a7~mv2.jpg",
   headerTitle: "Cyber Security",
   headerTextColor: {
   color: "#FFFFFF",
@@ -732,7 +732,7 @@ priority: 28
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_2c9c1a27e09343068b03f86432a64e81~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_2c9c1a27e09343068b03f86432a64e81~mv2.jpeg",
   headerTitle: "",
   headerTextColor: {
   color: "#FFFFFF",
@@ -762,7 +762,7 @@ priority: 29
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_1258615d957d4940a3d9ad70267b0ded~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_1258615d957d4940a3d9ad70267b0ded~mv2.jpg",
   headerTitle: "Heart 2 Heart",
   headerTextColor: {
   color: "#960B0B",
@@ -785,7 +785,7 @@ priority: 30
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_4310303ddeaf4c0fadf313baf5bc4bd8~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_4310303ddeaf4c0fadf313baf5bc4bd8~mv2.png",
   headerTitle: "Pets and Us",
   headerTextColor: {
   color: "#F70000",
@@ -808,7 +808,7 @@ priority: 31
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_1072e3dad0eb4c2a87ef8b1351663e8e~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_1072e3dad0eb4c2a87ef8b1351663e8e~mv2.jpg",
   headerTitle: "Skitz",
   headerTextColor: {
   color: "#FFFFFF",
@@ -832,7 +832,7 @@ priority: 32
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_815931ce9ba1401197690bbd8498150e~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_815931ce9ba1401197690bbd8498150e~mv2.jpeg",
   headerTitle: "Nanee",
   headerTextColor: {
   color: "#FFFFFF",
@@ -855,7 +855,7 @@ priority: 33
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_cee64f8fa5b44c82b77680e04eaaf50c~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_cee64f8fa5b44c82b77680e04eaaf50c~mv2.jpg",
   headerTitle: "Ayersha Sweety",
   headerTextColor: {
   color: "#FFFFFF",
@@ -879,7 +879,7 @@ priority: 34
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_da458e82913d41e5af78c2344cbfc595~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_da458e82913d41e5af78c2344cbfc595~mv2.jpg",
   headerTitle: "",
   headerTextColor: {
   color: "#FFFFFF",
@@ -903,7 +903,7 @@ priority: 35
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_00bc4e68f8cd4fbb92aea32ef6d8228e~mv2.jpeg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_00bc4e68f8cd4fbb92aea32ef6d8228e~mv2.jpeg",
   headerTitle: "",
   headerTextColor: {
   color: "#FFFFFF",
@@ -931,7 +931,7 @@ priority: 36
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_50aa8efff7c64e9385ae578fef0e738c~mv2.jpg",
+  https://cdn.fingermobileprotocol.com/media/9a1209_50aa8efff7c64e9385ae578fef0e738c~mv2.jpg",
   headerTitle: "Care Giver (WAENI N.G.O)",
   headerTextColor: {
   color: "#FFFFFF",
@@ -954,7 +954,7 @@ priority: 37
   headerType: "IMAGE",
   headerImage:
       ",
-  https://static.wixstatic.com/media/9a1209_75dc1e53e27640c980dedab074749527~mv2.png",
+  https://cdn.fingermobileprotocol.com/media/9a1209_75dc1e53e27640c980dedab074749527~mv2.png",
   headerTitle: "",
   headerTextColor: {
   color: "#000000",

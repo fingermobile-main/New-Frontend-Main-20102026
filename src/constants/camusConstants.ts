@@ -371,4 +371,4 @@ export const CAMUS_TESTIMONIALS: Testimonial[] = [
   }
 ];
 
-export const CAMUS_CATEGORIES: any[] = [];
+export const CAMUS_CATEGORIES: CourseCategory[] = CAMUS_COURSE_CATEGORIES;

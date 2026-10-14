@@ -7,6 +7,7 @@ import {
   Review,
   WishlistItem
 } from '../types';
+import { CURATED_STOREFRONT_PRODUCTS } from '../data/curatedStorefrontData';
 
 interface MarketplaceContextType {
   products: Product[];
@@ -32,43 +33,9 @@ export type { MarketplaceContextType };
 
 export const MarketplaceContext = createContext<MarketplaceContextType | undefined>(undefined);
 
-// Mock videos data structure (static reference outside the component to prevent re-creations)
-const MOCK_VIDEOS = [
-  {
-    id: 'vid1',
-    title: 'Sample Video',
-    description: 'A sample video product',
-    genre: 'Electronics',
-    contentTags: ['sample', 'video'],
-    createdAt: new Date().toISOString(),
-    authorId: 'auth1',
-    monetizationModel: 'subscription',
-    IARCClassification: '3+',
-    uploadFee: 0,
-    length: '10:00',
-    duration: '10:00',
-    resolution: '1080p',
-    engagementScore: 85,
-    bitrate: '5000 kbps',
-    codec: 'H.264',
-    sampleRate: '44.1 kHz',
-    channels: 'Stereo',
-    downloadCount: 0,
-    views: 100,
-    shareCount: 5,
-    saveCount: 3,
-    likeCount: 10,
-    likes: ['user1', 'user2'],
-    dislikes: [],
-    mashupCount: 0,
-    url: '/videos/sample.mp4',
-    uploader: 'SampleUploader'
-  }
-];
-
 export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { showToast } = useAppContext();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(CURATED_STOREFRONT_PRODUCTS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -85,42 +52,43 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       setError(null);
 
       const { default: apiService } = await import('../services/apiService');
-      const data = await apiService.get('/api/storefronts').catch(() => {
-        console.warn('Using mock products data in MarketplaceContext');
-        return MOCK_VIDEOS;
-      });
+      const data = await apiService.get('/api/storefronts').catch(() => null);
 
-      // Transform response data to product format
-      const transformedProducts: Product[] = (Array.isArray(data) ? data : data?.storefronts || []).map((item: any) => ({
-        id: item.id || `prod_${Date.now()}_${Math.random()}`,
-        name: item.name || item.title || 'Product',
-        description: item.description || '',
-        price: item.price || 0,
-        currency: item.currency || 'NGN',
-        category: item.category || item.genre || 'General',
-        platform: 'Video',
-        imageUrl: item.image_url || item.thumbnail || '/images/default-video-thumbnail.jpg',
-        images: item.image_url ? [item.image_url] : [],
-        rating: item.rating || 0,
-        sellerId: item.seller_id || item.creatorId || item.authorId || 'unknown',
-        sellerName: item.seller_name || 'Creator',
-        stock: item.stock || 100,
-        salesCount: item.sales_count || item.saveCount || 0,
-        createdAt: item.created_at || new Date().toISOString(),
-        updatedAt: item.updated_at || new Date().toISOString(),
-        ageRestricted: item.age_restricted || false,
-        contentRating: item.content_rating || 'General'
-      }));
-
-      setProducts(transformedProducts);
+      if (data && (Array.isArray(data) ? data.length > 0 : data?.storefronts?.length > 0)) {
+        const rawList = Array.isArray(data) ? data : data.storefronts;
+        const transformedProducts: Product[] = rawList.map((item: any) => ({
+          id: item.id || `prod_${Date.now()}_${Math.random()}`,
+          name: item.name || item.title || 'Product',
+          description: item.description || '',
+          price: item.price || 0,
+          currency: item.currency || 'NGN',
+          category: item.category || item.genre || 'General',
+          platform: item.platform || 'General',
+          imageUrl: item.image_url || item.thumbnail || item.imageUrl || '/images/default-video-thumbnail.jpg',
+          images: item.image_url ? [item.image_url] : (item.images || []),
+          rating: item.rating || 4.9,
+          sellerId: item.seller_id || item.creatorId || item.authorId || 'unknown',
+          sellerName: item.seller_name || item.sellerName || 'Creator',
+          stock: item.stock || 100,
+          salesCount: item.sales_count || item.saveCount || 0,
+          createdAt: item.created_at || new Date().toISOString(),
+          updatedAt: item.updated_at || new Date().toISOString(),
+          ageRestricted: item.age_restricted || false,
+          contentRating: item.content_rating || 'General'
+        }));
+        setProducts(transformedProducts);
+      } else {
+        // Use curated 10-products-per-category storefront catalog (50 total)
+        setProducts(CURATED_STOREFRONT_PRODUCTS);
+      }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : 'Unknown error';
       setError(errMsg);
-      showToast('Failed to load products', 'error');
+      setProducts(CURATED_STOREFRONT_PRODUCTS);
     } finally {
       setLoading(false);
     }
-  }, [showToast]); // Dependencies for useCallback
+  }, []); // Dependencies for useCallback
 
   // Run on Mount
   useEffect(() => {

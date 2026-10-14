@@ -1,5 +1,6 @@
 import React, { useRef, createContext, useContext } from 'react';
 import { logError } from '../utils/errorLogger';
+import ErrorBoundary from '../components/ErrorBoundary';
 // Define types inline
 export interface OrganizeCategory {
   title: string;
@@ -33,9 +34,6 @@ export interface OrganizedData {
   userData?: OrganizeCategory;
   locationData?: OrganizeCategory;
 }
-
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
 
 export interface OrganizationStats {
   totalItems: number;
@@ -168,7 +166,9 @@ export const OrganizeTheseProvider: React.FC<{ children: React.ReactNode }> = ({
         getOrganizationStats
       }}
     >
-      {children}
+      <ErrorBoundary fallback={<div className="p-4 text-sm text-slate-500">Organization module temporarily unavailable</div>}>
+        {children}
+      </ErrorBoundary>
     </OrganizeTheseContext.Provider>
   );
 };

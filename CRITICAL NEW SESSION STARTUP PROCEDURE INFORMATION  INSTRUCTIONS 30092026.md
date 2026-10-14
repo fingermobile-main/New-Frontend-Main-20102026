@@ -69,6 +69,7 @@ Development Servers: Both the backend (npm run dev in apps/backend) and frontend
 The infrastructure is heavily leaning towards a multi-service architecture (with 85+ total services and a host of database services defined),
 
 #### MAIN APP: ONLY focus on the main platform located at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps.
+
 #### the structure of the main platform at /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps is clear. It contains numerous MICROSERVICES, INDEPENDENT ENTITIES AND SERVICES, with subdirectories, likely representing various microservices, games, or features.
 
 Crucially, see the following directories that are candidates for the main platform's core frontend and backend:
@@ -132,6 +133,7 @@ The overall architecture, the exact directory for the main platform (…/FingerM
 /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Business and Monetization Suite/db/init-database.ts
 
 ##### Analysis of the FingerMobile Business and Monetization Suite
+
 ##### What is the FingerMobile Business and Monetization Suite?
 The FingerMobile Business and Monetization Suite is an independent standalone microservice that provides monetization and revenue management features for creators, businesses, and affiliates. It is connected to the main platform for member use cases but operates as a separate system with its own database, API, and UI. But the main platform is located here /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps
 
@@ -177,6 +179,14 @@ Use Google Chrome & IDE Preview to test features, verify DOM states, and fix com
 - No trailing spaces
 
 ---
+Start the backend server at apps/backend
+Start the frontend server at apps/frontend-main
+Access via Google Chrome and IDE Preview
+
+#### Start frontend server
+cd "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main" && npm start
+#### Start backend server
+cd "/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/backend" && npm run dev
 
 ## 1. Platform Architecture Overview
 

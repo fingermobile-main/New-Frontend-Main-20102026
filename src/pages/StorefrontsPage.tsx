@@ -16,6 +16,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import apiService from '../services/apiService';
+import { CURATED_STOREFRONTS } from '../data/curatedStorefrontData';
 
 interface StorefrontItem {
   id: string | number;
@@ -126,45 +127,14 @@ const StorefrontsPage: React.FC = () => {
         isVerified: s.is_verified ?? true
       }));
 
-      setStorefronts(formatted);
+      if (formatted.length > 0) {
+        setStorefronts(formatted);
+      } else {
+        setStorefronts(CURATED_STOREFRONTS);
+      }
     } catch {
-      // Fallback to initial display
-      setStorefronts([
-        {
-          id: 'store-1',
-          slug: 'alex-johnson-music',
-          name: 'Alex Johnson Music & Audio',
-          owner: 'Alex Johnson',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&q=80',
-          coverImage: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
-          category: 'Music & Audio',
-          description: 'Original beats, custom stems, and production tools for producers and audio designers.',
-          rating: 4.9,
-          reviews: 182,
-          products: 6,
-          followers: 15420,
-          tier: 'enterprise',
-          feeBps: 75,
-          isVerified: true
-        },
-        {
-          id: 'store-2',
-          slug: 'afrobeat-visuals',
-          name: 'Afrobeat Visuals & Merch',
-          owner: 'Test User',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
-          coverImage: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
-          category: 'Merchandise & Fashion',
-          description: 'Exclusive tour apparel, high-resolution photography packs, and signed posters.',
-          rating: 4.8,
-          reviews: 94,
-          products: 12,
-          followers: 9840,
-          tier: 'pro',
-          feeBps: 200,
-          isVerified: true
-        }
-      ]);
+      // Fallback to curated 5-category flagship storefronts
+      setStorefronts(CURATED_STOREFRONTS);
     } finally {
       setLoading(false);
     }

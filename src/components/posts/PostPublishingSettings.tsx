@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';  // Fixed import path
 import { usePostPublishing, PublishingSettings } from '../../hooks/usePostPublishing';
+import ErrorBoundary from '../ErrorBoundary';
 
 export type { PublishingSettings };
-
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
 
 const COMMON_COUNTRIES = [
   'Nigeria',
@@ -413,4 +411,10 @@ const PostPublishingSettings = () => {
   );
 };
 
-export default PostPublishingSettings;
+const SafePostPublishingSettings: React.FC = () => (
+  <ErrorBoundary fallback={<div className="p-4 bg-white rounded-lg shadow text-slate-500">Post publishing settings temporarily unavailable</div>}>
+    <PostPublishingSettings />
+  </ErrorBoundary>
+);
+
+export default SafePostPublishingSettings;

@@ -1,11 +1,13 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
+  const backendTarget = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+
   // Proxy API requests to the backend server
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:3001',
+      target: backendTarget,
       changeOrigin: true,
       secure: false, // Set to true if using HTTPS
     })
@@ -15,7 +17,7 @@ module.exports = function(app) {
   app.use(
     '/oauth',
     createProxyMiddleware({
-      target: 'http://localhost:3001',
+      target: backendTarget,
       changeOrigin: true,
       secure: false,
     })
@@ -25,7 +27,7 @@ module.exports = function(app) {
   app.use(
     '/auth',
     createProxyMiddleware({
-      target: 'http://localhost:3001',
+      target: backendTarget,
       changeOrigin: true,
       secure: false,
     })

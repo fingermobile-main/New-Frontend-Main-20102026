@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
+import ErrorBoundary from '../ErrorBoundary';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -315,8 +316,10 @@ const Navbar: React.FC = () => {
   );
 };
 
+const SafeNavbar: React.FC = () => (
+  <ErrorBoundary fallback={<div className="bg-white p-4 shadow text-center text-sm text-slate-500">Navigation bar unavailable</div>}>
+    <Navbar />
+  </ErrorBoundary>
+);
 
-// TODO: Wrap this component with ErrorBoundary for production
-// Example: <ErrorBoundary fallback={<div>Error occurred</div>}>{/* component */}</ErrorBoundary>
-
-export default Navbar;
+export default SafeNavbar;

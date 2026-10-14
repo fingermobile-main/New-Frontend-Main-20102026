@@ -15,7 +15,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'General Discussion',
     'description': 'Share your stories, ideas, pictures, videos and a lot more! Explore your Creativity.',
     'slug': 'general-discussion',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_ee5c0ff4ef7444f4ae3ec3f73bec51e7~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -23,7 +23,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Questions & Answers',
     'description': 'A talk, especially an informal one, between two or more people, in which news and ideas. Get answers and share knowledge',
     'slug': 'questions-answers',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_982e86bab7604f059c720cff2085e136~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -31,7 +31,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Verified Members',
     'description': 'FingerMobile Protocol Verified Members Platform',
     'slug': 'verified',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_800bf4c9f8a24d7898825d4198e8efab~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_800bf4c9f8a24d7898825d4198e8efab~mv2.jpg',
     'restrictionType': 'SUBSCRIPTION'
   },
   {
@@ -39,7 +39,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Connect',
     'description': 'Welcome to one of the most popular free adult chat rooms. Participate in public or private discuss',
     'slug': 'connect',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_d1f670b6be6e40ec873f7c244ef26200~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_d1f670b6be6e40ec873f7c244ef26200~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -47,7 +47,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Dating',
     'description': 'Welcome! Have a look around and join the conversations. Never be Shy to say Hello!',
     'slug': 'dating',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_7f089d318e074129a259dc44f43ac559~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_7f089d318e074129a259dc44f43ac559~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -55,7 +55,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Sights N\' Sounds',
     'description': 'Welcome! Have a look around and join the conversations.',
     'slug': 'sights-n-sounds',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_69c3a465ad7d482aa190be93287d4c1b~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_69c3a465ad7d482aa190be93287d4c1b~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -63,7 +63,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Movies N\' More',
     'description': '',
     'slug': 'movies-n-more',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_8caf098c1c6e4503ae97e07d79b6ba9e~mv2.webp',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_8caf098c1c6e4503ae97e07d79b6ba9e~mv2.webp',
     'restrictionType': 'NONE'
   },
   {
@@ -71,7 +71,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'MirellaFacet\u00ae\u2122\u00a9',
     'description': 'Welcome! Have a look around and join the conversations.',
     'slug': 'mirellafacet',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_e92d18c95ae3434ba71fef3e36fc5a3d~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_e92d18c95ae3434ba71fef3e36fc5a3d~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -79,7 +79,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Ketogenic',
     'description': 'The ketogenic diet is a high-fat, adequate-protein, low-carbohydrate dietary therapy',
     'slug': 'ketogenic',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_05538b9303d04377b535faa5adea8537~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_05538b9303d04377b535faa5adea8537~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -87,7 +87,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Nostalgic Arts',
     'description': 'Nostalgia is an intellectual and aesthetic crutch that prevents cultural artifacts from reflecting their own epochs.',
     'slug': 'nostalgic-arts',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_b557c4c74e054325850d17c3d23fb867~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_b557c4c74e054325850d17c3d23fb867~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -95,7 +95,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Music N\' Concerts',
     'description': 'A public musical performance around the globe., Join the conversations Now',
     'slug': 'music-n-concerts',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_4dd92e73f1654f9db86cb69decef3d9e~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_4dd92e73f1654f9db86cb69decef3d9e~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -103,7 +103,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Fresh Out',
     'description': 'Join the conversations.. Connect with other members, get and share your moments and updates',
     'slug': 'fresh-out',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_8649b41fc25c46819f4dab41318b2787~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_8649b41fc25c46819f4dab41318b2787~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -111,7 +111,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'School Fees Grant',
     'description': 'FingerGrants\u00a0are the financial assistances that are non-repayable in nature. It is provided by the FingerMobile Protocol',
     'slug': 'school-fees-grant',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_3e41cb70bd504973a7d3ef9f034c69b6~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_3e41cb70bd504973a7d3ef9f034c69b6~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -119,7 +119,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'My College and I',
     'description': 'Welcome! Have a look around and join the conversations.',
     'slug': 'college',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_f0e4796ea3f7454dabe29d168342490d~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_f0e4796ea3f7454dabe29d168342490d~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -127,7 +127,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Give-Away',
     'description': 'Complete Tasks and Challenges. Strategise, Answer Correctly, Win Polls and  Win Prizes, Vouchers and Gift Cards',
     'slug': 'fingermobile-give-away',
-    'imageUrl': 'https://static.wixstatic.com/media/11062b_77250f1db1cc45908e2c5efa3a565f79~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/11062b_77250f1db1cc45908e2c5efa3a565f79~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -135,7 +135,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': '\'- The - Private Room',
     'description': '',
     'slug': 'the-private-room',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_b12b5e2a40da4ed99a2a435aad96183e~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_b12b5e2a40da4ed99a2a435aad96183e~mv2.png',
     'restrictionType': 'BADGE'
   },
   {
@@ -143,7 +143,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Velvets N\' Suedes',
     'description': 'Only Suitable for persons above 24 Years of age. IARC Classification/Certification/Discretion. Rated 24+ (DMLSNGVRA)',
     'slug': 'velvets',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_51a23d17e15f425093adc292099de66e~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_51a23d17e15f425093adc292099de66e~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -151,7 +151,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Assured',
     'description': 'Inspired by desire and pleasure',
     'slug': 'aasure',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_bca34f91ddd546fb91b393f4b6960597~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_bca34f91ddd546fb91b393f4b6960597~mv2.jpg',
     'restrictionType': 'BADGE'
   },
   {
@@ -159,7 +159,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Crypto',
     'description': 'Decoding Crypto: What It Is, How It Works, and How to Get Started. The FingerMobile Infinite Coin',
     'slug': 'crypto',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_c608fb95661d49fcae6e8f62cbf45a7d~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_c608fb95661d49fcae6e8f62cbf45a7d~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -167,7 +167,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Professional Classified Assets',
     'description': 'Connecting the world\u2019s Professional Career and Classified Network of Asset.',
     'slug': 'professional-assets',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_161346d62a824ea39ee6b08c023362c9~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_161346d62a824ea39ee6b08c023362c9~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -175,7 +175,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Sell It - Buy it.',
     'description': 'Welcome! Have a look around and join the conversations.',
     'slug': 'ownit-r-tm',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_fca5b4387222407aaed0f17b794aa2b4~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_fca5b4387222407aaed0f17b794aa2b4~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -183,7 +183,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Kitchen Orders',
     'description': 'A group for sharing kitchen orders tips and recipes. Place your Orders!',
     'slug': 'kitchen-orders',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_1d171457e47144b982aca9dd0916ec9c~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_1d171457e47144b982aca9dd0916ec9c~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -191,7 +191,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Tech and Gadgets',
     'description': 'World of Technology, Gadgets, Phones, Devices, Laptops, Mac and Windows. Have a look around and join Us!',
     'slug': 'tech-and-gadgets',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_eb4c8427357a40fc8ecb9de5df871fa7~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_eb4c8427357a40fc8ecb9de5df871fa7~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -199,7 +199,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Lux',
     'description': 'Exclusive & Private 5 Star Luxury Air BnB experience Residential-style amenities like living rooms, kitchens and dining',
     'slug': 'lux-holidays',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_9e51d7170e684fe9aed71712e875d61d~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_9e51d7170e684fe9aed71712e875d61d~mv2.jpg',
     'restrictionType': 'SUBSCRIPTION'
   },
   {
@@ -207,7 +207,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Medical Health',
     'description': 'Health: A state of complete physical, mental, and social well-being\u00a0and not merely the absence of disease or infirmity.',
     'slug': 'medical-health',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_e8e2cd1077424500b5257be64e6bc950~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_e8e2cd1077424500b5257be64e6bc950~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -215,7 +215,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Telehealth MedCare Counselling',
     'description': 'The use of electronic information & telecommunication technologies to support long-distance clinical health care',
     'slug': 'medcare-counseling',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_ffaad2fc296a4c33a8f11270181110d0~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_ffaad2fc296a4c33a8f11270181110d0~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -223,7 +223,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'News Updates',
     'description': 'Covering Developmental Progress, World Events, Issues, Job Openings, Policies and Programs of the Private and Public Sectors',
     'slug': 'national-updates',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_8bccd2d867f64d57a5f083d5e219a7b3~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_8bccd2d867f64d57a5f083d5e219a7b3~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -231,7 +231,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Laffs',
     'description': 'Professional gathering for comic acts of entertainment, consisting of Memes, Media Jokes intended to make you Laff.',
     'slug': 'laffs-with-gana',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_9c78ad2fdc374e67b7480512ed092cdb~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_9c78ad2fdc374e67b7480512ed092cdb~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -239,7 +239,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Cyber Security',
     'description': 'The practice of protecting systems, networks, and programs from digital attacks.',
     'slug': 'cyber-security',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_272a6ed4263d4b23ba3063103c8465a7~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_272a6ed4263d4b23ba3063103c8465a7~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -247,7 +247,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'ShopWithUsNaija',
     'description': '',
     'slug': 'shopwithusnaija',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_2c9c1a27e09343068b03f86432a64e81~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_2c9c1a27e09343068b03f86432a64e81~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -255,7 +255,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Chuta',
     'description': 'Red Flags in Relationships, dating, Marriages, Divorce, Love Life, Spousal Abuse, Cohabitations and Flings.',
     'slug': 'ify-chuta',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_1258615d957d4940a3d9ad70267b0ded~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_1258615d957d4940a3d9ad70267b0ded~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -263,7 +263,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Pets and Us',
     'description': 'Join the conversations.',
     'slug': 'pets-and-us',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_4310303ddeaf4c0fadf313baf5bc4bd8~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_4310303ddeaf4c0fadf313baf5bc4bd8~mv2.png',
     'restrictionType': 'NONE'
   },
   {
@@ -271,7 +271,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Skitz',
     'description': '',
     'slug': 'i-skits',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_1072e3dad0eb4c2a87ef8b1351663e8e~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_1072e3dad0eb4c2a87ef8b1351663e8e~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -279,7 +279,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Nanee',
     'description': 'Recording and uploading your awesome video contents.  Join the trends',
     'slug': 'nanee',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_815931ce9ba1401197690bbd8498150e~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_815931ce9ba1401197690bbd8498150e~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -287,7 +287,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Ayersha',
     'description': 'Hey its Aisha Sweety.',
     'slug': 'ayersha',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_cee64f8fa5b44c82b77680e04eaaf50c~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_cee64f8fa5b44c82b77680e04eaaf50c~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -295,7 +295,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Sportica Olympia',
     'description': 'Stay up to date on your favourite sports and athletes. Discuss original Olympic and Sports Events or documentaries. Get exclusive stories',
     'slug': 'sportica-olympia',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_da458e82913d41e5af78c2344cbfc595~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_da458e82913d41e5af78c2344cbfc595~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -303,7 +303,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Wild Nature',
     'description': 'Natural Environments not significantly disturbed by Human characteristical activities.',
     'slug': 'wild-nature',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_00bc4e68f8cd4fbb92aea32ef6d8228e~mv2.jpeg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_00bc4e68f8cd4fbb92aea32ef6d8228e~mv2.jpeg',
     'restrictionType': 'NONE'
   },
   {
@@ -311,7 +311,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'WAENI',
     'description': 'Caregivers can be family members, friends, social workers, health professionals, or members of the clergy',
     'slug': 'waeni',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_50aa8efff7c64e9385ae578fef0e738c~mv2.jpg',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_50aa8efff7c64e9385ae578fef0e738c~mv2.jpg',
     'restrictionType': 'NONE'
   },
   {
@@ -319,7 +319,7 @@ export const FORUM_CATEGORIES: Category[] = [
     'name': 'Law and Order',
     'description': '',
     'slug': 'law-and-order',
-    'imageUrl': 'https://static.wixstatic.com/media/9a1209_75dc1e53e27640c980dedab074749527~mv2.png',
+    'imageUrl': 'https://cdn.fingermobileprotocol.com/media/9a1209_75dc1e53e27640c980dedab074749527~mv2.png',
     'restrictionType': 'NONE'
   }
 ];

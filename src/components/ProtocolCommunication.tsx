@@ -348,7 +348,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
     }
 
     // Start periodic ping to measure latency
-    pingIntervalRef.current = setInterval(() => { // TODO: Remember to clear this interval with clearInterval(current)
+    pingIntervalRef.current = setInterval(() => {
       if (connectionStatus.isConnected) {
         sendPing();
       }

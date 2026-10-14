@@ -12,6 +12,7 @@ const CreatorsCenterPage: React.FC = () => {
     legalName: '',
     nationality: '',
     passportNumber: '',
+    dateOfBirth: '2000-01-01',
   });
   const [passportImage, setPassportImage] = useState<File | null>(null);
   const [selfieImage, setSelfieImage] = useState<string | null>(null);
@@ -37,14 +38,10 @@ const CreatorsCenterPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      // The backend KYC endpoint expects JSON with userId, fullLegalName, dateOfBirth, biometricFaceData
-      // For images, we should send base64 or upload them first and send URLs.
-      // Here we assume base64 is sent in the JSON payload
-
       const payload = {
         userId: user?.id || 'temp-id',
         fullLegalName: formData.legalName,
-        dateOfBirth: '2000-01-01', // TODO: Add dateOfBirth to formData
+        dateOfBirth: formData.dateOfBirth,
         biometricFaceData: selfieImage, // base64 string
         nationality: formData.nationality,
         idDocumentNumber: formData.passportNumber,
@@ -118,9 +115,19 @@ const CreatorsCenterPage: React.FC = () => {
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
                 <button
                   onClick={() => setStep(3)}
-                  disabled={!formData.legalName || !formData.nationality || !formData.passportNumber}
+                  disabled={!formData.legalName || !formData.nationality || !formData.passportNumber || !formData.dateOfBirth}
                   className="mt-6 w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   Next Step

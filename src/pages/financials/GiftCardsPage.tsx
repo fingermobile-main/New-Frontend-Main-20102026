@@ -73,7 +73,7 @@ const GiftCardsPage: React.FC = () => {
     try {
       const res = await apiService.post<any>('/api/giftcards', {
         amount,
-        recipientEmail: 'self@fingermobile.com',
+        recipientEmail: 'self@fingermobileprotocol.com',
         message: `${amount} FIC Gift Card`
       });
       if (res?.success) {

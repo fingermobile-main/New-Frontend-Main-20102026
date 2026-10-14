@@ -119,10 +119,12 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
               <div className="flex items-center gap-3 min-w-0">
                 <button
                   type="button"
-                  className="lg:hidden inline-flex items-center justify-center rounded-xl p-2 text-emerald-800 hover:bg-emerald-50 focus:outline-none border border-emerald-200/80"
+                  className="inline-flex items-center justify-center rounded-xl p-2 text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none border border-orange-200/80 transition cursor-pointer"
                   onClick={() => setMobileMenuOpen(true)}
+                  aria-label="Open Platform Navigation Menu"
+                  title="Platform Navigation"
                 >
-                  <Bars3Icon className="h-6 w-6 text-emerald-700" />
+                  <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
                 </button>
 
                 <div className="truncate">

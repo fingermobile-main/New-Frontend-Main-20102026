@@ -3,7 +3,11 @@
 
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  process.env.REACT_APP_API_BASE_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  'http://localhost:5001/api';
 
 // --- Interface Models ---
 
@@ -61,6 +65,7 @@ export interface AuthResponse {
 class AuthService {
   private api: AxiosInstance;
   private isRefreshing = false;
+  // eslint-disable-next-line no-unused-vars
   private refreshSubscribers: ((token: string) => void)[] = [];
 
   constructor() {
@@ -133,6 +138,7 @@ class AuthService {
     );
   }
 
+  // eslint-disable-next-line no-unused-vars
   private subscribeTokenRefresh(cb: (token: string) => void): void {
     this.refreshSubscribers.push(cb);
   }
@@ -189,7 +195,7 @@ class AuthService {
         const mockToken = `mock-token-${Date.now()}`;
         const mockUser: User = {
           id: `usr_${Date.now()}`,
-          email: id.includes('@') ? id : `${id}@fingermobile.com`,
+          email: id.includes('@') ? id : `${id}@fingermobileprotocol.com`,
           username: id.split('@')[0],
           firstName: 'Sovereign',
           lastName: 'Member',
@@ -223,7 +229,7 @@ class AuthService {
         const mockToken = `mock-token-${Date.now()}`;
         const mockUser: User = {
           id: `usr_${Date.now()}`,
-          email: data.email || `user_${Date.now()}@fingermobile.com`,
+          email: data.email || `user_${Date.now()}@fingermobileprotocol.com`,
           username: data.username || (data.email ? data.email.split('@')[0] : `user_${Date.now()}`),
           firstName: data.firstName || 'Sovereign',
           lastName: data.lastName || 'Member',

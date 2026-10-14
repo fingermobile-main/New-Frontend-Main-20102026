@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'; // FIXED: Imported React namespace safely
 import { voiceLinesService } from '../../services/voiceLinesService'; // NEW: Import voice lines service
+import { mediaApiService } from '../../services/api';
 
 interface Artwork {
   id: number;
@@ -55,30 +56,15 @@ const DetailModal: React.FC<DetailModalProps> = ({ artwork, onClose, onClaimRewa
     };
   }, [onClose]);
 
-  // NEW: Fetch P2P matching data when modal opens
+  // Fetch P2P matching data when modal opens
   useEffect(() => {
     const fetchP2PData = async () => {
       setP2pLoading(true);
       setP2pError(false);
       
       try {
-        // TODO: Implement getP2PMatching endpoint in MediaApiService
-        // For now, simulate P2P data with mock response
-        await new Promise((resolve) => {
-          p2pTimerRef.current = setTimeout(resolve, 800); // Simulate API delay
-        });
-        
-        // Mock P2P matching data for demonstration
-        const mockP2PData = {
-          matchesCount: Math.floor(Math.random() * 8) + 2,
-          matches: [
-            { name: "Collector_0x7F", bidAmount: (Math.random() * 5 + 1).toFixed(2), credibility: Math.random() },
-            { name: "ArtVault_Pro", bidAmount: (Math.random() * 3 + 0.5).toFixed(2), credibility: Math.random() },
-            { name: "NeonTrader", bidAmount: (Math.random() * 2 + 0.2).toFixed(2), credibility: Math.random() }
-          ]
-        };
-        
-        setP2pData(mockP2PData);
+        const data = await mediaApiService.getP2PMatching(artwork.id);
+        setP2pData(data);
       } catch (error) {
         console.error('Error fetching P2P data:', error);
         setP2pError(true);

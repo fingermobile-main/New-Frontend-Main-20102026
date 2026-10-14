@@ -76,7 +76,7 @@ export const LoanSqrPage: React.FC = () => {
   const [applyDuration, setApplyDuration] = useState<number>(30);
   const [applyPurpose, setApplyPurpose] = useState<string>('Fast Inventory Restock for Peak Market Trading');
   const [applicantName, setApplicantName] = useState<string>((user as any)?.name || user?.username || 'Mbah Israel Obinna');
-  const [applicantEmail, setApplicantEmail] = useState<string>(user?.email || 'israel.obinna@fingermobile.org');
+  const [applicantEmail, setApplicantEmail] = useState<string>(user?.email || 'israel.obinna@fingermobileprotocol.com');
   const [applicantPhone] = useState<string>('+234 803 892 4190');
   const [businessName, setBusinessName] = useState<string>('Obinna Continental Supply & Logistics');
   const [businessType, setBusinessType] = useState<string>('Supply Chain Trader');

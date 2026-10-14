@@ -178,31 +178,34 @@ const DashboardPage: React.FC = () => {
 
         {/* Dashboard Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {dashboardCards.map(card => (
-            <Link
-              key={card.id}
-              to={card.route}
-              className="block transform transition-transform duration-200 hover:scale-105"
-            >
-              <div className={`${card.color} rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-shadow`}>
-                <div className="flex items-center">
-                  <div className="p-3 bg-white bg-opacity-20 rounded-lg">
-                    {React.createElement(card.icon, { className: "h-6 w-6 text-white" })}
+          {dashboardCards.map(card => {
+            const isLightBg = card.color.includes('yellow') || card.color.includes('amber');
+            return (
+              <Link
+                key={card.id}
+                to={card.route}
+                className="block transform transition-transform duration-200 hover:scale-105"
+              >
+                <div className={`${card.color} rounded-xl shadow-lg p-6 ${isLightBg ? 'text-slate-950' : 'text-white'} hover:shadow-xl transition-shadow`}>
+                  <div className="flex items-center">
+                    <div className={`p-3 ${isLightBg ? 'bg-black/15' : 'bg-white bg-opacity-20'} rounded-lg`}>
+                      {React.createElement(card.icon, { className: `h-6 w-6 ${isLightBg ? 'text-slate-950' : 'text-white'}` })}
+                    </div>
+                    <div className="ml-4 flex-1">
+                      <h3 className={`text-lg font-bold ${isLightBg ? 'text-slate-950' : 'text-white'}`}>{card.title}</h3>
+                      <p className={`text-sm mt-1 ${isLightBg ? 'text-slate-900 font-semibold' : 'text-white/90'}`}>{card.description}</p>
+                    </div>
                   </div>
-                  <div className="ml-4 flex-1">
-                    <h3 className="text-lg font-semibold">{card.title}</h3>
-                    <p className="text-sm opacity-80 mt-1">{card.description}</p>
+                  <div className="mt-4">
+                    <button className={`inline-flex items-center text-sm font-bold ${isLightBg ? 'text-slate-950 hover:text-black' : 'text-white opacity-90 hover:opacity-100'}`}>
+                      Access Dashboard
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </button>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <button className="inline-flex items-center text-sm font-medium opacity-90 hover:opacity-100">
-                    Access Dashboard
-                    <ChevronRight className="ml-1 h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Quick Stats */}

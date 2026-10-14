@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import api from '../../services/api';
 import { useToast } from '../../components/Toast';
+import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
+import SubscriptionModelsConsole from '../../components/dashboard/SubscriptionModelsConsole';
 
 const StercsCurationDashboard: React.FC = () => {
   const { addToast } = useToast();
-  const [activeTab, setActiveTab] = useState<'products' | 'ads'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'ads' | 'subscriptions'>('subscriptions');
   const [products, setProducts] = useState<any[]>([]);
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -69,36 +71,50 @@ const StercsCurationDashboard: React.FC = () => {
   return (
     <MainLayout pageTitle="STERCS Curation & Content Management">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {/* Permanent Platform Ownership Authority Seal */}
+        <PlatformOwnershipCard />
 
-        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/60 shadow-sm relative overflow-hidden">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">STERCS Content Curation</h1>
-            <p className="text-slate-500 font-medium mt-1">Manage Products, Media, and Ads across Marketplace, Flamingo, OwnIt, and Dancia-4Tv.</p>
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">STERCS Content & Subscription Curation</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Manage Products, Media, Advertisements, and Platform Subscription Models across FingerMobile Protocol.</p>
           </div>
-          <div className="flex gap-4 relative z-10">
+          <div className="flex flex-wrap gap-2.5 relative z-10">
+            <button
+              onClick={() => setActiveTab('subscriptions')}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'subscriptions' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
+            >
+              Subscriptions & Free Tiers
+            </button>
             <button
               onClick={() => setActiveTab('products')}
-              className={`px-6 py-2 rounded-xl font-bold transition-colors ${activeTab === 'products' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'products' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
             >
               Products / Media
             </button>
             <button
               onClick={() => setActiveTab('ads')}
-              className={`px-6 py-2 rounded-xl font-bold transition-colors ${activeTab === 'ads' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+              className={`px-5 py-2 rounded-xl font-bold transition-colors ${activeTab === 'ads' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'}`}
             >
               Advertising
             </button>
           </div>
         </div>
 
-        <div className="mb-8 flex justify-end">
-          <button
-            onClick={() => setIsCreating(!isCreating)}
-            className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-md"
-          >
-            {isCreating ? 'Cancel Creation' : `Create New ${activeTab === 'products' ? 'Product' : 'Ad'}`}
-          </button>
-        </div>
+        {activeTab === 'subscriptions' ? (
+          <div className="mb-8">
+            <SubscriptionModelsConsole sourceDashboard="StercsDashboard" />
+          </div>
+        ) : (
+          <>
+            <div className="mb-8 flex justify-end">
+              <button
+                onClick={() => setIsCreating(!isCreating)}
+                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-md"
+              >
+                {isCreating ? 'Cancel Creation' : `Create New ${activeTab === 'products' ? 'Product' : 'Ad'}`}
+              </button>
+            </div>
 
         {isCreating && (
           <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-200/60 shadow-sm mb-8 relative z-10">
@@ -181,8 +197,10 @@ const StercsCurationDashboard: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-    </MainLayout>
+      </>
+    )}
+  </div>
+</MainLayout>
   );
 };
 

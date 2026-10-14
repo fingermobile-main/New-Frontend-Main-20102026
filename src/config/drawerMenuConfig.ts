@@ -37,14 +37,6 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         badge: { text: 'Feed', type: 'primary' }
       },
       {
-        id: 'forum-draft',
-        title: 'Forum Page (09/10/2026 Draft)',
-        description: 'Modernized 3-Column Sovereign Streamlined Layout',
-        path: '/forum-draft',
-        icon: 'Sparkles',
-        badge: { text: 'Draft', type: 'info' }
-      },
-      {
         id: 'hallmark',
         title: 'Hallmark',
         description: 'Mega-communities hosting up to 250,000 members',
@@ -390,6 +382,38 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         description: 'Discounts & promotional vouchers',
         path: '/coupons',
         icon: 'Tag'
+      },
+      {
+        id: 'settings-hub',
+        title: 'Settings Hub',
+        description: 'Central enterprise configuration & feature console',
+        path: '/settings-hub',
+        icon: 'Sliders',
+        badge: { text: 'Hub', type: 'info' }
+      },
+      {
+        id: 'roles-permissions',
+        title: 'Roles & Permissions',
+        description: 'Collaborator seats, 45+ role permissions & location scopes',
+        path: '/settings/roles-permissions',
+        icon: 'ShieldCheck',
+        badge: { text: 'RBAC', type: 'primary' }
+      },
+      {
+        id: 'site-member-access',
+        title: 'Site Member Access',
+        description: 'Gate site pages for specific member roles & plans',
+        path: '/contacts/site-members/site-member-access',
+        icon: 'Lock',
+        badge: { text: 'Gated', type: 'warning' }
+      },
+      {
+        id: 'badges-studio',
+        title: 'Member Badges Studio',
+        description: 'Design custom badges, page unlocks & assign to members',
+        path: '/settings/badges',
+        icon: 'Award',
+        badge: { text: 'Studio', type: 'success' }
       },
       {
         id: 'settings',

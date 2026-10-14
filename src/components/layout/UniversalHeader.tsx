@@ -81,7 +81,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
                 <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl py-2 z-50 text-xs text-slate-300">
                   <div className="px-4 py-2 border-b border-slate-800">
                     <p className="font-bold text-white truncate">{(member as any)?.name || (member as any)?.username || 'Valued Member'}</p>
-                    <p className="text-slate-400 text-[10px] truncate">{member?.email || 'member@fingermobile.com'}</p>
+                    <p className="text-slate-400 text-[10px] truncate">{member?.email || 'member@fingermobileprotocol.com'}</p>
                   </div>
                   <Link
                     to="/member/landing"

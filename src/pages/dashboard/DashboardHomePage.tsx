@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import StatCard from '../../components/StatCard';
 import TrendCard from '../../components/TrendCard';
@@ -107,12 +108,30 @@ const mockPosts = [
 ];
 
 const DashboardHomePage: React.FC = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const { balance } = useWeb3();
   const [stats] = useState(mockStats);
   const [trends] = useState(mockTrends);
-  const [posts] = useState(mockPosts);
+  const [posts, setPosts] = useState(mockPosts);
   const [timeRange, setTimeRange] = useState('7d');
+
+  const handleLikePost = (postId: string) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          const nextLiked = !p.isLiked;
+          return {
+            ...p,
+            isLiked: nextLiked,
+            likesCount: nextLiked ? p.likesCount + 1 : p.likesCount - 1
+          };
+        }
+        return p;
+      })
+    );
+    showToast('Post reaction updated', 'success');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -185,10 +204,16 @@ const DashboardHomePage: React.FC = () => {
               </p>
 
               <div className="mt-6 space-y-3">
-                <button className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                <button
+                  onClick={() => navigate('/master-dashboard?tab=financials&subtab=fiat-rules')}
+                  className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
                   Withdraw Funds
                 </button>
-                <button className="w-full py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                <button
+                  onClick={() => navigate('/master-dashboard?tab=financials&subtab=cic-ledger')}
+                  className="w-full py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
                   View Transaction History
                 </button>
               </div>
@@ -200,7 +225,10 @@ const DashboardHomePage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">Recent Content</h2>
-            <button className="text-blue-600 hover:text-blue-800 font-medium">
+            <button
+              onClick={() => navigate('/forum')}
+              className="text-blue-600 hover:text-blue-800 font-medium"
+            >
               View All
             </button>
           </div>
@@ -211,14 +239,12 @@ const DashboardHomePage: React.FC = () => {
                 key={post.id}
                 post={{
                   ...post,
-                  pollOptions: post.pollOptions || [] // Ensure pollOptions is an array, not null
+                  pollOptions: post.pollOptions || []
                 }}
-                onLike={(postId) => console.info('Like post', postId)}
-                _onAddComment={() => console.info('Add comment')}
-                onOpenGiftModal={(post) => console.info('Open gift modal', post)}
-                onVote={(postId, voteType) =>
-                  console.info('Vote', postId, voteType)
-                }
+                onLike={(postId) => handleLikePost(postId)}
+                _onAddComment={() => showToast('Opening comment dialog', 'info')}
+                onOpenGiftModal={() => showToast('Opening creator gift tray', 'info')}
+                onVote={() => showToast('Vote submitted successfully', 'success')}
               />
             ))}
           </div>
@@ -228,7 +254,10 @@ const DashboardHomePage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-bold mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <button
+              onClick={() => navigate('/createpost')}
+              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+            >
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -245,10 +274,13 @@ const DashboardHomePage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <span className="font-medium">Create Post</span>
+              <span className="font-medium text-slate-900">Create Post</span>
             </button>
 
-            <button className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <button
+              onClick={() => navigate('/stercs')}
+              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+            >
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -265,10 +297,13 @@ const DashboardHomePage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <span className="font-medium">Upload Media</span>
+              <span className="font-medium text-slate-900">Upload Media</span>
             </button>
 
-            <button className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <button
+              onClick={() => navigate('/subscriptions')}
+              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+            >
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -285,10 +320,13 @@ const DashboardHomePage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <span className="font-medium">Monetize Content</span>
+              <span className="font-medium text-slate-900">Monetize Content</span>
             </button>
 
-            <button className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <button
+              onClick={() => navigate('/advancedanalytics')}
+              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+            >
               <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -305,7 +343,7 @@ const DashboardHomePage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <span className="font-medium">View Analytics</span>
+              <span className="font-medium text-slate-900">View Analytics</span>
             </button>
           </div>
         </div>

@@ -75,6 +75,12 @@ const PrivacyPolicyPage = () => {
               data stored on our site.
             </p>
             <p>
+            THIS FINGERMOBILE PROTOCOL PLATFORM, WEBSITE, MOBILE APPLICATION, SERVICES AND FEATURES,
+            ARE ALL PROVIDED ON AN *AS IS*, “HOW IS”, “WHERE IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS
+            OF ANY KIND OR VARIATION HOWSOEVER, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
+            ANY IMPLIED WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY OR NON-INFRINGEMENT.
+            </p>
+            <p>
               Sensitive and private data exchange between the site and its
               members happens over a SSL secured communication channel and is
               encrypted and protected with digital signatures.
@@ -146,9 +152,9 @@ const PrivacyPolicyPage = () => {
               at:
             </p>
             <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Legal Department</p>
-              <p>Email: legal@fingermobile.com</p>
-              <p>Address: 123 Innovation Street, Tech City, TC 10001</p>
+              <p className="font-medium">FingerMobile Protocol™ Data Protection &amp; Legal</p>
+              <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
+              <p>Official Website: https://fingermobileprotocol.com</p>
             </div>
           </Section>
 

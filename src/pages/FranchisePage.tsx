@@ -53,7 +53,7 @@ const DEFAULT_FRANCHISES: FranchiseEntity[] = [
     revenueSharePercentage: 15.0,
     grossVolumeFic: 245000,
     netPayoutFic: 36750,
-    contactEmail: 'lagos.hub@fingermobile.org',
+    contactEmail: 'lagos.hub@fingermobileprotocol.com',
     contactPhone: '+234 1 234 5678',
     status: 'active',
     foundedYear: 2024
@@ -70,7 +70,7 @@ const DEFAULT_FRANCHISES: FranchiseEntity[] = [
     revenueSharePercentage: 12.5,
     grossVolumeFic: 168000,
     netPayoutFic: 21000,
-    contactEmail: 'abuja.center@fingermobile.org',
+    contactEmail: 'abuja.center@fingermobileprotocol.com',
     contactPhone: '+234 9 876 5432',
     status: 'active',
     foundedYear: 2025
@@ -87,7 +87,7 @@ const DEFAULT_FRANCHISES: FranchiseEntity[] = [
     revenueSharePercentage: 10.0,
     grossVolumeFic: 94000,
     netPayoutFic: 9400,
-    contactEmail: 'ph.lounge@fingermobile.org',
+    contactEmail: 'ph.lounge@fingermobileprotocol.com',
     contactPhone: '+234 84 123 456',
     status: 'active',
     foundedYear: 2025
@@ -104,7 +104,7 @@ const DEFAULT_FRANCHISES: FranchiseEntity[] = [
     revenueSharePercentage: 15.0,
     grossVolumeFic: 320000,
     netPayoutFic: 48000,
-    contactEmail: 'london.node@fingermobile.org',
+    contactEmail: 'london.node@fingermobileprotocol.com',
     contactPhone: '+44 20 7946 0912',
     status: 'active',
     foundedYear: 2025
@@ -121,7 +121,7 @@ const DEFAULT_FRANCHISES: FranchiseEntity[] = [
     revenueSharePercentage: 15.0,
     grossVolumeFic: 280000,
     netPayoutFic: 42000,
-    contactEmail: 'richmond.terminal@fingermobile.org',
+    contactEmail: 'richmond.terminal@fingermobileprotocol.com',
     contactPhone: '+1 832 555 0198',
     status: 'active',
     foundedYear: 2025

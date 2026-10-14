@@ -28,8 +28,12 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
       // Simulate API call to enable 2FA
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Generate mock secret key and backup codes (DEMO ONLY - replace with real TOTP generation in production)
-      const mockSecret = process.env.TOTP_SECRET || 'JBSWY3DPEHPK3PXP'; // TODO: Replace with actual TOTP secret generation using speakeasy or otplib
+      // Generate standard base32 RFC 6238 compatible secret key and backup codes
+      const base32Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+      const randomSecret = Array.from({ length: 16 }, () =>
+        base32Chars.charAt(Math.floor(Math.random() * base32Chars.length))
+      ).join('');
+      const mockSecret = process.env.REACT_APP_TOTP_SECRET || randomSecret;
       const mockBackupCodes = Array.from({ length: 8 }, (_, i) =>
         Math.random().toString(36).substring(2, 10).toUpperCase()
       );

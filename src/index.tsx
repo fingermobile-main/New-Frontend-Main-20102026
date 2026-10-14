@@ -11,6 +11,9 @@ if (container) {
       <App />
     </React.StrictMode>
   );
+  if (typeof (window as any).dismissSplashScreen === 'function') {
+    (window as any).dismissSplashScreen();
+  }
 } else {
   console.error('Failed to find the root element');
 }

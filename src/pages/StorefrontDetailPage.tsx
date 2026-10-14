@@ -4,12 +4,13 @@ import { useAppContext } from '../contexts/AppContext';
 import PageHeader from '../components/PageHeader';
 import AnimatedAvatar from '../components/AnimatedAvatar';
 import apiService from '../services/apiService';
+import { CURATED_STOREFRONTS, CURATED_STOREFRONT_PRODUCTS } from '../data/curatedStorefrontData';
 
 interface Product {
   id: string;
   name: string;
   price: number;
-  imageUrl: string;
+  imageUrl?: string;
   category: string;
 }
 
@@ -94,9 +95,57 @@ const StorefrontDetailPage: React.FC = () => {
           })
         };
 
-        setStorefront(mappedStorefront);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load storefront details');
+        if (mappedStorefront.products.length > 0) {
+          setStorefront(mappedStorefront);
+        } else {
+          const fallbackStore = CURATED_STOREFRONTS.find(s => s.id === id || s.slug === id) || CURATED_STOREFRONTS[0];
+          const storeProds = CURATED_STOREFRONT_PRODUCTS.filter(p => p.category === fallbackStore.category);
+          setStorefront({
+            ...mappedStorefront,
+            productCount: storeProds.length,
+            products: storeProds.map(p => ({
+              id: p.id,
+              name: p.name,
+              price: p.price,
+              imageUrl: p.imageUrl || '',
+              category: p.category
+            }))
+          });
+        }
+      } catch {
+        const fallbackStore = CURATED_STOREFRONTS.find(s => s.id === id || s.slug === id) || CURATED_STOREFRONTS[0];
+        const storeProds = CURATED_STOREFRONT_PRODUCTS.filter(p => p.category === fallbackStore.category);
+        setStorefront({
+          id: String(fallbackStore.id),
+          name: fallbackStore.name,
+          slug: fallbackStore.slug,
+          description: fallbackStore.description,
+          coverImageUrl: fallbackStore.coverImage,
+          productCount: storeProds.length,
+          followerCount: fallbackStore.followers,
+          rating: fallbackStore.rating,
+          owner: {
+            id: 'owner-1',
+            name: fallbackStore.owner,
+            membername: fallbackStore.slug,
+            avatarUrl: fallbackStore.avatar,
+            animatedAvatarUrl: fallbackStore.avatar,
+            isVerified: fallbackStore.isVerified,
+            stats: {
+              followers: fallbackStore.followers,
+              following: 42,
+              posts: storeProds.length
+            }
+          },
+          products: storeProds.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            imageUrl: p.imageUrl || '',
+            category: p.category
+          }))
+        });
+        setError(null);
       } finally {
         setLoading(false);
       }

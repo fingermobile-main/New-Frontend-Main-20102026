@@ -304,6 +304,24 @@ class UserService {
       };
     }
   }
+
+  // Check if following user
+  static async isFollowing(targetUserId: string): Promise<ApiResponse<{ isFollowing: boolean }>> {
+    try {
+      const response = await ApiService.get(`/users/${targetUserId}/is-following`);
+      return {
+        success: true,
+        data: response.data,
+        message: 'Follow status retrieved successfully',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: 'Failed to retrieve follow status',
+        error: error.response?.data?.message || error.message || 'An error occurred while checking follow status',
+      };
+    }
+  }
 }
 
 export default UserService;

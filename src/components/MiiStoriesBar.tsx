@@ -73,7 +73,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
         <div className="flex items-center space-x-2">
           <span className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
             <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
-            Mii™ Disappearing Moments (48h)
+            Mii™®©℠ Disappearing Moments (48h)
           </span>
         </div>
         <div className="flex items-center space-x-2">
@@ -117,7 +117,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               +
             </span>
           </div>
-          <span className="text-[11px] font-semibold mt-1 text-gray-700 dark:text-gray-300">Your Mii</span>
+          <span className="text-[11px] font-semibold mt-1 text-gray-700 dark:text-gray-300">Create 48H Mii™®©℠</span>
         </div>
 
         {/* Contacts with Pulsating Profile Rings */}

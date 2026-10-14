@@ -151,9 +151,9 @@ const TermsOfServicePage = () => {
               If you have any questions about these Terms, please contact us at:
             </p>
             <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Legal Department</p>
-              <p>Email: legal@fingermobile.com</p>
-              <p>Address: 123 Innovation Street, Tech City, TC 10001</p>
+              <p className="font-medium">FingerMobile Protocol™ Legal Department</p>
+              <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
+              <p>Official Website: https://fingermobileprotocol.com</p>
             </div>
           </Section>
 

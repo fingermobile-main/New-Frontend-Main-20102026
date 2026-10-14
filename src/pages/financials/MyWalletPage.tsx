@@ -1,8 +1,31 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Coins,
+  ShoppingBag,
+  Clock,
+  Globe,
+  ArrowUpRight,
+  ArrowDownLeft,
+  Sparkles,
+  Lock,
+  ExternalLink,
+  Store,
+  TrendingUp,
+  History,
+  Info,
+} from 'lucide-react';
 import { useAppContext } from '../../contexts/AppContext';
-import apiService, { ApiService } from '../../services/apiService';
-
+import apiService from '../../services/apiService';
+import { enhancedWalletService } from '../../services/enhancedWalletService';
+import { exchangeRateService } from '../../services/exchangeRateService';
+import {
+  EnhancedWallet,
+  EarningDistribution,
+  StakeInvestment,
+  MultiBalanceUsdValuation,
+  PlatformStoreType,
+} from '../../types/enhanced-monetization';
 
 interface Transaction {
   id: string;
@@ -12,169 +35,792 @@ interface Transaction {
   status: string;
 }
 
-const Wallet: React.FC<{
-  ficBalance: number;
-  transactions: Transaction[];
-  onSendFic: (amount: number, recipient: string) => void;
-  onAddFunds: (amount: number) => void;
-}> = ({ ficBalance, transactions, onSendFic, onAddFunds }) => {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-xl font-bold mb-4">Wallet Overview</h2>
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <p className="text-sm text-gray-500">Available Balance</p>
-          <p className="text-3xl font-bold text-brand-blue">{ficBalance.toLocaleString()} FIC</p>
-        </div>
-      </div>
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <button onClick={() => onAddFunds(10)} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-            Add $10
-          </button>
-          <button onClick={() => onSendFic(10, 'example')} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Send 10 FIC
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const MyWalletPage: React.FC = () => {
-  const { ficBalance, showToast } = useAppContext();
+  const navigate = useNavigate();
+  const { showToast } = useAppContext();
+
+  // Multi-Balance Wallet state
+  const [wallet, setWallet] = useState<EnhancedWallet | null>(null);
+  const [valuation, setValuation] = useState<MultiBalanceUsdValuation | null>(null);
+  const [distributions, setDistributions] = useState<EarningDistribution[]>([]);
+  const [stakes, setStakes] = useState<StakeInvestment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Country Currency selection
+  const [selectedCountry, setSelectedCountry] = useState('NG');
+  const [localValuation, setLocalValuation] = useState<{ formatted: string; ratePerFic: number } | null>(null);
+
+  // Modals state
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [isStoreCreditModalOpen, setIsStoreCreditModalOpen] = useState(false);
+  const [isSimulateModalOpen, setIsSimulateModalOpen] = useState(false);
+
+  // Form states
+  const [sendAmount, setSendAmount] = useState('');
+  const [sendRecipient, setSendRecipient] = useState('');
+  const [depositAmount, setDepositAmount] = useState('');
+  const [storeSpendAmount, setStoreSpendAmount] = useState('');
+  const [selectedStore, setSelectedStore] = useState<PlatformStoreType>('FLAMINGO');
+  const [simulateGrossAmount, setSimulateGrossAmount] = useState('5000');
+  const [simulateSource, setSimulateSource] = useState<EarningDistribution['earningType']>('ADS');
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const loadWalletData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [walletData, distList, stakeList] = await Promise.all([
+        enhancedWalletService.getWallet(),
+        enhancedWalletService.getEarningDistributions(),
+        enhancedWalletService.getStakeInvestments(),
+      ]);
+
+      setWallet(walletData);
+      setDistributions(distList);
+      setStakes(stakeList);
+
+      const val = exchangeRateService.convertMultiBalanceValuation(
+        walletData.ficBalance,
+        walletData.storeCreditBalance,
+        walletData.stakeBalance
+      );
+      setValuation(val);
+
+      const local = exchangeRateService.ficToLocalCurrency(walletData.ficBalance, selectedCountry);
+      setLocalValuation(local);
+
+      // Load legacy transactions
+      const txRes = await apiService.get('/api/wallet/transactions').catch(() => null);
+      if (txRes && (txRes.transactions || txRes.data)) {
+        setTransactions(txRes.transactions || txRes.data);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load wallet data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCountry]);
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await apiService.get('/api/wallet/transactions');
-        if (response && (response.transactions || response.data)) {
-          setTransactions(response.transactions || response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-        showToast('Failed to load transactions.', 'error');
-      }
-    };
+    loadWalletData();
+  }, [loadWalletData]);
 
-    fetchTransactions();
-  }, [showToast]);
-
-  const handleSendFic = async (amount: number, recipient: string) => {
-    if (amount <= 0) {
-      showToast('Amount must be positive.', 'error');
-      return;
-    }
-
-    if (amount > ficBalance) {
-      showToast('Insufficient FIC balance.', 'error');
-      return;
-    }
-
-    if (!recipient) {
-      showToast('Recipient cannot be empty.', 'error');
-      return;
-    }
-
-    try {
-      await apiService.post('/api/wallet/transfer', {
-        recipient_wallet_address: recipient.trim(),
-        amount,
-        note: 'Transfer from Financials Wallet'
-      });
-      showToast(`Successfully sent ${amount} FIC to ${recipient}`, 'success');
-      const response = await apiService.get('/api/wallet/transactions');
-      if (response && (response.transactions || response.data)) {
-        setTransactions(response.transactions || response.data);
-      }
-    } catch (error) {
-      console.error('Error sending FIC:', error);
-      showToast('Failed to send FIC. Please try again.', 'error');
+  const handleCountryChange = (countryCode: string) => {
+    setSelectedCountry(countryCode);
+    if (wallet) {
+      const local = exchangeRateService.ficToLocalCurrency(wallet.ficBalance, countryCode);
+      setLocalValuation(local);
     }
   };
 
-  const handleAddFunds = async (amount: number) => {
-    if (amount <= 0) {
-      showToast('Amount must be positive.', 'error');
+  const handleSendFic = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(sendAmount);
+    if (isNaN(amount) || amount <= 0) {
+      showToast('Please enter a valid amount to send.', 'error');
       return;
     }
 
+    if (!wallet || amount > wallet.ficBalance) {
+      showToast('Insufficient liquid FIC balance.', 'error');
+      return;
+    }
+
+    if (!sendRecipient.trim()) {
+      showToast('Recipient address or handle cannot be empty.', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await apiService.post('/api/wallet/transfer', {
+        recipient_wallet_address: sendRecipient.trim(),
+        amount,
+        note: 'Transfer from Liquid FIC Wallet',
+      }).catch(() => null);
+
+      // Deduct from client wallet
+      wallet.ficBalance = parseFloat((wallet.ficBalance - amount).toFixed(2));
+      setWallet({ ...wallet });
+      showToast(`Successfully transferred ${amount.toLocaleString()} FIC to ${sendRecipient}`, 'success');
+      setSendAmount('');
+      setSendRecipient('');
+      setIsSendModalOpen(false);
+      await loadWalletData();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleDeposit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(depositAmount);
+    if (isNaN(amount) || amount <= 0) {
+      showToast('Please enter a valid deposit amount.', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
     try {
       await apiService.post('/api/wallet/deposit', {
         amount,
-        payment_method: 'Quick Add Funds'
-      });
-      showToast(`Successfully deposited ${amount} FIC into your live wallet`, 'success');
-      const response = await apiService.get('/api/wallet/transactions');
-      if (response && (response.transactions || response.data)) {
-        setTransactions(response.transactions || response.data);
+        payment_method: 'Direct Protocol Mint',
+      }).catch(() => null);
+
+      if (wallet) {
+        wallet.ficBalance = parseFloat((wallet.ficBalance + amount).toFixed(2));
+        setWallet({ ...wallet });
       }
-    } catch (error) {
-      console.error('Error adding funds:', error);
-      showToast('Failed to add funds. Please try again.', 'error');
+
+      showToast(`Successfully credited ${amount.toLocaleString()} FIC to your liquid balance.`, 'success');
+      setDepositAmount('');
+      setIsDepositModalOpen(false);
+      await loadWalletData();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleSpendStoreCredit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(storeSpendAmount);
+    if (isNaN(amount) || amount <= 0) {
+      showToast('Please enter a valid purchase amount.', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const result = await enhancedWalletService.spendStoreCredit(
+        'mem-primary-user',
+        amount,
+        selectedStore,
+        `ord-${selectedStore.toLowerCase()}-${Date.now().toString().slice(-5)}`,
+        `Direct purchase at ${selectedStore}`
+      );
+
+      if (result.success) {
+        showToast(result.message, 'success');
+        setStoreSpendAmount('');
+        setIsStoreCreditModalOpen(false);
+        await loadWalletData();
+      } else {
+        showToast(result.message, 'error');
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleSimulateEarning = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const gross = parseFloat(simulateGrossAmount);
+    if (isNaN(gross) || gross <= 0) {
+      showToast('Please enter a valid gross earning amount.', 'error');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const result = await enhancedWalletService.distributeEarnings(
+        'mem-primary-user',
+        gross,
+        simulateSource,
+        `sim-earn-${Date.now().toString().slice(-6)}`
+      );
+
+      const d = result.distribution;
+      showToast(
+        `4-Part Split Applied: +${d.memberRetained} FIC Liquid (45%) | +${d.storeCredit} FIC Store Credit (25%) | +${d.stakeAmount} FIC Sleepers (5%) | +${d.platformRetained} FIC Platform (25%)`,
+        'success'
+      );
+
+      setIsSimulateModalOpen(false);
+      await loadWalletData();
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">My Wallet</h1>
-          <p className="text-gray-600 mt-2">Manage your FIC tokens and transactions</p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header with Protocol Branding */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-1 text-xs font-mono text-amber-600 dark:text-amber-400">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>[FingerMobile™Protocol] Sovereign Monetary Architecture</span>
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-tight">Multi-Balance Sovereign Wallet</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Automated 4-part earning distribution: 45% Liquid Retained, 25% Store Credit, 5% 1-Year Sleepers @ 1.5% APY, and 25% Platform Revenue.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsSimulateModalOpen(true)}
+              className="px-3.5 py-2 text-xs font-bold rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-colors flex items-center gap-1.5"
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Simulate 4-Part Split</span>
+            </button>
+            <button
+              onClick={() => navigate('/fic-vault')}
+              className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+            >
+              <Clock className="w-3.5 h-3.5 text-blue-500" />
+              <span>Sleeper Vault</span>
+            </button>
+          </div>
         </div>
 
-        <Wallet
-          ficBalance={ficBalance}
-          transactions={transactions}
-          onSendFic={handleSendFic}
-          onAddFunds={handleAddFunds}
-        />
+        {/* 4-Balance Dashboard Deck */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1: Liquid FIC (45% Net Retained) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-blue-200 dark:border-blue-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                  45% Liquid Retained
+                </span>
+                <Coins className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Available Liquid FIC</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.ficBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-blue-600">FIC</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-1 font-mono">
+                ≈ ${valuation?.ficUsd.toLocaleString() || '0.00'} USD
+              </p>
+            </div>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-500">Total Spent</p>
-                <p className="text-xl font-bold">250.50 FIC</p>
-              </div>
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
+              <button
+                onClick={() => setIsSendModalOpen(true)}
+                className="flex-1 px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center gap-1"
+              >
+                <ArrowUpRight className="w-3 h-3" />
+                <span>Send</span>
+              </button>
+              <button
+                onClick={() => setIsDepositModalOpen(true)}
+                className="flex-1 px-3 py-1.5 text-xs font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-1"
+              >
+                <ArrowDownLeft className="w-3 h-3" />
+                <span>Deposit</span>
+              </button>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-green-100 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+          {/* Card 2: Store Credit (25% Net Portion) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-emerald-200 dark:border-emerald-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                  25% Store Credit
+                </span>
+                <ShoppingBag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-500">Security Score</p>
-                <p className="text-xl font-bold">98%</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Platform Store Credit</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.storeCreditBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-emerald-600">FIC</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-1 font-mono">
+                ≈ ${valuation?.storeCreditUsd.toLocaleString() || '0.00'} USD
+              </p>
+              <div className="mt-2 text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                <Store className="w-3 h-3 text-emerald-500 shrink-0" />
+                <span className="truncate">Flamingo • OwnIt • Marketplace • Storefront</span>
               </div>
+            </div>
+
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+              <button
+                onClick={() => setIsStoreCreditModalOpen(true)}
+                className="w-full px-3 py-1.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center justify-center gap-1.5"
+              >
+                <ShoppingBag className="w-3 h-3" />
+                <span>Redeem at Store</span>
+              </button>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+          {/* Card 3: 1-Year Staking Vault ("Sleepers" 5% Net Portion) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-purple-200 dark:border-purple-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5" />
+                  <span>5% Sleeper Pool</span>
+                </span>
+                <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm text-gray-500">Active Subscriptions</p>
-                <p className="text-xl font-bold">3</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Locked Sleepers Staked</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.stakeBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-purple-600">FIC</span>
+              </h2>
+              <p className="text-xs text-purple-600 dark:text-purple-400 mt-1 font-semibold flex items-center gap-1">
+                <span>1.5% Annual Interest Guarantee</span>
+              </p>
+              <p className="text-[10px] text-slate-500 mt-1 font-mono">
+                {stakes.length} positions locked for 365 days
+              </p>
+            </div>
+
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+              <button
+                onClick={() => navigate('/fic-vault')}
+                className="w-full px-3 py-1.5 text-xs font-bold border border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 rounded-lg transition-colors flex items-center justify-center gap-1.5"
+              >
+                <span>View Sleeper Vault</span>
+                <ExternalLink className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+
+          {/* Card 4: Multi-Currency Valuation & Global Forex */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                  Global Forex
+                </span>
+                <Globe className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Total Portfolio Value</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                ${valuation?.totalUsd.toLocaleString() || '0.00'} <span className="text-sm font-semibold text-amber-600">USD</span>
+              </h2>
+              <div className="mt-2 text-xs font-mono text-slate-600 dark:text-slate-400 space-y-0.5">
+                <p>CNY Fallback: ¥{valuation?.ficCny || '0.00'}</p>
+                <p className="font-semibold text-amber-700 dark:text-amber-300">
+                  {localValuation?.formatted || 'NGN 0.00'}
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+              <select
+                value={selectedCountry}
+                onChange={(e) => handleCountryChange(e.target.value)}
+                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-200 font-semibold focus:outline-none"
+              >
+                {exchangeRateService.getAllCountryRates().map((c) => (
+                  <option key={c.countryCode} value={c.countryCode}>
+                    {c.name} ({c.currency})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* 4-Part Earning Distributions History */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-bold flex items-center gap-2">
+                <History className="w-5 h-5 text-amber-500" />
+                <span>4-Part Earning Distributions Ledger</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Mathematical allocation breakdown: 45% Member Liquid, 25% Store Credit, 5% Sleeper Stake, 25% Platform Revenue.
+              </p>
+            </div>
+            <div className="text-xs font-mono text-slate-500">
+              Exchange Anchor: 1 USD = {exchangeRateService.getFicUsdRate()} FIC
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 uppercase tracking-wider font-mono">
+                <tr>
+                  <th className="py-3 px-3">Date</th>
+                  <th className="py-3 px-3">Earning Source</th>
+                  <th className="py-3 px-3">Gross Earning</th>
+                  <th className="py-3 px-3 text-blue-600 dark:text-blue-400">45% Member (Liquid)</th>
+                  <th className="py-3 px-3 text-emerald-600 dark:text-emerald-400">25% Store Credit</th>
+                  <th className="py-3 px-3 text-purple-600 dark:text-purple-400">5% Sleepers (1-Yr)</th>
+                  <th className="py-3 px-3 text-amber-600 dark:text-amber-400">25% Platform</th>
+                  <th className="py-3 px-3">Audit Hash</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                {distributions.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-8 text-center text-slate-400">
+                      No earning distributions recorded yet. Click &apos;Simulate 4-Part Split&apos; to test.
+                    </td>
+                  </tr>
+                ) : (
+                  distributions.map((d) => (
+                    <tr key={d.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors font-mono">
+                      <td className="py-3 px-3 text-slate-600 dark:text-slate-300">
+                        {new Date(d.distributionDate).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                          {d.earningType}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 font-bold text-slate-900 dark:text-white">
+                        {d.grossEarning.toLocaleString()} FIC
+                      </td>
+                      <td className="py-3 px-3 font-bold text-blue-600 dark:text-blue-400">
+                        +{d.memberRetained.toLocaleString()} FIC
+                      </td>
+                      <td className="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400">
+                        +{d.storeCredit.toLocaleString()} FIC
+                      </td>
+                      <td className="py-3 px-3 font-bold text-purple-600 dark:text-purple-400">
+                        +{d.stakeAmount.toLocaleString()} FIC
+                      </td>
+                      <td className="py-3 px-3 text-amber-700 dark:text-amber-400">
+                        {d.platformRetained.toLocaleString()} FIC
+                      </td>
+                      <td className="py-3 px-3 text-[10px] text-slate-400 truncate max-w-[120px]">
+                        {d.txHash || '—'}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Legacy Transfer Ledger & System Status */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+            <h3 className="text-base font-bold mb-4 flex items-center gap-2">
+              <Coins className="w-4 h-4 text-blue-500" />
+              <span>Peer-to-Peer Transfer Ledger</span>
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500">
+                  <tr>
+                    <th className="py-2.5 px-3">ID</th>
+                    <th className="py-2.5 px-3">Recipient / Target</th>
+                    <th className="py-2.5 px-3">Amount</th>
+                    <th className="py-2.5 px-3">Date</th>
+                    <th className="py-2.5 px-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {transactions.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-6 text-center text-slate-400">
+                        No peer transactions on ledger.
+                      </td>
+                    </tr>
+                  ) : (
+                    transactions.map((tx) => (
+                      <tr key={tx.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                        <td className="py-2.5 px-3 text-slate-500">{tx.id}</td>
+                        <td className="py-2.5 px-3">{tx.recipient}</td>
+                        <td className="py-2.5 px-3 font-bold text-blue-600">{tx.amount} FIC</td>
+                        <td className="py-2.5 px-3 text-slate-500">{tx.date}</td>
+                        <td className="py-2.5 px-3">
+                          <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                            {tx.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+            <h3 className="text-base font-bold flex items-center gap-2">
+              <Info className="w-4 h-4 text-purple-500" />
+              <span>Earning Policy Rules</span>
+            </h3>
+            <div className="text-xs text-slate-600 dark:text-slate-400 space-y-2.5">
+              <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-blue-900 dark:text-blue-300">
+                <span className="font-bold">45% Member Retained:</span> Immediate liquid withdrawal or peer-to-peer transfer.
+              </div>
+              <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-emerald-900 dark:text-emerald-300">
+                <span className="font-bold">25% Store Credit:</span> Exclusively spendable at Flamingo, OwnIt, Marketplace, and Storefront.
+              </div>
+              <div className="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 text-purple-900 dark:text-purple-300">
+                <span className="font-bold">5% Sleeper Staking:</span> Automatically locked in protocol vault for 365 days at 1.5% APY.
+              </div>
+              <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-300">
+                <span className="font-bold">25% Platform Revenue:</span> Channeled to protocol treasury for ecosystem maintenance.
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* MODAL: Send FIC */}
+      {isSendModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1">Send Liquid FIC</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Transfer liquid FIC directly to another member or external address.
+            </p>
+            <form onSubmit={handleSendFic} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Recipient Username or Wallet Address
+                </label>
+                <input
+                  type="text"
+                  value={sendRecipient}
+                  onChange={(e) => setSendRecipient(e.target.value)}
+                  placeholder="e.g. eunice_mbah or 0x8a1b..."
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  required
+                />
+              </div>
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">Amount (FIC)</span>
+                  <span className="text-slate-500">Max: {wallet?.ficBalance.toLocaleString()} FIC</span>
+                </div>
+                <input
+                  type="number"
+                  value={sendAmount}
+                  onChange={(e) => setSendAmount(e.target.value)}
+                  placeholder="0.00"
+                  max={wallet?.ficBalance}
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  required
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsSendModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md disabled:opacity-50"
+                >
+                  {isProcessing ? 'Sending...' : 'Confirm Transfer'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Deposit Funds */}
+      {isDepositModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1">Deposit FIC Tokens</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Acquire FIC tokens using fiat or bank rail at 1 USD = 20 FIC (1 FIC = $0.05 USD / ₦65.00 NGN).
+            </p>
+            <form onSubmit={handleDeposit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Deposit Amount (FIC)
+                </label>
+                <input
+                  type="number"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  placeholder="e.g. 500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  required
+                />
+                {depositAmount && (
+                  <p className="text-[11px] text-slate-500 mt-1 font-mono">
+                    ≈ ${exchangeRateService.ficToUsd(parseFloat(depositAmount) || 0)} USD
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsDepositModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="px-4 py-2 text-xs font-bold bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-md disabled:opacity-50"
+                >
+                  {isProcessing ? 'Processing...' : 'Complete Deposit'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Redeem Store Credit */}
+      {isStoreCreditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5 text-emerald-500" />
+              <span>Redeem Store Credit</span>
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Use your 25% store credit balance exclusively on official platform retail portals.
+            </p>
+            <form onSubmit={handleSpendStoreCredit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Select Platform Store
+                </label>
+                <select
+                  value={selectedStore}
+                  onChange={(e) => setSelectedStore(e.target.value as PlatformStoreType)}
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold"
+                >
+                  <option value="FLAMINGO">Flamingo Retail Store</option>
+                  <option value="OWNIT">OwnIt Digital Assets & IP</option>
+                  <option value="MARKETPLACE">Global Marketplace</option>
+                  <option value="STOREFRONT">Creator Storefronts</option>
+                </select>
+              </div>
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">Amount (FIC)</span>
+                  <span className="text-emerald-600 font-bold">
+                    Avail: {wallet?.storeCreditBalance.toLocaleString()} FIC
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  value={storeSpendAmount}
+                  onChange={(e) => setStoreSpendAmount(e.target.value)}
+                  placeholder="0.00"
+                  max={wallet?.storeCreditBalance}
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  required
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsStoreCreditModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="px-4 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md disabled:opacity-50"
+                >
+                  {isProcessing ? 'Redeeming...' : 'Confirm Store Purchase'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Simulate 4-Part Split Earning */}
+      {isSimulateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-500" />
+              <span>Simulate 4-Part Earning Distribution</span>
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Enter a gross earning amount to observe the automated mathematical split into the 4 defined buckets.
+            </p>
+            <form onSubmit={handleSimulateEarning} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Gross Creator Earning (FIC)
+                </label>
+                <input
+                  type="number"
+                  value={simulateGrossAmount}
+                  onChange={(e) => setSimulateGrossAmount(e.target.value)}
+                  placeholder="5000"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold font-mono"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Earning Category Source
+                </label>
+                <select
+                  value={simulateSource}
+                  onChange={(e) => setSimulateSource(e.target.value as any)}
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold"
+                >
+                  <option value="ADS">In-Stream Video Ads (45/25/5/25)</option>
+                  <option value="GEMS">Live Stream Gems & Marble Gifts</option>
+                  <option value="TIPS">Creator Tip Jar & Direct Patronage</option>
+                  <option value="SHOP_SALES">Flamingo & Storefront Merchandise</option>
+                  <option value="SUBSCRIPTIONS">VIP Channel Subscriptions</option>
+                </select>
+              </div>
+
+              {/* Preview calculation breakdown */}
+              {parseFloat(simulateGrossAmount) > 0 && (
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-mono space-y-1">
+                  <div className="flex justify-between text-blue-600 dark:text-blue-400">
+                    <span>45% Member Liquid:</span>
+                    <span>{(parseFloat(simulateGrossAmount) * 0.45).toLocaleString()} FIC</span>
+                  </div>
+                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                    <span>25% Store Credit:</span>
+                    <span>{(parseFloat(simulateGrossAmount) * 0.25).toLocaleString()} FIC</span>
+                  </div>
+                  <div className="flex justify-between text-purple-600 dark:text-purple-400">
+                    <span>5% Sleepers (1-Yr @ 1.5%):</span>
+                    <span>{(parseFloat(simulateGrossAmount) * 0.05).toLocaleString()} FIC</span>
+                  </div>
+                  <div className="flex justify-between text-amber-600 dark:text-amber-400">
+                    <span>25% Platform Revenue:</span>
+                    <span>{(parseFloat(simulateGrossAmount) * 0.25).toLocaleString()} FIC</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsSimulateModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="px-4 py-2 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md disabled:opacity-50"
+                >
+                  {isProcessing ? 'Calculating...' : 'Apply 4-Part Split'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

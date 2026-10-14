@@ -8,19 +8,11 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   Copy,
-  ExternalLink,
   ShieldCheck,
-  Building2,
   Sparkles,
-  ArrowRight,
   RefreshCw,
   Sliders,
-  AlertTriangle,
-  FileText,
-  Lock,
-  Layers,
-  Percent,
-  Coins
+  Percent
 } from 'lucide-react';
 import {
   PLATFORM_REVENUE_RAILS,

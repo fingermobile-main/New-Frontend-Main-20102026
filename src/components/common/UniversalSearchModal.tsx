@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { router } from '../../app/AppRoutes';
 import {
   Search,
   Sparkles,
@@ -35,6 +35,7 @@ export interface SearchResultItem {
 interface UniversalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onNavigate?: (route: string) => void;
 }
 
 const STATIC_REGISTRY: SearchResultItem[] = [
@@ -50,7 +51,7 @@ const STATIC_REGISTRY: SearchResultItem[] = [
   },
   {
     id: 'nav-mii',
-    title: 'Mii(™®©℠) Moments & Spotlight',
+    title: 'Mii™®©℠ Moments & Spotlight',
     description: 'Creator broadcast channel, media spotlight, and engagement timeline.',
     category: 'Platform Screens',
     route: '/mii',
@@ -239,6 +240,42 @@ const STATIC_REGISTRY: SearchResultItem[] = [
     badge: 'Ethics',
     icon: <Bot className="w-4 h-4 text-emerald-500" />
   },
+  {
+    id: 'dash-seo',
+    title: 'Guardian AI Autonomous SEO & Search Indexing Engine',
+    description: '100% daily autonomous SEO self-healing, Core Web Vitals, Google/Bing crawling & sub-ms search indexing.',
+    category: 'Enterprise Dashboards',
+    route: '/masterdashboard?tab=seo',
+    badge: '100% Auto',
+    icon: <Sparkles className="w-4 h-4 text-emerald-500" />
+  },
+  {
+    id: 'nav-financials-treasury',
+    title: 'Sovereign Treasury, FIC & FIAT Rules Console',
+    description: 'Live FIC minting engine, ₦100 fixed parity anchor, NIBSS/Paystack/Flutterwave rails, and subscription gating bridge.',
+    category: 'Enterprise Dashboards',
+    route: '/masterdashboard?tab=financials',
+    badge: 'FIC / ₦',
+    icon: <DollarSign className="w-4 h-4 text-amber-500" />
+  },
+  {
+    id: 'nav-roles-permissions',
+    title: 'Roles & Permissions (RBAC & Collaborator Seats)',
+    description: 'Enterprise collaborator seats (5/10), 45+ granular permissions catalog, custom roles, and location restriction fences.',
+    category: 'Enterprise Dashboards',
+    route: '/settings/roles-permissions',
+    badge: 'RBAC Seats',
+    icon: <Users className="w-4 h-4 text-indigo-500" />
+  },
+  {
+    id: 'nav-site-member-access',
+    title: 'Gated Content & Member Access Gatekeeper',
+    description: 'Gate 20 platform modules and 10 restricted site pages to specific subscription passes, VIP cohorts, and roles.',
+    category: 'Enterprise Dashboards',
+    route: '/contacts/site-members/site-member-access',
+    badge: 'Paywall Gate',
+    icon: <ShieldCheck className="w-4 h-4 text-rose-500" />
+  },
 
   // 3. Products & Hardware
   {
@@ -326,11 +363,24 @@ const STATIC_REGISTRY: SearchResultItem[] = [
   }
 ];
 
-export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
+export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOpen, onClose, onNavigate }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const goToRoute = useCallback(
+    (route: string) => {
+      onClose();
+      if (onNavigate) {
+        onNavigate(route);
+      } else if (router && router.navigate) {
+        router.navigate(route);
+      } else {
+        window.location.href = route;
+      }
+    },
+    [onClose, onNavigate]
+  );
 
   // Focus input when opened
   useEffect(() => {
@@ -368,10 +418,9 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
   // Navigate to item
   const handleSelect = useCallback(
     (item: SearchResultItem) => {
-      onClose();
-      navigate(item.route);
+      goToRoute(item.route);
     },
-    [navigate, onClose]
+    [goToRoute]
   );
 
   // Key navigation
@@ -500,8 +549,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
               </p>
               <button
                 onClick={() => {
-                  onClose();
-                  navigate('/forum');
+                  goToRoute('/forum');
                 }}
                 className="mt-4 px-4 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-xs transition"
               >

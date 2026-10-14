@@ -205,276 +205,276 @@ const MiiPage: React.FC = () => {
           {/* Tab 1: Moments & Live ShowCase */}
           {activeTab === 'moments' && (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-          {/* Live ShowCase Sync Panel */}
-          <div className="xl:col-span-5 space-y-6">
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                  <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
+              {/* Live ShowCase Sync Panel */}
+              <div className="xl:col-span-5 space-y-6">
+                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+                      <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
                     Live ShowCase Activity
-                </h3>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">
                     Live Broadcast
-                </span>
-              </div>
-
-              <div className="space-y-3 pt-2">
-                {/* BeatwaveNG Listening */}
-                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200 dark:border-blue-900 flex items-start gap-3">
-                  <Music className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 uppercase">Now Listening (BeatwaveNG)</span>
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white truncate mt-0.5">
-                      {myActivity.listening || 'No active track'}
-                    </p>
+                    </span>
                   </div>
-                </div>
 
-                {/* Dancia-4Tv Watching */}
-                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/40 dark:to-pink-950/40 border border-purple-200 dark:border-purple-900 flex items-start gap-3">
-                  <Tv className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase">Now Watching (Dancia-4Tv)</span>
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white truncate mt-0.5">
-                      {myActivity.watching || 'No live broadcast'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Status message */}
-              <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Status Note</span>
-                <p className="text-xs text-gray-700 dark:text-gray-300 italic mt-0.5">
-                    "{myActivity.statusText}"
-                </p>
-              </div>
-            </div>
-
-            {/* Pulsating Ring Indicator Legend */}
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-3">
-              <h4 className="font-bold text-xs uppercase tracking-wider text-gray-500">Contact Ring State</h4>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-indigo-500 p-0.5 animate-pulse">
-                  <div className="w-full h-full bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
-                      Mii
-                  </div>
-                </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">
-                  <span className="font-bold text-gray-900 dark:text-white block">Pulsating Ring Active</span>
-                    Signals active 48h Mii Disappearing Moments available.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Mii Feed Cards */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white">Active Followers Feed</h3>
-                  <p className="text-xs text-gray-500">Visible for 48 hours to authorized followers only</p>
-                </div>
-                <button
-                  onClick={() => setShowCreateModal(true)}
-                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
-                >
-                  <Plus className="w-4 h-4" /> Add Story Card
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { title: 'Behind the Console Session', duration: '24h left', type: 'Voice Mii™ & Audio', cards: 4, author: 'Alex Johnson' },
-                  { title: 'Dancia-4Tv Live Rehearsal', duration: '41h left', type: 'Video & Stickers', cards: 8, author: 'Sarah Williams' },
-                  { title: 'Late Night Studio Thoughts', duration: '12h left', type: 'Text & Drawing', cards: 2, author: 'Michael Chen' },
-                  { title: 'Exclusive Orbit Teaser', duration: '6h left', type: 'View-Once Censored', cards: 1, author: 'Emma Rodriguez' }
-                ].map((story, i) => (
-                  <div
-                    key={i}
-                    className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                          {story.duration}
-                        </span>
-                        <span className="text-[10px] font-mono text-gray-400">
-                          {story.cards} Cards
-                        </span>
+                  <div className="space-y-3 pt-2">
+                    {/* BeatwaveNG Listening */}
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200 dark:border-blue-900 flex items-start gap-3">
+                      <Music className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 uppercase">Now Listening (BeatwaveNG)</span>
+                        <p className="text-xs font-semibold text-gray-900 dark:text-white truncate mt-0.5">
+                          {myActivity.listening || 'No active track'}
+                        </p>
                       </div>
-                      <h4 className="font-bold text-sm text-gray-900 dark:text-white">{story.title}</h4>
-                      <p className="text-xs text-gray-500 mt-1">{story.type} • by {story.author}</p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-gray-700 flex items-center justify-between">
-                      <button
-                        onClick={() => showToast(`Playing story by ${story.author}`, 'info')}
-                        className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
+                    {/* Dancia-4Tv Watching */}
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/40 dark:to-pink-950/40 border border-purple-200 dark:border-purple-900 flex items-start gap-3">
+                      <Tv className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <span className="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase">Now Watching (Dancia-4Tv)</span>
+                        <p className="text-xs font-semibold text-gray-900 dark:text-white truncate mt-0.5">
+                          {myActivity.watching || 'No live broadcast'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Status message */}
+                  <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase">Status Note</span>
+                    <p className="text-xs text-gray-700 dark:text-gray-300 italic mt-0.5">
+                    "{myActivity.statusText}"
+                    </p>
+                  </div>
+                </div>
+
+                {/* Pulsating Ring Indicator Legend */}
+                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-3">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-gray-500">Contact Ring State</h4>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-indigo-500 p-0.5 animate-pulse">
+                      <div className="w-full h-full bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
+                      Mii
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-white block">Pulsating Ring Active</span>
+                    Signals active 48h Mii Disappearing Moments available.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mii Feed Cards */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900 dark:text-white">Active Followers Feed</h3>
+                      <p className="text-xs text-gray-500">Visible for 48 hours to authorized followers only</p>
+                    </div>
+                    <button
+                      onClick={() => setShowCreateModal(true)}
+                      className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                    >
+                      <Plus className="w-4 h-4" /> Add Story Card
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {[
+                      { title: 'Behind the Console Session', duration: '24h left', type: 'Voice Mii™ & Audio', cards: 4, author: 'Alex Johnson' },
+                      { title: 'Dancia-4Tv Live Rehearsal', duration: '41h left', type: 'Video & Stickers', cards: 8, author: 'Sarah Williams' },
+                      { title: 'Late Night Studio Thoughts', duration: '12h left', type: 'Text & Drawing', cards: 2, author: 'Michael Chen' },
+                      { title: 'Exclusive Orbit Teaser', duration: '6h left', type: 'View-Once Censored', cards: 1, author: 'Emma Rodriguez' }
+                    ].map((story, i) => (
+                      <div
+                        key={i}
+                        className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow"
                       >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                              {story.duration}
+                            </span>
+                            <span className="text-[10px] font-mono text-gray-400">
+                              {story.cards} Cards
+                            </span>
+                          </div>
+                          <h4 className="font-bold text-sm text-gray-900 dark:text-white">{story.title}</h4>
+                          <p className="text-xs text-gray-500 mt-1">{story.type} • by {story.author}</p>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-gray-700 flex items-center justify-between">
+                          <button
+                            onClick={() => showToast(`Playing story by ${story.author}`, 'info')}
+                            className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
+                          >
                           View Story
-                      </button>
-                      <button
-                        onClick={() => {
-                          setActiveTab('chats');
-                          showToast(`Replying to ${story.author}'s story in chat`, 'info');
-                        }}
-                        className="text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white"
-                      >
+                          </button>
+                          <button
+                            onClick={() => {
+                              setActiveTab('chats');
+                              showToast(`Replying to ${story.author}'s story in chat`, 'info');
+                            }}
+                            className="text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                          >
                           Reply in Chat
-                      </button>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 2: PIN Exchange & Contact Sync */}
+          {activeTab === 'contacts' && (
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                      <Lock className="w-5 h-5 text-emerald-600" />
+                    Mobile Phone Contact Sync & 6–8 Digit PIN Exchange
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                    Mandatory protocol: Mutual PIN verification required to unlock Mii Moments, ShowCase, and downloads.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowPinModal(true)}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors"
+                  >
+                  Open PIN Manager
+                  </button>
+                </div>
+
+                {/* Warning on Instant Vanish Revocation */}
+                <div className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-xs text-red-900 dark:text-red-300">
+                    <strong className="block font-bold mb-1">Instant Vanish Revocation Guarantee:</strong>
+                  Whenever you revoke a contact or delete their connection, all live presence, Mii updates, Dancia-4Tv watching sync, BeatwaveNG listening sync, and chat channels are IMMEDIATELY severed and wiped in real time.
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 3: FingerOrbit Folders */}
+          {activeTab === 'orbit' && (
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                      <Folder className="w-5 h-5 text-blue-600" />
+                    FingerOrbit™ Two-Folder Platform
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                    Folder 1 (Video UGC) & Folder 2 (Image UGC) with Tokenized Downloads strictly requiring PIN exchange.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowOrbitModal(true)}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors"
+                  >
+                  Manage Orbit UGC
+                  </button>
+                </div>
+
+                {/* Anti-Capture banner */}
+                <div className="bg-amber-500 text-black px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4 text-black" />
+                    <span>FingerOrbit™ Security: Strictly No Screenshots • No Screen Recording Permitted</span>
+                  </div>
+                  <span className="text-[10px] bg-black text-amber-300 px-2 py-0.5 rounded-full uppercase">
+                  Protected
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 4: MiniStore 2-Page Catalogue */}
+          {activeTab === 'ministore' && (
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                      <ShoppingBag className="w-5 h-5 text-purple-600" />
+                    Mii™ MiniStore: Strictly Two (2) Page Catalogue
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                    Seamlessly purchase creator merchandise and digital assets using FIC (Finger Coin) or Gems (💎).
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowMiniStoreModal(true)}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-colors"
+                  >
+                  Launch MiniStore
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 5: Encrypted Peer Chat */}
+          {activeTab === 'chats' && (
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+              <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-emerald-600" />
+              Direct Encrypted Mii Peer Chat
+              </h3>
+
+              <div className="h-64 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700">
+                {messages.map((m) => (
+                  <div
+                    key={m.id}
+                    className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-xs md:max-w-md p-3 rounded-2xl text-xs ${
+                        m.sender === 'me'
+                          ? 'bg-emerald-600 text-white rounded-br-none'
+                          : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-bl-none'
+                      }`}
+                    >
+                      <p>{m.text}</p>
+                      <span className={`text-[10px] mt-1 block text-right ${m.sender === 'me' ? 'text-emerald-100' : 'text-gray-400'}`}>
+                        {m.timestamp}
+                      </span>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Tab 2: PIN Exchange & Contact Sync */}
-      {activeTab === 'contacts' && (
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-emerald-600" />
-                    Mobile Phone Contact Sync & 6–8 Digit PIN Exchange
-                </h3>
-                <p className="text-xs text-gray-500">
-                    Mandatory protocol: Mutual PIN verification required to unlock Mii Moments, ShowCase, and downloads.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowPinModal(true)}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors"
-              >
-                  Open PIN Manager
-              </button>
-            </div>
-
-            {/* Warning on Instant Vanish Revocation */}
-            <div className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <div className="text-xs text-red-900 dark:text-red-300">
-                <strong className="block font-bold mb-1">Instant Vanish Revocation Guarantee:</strong>
-                  Whenever you revoke a contact or delete their connection, all live presence, Mii updates, Dancia-4Tv watching sync, BeatwaveNG listening sync, and chat channels are IMMEDIATELY severed and wiped in real time.
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab 3: FingerOrbit Folders */}
-      {activeTab === 'orbit' && (
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
-                  <Folder className="w-5 h-5 text-blue-600" />
-                    FingerOrbit™ Two-Folder Platform
-                </h3>
-                <p className="text-xs text-gray-500">
-                    Folder 1 (Video UGC) & Folder 2 (Image UGC) with Tokenized Downloads strictly requiring PIN exchange.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowOrbitModal(true)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors"
-              >
-                  Manage Orbit UGC
-              </button>
-            </div>
-
-            {/* Anti-Capture banner */}
-            <div className="bg-amber-500 text-black px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-black" />
-                <span>FingerOrbit™ Security: Strictly No Screenshots • No Screen Recording Permitted</span>
-              </div>
-              <span className="text-[10px] bg-black text-amber-300 px-2 py-0.5 rounded-full uppercase">
-                  Protected
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab 4: MiniStore 2-Page Catalogue */}
-      {activeTab === 'ministore' && (
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-purple-600" />
-                    Mii™ MiniStore: Strictly Two (2) Page Catalogue
-                </h3>
-                <p className="text-xs text-gray-500">
-                    Seamlessly purchase creator merchandise and digital assets using FIC (Finger Coin) or Gems (💎).
-                </p>
-              </div>
-              <button
-                onClick={() => setShowMiniStoreModal(true)}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-colors"
-              >
-                  Launch MiniStore
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab 5: Encrypted Peer Chat */}
-      {activeTab === 'chats' && (
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
-          <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-            <MessageSquare className="w-5 h-5 text-emerald-600" />
-              Direct Encrypted Mii Peer Chat
-          </h3>
-
-          <div className="h-64 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700">
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-xs md:max-w-md p-3 rounded-2xl text-xs ${
-                    m.sender === 'me'
-                      ? 'bg-emerald-600 text-white rounded-br-none'
-                      : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-bl-none'
-                  }`}
+              <form onSubmit={handleSendMessage} className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Type encrypted message or reply to Mii..."
+                  className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white"
+                />
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors shadow flex items-center gap-1.5"
                 >
-                  <p>{m.text}</p>
-                  <span className={`text-[10px] mt-1 block text-right ${m.sender === 'me' ? 'text-emerald-100' : 'text-gray-400'}`}>
-                    {m.timestamp}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <form onSubmit={handleSendMessage} className="flex gap-2">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Type encrypted message or reply to Mii story..."
-              className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white"
-            />
-            <button
-              type="submit"
-              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors shadow flex items-center gap-1.5"
-            >
-              <Send className="w-3.5 h-3.5" /> Send
-            </button>
-          </form>
-        </div>
-      )}
+                  <Send className="w-3.5 h-3.5" /> Send
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
 

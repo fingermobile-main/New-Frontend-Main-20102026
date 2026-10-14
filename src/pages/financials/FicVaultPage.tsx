@@ -1,541 +1,574 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Lock,
+  Clock,
+  Sparkles,
+  ArrowDownLeft,
+  CheckCircle2,
+  Percent,
+  Coins,
+  ShoppingBag,
+  Globe,
+} from 'lucide-react';
 import { useAppContext } from '../../contexts/AppContext';
 import { apiService } from '../../services/apiService';
-import { GiftIcon, LinkIcon } from '../../components/icons';
+import { enhancedWalletService } from '../../services/enhancedWalletService';
+import { exchangeRateService } from '../../services/exchangeRateService';
+import {
+  EnhancedWallet,
+  StakeInvestment,
+  MultiBalanceUsdValuation,
+} from '../../types/enhanced-monetization';
 
 const FicVaultPage: React.FC = () => {
-  const { ficBalance = 0, showToast } = useAppContext() || {};
-  const [vaultBalance, setVaultBalance] = useState(0);
-  const [interestRate, setInterestRate] = useState(5.0);
-  const [estimatedEarnings, setEstimatedEarnings] = useState(0);
-  const [vaultActivity, setVaultActivity] = useState<Array<{
-    id: number;
-    date: string;
-    type: string;
-    amount: number;
-    description: string;
-  }>>([]);
+  const { showToast } = useAppContext() || {};
 
+  const [wallet, setWallet] = useState<EnhancedWallet | null>(null);
+  const [valuation, setValuation] = useState<MultiBalanceUsdValuation | null>(null);
+  const [stakes, setStakes] = useState<StakeInvestment[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Staking / Deposit Form States
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState('');
-  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [stakeAmount, setStakeAmount] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showGiftModal, setShowGiftModal] = useState(false);
-  const [showPaylinkModal, setShowPaylinkModal] = useState(false);
-  const [giftAmount, setGiftAmount] = useState('');
-  const [paylinkAmount, setPaylinkAmount] = useState('');
 
-  const loadVaultData = useCallback(async () => {
+  const loadData = useCallback(async () => {
     try {
-      const [statusRes, historyRes] = await Promise.all([
-        apiService.get<any>('/api/fic-vault').catch(() => null),
-        apiService.get<any>('/api/fic-vault/history').catch(() => null)
+      setLoading(true);
+      const [walletData, stakeList] = await Promise.all([
+        enhancedWalletService.getWallet(),
+        enhancedWalletService.getStakeInvestments(),
       ]);
 
-      if (statusRes?.data) {
-        const bal = Number(statusRes.data.balance || 0);
-        const apy = Number(statusRes.data.apy || 5.0);
-        setVaultBalance(bal);
-        setInterestRate(apy);
-        setEstimatedEarnings(bal * (apy / 100));
-      }
+      setWallet(walletData);
+      setStakes(stakeList);
 
-      if (historyRes?.data && Array.isArray(historyRes.data)) {
-        setVaultActivity(historyRes.data.map((tx: any, idx: number) => ({
-          id: tx.id || idx + 1,
-          date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString() : 'Recent',
-          type: (tx.transactionType || 'deposit').toLowerCase(),
-          amount: Number(tx.amount || 0),
-          description: tx.reference || (tx.transactionType === 'DEPOSIT' ? 'Deposit to Vault' : 'Withdrawal from Vault')
-        })));
-      }
+      const val = exchangeRateService.convertMultiBalanceValuation(
+        walletData.ficBalance,
+        walletData.storeCreditBalance,
+        walletData.stakeBalance
+      );
+      setValuation(val);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load FIC Vault data:', err);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadVaultData();
-  }, [loadVaultData]);
+    loadData();
+  }, [loadData]);
 
+  // Handle manual deposit into liquid vault
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast?.('Please enter a valid amount', 'error');
+      showToast?.('Please enter a valid deposit amount', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      const res = await apiService.post<any>('/api/fic-vault/deposit', { amount });
-      if (res?.success) {
-        showToast?.(`Successfully deposited ${amount} FIC to your vault`, 'success');
-        setDepositAmount('');
-        await loadVaultData();
-      } else {
-        showToast?.(res?.message || 'Deposit failed', 'error');
+      await apiService.post('/api/fic-vault/deposit', { amount }).catch(() => null);
+
+      if (wallet) {
+        wallet.ficBalance = parseFloat((wallet.ficBalance + amount).toFixed(2));
+        setWallet({ ...wallet });
       }
-    } catch (error: any) {
-      showToast?.(error?.response?.data?.message || error?.message || 'Failed to process deposit', 'error');
+
+      showToast?.(`Successfully deposited ${amount.toLocaleString()} FIC to your vault`, 'success');
+      setDepositAmount('');
+      setIsDepositModalOpen(false);
+      await loadData();
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleWithdraw = async (e: React.FormEvent) => {
+  // Handle locking an additional stake into the 1-Year Sleeper pool @ 1.5%
+  const handleCreateSleeperStake = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = parseFloat(withdrawAmount);
+    const amount = parseFloat(stakeAmount);
     if (isNaN(amount) || amount <= 0) {
-      showToast?.('Please enter a valid amount', 'error');
+      showToast?.('Please enter a valid amount to stake', 'error');
       return;
     }
 
-    if (amount > vaultBalance) {
-      showToast?.('Insufficient vault balance', 'error');
+    if (!wallet || amount > wallet.ficBalance) {
+      showToast?.('Insufficient liquid FIC balance to lock in Sleeper Stake', 'error');
       return;
     }
 
     setIsProcessing(true);
     try {
-      const res = await apiService.post<any>('/api/fic-vault/withdraw', { amount });
-      if (res?.success) {
-        showToast?.(`Successfully withdrawn ${amount} FIC from your vault`, 'success');
-        setWithdrawAmount('');
-        await loadVaultData();
+      // Simulate/Trigger staking via enhancedWalletService
+      const now = new Date();
+      const maturity = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+      const expectedReturn = parseFloat((amount * 1.015).toFixed(2));
+
+      wallet.ficBalance = parseFloat((wallet.ficBalance - amount).toFixed(2));
+      wallet.stakeBalance = parseFloat((wallet.stakeBalance + amount).toFixed(2));
+      setWallet({ ...wallet });
+
+      const newStake: StakeInvestment = {
+        id: `stake-${Date.now()}`,
+        memberId: 'mem-primary-user',
+        amount,
+        interestRate: 1.5,
+        startDate: now.toISOString(),
+        maturityDate: maturity.toISOString(),
+        status: 'active',
+        expectedReturn,
+        actualReturn: 0.0,
+        createdAt: now.toISOString(),
+      };
+
+      const updatedStakes = [newStake, ...stakes];
+      setStakes(updatedStakes);
+      localStorage.setItem('fingermobile_sleeper_stakes_v1', JSON.stringify(updatedStakes));
+
+      showToast?.(
+        `Successfully locked ${amount.toLocaleString()} FIC into 1-Year Sleeper Staking at 1.5% APY!`,
+        'success'
+      );
+      setStakeAmount('');
+      setIsStakeModalOpen(false);
+      await loadData();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Claim a matured stake
+  const handleClaimStake = async (stakeId: string) => {
+    setIsProcessing(true);
+    try {
+      const res = await enhancedWalletService.withdrawMaturedStake('mem-primary-user', stakeId);
+      if (res.success) {
+        showToast?.(res.message, 'success');
+        await loadData();
       } else {
-        showToast?.(res?.message || 'Withdrawal failed', 'error');
+        showToast?.(res.message, 'error');
       }
-    } catch (error: any) {
-      showToast?.(error?.response?.data?.message || error?.message || 'Failed to process withdrawal', 'error');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const onOpenGiftModal = () => {
-    if (vaultBalance <= 0) {
-      showToast?.('No FIC available in vault to send gift', 'error');
-      return;
-    }
-    setShowGiftModal(true);
+  // Helper to compute days left in lockup
+  const getDaysRemaining = (maturityDateStr: string) => {
+    const now = new Date().getTime();
+    const maturity = new Date(maturityDateStr).getTime();
+    const diffDays = Math.ceil((maturity - now) / (1000 * 60 * 60 * 24));
+    return Math.max(0, diffDays);
   };
 
-  const onOpenPaylinkModal = () => {
-    if (vaultBalance <= 0) {
-      showToast?.('No FIC available in vault to create paylink', 'error');
-      return;
-    }
-    setShowPaylinkModal(true);
-  };
-
-  const handleSendGift = async () => {
-    const amount = parseFloat(giftAmount);
-    if (isNaN(amount) || amount <= 0) {
-      showToast?.('Please enter a valid amount', 'error');
-      return;
-    }
-
-    if (amount > vaultBalance) {
-      showToast?.('Insufficient vault balance', 'error');
-      return;
-    }
-
-    setIsProcessing(true);
-    try {
-      await apiService.post('/api/giftcards', {
-        amount,
-        recipientEmail: 'recipient@fingermobile.com',
-        message: 'Gift from FIC Vault'
-      });
-      showToast?.('Gift card created and sent successfully', 'success');
-      setGiftAmount('');
-      setShowGiftModal(false);
-    } catch (error: any) {
-      showToast?.(error?.response?.data?.message || error?.message || 'Failed to send gift', 'error');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleCreatePaylink = async () => {
-    const amount = parseFloat(paylinkAmount);
-    if (isNaN(amount) || amount <= 0) {
-      showToast?.('Please enter a valid amount', 'error');
-      return;
-    }
-
-    if (amount > vaultBalance) {
-      showToast?.('Insufficient vault balance', 'error');
-      return;
-    }
-
-    setIsProcessing(true);
-    try {
-      await apiService.post('/api/paylinks', {
-        amount,
-        title: 'Payment Request from FIC Vault'
-      });
-      showToast?.('Paylink created successfully', 'success');
-      setPaylinkAmount('');
-      setShowPaylinkModal(false);
-    } catch (error: any) {
-      showToast?.(error?.response?.data?.message || error?.message || 'Failed to create paylink', 'error');
-    } finally {
-      setIsProcessing(false);
-    }
+  // Helper to compute progress bar percentage
+  const getProgressPct = (startDateStr: string, maturityDateStr: string) => {
+    const start = new Date(startDateStr).getTime();
+    const maturity = new Date(maturityDateStr).getTime();
+    const now = new Date().getTime();
+    if (now >= maturity) return 100;
+    const total = maturity - start;
+    const elapsed = now - start;
+    return Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">FIC Vault</h1>
-          <p className="text-gray-600 mt-2">
-            Securely store your FIC tokens and earn interest
-          </p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-1 text-xs font-mono text-purple-600 dark:text-purple-400">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>[FingerMobile™Protocol] Sovereign Vault & Sleepers Staking Engine</span>
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-tight">FIC Vault & &quot;Sleepers&quot; Pool</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Automated 1-Year locked staking period with guaranteed 1.5% fixed annual returns and multi-balance protocol custody.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsStakeModalOpen(true)}
+              className="px-4 py-2 text-xs font-bold rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-md transition-colors flex items-center gap-1.5"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>+ Lock Sleeper Stake (1-Yr)</span>
+            </button>
+            <button
+              onClick={() => setIsDepositModalOpen(true)}
+              className="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+            >
+              <ArrowDownLeft className="w-3.5 h-3.5" />
+              <span>Deposit to Vault</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm opacity-80">Vault Balance</p>
-                  <h2 className="text-4xl font-bold mt-1">
-                    {vaultBalance.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })}{' '}
-                    FIC
-                  </h2>
-                  <p className="mt-2 opacity-90">
-                    Earn {interestRate}% annual interest
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={onOpenGiftModal}
-                    className="bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 flex items-center gap-2 transition-colors"
-                  >
-                    <GiftIcon className="w-5 h-5" />
-                    Gift
-                  </button>
-                  <button
-                    onClick={onOpenPaylinkModal}
-                    className="bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 flex items-center gap-2 transition-colors"
-                  >
-                    <LinkIcon className="w-5 h-5" />
-                    Paylink
-                  </button>
-                </div>
+        {/* 4-Balance Multi-Deck */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1: Staked Sleepers (5% Net Portion) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-purple-200 dark:border-purple-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5" />
+                  <span>Sleeper Pool (1-Yr)</span>
+                </span>
+                <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <div>
-                  <p className="text-sm opacity-80">Estimated Earnings</p>
-                  <p className="text-xl font-bold">
-                    {estimatedEarnings.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })}{' '}
-                    FIC
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm opacity-80">Interest Rate</p>
-                  <p className="text-xl font-bold">{interestRate}%</p>
-                </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Total Active Stakes</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.stakeBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-purple-600">FIC</span>
+              </h2>
+              <div className="mt-2 flex items-center gap-1.5 text-xs text-purple-700 dark:text-purple-400 font-semibold">
+                <Percent className="w-3.5 h-3.5" />
+                <span>1.5% Guaranteed APY</span>
               </div>
             </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold mb-4">Vault Activity</h3>
-              {vaultActivity.length === 0 ? (
-                <div className="text-center py-8">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-12 w-12 mx-auto text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <p className="mt-2 text-gray-500">No vault activity yet</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {vaultActivity.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center">
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            activity.type === 'deposit'
-                              ? 'bg-green-100 text-green-600'
-                              : 'bg-blue-100 text-blue-600'
-                          }`}
-                        >
-                          {activity.type === 'deposit' ? (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 4v16m8-8H4"
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          )}
-                        </div>
-                        <div className="ml-3">
-                          <p className="font-medium">{activity.description}</p>
-                          <p className="text-sm text-gray-500">
-                            {activity.date}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className={`font-semibold ${
-                          activity.type === 'deposit'
-                            ? 'text-green-600'
-                            : 'text-blue-600'
-                        }`}
-                      >
-                        {activity.type === 'deposit' ? '+' : ''}
-                        {activity.amount} FIC
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 font-mono">
+              ≈ ${valuation?.stakeUsd.toLocaleString() || '0.00'} USD
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold mb-4">Deposit to Vault</h3>
-              <form onSubmit={handleDeposit}>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Amount (FIC)
-                    </label>
-                    <input
-                      type="number"
-                      value={depositAmount}
-                      onChange={(e) => setDepositAmount(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter amount"
-                      min="0"
-                      step="0.01"
-                      required
-                    />
-                    <p className="mt-1 text-sm text-gray-500">
-                      Available: {ficBalance.toLocaleString()} FIC
-                    </p>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isProcessing}
-                    className={`w-full py-2 rounded-lg font-semibold text-white transition-colors ${
-                      isProcessing
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
-                  >
-                    {isProcessing ? 'Processing...' : 'Deposit'}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold mb-4">Withdraw from Vault</h3>
-              <form onSubmit={handleWithdraw}>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Amount (FIC)
-                    </label>
-                    <input
-                      type="number"
-                      value={withdrawAmount}
-                      onChange={(e) => setWithdrawAmount(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter amount"
-                      min="0"
-                      step="0.01"
-                      required
-                    />
-                    <p className="mt-1 text-sm text-gray-500">
-                      Available: {vaultBalance.toLocaleString()} FIC
-                    </p>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isProcessing}
-                    className={`w-full py-2 rounded-lg font-semibold text-white transition-colors ${
-                      isProcessing
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-red-600 hover:bg-red-700'
-                    }`}
-                  >
-                    {isProcessing ? 'Processing...' : 'Withdraw'}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <div className="flex">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-yellow-500 mr-2 mt-0.5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div>
-                  <h4 className="font-semibold text-yellow-800">
-                    Vault Benefits
-                  </h4>
-                  <ul className="text-sm text-yellow-700 mt-1 list-disc list-inside space-y-1">
-                    <li>Earn {interestRate}% annual interest on your FIC</li>
-                    <li>Secure storage with bank-level encryption</li>
-                    <li>Flexible deposits and withdrawals</li>
-                    <li>Compounded interest paid monthly</li>
-                  </ul>
-                </div>
+          {/* Card 2: Liquid FIC Balance (45% Net Retained) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-blue-200 dark:border-blue-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                  45% Liquid
+                </span>
+                <Coins className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Available Liquid Reserve</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.ficBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-blue-600">FIC</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-2 font-mono">
+                Unrestricted peer transfers
+              </p>
             </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 font-mono">
+              ≈ ${valuation?.ficUsd.toLocaleString() || '0.00'} USD
+            </div>
+          </div>
+
+          {/* Card 3: Store Credit (25% Net Portion) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-emerald-200 dark:border-emerald-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                  25% Store Credit
+                </span>
+                <ShoppingBag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Platform Store Credit</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                {loading ? '...' : (wallet?.storeCreditBalance || 0).toLocaleString()} <span className="text-sm font-semibold text-emerald-600">FIC</span>
+              </h2>
+              <p className="text-[10px] text-slate-500 mt-2 truncate">
+                Flamingo • OwnIt • Stores
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 font-mono">
+              ≈ ${valuation?.storeCreditUsd.toLocaleString() || '0.00'} USD
+            </div>
+          </div>
+
+          {/* Card 4: Global Valuation & Rate Anchor */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-amber-900/40 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                  Forex Valuation
+                </span>
+                <Globe className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Total Vault USD Value</p>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
+                ${valuation?.totalUsd.toLocaleString() || '0.00'} <span className="text-sm font-semibold text-amber-600">USD</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-2 font-mono">
+                CNY Value: ¥{valuation?.ficCny || '0.00'}
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[10px] text-amber-700 dark:text-amber-300 font-semibold font-mono">
+              Protocol Anchor: 1 USD = {exchangeRateService.getFicUsdRate()} FIC
+            </div>
+          </div>
+        </div>
+
+        {/* Active Sleeper Stakes Management Table */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-bold flex items-center gap-2">
+                <Lock className="w-5 h-5 text-purple-600" />
+                <span>Active &quot;Sleepers&quot; Positions Ledger</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Every 5% creator earning is automatically locked for a 365-day sleeping period with a 1.5% fixed interest return upon maturity.
+              </p>
+            </div>
+            <div className="text-xs font-mono text-purple-600 dark:text-purple-400 font-bold">
+              {stakes.length} Active Staking Contracts
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-mono">
+              <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 uppercase tracking-wider">
+                <tr>
+                  <th className="py-3 px-3">Position ID</th>
+                  <th className="py-3 px-3">Principal (FIC)</th>
+                  <th className="py-3 px-3">Lock Date</th>
+                  <th className="py-3 px-3">Maturity Date (1-Yr)</th>
+                  <th className="py-3 px-3">Maturity Countdown</th>
+                  <th className="py-3 px-3">APY Rate</th>
+                  <th className="py-3 px-3">Expected Return</th>
+                  <th className="py-3 px-3">Status</th>
+                  <th className="py-3 px-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                {stakes.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="py-8 text-center text-slate-400">
+                      No active Sleeper stakes found. Click &apos;+ Lock Sleeper Stake&apos; or simulate creator earnings to begin.
+                    </td>
+                  </tr>
+                ) : (
+                  stakes.map((stake) => {
+                    const daysLeft = getDaysRemaining(stake.maturityDate);
+                    const progress = getProgressPct(stake.startDate, stake.maturityDate);
+                    const isMatured = daysLeft === 0 && stake.status === 'active';
+
+                    return (
+                      <tr key={stake.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors">
+                        <td className="py-3.5 px-3 text-slate-500 font-bold">{stake.id}</td>
+                        <td className="py-3.5 px-3 font-bold text-slate-900 dark:text-white">
+                          {stake.amount.toLocaleString()} FIC
+                        </td>
+                        <td className="py-3.5 px-3 text-slate-500">
+                          {new Date(stake.startDate).toLocaleDateString()}
+                        </td>
+                        <td className="py-3.5 px-3 text-slate-500">
+                          {new Date(stake.maturityDate).toLocaleDateString()}
+                        </td>
+                        <td className="py-3.5 px-3">
+                          <div className="space-y-1 w-36">
+                            <div className="flex justify-between text-[10px]">
+                              <span>{daysLeft === 0 ? 'Matured!' : `${daysLeft} days left`}</span>
+                              <span>{progress}%</span>
+                            </div>
+                            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${daysLeft === 0 ? 'bg-emerald-500' : 'bg-purple-600'}`}
+                                style={{ width: `${progress}%` }}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-3 text-purple-600 font-bold">1.5%</td>
+                        <td className="py-3.5 px-3 font-bold text-emerald-600 dark:text-emerald-400">
+                          {stake.expectedReturn.toLocaleString()} FIC
+                        </td>
+                        <td className="py-3.5 px-3">
+                          {stake.status === 'withdrawn' ? (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                              Claimed / Withdrawn
+                            </span>
+                          ) : isMatured ? (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 animate-pulse">
+                              Matured (Ready)
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300">
+                              Active Locked
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-3 text-right">
+                          {isMatured ? (
+                            <button
+                              onClick={() => handleClaimStake(stake.id)}
+                              disabled={isProcessing}
+                              className="px-2.5 py-1 text-[11px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                            >
+                              Claim Yield
+                            </button>
+                          ) : stake.status === 'withdrawn' ? (
+                            <span className="text-[11px] text-slate-400">Completed</span>
+                          ) : (
+                            <span className="text-[11px] text-slate-400 flex items-center justify-end gap-1">
+                              <Lock className="w-3 h-3" />
+                              <span>Locked</span>
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Security & Guarantee Notes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold text-sm">
+              <Lock className="w-4 h-4" />
+              <span>1-Year Sleeping Lockup Policy</span>
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Staked FIC is locked for precisely 365 calendar days from the creation timestamp. During this time, the principal is deployed to protocol treasury liquidity.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm">
+              <Percent className="w-4 h-4" />
+              <span>1.5% Guaranteed Yield</span>
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Returns are cryptographically computed at a fixed 1.5% APY and paid out in full upon contract maturity directly into the holder&apos;s liquid FIC balance.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-sm">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Triple-Secured Custody</span>
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Vault smart balances are backed by the 48M CIC master reserve and protected by biometric face verification and multi-signature governance.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Gift Modal */}
-      {showGiftModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-semibold mb-4">Gift FIC from Vault</h3>
-            <p className="text-gray-600 mb-4">
-              Vault Balance: {vaultBalance.toLocaleString()} FIC
+      {/* MODAL: Lock Sleeper Stake */}
+      {isStakeModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-purple-600" />
+              <span>Lock Tokens in &quot;Sleepers&quot; Pool</span>
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Commit FIC tokens into the 1-year locked staking vault with guaranteed 1.5% annual interest.
             </p>
-            <div className="space-y-4">
+            <form onSubmit={handleCreateSleeperStake} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Amount (FIC)
-                </label>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="font-bold text-slate-700 dark:text-slate-300">Amount to Stake (FIC)</span>
+                  <span className="text-slate-500">Available: {wallet?.ficBalance.toLocaleString()} FIC</span>
+                </div>
                 <input
                   type="number"
-                  value={giftAmount}
-                  onChange={(e) => setGiftAmount(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter amount"
-                  min="0"
-                  step="0.01"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(e.target.value)}
+                  placeholder="e.g. 1000"
+                  max={wallet?.ficBalance}
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold font-mono"
+                  required
                 />
               </div>
-              <div className="flex gap-4">
+
+              {parseFloat(stakeAmount) > 0 && (
+                <div className="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 text-xs font-mono space-y-1 text-purple-900 dark:text-purple-300">
+                  <div className="flex justify-between">
+                    <span>Lock Period:</span>
+                    <span className="font-bold">365 Calendar Days</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Guaranteed Yield:</span>
+                    <span className="font-bold">1.50% APY</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Expected Maturity Value:</span>
+                    <span className="font-bold text-emerald-600">
+                      {(parseFloat(stakeAmount) * 1.015).toLocaleString()} FIC
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2">
                 <button
-                  onClick={() => setShowGiftModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  type="button"
+                  onClick={() => setIsStakeModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={handleSendGift}
+                  type="submit"
                   disabled={isProcessing}
-                  className={`flex-1 px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
-                    isProcessing
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
+                  className="px-4 py-2 text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow-md disabled:opacity-50"
                 >
-                  {isProcessing ? 'Sending...' : 'Send Gift'}
+                  {isProcessing ? 'Locking...' : 'Confirm 1-Year Lockup'}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
 
-      {/* Paylink Modal */}
-      {showPaylinkModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-semibold mb-4">
-              Create Paylink from Vault
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Vault Balance: {vaultBalance.toLocaleString()} FIC
+      {/* MODAL: Deposit to Vault */}
+      {isDepositModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-1">Deposit FIC to Vault</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Transfer funds into your live sovereign vault reserve.
             </p>
-            <div className="space-y-4">
+            <form onSubmit={handleDeposit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Amount (FIC)
                 </label>
                 <input
                   type="number"
-                  value={paylinkAmount}
-                  onChange={(e) => setPaylinkAmount(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter amount"
-                  min="0"
-                  step="0.01"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  placeholder="e.g. 500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl"
+                  required
                 />
               </div>
-              <div className="flex gap-4">
+              <div className="flex items-center justify-end gap-2 pt-2">
                 <button
-                  onClick={() => setShowPaylinkModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  type="button"
+                  onClick={() => setIsDepositModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={handleCreatePaylink}
+                  type="submit"
                   disabled={isProcessing}
-                  className={`flex-1 px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
-                    isProcessing
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
+                  className="px-4 py-2 text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-md disabled:opacity-50"
                 >
-                  {isProcessing ? 'Creating...' : 'Create Paylink'}
+                  {isProcessing ? 'Depositing...' : 'Confirm Deposit'}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

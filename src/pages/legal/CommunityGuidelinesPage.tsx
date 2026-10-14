@@ -90,9 +90,9 @@ const CommunityGuidelinesPage = () => {
           <Section title="Contact Us">
             <p>If you have questions about these community guidelines or need assistance with a community-related issue, please contact us at:</p>
             <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
-              <p className="font-medium">FingerMobile Community Team</p>
-              <p>Email: community@fingermobile.com</p>
-              <p>Address: 123 Innovation Street, Tech City, TC 10001</p>
+              <p className="font-medium">FingerMobile Protocol™ Community Team</p>
+              <p>Email: info@fingermobileprotocol.com / fingermobileprotocol@gmail.com</p>
+              <p>Official Website: https://fingermobileprotocol.com</p>
             </div>
           </Section>
 

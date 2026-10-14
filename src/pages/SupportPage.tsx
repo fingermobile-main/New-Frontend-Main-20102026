@@ -225,8 +225,9 @@ const SupportPage: React.FC = () => {
               <h2 className="text-lg font-bold text-gray-900 mb-4">Contact Information</h2>
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-gray-600">Email</p>
-                  <p className="font-medium">support@fingermobile.com</p>
+                  <p className="text-sm text-gray-600">Official Support Emails</p>
+                  <p className="font-medium text-blue-600">info@fingermobileprotocol.com</p>
+                  <p className="font-medium text-gray-700 text-xs">fingermobileprotocol@gmail.com</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Phone</p>
@@ -280,7 +281,7 @@ const SupportPage: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="mailto:support@fingermobile.com"
+              href="mailto:info@fingermobileprotocol.com"
               className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center"
             >
               Email Support
