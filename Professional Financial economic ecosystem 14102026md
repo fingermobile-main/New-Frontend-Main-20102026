@@ -1,0 +1,60 @@
+#### lets get the Masterdashboard and the Stercs Dashboard Financials to a Professional Financial economic ecosystem:-
+
+
+1. All Platform Revenue must be paid into and must go to:- 
+Bank: Fidelity Bank.
+FingerMobile Protocol Communication.
+Naira account: 5600792703.
+USSD: 5250325184.
+Pounds: 5250325201.
+Euro: 5250325191.
+Address: Lagos.
+Bank Swift: FIDTNGLA.
+
+2. All Platform PROFIT must be paid into and must go to:- 
+Bank: Fidelity Bank.
+Account Name: FingerMobile Protocol Communication.
+Address; Abuja, F.C.T, Area 8 Branch.
+Account Number: 5601279229.
+USSD Account Number: 5250325184.
+Address: Lagos.
+Bank Swift: FIDTNGLA.
+
+• Revenue: The total amount of money a business brings in from selling its goods or services before any costs or expenses are subtracted. 
+It sits at the "top line" of an income statement.
+
+• Income: A broader term that often means net income (the money left over after subtracting all operating expenses, 
+taxes, and interest from revenue), or gross income (revenue minus the direct cost of goods sold). 
+It can also include non-operating gains like rent or asset sales.
+
+• Profit: The actual financial gain or surplus remaining after all expenses are deducted from total revenue. 
+It is the "bottom line" and shows whether a business is truly making
+
+Interest and Growth
+
+• Simple Interest (I): I = P × r × t (where P = principal, r = annual interest rate, t = time in years)
+• Simple Total Amount (A): \(A = P(1 + r \times t)\)
+• Compound Interest (Future Value, FV): \(FV = PV \times (1 + \frac{r}{n})^{n \times t}\) (where PV = present value, n = compounding periods per year)
+• Present Value (PV): \(PV = \frac{FV}{(1 + r)^t}\)
+• Effective Annual Rate (EAR): \(EAR = (1 + \frac{r}{n})^n - 1\)
+
+#### FingerMobile Business and Accounting Ratios: You are required and mandated to significally improve on these during your implementations into the platform MasterDashboards and Stercs Dashboards (database, tables and fields are required, API, Controllers, COmponents, Services, Models,, Modals, utils, constants, hooks, middlewares, styles and types etc)
+
+• Balance Sheet Equation: Assets = Liabilities + Equity
+• Net Income: Net Income = Total Revenue - Total Expenses
+• Gross Profit: Gross Profit = Sales - COGS (Cost of Goods Sold)
+• Current Ratio: \(\text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}\)
+• Quick Ratio (Acid-Test): \(\text{Quick Ratio} = \frac{\text{Current Assets} - \text{Inventory}}{\text{Current Liabilities}}\)
+• Return on Assets (ROA): \(ROA = \frac{\text{Net Income}}{\text{Total Assets}}\)
+
+the FingerMobile Protocol Draft Financials 14102026.xlsx all the sheets needs a lot of updating while you extract them into the right console in the database
+
+/Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/Assets/FingerMobile Protocol Draft Financials 14102026.xlsx
+
+
+
+
+new task
+save this Breakpoint to git as "New Dashboard Actions". so that we can go back /rollback to this "New Dashboard Actions" point if our next implementation actions give us issues., as we are about to perform a system wide/general platform update. 
+
+perform the "New Dashboard Actions" save and report to me once done! so we can proceed
