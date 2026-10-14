@@ -95,6 +95,26 @@
     color: #111827 !important;
   }
 
+  /* Global fix: prevent faint gray descriptions or labels on white boxes across the platform */
+  .bg-white p[class*="text-gray-"],
+  .bg-white p[class*="text-slate-"],
+  .bg-white span[class*="text-gray-"],
+  .bg-white span[class*="text-slate-"],
+  .bg-white div[class*="text-gray-"],
+  .bg-white div[class*="text-slate-"],
+  .bg-white label[class*="text-gray-"],
+  .bg-white label[class*="text-slate-"],
+  [class*="bg-white"] p[class*="text-gray-"],
+  [class*="bg-white"] p[class*="text-slate-"],
+  [class*="bg-white"] span[class*="text-gray-"],
+  [class*="bg-white"] span[class*="text-slate-"],
+  [class*="bg-white"] div[class*="text-gray-"],
+  [class*="bg-white"] div[class*="text-slate-"],
+  [class*="bg-white"] label[class*="text-gray-"],
+  [class*="bg-white"] label[class*="text-slate-"] {
+    color: #0f172a !important; /* Crisp, readable jet-black */
+  }
+
   input::placeholder, textarea::placeholder {
     color: #9ca3af;
   }

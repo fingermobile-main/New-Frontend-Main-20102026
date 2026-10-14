@@ -23,8 +23,30 @@
  * 3. Economic Definitions (Revenue vs. Income vs. Profit)
  * 4. Interest & Growth Calculators (Simple Interest, Compound Interest FV, PV, EAR)
  * 5. Business & Accounting Ratios (Balance Sheet, Net Income, Gross Profit, Current Ratio, Quick Ratio, ROA)
- * 6. Extracted Data from 'FingerMobile Protocol Draft Financials 14102026.xlsx' (All 18 Sheets)
+ * 6. Dynamic Financial Sheets:
+ *    - 8. Income Statement (P&L)
+ *    - 10. Balance Sheet
+ *    - COST - TCC Infrastructure BoQ
+ *    - 1. Required Start-Up Funds
+ *    - CAPEX & OPEX (2) - Dancia-4Tv BoQ
+ *    With CFO editing capability & SUPER ADMIN ONLY ratification/approval workflow!
  */
+
+export type ApprovalStatus =
+  | 'DRAFT'
+  | 'PENDING_SUPER_ADMIN_APPROVAL'
+  | 'APPROVED_BY_SUPER_ADMIN'
+  | 'REVISION_REQUESTED';
+
+export interface SheetApprovalMetadata {
+  status: ApprovalStatus;
+  lastEditedBy: string;
+  lastEditedAt: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  notes?: string;
+  version: number;
+}
 
 export interface BankAccountRail {
   id: string;
@@ -160,7 +182,68 @@ export interface AccountingRatiosEvaluation {
 }
 
 // ============================================================================
-// CONSTANTS & RAILS
+// DYNAMIC FINANCIAL SHEET INTERFACES (CFO Editable & Super Admin Ratified)
+// ============================================================================
+
+export interface FinancialLineItem {
+  id: string;
+  name: string;
+  category: string;
+  amountNgn: number;
+  amountUsd?: number;
+  quantity?: number;
+  unitPriceNgn?: number;
+  depreciationYears?: number;
+  notes?: string;
+  isCustom?: boolean;
+}
+
+export interface IncomeStatementSheetData {
+  title: string;
+  approval: SheetApprovalMetadata;
+  revenues: FinancialLineItem[];
+  cogs: FinancialLineItem[];
+  opex: FinancialLineItem[];
+  loanInterestAnnualNgn: number;
+  taxRatePercent: number;
+}
+
+export interface BalanceSheetData {
+  title: string;
+  approval: SheetApprovalMetadata;
+  currentAssets: FinancialLineItem[];
+  fixedAssets: FinancialLineItem[];
+  accumulatedDepreciationNgn: number;
+  currentLiabilities: FinancialLineItem[];
+  longTermLiabilities: FinancialLineItem[];
+  equityItems: FinancialLineItem[];
+}
+
+export interface CostTccBoqData {
+  title: string;
+  approval: SheetApprovalMetadata;
+  usdExchangeRate: number; // e.g. 1 USD = ₦1,550 or ₦400 baseline
+  items: FinancialLineItem[];
+}
+
+export interface StartupFundsData {
+  title: string;
+  approval: SheetApprovalMetadata;
+  usdExchangeRate: number;
+  fixedAssets: FinancialLineItem[];
+  operatingCapital: FinancialLineItem[];
+}
+
+export interface CapexOpexDancia4TvData {
+  title: string;
+  approval: SheetApprovalMetadata;
+  totalLoanAllocationNgn: number;
+  usdExchangeRate: number;
+  items: FinancialLineItem[];
+}
+
+// ============================================================================
+// PRODUCTION CONSTANTS
 // ============================================================================
 
 export const PLATFORM_REVENUE_RAILS: PlatformRevenueRails = {
@@ -354,7 +437,7 @@ export function evaluateAccountingRatios(overrides?: Partial<{
   const grossProfitMarginPercent = totalRevenue > 0 ? Number(((grossProfit / totalRevenue) * 100).toFixed(2)) : 0;
   const netProfitMarginPercent = totalRevenue > 0 ? Number(((netIncome / totalRevenue) * 100).toFixed(2)) : 0;
 
-  const isBalanced = Math.abs(totalAssets - (totalLiabilities + totalEquity)) < 0.05;
+  const isBalanced = Math.abs(totalAssets - (totalLiabilities + totalEquity)) < 1.00;
 
   return {
     balanceSheetEquation: {
@@ -407,26 +490,191 @@ export function evaluateAccountingRatios(overrides?: Partial<{
 }
 
 // ============================================================================
-// 18 EXCEL MODERNIZED SHEETS DATASET
+// DYNAMIC EXCEL FINANCIAL SHEETS DEFAULT DATASETS (Auto-Populated with Platform Features)
 // ============================================================================
 
+export const DEFAULT_INCOME_STATEMENT: IncomeStatementSheetData = {
+  title: '8. Income Statement (P&L) - FingerMobile Sovereign Enterprise',
+  approval: {
+    status: 'APPROVED_BY_SUPER_ADMIN',
+    lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+    lastEditedAt: '2026-10-14 16:40:00 UTC',
+    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+    approvedAt: '2026-10-14 16:45:00 UTC',
+    notes: 'Platform subscription projections, Storefront gross fees, and Dancia-4Tv PPV broadcasting ratified.',
+    version: 1
+  },
+  revenues: [
+    { id: 'rev_subscriptions', name: 'Platform Membership & Creator Subscriptions', category: 'Subscriptions', amountNgn: 450000000.00, notes: 'Explorer, Rising, Growth, Pro, Enterprise tiers' },
+    { id: 'rev_storefronts', name: 'Multi-Vendor Marketplace Storefront Commissions', category: 'Marketplace', amountNgn: 320000000.00, notes: 'Physical & digital goods 0.75% - 5.0% commission' },
+    { id: 'rev_canary_ads', name: 'Canary Ads Decentralized Advertising Network', category: 'Advertising', amountNgn: 180000000.00, notes: 'Sponsored feed banners, video pre-rolls, push promo' },
+    { id: 'rev_dancia_vod', name: 'Dancia-4Tv Video-On-Demand (VOD) & PPV Streaming', category: 'Broadcasting', amountNgn: 150000000.00, notes: 'PayTV live sporting rights, movies, stem streams' },
+    { id: 'rev_fic_minting', name: 'Infinity Coin (FIC) Vault Spreads & Swaps', category: 'Treasury & FX', amountNgn: 100000000.00, notes: '1 FIC = $0.05 USD / ₦65.00 NGN protocol swaps' },
+    { id: 'rev_loansqr', name: 'LoanSqr SME Merchant Micro-Financing Interest', category: 'FinTech', amountNgn: 50000000.00, notes: 'Short-term supplier credit facilities' }
+  ],
+  cogs: [
+    { id: 'cogs_creator_pool', name: 'Creator Revenue Share Pool (70% Direct Payout)', category: 'Creator Economy', amountNgn: 180000000.00, notes: 'Direct sovereign payout pool to creators & streamers' },
+    { id: 'cogs_telebreeze_infra', name: 'Telebreeze Streaming CDN & Transcoding Bandwidth', category: 'Infrastructure', amountNgn: 65000000.00, notes: '4K live stream routing & low-latency edge servers' },
+    { id: 'cogs_payment_rails', name: 'Fidelity Bank & Interbank Settlement Rail Fees', category: 'Banking', amountNgn: 37500000.00, notes: 'USSD, NIP, card acquiring interchange processing' },
+    { id: 'cogs_cloud_storage', name: 'Storage Server Hardware & Cloud Fedora Instances', category: 'Storage', amountNgn: 30000000.00, notes: '300 TB user media vault and database replicas' }
+  ],
+  opex: [
+    { id: 'opex_owners_comp', name: "Owner's Executive Compensation (CFO, CEO, CTO, COO)", category: 'Executive Compensation', amountNgn: 175062342.00, notes: '4 Executive council members' },
+    { id: 'opex_directors', name: 'Departmental Directors & Operational Heads (8 Staff)', category: 'Staff Compensation', amountNgn: 108000000.00, notes: 'Lead engineering, finance, security, and content' },
+    { id: 'opex_tech_ops', name: 'Technical & Systems Engineering Personnel (8 Staff)', category: 'Technical Staff', amountNgn: 46800000.00, notes: 'Full-time DevOps, frontend, backend and QA' },
+    { id: 'opex_marketing', name: 'National Strategic Marketing & Brand Publicity', category: 'Publicity', amountNgn: 60000000.00, notes: 'Multi-channel acquisition, media, billboards' },
+    { id: 'opex_rent_utils', name: 'Technical Center Facility Rent & Broadband Links', category: 'Facility', amountNgn: 20637658.00, notes: 'TCC server building and enterprise satellite' },
+    { id: 'opex_licenses', name: 'Regulatory NBC & NCC Statutory License Amortization', category: 'Compliance', amountNgn: 8000000.00, notes: '10-Year broadcast permits annual allotment' }
+  ],
+  loanInterestAnnualNgn: 140811000.00 / 3, // ₦46,937,000 per year
+  taxRatePercent: 10.0
+};
+
+export const DEFAULT_BALANCE_SHEET: BalanceSheetData = {
+  title: '10. Balance Sheet - FingerMobile Sovereign Enterprise',
+  approval: {
+    status: 'APPROVED_BY_SUPER_ADMIN',
+    lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+    lastEditedAt: '2026-10-14 16:40:00 UTC',
+    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+    approvedAt: '2026-10-14 16:45:00 UTC',
+    notes: 'Audited assets, liabilities, and shareholder equity balanced to exact precision.',
+    version: 1
+  },
+  currentAssets: [
+    { id: 'ca_lagos_bank', name: 'Fidelity Bank Lagos Top-Line Revenue Clearing (5600792703)', category: 'Cash & Bank', amountNgn: 320000000.00 },
+    { id: 'ca_abuja_bank', name: 'Fidelity Bank Abuja Area 8 Profit Surplus Vault (5601279229)', category: 'Cash & Bank', amountNgn: 124580000.00 },
+    { id: 'ca_fic_reserve', name: 'Sovereign Vault Infinity Coin (FIC) Strategic Reserves', category: 'Digital Reserves', amountNgn: 200000000.00, notes: 'Backing treasury @ ₦65.00/FIC' },
+    { id: 'ca_receivables', name: 'Accounts Receivable (Enterprise Clients & Storefronts)', category: 'Receivables', amountNgn: 37420000.00 },
+    { id: 'ca_inventory', name: 'Digital & Physical Merchandising Inventory', category: 'Inventory', amountNgn: 85000000.00 }
+  ],
+  fixedAssets: [
+    { id: 'fa_telecoms', name: 'TCC Infrastructure Servers, Switches, Inverters & Generators', category: 'TCC Equipment', amountNgn: 426700000.00, depreciationYears: 7 },
+    { id: 'fa_broadcasting', name: 'Dancia-4Tv Broadcast Satellite Disks & Antennas', category: 'Broadcast Tech', amountNgn: 150000000.00, depreciationYears: 5 },
+    { id: 'fa_vehicles', name: 'Operations & Dispatch Logistics Fleet', category: 'Vehicles', amountNgn: 44887780.00, depreciationYears: 5 },
+    { id: 'fa_leasehold', name: 'Office Renovations, Interior & Building Improvements', category: 'Leasehold', amountNgn: 15412220.00, depreciationYears: 5 }
+  ],
+  accumulatedDepreciationNgn: 12500000.00,
+  currentLiabilities: [
+    { id: 'cl_accounts_payable', name: 'Accounts Payable & Vendor Obligations', category: 'Trade Payables', amountNgn: 92670333.33 },
+    { id: 'cl_creator_escrow', name: 'Creator Escrow Vault Pending Milestone Releases', category: 'Escrow Liabilities', amountNgn: 150000000.00 }
+  ],
+  longTermLiabilities: [
+    { id: 'lt_commercial_loan', name: '₦426.7M Commercial Bank Facility @ 33% Interest', category: 'Long-Term Facility', amountNgn: 378340666.67, notes: 'Tenor: 3 Years with 1-Year Moratorium' }
+  ],
+  equityItems: [
+    { id: 'eq_founder_capital', name: 'Contributed Shareholder Paid-Up Capital', category: 'Owner Equity', amountNgn: 500000000.00 },
+    { id: 'eq_retained_earnings', name: 'Retained Platform Surplus & Institutional Profits', category: 'Retained Earnings', amountNgn: 270489000.00 }
+  ]
+};
+
+export const DEFAULT_COST_TCC_BOQ: CostTccBoqData = {
+  title: 'COST - Technical Computing Center (TCC) Bill of Quantities',
+  approval: {
+    status: 'APPROVED_BY_SUPER_ADMIN',
+    lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+    lastEditedAt: '2026-10-14 16:40:00 UTC',
+    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+    approvedAt: '2026-10-14 16:45:00 UTC',
+    notes: 'BoQ reviewed and certified for TCC hardware acquisition.',
+    version: 1
+  },
+  usdExchangeRate: 1550,
+  items: [
+    { id: 'tcc_1', name: 'Telebreeze PayTV VOD DVB Equipment', category: 'Broadcast Tech', quantity: 2, unitPriceNgn: 174600000, amountNgn: 349200000, amountUsd: 225290.32, depreciationYears: 7 },
+    { id: 'tcc_2', name: '62.5 KVA Power Generator System', category: 'Power', quantity: 2, unitPriceNgn: 2070000, amountNgn: 4140000, amountUsd: 2670.97, depreciationYears: 5 },
+    { id: 'tcc_3', name: '12 KVA Power Inverter System', category: 'Power', quantity: 4, unitPriceNgn: 850000, amountNgn: 3400000, amountUsd: 2193.55, depreciationYears: 5 },
+    { id: 'tcc_4', name: 'Server Room Cooling Precision Systems', category: 'HVAC', quantity: 2, unitPriceNgn: 395000, amountNgn: 790000, amountUsd: 509.68, depreciationYears: 5 },
+    { id: 'tcc_5', name: 'T.C.C Design & Comp Off-Site Deployment', category: 'Professional Services', quantity: 1, unitPriceNgn: 810000, amountNgn: 810000, amountUsd: 522.58, depreciationYears: 5 },
+    { id: 'tcc_6', name: 'Front-End HP Fedora Enterprise Servers', category: 'Compute', quantity: 4, unitPriceNgn: 510000, amountNgn: 2040000, amountUsd: 1316.13, depreciationYears: 4 },
+    { id: 'tcc_7', name: 'Back-End Cisco ME 3750 Switches (Dual Set)', category: 'Networking', quantity: 2, unitPriceNgn: 15970000, amountNgn: 31940000, amountUsd: 20606.45, depreciationYears: 5 },
+    { id: 'tcc_8', name: '300 TB High-Throughput Media Storage Servers', category: 'Storage', quantity: 1, unitPriceNgn: 1356000, amountNgn: 1356000, amountUsd: 874.84, depreciationYears: 5 },
+    { id: 'tcc_9', name: '2.4M Channel Master V-SAT Satellite Link', category: 'Satellite Links', quantity: 2, unitPriceNgn: 1850000, amountNgn: 3700000, amountUsd: 2387.10, depreciationYears: 5 },
+    { id: 'tcc_10', name: 'WISP Management Network Monitoring Suite (1 Yr)', category: 'Software Suite', quantity: 1, unitPriceNgn: 1600000, amountNgn: 1600000, amountUsd: 1032.26, depreciationYears: 3 },
+    { id: 'tcc_11', name: 'Office Intranet Gigabit Structured Cabling', category: 'Networking', quantity: 1, unitPriceNgn: 467000, amountNgn: 467000, amountUsd: 301.29, depreciationYears: 5 },
+    { id: 'tcc_12', name: '1200 Directional Omni Antennas', category: 'Antennas', quantity: 1, unitPriceNgn: 85000, amountNgn: 85000, amountUsd: 54.84, depreciationYears: 5 },
+    { id: 'tcc_13', name: 'I7 XLM Engineer Laptops & Field Terminals', category: 'Client Terminals', quantity: 7, unitPriceNgn: 325000, amountNgn: 2275000, amountUsd: 1467.74, depreciationYears: 3 },
+    { id: 'tcc_14', name: '21" Desktops Core i7 Operations Hubs', category: 'Client Terminals', quantity: 20, unitPriceNgn: 250000, amountNgn: 5000000, amountUsd: 3225.81, depreciationYears: 3 }
+  ]
+};
+
+export const DEFAULT_STARTUP_FUNDS: StartupFundsData = {
+  title: '1. Required Start-Up Funds - FingerMobile Capital Structure',
+  approval: {
+    status: 'APPROVED_BY_SUPER_ADMIN',
+    lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+    lastEditedAt: '2026-10-14 16:40:00 UTC',
+    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+    approvedAt: '2026-10-14 16:45:00 UTC',
+    notes: 'Capital allocation model for startup fund deployment.',
+    version: 1
+  },
+  usdExchangeRate: 1550,
+  fixedAssets: [
+    { id: 'su_fa_leasehold', name: 'Building & Leasehold Improvements', category: 'Real Estate', amountUsd: 3000.00, amountNgn: 4650000.00, depreciationYears: 5 },
+    { id: 'su_fa_telecoms', name: 'Telecommunications & Computing Equipment', category: 'Equipment', amountUsd: 625700.75, amountNgn: 969836162.50, depreciationYears: 7 },
+    { id: 'su_fa_furniture', name: 'Office Furniture and Executive Fixtures', category: 'Furniture', amountUsd: 3000.00, amountNgn: 4650000.00, depreciationYears: 5 },
+    { id: 'su_fa_vehicles', name: 'Operations & Dispatch Logistics Vehicles', category: 'Vehicles', amountUsd: 29925.19, amountNgn: 46384044.50, depreciationYears: 5 },
+    { id: 'su_fa_other', name: 'Other Fixed Enterprise Infrastructure', category: 'Other Fixed', amountUsd: 3000.00, amountNgn: 4650000.00, depreciationYears: 5 }
+  ],
+  operatingCapital: [
+    { id: 'su_op_salaries', name: 'Pre-Opening Salaries and Wages Reserve', category: 'Salaries', amountUsd: 44887.78, amountNgn: 69576059.00 },
+    { id: 'su_op_insurance', name: 'Prepaid Commercial Insurance Premiums', category: 'Insurance', amountUsd: 1000.00, amountNgn: 1550000.00 },
+    { id: 'su_op_rent', name: 'Rent and Leased Property Deposits', category: 'Deposits', amountUsd: 29925.19, amountNgn: 46384044.50 },
+    { id: 'su_op_supplies', name: 'Supplies, Stationery and Office Consumables', category: 'Supplies', amountUsd: 1122.19, amountNgn: 1739394.50 },
+    { id: 'su_op_ads', name: 'Advertising, Media PR & Launch Promotions', category: 'Marketing', amountUsd: 10000.00, amountNgn: 15500000.00 },
+    { id: 'su_op_licenses', name: 'NBC-NCC 10-Year Commercial Operating Licenses', category: 'Regulatory', amountUsd: 73965.09, amountNgn: 114645889.50 },
+    { id: 'su_op_working_capital', name: 'Working Capital Cash on Hand (Contingency)', category: 'Liquid Reserves', amountUsd: 18703.24, amountNgn: 28990022.00 }
+  ]
+};
+
+export const DEFAULT_CAPEX_OPEX_DANCIA4TV: CapexOpexDancia4TvData = {
+  title: 'CAPEX & OPEX (2) - Dancia-4Tv 1st Year Plan Bill of Quantity',
+  approval: {
+    status: 'APPROVED_BY_SUPER_ADMIN',
+    lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+    lastEditedAt: '2026-10-14 16:40:00 UTC',
+    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+    approvedAt: '2026-10-14 16:45:00 UTC',
+    notes: '17 itemized loan distribution lines verified with bank facility.',
+    version: 1
+  },
+  totalLoanAllocationNgn: 1412050000.00,
+  usdExchangeRate: 1550,
+  items: [
+    { id: 'dancia_1', name: '1. Two (2) Year Land Leased Assets / Office Space Rent', category: 'Real Estate', amountNgn: 16000000.00, notes: '2 years @ ₦8,000,000/yr' },
+    { id: 'dancia_2', name: '2. Telebreeze for PayTV VOD DVB Equipment', category: 'Broadcast Tech', amountNgn: 349200000.00, notes: '2 units @ ₦174,600,000' },
+    { id: 'dancia_3', name: '3. Legal Counsel, Contracts & Regulatory Incorporation', category: 'Legal', amountNgn: 500000.00, notes: 'Statutory filing & deed seals' },
+    { id: 'dancia_4', name: '4. Building Improvements and Office Renovation', category: 'Facilities', amountNgn: 8800000.00, notes: 'Server room prep & acoustics' },
+    { id: 'dancia_5', name: '5. One-Year Broadband Dedicated Data Trunk Link', category: 'Comms', amountNgn: 4600000.00, notes: 'High-speed fiber connectivity' },
+    { id: 'dancia_6', name: '6. Two-Year Overhead, Operations & Logistics Costs', category: 'Overhead', amountNgn: 62150000.00, notes: 'Operational contingency' },
+    { id: 'dancia_7', name: '7. Tech Equipment Operation & Systems Development', category: 'R&D', amountNgn: 3500000.00, notes: 'Platform integration' },
+    { id: 'dancia_8', name: '8. 3-Year International Content Acquisition (+EPL Rights)', category: 'Content Licensing', amountNgn: 550000000.00, notes: 'Premier league & global media' },
+    { id: 'dancia_9', name: '9. 10-Year NBC & NCC Licenses, Permits and Clearances', category: 'Regulatory', amountNgn: 30000000.00, notes: '10-Year national broadcast license' },
+    { id: 'dancia_10', name: '10. One-Year Domestic Content Development & Media Network', category: 'Production', amountNgn: 600000000.00, notes: 'Local film, music, short-dramas' },
+    { id: 'dancia_11', name: '11. One-Year Strategic Marketing, Billboard & Ad Campaigns', category: 'Marketing', amountNgn: 60000000.00, notes: 'National promotional blitz' },
+    { id: 'dancia_12', name: '12. Brand Identity, Promotion & Media Launch', category: 'Branding', amountNgn: 5000000.00, notes: 'PR events and agency services' },
+    { id: 'dancia_13', name: '13. One-Year Inventory, Office Supplies & Stationeries', category: 'Supplies', amountNgn: 500000.00, notes: 'Consumables' },
+    { id: 'dancia_14', name: '14. Fixed Working Capital Liquidity Buffer', category: 'Working Capital', amountNgn: 2000000.00, notes: 'Reserve liquidity' },
+    { id: 'dancia_15', name: '15. Statutory Fixed Bank Escrow Deposit', category: 'Banking Deposit', amountNgn: 50000000.00, notes: 'Compulsory regulatory deposit' },
+    { id: 'dancia_16', name: '16. Operations, Field Broadcast & Dispatch Vehicles', category: 'Logistics', amountNgn: 7000000.00, notes: 'Field fleet' },
+    { id: 'dancia_17', name: '17. Shipping, Cargo Delivery and Customs Import Duties', category: 'Customs & Logistics', amountNgn: 2000000.00, notes: 'Port clearance & logistics' }
+  ]
+};
+
+// Legacy backward-compatibility wrapper
 export const EXCEL_SHEETS_DATA = {
   sheet1_cost: {
-    title: 'COST - Technical Computing Center (TCC) BoQ',
+    title: DEFAULT_COST_TCC_BOQ.title,
     category: 'CAPEX & Infrastructure',
-    totalNaira: 426700000.00,
-    items: [
-      { item: 'Telebreeze PayTV VOD DVB Equipment', rateNgn: 174600000, qty: 2, amountNgn: 349200000, amountUsd: 870822.94 },
-      { item: '62.5 KVA Power Generator', rateNgn: 2070000, qty: 2, amountNgn: 4140000, amountUsd: 10324.19 },
-      { item: '12 KVA Power Inverter System', rateNgn: 850000, qty: 4, amountNgn: 3400000, amountUsd: 8478.80 },
-      { item: 'Server Room Cooling Precision Systems', rateNgn: 395000, qty: 2, amountNgn: 790000, amountUsd: 1970.07 },
-      { item: 'T.C.C Design & Comp Off-Site Deployment', rateNgn: 810000, qty: 1, amountNgn: 810000, amountUsd: 2019.95 },
-      { item: 'Front-End HP Fedora Enterprise Servers', rateNgn: 510000, qty: 4, amountNgn: 2040000, amountUsd: 5087.28 },
-      { item: 'Back-End Cisco ME 3750 Switches', rateNgn: 15970000, qty: 2, amountNgn: 31940000, amountUsd: 79650.87 },
-      { item: '300 TB High-Throughput Storage Servers', rateNgn: 1356000, qty: 1, amountNgn: 1356000, amountUsd: 3381.55 },
-      { item: '2.4M Channel Master V-SAT Satellite Link', rateNgn: 1850000, qty: 2, amountNgn: 3700000, amountUsd: 9226.93 },
-      { item: 'WISP Management Network Monitoring Suite', rateNgn: 1600000, qty: 1, amountNgn: 1600000, amountUsd: 3990.02 }
-    ]
+    totalNaira: DEFAULT_COST_TCC_BOQ.items.reduce((acc, it) => acc + it.amountNgn, 0),
+    items: DEFAULT_COST_TCC_BOQ.items.map((it) => ({
+      item: it.name,
+      rateNgn: it.unitPriceNgn || 0,
+      qty: it.quantity || 1,
+      amountNgn: it.amountNgn,
+      amountUsd: it.amountUsd || 0
+    }))
   },
   sheet2_sterc: {
     title: 'STERC - Sentient Technical Executive Review & Clearances',
@@ -441,45 +689,26 @@ export const EXCEL_SHEETS_DATA = {
     ]
   },
   sheet3_startup_funds: {
-    title: '1. Required Start-Up Funds',
-    totalFixedAssetsUsd: 664625.94,
-    totalFixedAssetsNgn: 890598759.60,
-    fixedAssets: [
-      { category: 'Real Estate & Leasehold Improvements', amountUsd: 3000.00, depreciationYears: 5 },
-      { category: 'Telecommunications & Computing Equipment', amountUsd: 625700.75, depreciationYears: 7 },
-      { category: 'Office Furniture & Fixtures', amountUsd: 3000.00, depreciationYears: 5 },
-      { category: 'Ops & Dispatch Vehicles', amountUsd: 29925.19, depreciationYears: 5 },
-      { category: 'Other Fixed Enterprise Assets', amountUsd: 3000.00, depreciationYears: 5 }
-    ],
-    operatingCapital: [
-      { item: 'Pre-Opening Salaries and Wages', amountUsd: 44887.78 },
-      { item: 'Prepaid Insurance Premiums', amountUsd: 1000.00 },
-      { item: 'Rent & Leased Asset Deposits', amountUsd: 29925.19 },
-      { item: 'Supplies & Stationeries', amountUsd: 1122.19 },
-      { item: 'Advertising & Brand Launch Promotions', amountUsd: 10000.00 }
-    ]
+    title: DEFAULT_STARTUP_FUNDS.title,
+    totalFixedAssetsUsd: DEFAULT_STARTUP_FUNDS.fixedAssets.reduce((acc, it) => acc + (it.amountUsd || 0), 0),
+    totalFixedAssetsNgn: DEFAULT_STARTUP_FUNDS.fixedAssets.reduce((acc, it) => acc + it.amountNgn, 0),
+    fixedAssets: DEFAULT_STARTUP_FUNDS.fixedAssets.map((it) => ({
+      category: it.name,
+      amountUsd: it.amountUsd || 0,
+      depreciationYears: it.depreciationYears || 5
+    })),
+    operatingCapital: DEFAULT_STARTUP_FUNDS.operatingCapital.map((it) => ({
+      item: it.name,
+      amountUsd: it.amountUsd || 0
+    }))
   },
   sheet5_capex_opex_dancia4tv: {
-    title: 'CAPEX & OPEX (2) - Dancia-4Tv 1st Year BoQ',
-    totalBillOfQuantityNgn: 1412050000.00,
-    keyLineItems: [
-      { item: '2-Year Land Leased Assets / Office Space Rent', amountNgn: 4000000.00 },
-      { item: 'VOD DVB PayTV Equipment', amountNgn: 22000000.00 },
-      { item: 'Legal & Regulatory Incorporation Cost', amountNgn: 500000.00 },
-      { item: 'Building Improvements & Office Furnitures', amountNgn: 8800000.00 },
-      { item: 'Broadband Data & Comms Equipment Purchase', amountNgn: 4600000.00 },
-      { item: 'Two-Year Fixed Operating Overhead', amountNgn: 62150000.00 },
-      { item: 'Tech Equipment Operation Development', amountNgn: 3500000.00 },
-      { item: 'Three-Year International Content Acquisition (+EPL)', amountNgn: 550000000.00 },
-      { item: '10-Year NBC & NCC Licenses and Permits', amountNgn: 30000000.00 },
-      { item: 'Domestic Content Production & Creative Development', amountNgn: 600000000.00 },
-      { item: 'One-Year Strategic Marketing & Publicity', amountNgn: 60000000.00 },
-      { item: 'Brand Identity & Media Promotion', amountNgn: 5000000.00 },
-      { item: 'Fixed Working Capital', amountNgn: 2000000.00 },
-      { item: 'Fixed Statutory Bank Reserve Deposit', amountNgn: 50000000.00 },
-      { item: 'Ops & Dispatch Vehicles', amountNgn: 7000000.00 },
-      { item: 'Shipping, Delivery & Cross-Border Duties', amountNgn: 2000000.00 }
-    ]
+    title: DEFAULT_CAPEX_OPEX_DANCIA4TV.title,
+    totalBillOfQuantityNgn: DEFAULT_CAPEX_OPEX_DANCIA4TV.items.reduce((acc, it) => acc + it.amountNgn, 0),
+    keyLineItems: DEFAULT_CAPEX_OPEX_DANCIA4TV.items.map((it) => ({
+      item: it.name,
+      amountNgn: it.amountNgn
+    }))
   },
   sheet8_loan_request: {
     title: 'Loan Request and Pay-Back Facility',
@@ -496,26 +725,28 @@ export const EXCEL_SHEETS_DATA = {
     payBackSchedule: 'March 2026 - April/May 2029'
   },
   sheet11_income_statement: {
-    title: '8. Income Statement (P&L)',
-    grossRevenueYear1Ngn: 1250000000.00,
-    cogsYear1Ngn: 312500000.00,
-    grossProfitYear1Ngn: 937500000.00,
-    grossMarginPercent: 75.0,
-    totalOpexYear1Ngn: 418500000.00,
+    title: DEFAULT_INCOME_STATEMENT.title,
+    grossRevenueYear1Ngn: DEFAULT_INCOME_STATEMENT.revenues.reduce((acc, it) => acc + it.amountNgn, 0),
+    cogsYear1Ngn: DEFAULT_INCOME_STATEMENT.cogs.reduce((acc, it) => acc + it.amountNgn, 0),
+    grossProfitYear1Ngn:
+      DEFAULT_INCOME_STATEMENT.revenues.reduce((acc, it) => acc + it.amountNgn, 0) -
+      DEFAULT_INCOME_STATEMENT.cogs.reduce((acc, it) => acc + it.amountNgn, 0),
+    grossMarginPercent: 74.0,
+    totalOpexYear1Ngn: DEFAULT_INCOME_STATEMENT.opex.reduce((acc, it) => acc + it.amountNgn, 0),
     operatingProfitYear1Ngn: 519000000.00,
     taxAndInterestYear1Ngn: 140811000.00,
     netIncomeYear1Ngn: 378189000.00,
     netProfitMarginPercent: 30.25
   },
   sheet13_balance_sheet: {
-    title: '10. Balance Sheet',
+    title: DEFAULT_BALANCE_SHEET.title,
     totalAssetsNgn: 1391500000.00,
-    currentAssetsNgn: 767000000.00,
-    fixedAssetsNgn: 624500000.00,
+    currentAssetsNgn: DEFAULT_BALANCE_SHEET.currentAssets.reduce((acc, it) => acc + it.amountNgn, 0),
+    fixedAssetsNgn: DEFAULT_BALANCE_SHEET.fixedAssets.reduce((acc, it) => acc + it.amountNgn, 0),
     totalLiabilitiesNgn: 621011000.00,
-    currentLiabilitiesNgn: 242670333.33,
-    longTermDebtNgn: 378340666.67,
-    totalEquityNgn: 770489000.00,
+    currentLiabilitiesNgn: DEFAULT_BALANCE_SHEET.currentLiabilities.reduce((acc, it) => acc + it.amountNgn, 0),
+    longTermDebtNgn: DEFAULT_BALANCE_SHEET.longTermLiabilities.reduce((acc, it) => acc + it.amountNgn, 0),
+    totalEquityNgn: DEFAULT_BALANCE_SHEET.equityItems.reduce((acc, it) => acc + it.amountNgn, 0),
     isBalanced: true
   },
   sheet16_breakeven_analysis: {

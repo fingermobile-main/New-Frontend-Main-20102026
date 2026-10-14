@@ -22,7 +22,13 @@ import {
   PlayCircle,
   HelpCircle,
   Sliders,
-  DollarSign
+  DollarSign,
+  Copy,
+  Files,
+  CheckSquare,
+  Square,
+  FolderInput,
+  TrendingUp
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -422,11 +428,116 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
     setIsCreatingNew(false);
   };
 
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [copiedBuffer, setCopiedBuffer] = useState<EditableSubscriptionModel[]>([]);
+  const [targetMoveCategory, setTargetMoveCategory] = useState<'platform' | 'creator_channel' | 'gems_broadcast' | 'content_paywall'>('platform');
+
+  const handleToggleSelect = (id: string) => {
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  };
+
+  const handleSelectAll = (visibleIds: string[]) => {
+    if (selectedIds.length === visibleIds.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(visibleIds);
+    }
+  };
+
+  const handleDuplicateSingle = (model: EditableSubscriptionModel) => {
+    const clone: EditableSubscriptionModel = {
+      ...model,
+      id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      name: `${model.name} (Copy)`,
+      badge: `${model.badge}`,
+      subscriberCount: 0
+    };
+    const updated = [...models, clone];
+    saveModelsToStorage(updated);
+    setSavedBanner(`📋 Duplicated subscription card: "${clone.name}"`);
+  };
+
+  const handleDuplicateSelected = () => {
+    if (selectedIds.length === 0) return;
+    const toClone = models.filter((m) => selectedIds.includes(m.id));
+    const clones: EditableSubscriptionModel[] = toClone.map((model, idx) => ({
+      ...model,
+      id: `sub_${Date.now()}_${idx}_${Math.random().toString(36).substr(2, 4)}`,
+      name: `${model.name} (Copy)`,
+      badge: `${model.badge}`,
+      subscriberCount: 0
+    }));
+    const updated = [...models, ...clones];
+    saveModelsToStorage(updated);
+    setSelectedIds([]);
+    setSavedBanner(`📋 Successfully duplicated ${clones.length} subscription cards!`);
+  };
+
+  const handleCopySelected = () => {
+    if (selectedIds.length === 0) return;
+    const toCopy = models.filter((m) => selectedIds.includes(m.id));
+    setCopiedBuffer(toCopy);
+    setSavedBanner(`📑 Copied ${toCopy.length} card(s) to clipboard buffer! Ready to paste.`);
+  };
+
+  const handlePasteBuffer = () => {
+    if (copiedBuffer.length === 0) return;
+    const targetCat = activeCategory !== 'all' ? (activeCategory as any) : 'platform';
+    const pasted: EditableSubscriptionModel[] = copiedBuffer.map((model, idx) => ({
+      ...model,
+      id: `sub_${Date.now()}_paste_${idx}`,
+      category: targetCat,
+      name: `${model.name} (Pasted)`,
+      badge: `${model.badge}`,
+      subscriberCount: 0
+    }));
+    const updated = [...models, ...pasted];
+    saveModelsToStorage(updated);
+    setSavedBanner(`📥 Pasted ${pasted.length} card(s) into category: "${targetCat}"!`);
+  };
+
+  const handleMoveSelected = () => {
+    if (selectedIds.length === 0) return;
+    const updated = models.map((m) => (selectedIds.includes(m.id) ? { ...m, category: targetMoveCategory } : m));
+    saveModelsToStorage(updated);
+    const count = selectedIds.length;
+    setSelectedIds([]);
+    setSavedBanner(`🔄 Moved ${count} card(s) to category: "${targetMoveCategory}"!`);
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedIds.length === 0) return;
+    if (window.confirm(`Delete ${selectedIds.length} selected subscription cards?`)) {
+      const updated = models.filter((m) => !selectedIds.includes(m.id));
+      saveModelsToStorage(updated);
+      setSelectedIds([]);
+      setSavedBanner(`🗑️ Deleted ${selectedIds.length} subscription cards.`);
+    }
+  };
+
   const handleDeleteModel = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this subscription model?')) {
+    if (window.confirm('Are you sure you want to delete this subscription card?')) {
       const updated = models.filter((m) => m.id !== id);
       saveModelsToStorage(updated);
+      setSelectedIds((prev) => prev.filter((item) => item !== id));
+      setSavedBanner('🗑️ Subscription model removed.');
     }
+  };
+
+  const handleSyncToFinancialPnl = () => {
+    const totalMonthlyNaira = models.reduce((acc, m) => {
+      const subs = m.subscriberCount || 100;
+      const nairaRate = m.monthlyNaira || (m.monthlyFIC * 65);
+      return acc + (subs * nairaRate);
+    }, 0);
+    const annualTotalNgn = totalMonthlyNaira * 12;
+    localStorage.setItem('fingermobile_synced_subscription_pnl_annual_ngn', String(annualTotalNgn));
+    window.dispatchEvent(
+      new CustomEvent('fingermobile_subscriptions_pnl_sync', {
+        detail: { annualTotalNgn, totalMonthlyNaira, count: models.length }
+      })
+    );
+    setSavedBanner(`📊 Subscriptions synced to Financial P&L! Projected Annual Gross: ₦${annualTotalNgn.toLocaleString()} across ${models.length} active models.`);
   };
 
   const filteredModels = models.filter((m) => {
@@ -603,15 +714,131 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
         </div>
       </div>
 
+      {/* Selection, Duplication, Copy/Paste, Move & P&L Sync Action Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-xs">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => handleSelectAll(filteredModels.map((m) => m.id))}
+            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold flex items-center gap-1.5 transition"
+          >
+            {selectedIds.length === filteredModels.length && filteredModels.length > 0 ? (
+              <CheckSquare className="w-4 h-4 text-blue-400" />
+            ) : (
+              <Square className="w-4 h-4 text-slate-400" />
+            )}
+            <span>
+              {selectedIds.length === filteredModels.length && filteredModels.length > 0
+                ? 'Deselect All'
+                : `Select All (${filteredModels.length})`}
+            </span>
+          </button>
+
+          {selectedIds.length > 0 && (
+            <span className="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-300 font-bold border border-blue-400/30">
+              {selectedIds.length} card{selectedIds.length > 1 ? 's' : ''} selected
+            </span>
+          )}
+
+          {/* Duplicate Selected */}
+          <button
+            onClick={handleDuplicateSelected}
+            disabled={selectedIds.length === 0}
+            className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition ${
+              selectedIds.length > 0
+                ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md'
+                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+            }`}
+            title="Duplicate all selected cards"
+          >
+            <Files className="w-3.5 h-3.5" />
+            <span>Duplicate Selected ({selectedIds.length})</span>
+          </button>
+
+          {/* Copy Selected */}
+          <button
+            onClick={handleCopySelected}
+            disabled={selectedIds.length === 0}
+            className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition ${
+              selectedIds.length > 0
+                ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md'
+                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+            }`}
+            title="Copy selected cards to buffer"
+          >
+            <Copy className="w-3.5 h-3.5" />
+            <span>Copy ({selectedIds.length})</span>
+          </button>
+
+          {/* Paste Buffer */}
+          {copiedBuffer.length > 0 && (
+            <button
+              onClick={handlePasteBuffer}
+              className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold flex items-center gap-1.5 shadow-md animate-pulse"
+              title="Paste buffered cards as duplicates into active category"
+            >
+              <FolderInput className="w-3.5 h-3.5" />
+              <span>Paste ({copiedBuffer.length}) Cards</span>
+            </button>
+          )}
+
+          {/* Move to Category */}
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-1.5 bg-slate-800/90 p-1 rounded-lg border border-slate-700">
+              <span className="text-[11px] text-slate-300 font-semibold px-1">Move to:</span>
+              <select
+                value={targetMoveCategory}
+                onChange={(e) => setTargetMoveCategory(e.target.value as any)}
+                className="bg-slate-900 text-white text-xs rounded px-2 py-1 border border-slate-700 focus:outline-none"
+              >
+                <option value="platform">Platform Plans</option>
+                <option value="creator_channel">Creator Channel</option>
+                <option value="gems_broadcast">Gems Broadcast</option>
+                <option value="content_paywall">Content Paywall</option>
+              </select>
+              <button
+                onClick={handleMoveSelected}
+                className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold"
+              >
+                Apply Move
+              </button>
+            </div>
+          )}
+
+          {/* Delete Selected */}
+          {selectedIds.length > 0 && (
+            <button
+              onClick={handleDeleteSelected}
+              className="px-2.5 py-1.5 rounded-lg bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-700/60 font-bold flex items-center gap-1"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete ({selectedIds.length})</span>
+            </button>
+          )}
+        </div>
+
+        {/* Sync Subscriptions to P&L */}
+        <button
+          onClick={handleSyncToFinancialPnl}
+          className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition ml-auto"
+          title="Recalculate subscription revenue and feed into Financial P&L"
+        >
+          <TrendingUp className="w-4 h-4 text-emerald-200" />
+          <span>Sync Subscriptions to Financial P&L</span>
+        </button>
+      </div>
+
       {/* Models Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredModels.map((model) => {
           const isCurrentActiveTest = activeTestTier === model.id;
+          const isSelected = selectedIds.includes(model.id);
 
           return (
             <div
               key={model.id}
               className={`relative rounded-2xl p-5 border flex flex-col justify-between transition-all shadow-md ${
+                isSelected ? 'ring-2 ring-blue-500' : ''
+              } ${
                 model.isFreeTier
                   ? 'bg-gradient-to-b from-emerald-950/20 via-slate-900 to-slate-950 border-emerald-500/30 hover:border-emerald-500/60 shadow-emerald-500/5'
                   : model.isPopular
@@ -619,10 +846,17 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                   : 'bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 border-slate-800 hover:border-slate-700'
               }`}
             >
-              {/* Header Badges */}
+              {/* Header Badges & Select */}
               <div>
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-1.5 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => handleToggleSelect(model.id)}
+                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer border-slate-700 bg-slate-900"
+                      title="Select card for duplication, copy, or move"
+                    />
                     <span
                       className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-bold border ${
                         model.isFreeTier
@@ -645,6 +879,14 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                   </div>
 
                   <div className="flex items-center gap-1">
+                    {/* Duplicate Single Card */}
+                    <button
+                      onClick={() => handleDuplicateSingle(model)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors"
+                      title="Duplicate this subscription card"
+                    >
+                      <Files className="w-3.5 h-3.5" />
+                    </button>
                     <button
                       onClick={() => {
                         setEditingModel({ ...model });

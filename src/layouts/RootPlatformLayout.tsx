@@ -40,14 +40,14 @@ export const RootPlatformLayout: React.FC = () => {
 
   return (
     <div className="relative min-h-screen w-full">
-      {/* Omni-present Facebook-Style Slide-Over Drawer Menu for All 385 Pages */}
+      {/* Omni-present FingerMobile Slide-Over Drawer Menu for All 385 Pages */}
       <DrawerMenuContainer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         isDesktopSidebar={false}
       />
 
-      {/* Harmonized Facebook-Style Member Profile Pill & Platform Menu Trigger */}
+      {/* Harmonized FingerMobile Member Profile Pill & Platform Menu Trigger */}
       {!hasEmbeddedHeader && (
         <MemberProfileMenuTrigger
           isOpen={isDrawerOpen}

@@ -209,7 +209,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
         )}
       </div>
 
-      {/* 2. FACEBOOK-STYLE MEMBER PROFILE CARD AT TOP OF MENU */}
+      {/* 2. FingerMobile MEMBER PROFILE CARD AT TOP OF MENU */}
       <div className="p-3.5 border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900 relative">
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
@@ -309,7 +309,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
         </button>
       </div>
 
-      {/* 4. DUAL COLUMN BODY (Facebook-Style Mega Menu on md+ screens) */}
+      {/* 4. DUAL COLUMN BODY (FingerMobile Mega Menu on md+ screens) */}
       <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
         {/* LEFT COLUMN: Categorical Navigation & Search */}
         <div className={`flex-1 flex flex-col min-w-0 border-r border-slate-800 overflow-hidden ${
@@ -437,7 +437,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Facebook-Style "Create & Quick Actions" Panel */}
+        {/* RIGHT COLUMN: FingerMobile "Create & Quick Actions" Panel */}
         <div className={`w-full md:w-72 md:shrink-0 flex flex-col bg-slate-950/70 p-3 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 ${
           activeTab === 'create' ? 'flex' : 'hidden md:flex'
         }`}>
@@ -446,7 +446,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
               <PlusCircle className="w-3.5 h-3.5 text-orange-400" />
               Create & Quick Actions
             </span>
-            <span className="text-[10px] text-slate-500 font-mono">Facebook Style</span>
+            <span className="text-[10px] text-slate-500 font-mono">FingerMobile</span>
           </div>
 
           <div className="space-y-2">

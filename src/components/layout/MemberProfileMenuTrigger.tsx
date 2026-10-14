@@ -74,7 +74,7 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
             </div>
           )}
 
-          {/* Facebook-style Dropdown Chevron */}
+          {/* FingerMobile Dropdown Chevron */}
           <div className="p-1 rounded-lg text-slate-400 group-hover:text-white transition-colors">
             <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-orange-500' : ''}`} />
           </div>
@@ -83,7 +83,7 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
         {/* Vertical Divider */}
         <div className="h-5 w-px bg-slate-800" />
 
-        {/* Facebook-style 9-Dot Menu Grid Trigger */}
+        {/* FingerMobile 9-Dot Menu Grid Trigger */}
         <button
           type="button"
           onClick={onToggleMenu}
@@ -92,7 +92,7 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
               ? 'bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-md shadow-orange-500/30'
               : 'text-slate-300 hover:text-white hover:bg-slate-900'
           }`}
-          title="Facebook-Style Platform Mega Menu (385 Pages)"
+          title="FingerMobile Platform Mega Menu (385 Pages)"
           aria-label="Toggle Platform Mega Menu"
         >
           <Grid className="w-4 h-4 text-orange-400 group-hover:scale-105 transition-transform" />
