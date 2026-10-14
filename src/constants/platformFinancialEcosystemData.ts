@@ -205,8 +205,13 @@ export interface IncomeStatementSheetData {
   cogs: FinancialLineItem[];
   opex: FinancialLineItem[];
   loanInterestAnnualNgn: number;
+  /** Loan interest rate percentage (fluctuates annually — CFO-editable). Default 33% commercial rate. */
+  loanInterestRatePercent?: number;
+  /** Loan principal amount in Naira (CFO-editable). Used to recalculate annual debt service. */
+  loanPrincipalNgn?: number;
   taxRatePercent: number;
 }
+
 
 export interface BalanceSheetData {
   title: string;
@@ -496,12 +501,10 @@ export function evaluateAccountingRatios(overrides?: Partial<{
 export const DEFAULT_INCOME_STATEMENT: IncomeStatementSheetData = {
   title: '8. Income Statement (P&L) - FingerMobile Sovereign Enterprise',
   approval: {
-    status: 'APPROVED_BY_SUPER_ADMIN',
+    status: 'DRAFT',
     lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
-    lastEditedAt: '2026-10-14 16:40:00 UTC',
-    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
-    approvedAt: '2026-10-14 16:45:00 UTC',
-    notes: 'Platform subscription projections, Storefront gross fees, and Dancia-4Tv PPV broadcasting ratified.',
+    lastEditedAt: '2026-10-14 18:30:00 UTC',
+    notes: 'CFO Working Draft — Unlocked for Active Financial Modeling and Micro-Management.',
     version: 1
   },
   revenues: [
@@ -526,19 +529,19 @@ export const DEFAULT_INCOME_STATEMENT: IncomeStatementSheetData = {
     { id: 'opex_rent_utils', name: 'Technical Center Facility Rent & Broadband Links', category: 'Facility', amountNgn: 20637658.00, notes: 'TCC server building and enterprise satellite' },
     { id: 'opex_licenses', name: 'Regulatory NBC & NCC Statutory License Amortization', category: 'Compliance', amountNgn: 8000000.00, notes: '10-Year broadcast permits annual allotment' }
   ],
-  loanInterestAnnualNgn: 140811000.00 / 3, // ₦46,937,000 per year
-  taxRatePercent: 10.0
+  loanInterestAnnualNgn: 140811000.00 / 3, // ₦46,937,000 per year (33% of ₦426.7M principal / 3yr term)
+  loanInterestRatePercent: 33,              // 33% Commercial bank loan rate (CFO-adjustable annually)
+  loanPrincipalNgn: 426700000,              // ₦426.7M total commercial loan principal
+  taxRatePercent: 10.0                      // 10% CIT / CITA tax reserve (FIRS-adjustable, CFO-editable)
 };
 
 export const DEFAULT_BALANCE_SHEET: BalanceSheetData = {
   title: '10. Balance Sheet - FingerMobile Sovereign Enterprise',
   approval: {
-    status: 'APPROVED_BY_SUPER_ADMIN',
+    status: 'DRAFT',
     lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
-    lastEditedAt: '2026-10-14 16:40:00 UTC',
-    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
-    approvedAt: '2026-10-14 16:45:00 UTC',
-    notes: 'Audited assets, liabilities, and shareholder equity balanced to exact precision.',
+    lastEditedAt: '2026-10-14 18:30:00 UTC',
+    notes: 'CFO Working Draft — Unlocked for Active Financial Modeling and Micro-Management.',
     version: 1
   },
   currentAssets: [
@@ -571,12 +574,10 @@ export const DEFAULT_BALANCE_SHEET: BalanceSheetData = {
 export const DEFAULT_COST_TCC_BOQ: CostTccBoqData = {
   title: 'COST - Technical Computing Center (TCC) Bill of Quantities',
   approval: {
-    status: 'APPROVED_BY_SUPER_ADMIN',
+    status: 'DRAFT',
     lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
-    lastEditedAt: '2026-10-14 16:40:00 UTC',
-    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
-    approvedAt: '2026-10-14 16:45:00 UTC',
-    notes: 'BoQ reviewed and certified for TCC hardware acquisition.',
+    lastEditedAt: '2026-10-14 18:30:00 UTC',
+    notes: 'CFO Working Draft — Unlocked for Active Financial Modeling and Micro-Management.',
     version: 1
   },
   usdExchangeRate: 1550,
@@ -601,12 +602,10 @@ export const DEFAULT_COST_TCC_BOQ: CostTccBoqData = {
 export const DEFAULT_STARTUP_FUNDS: StartupFundsData = {
   title: '1. Required Start-Up Funds - FingerMobile Capital Structure',
   approval: {
-    status: 'APPROVED_BY_SUPER_ADMIN',
+    status: 'DRAFT',
     lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
-    lastEditedAt: '2026-10-14 16:40:00 UTC',
-    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
-    approvedAt: '2026-10-14 16:45:00 UTC',
-    notes: 'Capital allocation model for startup fund deployment.',
+    lastEditedAt: '2026-10-14 18:30:00 UTC',
+    notes: 'CFO Working Draft — Unlocked for Active Financial Modeling and Micro-Management.',
     version: 1
   },
   usdExchangeRate: 1550,
@@ -631,12 +630,10 @@ export const DEFAULT_STARTUP_FUNDS: StartupFundsData = {
 export const DEFAULT_CAPEX_OPEX_DANCIA4TV: CapexOpexDancia4TvData = {
   title: 'CAPEX & OPEX (2) - Dancia-4Tv 1st Year Plan Bill of Quantity',
   approval: {
-    status: 'APPROVED_BY_SUPER_ADMIN',
+    status: 'DRAFT',
     lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
-    lastEditedAt: '2026-10-14 16:40:00 UTC',
-    approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
-    approvedAt: '2026-10-14 16:45:00 UTC',
-    notes: '17 itemized loan distribution lines verified with bank facility.',
+    lastEditedAt: '2026-10-14 18:30:00 UTC',
+    notes: 'CFO Working Draft — Unlocked for Active Financial Modeling and Micro-Management.',
     version: 1
   },
   totalLoanAllocationNgn: 1412050000.00,

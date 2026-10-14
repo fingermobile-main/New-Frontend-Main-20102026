@@ -61,6 +61,13 @@ const LegalIndexPage: React.FC = () => {
       description: 'Complete architecture specification for Infinite Coin (IFO/FIC), settlement rails, and smart contracts.',
       link: '/legal/whitepaper',
       badge: 'v1.0.0'
+    },
+    {
+      icon: <ExclamationTriangleIcon className="w-8 h-8 text-rose-500" />,
+      title: 'Community Standards: Nudity & Sexual Activity',
+      description: 'Statutory policy governing nudity, sexual activity, age-gating, spoiler labels, fetish content prohibitions, and permitted artistic/crisis exceptions.',
+      link: '/legal/community-standards-nudity',
+      badge: 'v1.0.0'
     }
   ];
 

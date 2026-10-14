@@ -81,6 +81,7 @@ const CommunityPageEnhanced = lazy(() => import('../pages/CommunityPageEnhanced'
 const CommunityPages = lazy(() => import('../pages/CommunityPages'));
 const CommunityManagementPage = lazy(() => import('../pages/dashboard/community/CommunityManagementPage'));
 const CommunityGuidelinesPage = lazy(() => import('../pages/legal/CommunityGuidelinesPage'));
+const CommunityStandardsNudityPage = lazy(() => import('../pages/legal/CommunityStandardsNudityPage'));
 const GroupsPage = lazy(() => import('../pages/GroupsPage')); // Consolidated standard
 const GroupDetailPage = lazy(() => import('../pages/groups/GroupDetailPage')); // Consolidated standard
 const CreateGroupPage = lazy(() => import('../pages/CreateGroupPage'));
@@ -311,6 +312,9 @@ export const routes: RouteObject[] = [
           { path: '/marketing', element: <MarketingPage /> },
           { path: '/guidelines', element: redirectTo('/communityguidelines') },
           { path: '/communityguidelines', element: <CommunityGuidelinesPage /> },
+          { path: '/community-standards-nudity', element: <CommunityStandardsNudityPage /> },
+          { path: '/legal/community-standards-nudity', element: <CommunityStandardsNudityPage /> },
+          { path: '/legal/nudity-policy', element: <CommunityStandardsNudityPage /> },
           { path: '/privacy', element: redirectTo('/privacypolicy') },
           { path: '/privacy-policy', element: redirectTo('/privacypolicy') },
           { path: '/privacypolicy', element: <PrivacyPolicyPage /> },

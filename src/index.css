@@ -95,24 +95,108 @@
     color: #111827 !important;
   }
 
-  /* Global fix: prevent faint gray descriptions or labels on white boxes across the platform */
-  .bg-white p[class*="text-gray-"],
-  .bg-white p[class*="text-slate-"],
-  .bg-white span[class*="text-gray-"],
-  .bg-white span[class*="text-slate-"],
-  .bg-white div[class*="text-gray-"],
-  .bg-white div[class*="text-slate-"],
-  .bg-white label[class*="text-gray-"],
-  .bg-white label[class*="text-slate-"],
+  /* ============================================================
+     GLOBAL GRAY TEXT CONTRAST FIX
+     Fix: faint gray / slate / zinc / neutral text is invisible
+     on white or light (bg-gray-50, bg-slate-50) backgrounds.
+     Applies to ALL elements (p, span, div, label, td, th, li, h*)
+     on any white or light container across the platform.
+     ============================================================ */
+
+  /* --- on pure white bg-white containers --- */
+  .bg-white .text-gray-300, .bg-white .text-gray-400, .bg-white .text-gray-500,
+  .bg-white .text-gray-600, .bg-white .text-gray-700,
+  .bg-white .text-slate-300, .bg-white .text-slate-400, .bg-white .text-slate-500,
+  .bg-white .text-slate-600, .bg-white .text-slate-700,
+  .bg-white .text-zinc-300,  .bg-white .text-zinc-400,  .bg-white .text-zinc-500,
+  .bg-white .text-zinc-600,  .bg-white .text-zinc-700,
+  .bg-white .text-neutral-300, .bg-white .text-neutral-400, .bg-white .text-neutral-500,
+  .bg-white .text-neutral-600, .bg-white .text-neutral-700,
+  /* --- on bg-gray-50, bg-gray-100 (nearly white panels) --- */
+  .bg-gray-50 .text-gray-300, .bg-gray-50 .text-gray-400, .bg-gray-50 .text-gray-500,
+  .bg-gray-50 .text-gray-600, .bg-gray-50 .text-gray-700,
+  .bg-gray-50 .text-slate-300, .bg-gray-50 .text-slate-400, .bg-gray-50 .text-slate-500,
+  .bg-gray-50 .text-slate-600, .bg-gray-50 .text-slate-700,
+  .bg-gray-50 .text-zinc-300,  .bg-gray-50 .text-zinc-400,  .bg-gray-50 .text-zinc-500,
+  .bg-gray-50 .text-zinc-600,  .bg-gray-50 .text-zinc-700,
+  .bg-gray-50 .text-neutral-300, .bg-gray-50 .text-neutral-400, .bg-gray-50 .text-neutral-500,
+  .bg-gray-100 .text-gray-300, .bg-gray-100 .text-gray-400, .bg-gray-100 .text-gray-500,
+  .bg-gray-100 .text-gray-600, .bg-gray-100 .text-gray-700,
+  .bg-gray-100 .text-slate-300, .bg-gray-100 .text-slate-400, .bg-gray-100 .text-slate-500,
+  .bg-gray-100 .text-slate-600, .bg-gray-100 .text-slate-700,
+  .bg-gray-100 .text-zinc-300,  .bg-gray-100 .text-zinc-400,  .bg-gray-100 .text-zinc-500,
+  .bg-gray-100 .text-zinc-600,  .bg-gray-100 .text-zinc-700,
+  /* --- on bg-slate-50 / bg-slate-100 panels --- */
+  .bg-slate-50 .text-gray-300, .bg-slate-50 .text-gray-400, .bg-slate-50 .text-gray-500,
+  .bg-slate-50 .text-gray-600, .bg-slate-50 .text-gray-700,
+  .bg-slate-50 .text-slate-300, .bg-slate-50 .text-slate-400, .bg-slate-50 .text-slate-500,
+  .bg-slate-50 .text-slate-600, .bg-slate-50 .text-slate-700,
+  .bg-slate-50 .text-zinc-300, .bg-slate-50 .text-zinc-400, .bg-slate-50 .text-zinc-500,
+  .bg-slate-50 .text-zinc-600, .bg-slate-50 .text-zinc-700,
+  .bg-slate-100 .text-gray-300, .bg-slate-100 .text-gray-400, .bg-slate-100 .text-gray-500,
+  .bg-slate-100 .text-gray-600, .bg-slate-100 .text-gray-700,
+  .bg-slate-100 .text-slate-300, .bg-slate-100 .text-slate-400, .bg-slate-100 .text-slate-500,
+  .bg-slate-100 .text-slate-600, .bg-slate-100 .text-slate-700,
+  .bg-slate-100 .text-zinc-300, .bg-slate-100 .text-zinc-400, .bg-slate-100 .text-zinc-500,
+  /* --- on bg-emerald-50 / bg-blue-50 / bg-amber-50 card tints --- */
+  .bg-emerald-50 .text-gray-400, .bg-emerald-50 .text-gray-500, .bg-emerald-50 .text-gray-600,
+  .bg-emerald-50 .text-slate-400, .bg-emerald-50 .text-slate-500, .bg-emerald-50 .text-slate-600,
+  .bg-emerald-50 .text-zinc-400, .bg-emerald-50 .text-zinc-500, .bg-emerald-50 .text-zinc-600,
+  .bg-blue-50 .text-gray-400, .bg-blue-50 .text-gray-500, .bg-blue-50 .text-gray-600,
+  .bg-blue-50 .text-slate-400, .bg-blue-50 .text-slate-500, .bg-blue-50 .text-slate-600,
+  .bg-blue-50 .text-zinc-400, .bg-blue-50 .text-zinc-500, .bg-blue-50 .text-zinc-600,
+  .bg-amber-50 .text-gray-400, .bg-amber-50 .text-gray-500, .bg-amber-50 .text-gray-600,
+  .bg-amber-50 .text-slate-400, .bg-amber-50 .text-slate-500, .bg-amber-50 .text-slate-600,
+  .bg-amber-50 .text-zinc-400, .bg-amber-50 .text-zinc-500, .bg-amber-50 .text-zinc-600,
+  .bg-rose-50 .text-gray-400, .bg-rose-50 .text-gray-500, .bg-rose-50 .text-gray-600,
+  .bg-rose-50 .text-slate-400, .bg-rose-50 .text-slate-500, .bg-rose-50 .text-slate-600,
+  .bg-rose-50 .text-zinc-400, .bg-rose-50 .text-zinc-500, .bg-rose-50 .text-zinc-600,
+  .bg-indigo-50 .text-gray-400, .bg-indigo-50 .text-gray-500, .bg-indigo-50 .text-gray-600,
+  .bg-indigo-50 .text-slate-400, .bg-indigo-50 .text-slate-500, .bg-indigo-50 .text-slate-600,
+  .bg-purple-50 .text-gray-400, .bg-purple-50 .text-gray-500, .bg-purple-50 .text-gray-600,
+  .bg-purple-50 .text-slate-400, .bg-purple-50 .text-slate-500, .bg-purple-50 .text-slate-600 {
+    color: #1a1a2e !important; /* deep near-black for full legibility */
+  }
+
+  /* --- Standalone gray/zinc text elements NOT inside dark containers --- */
+  /* Catch any element directly using gray classes on the root light background */
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-gray-400,
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-gray-500,
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-slate-400,
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-slate-500,
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-zinc-400,
+  :not(.dark):not(.bg-slate-800):not(.bg-slate-900):not(.bg-gray-800):not(.bg-gray-900):not(.bg-black):not([class*="bg-zinc-8"]):not([class*="bg-zinc-9"]):not([class*="bg-indigo-9"]):not([class*="bg-blue-9"]):not([class*="bg-blue-8"]) > .text-zinc-500 {
+    color: #374151 !important; /* dark gray-700 equivalent - readable on any light bg */
+  }
+
+  /* Legacy class-selector fallback for generic bg-white containers (ensures backward compat) */
   [class*="bg-white"] p[class*="text-gray-"],
   [class*="bg-white"] p[class*="text-slate-"],
+  [class*="bg-white"] p[class*="text-zinc-"],
   [class*="bg-white"] span[class*="text-gray-"],
   [class*="bg-white"] span[class*="text-slate-"],
+  [class*="bg-white"] span[class*="text-zinc-"],
   [class*="bg-white"] div[class*="text-gray-"],
   [class*="bg-white"] div[class*="text-slate-"],
+  [class*="bg-white"] div[class*="text-zinc-"],
   [class*="bg-white"] label[class*="text-gray-"],
-  [class*="bg-white"] label[class*="text-slate-"] {
-    color: #0f172a !important; /* Crisp, readable jet-black */
+  [class*="bg-white"] label[class*="text-slate-"],
+  [class*="bg-white"] label[class*="text-zinc-"],
+  [class*="bg-white"] td[class*="text-gray-"],
+  [class*="bg-white"] td[class*="text-slate-"],
+  [class*="bg-white"] td[class*="text-zinc-"],
+  [class*="bg-white"] th[class*="text-gray-"],
+  [class*="bg-white"] th[class*="text-slate-"],
+  [class*="bg-white"] th[class*="text-zinc-"],
+  [class*="bg-white"] li[class*="text-gray-"],
+  [class*="bg-white"] li[class*="text-slate-"],
+  [class*="bg-white"] li[class*="text-zinc-"],
+  [class*="bg-white"] h1[class*="text-gray-"],
+  [class*="bg-white"] h2[class*="text-gray-"],
+  [class*="bg-white"] h3[class*="text-gray-"],
+  [class*="bg-white"] h4[class*="text-gray-"],
+  [class*="bg-white"] h5[class*="text-gray-"] {
+    color: #0f172a !important;
   }
 
   input::placeholder, textarea::placeholder {

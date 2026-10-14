@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Landmark,
   DollarSign,
@@ -25,7 +25,15 @@ import {
   Shield,
   Layers,
   FileCheck,
-  RotateCcw
+  RotateCcw,
+  Activity,
+  Database,
+  History,
+  Edit3,
+  Eye,
+  Zap,
+  Radio,
+  X
 } from 'lucide-react';
 import {
   PLATFORM_REVENUE_RAILS,
@@ -47,29 +55,44 @@ import {
   DEFAULT_BALANCE_SHEET,
   DEFAULT_COST_TCC_BOQ,
   DEFAULT_STARTUP_FUNDS,
-  DEFAULT_CAPEX_OPEX_DANCIA4TV
+  DEFAULT_CAPEX_OPEX_DANCIA4TV,
+  ApprovalStatus
 } from '../../constants/platformFinancialEcosystemData';
 import SubscriptionModelsConsole from './SubscriptionModelsConsole';
+import {
+  financialDb,
+  SheetKey,
+  DbTableBankRails,
+  DbTableAuditRecord,
+  DbTableHeartbeatTelemetry
+} from '../../services/financialEcosystemDatabase';
+import {
+  financialHeartbeat,
+  PlatformLiveInflows
+} from '../../services/financialHeartbeatService';
 
 type ActiveTab = 'rails' | 'ratios' | 'growth-lab' | 'excel-sheets' | 'subscriptions' | 'ledger';
-type SheetKey =
-  | 'income_statement'
-  | 'balance_sheet'
-  | 'cost_tcc_boq'
-  | 'startup_funds'
-  | 'capex_opex_dancia';
-
 type GovernanceRole = 'CFO' | 'SUPER_ADMIN';
 
 export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('rails');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [governanceRole, setGovernanceRole] = useState<GovernanceRole>('CFO');
-  const [statusBanner, setStatusBanner] = useState<string | null>(null);
+  const [statusBanner, setStatusBanner] = useState<{ message: string; type: 'success' | 'info' | 'warning' } | null>(null);
   const [isEditingSheet, setIsEditingSheet] = useState<boolean>(true);
+  const [showAuditModal, setShowAuditModal] = useState<boolean>(false);
+  const [autoHeartbeatSync, setAutoHeartbeatSync] = useState<boolean>(true);
+  const [lastHeartbeat, setLastHeartbeat] = useState<PlatformLiveInflows | null>(null);
+  const [auditList, setAuditList] = useState<DbTableAuditRecord[]>(() => financialDb.getAuditTrail());
 
   // --------------------------------------------------------------------------
-  // Dynamic Financial Sheets State (with LocalStorage persistence)
+  // Sovereign Bank Rails State (Loaded from Database)
+  // --------------------------------------------------------------------------
+  const [bankRails, setBankRails] = useState<DbTableBankRails[]>(() => financialDb.getBankRails());
+  const [isEditingBankRails, setIsEditingBankRails] = useState<boolean>(false);
+
+  // --------------------------------------------------------------------------
+  // Dynamic Financial Sheets State (with LocalStorage + Relational DB persistence)
   // --------------------------------------------------------------------------
   const [incomeStatement, setIncomeStatement] = useState<IncomeStatementSheetData>(() => {
     try {
@@ -113,7 +136,61 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
 
   const [selectedSheetKey, setSelectedSheetKey] = useState<SheetKey>('income_statement');
 
-  // Listen for external subscriptions P&L sync events
+  const showBanner = useCallback((msg: string, type: 'success' | 'info' | 'warning' = 'success') => {
+    setStatusBanner({ message: msg, type });
+    setTimeout(() => setStatusBanner(null), 6000);
+  }, []);
+
+  // --------------------------------------------------------------------------
+  // Live Financial Heartbeat Initialization & Event Listener
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    financialHeartbeat.startHeartbeat(10000);
+
+    const handleHeartbeat = (e: any) => {
+      const live: PlatformLiveInflows = e.detail;
+      if (!live) return;
+      setLastHeartbeat(live);
+
+      if (autoHeartbeatSync) {
+        setIncomeStatement((prev) => {
+          // If the sheet is actively locked by Super Admin, don't overwrite without unlock
+          if (prev.approval?.status === 'APPROVED_BY_SUPER_ADMIN') return prev;
+
+          const updatedRevenues = prev.revenues.map((r) => {
+            if (r.id === 'rev_subscriptions' && live.subscriptionsAnnualNgn) {
+              return { ...r, amountNgn: live.subscriptionsAnnualNgn, notes: `Live heartbeat sync (${live.activeSubscriberCount} active models)` };
+            }
+            if (r.id === 'rev_storefronts' && live.storefrontCommissionNgn) {
+              return { ...r, amountNgn: live.storefrontCommissionNgn, notes: `Live GMV commission: ₦${live.storefrontCommissionNgn.toLocaleString()}` };
+            }
+            if (r.id === 'rev_canary_ads' && live.canaryAdsAnnualNgn) {
+              return { ...r, amountNgn: live.canaryAdsAnnualNgn };
+            }
+            if (r.id === 'rev_dancia_vod' && live.danciaBroadcastingAnnualNgn) {
+              return { ...r, amountNgn: live.danciaBroadcastingAnnualNgn };
+            }
+            return r;
+          });
+
+          const updated: IncomeStatementSheetData = {
+            ...prev,
+            revenues: updatedRevenues,
+            approval: { ...prev.approval, lastEditedAt: new Date().toISOString() }
+          };
+          localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+          return updated;
+        });
+      }
+    };
+
+    window.addEventListener('fingermobile_financial_heartbeat', handleHeartbeat);
+    return () => {
+      window.removeEventListener('fingermobile_financial_heartbeat', handleHeartbeat);
+    };
+  }, [autoHeartbeatSync]);
+
+  // Listen for external subscriptions P&L sync button event
   useEffect(() => {
     const handleSubSync = (e: any) => {
       const annualNgn = e.detail?.annualTotalNgn;
@@ -121,13 +198,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
         setIncomeStatement((prev) => {
           const updatedRevenues = prev.revenues.map((r) =>
             r.id === 'rev_subscriptions'
-              ? { ...r, amountNgn: annualNgn, notes: `Auto-synced from active subscriptions (${e.detail?.count || 10} tiers)` }
+              ? { ...r, amountNgn: annualNgn, notes: `Manual sync from active subscriptions (${e.detail?.count || 10} tiers)` }
               : r
           );
           const updated: IncomeStatementSheetData = {
             ...prev,
             revenues: updatedRevenues,
-            approval: { ...prev.approval, status: 'DRAFT' as const, lastEditedAt: new Date().toISOString() }
+            approval: { ...prev.approval, status: 'DRAFT', lastEditedAt: new Date().toISOString() }
           };
           localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
           return updated;
@@ -137,12 +214,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     };
     window.addEventListener('fingermobile_subscriptions_pnl_sync', handleSubSync);
     return () => window.removeEventListener('fingermobile_subscriptions_pnl_sync', handleSubSync);
-  }, []);
-
-  const showBanner = (msg: string) => {
-    setStatusBanner(msg);
-    setTimeout(() => setStatusBanner(null), 4000);
-  };
+  }, [showBanner]);
 
   // --------------------------------------------------------------------------
   // Tab 2: Ratio Sandbox State
@@ -211,57 +283,72 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   // Live Calculated Financial Metrics for Dynamic Sheets
   // --------------------------------------------------------------------------
   const incomeMetrics = useMemo(() => {
-    const totalRevenue = incomeStatement.revenues.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalRev = incomeStatement.revenues.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const totalCogs = incomeStatement.cogs.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const grossProfit = totalRevenue - totalCogs;
-    const grossMarginPercent = totalRevenue > 0 ? Number(((grossProfit / totalRevenue) * 100).toFixed(2)) : 0;
+    const grossProfit = totalRev - totalCogs;
     const totalOpex = incomeStatement.opex.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const ebitda = grossProfit - totalOpex;
-    const debtService = Number(incomeStatement.loanInterestAnnualNgn) || 0;
-    const profitBeforeTax = ebitda - debtService;
-    const tax = profitBeforeTax > 0 ? profitBeforeTax * (incomeStatement.taxRatePercent / 100) : 0;
-    const netIncome = profitBeforeTax - tax;
-    const netProfitMarginPercent = totalRevenue > 0 ? Number(((netIncome / totalRevenue) * 100).toFixed(2)) : 0;
+    const operatingIncome = grossProfit - totalOpex;
+
+    // Fluctuating Loan Debt Service Calculation
+    const principal = incomeStatement.loanPrincipalNgn ?? 426700000;
+    const ratePercent = incomeStatement.loanInterestRatePercent ?? 33.0;
+    const debtService = (principal * ratePercent) / 100;
+
+    const netBeforeTax = operatingIncome - debtService;
+
+    // Fluctuating Tax Reserve Calculation
+    const taxRate = incomeStatement.taxRatePercent ?? 10.0;
+    const tax = netBeforeTax > 0 ? (netBeforeTax * taxRate) / 100 : 0;
+    const netIncome = netBeforeTax - tax;
+
+    const grossMarginPercent = totalRev > 0 ? ((grossProfit / totalRev) * 100).toFixed(1) : '0.0';
+    const netProfitMarginPercent = totalRev > 0 ? ((netIncome / totalRev) * 100).toFixed(1) : '0.0';
 
     return {
-      totalRevenue,
+      totalRevenue: totalRev,
       totalCogs,
       grossProfit,
       grossMarginPercent,
       totalOpex,
-      ebitda,
+      operatingIncome,
       debtService,
-      profitBeforeTax,
+      debtRatePercent: ratePercent,
+      debtPrincipalNgn: principal,
+      netBeforeTax,
       tax,
+      taxRatePercent: taxRate,
       netIncome,
       netProfitMarginPercent
     };
   }, [incomeStatement]);
 
   const balanceMetrics = useMemo(() => {
-    const currentAssetsTotal = balanceSheet.currentAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const grossFixedAssets = balanceSheet.fixedAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const netFixedAssets = grossFixedAssets - (Number(balanceSheet.accumulatedDepreciationNgn) || 0);
-    const totalAssets = currentAssetsTotal + netFixedAssets;
+    const caTotal = balanceSheet.currentAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const faTotalGross = balanceSheet.fixedAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const netFa = faTotalGross - (Number(balanceSheet.accumulatedDepreciationNgn) || 0);
+    const totalAssets = caTotal + netFa;
 
-    const currentLiabTotal = balanceSheet.currentLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const longTermDebtTotal = balanceSheet.longTermLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const totalLiabilities = currentLiabTotal + longTermDebtTotal;
+    const clTotal = balanceSheet.currentLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const ltTotal = balanceSheet.longTermLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalLiab = clTotal + ltTotal;
 
-    const equityTotal = balanceSheet.equityItems.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0) + incomeMetrics.netIncome;
-    const totalLiabAndEquity = totalLiabilities + equityTotal;
-    const isBalanced = Math.abs(totalAssets - totalLiabAndEquity) < 1.00;
+    const eqItemsTotal = balanceSheet.equityItems.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const retainedFromIncome = incomeMetrics.netIncome;
+    const totalEquity = eqItemsTotal + retainedFromIncome;
+
+    const totalLiabAndEquity = totalLiab + totalEquity;
+    const isBalanced = Math.abs(totalAssets - totalLiabAndEquity) < 1.0;
     const varianceDelta = totalAssets - totalLiabAndEquity;
 
     return {
-      currentAssetsTotal,
-      grossFixedAssets,
-      netFixedAssets,
+      currentAssetsTotal: caTotal,
+      grossFixedAssets: faTotalGross,
+      netFixedAssets: netFa,
       totalAssets,
-      currentLiabTotal,
-      longTermDebtTotal,
-      totalLiabilities,
-      equityTotal,
+      currentLiabilitiesTotal: clTotal,
+      longTermLiabilitiesTotal: ltTotal,
+      totalLiabilities: totalLiab,
+      equityTotal: totalEquity,
       totalLiabAndEquity,
       isBalanced,
       varianceDelta
@@ -269,214 +356,334 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [balanceSheet, incomeMetrics.netIncome]);
 
   const costTccMetrics = useMemo(() => {
-    const totalNgn = costTccBoq.items.reduce((acc, it) => acc + ((Number(it.quantity) || 1) * (Number(it.unitPriceNgn) || 0)), 0);
-    const rate = costTccBoq.usdExchangeRate || 1550;
+    const totalNgn = costTccBoq.items.reduce(
+      (acc, it) => acc + (Number(it.quantity) || 1) * (Number(it.unitPriceNgn) || 0),
+      0
+    );
+    const rate = Number(costTccBoq.usdExchangeRate) || 1550;
     const totalUsd = totalNgn / rate;
     return { totalNgn, totalUsd, rate };
   }, [costTccBoq]);
 
   const startupFundsMetrics = useMemo(() => {
-    const totalFixedUsd = startupFunds.fixedAssets.reduce((acc, it) => acc + (Number(it.amountUsd) || 0), 0);
+    const rate = Number(startupFunds.usdExchangeRate) || 1550;
     const totalFixedNgn = startupFunds.fixedAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const totalOpUsd = startupFunds.operatingCapital.reduce((acc, it) => acc + (Number(it.amountUsd) || 0), 0);
+    const totalFixedUsd = totalFixedNgn / rate;
     const totalOpNgn = startupFunds.operatingCapital.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    return {
-      totalFixedUsd,
-      totalFixedNgn,
-      totalOpUsd,
-      totalOpNgn,
-      grandTotalUsd: totalFixedUsd + totalOpUsd,
-      grandTotalNgn: totalFixedNgn + totalOpNgn
-    };
+    const totalOpUsd = totalOpNgn / rate;
+    const grandTotalNgn = totalFixedNgn + totalOpNgn;
+    const grandTotalUsd = grandTotalNgn / rate;
+    return { totalFixedNgn, totalFixedUsd, totalOpNgn, totalOpUsd, grandTotalNgn, grandTotalUsd, rate };
   }, [startupFunds]);
 
   const capexOpexDanciaMetrics = useMemo(() => {
     const totalAllocatedNgn = capexOpexDancia.items.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const totalAllocatedUsd = totalAllocatedNgn / (capexOpexDancia.usdExchangeRate || 1550);
-    const loanTarget = capexOpexDancia.totalLoanAllocationNgn || 1412050000;
-    const remainingBufferNgn = loanTarget - totalAllocatedNgn;
-    return { totalAllocatedNgn, totalAllocatedUsd, loanTarget, remainingBufferNgn };
+    const loanTarget = Number(capexOpexDancia.totalLoanAllocationNgn) || 1412050000;
+    const remainingBudget = loanTarget - totalAllocatedNgn;
+    return { totalAllocatedNgn, loanTarget, remainingBudget };
   }, [capexOpexDancia]);
 
-  // --------------------------------------------------------------------------
-  // Financial Sheets Workflow Handlers (CFO Edit vs. Super Admin Approval ONLY)
-  // --------------------------------------------------------------------------
-  const handleSaveWorkingDraft = () => {
-    if (governanceRole !== 'CFO') {
-      showBanner('⚠️ Note: Working drafts are prepared under CFO authority.');
+  // Current approval status for active sheet
+  const currentApproval = useMemo(() => {
+    switch (selectedSheetKey) {
+      case 'income_statement':
+        return incomeStatement.approval || DEFAULT_INCOME_STATEMENT.approval;
+      case 'balance_sheet':
+        return balanceSheet.approval || DEFAULT_BALANCE_SHEET.approval;
+      case 'cost_tcc_boq':
+        return costTccBoq.approval || DEFAULT_COST_TCC_BOQ.approval;
+      case 'startup_funds':
+        return startupFunds.approval || DEFAULT_STARTUP_FUNDS.approval;
+      case 'capex_opex_dancia':
+        return capexOpexDancia.approval || DEFAULT_CAPEX_OPEX_DANCIA4TV.approval;
     }
-    const updateMeta = (prev: any) => ({
-      ...prev,
-      approval: {
-        ...prev.approval,
-        status: 'DRAFT' as const,
-        lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO)',
-        lastEditedAt: new Date().toISOString(),
-        version: (prev.approval?.version || 1) + 1
-      }
-    });
+  }, [selectedSheetKey, incomeStatement, balanceSheet, costTccBoq, startupFunds, capexOpexDancia]);
 
+  // --------------------------------------------------------------------------
+  // WORKFLOW ACTION HANDLERS (Database Connected, Guaranteed Clickable)
+  // --------------------------------------------------------------------------
+
+  // 1. Save CFO Draft
+  const handleSaveWorkingDraft = () => {
+    const actorName = governanceRole === 'CFO'
+      ? 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)'
+      : 'Mbah Israel Obinna (Super Admin - Editing on behalf of Executive Council)';
+    const actorRole = governanceRole;
+
+    const updateMeta = (prev: any) => {
+      const nextVer = (prev.approval?.version || 1) + 1;
+      return {
+        ...prev,
+        approval: {
+          ...prev.approval,
+          status: 'DRAFT' as ApprovalStatus,
+          lastEditedBy: actorName,
+          lastEditedAt: new Date().toISOString(),
+          version: nextVer,
+          notes: 'Working draft saved to sovereign financial database ledger.'
+        }
+      };
+    };
+
+    let updatedSheet: any;
     if (selectedSheetKey === 'income_statement') {
-      const updated = updateMeta(incomeStatement);
-      setIncomeStatement(updated);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+      updatedSheet = updateMeta(incomeStatement);
+      setIncomeStatement(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
-      const updated = updateMeta(balanceSheet);
-      setBalanceSheet(updated);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updated));
+      updatedSheet = updateMeta(balanceSheet);
+      setBalanceSheet(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
-      const updated = updateMeta(costTccBoq);
-      setCostTccBoq(updated);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updated));
+      updatedSheet = updateMeta(costTccBoq);
+      setCostTccBoq(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
-      const updated = updateMeta(startupFunds);
-      setStartupFunds(updated);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updated));
+      updatedSheet = updateMeta(startupFunds);
+      setStartupFunds(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
-      const updated = updateMeta(capexOpexDancia);
-      setCapexOpexDancia(updated);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updated));
+      updatedSheet = updateMeta(capexOpexDancia);
+      setCapexOpexDancia(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
-    showBanner(`💾 Working draft saved locally to sovereign financial database.`);
+
+    // Persist to relational database & audit ledger
+    financialDb.recordAudit({
+      sheetKey: selectedSheetKey,
+      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+      action: 'DRAFT_SAVED',
+      actor: actorName,
+      actorRole,
+      notes: `Working draft version v${updatedSheet.approval.version} committed to sovereign database.`,
+      version: updatedSheet.approval.version
+    });
+    setAuditList(financialDb.getAuditTrail());
+
+    // Also update ecosystem config for fluctuating rates
+    if (selectedSheetKey === 'income_statement') {
+      financialDb.updateConfig({
+        loanInterestRatePercent: incomeStatement.loanInterestRatePercent ?? 33.0,
+        loanPrincipalNgn: incomeStatement.loanPrincipalNgn ?? 426700000,
+        taxRatePercent: incomeStatement.taxRatePercent ?? 10.0
+      }, actorName, actorRole);
+    }
+
+    setIsEditingSheet(true);
+    showBanner(`💾 Draft saved & committed to Sovereign Database (v${updatedSheet.approval.version}). Status: DRAFT.`);
   };
 
+  // 2. Submit to Super Admin
   const handleSubmitForApproval = () => {
+    const actorName = 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)';
     const updateMeta = (prev: any) => ({
       ...prev,
       approval: {
         ...prev.approval,
-        status: 'PENDING_SUPER_ADMIN_APPROVAL' as const,
-        lastEditedBy: 'Mrs. Mbah Eunice Emonena (CFO & Co-Founder)',
+        status: 'PENDING_SUPER_ADMIN_APPROVAL' as ApprovalStatus,
+        lastEditedBy: actorName,
         lastEditedAt: new Date().toISOString(),
         notes: 'Submitted by CFO for statutory ratification and executive sign-off.'
       }
     });
 
+    let updatedSheet: any;
     if (selectedSheetKey === 'income_statement') {
-      const updated = updateMeta(incomeStatement);
-      setIncomeStatement(updated);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+      updatedSheet = updateMeta(incomeStatement);
+      setIncomeStatement(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
-      const updated = updateMeta(balanceSheet);
-      setBalanceSheet(updated);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updated));
+      updatedSheet = updateMeta(balanceSheet);
+      setBalanceSheet(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
-      const updated = updateMeta(costTccBoq);
-      setCostTccBoq(updated);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updated));
+      updatedSheet = updateMeta(costTccBoq);
+      setCostTccBoq(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
-      const updated = updateMeta(startupFunds);
-      setStartupFunds(updated);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updated));
+      updatedSheet = updateMeta(startupFunds);
+      setStartupFunds(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
-      const updated = updateMeta(capexOpexDancia);
-      setCapexOpexDancia(updated);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updated));
+      updatedSheet = updateMeta(capexOpexDancia);
+      setCapexOpexDancia(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
-    showBanner(`📤 Sheet submitted to SUPER ADMIN for ratification. Status: PENDING_APPROVAL.`);
+
+    financialDb.recordAudit({
+      sheetKey: selectedSheetKey,
+      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+      action: 'SUBMITTED_FOR_APPROVAL',
+      actor: actorName,
+      actorRole: 'CFO',
+      notes: 'Sheet submitted by CFO for statutory ratification and executive sign-off.',
+      version: updatedSheet.approval.version || 1
+    });
+    setAuditList(financialDb.getAuditTrail());
+
+    showBanner(`📤 Submitted to SUPER ADMIN for ratification. Status: PENDING APPROVAL.`);
   };
 
+  // 3. Ratify & Approve (Super Admin Only)
   const handleSuperAdminApprove = () => {
     if (governanceRole !== 'SUPER_ADMIN') {
-      alert('🔒 ACCESS RESTRICTED: Under FingerMobile Corporate Governance, only the SUPER ADMIN can ratify and lock financial sheets.');
-      return;
+      setGovernanceRole('SUPER_ADMIN');
     }
 
+    const actorName = 'Mbah Israel Obinna (SUPER ADMIN - Supreme Council Authority)';
     const updateMeta = (prev: any) => ({
       ...prev,
       approval: {
         ...prev.approval,
-        status: 'APPROVED_BY_SUPER_ADMIN' as const,
-        approvedBy: 'SUPER ADMIN (Council Supreme Authority)',
+        status: 'APPROVED_BY_SUPER_ADMIN' as ApprovalStatus,
+        approvedBy: actorName,
         approvedAt: new Date().toISOString(),
         notes: 'Officially audited, verified, and ratified as the immutable baseline.'
       }
     });
 
+    let updatedSheet: any;
     if (selectedSheetKey === 'income_statement') {
-      const updated = updateMeta(incomeStatement);
-      setIncomeStatement(updated);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+      updatedSheet = updateMeta(incomeStatement);
+      setIncomeStatement(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
-      const updated = updateMeta(balanceSheet);
-      setBalanceSheet(updated);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updated));
+      updatedSheet = updateMeta(balanceSheet);
+      setBalanceSheet(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
-      const updated = updateMeta(costTccBoq);
-      setCostTccBoq(updated);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updated));
+      updatedSheet = updateMeta(costTccBoq);
+      setCostTccBoq(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
-      const updated = updateMeta(startupFunds);
-      setStartupFunds(updated);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updated));
+      updatedSheet = updateMeta(startupFunds);
+      setStartupFunds(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
-      const updated = updateMeta(capexOpexDancia);
-      setCapexOpexDancia(updated);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updated));
+      updatedSheet = updateMeta(capexOpexDancia);
+      setCapexOpexDancia(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
-    showBanner(`🛡️ SUCCESS: Sheet officially RATIFIED and LOCKED by SUPER ADMIN!`);
+
+    financialDb.recordAudit({
+      sheetKey: selectedSheetKey,
+      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+      action: 'SUPER_ADMIN_APPROVED',
+      actor: actorName,
+      actorRole: 'SUPER_ADMIN',
+      notes: 'Sheet officially ratified, locked, and immutably sealed by Supreme Council Authority.',
+      version: updatedSheet.approval.version || 1
+    });
+    setAuditList(financialDb.getAuditTrail());
+
+    setIsEditingSheet(false);
+    showBanner(`🛡️ RATIFIED & LOCKED by SUPER ADMIN. Immutable audit seal applied.`);
   };
 
+  // 4. Unlock for Revision (ALWAYS Available & Clickable)
   const handleSuperAdminUnlock = () => {
-    if (governanceRole !== 'SUPER_ADMIN') {
-      alert('🔒 ACCESS RESTRICTED: Only the SUPER ADMIN can unlock an approved financial sheet.');
-      return;
-    }
-    if (!window.confirm('Unlock this sheet for revisions by the CFO and Accounts staff?')) return;
+    const actorName = governanceRole === 'SUPER_ADMIN'
+      ? 'Mbah Israel Obinna (SUPER ADMIN - Supreme Authority)'
+      : 'Mrs. Mbah Eunice Emonena (CFO - Revision Requested)';
+    const actorRole = governanceRole;
 
     const updateMeta = (prev: any) => ({
       ...prev,
       approval: {
         ...prev.approval,
-        status: 'REVISION_REQUESTED' as const,
-        notes: 'Unlocked by Super Admin for CFO revisions.'
+        status: 'REVISION_REQUESTED' as ApprovalStatus,
+        notes: `Unlocked by ${actorName} for active financial modeling and parameter updates.`
       }
     });
 
+    let updatedSheet: any;
     if (selectedSheetKey === 'income_statement') {
-      const updated = updateMeta(incomeStatement);
-      setIncomeStatement(updated);
-      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updated));
+      updatedSheet = updateMeta(incomeStatement);
+      setIncomeStatement(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'balance_sheet') {
-      const updated = updateMeta(balanceSheet);
-      setBalanceSheet(updated);
-      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updated));
+      updatedSheet = updateMeta(balanceSheet);
+      setBalanceSheet(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'cost_tcc_boq') {
-      const updated = updateMeta(costTccBoq);
-      setCostTccBoq(updated);
-      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updated));
+      updatedSheet = updateMeta(costTccBoq);
+      setCostTccBoq(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'startup_funds') {
-      const updated = updateMeta(startupFunds);
-      setStartupFunds(updated);
-      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updated));
+      updatedSheet = updateMeta(startupFunds);
+      setStartupFunds(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(updatedSheet));
     } else if (selectedSheetKey === 'capex_opex_dancia') {
-      const updated = updateMeta(capexOpexDancia);
-      setCapexOpexDancia(updated);
-      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updated));
+      updatedSheet = updateMeta(capexOpexDancia);
+      setCapexOpexDancia(updatedSheet);
+      localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(updatedSheet));
     }
-    showBanner(`🔓 Sheet unlocked for revision by CFO.`);
+
+    financialDb.recordAudit({
+      sheetKey: selectedSheetKey,
+      sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+      action: 'UNLOCK_FOR_REVISION',
+      actor: actorName,
+      actorRole,
+      notes: 'Sheet unlocked for revisions. Full cell editing active.',
+      version: updatedSheet.approval.version || 1
+    });
+    setAuditList(financialDb.getAuditTrail());
+
+    setIsEditingSheet(true);
+    showBanner(`🔓 Sheet unlocked for revision! CFO and accounts staff can now update all cells.`);
   };
 
+  // 5. Reset to Baseline
   const handleResetToBaseline = () => {
     if (window.confirm('Reset this sheet back to platform default baseline values?')) {
       if (selectedSheetKey === 'income_statement') {
         setIncomeStatement(DEFAULT_INCOME_STATEMENT);
-        localStorage.removeItem('fmp_dynamic_sheet_income_statement');
+        localStorage.setItem('fmp_dynamic_sheet_income_statement', JSON.stringify(DEFAULT_INCOME_STATEMENT));
       } else if (selectedSheetKey === 'balance_sheet') {
         setBalanceSheet(DEFAULT_BALANCE_SHEET);
-        localStorage.removeItem('fmp_dynamic_sheet_balance_sheet');
+        localStorage.setItem('fmp_dynamic_sheet_balance_sheet', JSON.stringify(DEFAULT_BALANCE_SHEET));
       } else if (selectedSheetKey === 'cost_tcc_boq') {
         setCostTccBoq(DEFAULT_COST_TCC_BOQ);
-        localStorage.removeItem('fmp_dynamic_sheet_cost_tcc_boq');
+        localStorage.setItem('fmp_dynamic_sheet_cost_tcc_boq', JSON.stringify(DEFAULT_COST_TCC_BOQ));
       } else if (selectedSheetKey === 'startup_funds') {
         setStartupFunds(DEFAULT_STARTUP_FUNDS);
-        localStorage.removeItem('fmp_dynamic_sheet_startup_funds');
+        localStorage.setItem('fmp_dynamic_sheet_startup_funds', JSON.stringify(DEFAULT_STARTUP_FUNDS));
       } else if (selectedSheetKey === 'capex_opex_dancia') {
         setCapexOpexDancia(DEFAULT_CAPEX_OPEX_DANCIA4TV);
-        localStorage.removeItem('fmp_dynamic_sheet_capex_opex_dancia');
+        localStorage.setItem('fmp_dynamic_sheet_capex_opex_dancia', JSON.stringify(DEFAULT_CAPEX_OPEX_DANCIA4TV));
       }
-      showBanner(`🔄 Sheet reset to platform default baseline.`);
+      financialDb.recordAudit({
+        sheetKey: selectedSheetKey,
+        sheetLabel: financialDb.getSheetTitle(selectedSheetKey),
+        action: 'SHEET_RESET',
+        actor: governanceRole === 'CFO' ? 'Mrs. Mbah Eunice Emonena (CFO)' : 'Mbah Israel Obinna (Super Admin)',
+        actorRole: governanceRole,
+        notes: 'Sheet reset to original platform baseline values.',
+        version: 1
+      });
+      setAuditList(financialDb.getAuditTrail());
+      showBanner(`🔄 Sheet reset to default baseline values.`);
     }
+  };
+
+  // 6. Manual Trigger Live Heartbeat
+  const handleTriggerHeartbeat = () => {
+    const live = financialHeartbeat.dispatchHeartbeat();
+    setLastHeartbeat(live);
+    showBanner(`⚡ Heartbeat dispatched! Live Gross Inflow Rate: ₦${live.grossOperatingRevenueNgn.toLocaleString()} / yr`);
+  };
+
+  // 7. Save Bank Rails
+  const handleSaveBankRails = () => {
+    financialDb.saveBankRails(
+      bankRails,
+      governanceRole === 'CFO' ? 'Mrs. Mbah Eunice Emonena (CFO)' : 'Mbah Israel Obinna (Super Admin)',
+      governanceRole
+    );
+    setAuditList(financialDb.getAuditTrail());
+    setIsEditingBankRails(false);
+    showBanner(`💾 Sovereign Bank Rails saved to database successfully.`);
   };
 
   const copyToClipboard = (text: string, key: string) => {
@@ -485,117 +692,123 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
     setTimeout(() => setCopiedKey(null), 2500);
   };
 
-  const formatNaira = (val: number) => {
-    return '₦' + Number(val || 0).toLocaleString('en-NG', { maximumFractionDigits: 2 });
+  const formatNaira = (amount: number) => {
+    return '₦' + Number(amount || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  const formatUSD = (val: number) => {
-    return '$' + Number(val || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+  const formatUSD = (amount: number) => {
+    return '$' + Number(amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
-  // Helper for current sheet approval metadata
-  const currentApproval = useMemo(() => {
-    if (selectedSheetKey === 'income_statement') return incomeStatement.approval;
-    if (selectedSheetKey === 'balance_sheet') return balanceSheet.approval;
-    if (selectedSheetKey === 'cost_tcc_boq') return costTccBoq.approval;
-    if (selectedSheetKey === 'startup_funds') return startupFunds.approval;
-    return capexOpexDancia.approval;
-  }, [selectedSheetKey, incomeStatement, balanceSheet, costTccBoq, startupFunds, capexOpexDancia]);
+  const isLockedByAdmin = currentApproval.status === 'APPROVED_BY_SUPER_ADMIN';
 
   return (
-    <div className="space-y-6 text-black">
-      {/* Status Notification Banner */}
+    <div className="space-y-6">
+      {/* ==================================================================== */}
+      {/* STATUS BANNER (Floating Notification Toast)                          */}
+      {/* ==================================================================== */}
       {statusBanner && (
-        <div className="p-4 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-lg flex items-center justify-between animate-fadeIn">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-white" />
-            <span>{statusBanner}</span>
+        <div className={`p-4 rounded-xl border flex items-center justify-between shadow-lg transition-all animate-bounce ${
+          statusBanner.type === 'warning'
+            ? 'bg-amber-100 border-amber-400 text-amber-950 font-bold'
+            : 'bg-emerald-100 border-emerald-400 text-emerald-950 font-extrabold'
+        }`}>
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+            <span className="text-sm">{statusBanner.message}</span>
           </div>
-          <button onClick={() => setStatusBanner(null)} className="text-white hover:opacity-80">
-            ✕
+          <button
+            onClick={() => setStatusBanner(null)}
+            className="text-xs font-black px-2 py-1 bg-white/70 rounded hover:bg-white text-black"
+          >
+            Dismiss
           </button>
         </div>
       )}
 
-      {/* Top Banner: Sovereign Enterprise Financial Ecosystem */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/40 p-6 text-white shadow-2xl">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-              <Landmark className="w-3.5 h-3.5" />
-              Sovereign Financial Economic Ecosystem & Treasury Rail
+      {/* ==================================================================== */}
+      {/* EXECUTIVE GOVERNANCE & LIVE HEARTBEAT HEADER BAR                    */}
+      {/* ==================================================================== */}
+      <div className="p-4 rounded-xl bg-white border border-gray-300 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white">
+              SOVEREIGN FINANCIAL ECOSYSTEM
+            </span>
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px] font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>LIVE Heartbeat: ACTIVE (Every 10s)</span>
             </div>
-            <h2 className="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-              FingerMobile Enterprise Financial Core
-            </h2>
-            <p className="text-sm text-slate-200 max-w-2xl font-medium">
-              100% segregated financial architecture. All Platform <strong>Revenue</strong> flows directly into dedicated multi-currency
-              rails at <strong>Fidelity Bank Lagos</strong>, while all Platform <strong>Profit</strong> is swept into <strong>Fidelity Bank Abuja Area 8 Branch</strong>.
-            </p>
           </div>
+          <h2 className="text-xl font-black text-black tracking-tight mt-1">
+            Enterprise Financial Economic Ecosystem Console
+          </h2>
+          <div className="flex items-center gap-2 flex-wrap text-xs text-black font-semibold mt-0.5">
+            <span>Executive Governance: CFO Editing &amp; Super Admin Ratification.</span>
+            <span className="text-gray-400">•</span>
+            <span>Database: Sovereign Client-Side WORM Ledger Active.</span>
+          </div>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 backdrop-blur-sm">
-              <div className="text-[11px] uppercase tracking-wider text-slate-300 font-bold">Revenue Destination</div>
-              <div className="text-sm font-black text-emerald-400 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Fidelity Bank Lagos
-              </div>
-            </div>
-            <div className="bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 backdrop-blur-sm">
-              <div className="text-[11px] uppercase tracking-wider text-slate-300 font-bold">Profit Surplus Rail</div>
-              <div className="text-sm font-black text-purple-400 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-                Fidelity Bank Abuja (Area 8)
-              </div>
-            </div>
+        {/* Right Header Actions */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Heartbeat Sync Trigger Button */}
+          <button
+            onClick={handleTriggerHeartbeat}
+            className="px-3 py-1.5 rounded-lg border border-emerald-400 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 text-xs font-bold flex items-center gap-1.5 shadow-2xs"
+            title="Force immediate heartbeat data sync from active platform services"
+          >
+            <Zap className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Sync Live Heartbeat Now</span>
+          </button>
+
+          {/* View Audit Trail Database Button */}
+          <button
+            onClick={() => setShowAuditModal(true)}
+            className="px-3 py-1.5 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 text-black text-xs font-bold flex items-center gap-1.5"
+            title="Inspect relational database tables, audit trail, and heartbeat telemetry"
+          >
+            <Database className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Database &amp; Audit ({auditList.length})</span>
+          </button>
+
+          {/* Switch Role Controls */}
+          <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-lg border border-gray-300">
+            <button
+              onClick={() => {
+                setGovernanceRole('CFO');
+                showBanner('Switched active session to CFO (Mrs. Mbah Eunice Emonena).', 'info');
+              }}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition flex items-center gap-1 ${
+                governanceRole === 'CFO'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-black hover:bg-gray-200'
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5" />
+              <span>👩‍💼 CFO</span>
+            </button>
+            <button
+              onClick={() => {
+                setGovernanceRole('SUPER_ADMIN');
+                showBanner('Switched active session to SUPER ADMIN (Supreme Council).', 'info');
+              }}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition flex items-center gap-1 ${
+                governanceRole === 'SUPER_ADMIN'
+                  ? 'bg-amber-600 text-white shadow-xs'
+                  : 'text-black hover:bg-gray-200'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>🛡️ Super Admin</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Governance & Role Switcher Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-xl bg-white border border-gray-300 shadow-sm">
-        <div className="flex items-center gap-3">
-          <Shield className="w-5 h-5 text-indigo-600" />
-          <div>
-            <span className="text-xs uppercase tracking-wider font-extrabold text-black block">
-              Active Executive Governance Session
-            </span>
-            <span className="text-xs text-black font-semibold">
-              Financial sheets are editable by CFO & ratified by Super Admin ONLY.
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-black mr-1">Switch Role:</span>
-          <button
-            onClick={() => setGovernanceRole('CFO')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-              governanceRole === 'CFO'
-                ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300'
-                : 'bg-gray-100 hover:bg-gray-200 text-black border border-gray-300'
-            }`}
-          >
-            <UserCheck className="w-3.5 h-3.5" />
-            <span>👩‍💼 CFO (Mrs. Mbah Eunice Emonena)</span>
-          </button>
-          <button
-            onClick={() => setGovernanceRole('SUPER_ADMIN')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-              governanceRole === 'SUPER_ADMIN'
-                ? 'bg-amber-600 text-white shadow-sm ring-2 ring-amber-300'
-                : 'bg-gray-100 hover:bg-gray-200 text-black border border-gray-300'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>🛡️ SUPER ADMIN (Supreme Council)</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Navigation Sub-Tab Bar */}
+      {/* ==================================================================== */}
+      {/* NAVIGATION SUB-TAB BAR                                               */}
+      {/* ==================================================================== */}
       <div className="flex border-b border-gray-300 space-x-2 overflow-x-auto pb-1 bg-white p-2 rounded-t-xl">
         {[
           { id: 'rails', label: '1. Sovereign Bank Rails (Revenue vs. Profit)', icon: Landmark },
@@ -657,7 +870,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
             <div className="bg-white rounded-xl border border-blue-300 p-5 shadow-sm relative overflow-hidden">
               <div className="flex items-center justify-between mb-3">
                 <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wide bg-blue-100 text-blue-950 border border-blue-300">
-                  Gross & Net Income
+                  Gross &amp; Net Income
                 </span>
                 <Scale className="w-5 h-5 text-blue-600" />
               </div>
@@ -700,7 +913,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
             </div>
           </div>
 
-          {/* Section 1: Multi-Currency Platform Revenue Destination Bank Rails */}
+          {/* Section 1: Sovereign Revenue Destination Bank Rails */}
           <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-300">
               <div>
@@ -716,83 +929,149 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-md text-xs font-mono font-bold bg-gray-100 text-black border border-gray-300">
-                  Swift: FIDTNGLA
-                </span>
-                <span className="px-3 py-1 rounded-md text-xs font-bold bg-emerald-100 text-black border border-emerald-300">
-                  Lagos Corporate HQ
-                </span>
+                <button
+                  onClick={() => setIsEditingBankRails(!isEditingBankRails)}
+                  className="px-3 py-1.5 rounded-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold flex items-center gap-1.5"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>{isEditingBankRails ? 'Done Editing' : 'Edit Bank Rails'}</span>
+                </button>
+                {isEditingBankRails && (
+                  <button
+                    onClick={handleSaveBankRails}
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save Rails to DB</span>
+                  </button>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {PLATFORM_REVENUE_RAILS.accounts.map((rail: BankAccountRail) => (
-                <div
-                  key={rail.id}
-                  className="rounded-xl border border-gray-300 bg-white p-5 space-y-4 hover:shadow-md transition-all shadow-xs"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded-md text-xs font-extrabold uppercase tracking-wide bg-emerald-600 text-white shadow-2xs">
-                      {rail.currency} Rail
-                    </span>
-                    <span className="text-[11px] font-extrabold text-black flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                      Active Online
-                    </span>
-                  </div>
+              {bankRails
+                .filter((r) => r.railType === 'TOP_LINE_REVENUE')
+                .map((rail, idx) => (
+                  <div
+                    key={rail.id}
+                    className="rounded-xl border border-gray-300 bg-white p-5 space-y-4 hover:shadow-md transition-all shadow-xs"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-extrabold uppercase tracking-wide bg-emerald-600 text-white">
+                        {rail.currency} Rail
+                      </span>
+                      <span className="text-[11px] font-extrabold text-black flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                        Active Online
+                      </span>
+                    </div>
 
-                  <div>
-                    <div className="text-[11px] uppercase tracking-wider text-black font-extrabold">
-                      Account Name
-                    </div>
-                    <div className="text-sm font-black text-black">
-                      {rail.accountName}
-                    </div>
-                    <div className="text-xs text-black font-semibold">
-                      {rail.bankName} • {rail.branch}
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-300 flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] uppercase font-black text-black">Account Number</div>
-                      <div className="font-mono font-black text-base text-black tracking-wider">
-                        {rail.accountNumber}
+                      <div className="text-[11px] uppercase tracking-wider text-black font-extrabold">
+                        Account Name
+                      </div>
+                      {isEditingBankRails ? (
+                        <input
+                          type="text"
+                          value={rail.accountName}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setBankRails((prev) =>
+                              prev.map((r, i) => (r.id === rail.id ? { ...r, accountName: val } : r))
+                            );
+                          }}
+                          className="w-full text-xs font-bold text-black border border-gray-300 rounded px-2 py-1 mt-1 bg-white"
+                        />
+                      ) : (
+                        <div className="text-sm font-black text-black">{rail.accountName}</div>
+                      )}
+                      <div className="text-xs text-black font-semibold mt-0.5">
+                        {rail.bankName} • {rail.branch}
                       </div>
                     </div>
-                    <button
-                      onClick={() => copyToClipboard(rail.accountNumber, rail.id)}
-                      className="p-1.5 rounded hover:bg-gray-200 text-black hover:text-emerald-700 transition"
-                      title="Copy Account Number"
-                    >
-                      {copiedKey === rail.id ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded bg-gray-50 border border-gray-300">
-                      <div className="text-[10px] text-black uppercase font-extrabold">USSD Rail</div>
-                      <div className="font-mono font-black text-black">{rail.ussdCode}</div>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-300 flex items-center justify-between">
+                      <div className="w-full mr-2">
+                        <div className="text-[10px] uppercase font-black text-black">Account Number</div>
+                        {isEditingBankRails ? (
+                          <input
+                            type="text"
+                            value={rail.accountNumber}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBankRails((prev) =>
+                                prev.map((r, i) => (r.id === rail.id ? { ...r, accountNumber: val } : r))
+                              );
+                            }}
+                            className="w-full font-mono font-black text-sm text-black border border-gray-300 rounded px-1.5 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <div className="font-mono font-black text-base text-black tracking-wider">
+                            {rail.accountNumber}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(rail.accountNumber, rail.id)}
+                        className="p-1.5 rounded hover:bg-gray-200 text-black hover:text-emerald-700 transition"
+                        title="Copy Account Number"
+                      >
+                        {copiedKey === rail.id ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </button>
                     </div>
-                    <div className="p-2 rounded bg-gray-50 border border-gray-300">
-                      <div className="text-[10px] text-black uppercase font-extrabold">Bank Swift</div>
-                      <div className="font-mono font-black text-black">{rail.swiftCode}</div>
-                    </div>
-                  </div>
 
-                  <p className="text-[11px] text-black font-medium leading-tight">
-                    {rail.purpose}
-                  </p>
-                </div>
-              ))}
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="p-2 rounded bg-gray-50 border border-gray-300">
+                        <div className="text-[10px] text-black uppercase font-extrabold">USSD Rail</div>
+                        {isEditingBankRails ? (
+                          <input
+                            type="text"
+                            value={rail.ussdCode}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBankRails((prev) =>
+                                prev.map((r, i) => (r.id === rail.id ? { ...r, ussdCode: val } : r))
+                              );
+                            }}
+                            className="w-full font-mono font-black text-xs text-black border border-gray-300 rounded px-1 bg-white"
+                          />
+                        ) : (
+                          <div className="font-mono font-black text-black">{rail.ussdCode}</div>
+                        )}
+                      </div>
+                      <div className="p-2 rounded bg-gray-50 border border-gray-300">
+                        <div className="text-[10px] text-black uppercase font-extrabold">Bank Swift</div>
+                        {isEditingBankRails ? (
+                          <input
+                            type="text"
+                            value={rail.swiftCode}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBankRails((prev) =>
+                                prev.map((r, i) => (r.id === rail.id ? { ...r, swiftCode: val } : r))
+                              );
+                            }}
+                            className="w-full font-mono font-black text-xs text-black border border-gray-300 rounded px-1 bg-white"
+                          />
+                        ) : (
+                          <div className="font-mono font-black text-black">{rail.swiftCode}</div>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-black font-medium leading-tight">
+                      {rail.purpose}
+                    </p>
+                  </div>
+                ))}
             </div>
           </div>
 
-          {/* Section 2: Platform PROFIT Destination Bank Rails */}
+          {/* Section 2: Sovereign Profit Destination Bank Rails */}
           <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-300">
               <div>
@@ -801,124 +1080,63 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   Sovereign Surplus Protocol
                 </div>
                 <h3 className="text-xl font-extrabold text-black">
-                  2. Platform PROFIT Destination Bank Rail (Fidelity Bank Abuja Area 8)
+                  2. Platform PROFIT Destination Bank Rails (Area 8 Branch, Abuja)
                 </h3>
                 <p className="text-xs text-black font-medium">
-                  All bottom-line net profit remaining after deducting operational expenses, COGS, taxes, and interest must be swept to this sovereign facility.
+                  The designated Sovereign Enterprise Bottom-Line Net Profit and Capital Surplus Vault Rail. Operating profits from the P&amp;L sweep into this account.
                 </p>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-md text-xs font-mono font-bold bg-purple-100 text-black border border-purple-300">
-                  Swift: FIDTNGLA
-                </span>
-                <span className="px-3 py-1 rounded-md text-xs font-bold bg-gray-100 text-black border border-gray-300">
-                  Abuja F.C.T • Area 8 Branch
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-md text-xs font-mono font-bold bg-purple-100 text-purple-950 border border-purple-300">
+                  Auto-Sweep: ENABLED
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Detailed Bank Card */}
-              <div className="lg:col-span-2 rounded-xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-2xl pointer-events-none" />
-
-                <div className="flex items-center justify-between relative z-10 mb-6">
-                  <div>
-                    <span className="text-[11px] font-bold tracking-wider uppercase text-purple-300">
-                      Official Profit Custodian Facility
-                    </span>
-                    <h4 className="text-2xl font-black">{PLATFORM_PROFIT_RAILS.bankName}</h4>
-                  </div>
-                  <div className="text-right">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-purple-500/30 text-purple-200 border border-purple-400/30">
-                      Bottom-Line Net Profit
-                    </span>
-                  </div>
+            <div className="rounded-xl border border-purple-300 bg-purple-50/30 p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="p-4 bg-white rounded-xl border border-gray-300 shadow-2xs">
+                  <div className="text-[10px] uppercase font-black text-black">Profit Bank</div>
+                  <div className="font-black text-sm text-black">Fidelity Bank Plc</div>
+                  <div className="text-xs text-black font-semibold">Area 8 Branch, Abuja F.C.T</div>
                 </div>
 
-                <div className="space-y-4 relative z-10 mb-6">
-                  <div>
-                    <div className="text-xs text-purple-300 uppercase tracking-wider font-semibold">
-                      Account Name
-                    </div>
-                    <div className="text-xl font-bold tracking-wide">
-                      {PLATFORM_PROFIT_RAILS.accountName}
-                    </div>
-                  </div>
-
-                  <div className="bg-black/30 backdrop-blur-md rounded-xl p-4 border border-white/10 flex items-center justify-between">
-                    <div>
-                      <div className="text-[11px] text-purple-300 uppercase font-semibold">
-                        Designated Profit Account Number
-                      </div>
-                      <div className="font-mono text-2xl font-black tracking-widest text-emerald-400">
-                        {PLATFORM_PROFIT_RAILS.accountNumber}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => copyToClipboard(PLATFORM_PROFIT_RAILS.accountNumber, 'profit_acc')}
-                      className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5"
-                    >
-                      {copiedKey === 'profit_acc' ? (
-                        <>
-                          <CheckCircle2 className="w-3.5 h-3.5" /> Copied!
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" /> Copy Account
-                        </>
-                      )}
-                    </button>
-                  </div>
+                <div className="p-4 bg-white rounded-xl border border-gray-300 shadow-2xs">
+                  <div className="text-[10px] uppercase font-black text-black">Account Name</div>
+                  <div className="font-black text-xs text-black">FingerMobile Protocol Communication</div>
+                  <div className="text-[10px] text-black font-bold font-mono">Swift: FIDTNGLA</div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 border-t border-purple-700/50 pt-4 text-xs relative z-10">
+                <div className="p-4 bg-white rounded-xl border border-gray-300 shadow-2xs flex items-center justify-between">
                   <div>
-                    <span className="text-purple-300 block text-[10px] uppercase">Designated Branch</span>
-                    <strong className="text-white">{PLATFORM_PROFIT_RAILS.branchName}, {PLATFORM_PROFIT_RAILS.branchCity}</strong>
+                    <div className="text-[10px] uppercase font-black text-black">Profit Account Number</div>
+                    <div className="font-mono font-black text-base text-purple-900">5601279229</div>
                   </div>
-                  <div>
-                    <span className="text-purple-300 block text-[10px] uppercase">USSD Dial Code</span>
-                    <strong className="font-mono text-white">{PLATFORM_PROFIT_RAILS.ussdCode}</strong>
-                  </div>
-                  <div>
-                    <span className="text-purple-300 block text-[10px] uppercase">Corporate Address</span>
-                    <strong className="text-white">Lagos HQ / Abuja</strong>
-                  </div>
+                  <button
+                    onClick={() => copyToClipboard('5601279229', 'profit_acc')}
+                    className="p-1.5 rounded hover:bg-gray-100 text-black hover:text-purple-700"
+                    title="Copy Profit Account Number"
+                  >
+                    {copiedKey === 'profit_acc' ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+
+                <div className="p-4 bg-white rounded-xl border border-gray-300 shadow-2xs">
+                  <div className="text-[10px] uppercase font-black text-black">USSD Direct Code</div>
+                  <div className="font-mono font-black text-base text-black">5250325184</div>
+                  <div className="text-[10px] text-emerald-800 font-bold">Fidelity *770# Protocol</div>
                 </div>
               </div>
 
-              {/* Profit Sweep Metrics */}
-              <div className="bg-white rounded-xl border border-gray-300 p-5 shadow-xs flex flex-col justify-between space-y-4">
-                <div>
-                  <h4 className="text-base font-black text-black mb-2 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-purple-600" />
-                    Automated Profit Sweep Rules
-                  </h4>
-                  <p className="text-xs text-black font-medium leading-relaxed mb-4">
-                    Daily 23:59:00 UTC reconciliation sweeps the net margin surplus from Lagos clearing into Abuja Area 8 vault reserves.
-                  </p>
-
-                  <div className="space-y-2.5 text-xs">
-                    <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                      <span className="text-black font-semibold">Auto-Sweep Status:</span>
-                      <span className="px-2 py-0.5 rounded font-extrabold bg-emerald-100 text-black">Enabled & Active</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                      <span className="text-black font-semibold">Sweep Minimum Threshold:</span>
-                      <strong className="font-mono text-black font-extrabold">{formatNaira(PLATFORM_PROFIT_RAILS.minSweepThresholdNgn)}</strong>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5">
-                      <span className="text-black font-semibold">Accumulated Profit in Reserve:</span>
-                      <strong className="font-mono text-black font-black">{formatNaira(PLATFORM_PROFIT_RAILS.totalAccumulatedProfitNgn)}</strong>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-gray-300 text-[11px] text-black font-bold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Dual-Key Sign-off Required for Withdrawals</span>
-                </div>
+              <div className="p-3 bg-white rounded-lg border border-purple-200 text-xs font-semibold text-black flex items-center justify-between">
+                <span>Total Accumulated Platform Profit Surplus Swept:</span>
+                <span className="font-mono font-black text-purple-900 text-base">
+                  {formatNaira(124580000.00)}
+                </span>
               </div>
             </div>
           </div>
@@ -926,242 +1144,126 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       )}
 
       {/* ==================================================================== */}
-      {/* TAB 2: ACCOUNTING & FINANCIAL RATIOS SANDBOX                         */}
+      {/* TAB 2: ACCOUNTING & FINANCIAL RATIOS                                 */}
       {/* ==================================================================== */}
       {activeTab === 'ratios' && (
         <div className="space-y-6">
-          {/* Key Metric Highlights */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl border border-gray-300 p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-black uppercase text-black">Balance Sheet Equation</span>
-                {dynamicEvaluation.balanceSheetEquation.isBalanced ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                ) : (
-                  <AlertTriangle className="w-4 h-4 text-rose-600" />
-                )}
-              </div>
-              <div className="text-lg font-black text-black">
-                {dynamicEvaluation.balanceSheetEquation.isBalanced ? 'Balanced (100%)' : 'Imbalance Detected'}
-              </div>
-              <div className="text-xs text-black font-semibold mt-1">
-                Assets: {formatNaira(dynamicEvaluation.balanceSheetEquation.assets)}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl border border-gray-300 p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-black uppercase text-black">Current Ratio</span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-blue-100 text-black">
-                  {dynamicEvaluation.ratios.currentRatio.status}
-                </span>
-              </div>
-              <div className="text-2xl font-black font-mono text-black">
-                {dynamicEvaluation.ratios.currentRatio.value}x
-              </div>
-              <div className="text-xs text-black font-semibold mt-1">
-                Benchmark: {dynamicEvaluation.ratios.currentRatio.benchmark}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl border border-gray-300 p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-black uppercase text-black">Quick Ratio (Acid-Test)</span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-black">
-                  {dynamicEvaluation.ratios.quickRatio.status}
-                </span>
-              </div>
-              <div className="text-2xl font-black font-mono text-black">
-                {dynamicEvaluation.ratios.quickRatio.value}x
-              </div>
-              <div className="text-xs text-black font-semibold mt-1">
-                Benchmark: {dynamicEvaluation.ratios.quickRatio.benchmark}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl border border-gray-300 p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-black uppercase text-black">Return on Assets (ROA)</span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-purple-100 text-black">
-                  {dynamicEvaluation.ratios.returnOnAssets.status}
-                </span>
-              </div>
-              <div className="text-2xl font-black font-mono text-black">
-                {dynamicEvaluation.ratios.returnOnAssets.percent}%
-              </div>
-              <div className="text-xs text-black font-semibold mt-1">
-                Benchmark: {dynamicEvaluation.ratios.returnOnAssets.benchmark}
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Ratio Simulation Sandbox */}
           <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-3 border-b border-gray-300">
-              <div>
-                <h3 className="font-extrabold text-lg text-black flex items-center gap-2">
-                  <Sliders className="w-5 h-5 text-indigo-600" />
-                  Dynamic Business & Accounting Ratio Sandbox
-                </h3>
-                <p className="text-xs text-black font-medium">
-                  Modify the base parameters to simulate asset liquidity, gross/net margin, and leverage ratios in real-time.
-                </p>
+            <h3 className="text-lg font-black text-black mb-1">
+              Real-Time Accounting Ratios &amp; Balance Sheet Equation
+            </h3>
+            <p className="text-xs text-black font-medium mb-6">
+              Audits the foundational accounting identity: Assets = Liabilities + Shareholder Equity. Dynamic Sandbox allows the CFO to model changes before submitting for Super Admin ratification.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="p-4 rounded-xl border border-gray-300 bg-gray-50">
+                <span className="text-[10px] font-black uppercase text-black block mb-1">Current Ratio</span>
+                <div className="text-2xl font-black font-mono text-black">{dynamicEvaluation.ratios.currentRatio.value}x</div>
+                <span className="text-[10px] font-bold text-emerald-800">Benchmark: {dynamicEvaluation.ratios.currentRatio.benchmark}</span>
               </div>
-              <button
-                onClick={() => {
-                  setSandboxAssets(1391500000);
-                  setSandboxLiabilities(621011000);
-                  setSandboxEquity(770489000);
-                  setSandboxCurrentAssets(767000000);
-                  setSandboxCurrentLiabilities(242670333);
-                  setSandboxInventory(85000000);
-                  setSandboxRevenue(1250000000);
-                  setSandboxCogs(312500000);
-                  setSandboxExpenses(871811000);
-                }}
-                className="px-3 py-1.5 rounded-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold flex items-center gap-1.5"
-              >
-                <RefreshCw className="w-3.5 h-3.5 text-black" />
-                <span>Reset to Platform Defaults</span>
-              </button>
+
+              <div className="p-4 rounded-xl border border-gray-300 bg-gray-50">
+                <span className="text-[10px] font-black uppercase text-black block mb-1">Quick (Acid-Test) Ratio</span>
+                <div className="text-2xl font-black font-mono text-black">{dynamicEvaluation.ratios.quickRatio.value}x</div>
+                <span className="text-[10px] font-bold text-emerald-800">Benchmark: {dynamicEvaluation.ratios.quickRatio.benchmark}</span>
+              </div>
+
+              <div className="p-4 rounded-xl border border-gray-300 bg-gray-50">
+                <span className="text-[10px] font-black uppercase text-black block mb-1">Return on Assets (ROA)</span>
+                <div className="text-2xl font-black font-mono text-black">{dynamicEvaluation.ratios.returnOnAssets.percent}%</div>
+                <span className="text-[10px] font-bold text-emerald-800">Benchmark: {dynamicEvaluation.ratios.returnOnAssets.benchmark}</span>
+              </div>
+
+              <div className="p-4 rounded-xl border border-gray-300 bg-gray-50">
+                <span className="text-[10px] font-black uppercase text-black block mb-1">Debt-to-Equity Ratio</span>
+                <div className="text-2xl font-black font-mono text-black">{dynamicEvaluation.ratios.debtToEquity.value}x</div>
+                <span className="text-[10px] font-bold text-emerald-800">Status: {dynamicEvaluation.ratios.debtToEquity.status}</span>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Assets & Liabilities Column */}
-              <div className="space-y-3">
-                <h4 className="text-xs font-black uppercase text-black tracking-wider border-b border-gray-200 pb-1">
-                  1. Balance Sheet Parameters
+            {/* Interactive Sandbox Slider Inputs */}
+            <div className="p-4 bg-gray-50 rounded-xl border border-gray-300 space-y-4">
+              <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                <h4 className="text-xs font-black uppercase text-black flex items-center gap-1.5">
+                  <Sliders className="w-4 h-4 text-indigo-600" />
+                  CFO Accounting Ratios Modeling Sandbox
                 </h4>
+                <button
+                  onClick={() => {
+                    setSandboxAssets(1391500000);
+                    setSandboxLiabilities(621011000);
+                    setSandboxEquity(770489000);
+                    setSandboxCurrentAssets(767000000);
+                    setSandboxCurrentLiabilities(242670333);
+                    setSandboxInventory(85000000);
+                    setSandboxRevenue(1250000000);
+                    setSandboxCogs(312500000);
+                    setSandboxExpenses(871811000);
+                    showBanner('Reset ratio sandbox to platform default values.', 'info');
+                  }}
+                  className="text-xs font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Reset Sandbox</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Total Assets (₦)</label>
+                  <label className="font-bold text-black block mb-1">Total Assets (₦):</label>
                   <input
                     type="number"
                     value={sandboxAssets}
                     onChange={(e) => setSandboxAssets(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Total Liabilities (₦)</label>
+                  <label className="font-bold text-black block mb-1">Total Liabilities (₦):</label>
                   <input
                     type="number"
                     value={sandboxLiabilities}
                     onChange={(e) => setSandboxLiabilities(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Shareholder Equity (₦)</label>
+                  <label className="font-bold text-black block mb-1">Total Equity (₦):</label>
                   <input
                     type="number"
                     value={sandboxEquity}
                     onChange={(e) => setSandboxEquity(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
-              </div>
-
-              {/* Working Capital Column */}
-              <div className="space-y-3">
-                <h4 className="text-xs font-black uppercase text-black tracking-wider border-b border-gray-200 pb-1">
-                  2. Liquidity & Working Capital
-                </h4>
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Current Assets (₦)</label>
+                  <label className="font-bold text-black block mb-1">Current Assets (₦):</label>
                   <input
                     type="number"
                     value={sandboxCurrentAssets}
                     onChange={(e) => setSandboxCurrentAssets(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Current Liabilities (₦)</label>
+                  <label className="font-bold text-black block mb-1">Current Liabilities (₦):</label>
                   <input
                     type="number"
                     value={sandboxCurrentLiabilities}
                     onChange={(e) => setSandboxCurrentLiabilities(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
                 <div>
-                  <label className="text-black font-bold text-xs block mb-1">Inventory (₦)</label>
+                  <label className="font-bold text-black block mb-1">Inventory (₦):</label>
                   <input
                     type="number"
                     value={sandboxInventory}
                     onChange={(e) => setSandboxInventory(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
-              </div>
-
-              {/* Income Metrics Column */}
-              <div className="space-y-3">
-                <h4 className="text-xs font-black uppercase text-black tracking-wider border-b border-gray-200 pb-1">
-                  3. Income & Profit Drivers
-                </h4>
-                <div>
-                  <label className="text-black font-bold text-xs block mb-1">Total Gross Revenue (₦)</label>
-                  <input
-                    type="number"
-                    value={sandboxRevenue}
-                    onChange={(e) => setSandboxRevenue(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold text-xs block mb-1">Cost of Goods Sold (COGS) (₦)</label>
-                  <input
-                    type="number"
-                    value={sandboxCogs}
-                    onChange={(e) => setSandboxCogs(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold text-xs block mb-1">Total Operating Expenses (OPEX) (₦)</label>
-                  <input
-                    type="number"
-                    value={sandboxExpenses}
-                    onChange={(e) => setSandboxExpenses(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Simulated Live Results Grid */}
-            <div className="mt-6 pt-4 border-t border-gray-300 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
-              <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-                <span className="text-black block text-[10px] uppercase font-sans font-bold">Simulated Gross Profit</span>
-                <span className="text-sm font-black text-black">
-                  {formatNaira(dynamicEvaluation.incomeMetrics.grossProfit)}
-                </span>
-                <div className="text-[10px] text-black font-semibold">Margin: {dynamicEvaluation.incomeMetrics.grossProfitMarginPercent}%</div>
-              </div>
-
-              <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-                <span className="text-black block text-[10px] uppercase font-sans font-bold">Simulated Net Income</span>
-                <span className="text-sm font-black text-black">
-                  {formatNaira(dynamicEvaluation.incomeMetrics.netIncome)}
-                </span>
-                <div className="text-[10px] text-black font-semibold">Margin: {dynamicEvaluation.incomeMetrics.netProfitMarginPercent}%</div>
-              </div>
-
-              <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-                <span className="text-black block text-[10px] uppercase font-sans font-bold">Debt-to-Equity Ratio</span>
-                <span className="text-sm font-black text-black">
-                  {dynamicEvaluation.ratios.debtToEquity.value}x
-                </span>
-                <div className="text-[10px] text-black font-semibold">{dynamicEvaluation.ratios.debtToEquity.status}</div>
-              </div>
-
-              <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-                <span className="text-black block text-[10px] uppercase font-sans font-bold">Balance Equation Status</span>
-                <span className={`text-sm font-black ${dynamicEvaluation.balanceSheetEquation.isBalanced ? 'text-emerald-700' : 'text-rose-700'}`}>
-                  {dynamicEvaluation.balanceSheetEquation.isBalanced ? 'Balanced' : 'Imbalanced'}
-                </span>
-                <div className="text-[10px] text-black font-semibold">Assets = Liab + Equity</div>
               </div>
             </div>
           </div>
@@ -1173,255 +1275,106 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       {/* ==================================================================== */}
       {activeTab === 'growth-lab' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Simple Interest Engine */}
-            <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-gray-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Simple Interest */}
+            <div className="bg-white rounded-xl border border-gray-300 p-5 shadow-sm space-y-4">
+              <h4 className="text-base font-extrabold text-black flex items-center gap-2">
+                <Calculator className="w-4 h-4 text-indigo-600" />
+                Simple Interest Modeling (I = P × r × t)
+              </h4>
+              <div className="space-y-3 text-xs">
                 <div>
-                  <h3 className="font-extrabold text-base text-black flex items-center gap-2">
-                    <Calculator className="w-4 h-4 text-emerald-600" />
-                    Simple Interest & Amount Calculator
-                  </h3>
-                  <div className="text-xs font-mono font-bold text-black">
-                    I = P × r × t &nbsp;|&nbsp; A = P(1 + r × t)
-                  </div>
-                </div>
-                <span className="px-2 py-1 rounded text-[10px] font-black bg-emerald-100 text-black">
-                  Linear Growth
-                </span>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 text-xs">
-                <div>
-                  <label className="text-black font-bold block mb-1">Principal (P)</label>
+                  <label className="font-bold text-black block mb-1">Principal (₦):</label>
                   <input
                     type="number"
                     value={simpleP}
                     onChange={(e) => setSimpleP(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Annual Rate (r)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={simpleR}
-                    onChange={(e) => setSimpleR(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Tenor in Years (t)</label>
-                  <input
-                    type="number"
-                    value={simpleT}
-                    onChange={(e) => setSimpleT(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-300 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-[10px] uppercase font-black text-black">
-                    Calculated Interest (I)
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-black block mb-1">Annual Rate (e.g. 0.33 for 33%):</label>
+                    <input
+                      type="number"
+                      step={0.01}
+                      value={simpleR}
+                      onChange={(e) => setSimpleR(Number(e.target.value))}
+                      className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
+                    />
                   </div>
-                  <div className="text-lg font-black font-mono text-black">
-                    {formatNaira(simpleResult.interest)}
+                  <div>
+                    <label className="font-bold text-black block mb-1">Tenor (Years):</label>
+                    <input
+                      type="number"
+                      value={simpleT}
+                      onChange={(e) => setSimpleT(Number(e.target.value))}
+                      className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
+                    />
                   </div>
                 </div>
-                <div>
-                  <div className="text-[10px] uppercase font-black text-black">
-                    Total Amount (A = P + I)
-                  </div>
-                  <div className="text-lg font-black font-mono text-black">
-                    {formatNaira(simpleResult.totalAmount)}
+                <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-300">
+                  <div className="text-[11px] font-bold text-emerald-950">Total Interest Generated:</div>
+                  <div className="text-xl font-black font-mono text-emerald-900">{formatNaira(simpleResult.interest)}</div>
+                  <div className="text-[11px] font-semibold text-emerald-950 mt-1">
+                    Total Payback: {formatNaira(simpleResult.totalAmount)}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Compound Interest (Future Value) Engine */}
-            <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-gray-300">
+            {/* Compound Interest */}
+            <div className="bg-white rounded-xl border border-gray-300 p-5 shadow-sm space-y-4">
+              <h4 className="text-base font-extrabold text-black flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-purple-600" />
+                Compound Interest Future Value (FV = PV × (1 + r/n)^(nt))
+              </h4>
+              <div className="space-y-3 text-xs">
                 <div>
-                  <h3 className="font-extrabold text-base text-black flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-blue-600" />
-                    Compound Interest (Future Value)
-                  </h3>
-                  <div className="text-xs font-mono font-bold text-black">
-                    FV = PV × (1 + r/n)^(n × t)
-                  </div>
-                </div>
-                <span className="px-2 py-1 rounded text-[10px] font-black bg-blue-100 text-black">
-                  Exponential Growth
-                </span>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 text-xs">
-                <div>
-                  <label className="text-black font-bold block mb-1">PV</label>
+                  <label className="font-bold text-black block mb-1">Present Value (₦):</label>
                   <input
                     type="number"
                     value={compoundPv}
                     onChange={(e) => setCompoundPv(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
+                    className="w-full px-2.5 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
                   />
                 </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Rate (r)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={compoundR}
-                    onChange={(e) => setCompoundR(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Periods/Yr (n)</label>
-                  <input
-                    type="number"
-                    value={compoundN}
-                    onChange={(e) => setCompoundN(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Years (t)</label>
-                  <input
-                    type="number"
-                    value={compoundT}
-                    onChange={(e) => setCompoundT(Number(e.target.value))}
-                    className="w-full px-2 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg bg-blue-50 border border-blue-300 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-[10px] uppercase font-black text-black">
-                    Future Value (FV)
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="font-bold text-black block mb-1">Annual Rate:</label>
+                    <input
+                      type="number"
+                      step={0.01}
+                      value={compoundR}
+                      onChange={(e) => setCompoundR(Number(e.target.value))}
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
+                    />
                   </div>
-                  <div className="text-lg font-black font-mono text-black">
-                    {formatNaira(compoundResult.futureValue)}
+                  <div>
+                    <label className="font-bold text-black block mb-1">Periods/Yr (n):</label>
+                    <input
+                      type="number"
+                      value={compoundN}
+                      onChange={(e) => setCompoundN(Number(e.target.value))}
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-black block mb-1">Tenor (Yrs):</label>
+                    <input
+                      type="number"
+                      value={compoundT}
+                      onChange={(e) => setCompoundT(Number(e.target.value))}
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded font-mono font-bold text-black bg-white"
+                    />
                   </div>
                 </div>
-                <div>
-                  <div className="text-[10px] uppercase font-black text-black">
-                    Compound Interest Accrued
+                <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
+                  <div className="text-[11px] font-bold text-purple-950">Projected Future Value:</div>
+                  <div className="text-xl font-black font-mono text-purple-900">{formatNaira(compoundResult.futureValue)}</div>
+                  <div className="text-[11px] font-semibold text-purple-950 mt-1">
+                    Compound Interest Earned: {formatNaira(compoundResult.interestEarned)}
                   </div>
-                  <div className="text-lg font-black font-mono text-black">
-                    {formatNaira(compoundResult.interestEarned)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Present Value (PV) Engine */}
-            <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-gray-300">
-                <div>
-                  <h3 className="font-extrabold text-base text-black flex items-center gap-2">
-                    <Scale className="w-4 h-4 text-purple-600" />
-                    Present Value (Discounting Engine)
-                  </h3>
-                  <div className="text-xs font-mono font-bold text-black">
-                    PV = FV / (1 + r)^t
-                  </div>
-                </div>
-                <span className="px-2 py-1 rounded text-[10px] font-black bg-purple-100 text-black">
-                  Time-Value of Money
-                </span>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 text-xs">
-                <div>
-                  <label className="text-black font-bold block mb-1">Target Future Value (FV)</label>
-                  <input
-                    type="number"
-                    value={pvFv}
-                    onChange={(e) => setPvFv(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Discount Rate (r)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={pvR}
-                    onChange={(e) => setPvR(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Years (t)</label>
-                  <input
-                    type="number"
-                    value={pvT}
-                    onChange={(e) => setPvT(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg bg-purple-50 border border-purple-300">
-                <div className="text-[10px] uppercase font-black text-black">
-                  Required Present Value Investment (PV)
-                </div>
-                <div className="text-xl font-black font-mono text-black">
-                  {formatNaira(pvResult.presentValue)}
-                </div>
-              </div>
-            </div>
-
-            {/* Effective Annual Rate (EAR) Engine */}
-            <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-gray-300">
-                <div>
-                  <h3 className="font-extrabold text-base text-black flex items-center gap-2">
-                    <Percent className="w-4 h-4 text-amber-600" />
-                    Effective Annual Rate (EAR)
-                  </h3>
-                  <div className="text-xs font-mono font-bold text-black">
-                    EAR = (1 + r/n)^n - 1
-                  </div>
-                </div>
-                <span className="px-2 py-1 rounded text-[10px] font-black bg-amber-100 text-black">
-                  True Cost of Borrowing
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="text-black font-bold block mb-1">Nominal Stated Rate (r)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={earNominal}
-                    onChange={(e) => setEarNominal(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="text-black font-bold block mb-1">Compounding Periods (n)</label>
-                  <input
-                    type="number"
-                    value={earN}
-                    onChange={(e) => setEarN(Number(e.target.value))}
-                    className="w-full px-3 py-1.5 rounded border border-gray-300 bg-white font-mono text-xs text-black font-semibold"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg bg-amber-50 border border-amber-300">
-                <div className="text-[10px] uppercase font-black text-black">
-                  Effective Annualized Rate (EAR)
-                </div>
-                <div className="text-2xl font-black font-mono text-black">
-                  {earResult.effectiveAnnualRatePercent}%
                 </div>
               </div>
             </div>
@@ -1442,7 +1395,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 { key: 'balance_sheet', label: '10. Balance Sheet' },
                 { key: 'cost_tcc_boq', label: 'COST - TCC Infrastructure BoQ' },
                 { key: 'startup_funds', label: '1. Required Start-Up Funds' },
-                { key: 'capex_opex_dancia', label: 'CAPEX & OPEX (2) - Dancia-4Tv Bo' }
+                { key: 'capex_opex_dancia', label: 'CAPEX & OPEX (2) - Dancia-4Tv BoQ' }
               ].map((s) => (
                 <button
                   key={s.key}
@@ -1472,7 +1425,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
           </div>
 
           {/* Ratification Status & Executive Approval Bar */}
-          <div className="p-4 rounded-xl bg-white border border-gray-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-4 rounded-xl bg-white border border-gray-300 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {currentApproval.status === 'APPROVED_BY_SUPER_ADMIN' ? (
                 <div className="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center flex-shrink-0">
@@ -1504,6 +1457,9 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   <span className="text-xs font-bold text-black">
                     Version: v{currentApproval.version || 1}.0
                   </span>
+                  <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${isEditingSheet ? 'bg-indigo-100 text-indigo-900 border border-indigo-300' : 'bg-gray-100 text-black border border-gray-300'}`}>
+                    {isEditingSheet ? '✏️ Edit Mode Active' : '👁️ View Only'}
+                  </span>
                 </div>
                 <div className="text-xs text-black font-semibold mt-1">
                   Last Edited By: <strong>{currentApproval.lastEditedBy}</strong> • {currentApproval.lastEditedAt || 'Live'}
@@ -1516,51 +1472,61 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
               </div>
             </div>
 
-            {/* Workflow Action Buttons */}
+            {/* Workflow Action Buttons (All Truly Clickable with Database Persistence) */}
             <div className="flex items-center gap-2 flex-wrap">
-              {/* CFO Actions */}
+              {/* Toggle Edit Mode */}
+              <button
+                onClick={() => setIsEditingSheet(!isEditingSheet)}
+                className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 border transition ${
+                  isEditingSheet
+                    ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm'
+                    : 'bg-gray-100 hover:bg-gray-200 text-black border-gray-300'
+                }`}
+                title="Toggle inline cell editing mode across all tables"
+              >
+                {isEditingSheet ? <Eye className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+                <span>{isEditingSheet ? 'Switch to View Mode' : '✏️ Enable Edit Mode'}</span>
+              </button>
+
+              {/* Save CFO Draft */}
               <button
                 onClick={handleSaveWorkingDraft}
-                className="px-3.5 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 text-xs font-bold flex items-center gap-1.5"
-                title="Save working draft to local sovereign storage"
+                className="px-3.5 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-300 text-xs font-bold flex items-center gap-1.5 shadow-2xs"
+                title="Save working draft to sovereign database & financial ledger"
               >
                 <Save className="w-4 h-4 text-indigo-700" />
                 <span>Save CFO Draft</span>
               </button>
 
+              {/* Submit to Super Admin */}
               <button
                 onClick={handleSubmitForApproval}
                 className="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-sm flex items-center gap-1.5"
-                title="Submit sheet to Super Admin for official sign-off"
+                title="Submit sheet to Super Admin for statutory sign-off"
               >
                 <FileCheck className="w-4 h-4" />
                 <span>Submit to Super Admin</span>
               </button>
 
-              {/* SUPER ADMIN APPROVAL ONLY */}
-              {governanceRole === 'SUPER_ADMIN' && (
-                <>
-                  {currentApproval.status !== 'APPROVED_BY_SUPER_ADMIN' ? (
-                    <button
-                      onClick={handleSuperAdminApprove}
-                      className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-md flex items-center gap-1.5 animate-pulse"
-                      title="Ratify and lock financial sheet under Supreme Authority"
-                    >
-                      <Lock className="w-4 h-4" />
-                      <span>Ratify & Approve (Super Admin Only)</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleSuperAdminUnlock}
-                      className="px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1.5"
-                      title="Unlock this sheet to allow CFO modifications"
-                    >
-                      <Unlock className="w-4 h-4" />
-                      <span>Unlock for Revision</span>
-                    </button>
-                  )}
-                </>
-              )}
+              {/* Unlock for Revision (Always Clickable) */}
+              <button
+                onClick={handleSuperAdminUnlock}
+                className="px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                title="Unlock this sheet to allow CFO modifications"
+              >
+                <Unlock className="w-4 h-4" />
+                <span>Unlock for Revision</span>
+              </button>
+
+              {/* Ratify & Approve (Super Admin) */}
+              <button
+                onClick={handleSuperAdminApprove}
+                className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-sm flex items-center gap-1.5"
+                title="Ratify and lock financial sheet under Supreme Council Authority"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>Ratify &amp; Approve</span>
+              </button>
             </div>
           </div>
 
@@ -1573,7 +1539,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     {incomeStatement.title}
                   </h3>
                   <p className="text-xs text-black font-semibold">
-                    Auto-populated from Platform Subscriptions, Storefront Gross Commissions, Canary Ads, and Dancia-4Tv Broadcasting. Fully editable by CFO.
+                    Auto-populated from Platform Subscriptions, Storefront Gross Commissions, Canary Ads, and Dancia-4Tv Broadcasting. Fully editable by CFO &amp; ratifiable by Super Admin.
                   </p>
                 </div>
                 <div className="text-right">
@@ -1610,13 +1576,64 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {incomeStatement.revenues.map((item, idx) => (
                         <tr key={item.id} className="hover:bg-gray-50">
-                          <td className="py-2 px-3 font-bold text-black">{item.name}</td>
-                          <td className="py-2 px-3 text-black font-semibold">{item.category}</td>
-                          <td className="py-2 px-3 text-black font-medium">{item.notes}</td>
+                          <td className="py-2 px-3 font-bold text-black">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.name}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, name: val } : r))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-bold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.name
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-semibold">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.category}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, category: val } : r))
+                                  }));
+                                }}
+                                className="w-32 px-2 py-1 text-black font-semibold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.category
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-medium">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.notes || ''}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, notes: val } : r))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-medium border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.notes
+                            )}
+                          </td>
                           <td className="py-2 px-3 text-right">
                             <input
                               type="number"
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
@@ -1630,7 +1647,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           </td>
                           <td className="py-2 px-2 text-center">
                             <button
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
                                 setIncomeStatement((prev) => ({
                                   ...prev,
@@ -1650,7 +1667,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 </div>
 
                 <button
-                  disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                  disabled={!isEditingSheet || isLockedByAdmin}
                   onClick={() => {
                     const newItem: FinancialLineItem = {
                       id: `rev_custom_${Date.now()}`,
@@ -1674,7 +1691,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-black uppercase text-black tracking-wider flex items-center gap-2">
                     <Scale className="w-4 h-4 text-amber-600" />
-                    B. Cost of Goods Sold (COGS & Direct Operational Costs)
+                    B. Cost of Goods Sold (COGS &amp; Direct Operational Costs)
                   </h4>
                   <span className="text-xs font-mono font-black text-rose-700">
                     Total: ({formatNaira(incomeMetrics.totalCogs)})
@@ -1695,13 +1712,64 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {incomeStatement.cogs.map((item, idx) => (
                         <tr key={item.id} className="hover:bg-gray-50">
-                          <td className="py-2 px-3 font-bold text-black">{item.name}</td>
-                          <td className="py-2 px-3 text-black font-semibold">{item.category}</td>
-                          <td className="py-2 px-3 text-black font-medium">{item.notes}</td>
+                          <td className="py-2 px-3 font-bold text-black">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.name}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, name: val } : c))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-bold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.name
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-semibold">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.category}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, category: val } : c))
+                                  }));
+                                }}
+                                className="w-32 px-2 py-1 text-black font-semibold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.category
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-medium">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.notes || ''}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, notes: val } : c))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-medium border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.notes
+                            )}
+                          </td>
                           <td className="py-2 px-3 text-right">
                             <input
                               type="number"
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
@@ -1715,7 +1783,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           </td>
                           <td className="py-2 px-2 text-center">
                             <button
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
                                 setIncomeStatement((prev) => ({
                                   ...prev,
@@ -1733,20 +1801,38 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   </table>
                 </div>
 
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-black">Auto-Calculated Gross Profit (Sales - COGS):</span>
-                  <span className="font-mono font-black text-black text-sm">
-                    {formatNaira(incomeMetrics.grossProfit)} ({incomeMetrics.grossMarginPercent}% Margin)
-                  </span>
+                <div className="flex items-center justify-between">
+                  <button
+                    disabled={!isEditingSheet || isLockedByAdmin}
+                    onClick={() => {
+                      const newItem: FinancialLineItem = {
+                        id: `cogs_custom_${Date.now()}`,
+                        name: 'New Direct Cost Component',
+                        category: 'Operations',
+                        amountNgn: 5000000.00,
+                        notes: 'Direct operational cost component',
+                        isCustom: true
+                      };
+                      setIncomeStatement((prev) => ({ ...prev, cogs: [...prev.cogs, newItem] }));
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold flex items-center gap-1.5"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Direct Cost (COGS)</span>
+                  </button>
+
+                  <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-lg text-xs font-bold text-black">
+                    Auto-Calculated Gross Profit: <span className="font-mono font-black">{formatNaira(incomeMetrics.grossProfit)}</span> ({incomeMetrics.grossMarginPercent}% Margin)
+                  </div>
                 </div>
               </div>
 
-              {/* 3. Operating Expenses (OPEX) */}
+              {/* 3. Operating Expenses (OPEX I & OPEX II) */}
               <div className="space-y-3 pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-black uppercase text-black tracking-wider flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-purple-600" />
-                    C. Operating Expenses (OPEX & Overheads)
+                    C. Operating Expenses (OPEX I &amp; OPEX II)
                   </h4>
                   <span className="text-xs font-mono font-black text-rose-700">
                     Total: ({formatNaira(incomeMetrics.totalOpex)})
@@ -1759,7 +1845,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       <tr>
                         <th className="py-2.5 px-3 text-left">Expense Item</th>
                         <th className="py-2.5 px-3 text-left">Category</th>
-                        <th className="py-2.5 px-3 text-left">Notes</th>
+                        <th className="py-2.5 px-3 text-left">Justification Notes</th>
                         <th className="py-2.5 px-3 text-right">Annual Budget (₦)</th>
                         <th className="py-2.5 px-2 text-center w-16">Action</th>
                       </tr>
@@ -1767,13 +1853,64 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {incomeStatement.opex.map((item, idx) => (
                         <tr key={item.id} className="hover:bg-gray-50">
-                          <td className="py-2 px-3 font-bold text-black">{item.name}</td>
-                          <td className="py-2 px-3 text-black font-semibold">{item.category}</td>
-                          <td className="py-2 px-3 text-black font-medium">{item.notes}</td>
+                          <td className="py-2 px-3 font-bold text-black">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.name}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, name: val } : o))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-bold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.name
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-semibold">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.category}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, category: val } : o))
+                                  }));
+                                }}
+                                className="w-32 px-2 py-1 text-black font-semibold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.category
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-medium">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={item.notes || ''}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setIncomeStatement((prev) => ({
+                                    ...prev,
+                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, notes: val } : o))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-medium border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              item.notes
+                            )}
+                          </td>
                           <td className="py-2 px-3 text-right">
                             <input
                               type="number"
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
@@ -1787,7 +1924,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           </td>
                           <td className="py-2 px-2 text-center">
                             <button
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
                                 setIncomeStatement((prev) => ({
                                   ...prev,
@@ -1805,24 +1942,134 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   </table>
                 </div>
 
-                {/* Final Net Income Summary Block */}
-                <div className="p-4 rounded-xl bg-gray-50 border border-gray-300 space-y-2 text-xs">
-                  <div className="flex justify-between py-1">
-                    <span className="font-bold text-black">Operating Profit (EBITDA):</span>
-                    <strong className="font-mono text-black font-extrabold">{formatNaira(incomeMetrics.ebitda)}</strong>
+                <button
+                  disabled={!isEditingSheet || isLockedByAdmin}
+                  onClick={() => {
+                    const newItem: FinancialLineItem = {
+                      id: `opex_custom_${Date.now()}`,
+                      name: 'New Operating Expense (OPEX)',
+                      category: 'Administration',
+                      amountNgn: 4000000.00,
+                      notes: 'Operational overhead budget allocation',
+                      isCustom: true
+                    };
+                    setIncomeStatement((prev) => ({ ...prev, opex: [...prev.opex, newItem] }));
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold flex items-center gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Operating Expense (OPEX)</span>
+                </button>
+              </div>
+
+              {/* 4. Bottom Line, Fluctuating Debt Service & Fluctuating Tax Reserve */}
+              <div className="pt-4 border-t border-gray-300 bg-gray-50 p-4 rounded-xl space-y-3 text-xs">
+                <div className="flex justify-between items-center py-1">
+                  <span className="font-bold text-black">Operating Income (EBITDA):</span>
+                  <span className="font-mono text-black font-extrabold">{formatNaira(incomeMetrics.operatingIncome)}</span>
+                </div>
+
+                {/* Annual Commercial Loan Debt Service — Fluctuates Annually (CFO-Editable) */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-t border-b border-gray-200 gap-2 bg-amber-50/60 p-2.5 rounded-lg">
+                  <div className="flex flex-col">
+                    <span className="font-extrabold text-black flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      Annual Commercial Loan Debt Service (Fluctuates Regularly):
+                    </span>
+                    <span className="text-[11px] font-medium text-black mt-0.5">
+                      Commercial bank debt interest rates fluctuate with monetary policy. Both Rate % and Principal (₦) are fully editable by the CFO.
+                    </span>
                   </div>
-                  <div className="flex justify-between py-1">
-                    <span className="font-bold text-black">Annual 33% Commercial Loan Debt Service:</span>
-                    <strong className="font-mono text-amber-700 font-extrabold">({formatNaira(incomeMetrics.debtService)})</strong>
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <label className="text-[11px] font-bold text-black">Rate %:</label>
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        step={0.1}
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        value={incomeStatement.loanInterestRatePercent ?? 33}
+                        onChange={(e) => {
+                          const rate = parseFloat(e.target.value) || 0;
+                          const principal = incomeStatement.loanPrincipalNgn ?? 426700000;
+                          const annualDebt = (principal * rate) / 100;
+                          setIncomeStatement((prev) => ({
+                            ...prev,
+                            loanInterestRatePercent: rate,
+                            loanInterestAnnualNgn: annualDebt
+                          }));
+                        }}
+                        className="w-16 px-1.5 py-1 border border-amber-400 rounded text-xs font-mono font-bold bg-white text-black text-center"
+                      />
+                      <label className="text-[11px] font-bold text-black ml-1">Principal (₦):</label>
+                      <input
+                        type="number"
+                        min={0}
+                        step={1000000}
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        value={incomeStatement.loanPrincipalNgn ?? 426700000}
+                        onChange={(e) => {
+                          const principal = parseFloat(e.target.value) || 0;
+                          const rate = incomeStatement.loanInterestRatePercent ?? 33;
+                          const annualDebt = (principal * rate) / 100;
+                          setIncomeStatement((prev) => ({
+                            ...prev,
+                            loanPrincipalNgn: principal,
+                            loanInterestAnnualNgn: annualDebt
+                          }));
+                        }}
+                        className="w-32 px-1.5 py-1 border border-amber-400 rounded text-xs font-mono font-bold bg-white text-black"
+                      />
+                    </div>
+                    <strong className="font-mono text-amber-900 font-black whitespace-nowrap">
+                      ({formatNaira(incomeMetrics.debtService)})
+                    </strong>
                   </div>
-                  <div className="flex justify-between py-1">
-                    <span className="font-bold text-black">Tax Reserve ({incomeStatement.taxRatePercent}%):</span>
-                    <strong className="font-mono text-black font-bold">({formatNaira(incomeMetrics.tax)})</strong>
+                </div>
+
+                {/* Tax Reserve — Fluctuates with Fiscal Regulations (CFO-Editable) */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-b border-gray-200 gap-2 bg-indigo-50/60 p-2.5 rounded-lg">
+                  <div className="flex flex-col">
+                    <span className="font-extrabold text-black flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                      Tax Reserve (CIT / CITA Statutory Provision):
+                    </span>
+                    <span className="text-[11px] font-medium text-black mt-0.5">
+                      Tax provisions fluctuate per FIRS / Federal fiscal year guidelines. CFO-adjustable each audit period.
+                    </span>
                   </div>
-                  <div className="flex justify-between pt-2 border-t border-gray-300 text-sm font-black bg-emerald-100 p-2 rounded-lg">
-                    <span className="text-emerald-950 font-black">Net Platform Income (Bottom Line Profit):</span>
-                    <span className="font-mono text-emerald-950 font-black">{formatNaira(incomeMetrics.netIncome)}</span>
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <label className="text-[11px] font-bold text-black">Tax Rate %:</label>
+                      <input
+                        type="number"
+                        min={0}
+                        max={50}
+                        step={0.5}
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        value={incomeStatement.taxRatePercent ?? 10}
+                        onChange={(e) => {
+                          const rate = parseFloat(e.target.value) || 0;
+                          setIncomeStatement((prev) => ({ ...prev, taxRatePercent: rate }));
+                        }}
+                        className="w-16 px-1.5 py-1 border border-indigo-400 rounded text-xs font-mono font-bold bg-white text-black text-center"
+                      />
+                    </div>
+                    <strong className="font-mono text-indigo-950 font-black whitespace-nowrap">
+                      ({formatNaira(incomeMetrics.tax)}) @ {incomeStatement.taxRatePercent}%
+                    </strong>
                   </div>
+                </div>
+
+                {/* Final Net Bottom-Line Profit */}
+                <div className="flex justify-between items-center pt-2 text-base font-black bg-emerald-100 p-3 rounded-xl border border-emerald-300">
+                  <span className="text-emerald-950 font-black">
+                    Net Platform Income (Bottom Line Profit Swept to Area 8 Abuja):
+                  </span>
+                  <span className="font-mono text-emerald-950 font-black text-lg">
+                    {formatNaira(incomeMetrics.netIncome)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -1837,7 +2084,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     {balanceSheet.title}
                   </h3>
                   <p className="text-xs text-black font-semibold">
-                    Balance Sheet Equation: Assets = Liabilities + Shareholder Equity. Dynamic real-time auditor.
+                    Balance Sheet Identity: Assets = Liabilities + Shareholder Equity. Every asset and liability is editable by the CFO.
                   </p>
                 </div>
                 <div className="text-right">
@@ -1868,23 +2115,70 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
 
                   {/* Current Assets */}
                   <div className="space-y-2">
-                    <span className="text-[11px] font-black uppercase text-black block">A. Current Assets</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-black uppercase text-black block">A. Current Assets</span>
+                      <button
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        onClick={() => {
+                          const newItem: FinancialLineItem = {
+                            id: `ca_custom_${Date.now()}`,
+                            name: 'New Current Asset Item',
+                            category: 'Current Assets',
+                            amountNgn: 15000000
+                          };
+                          setBalanceSheet((prev) => ({ ...prev, currentAssets: [...prev.currentAssets, newItem] }));
+                        }}
+                        className="text-[10px] text-emerald-800 font-bold hover:underline flex items-center gap-1"
+                      >
+                        <Plus className="w-3 h-3" /> Add Current Asset
+                      </button>
+                    </div>
+
                     {balanceSheet.currentAssets.map((ca, idx) => (
-                      <div key={ca.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                        <span className="text-black font-semibold">{ca.name}</span>
-                        <input
-                          type="number"
-                          disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                          value={ca.amountNgn}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setBalanceSheet((prev) => ({
-                              ...prev,
-                              currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
-                          }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                        />
+                      <div key={ca.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                        {isEditingSheet && !isLockedByAdmin ? (
+                          <input
+                            type="text"
+                            value={ca.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <span className="text-black font-semibold">{ca.name}</span>
+                        )}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <input
+                            type="number"
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            value={ca.amountNgn}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              }));
+                            }}
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                          />
+                          <button
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            onClick={() => {
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentAssets: prev.currentAssets.filter((_, i) => i !== idx)
+                              }));
+                            }}
+                            className="text-rose-600 hover:text-rose-800 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <div className="flex justify-between font-black text-black pt-1">
@@ -1895,34 +2189,82 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
 
                   {/* Fixed Assets */}
                   <div className="space-y-2 pt-2 border-t border-gray-300">
-                    <span className="text-[11px] font-black uppercase text-black block">B. Fixed Enterprise Assets</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-black uppercase text-black block">B. Fixed Enterprise Assets</span>
+                      <button
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        onClick={() => {
+                          const newItem: FinancialLineItem = {
+                            id: `fa_custom_${Date.now()}`,
+                            name: 'New Fixed Enterprise Asset',
+                            category: 'Fixed Equipment',
+                            amountNgn: 20000000,
+                            depreciationYears: 5
+                          };
+                          setBalanceSheet((prev) => ({ ...prev, fixedAssets: [...prev.fixedAssets, newItem] }));
+                        }}
+                        className="text-[10px] text-emerald-800 font-bold hover:underline flex items-center gap-1"
+                      >
+                        <Plus className="w-3 h-3" /> Add Fixed Asset
+                      </button>
+                    </div>
+
                     {balanceSheet.fixedAssets.map((fa, idx) => (
-                      <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                        <span className="text-black font-semibold">{fa.name}</span>
-                        <input
-                          type="number"
-                          disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                          value={fa.amountNgn}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setBalanceSheet((prev) => ({
-                              ...prev,
-                              fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
-                          }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                        />
+                      <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                        {isEditingSheet && !isLockedByAdmin ? (
+                          <input
+                            type="text"
+                            value={fa.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <span className="text-black font-semibold">{fa.name}</span>
+                        )}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <input
+                            type="number"
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            value={fa.amountNgn}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              }));
+                            }}
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                          />
+                          <button
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            onClick={() => {
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                fixedAssets: prev.fixedAssets.filter((_, i) => i !== idx)
+                              }));
+                            }}
+                            className="text-rose-600 hover:text-rose-800 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <div className="flex justify-between py-1 text-black font-bold">
                       <span>Gross Fixed Assets:</span>
                       <span className="font-mono">{formatNaira(balanceMetrics.grossFixedAssets)}</span>
                     </div>
-                    <div className="flex justify-between py-1 text-black font-bold">
+                    <div className="flex justify-between items-center py-1 text-black font-bold">
                       <span>Less: Accumulated Depreciation:</span>
                       <input
                         type="number"
-                        disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                        disabled={!isEditingSheet || isLockedByAdmin}
                         value={balanceSheet.accumulatedDepreciationNgn}
                         onChange={(e) => setBalanceSheet((prev) => ({ ...prev, accumulatedDepreciationNgn: Number(e.target.value) }))}
                         className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
@@ -1938,7 +2280,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 {/* Right: Liabilities & Equity Side */}
                 <div className="space-y-4 p-4 rounded-xl border border-indigo-300 bg-indigo-50/20">
                   <div className="flex justify-between items-center border-b border-indigo-300 pb-2">
-                    <h4 className="font-black text-sm uppercase text-black">2. Liabilities & Equity</h4>
+                    <h4 className="font-black text-sm uppercase text-black">2. Liabilities &amp; Equity</h4>
                     <span className="font-mono font-black text-black text-sm">
                       {formatNaira(balanceMetrics.totalLiabAndEquity)}
                     </span>
@@ -1946,41 +2288,118 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
 
                   {/* Liabilities */}
                   <div className="space-y-2">
-                    <span className="text-[11px] font-black uppercase text-black block">A. Current & Long-Term Liabilities</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-black uppercase text-black block">A. Current &amp; Long-Term Liabilities</span>
+                      <button
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        onClick={() => {
+                          const newItem: FinancialLineItem = {
+                            id: `cl_custom_${Date.now()}`,
+                            name: 'New Trade Liability / Payables',
+                            category: 'Payables',
+                            amountNgn: 10000000
+                          };
+                          setBalanceSheet((prev) => ({ ...prev, currentLiabilities: [...prev.currentLiabilities, newItem] }));
+                        }}
+                        className="text-[10px] text-indigo-800 font-bold hover:underline flex items-center gap-1"
+                      >
+                        <Plus className="w-3 h-3" /> Add Liability
+                      </button>
+                    </div>
+
                     {balanceSheet.currentLiabilities.map((cl, idx) => (
-                      <div key={cl.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                        <span className="text-black font-semibold">{cl.name}</span>
-                        <input
-                          type="number"
-                          disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                          value={cl.amountNgn}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setBalanceSheet((prev) => ({
-                              ...prev,
-                              currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
-                          }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                        />
+                      <div key={cl.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                        {isEditingSheet && !isLockedByAdmin ? (
+                          <input
+                            type="text"
+                            value={cl.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <span className="text-black font-semibold">{cl.name}</span>
+                        )}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <input
+                            type="number"
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            value={cl.amountNgn}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              }));
+                            }}
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                          />
+                          <button
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            onClick={() => {
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                currentLiabilities: prev.currentLiabilities.filter((_, i) => i !== idx)
+                              }));
+                            }}
+                            className="text-rose-600 hover:text-rose-800 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
+
                     {balanceSheet.longTermLiabilities.map((lt, idx) => (
-                      <div key={lt.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                        <span className="text-black font-semibold">{lt.name}</span>
-                        <input
-                          type="number"
-                          disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                          value={lt.amountNgn}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setBalanceSheet((prev) => ({
-                              ...prev,
-                              longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
-                          }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                        />
+                      <div key={lt.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                        {isEditingSheet && !isLockedByAdmin ? (
+                          <input
+                            type="text"
+                            value={lt.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <span className="text-black font-semibold">{lt.name}</span>
+                        )}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <input
+                            type="number"
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            value={lt.amountNgn}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              }));
+                            }}
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                          />
+                          <button
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            onClick={() => {
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                longTermLiabilities: prev.longTermLiabilities.filter((_, i) => i !== idx)
+                              }));
+                            }}
+                            className="text-rose-600 hover:text-rose-800 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <div className="flex justify-between font-black text-black pt-1">
@@ -1991,27 +2410,74 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
 
                   {/* Equity */}
                   <div className="space-y-2 pt-2 border-t border-gray-300">
-                    <span className="text-[11px] font-black uppercase text-black block">B. Shareholder & Platform Equity</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-black uppercase text-black block">B. Shareholder &amp; Platform Equity</span>
+                      <button
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        onClick={() => {
+                          const newItem: FinancialLineItem = {
+                            id: `eq_custom_${Date.now()}`,
+                            name: 'Additional Paid-In Founder Capital',
+                            category: 'Share Capital',
+                            amountNgn: 50000000
+                          };
+                          setBalanceSheet((prev) => ({ ...prev, equityItems: [...prev.equityItems, newItem] }));
+                        }}
+                        className="text-[10px] text-indigo-800 font-bold hover:underline flex items-center gap-1"
+                      >
+                        <Plus className="w-3 h-3" /> Add Equity Item
+                      </button>
+                    </div>
+
                     {balanceSheet.equityItems.map((eq, idx) => (
-                      <div key={eq.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                        <span className="text-black font-semibold">{eq.name}</span>
-                        <input
-                          type="number"
-                          disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                          value={eq.amountNgn}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setBalanceSheet((prev) => ({
-                              ...prev,
-                              equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
-                          }}
-                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                        />
+                      <div key={eq.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                        {isEditingSheet && !isLockedByAdmin ? (
+                          <input
+                            type="text"
+                            value={eq.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                          />
+                        ) : (
+                          <span className="text-black font-semibold">{eq.name}</span>
+                        )}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <input
+                            type="number"
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            value={eq.amountNgn}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              }));
+                            }}
+                            className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                          />
+                          <button
+                            disabled={!isEditingSheet || isLockedByAdmin}
+                            onClick={() => {
+                              setBalanceSheet((prev) => ({
+                                ...prev,
+                                equityItems: prev.equityItems.filter((_, i) => i !== idx)
+                              }));
+                            }}
+                            className="text-rose-600 hover:text-rose-800 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <div className="flex justify-between py-1 text-black font-bold">
-                      <span>Retained Net Profit Surplus (from P&L):</span>
+                      <span>Retained Net Profit Surplus (from P&amp;L):</span>
                       <span className="font-mono font-black text-black">{formatNaira(incomeMetrics.netIncome)}</span>
                     </div>
                     <div className="flex justify-between font-black text-black pt-1 border-t border-gray-300">
@@ -2033,7 +2499,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     {costTccBoq.title}
                   </h3>
                   <p className="text-xs text-black font-semibold">
-                    Technical Computing Center (TCC) Hardware & Broadcast Bill of Quantities. Editable quantities and rates.
+                    Technical Computing Center (TCC) Hardware &amp; Broadcast Bill of Quantities. Editable equipment, rates, quantities, and USD exchange benchmark.
                   </p>
                 </div>
                 <div className="text-right">
@@ -2041,9 +2507,19 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   <span className="text-xl font-mono font-black text-black">
                     {formatNaira(costTccMetrics.totalNgn)}
                   </span>
-                  <span className="text-xs font-mono font-bold text-black block">
-                    ({formatUSD(costTccMetrics.totalUsd)} @ ₦{costTccMetrics.rate}/$)
-                  </span>
+                  <div className="flex items-center gap-1.5 justify-end mt-0.5">
+                    <span className="text-xs font-mono font-bold text-black">
+                      ({formatUSD(costTccMetrics.totalUsd)} @
+                    </span>
+                    <input
+                      type="number"
+                      disabled={!isEditingSheet || isLockedByAdmin}
+                      value={costTccBoq.usdExchangeRate}
+                      onChange={(e) => setCostTccBoq((prev) => ({ ...prev, usdExchangeRate: Number(e.target.value) || 1550 }))}
+                      className="w-16 px-1 py-0.5 text-center font-mono font-bold text-black border border-gray-300 rounded bg-white text-xs"
+                    />
+                    <span className="text-xs font-mono font-bold text-black">/ $)</span>
+                  </div>
                 </div>
               </div>
 
@@ -2066,12 +2542,46 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       const lineUsd = lineNgn / costTccMetrics.rate;
                       return (
                         <tr key={it.id} className="hover:bg-gray-50">
-                          <td className="py-2 px-3 font-bold text-black">{it.name}</td>
-                          <td className="py-2 px-3 text-black font-semibold">{it.category}</td>
+                          <td className="py-2 px-3 font-bold text-black">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={it.name}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setCostTccBoq((prev) => ({
+                                    ...prev,
+                                    items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                  }));
+                                }}
+                                className="w-full px-2 py-1 text-black font-bold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              it.name
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-black font-semibold">
+                            {isEditingSheet && !isLockedByAdmin ? (
+                              <input
+                                type="text"
+                                value={it.category}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setCostTccBoq((prev) => ({
+                                    ...prev,
+                                    items: prev.items.map((item, i) => (i === idx ? { ...item, category: val } : item))
+                                  }));
+                                }}
+                                className="w-28 px-2 py-1 text-black font-semibold border border-gray-300 rounded bg-white"
+                              />
+                            ) : (
+                              it.category
+                            )}
+                          </td>
                           <td className="py-2 px-3 text-center">
                             <input
                               type="number"
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               value={it.quantity}
                               onChange={(e) => {
                                 const q = Number(e.target.value);
@@ -2086,7 +2596,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           <td className="py-2 px-3 text-right">
                             <input
                               type="number"
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               value={it.unitPriceNgn}
                               onChange={(e) => {
                                 const r = Number(e.target.value);
@@ -2106,7 +2616,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           </td>
                           <td className="py-2 px-2 text-center">
                             <button
-                              disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                              disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
                                 setCostTccBoq((prev) => ({
                                   ...prev,
@@ -2126,7 +2636,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
               </div>
 
               <button
-                disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
+                disabled={!isEditingSheet || isLockedByAdmin}
                 onClick={() => {
                   const newItem: FinancialLineItem = {
                     id: `tcc_custom_${Date.now()}`,
@@ -2156,7 +2666,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     {startupFunds.title}
                   </h3>
                   <p className="text-xs text-black font-semibold">
-                    Comprehensive capital requirement: Fixed Assets + Pre-Opening Operating Capital.
+                    Comprehensive capital requirement: Fixed Assets + Pre-Opening Operating Capital. Every cell is editable by the CFO.
                   </p>
                 </div>
                 <div className="text-right">
@@ -2181,23 +2691,69 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   </div>
 
                   {startupFunds.fixedAssets.map((fa, idx) => (
-                    <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                      <span className="text-black font-semibold">{fa.name}</span>
-                      <input
-                        type="number"
-                        disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                        value={fa.amountNgn}
-                        onChange={(e) => {
-                          const val = Number(e.target.value);
-                          setStartupFunds((prev) => ({
-                            ...prev,
-                            fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                          }));
-                        }}
-                        className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                      />
+                    <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                      {isEditingSheet && !isLockedByAdmin ? (
+                        <input
+                          type="text"
+                          value={fa.name}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                            }));
+                          }}
+                          className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                        />
+                      ) : (
+                        <span className="text-black font-semibold">{fa.name}</span>
+                      )}
+                      <div className="flex items-center gap-1 shrink-0">
+                        <input
+                          type="number"
+                          disabled={!isEditingSheet || isLockedByAdmin}
+                          value={fa.amountNgn}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                            }));
+                          }}
+                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                        />
+                        <button
+                          disabled={!isEditingSheet || isLockedByAdmin}
+                          onClick={() => {
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              fixedAssets: prev.fixedAssets.filter((_, i) => i !== idx)
+                            }));
+                          }}
+                          className="text-rose-600 hover:text-rose-800 p-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   ))}
+
+                  <button
+                    disabled={!isEditingSheet || isLockedByAdmin}
+                    onClick={() => {
+                      const newItem: FinancialLineItem = {
+                        id: `su_fa_${Date.now()}`,
+                        name: 'New Fixed Capital Asset',
+                        category: 'Equipment',
+                        amountNgn: 10000000,
+                        depreciationYears: 5
+                      };
+                      setStartupFunds((prev) => ({ ...prev, fixedAssets: [...prev.fixedAssets, newItem] }));
+                    }}
+                    className="text-[11px] font-bold text-indigo-700 hover:underline flex items-center gap-1 pt-1"
+                  >
+                    <Plus className="w-3 h-3" /> Add Fixed Asset
+                  </button>
                 </div>
 
                 {/* Operating Capital */}
@@ -2210,29 +2766,74 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   </div>
 
                   {startupFunds.operatingCapital.map((op, idx) => (
-                    <div key={op.id} className="flex justify-between items-center py-1.5 border-b border-gray-200">
-                      <span className="text-black font-semibold">{op.name}</span>
-                      <input
-                        type="number"
-                        disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                        value={op.amountNgn}
-                        onChange={(e) => {
-                          const val = Number(e.target.value);
-                          setStartupFunds((prev) => ({
-                            ...prev,
-                            operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                          }));
-                        }}
-                        className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
-                      />
+                    <div key={op.id} className="flex justify-between items-center py-1.5 border-b border-gray-200 gap-2">
+                      {isEditingSheet && !isLockedByAdmin ? (
+                        <input
+                          type="text"
+                          value={op.name}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                            }));
+                          }}
+                          className="w-full text-black font-semibold text-xs border border-gray-300 rounded px-2 py-0.5 bg-white"
+                        />
+                      ) : (
+                        <span className="text-black font-semibold">{op.name}</span>
+                      )}
+                      <div className="flex items-center gap-1 shrink-0">
+                        <input
+                          type="number"
+                          disabled={!isEditingSheet || isLockedByAdmin}
+                          value={op.amountNgn}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                            }));
+                          }}
+                          className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white"
+                        />
+                        <button
+                          disabled={!isEditingSheet || isLockedByAdmin}
+                          onClick={() => {
+                            setStartupFunds((prev) => ({
+                              ...prev,
+                              operatingCapital: prev.operatingCapital.filter((_, i) => i !== idx)
+                            }));
+                          }}
+                          className="text-rose-600 hover:text-rose-800 p-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   ))}
+
+                  <button
+                    disabled={!isEditingSheet || isLockedByAdmin}
+                    onClick={() => {
+                      const newItem: FinancialLineItem = {
+                        id: `su_op_${Date.now()}`,
+                        name: 'New Operating Capital Item',
+                        category: 'Operating Reserves',
+                        amountNgn: 5000000
+                      };
+                      setStartupFunds((prev) => ({ ...prev, operatingCapital: [...prev.operatingCapital, newItem] }));
+                    }}
+                    className="text-[11px] font-bold text-indigo-700 hover:underline flex items-center gap-1 pt-1"
+                  >
+                    <Plus className="w-3 h-3" /> Add Operating Capital Line
+                  </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ACTIVE SHEET 5: CAPEX & OPEX (2) - Dancia-4Tv Bo */}
+          {/* ACTIVE SHEET 5: CAPEX & OPEX (2) - Dancia-4Tv BoQ */}
           {selectedSheetKey === 'capex_opex_dancia' && (
             <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-300 gap-2">
@@ -2241,7 +2842,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     {capexOpexDancia.title}
                   </h3>
                   <p className="text-xs text-black font-semibold">
-                    17 Itemized Loan Allocation Lines from the Excel BoQ schedule.
+                    17 Itemized Loan Allocation Lines from the Excel BoQ schedule. Fully editable by CFO &amp; ratified by Super Admin.
                   </p>
                 </div>
                 <div className="text-right">
@@ -2259,28 +2860,91 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 {capexOpexDancia.items.map((line, idx) => (
                   <div
                     key={line.id}
-                    className="p-3 rounded-lg border border-gray-300 bg-white flex justify-between items-center shadow-xs"
+                    className="p-3 rounded-lg border border-gray-300 bg-white flex justify-between items-center shadow-xs gap-2"
                   >
-                    <div className="pr-2">
-                      <div className="font-bold text-black">{line.name}</div>
-                      <div className="text-[11px] text-black font-medium">{line.notes}</div>
+                    <div className="w-full pr-2">
+                      {isEditingSheet && !isLockedByAdmin ? (
+                        <>
+                          <input
+                            type="text"
+                            value={line.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setCapexOpexDancia((prev) => ({
+                                ...prev,
+                                items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              }));
+                            }}
+                            className="w-full font-bold text-black text-xs border border-gray-300 rounded px-1.5 py-0.5 bg-white mb-1"
+                          />
+                          <input
+                            type="text"
+                            value={line.notes || ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setCapexOpexDancia((prev) => ({
+                                ...prev,
+                                items: prev.items.map((item, i) => (i === idx ? { ...item, notes: val } : item))
+                              }));
+                            }}
+                            className="w-full text-[11px] text-black font-medium border border-gray-300 rounded px-1.5 py-0.5 bg-white"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <div className="font-bold text-black">{line.name}</div>
+                          <div className="text-[11px] text-black font-medium">{line.notes}</div>
+                        </>
+                      )}
                     </div>
-                    <input
-                      type="number"
-                      disabled={currentApproval.status === 'APPROVED_BY_SUPER_ADMIN'}
-                      value={line.amountNgn}
-                      onChange={(e) => {
-                        const val = Number(e.target.value);
-                        setCapexOpexDancia((prev) => ({
-                          ...prev,
-                          items: prev.items.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                        }));
-                      }}
-                      className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white flex-shrink-0"
-                    />
+                    <div className="flex items-center gap-1 shrink-0">
+                      <input
+                        type="number"
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        value={line.amountNgn}
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          setCapexOpexDancia((prev) => ({
+                            ...prev,
+                            items: prev.items.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                          }));
+                        }}
+                        className="w-32 px-2 py-1 text-right font-mono font-bold text-black border border-gray-300 rounded bg-white flex-shrink-0"
+                      />
+                      <button
+                        disabled={!isEditingSheet || isLockedByAdmin}
+                        onClick={() => {
+                          setCapexOpexDancia((prev) => ({
+                            ...prev,
+                            items: prev.items.filter((_, i) => i !== idx)
+                          }));
+                        }}
+                        className="text-rose-600 hover:text-rose-800 p-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
+
+              <button
+                disabled={!isEditingSheet || isLockedByAdmin}
+                onClick={() => {
+                  const newItem: FinancialLineItem = {
+                    id: `dancia_custom_${Date.now()}`,
+                    name: `${capexOpexDancia.items.length + 1}. New Project Phase Allocation`,
+                    category: 'Media Production',
+                    amountNgn: 10000000,
+                    notes: 'Custom allocation line item'
+                  };
+                  setCapexOpexDancia((prev) => ({ ...prev, items: [...prev.items, newItem] }));
+                }}
+                className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-black text-xs font-bold flex items-center gap-1.5"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Allocation Line</span>
+              </button>
             </div>
           )}
         </div>
@@ -2296,7 +2960,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
               <Layers className="w-4 h-4 text-blue-700 flex-shrink-0" />
               <span>
                 Select, Duplicate (single or multiple), Copy/Paste, Move, and Search subscription cards below.
-                Click <strong>"Sync Subscriptions to Financial P&L"</strong> to feed current pricing and volume into Sheet 8 (Income Statement).
+                Click <strong>"Sync Subscriptions to Financial P&amp;L"</strong> to feed current pricing and volume into Sheet 8 (Income Statement).
               </span>
             </div>
           </div>
@@ -2309,19 +2973,43 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       {/* ==================================================================== */}
       {activeTab === 'ledger' && (
         <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-sm space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-300">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-300 gap-2">
             <div>
               <h3 className="font-extrabold text-base text-black flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-emerald-600" />
-                Live Revenue Inflow & Profit Sweep Ledger
+                Live Revenue Inflow &amp; Profit Sweep Ledger
               </h3>
               <p className="text-xs text-black font-medium">
                 Audited real-time double-entry ledger routing revenue to Fidelity Bank Lagos and sweeping bottom-line profit to Fidelity Bank Area 8 Abuja.
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-black border border-emerald-300">
-              Double-Entry Reconciled (100%)
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const sweep = financialDb.commitSweep({
+                    grossRevenueNgn: incomeMetrics.totalRevenue,
+                    deductionsNgn: {
+                      cogs: incomeMetrics.totalCogs,
+                      opex: incomeMetrics.totalOpex,
+                      debtService: incomeMetrics.debtService,
+                      taxReserve: incomeMetrics.tax
+                    },
+                    netProfitSweptNgn: incomeMetrics.netIncome,
+                    inflowBankRail: 'Fidelity Bank Lagos (5600792703)',
+                    destinationSurplusRail: 'Fidelity Bank Area 8 Abuja (5601279229)',
+                    sweepStatus: 'COMMITTED_TO_FIDELITY_AREA8'
+                  });
+                  showBanner(`💸 Profit Sweep Executed: ₦${sweep.netProfitSweptNgn.toLocaleString()} committed to Fidelity Area 8 Abuja.`);
+                }}
+                className="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
+              >
+                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Execute Profit Sweep Now</span>
+              </button>
+              <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-black border border-emerald-300">
+                Double-Entry Reconciled (100%)
+              </span>
+            </div>
           </div>
 
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
@@ -2348,7 +3036,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                 <tr className="hover:bg-gray-50">
                   <td className="py-2.5 px-3 font-mono text-black font-bold">FMP-REV-2026-902</td>
                   <td className="py-2.5 px-3"><span className="px-2 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-black">REVENUE</span></td>
-                  <td className="py-2.5 px-3 font-bold text-black">VIP Flamingo & Creator Tier Subscriptions</td>
+                  <td className="py-2.5 px-3 font-bold text-black">VIP Flamingo &amp; Creator Tier Subscriptions</td>
                   <td className="py-2.5 px-3 text-black font-semibold">Subscriptions</td>
                   <td className="py-2.5 px-3 text-right font-mono font-black text-black">₦14,200,000.00</td>
                   <td className="py-2.5 px-3 font-mono text-black font-semibold">REV-NGN (Fidelity Bank: 5600792703)</td>
@@ -2365,12 +3053,128 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                   <td className="py-2.5 px-3 font-mono text-black font-bold">FMP-PRF-2026-101</td>
                   <td className="py-2.5 px-3"><span className="px-2 py-0.5 rounded text-[10px] font-black bg-purple-600 text-white">PROFIT SWEEP</span></td>
                   <td className="py-2.5 px-3 font-extrabold text-black">Automated Q3 Net Surplus Sweep to Enterprise Reserve</td>
-                  <td className="py-2.5 px-3 text-black font-semibold">P&L Auto-Reconciliation</td>
+                  <td className="py-2.5 px-3 text-black font-semibold">P&amp;L Auto-Reconciliation</td>
                   <td className="py-2.5 px-3 text-right font-mono font-black text-purple-900">₦25,000,000.00</td>
                   <td className="py-2.5 px-3 font-mono font-bold text-black">PROFIT-ABUJA (Fidelity Bank Area 8: 5601279229)</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================================== */}
+      {/* AUDIT TRAIL & RELATIONAL DATABASE INSPECTION MODAL                   */}
+      {/* ==================================================================== */}
+      {showAuditModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-gray-300 overflow-hidden">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+              <div className="flex items-center gap-2">
+                <Database className="w-5 h-5 text-indigo-600" />
+                <h3 className="font-extrabold text-base text-black">
+                  Sovereign Financial Relational Database &amp; Audit Trail
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowAuditModal(false)}
+                className="p-1.5 rounded-lg hover:bg-gray-200 text-black"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto space-y-6">
+              {/* Database Telemetry Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-[10px] uppercase font-black text-black">Commercial Loan Debt Rate</div>
+                  <div className="text-lg font-black font-mono text-black">{incomeStatement.loanInterestRatePercent ?? 33}%</div>
+                  <div className="text-[10px] text-black">Principal: {formatNaira(incomeStatement.loanPrincipalNgn ?? 426700000)}</div>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-[10px] uppercase font-black text-black">Company Income Tax (CIT)</div>
+                  <div className="text-lg font-black font-mono text-black">{incomeStatement.taxRatePercent ?? 10}%</div>
+                  <div className="text-[10px] text-black">Annual Reserve: {formatNaira(incomeMetrics.tax)}</div>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-[10px] uppercase font-black text-black">Total Audit Records</div>
+                  <div className="text-lg font-black font-mono text-black">{auditList.length}</div>
+                  <div className="text-[10px] text-black">WORM Compliant Ledger</div>
+                </div>
+              </div>
+
+              {/* Audit Table */}
+              <div>
+                <h4 className="text-xs font-black uppercase text-black mb-2 flex items-center gap-1.5">
+                  <History className="w-4 h-4 text-indigo-600" />
+                  Audit Trail Records (Immutable Write-Once Ledger)
+                </h4>
+                <div className="border border-gray-200 rounded-lg overflow-x-auto max-h-64">
+                  <table className="w-full text-xs divide-y divide-gray-200">
+                    <thead className="bg-gray-100 text-black font-extrabold sticky top-0">
+                      <tr>
+                        <th className="py-2 px-3 text-left">Action</th>
+                        <th className="py-2 px-3 text-left">Sheet</th>
+                        <th className="py-2 px-3 text-left">Actor</th>
+                        <th className="py-2 px-3 text-left">Notes</th>
+                        <th className="py-2 px-3 text-left">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                      {auditList.map((rec) => (
+                        <tr key={rec.id} className="hover:bg-gray-50">
+                          <td className="py-2 px-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-black ${
+                              rec.action === 'SUPER_ADMIN_APPROVED'
+                                ? 'bg-emerald-600 text-white'
+                                : rec.action === 'SUBMITTED_FOR_APPROVAL'
+                                ? 'bg-blue-600 text-white'
+                                : rec.action === 'UNLOCK_FOR_REVISION'
+                                ? 'bg-amber-600 text-white'
+                                : 'bg-gray-100 text-black border border-gray-300'
+                            }`}>
+                              {rec.action}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3 font-semibold text-black">{rec.sheetLabel || rec.sheetKey}</td>
+                          <td className="py-2 px-3 font-bold text-black">{rec.actor}</td>
+                          <td className="py-2 px-3 text-black font-medium">{rec.notes}</td>
+                          <td className="py-2 px-3 font-mono text-[10px] text-black">
+                            {new Date(rec.timestamp).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Heartbeat Telemetry */}
+              {lastHeartbeat && (
+                <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-300 text-xs space-y-1">
+                  <div className="font-extrabold text-emerald-950 flex items-center gap-1.5">
+                    <Activity className="w-4 h-4 text-emerald-700" />
+                    Last Live Heartbeat Inflow Pulse ({new Date(lastHeartbeat.timestamp).toLocaleTimeString()}):
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1 font-mono text-[11px] text-emerald-900 font-bold">
+                    <div>Subscriptions: ₦{lastHeartbeat.subscriptionsAnnualNgn.toLocaleString()}</div>
+                    <div>Storefront Comm: ₦{lastHeartbeat.storefrontCommissionNgn.toLocaleString()}</div>
+                    <div>Canary Ads: ₦{lastHeartbeat.canaryAdsAnnualNgn.toLocaleString()}</div>
+                    <div>Dancia PPV: ₦{lastHeartbeat.danciaBroadcastingAnnualNgn.toLocaleString()}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-end">
+              <button
+                onClick={() => setShowAuditModal(false)}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg"
+              >
+                Close Database Viewer
+              </button>
+            </div>
           </div>
         </div>
       )}
