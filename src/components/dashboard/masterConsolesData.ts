@@ -853,6 +853,22 @@ export const GOVERNANCE_OPS_CONSOLES: ConsoleItem[] = [
     telemetry: 'Executive portfolio health (18/18 active), DoA compliance index (100%), appointed member clearance ratio.',
     activeIncidents: 0,
     sparkline: [100, 100, 100, 100, 100, 100, 100]
+  },
+  {
+    id: 'financial-ecosystem',
+    name: 'Financial Economic Ecosystem & Ratios',
+    group: 'governance-ops',
+    groupName: 'Platform Governance & Operations',
+    purpose: 'Fidelity Bank Multi-Currency Revenue Rails (NGN, GBP, EUR), Area 8 Abuja Profit Rail, 6 Key Business Ratios & Modernized Excel Financials (Critical)',
+    healthScore: 100,
+    status: 'online',
+    responseTime: 11,
+    route: '/master-dashboard?tab=financials&subtab=financial-ecosystem',
+    controls: 'Bank rails management, P&L profit sweep automation, interest calculators, ratio stress-testing sandbox.',
+    safeguards: 'Dual-Key multi-sig approval, segregated revenue/profit accounts, WORM cryptographic ledgering.',
+    telemetry: 'Total revenue inflows, net profit sweep volume, Current Ratio (3.16x), Quick Ratio (2.81x), ROA (27.18%).',
+    activeIncidents: 0,
+    sparkline: [100, 100, 100, 100, 100, 100, 100]
   }
 ];
 

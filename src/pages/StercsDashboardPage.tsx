@@ -58,6 +58,7 @@ import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
 import { guardianSearchIndexer } from '../services/GuardianSearchIndexingService';
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
+import EnterpriseFinancialEcosystemConsole from '../components/dashboard/EnterpriseFinancialEcosystemConsole';
 
 interface StercsModule {
   id: string;
@@ -1601,6 +1602,19 @@ const StercsDashboardPage: React.FC = () => {
                 <div className="text-2xl font-extrabold text-gray-900 mb-1">28.4%</div>
                 <div className="text-[11px] text-gray-500">High-Intent Conversion Rate</div>
               </div>
+            </div>
+
+            {/* Sovereign Financial Economic Ecosystem & Accounting Ratios Core */}
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <div className="mb-4">
+                <h3 className="text-base font-bold text-gray-900">
+                  Platform Financial Economic Ecosystem & Accounting Ratios
+                </h3>
+                <p className="text-xs text-gray-500">
+                  Full sovereign bank rails (Fidelity Bank Revenue vs Profit), live accounting ratio evaluators, growth engines, and modernized financial models.
+                </p>
+              </div>
+              <EnterpriseFinancialEcosystemConsole />
             </div>
           </div>
         )}
