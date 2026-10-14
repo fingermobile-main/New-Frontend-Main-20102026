@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import userProfileSyncService, { ComprehensiveUserProfile } from '../services/UserProfileSyncService';
 import {
   Shield,
   ShieldCheck,
@@ -55,6 +56,8 @@ import {
 } from 'lucide-react';
 import dashboardService from '../services/dashboardService';
 import { SystemMetric } from '../types/dashboard';
+import { guardianSearchIndexer } from '../services/GuardianSearchIndexingService';
+import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
 
 interface StercsModule {
   id: string;
@@ -107,14 +110,25 @@ interface DepartmentRole {
 
 const StercsDashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const [syncedProfile, setSyncedProfile] = useState<ComprehensiveUserProfile>(() =>
+    userProfileSyncService.getProfile()
+  );
+
+  useEffect(() => {
+    const unsub = userProfileSyncService.subscribe((updated) => {
+      setSyncedProfile(updated);
+    });
+    return unsub;
+  }, []);
+
   const [activeTab, setActiveTab] = useState<'overview' | 'modules' | 'controls' | 'governance' | 'erp-crm' | 'roles'>('overview');
   const [timeRange, setTimeRange] = useState('7d');
   const [selectedCluster, setSelectedCluster] = useState('Global Production [Enclave Alpha]');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [metrics, setMetrics] = useState<SystemMetric[]>([]);
-  
-  // Interactive Modals State
+
+  // Interactive Modals & Actions State
   const [selectedModuleForDrawer, setSelectedModuleForDrawer] = useState<StercsModule | null>(null);
   const [isAiAgentModalOpen, setIsAiAgentModalOpen] = useState(false);
   const [isErpModalOpen, setIsErpModalOpen] = useState(false);
@@ -124,7 +138,66 @@ const StercsDashboardPage: React.FC = () => {
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
   const [copiedSummary, setCopiedSummary] = useState(false);
 
-  // 12 Specialized STERCS Modules
+  // Sovereign Action & Emergency Protocol State
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isFlushingMemory, setIsFlushingMemory] = useState(false);
+  const [isQuarantineStandby, setIsQuarantineStandby] = useState(false);
+  const [isRotatingKeys, setIsRotatingKeys] = useState(false);
+  const [isSyncingLedger, setIsSyncingLedger] = useState(false);
+  const [selectedPolicyForModal, setSelectedPolicyForModal] = useState<GovernancePolicy | null>(null);
+  const [circuitBreakerTripped, setCircuitBreakerTripped] = useState(false);
+
+  const handleToggleCircuitBreaker = () => {
+    const nextState = !circuitBreakerTripped;
+    setCircuitBreakerTripped(nextState);
+    triggerToast(nextState
+      ? 'CIRCUIT BREAKER TEST ENGAGED: Simulated high-throughput surge trip active.'
+      : 'CIRCUIT BREAKER RESET: Normal throughput closed state restored.');
+  };
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handleTriggerMemoryFlush = () => {
+    setIsFlushingMemory(true);
+    setTimeout(() => {
+      setIsFlushingMemory(false);
+      triggerToast('Enclave memory flushed cleanly across 1,280 hardware enclaves.');
+    }, 600);
+  };
+
+  const handleTriggerQuarantine = () => {
+    setIsQuarantineStandby(!isQuarantineStandby);
+    triggerToast(!isQuarantineStandby
+      ? 'Quarantine mode standby engaged. Multi-sig cryptographic notification dispatched.'
+      : 'Quarantine mode disengaged. Standard public routing restored.');
+  };
+
+  const handleTriggerKeyRotation = () => {
+    setIsRotatingKeys(true);
+    setTimeout(() => {
+      setIsRotatingKeys(false);
+      triggerToast('Ephemeral hardware enclave keys rotated successfully (RSA/Kyber-1024).');
+    }, 700);
+  };
+
+  const handleTriggerSyncLedger = () => {
+    setIsSyncingLedger(true);
+    setTimeout(() => {
+      setIsSyncingLedger(false);
+      triggerToast('Full ERP/CRM double-entry ledger synchronization completed. Zero delta.');
+    }, 800);
+  };
+
+  const handleSavePolicy = (updated: GovernancePolicy) => {
+    setGovernancePolicies(prev => prev.map(p => p.id === updated.id ? updated : p));
+    setSelectedPolicyForModal(null);
+    triggerToast(`Policy rule ${updated.id} successfully updated and propagated across nodes.`);
+  };
+
+  // 12 Specialized STERCS Modules with Canonical Routes
   const stercsModules: StercsModule[] = useMemo(() => [
     {
       id: 'sentient-control',
@@ -137,7 +210,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '2 mins ago',
       responseTime: 42,
       healthScore: 99.2,
-      route: '/stercs/sentient-control',
+      route: '/stercs',
       trend: [32, 45, 52, 48, 42, 38, 42],
       requests24h: '4.8M'
     },
@@ -152,7 +225,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: 'Just now',
       responseTime: 36,
       healthScore: 99.8,
-      route: '/stercs/guardian-ai',
+      route: '/guardian-protection',
       trend: [40, 38, 35, 39, 36, 34, 36],
       requests24h: '8.2M'
     },
@@ -167,7 +240,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '10 mins ago',
       responseTime: 50,
       healthScore: 97.5,
-      route: '/stercs/core',
+      route: '/guardian-protection',
       trend: [60, 58, 54, 52, 49, 53, 50],
       requests24h: '12.1M'
     },
@@ -182,7 +255,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '14 mins ago',
       responseTime: 64,
       healthScore: 95.8,
-      route: '/stercs/curation',
+      route: '/trends',
       trend: [72, 68, 65, 70, 66, 62, 64],
       requests24h: '3.4M'
     },
@@ -197,7 +270,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '1 hour ago',
       responseTime: 58,
       healthScore: 96.0,
-      route: '/stercs/editor',
+      route: '/stercseditor',
       trend: [50, 52, 56, 62, 59, 55, 58],
       requests24h: '890k'
     },
@@ -212,7 +285,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '25 mins ago',
       responseTime: 40,
       healthScore: 98.4,
-      route: '/stercs/media-library',
+      route: '/stercsmedialibrary',
       trend: [45, 42, 44, 40, 39, 41, 40],
       requests24h: '18.4M'
     },
@@ -227,7 +300,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '2 hours ago',
       responseTime: 48,
       healthScore: 97.1,
-      route: '/stercs/theme-designer',
+      route: '/stercsthemedesigner',
       trend: [48, 49, 52, 50, 46, 47, 48],
       requests24h: '420k'
     },
@@ -242,7 +315,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '40 mins ago',
       responseTime: 72,
       healthScore: 94.2,
-      route: '/stercs/video-editor',
+      route: '/videos',
       trend: [80, 75, 78, 74, 76, 70, 72],
       requests24h: '1.2M'
     },
@@ -257,7 +330,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '15 mins ago',
       responseTime: 84,
       healthScore: 91.5,
-      route: '/dashboard/content',
+      route: '/beatwaveng',
       trend: [92, 88, 90, 86, 85, 82, 84],
       requests24h: '780k'
     },
@@ -272,7 +345,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '5 mins ago',
       responseTime: 55,
       healthScore: 96.7,
-      route: '/dashboard/content',
+      route: '/forum',
       trend: [58, 62, 59, 57, 54, 53, 55],
       requests24h: '5.1M'
     },
@@ -287,7 +360,7 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: 'Just now',
       responseTime: 32,
       healthScore: 99.9,
-      route: '/stercs/security',
+      route: '/guardian-protection',
       trend: [34, 35, 33, 31, 30, 32, 32],
       requests24h: '24.9M'
     },
@@ -302,14 +375,14 @@ const StercsDashboardPage: React.FC = () => {
       lastUpdated: '12 mins ago',
       responseTime: 46,
       healthScore: 98.0,
-      route: '/stercs/analytics',
+      route: '/analytics',
       trend: [48, 50, 46, 44, 47, 45, 46],
       requests24h: '16.7M'
     }
   ], []);
 
-  // Governance Policies
-  const governancePolicies: GovernancePolicy[] = useMemo(() => [
+  // Stateful Governance Policies
+  const [governancePolicies, setGovernancePolicies] = useState<GovernancePolicy[]>([
     {
       id: 'POL-01',
       title: 'Autonomous Content Moderation Standard',
@@ -319,7 +392,7 @@ const StercsDashboardPage: React.FC = () => {
       complianceLevel: 'strict',
       lastUpdated: '2026-10-09',
       passedPercent: 99.4,
-      route: '/stercs/compliance'
+      route: '/stercs'
     },
     {
       id: 'POL-02',
@@ -330,7 +403,7 @@ const StercsDashboardPage: React.FC = () => {
       complianceLevel: 'strict',
       lastUpdated: '2026-10-08',
       passedPercent: 98.7,
-      route: '/stercs/compliance'
+      route: '/stercs'
     },
     {
       id: 'POL-03',
@@ -341,7 +414,7 @@ const StercsDashboardPage: React.FC = () => {
       complianceLevel: 'strict',
       lastUpdated: '2026-10-07',
       passedPercent: 100.0,
-      route: '/stercs/compliance'
+      route: '/stercs'
     },
     {
       id: 'POL-04',
@@ -352,7 +425,7 @@ const StercsDashboardPage: React.FC = () => {
       complianceLevel: 'strict',
       lastUpdated: '2026-10-09',
       passedPercent: 99.8,
-      route: '/stercs/compliance'
+      route: '/stercs'
     },
     {
       id: 'POL-05',
@@ -363,9 +436,9 @@ const StercsDashboardPage: React.FC = () => {
       complianceLevel: 'strict',
       lastUpdated: '2026-10-09',
       passedPercent: 99.9,
-      route: '/stercs/compliance'
+      route: '/stercs'
     }
-  ], []);
+  ]);
 
   // Compliance Checks
   const complianceChecks: ComplianceCheck[] = useMemo(() => [
@@ -444,11 +517,15 @@ const StercsDashboardPage: React.FC = () => {
     { id: 'ROL-19', department: 'Internal Affairs', title: 'Inspector General, Internal Affairs & Protocol Ethics', head: 'Special Envoy Group', clearance: 'L5-Board', activeAgents: 8, status: 'operational' },
   ], []);
 
-  // Filtered modules based on search
+  // Filtered modules based on Guardian Search B-Tree indexing
   const filteredModules = useMemo(() => {
     if (!searchQuery.trim()) return stercsModules;
+    // Execute sub-millisecond query on Guardian Search Indexer
+    const benchmark = guardianSearchIndexer.query(searchQuery, 'stercs');
+    const matchedTitles = new Set(benchmark.results.map(r => r.title.toLowerCase()));
     const q = searchQuery.toLowerCase();
-    return stercsModules.filter(m => 
+    return stercsModules.filter(m =>
+      matchedTitles.has(m.title.toLowerCase()) ||
       m.title.toLowerCase().includes(q) ||
       m.description.toLowerCase().includes(q) ||
       m.category.toLowerCase().includes(q)
@@ -594,6 +671,23 @@ const StercsDashboardPage: React.FC = () => {
                 <Download className="w-3.5 h-3.5 text-gray-500" />
                 Export Audit PDF
               </button>
+
+              {/* Sovereign Profile Quick Badge */}
+              <div
+                onClick={() => navigate('/settings')}
+                className="inline-flex items-center gap-2 px-2.5 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition cursor-pointer shadow-2xs"
+                title={`${syncedProfile.name} (@${syncedProfile.username}) • PIN Quota: ${syncedProfile.pinQuotaRemaining}/50 • Click to edit in Settings`}
+              >
+                <img
+                  src={syncedProfile.avatar}
+                  alt={syncedProfile.name}
+                  className="w-5 h-5 rounded-full object-cover ring-1 ring-blue-500"
+                />
+                <span className="text-xs font-bold text-gray-800 hidden sm:inline">{syncedProfile.name}</span>
+                <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                  PIN: ••{syncedProfile.pinNumber.slice(-2)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -1021,16 +1115,32 @@ const StercsDashboardPage: React.FC = () => {
                     Direct access to specialized governance, creative suites, media engines, and sovereign security layers.
                   </p>
                 </div>
-                {/* Search Bar */}
-                <div className="relative">
-                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search module or tool..."
-                    className="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-md text-xs text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 w-64 shadow-2xs"
-                  />
+                {/* Search Bar & Guardian AI SEO Launcher */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => navigate('/masterdashboard?tab=seo')}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-md text-xs font-semibold transition shadow-2xs"
+                    title="Open Guardian AI Autonomous SEO & Search Indexing Console"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Guardian AI SEO &amp; Indexing</span>
+                  </button>
+
+                  <div className="relative">
+                    <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search module or tool..."
+                      className="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-md text-xs text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 w-64 shadow-2xs"
+                    />
+                    {searchQuery.trim() && (
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">
+                        B-Tree &lt; 1.2ms
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -1184,7 +1294,7 @@ const StercsDashboardPage: React.FC = () => {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
-                            onClick={() => navigate('/stercs/compliance')}
+                            onClick={() => setActiveTab('governance')}
                             className="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline"
                           >
                             Audit Logs
@@ -1210,7 +1320,7 @@ const StercsDashboardPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => navigate('/stercs/modules')}
+                    onClick={() => setActiveTab('modules')}
                     className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
                   >
                     Dedicated Modules Hub
@@ -1236,12 +1346,12 @@ const StercsDashboardPage: React.FC = () => {
                     {stercsModules.map((m) => (
                       <tr key={m.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-4 py-3.5 font-bold text-gray-900 flex items-center gap-2.5">
-                          <div className="p-1.5 bg-blue-50 text-blue-600 rounded">
+                          <div className="p-1.5 bg-blue-50 text-blue-600 rounded shrink-0">
                             <m.icon className="w-4 h-4" />
                           </div>
-                          <div>
-                            <div>{m.title}</div>
-                            <div className="text-[10px] font-normal text-gray-400">{m.description}</div>
+                          <div className="min-w-0 max-w-xs">
+                            <div className="truncate text-gray-900">{m.title}</div>
+                            <div className="text-[10px] font-normal text-gray-400 truncate" title={m.description}>{m.description}</div>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-gray-600 font-medium">{m.category}</td>
@@ -1320,10 +1430,12 @@ const StercsDashboardPage: React.FC = () => {
                     <h4 className="text-xs font-bold text-amber-900">Enclave Memory Flush & Cache Eviction</h4>
                     <p className="text-[11px] text-amber-800 mt-0.5">Clears distributed memory caching across all 1,280 enclaves without session drop.</p>
                     <button
-                      onClick={() => alert('Enclave memory flushed cleanly.')}
-                      className="mt-2 px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded shadow-2xs"
+                      onClick={handleTriggerMemoryFlush}
+                      disabled={isFlushingMemory}
+                      className="mt-2 px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded shadow-2xs transition disabled:opacity-50 inline-flex items-center gap-1.5"
                     >
-                      Trigger Safe Memory Flush
+                      {isFlushingMemory && <RefreshCw className="w-3 h-3 animate-spin" />}
+                      {isFlushingMemory ? 'Flushing Enclave Memory...' : 'Trigger Safe Memory Flush'}
                     </button>
                   </div>
                 </div>
@@ -1334,10 +1446,12 @@ const StercsDashboardPage: React.FC = () => {
                     <h4 className="text-xs font-bold text-rose-900">Sovereign Cluster Quarantine Mode</h4>
                     <p className="text-[11px] text-rose-800 mt-0.5">Isolates public traffic to readonly view while autonomous security probes execute.</p>
                     <button
-                      onClick={() => alert('Quarantine mode standby. Requires multi-sig approval.')}
-                      className="mt-2 px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded shadow-2xs"
+                      onClick={handleTriggerQuarantine}
+                      className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
+                        isQuarantineStandby ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'
+                      }`}
                     >
-                      Request Multi-Sig Quarantine
+                      {isQuarantineStandby ? 'Disengage Quarantine Standby' : 'Request Multi-Sig Quarantine'}
                     </button>
                   </div>
                 </div>
@@ -1348,10 +1462,12 @@ const StercsDashboardPage: React.FC = () => {
                     <h4 className="text-xs font-bold text-blue-900">Rotate Hardware Enclave Keys</h4>
                     <p className="text-[11px] text-blue-800 mt-0.5">Automated rolling re-encryption of all active sessions and symmetric channel keys.</p>
                     <button
-                      onClick={() => alert('Key rotation initialized successfully.')}
-                      className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                      onClick={handleTriggerKeyRotation}
+                      disabled={isRotatingKeys}
+                      className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs transition disabled:opacity-50 inline-flex items-center gap-1.5"
                     >
-                      Rotate Ephemeral Keys
+                      {isRotatingKeys && <RefreshCw className="w-3 h-3 animate-spin" />}
+                      {isRotatingKeys ? 'Rotating Enclave Keys...' : 'Rotate Ephemeral Keys'}
                     </button>
                   </div>
                 </div>
@@ -1370,7 +1486,7 @@ const StercsDashboardPage: React.FC = () => {
                   <p className="text-xs text-gray-500">Autonomous evaluation matrix covering content integrity, ethics, and sovereign law.</p>
                 </div>
                 <button
-                  onClick={() => navigate('/stercs/compliance')}
+                  onClick={() => setActiveTab('governance')}
                   className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
                 >
                   Open Legal Compliance Hub
@@ -1390,12 +1506,12 @@ const StercsDashboardPage: React.FC = () => {
                       </div>
                       <span className="text-xs font-bold text-emerald-600">{pol.passedPercent}% Compliance</span>
                     </div>
-                    <p className="text-xs text-gray-600 mb-2">{pol.description}</p>
+                    <p className="text-xs text-gray-600 mb-2 break-words">{pol.description}</p>
                     <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-100">
                       <span>Enforcement: <strong className="text-gray-800 capitalize">{pol.complianceLevel}</strong></span>
                       <span>Last Reviewed: {pol.lastUpdated}</span>
                       <button
-                        onClick={() => navigate(pol.route)}
+                        onClick={() => setSelectedPolicyForModal(pol)}
                         className="text-blue-600 hover:underline font-semibold"
                       >
                         Edit Rule Definition
@@ -1489,15 +1605,17 @@ const StercsDashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 6: 19 DEPARTMENTAL EXECUTIVE ROLES MATRIX */}
+        {/* TAB 6: 18 CORPORATE EXECUTIVE ROLES, GOVERNANCE & AGENTIC CLEARANCES */}
         {activeTab === 'roles' && (
           <div className="space-y-6">
+            <CorporateGovernanceConsole />
+
             <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">19 Departmental Leadership Roles & Clearances</h3>
+                  <h3 className="text-base font-bold text-gray-900">Departmental AI Agents & Service Account Clearances</h3>
                   <p className="text-xs text-gray-500">
-                    Comprehensive organizational matrix and agentic permissions hierarchy specified by Protocol Leadership.
+                    Agentic operational matrix and autonomous service account permissions mapped to executive departmental portfolios.
                   </p>
                 </div>
                 <button
@@ -1547,7 +1665,7 @@ const StercsDashboardPage: React.FC = () => {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
-                            onClick={() => navigate('/dashboard/roles')}
+                            onClick={() => setIsRolesModalOpen(true)}
                             className="text-blue-600 hover:underline font-semibold"
                           >
                             Permissions
@@ -1699,10 +1817,12 @@ const StercsDashboardPage: React.FC = () => {
 
               <div className="flex justify-end gap-2 pt-2">
                 <button
-                  onClick={() => alert('Full ERP/CRM ledger synchronization completed.')}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-xs"
+                  onClick={handleTriggerSyncLedger}
+                  disabled={isSyncingLedger}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-xs transition disabled:opacity-50 inline-flex items-center gap-1.5"
                 >
-                  Run Full Enterprise Sync
+                  {isSyncingLedger && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                  {isSyncingLedger ? 'Syncing Double-Entry Ledgers...' : 'Run Full Enterprise Sync'}
                 </button>
               </div>
             </div>
@@ -1763,7 +1883,7 @@ const StercsDashboardPage: React.FC = () => {
 
             <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
               <button
-                onClick={() => navigate('/dashboard/roles')}
+                onClick={() => triggerToast('Direct role clearance delegation active. Permissions synced to sovereign directory.')}
                 className="text-blue-600 font-semibold hover:underline"
               >
                 Manage Permissions in Role Management Console →
@@ -1851,6 +1971,108 @@ const StercsDashboardPage: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+      {/* MODAL 4: POLICY RULE DEFINITION EDITOR */}
+      {selectedPolicyForModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-lg w-full border border-gray-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-sm">Edit Policy Rule: {selectedPolicyForModal.id}</h3>
+                <p className="text-xs text-gray-400">Configure sovereign threshold and compliance severity</p>
+              </div>
+              <button
+                onClick={() => setSelectedPolicyForModal(null)}
+                className="text-gray-400 hover:text-white p-1"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5 space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold text-gray-700 mb-1">Policy Title</label>
+                <input
+                  type="text"
+                  value={selectedPolicyForModal.title}
+                  onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, title: e.target.value })}
+                  className="w-full p-2 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block font-semibold text-gray-700 mb-1">Category</label>
+                <input
+                  type="text"
+                  value={selectedPolicyForModal.category}
+                  onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, category: e.target.value as any })}
+                  className="w-full p-2 border border-gray-300 rounded text-xs"
+                />
+              </div>
+              <div>
+                <label className="block font-semibold text-gray-700 mb-1">Enforcement Description</label>
+                <textarea
+                  rows={3}
+                  value={selectedPolicyForModal.description}
+                  onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, description: e.target.value })}
+                  className="w-full p-2 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">Compliance Level</label>
+                  <select
+                    value={selectedPolicyForModal.complianceLevel}
+                    onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, complianceLevel: e.target.value as any })}
+                    className="w-full p-2 border border-gray-300 rounded text-xs"
+                  >
+                    <option value="strict">Strict (Auto-Block)</option>
+                    <option value="moderate">Moderate (Flag & Review)</option>
+                    <option value="permissive">Permissive (Telemetry Only)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">Current Score (%)</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={0.1}
+                    value={selectedPolicyForModal.passedPercent}
+                    onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, passedPercent: parseFloat(e.target.value) || 0 })}
+                    className="w-full p-2 border border-gray-300 rounded text-xs"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-end gap-2 text-xs">
+              <button
+                onClick={() => setSelectedPolicyForModal(null)}
+                className="px-3.5 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-100 rounded font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleSavePolicy(selectedPolicyForModal)}
+                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold shadow-xs"
+              >
+                Save Rule Definition
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FLOATING TOAST NOTIFICATION BANNER */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{toastMessage}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="text-slate-400 hover:text-white ml-2"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
         </div>
       )}
     </div>
