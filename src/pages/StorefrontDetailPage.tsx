@@ -198,7 +198,7 @@ const StorefrontDetailPage: React.FC = () => {
         description: `Direct payment link for ${storefront?.name}`,
         amount: isNaN(amountNum) || amountNum <= 0 ? 25 : amountNum
       });
-      const url = res?.data?.url || `https://fingermobile.com/storefront/${storefront?.slug || storefront?.id}`;
+      const url = res?.data?.url || `https://fingermobileprotocol.com/storefront/${storefront?.slug || storefront?.id}`;
       await navigator.clipboard.writeText(url);
       showToast('Paylink created & copied to clipboard!', 'success');
       setShowPaylinkModal(false);

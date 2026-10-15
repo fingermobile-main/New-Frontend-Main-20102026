@@ -79,6 +79,7 @@ import GuardianAISeoPerformanceConsole from '../components/dashboard/GuardianAIS
 import MasterMembersConsole from '../components/dashboard/MasterMembersConsole';
 import MasterEcommerceConsole from '../components/dashboard/MasterEcommerceConsole';
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
+import MasterWidgetConsole from '../components/dashboard/MasterWidgetConsole';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
 
 interface Section {
@@ -2390,6 +2391,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'members', label: 'User & Members Console', badge: 'Active' },
               { id: 'governance', label: 'Corporate Governance (18 Portfolios)', badge: '18 Roles' },
               { id: 'ecommerce', label: 'E-Commerce Console', badge: '90 SKUs' },
+              { id: 'widgets', label: 'Widgets & Rails Console', badge: 'Rotational 2h' },
               { id: 'subscriptions', label: 'Subscription Models & Free Tier', badge: 'Active' },
               { id: 'seo', label: 'Guardian AI SEO & Indexing', badge: '100% Auto' },
               { id: 'community-identity', label: 'Community & Identity', badge: '9' },
@@ -2665,6 +2667,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'ecommerce' && (
               <div className="space-y-6">
                 <MasterEcommerceConsole />
+              </div>
+            )}
+
+            {/* Dedicated Widgets & Rails Master Console Tab */}
+            {activeTab === 'widgets' && (
+              <div className="space-y-6">
+                <MasterWidgetConsole />
               </div>
             )}
 

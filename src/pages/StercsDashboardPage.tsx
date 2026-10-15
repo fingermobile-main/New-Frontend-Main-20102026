@@ -515,53 +515,53 @@ const StercsDashboardPage: React.FC = () => {
 
   const getModuleCategoryColor = (category: string) => {
     switch (category) {
-      case 'Security':
-        return 'bg-rose-50 text-rose-600';
-      case 'Creation':
-        return 'bg-purple-50 text-purple-600';
-      case 'Intelligence':
-        return 'bg-blue-50 text-blue-600';
-      default:
-        return 'bg-amber-50 text-amber-600';
+    case 'Security':
+      return 'bg-rose-100 text-rose-950 border border-rose-300 font-bold';
+    case 'Creation':
+      return 'bg-purple-100 text-purple-950 border border-purple-300 font-bold';
+    case 'Intelligence':
+      return 'bg-blue-100 text-blue-950 border border-blue-300 font-bold';
+    default:
+      return 'bg-amber-100 text-amber-950 border border-amber-300 font-bold';
     }
   };
 
   const getModuleStatusBadge = (status: string) => {
     switch (status) {
-      case 'online':
-        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
-      case 'optimal':
-        return 'bg-blue-50 text-blue-700 border border-blue-200';
-      case 'syncing':
-        return 'bg-amber-50 text-amber-700 border border-amber-200';
-      default:
-        return 'bg-gray-100 text-gray-700';
+    case 'online':
+      return 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-black';
+    case 'optimal':
+      return 'bg-blue-100 text-blue-950 border border-blue-400 font-black';
+    case 'syncing':
+      return 'bg-amber-100 text-amber-950 border border-amber-400 font-black';
+    default:
+      return 'bg-slate-100 text-slate-900 border border-slate-300 font-black';
     }
   };
 
   const getModuleStatusDot = (status: string) => {
     switch (status) {
-      case 'online':
-        return 'bg-emerald-500';
-      case 'optimal':
-        return 'bg-blue-500';
-      case 'syncing':
-        return 'bg-amber-500';
-      default:
-        return 'bg-gray-400';
+    case 'online':
+      return 'bg-emerald-600';
+    case 'optimal':
+      return 'bg-blue-600';
+    case 'syncing':
+      return 'bg-amber-600';
+    default:
+      return 'bg-slate-500';
     }
   };
 
   const getCheckSeverityBadge = (severity: string) => {
-    if (severity === 'critical') return 'bg-rose-100 text-rose-700';
-    if (severity === 'high') return 'bg-amber-100 text-amber-700';
-    return 'bg-blue-100 text-blue-700';
+    if (severity === 'critical') return 'bg-rose-100 text-rose-950 border border-rose-400 font-black';
+    if (severity === 'high') return 'bg-amber-100 text-amber-950 border border-amber-400 font-black';
+    return 'bg-blue-100 text-blue-950 border border-blue-400 font-black';
   };
 
   const getClearanceBadge = (clearance: string) => {
-    if (clearance.includes('Board')) return 'bg-purple-100 text-purple-800';
-    if (clearance.includes('Executive')) return 'bg-blue-100 text-blue-800';
-    return 'bg-gray-100 text-gray-800';
+    if (clearance.includes('Board')) return 'bg-purple-100 text-purple-950 border border-purple-400 font-black';
+    if (clearance.includes('Executive')) return 'bg-blue-100 text-blue-950 border border-blue-400 font-black';
+    return 'bg-slate-100 text-slate-900 border border-slate-300 font-black';
   };
 
   // Load telemetry metrics
@@ -606,25 +606,25 @@ const StercsDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F5F8] text-[#1E293B] font-sans antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased">
       {/* 1. SEMrush Standard Breadcrumb & Project Control Bar */}
-      <div className="bg-white border-b border-[#E2E8F0] sticky top-0 z-30 shadow-xs">
+      <div className="bg-white border-b border-slate-300 sticky top-0 z-30 shadow-xs">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4 py-3">
             {/* Left: Breadcrumbs & Cluster Switcher */}
             <div className="flex items-center space-x-3 text-sm">
-              <span className="font-semibold text-blue-600 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-blue-600" />
+              <span className="font-bold text-blue-700 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-blue-700" />
                 STERCS™ Platform
               </span>
-              <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-              <span className="text-gray-500 font-medium">Sovereign Control Core</span>
-              <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+              <span className="text-slate-800 font-bold">Sovereign Control Core</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
               <div className="relative inline-block">
                 <select
                   value={selectedCluster}
                   onChange={(e) => setSelectedCluster(e.target.value)}
-                  className="bg-gray-50 border border-gray-300 text-gray-800 font-semibold text-xs rounded-md pl-2.5 pr-8 py-1.5 hover:bg-gray-100 transition-colors cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                  className="bg-white border border-slate-300 text-slate-900 font-bold text-xs rounded-md pl-2.5 pr-8 py-1.5 hover:bg-slate-50 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-600"
                 >
                   <option>Global Production [Enclave Alpha]</option>
                   <option>Regional Failover [US-East Sovereign]</option>
@@ -632,8 +632,8 @@ const StercsDashboardPage: React.FC = () => {
                   <option>Sandbox Staging Enclave</option>
                 </select>
               </div>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-500 animate-spin' : 'bg-emerald-500 animate-pulse'}`} />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400">
+                <span className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-600 animate-spin' : 'bg-emerald-600 animate-pulse'}`} />
                 {loading ? 'Syncing Telemetry...' : `Live Enclave Sync (${metrics.length || 12} Nodes)`}
               </span>
             </div>
@@ -641,15 +641,15 @@ const StercsDashboardPage: React.FC = () => {
             {/* Right: Date Picker & Global Action Suite */}
             <div className="flex items-center flex-wrap gap-2">
               {/* Date Filter Pills */}
-              <div className="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5 text-xs font-medium">
+              <div className="inline-flex rounded-md border border-slate-300 bg-slate-100 p-0.5 text-xs font-bold">
                 {(['24h', '7d', '30d', '90d'] as const).map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1 rounded transition-colors ${
                       timeRange === range
-                        ? 'bg-white text-blue-600 font-semibold shadow-xs'
-                        : 'text-gray-600 hover:text-gray-900'
+                        ? 'bg-white text-blue-700 font-black shadow-xs border border-slate-300'
+                        : 'text-slate-700 hover:text-slate-900 font-bold'
                     }`}
                   >
                     {range === '24h' ? 'Today' : `Last ${range}`}
@@ -661,63 +661,63 @@ const StercsDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 rounded-md hover:bg-slate-50 hover:text-blue-700 transition-colors shadow-2xs"
                 title="Universal AI Search (Cmd+K)"
               >
-                <Search className="w-3.5 h-3.5 text-cyan-600" />
+                <Search className="w-3.5 h-3.5 text-cyan-700" />
                 <span>Universal Search</span>
-                <kbd className="px-1 py-0.2 text-[9px] font-mono bg-gray-100 border border-gray-300 rounded text-gray-500">⌘K</kbd>
+                <kbd className="px-1 py-0.2 text-[9px] font-mono bg-slate-100 border border-slate-300 rounded text-slate-800 font-bold">⌘K</kbd>
               </button>
 
               {/* Master Dashboard Link */}
               <button
                 onClick={() => navigate('/master-dashboard')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 rounded-md hover:bg-slate-50 hover:text-blue-700 transition-colors shadow-2xs"
               >
-                <Activity className="w-3.5 h-3.5 text-blue-500" />
+                <Activity className="w-3.5 h-3.5 text-blue-600" />
                 Master Dashboard
               </button>
 
               {/* Agentic AI Trigger */}
               <button
                 onClick={() => setIsAiAgentModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-md hover:bg-purple-100 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-purple-950 bg-purple-100 border border-purple-300 rounded-md hover:bg-purple-200 transition-colors shadow-2xs"
               >
-                <Bot className="w-3.5 h-3.5 text-purple-600" />
+                <Bot className="w-3.5 h-3.5 text-purple-700" />
                 Agentic AI Engine
               </button>
 
               {/* ERP / CRM Bridge */}
               <button
                 onClick={() => setIsErpModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md hover:bg-emerald-100 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-950 bg-emerald-100 border border-emerald-400 rounded-md hover:bg-emerald-200 transition-colors shadow-2xs"
               >
-                <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
+                <Briefcase className="w-3.5 h-3.5 text-emerald-700" />
                 ERP & CRM Suite
               </button>
 
               {/* Export to PDF */}
               <button
                 onClick={() => window.print()}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors shadow-2xs"
               >
-                <Download className="w-3.5 h-3.5 text-gray-500" />
+                <Download className="w-3.5 h-3.5 text-slate-600" />
                 Export Audit PDF
               </button>
 
               {/* Sovereign Profile Quick Badge */}
               <div
                 onClick={() => navigate('/settings')}
-                className="inline-flex items-center gap-2 px-2.5 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition cursor-pointer shadow-2xs"
+                className="inline-flex items-center gap-2 px-2.5 py-1 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition cursor-pointer shadow-2xs"
                 title={`${syncedProfile.name} (@${syncedProfile.username}) • PIN Quota: ${syncedProfile.pinQuotaRemaining}/50 • Click to edit in Settings`}
               >
                 <img
                   src={syncedProfile.avatar}
                   alt={syncedProfile.name}
-                  className="w-5 h-5 rounded-full object-cover ring-1 ring-blue-500"
+                  className="w-5 h-5 rounded-full object-cover ring-1 ring-blue-600"
                 />
-                <span className="text-xs font-bold text-gray-800 hidden sm:inline">{syncedProfile.name}</span>
-                <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                <span className="text-xs font-black text-slate-900 hidden sm:inline">{syncedProfile.name}</span>
+                <span className="text-[10px] font-mono text-emerald-950 font-black bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-400">
                   PIN: ••{syncedProfile.pinNumber.slice(-2)}
                 </span>
               </div>
@@ -730,38 +730,38 @@ const StercsDashboardPage: React.FC = () => {
         {/* 2. Top SEMrush Hero Domain Analytics / Authority KPI Bar (5 Columns) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Card 1: STERCS Trust Index */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span className="font-semibold uppercase tracking-wider text-gray-600">STERCS Trust Index</span>
-              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+          <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs relative overflow-hidden group hover:border-blue-500 transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
+              <span className="font-bold uppercase tracking-wider text-slate-700 text-xs">STERCS Trust Index</span>
+              <span className="inline-flex items-center text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-1.5 py-0.5 rounded text-[11px]">
                 <ArrowUpRight className="w-3 h-3 mr-0.5" /> +1.8%
               </span>
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">97.4</span>
-              <span className="text-sm font-semibold text-gray-400">/ 100</span>
+              <span className="text-3xl font-black text-slate-900 tracking-tight">97.4</span>
+              <span className="text-sm font-bold text-slate-600">/ 100</span>
             </div>
             {/* SVG Semicircle Micro-gauge */}
-            <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden mb-2">
-              <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full" style={{ width: '97.4%' }} />
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full rounded-full" style={{ width: '97.4%' }} />
             </div>
-            <p className="text-[11px] text-gray-500 flex items-center justify-between">
+            <p className="text-xs text-slate-700 font-medium flex items-center justify-between">
               <span>Sovereign Enclave Status</span>
-              <span className="font-medium text-emerald-600">Hardware Attested</span>
+              <span className="font-bold text-emerald-800">Hardware Attested</span>
             </p>
           </div>
 
           {/* Card 2: Consensus Proof Velocity */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span className="font-semibold uppercase tracking-wider text-gray-600">Proof Velocity</span>
-              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+          <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs relative overflow-hidden group hover:border-blue-500 transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
+              <span className="font-bold uppercase tracking-wider text-slate-700 text-xs">Proof Velocity</span>
+              <span className="inline-flex items-center text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-1.5 py-0.5 rounded text-[11px]">
                 <ArrowUpRight className="w-3 h-3 mr-0.5" /> +12.4%
               </span>
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">48.6k</span>
-              <span className="text-xs font-semibold text-gray-500">proofs/s</span>
+              <span className="text-3xl font-black text-slate-900 tracking-tight">48.6k</span>
+              <span className="text-xs font-bold text-slate-700">proofs/s</span>
             </div>
             {/* Mini SVG Area Sparkline */}
             <div className="h-6 w-full">
@@ -773,24 +773,24 @@ const StercsDashboardPage: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <path d="M0,18 Q20,15 35,12 T70,8 T100,4 L100,24 L0,24 Z" fill="url(#gradVelocity)" />
-                <path d="M0,18 Q20,15 35,12 T70,8 T100,4" fill="none" stroke="#10B981" strokeWidth="2" />
+                <path d="M0,18 Q20,15 35,12 T70,8 T100,4" fill="none" stroke="#059669" strokeWidth="2" />
               </svg>
             </div>
-            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+            <p className="text-xs text-slate-700 font-medium flex items-center justify-between mt-1">
               <span>Sub-second Finality</span>
-              <span className="font-medium text-gray-700">18.4 ms avg</span>
+              <span className="font-bold text-slate-900">18.4 ms avg</span>
             </p>
           </div>
 
           {/* Card 3: Active Sovereign Enclaves */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span className="font-semibold uppercase tracking-wider text-gray-600">Enclave Nodes</span>
-              <span className="text-xs text-emerald-600 font-semibold">99.69%</span>
+          <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs relative overflow-hidden group hover:border-blue-500 transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
+              <span className="font-bold uppercase tracking-wider text-slate-700 text-xs">Enclave Nodes</span>
+              <span className="text-xs text-emerald-800 font-black">99.69%</span>
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">1,280</span>
-              <span className="text-xs font-medium text-gray-400">/ 1,284 total</span>
+              <span className="text-3xl font-black text-slate-900 tracking-tight">1,280</span>
+              <span className="text-xs font-bold text-slate-600">/ 1,284 total</span>
             </div>
             {/* Mini SVG Area Sparkline */}
             <div className="h-6 w-full">
@@ -802,48 +802,48 @@ const StercsDashboardPage: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <path d="M0,12 Q25,8 50,10 T80,6 T100,4 L100,24 L0,24 Z" fill="url(#gradNodes)" />
-                <path d="M0,12 Q25,8 50,10 T80,6 T100,4" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                <path d="M0,12 Q25,8 50,10 T80,6 T100,4" fill="none" stroke="#2563EB" strokeWidth="2" />
               </svg>
             </div>
-            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+            <p className="text-xs text-slate-700 font-medium flex items-center justify-between mt-1">
               <span>Camus Isolation</span>
-              <span className="font-medium text-emerald-600">0 Leaks</span>
+              <span className="font-bold text-emerald-800">0 Leaks</span>
             </p>
           </div>
 
           {/* Card 4: Threat Neutralization Ratio */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span className="font-semibold uppercase tracking-wider text-gray-600">Threat Mitigation</span>
-              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+          <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs relative overflow-hidden group hover:border-blue-500 transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
+              <span className="font-bold uppercase tracking-wider text-slate-700 text-xs">Threat Mitigation</span>
+              <span className="inline-flex items-center text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-1.5 py-0.5 rounded text-[11px]">
                 Active
               </span>
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">99.98%</span>
+              <span className="text-3xl font-black text-slate-900 tracking-tight">99.98%</span>
             </div>
             {/* Multi-segment mini bar */}
-            <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden flex mb-2">
-              <div className="bg-emerald-500 h-full" style={{ width: '99.98%' }} />
-              <div className="bg-rose-500 h-full" style={{ width: '0.02%' }} />
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex mb-2">
+              <div className="bg-emerald-600 h-full" style={{ width: '99.98%' }} />
+              <div className="bg-rose-600 h-full" style={{ width: '0.02%' }} />
             </div>
-            <p className="text-[11px] text-gray-500 flex items-center justify-between">
+            <p className="text-xs text-slate-700 font-medium flex items-center justify-between">
               <span>Deflected Threats (24h)</span>
-              <span className="font-semibold text-gray-800">4,129 blocked</span>
+              <span className="font-bold text-slate-900">4,129 blocked</span>
             </p>
           </div>
 
           {/* Card 5: Autonomous ERP & CRM Workflows */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs relative overflow-hidden group hover:border-blue-400 transition-colors">
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span className="font-semibold uppercase tracking-wider text-gray-600">ERP / CRM Tasks</span>
-              <span className="inline-flex items-center text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded text-[11px]">
+          <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs relative overflow-hidden group hover:border-blue-500 transition-colors">
+            <div className="flex items-center justify-between text-xs text-slate-700 mb-2">
+              <span className="font-bold uppercase tracking-wider text-slate-700 text-xs">ERP / CRM Tasks</span>
+              <span className="inline-flex items-center text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-1.5 py-0.5 rounded text-[11px]">
                 <ArrowUpRight className="w-3 h-3 mr-0.5" /> +8.5%
               </span>
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-3xl font-extrabold text-gray-900 tracking-tight">14.8k</span>
-              <span className="text-xs font-semibold text-gray-500">runs/hour</span>
+              <span className="text-3xl font-black text-slate-900 tracking-tight">14.8k</span>
+              <span className="text-xs font-bold text-slate-700">runs/hour</span>
             </div>
             {/* Mini SVG Area Sparkline */}
             <div className="h-6 w-full">
@@ -855,12 +855,12 @@ const StercsDashboardPage: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <path d="M0,16 Q30,18 55,10 T85,6 T100,2 L100,24 L0,24 Z" fill="url(#gradErp)" />
-                <path d="M0,16 Q30,18 55,10 T85,6 T100,2" fill="none" stroke="#8B5CF6" strokeWidth="2" />
+                <path d="M0,16 Q30,18 55,10 T85,6 T100,2" fill="none" stroke="#7C3AED" strokeWidth="2" />
               </svg>
             </div>
-            <p className="text-[11px] text-gray-500 flex items-center justify-between mt-1">
+            <p className="text-xs text-slate-700 font-medium flex items-center justify-between mt-1">
               <span>Auto-Reconciled</span>
-              <span className="font-medium text-purple-700">100.0% accuracy</span>
+              <span className="font-bold text-purple-900">100.0% accuracy</span>
             </p>
           </div>
         </div>
@@ -926,7 +926,7 @@ const StercsDashboardPage: React.FC = () => {
         </div>
 
         {/* 4. Tab Navigation Strip */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-slate-300">
           <nav className="flex space-x-8 -mb-px">
             {[
               { id: 'overview', label: 'Enclave Overview', icon: Activity },
@@ -939,13 +939,13 @@ const StercsDashboardPage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors ${
+                className={`py-3 px-1 border-b-2 font-bold text-sm flex items-center gap-2 transition-colors ${
                   activeTab === tab.id
-                    ? 'border-blue-600 text-blue-600 font-semibold'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-blue-600 text-blue-700 font-black'
+                    : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-400'
                 }`}
               >
-                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'}`} />
+                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? 'text-blue-600' : 'text-slate-500'}`} />
                 {tab.label}
               </button>
             ))}
@@ -958,10 +958,10 @@ const StercsDashboardPage: React.FC = () => {
             {/* Visual Analytics Grid: SEMrush Semicircle Dial, Stacked Toxicity Bar, and Policy Donut */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Box 1: Semicircle Site Health & Enclave Integrity Dial */}
-              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+              <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Sovereign Enclave Health</h3>
-                  <span className="text-xs text-blue-600 font-semibold hover:underline cursor-pointer">
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">Sovereign Enclave Health</h3>
+                  <span className="text-xs text-blue-700 font-bold hover:underline cursor-pointer">
                     Inspect 1,280 Nodes
                   </span>
                 </div>
@@ -972,7 +972,7 @@ const StercsDashboardPage: React.FC = () => {
                       <path
                         d="M 20 90 A 80 80 0 0 1 180 90"
                         fill="none"
-                        stroke="#F1F5F9"
+                        stroke="#E2E8F0"
                         strokeWidth="20"
                         strokeLinecap="round"
                       />
@@ -993,89 +993,89 @@ const StercsDashboardPage: React.FC = () => {
                       </defs>
                     </svg>
                     <div className="absolute bottom-0 text-center">
-                      <span className="text-3xl font-extrabold text-gray-900">97%</span>
-                      <span className="block text-[11px] font-semibold text-emerald-600 uppercase">Optimal Health</span>
+                      <span className="text-3xl font-black text-slate-900">97%</span>
+                      <span className="block text-xs font-bold text-emerald-800 uppercase">Optimal Health</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 text-center">
-                  <div className="p-2 rounded bg-emerald-50">
-                    <span className="block text-xs font-semibold text-emerald-700">1,276</span>
-                    <span className="text-[10px] text-emerald-600 uppercase">Flawless</span>
+                <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-200 text-center">
+                  <div className="p-2 rounded bg-emerald-100 border border-emerald-300">
+                    <span className="block text-xs font-black text-emerald-950">1,276</span>
+                    <span className="text-[10px] text-emerald-900 font-bold uppercase">Flawless</span>
                   </div>
-                  <div className="p-2 rounded bg-amber-50">
-                    <span className="block text-xs font-semibold text-amber-700">4</span>
-                    <span className="text-[10px] text-amber-600 uppercase">Syncing</span>
+                  <div className="p-2 rounded bg-amber-100 border border-amber-300">
+                    <span className="block text-xs font-black text-amber-950">4</span>
+                    <span className="text-[10px] text-amber-900 font-bold uppercase">Syncing</span>
                   </div>
-                  <div className="p-2 rounded bg-rose-50">
-                    <span className="block text-xs font-semibold text-rose-700">0</span>
-                    <span className="text-[10px] text-rose-600 uppercase">Faulted</span>
+                  <div className="p-2 rounded bg-rose-100 border border-rose-300">
+                    <span className="block text-xs font-black text-rose-950">0</span>
+                    <span className="text-[10px] text-rose-900 font-bold uppercase">Faulted</span>
                   </div>
                 </div>
               </div>
 
               {/* Box 2: Toxicity & Camus Intrusion Protection Bar */}
-              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+              <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Camus Security & Content Filtering</h3>
-                  <span className="text-xs text-gray-500 font-medium">Last 24 Hours</span>
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">Camus Security & Content Filtering</h3>
+                  <span className="text-xs text-slate-700 font-bold">Last 24 Hours</span>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <div className="flex justify-between text-xs mb-1.5 font-medium">
-                      <span className="text-gray-700">Aggregated Traffic Cleanliness</span>
-                      <span className="text-emerald-600 font-bold">99.4% Verified Clean</span>
+                    <div className="flex justify-between text-xs mb-1.5 font-bold">
+                      <span className="text-slate-800">Aggregated Traffic Cleanliness</span>
+                      <span className="text-emerald-800 font-black">99.4% Verified Clean</span>
                     </div>
                     {/* Stacked 4-segment distribution bar */}
-                    <div className="w-full h-4 rounded-full overflow-hidden flex bg-gray-100 shadow-inner">
-                      <div className="bg-emerald-500 h-full hover:opacity-90 transition-opacity" style={{ width: '92.4%' }} title="Clean: 92.4%" />
-                      <div className="bg-blue-500 h-full hover:opacity-90 transition-opacity" style={{ width: '5.2%' }} title="Heuristics Scanned: 5.2%" />
-                      <div className="bg-amber-400 h-full hover:opacity-90 transition-opacity" style={{ width: '2.1%' }} title="Quarantined: 2.1%" />
-                      <div className="bg-rose-500 h-full hover:opacity-90 transition-opacity" style={{ width: '0.3%' }} title="Threat Blocked: 0.3%" />
+                    <div className="w-full h-4 rounded-full overflow-hidden flex bg-slate-200 shadow-inner">
+                      <div className="bg-emerald-600 h-full hover:opacity-90 transition-opacity" style={{ width: '92.4%' }} title="Clean: 92.4%" />
+                      <div className="bg-blue-600 h-full hover:opacity-90 transition-opacity" style={{ width: '5.2%' }} title="Heuristics Scanned: 5.2%" />
+                      <div className="bg-amber-500 h-full hover:opacity-90 transition-opacity" style={{ width: '2.1%' }} title="Quarantined: 2.1%" />
+                      <div className="bg-rose-600 h-full hover:opacity-90 transition-opacity" style={{ width: '0.3%' }} title="Threat Blocked: 0.3%" />
                     </div>
                   </div>
 
                   {/* Legend Breakdown */}
                   <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                      <span className="text-gray-600">Clean Payload:</span>
-                      <span className="font-semibold text-gray-900 ml-auto">92.4%</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+                      <span className="text-slate-700 font-bold">Clean Payload:</span>
+                      <span className="font-black text-slate-900 ml-auto">92.4%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                      <span className="text-gray-600">AI Verified:</span>
-                      <span className="font-semibold text-gray-900 ml-auto">5.2%</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+                      <span className="text-slate-700 font-bold">AI Verified:</span>
+                      <span className="font-black text-slate-900 ml-auto">5.2%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                      <span className="text-gray-600">Quarantined:</span>
-                      <span className="font-semibold text-gray-900 ml-auto">2.1%</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                      <span className="text-slate-700 font-bold">Quarantined:</span>
+                      <span className="font-black text-slate-900 ml-auto">2.1%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
-                      <span className="text-gray-600">Hostile Drops:</span>
-                      <span className="font-semibold text-rose-600 ml-auto">0.3%</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
+                      <span className="text-slate-700 font-bold">Hostile Drops:</span>
+                      <span className="font-black text-rose-700 ml-auto">0.3%</span>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs text-gray-600 flex items-center justify-between">
+                  <div className="p-3 bg-slate-100 rounded-lg border border-slate-300 text-xs text-slate-800 font-bold flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-blue-600" />
+                      <Shield className="w-4 h-4 text-blue-700" />
                       <span>Zero-Day Intrusion Signature Engine:</span>
                     </div>
-                    <span className="font-bold text-emerald-600">Active & Enforcing</span>
+                    <span className="font-black text-emerald-800">Active & Enforcing</span>
                   </div>
                 </div>
               </div>
 
               {/* Box 3: 150-Rule Governance Policy Donut Chart */}
-              <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-2xs">
+              <div className="bg-white rounded-lg p-5 border border-slate-300 shadow-2xs">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Active Policy Frameworks (150 Rules)</h3>
-                  <span className="text-xs text-blue-600 font-semibold hover:underline cursor-pointer" onClick={() => setActiveTab('governance')}>
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">Active Policy Frameworks (150 Rules)</h3>
+                  <span className="text-xs text-blue-700 font-bold hover:underline cursor-pointer" onClick={() => setActiveTab('governance')}>
                     View All Rules
                   </span>
                 </div>
@@ -1085,56 +1085,56 @@ const StercsDashboardPage: React.FC = () => {
                   <div className="relative w-28 h-28 shrink-0">
                     <svg className="w-28 h-28 -rotate-90" viewBox="0 0 36 36">
                       {/* Segment 1: Content Safety (45%) */}
-                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#3B82F6" strokeWidth="5" strokeDasharray="45 55" strokeDashoffset="0" />
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#2563EB" strokeWidth="5" strokeDasharray="45 55" strokeDashoffset="0" />
                       {/* Segment 2: AI Ethics (25%) */}
-                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#10B981" strokeWidth="5" strokeDasharray="25 75" strokeDashoffset="-45" />
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#059669" strokeWidth="5" strokeDasharray="25 75" strokeDashoffset="-45" />
                       {/* Segment 3: Privacy (15%) */}
-                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#8B5CF6" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-70" />
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#7C3AED" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-70" />
                       {/* Segment 4: Financial (15%) */}
-                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#F59E0B" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-85" />
+                      <circle cx="18" cy="18" r="14" fill="transparent" stroke="#D97706" strokeWidth="5" strokeDasharray="15 85" strokeDashoffset="-85" />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                      <span className="text-base font-extrabold text-gray-900">150</span>
-                      <span className="text-[9px] text-gray-500 uppercase font-semibold">Rules</span>
+                      <span className="text-base font-black text-slate-900">150</span>
+                      <span className="text-[10px] text-slate-700 uppercase font-bold">Rules</span>
                     </div>
                   </div>
 
                   {/* Donut Legend */}
                   <div className="space-y-1.5 text-xs flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-gray-600">
-                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                      <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-blue-600" />
                         Content Safety
                       </span>
-                      <span className="font-semibold text-gray-900">68 rules</span>
+                      <span className="font-black text-slate-900">68 rules</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-gray-600">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-600" />
                         AI Ethics & Bias
                       </span>
-                      <span className="font-semibold text-gray-900">38 rules</span>
+                      <span className="font-black text-slate-900">38 rules</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-gray-600">
-                        <span className="w-2 h-2 rounded-full bg-purple-500" />
+                      <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-purple-600" />
                         Data Privacy / GDPR
                       </span>
-                      <span className="font-semibold text-gray-900">22 rules</span>
+                      <span className="font-black text-slate-900">22 rules</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-gray-600">
-                        <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      <span className="flex items-center gap-1.5 text-slate-700 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-amber-600" />
                         ERP & Financial
                       </span>
-                      <span className="font-semibold text-gray-900">22 rules</span>
+                      <span className="font-black text-slate-900">22 rules</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-                  <span className="text-gray-500">Autonomous Compliance:</span>
-                  <span className="font-bold text-emerald-600">99.7% Enforced</span>
+                <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                  <span className="text-slate-700 font-bold">Autonomous Compliance:</span>
+                  <span className="font-black text-emerald-800">99.7% Enforced</span>
                 </div>
               </div>
             </div>
@@ -1143,8 +1143,8 @@ const StercsDashboardPage: React.FC = () => {
             <div>
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900">12 Specialized STERCS Consoles</h2>
-                  <p className="text-xs text-gray-500">
+                  <h2 className="text-lg font-bold text-slate-900">12 Specialized STERCS Consoles</h2>
+                  <p className="text-xs text-slate-700 font-medium">
                     Direct access to specialized governance, creative suites, media engines, and sovereign security layers.
                   </p>
                 </div>
@@ -1152,24 +1152,24 @@ const StercsDashboardPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate('/masterdashboard?tab=seo')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-md text-xs font-semibold transition shadow-2xs"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-950 hover:bg-emerald-200 border border-emerald-400 rounded-md text-xs font-bold transition shadow-2xs"
                     title="Open Guardian AI Autonomous SEO & Search Indexing Console"
                   >
-                    <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                    <Zap className="w-3.5 h-3.5 text-emerald-700" />
                     <span>Guardian AI SEO &amp; Indexing</span>
                   </button>
 
                   <div className="relative">
-                    <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search module or tool..."
-                      className="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-md text-xs text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 w-64 shadow-2xs"
+                      className="pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder-slate-500 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-600 w-64 shadow-2xs"
                     />
                     {searchQuery.trim() && (
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-950 font-black border border-emerald-400">
                         B-Tree &lt; 1.2ms
                       </span>
                     )}
@@ -1181,7 +1181,7 @@ const StercsDashboardPage: React.FC = () => {
                 {filteredModules.map((mod) => (
                   <div
                     key={mod.id}
-                    className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs hover:shadow-md hover:border-blue-400 transition-all flex flex-col justify-between group"
+                    className="bg-white rounded-lg border border-slate-300 p-4 shadow-2xs hover:shadow-md hover:border-blue-500 transition-all flex flex-col justify-between group"
                   >
                     <div>
                       {/* Top Bar of Module Card */}
@@ -1191,30 +1191,30 @@ const StercsDashboardPage: React.FC = () => {
                             <mod.icon className="w-4 h-4" />
                           </div>
                           <div>
-                            <h3 className="font-bold text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                            <h3 className="font-bold text-sm text-slate-900 group-hover:text-blue-700 transition-colors">
                               {mod.title}
                             </h3>
-                            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+                            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">
                               {mod.category}
                             </span>
                           </div>
                         </div>
 
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${getModuleStatusBadge(mod.status)}`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black capitalize ${getModuleStatusBadge(mod.status)}`}>
                           <span className={`w-1.5 h-1.5 rounded-full mr-1 ${getModuleStatusDot(mod.status)}`} />
                           {mod.status}
                         </span>
                       </div>
 
-                      <p className="text-xs text-gray-500 line-clamp-2 mb-3 min-h-[32px]">
+                      <p className="text-xs text-slate-700 font-medium line-clamp-2 mb-3 min-h-[32px]">
                         {mod.description}
                       </p>
 
                       {/* Health & Latency Row */}
-                      <div className="flex items-center justify-between text-xs py-1.5 px-2 bg-gray-50 rounded border border-gray-100 mb-3">
-                        <span className="text-gray-500">Latency: <strong className="text-gray-800">{mod.responseTime}ms</strong></span>
-                        <span className="text-gray-500">Score: <strong className="text-emerald-600">{mod.healthScore}%</strong></span>
-                        <span className="text-gray-400 font-mono text-[10px]">{mod.requests24h}</span>
+                      <div className="flex items-center justify-between text-xs py-1.5 px-2 bg-slate-50 rounded border border-slate-200 mb-3">
+                        <span className="text-slate-700 font-medium">Latency: <strong className="text-slate-900 font-bold">{mod.responseTime}ms</strong></span>
+                        <span className="text-slate-700 font-medium">Score: <strong className="text-emerald-800 font-black">{mod.healthScore}%</strong></span>
+                        <span className="text-slate-700 font-mono text-[10px] font-bold">{mod.requests24h}</span>
                       </div>
 
                       {/* Mini Area Sparkline */}
@@ -1222,13 +1222,13 @@ const StercsDashboardPage: React.FC = () => {
                         <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
                           <path
                             d={`M 0,${24 - mod.trend[0] / 4} Q 25,${24 - mod.trend[2] / 4} 50,${24 - mod.trend[4] / 4} T 100,${24 - mod.trend[6] / 4} L 100,24 L 0,24 Z`}
-                            fill="#E0E7FF"
-                            opacity="0.6"
+                            fill="#E2E8F0"
+                            opacity="0.7"
                           />
                           <path
                             d={`M 0,${24 - mod.trend[0] / 4} Q 25,${24 - mod.trend[2] / 4} 50,${24 - mod.trend[4] / 4} T 100,${24 - mod.trend[6] / 4}`}
                             fill="none"
-                            stroke="#4F46E5"
+                            stroke="#3B82F6"
                             strokeWidth="1.5"
                           />
                         </svg>
@@ -1236,10 +1236,10 @@ const StercsDashboardPage: React.FC = () => {
                     </div>
 
                     {/* Action Buttons: Launch Console & Quick Telemetry */}
-                    <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                    <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
                       <button
                         onClick={() => navigate(mod.route)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded transition-colors shadow-2xs"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded transition-colors shadow-2xs"
                       >
                         Launch Console
                         <ArrowUpRight className="w-3.5 h-3.5" />
@@ -1247,7 +1247,7 @@ const StercsDashboardPage: React.FC = () => {
                       <button
                         onClick={() => setSelectedModuleForDrawer(mod)}
                         title="View Telemetry Drawer"
-                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 border border-gray-200 rounded transition-colors"
+                        className="p-1.5 text-slate-700 hover:text-blue-700 hover:bg-blue-50 border border-slate-300 rounded transition-colors"
                       >
                         <Activity className="w-3.5 h-3.5" />
                       </button>
@@ -1258,58 +1258,58 @@ const StercsDashboardPage: React.FC = () => {
             </div>
 
             {/* Compliance Table Preview */}
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">Active Compliance Checks (Automated Watchdog)</h3>
-                  <p className="text-xs text-gray-500">Live cryptographic, ethical, accessibility and financial integrity scans.</p>
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">Active Compliance Checks (Automated Watchdog)</h3>
+                  <p className="text-xs text-slate-700 font-medium">Live cryptographic, ethical, accessibility and financial integrity scans.</p>
                 </div>
                 <button
                   onClick={() => setActiveTab('governance')}
-                  className="text-xs font-semibold text-blue-600 hover:underline inline-flex items-center gap-1"
+                  className="text-xs font-bold text-blue-700 hover:underline inline-flex items-center gap-1"
                 >
                   Run Full Suite <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-xs">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-slate-200 text-xs">
+                  <thead className="bg-slate-100">
                     <tr>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Check Name</th>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Category</th>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Severity</th>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Last Execution</th>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Score</th>
-                      <th className="px-4 py-2.5 text-left font-semibold text-gray-600">Status</th>
-                      <th className="px-4 py-2.5 text-right font-semibold text-gray-600">Action</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Check Name</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Category</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Severity</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Last Execution</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Score</th>
+                      <th className="px-4 py-2.5 text-left font-bold text-slate-800">Status</th>
+                      <th className="px-4 py-2.5 text-right font-bold text-slate-800">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
+                  <tbody className="divide-y divide-slate-200 bg-white">
                     {complianceChecks.map((chk) => (
-                      <tr key={chk.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 font-semibold text-gray-900 flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <tr key={chk.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="px-4 py-3 font-bold text-slate-900 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                           {chk.name}
                         </td>
-                        <td className="px-4 py-3 text-gray-600">{chk.category}</td>
+                        <td className="px-4 py-3 text-slate-800 font-medium">{chk.category}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getCheckSeverityBadge(chk.severity)}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${getCheckSeverityBadge(chk.severity)}`}>
                             {chk.severity}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-gray-500">{chk.lastRun}</td>
-                        <td className="px-4 py-3 font-semibold text-gray-800">{chk.score}%</td>
+                        <td className="px-4 py-3 text-slate-700 font-medium">{chk.lastRun}</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">{chk.score}%</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                             {chk.status}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
                             onClick={() => setActiveTab('governance')}
-                            className="text-blue-600 hover:text-blue-800 font-medium text-xs hover:underline"
+                            className="text-blue-700 hover:text-blue-900 font-bold text-xs hover:underline"
                           >
                             Audit Logs
                           </button>
@@ -1326,16 +1326,16 @@ const StercsDashboardPage: React.FC = () => {
         {/* TAB 2: MODULES MANAGEMENT */}
         {activeTab === 'modules' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">STERCS Modular Control Plane</h3>
-                  <p className="text-xs text-gray-500">Configure, monitor, update and restart sovereign engine modules.</p>
+                  <h3 className="text-base font-bold text-slate-900">STERCS Modular Control Plane</h3>
+                  <p className="text-xs text-slate-700 font-medium">Configure, monitor, update and restart sovereign engine modules.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setActiveTab('modules')}
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-2xs"
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded shadow-2xs"
                   >
                     Dedicated Modules Hub
                   </button>
@@ -1343,52 +1343,52 @@ const StercsDashboardPage: React.FC = () => {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-xs">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-slate-200 text-xs">
+                  <thead className="bg-slate-100">
                     <tr>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Module</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Category</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Version</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Response</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Health</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">24h Volume</th>
-                      <th className="px-4 py-3 text-right font-semibold text-gray-600">Actions</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Module</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Category</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Version</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Status</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Response</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Health</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">24h Volume</th>
+                      <th className="px-4 py-3 text-right font-bold text-slate-800">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
+                  <tbody className="divide-y divide-slate-200 bg-white">
                     {stercsModules.map((m) => (
-                      <tr key={m.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3.5 font-bold text-gray-900 flex items-center gap-2.5">
-                          <div className="p-1.5 bg-blue-50 text-blue-600 rounded shrink-0">
+                      <tr key={m.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="px-4 py-3.5 font-bold text-slate-900 flex items-center gap-2.5">
+                          <div className="p-1.5 bg-blue-100 text-blue-900 rounded shrink-0 border border-blue-200">
                             <m.icon className="w-4 h-4" />
                           </div>
                           <div className="min-w-0 max-w-xs">
-                            <div className="truncate text-gray-900">{m.title}</div>
-                            <div className="text-[10px] font-normal text-gray-400 truncate" title={m.description}>{m.description}</div>
+                            <div className="truncate text-slate-900 font-bold">{m.title}</div>
+                            <div className="text-[10px] font-medium text-slate-600 truncate" title={m.description}>{m.description}</div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-gray-600 font-medium">{m.category}</td>
-                        <td className="px-4 py-3 text-gray-500 font-mono text-[11px]">{m.version}</td>
+                        <td className="px-4 py-3 text-slate-800 font-medium">{m.category}</td>
+                        <td className="px-4 py-3 text-slate-700 font-mono text-[11px] font-bold">{m.version}</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span className={`inline-flex items-center gap-1 text-[11px] font-black px-2 py-0.5 rounded-full ${getModuleStatusBadge(m.status)}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${getModuleStatusDot(m.status)}`} />
                             {m.status}
                           </span>
                         </td>
-                        <td className="px-4 py-3 font-semibold text-gray-800">{m.responseTime} ms</td>
-                        <td className="px-4 py-3 font-semibold text-emerald-600">{m.healthScore}%</td>
-                        <td className="px-4 py-3 text-gray-500 font-mono">{m.requests24h}</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">{m.responseTime} ms</td>
+                        <td className="px-4 py-3 font-black text-emerald-800">{m.healthScore}%</td>
+                        <td className="px-4 py-3 text-slate-800 font-mono font-bold">{m.requests24h}</td>
                         <td className="px-4 py-3 text-right space-x-2">
                           <button
                             onClick={() => navigate(m.route)}
-                            className="px-2.5 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded font-semibold text-xs transition-colors"
+                            className="px-2.5 py-1 bg-blue-100 text-blue-900 hover:bg-blue-200 rounded font-bold text-xs transition-colors border border-blue-300"
                           >
                             Launch
                           </button>
                           <button
                             onClick={() => setSelectedModuleForDrawer(m)}
-                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-medium text-xs transition-colors"
+                            className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded font-bold text-xs transition-colors border border-slate-300"
                           >
                             Telemetry
                           </button>
@@ -1405,9 +1405,9 @@ const StercsDashboardPage: React.FC = () => {
         {/* TAB 3: CONTROLS & FEATURE FLAGS */}
         {activeTab === 'controls' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
-              <h3 className="text-base font-bold text-gray-900 mb-2">Automated Security & Governance Policies</h3>
-              <p className="text-xs text-gray-500 mb-4">Toggle autonomous enforcement thresholds across cluster nodes.</p>
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
+              <h3 className="text-base font-bold text-slate-900 mb-2">Automated Security & Governance Policies</h3>
+              <p className="text-xs text-slate-700 font-medium mb-4">Toggle autonomous enforcement thresholds across cluster nodes.</p>
 
               <div className="space-y-3">
                 {[
@@ -1418,13 +1418,13 @@ const StercsDashboardPage: React.FC = () => {
                   { name: 'DDoS & Rate Limiter Sovereign Throttle', desc: 'Auto-ban IPs exceeding 2,500 socket requests per second', active: true },
                   { name: 'GDPR / NDPR Zero-Knowledge Deletion', desc: 'Cryptographically wipe revoked personal data within 100ms', active: false },
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
+                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
                     <div>
-                      <div className="font-semibold text-xs text-gray-900">{item.name}</div>
-                      <div className="text-[11px] text-gray-500">{item.desc}</div>
+                      <div className="font-bold text-xs text-slate-900">{item.name}</div>
+                      <div className="text-[11px] text-slate-700 font-medium">{item.desc}</div>
                     </div>
-                    <span className={`px-2.5 py-1 rounded text-xs font-bold uppercase ${
-                      item.active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'
+                    <span className={`px-2.5 py-1 rounded text-xs font-bold uppercase border ${
+                      item.active ? 'bg-emerald-100 text-emerald-950 border-emerald-300' : 'bg-slate-200 text-slate-800 border-slate-300'
                     }`}>
                       {item.active ? 'Enforced' : 'Standby'}
                     </span>
@@ -1433,16 +1433,16 @@ const StercsDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
-              <h3 className="text-base font-bold text-gray-900 mb-2">Emergency Protocols & Sovereign Killswitches</h3>
-              <p className="text-xs text-gray-500 mb-4">Cryptographically signed fail-safe actions for super-administrators.</p>
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
+              <h3 className="text-base font-bold text-slate-900 mb-2">Emergency Protocols & Sovereign Killswitches</h3>
+              <p className="text-xs text-slate-700 font-medium mb-4">Cryptographically signed fail-safe actions for super-administrators.</p>
 
               <div className="space-y-4">
-                <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-300 flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-amber-900">Enclave Memory Flush & Cache Eviction</h4>
-                    <p className="text-[11px] text-amber-800 mt-0.5">Clears distributed memory caching across all 1,280 enclaves without session drop.</p>
+                    <h4 className="text-xs font-bold text-amber-950">Enclave Memory Flush & Cache Eviction</h4>
+                    <p className="text-[11px] text-amber-900 font-medium mt-0.5">Clears distributed memory caching across all 1,280 enclaves without session drop.</p>
                     <button
                       onClick={handleTriggerMemoryFlush}
                       disabled={isFlushingMemory}
@@ -1454,11 +1454,11 @@ const StercsDashboardPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-rose-50 border border-rose-200 flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-rose-50 border border-rose-300 flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-rose-700 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-rose-900">Sovereign Cluster Quarantine Mode</h4>
-                    <p className="text-[11px] text-rose-800 mt-0.5">Isolates public traffic to readonly view while autonomous security probes execute.</p>
+                    <h4 className="text-xs font-bold text-rose-950">Sovereign Cluster Quarantine Mode</h4>
+                    <p className="text-[11px] text-rose-900 font-medium mt-0.5">Isolates public traffic to readonly view while autonomous security probes execute.</p>
                     <button
                       onClick={handleTriggerQuarantine}
                       className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
@@ -1470,11 +1470,11 @@ const StercsDashboardPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-blue-50 border border-blue-200 flex items-start gap-3">
-                  <RefreshCw className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-blue-50 border border-blue-300 flex items-start gap-3">
+                  <RefreshCw className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-blue-900">Rotate Hardware Enclave Keys</h4>
-                    <p className="text-[11px] text-blue-800 mt-0.5">Automated rolling re-encryption of all active sessions and symmetric channel keys.</p>
+                    <h4 className="text-xs font-bold text-blue-950">Rotate Hardware Enclave Keys</h4>
+                    <p className="text-[11px] text-blue-900 font-medium mt-0.5">Automated rolling re-encryption of all active sessions and symmetric channel keys.</p>
                     <button
                       onClick={handleTriggerKeyRotation}
                       disabled={isRotatingKeys}
@@ -1486,11 +1486,11 @@ const StercsDashboardPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-indigo-50 border border-indigo-200 flex items-start gap-3">
-                  <Activity className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-indigo-50 border border-indigo-300 flex items-start gap-3">
+                  <Activity className="w-5 h-5 text-indigo-700 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-indigo-900">Throughput Surge Circuit Breaker</h4>
-                    <p className="text-[11px] text-indigo-800 mt-0.5">Simulates automated circuit trip during severe traffic surges to protect database persistence.</p>
+                    <h4 className="text-xs font-bold text-indigo-950">Throughput Surge Circuit Breaker</h4>
+                    <p className="text-[11px] text-indigo-900 font-medium mt-0.5">Simulates automated circuit trip during severe traffic surges to protect database persistence.</p>
                     <button
                       onClick={handleToggleCircuitBreaker}
                       className={`mt-2 px-3 py-1 text-white text-xs font-semibold rounded shadow-2xs transition ${
@@ -1509,11 +1509,11 @@ const StercsDashboardPage: React.FC = () => {
         {/* TAB 4: GOVERNANCE & COMPLIANCE */}
         {activeTab === 'governance' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">150-Rule Governance & Compliance Suite</h3>
-                  <p className="text-xs text-gray-500">Autonomous evaluation matrix covering content integrity, ethics, and sovereign law.</p>
+                  <h3 className="text-base font-bold text-slate-900">150-Rule Governance & Compliance Suite</h3>
+                  <p className="text-xs text-slate-700 font-medium">Autonomous evaluation matrix covering content integrity, ethics, and sovereign law.</p>
                 </div>
                 <button
                   onClick={() => setActiveTab('governance')}
@@ -1525,24 +1525,24 @@ const StercsDashboardPage: React.FC = () => {
 
               <div className="space-y-3">
                 {governancePolicies.map((pol) => (
-                  <div key={pol.id} className="p-4 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50/30 transition-all">
+                  <div key={pol.id} className="p-4 rounded-lg border border-slate-300 hover:border-blue-500 hover:bg-blue-50/40 transition-all">
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-blue-600">{pol.id}</span>
-                        <h4 className="font-bold text-sm text-gray-900">{pol.title}</h4>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-100 text-gray-700">
+                        <span className="font-mono text-xs font-black text-blue-700">{pol.id}</span>
+                        <h4 className="font-bold text-sm text-slate-900">{pol.title}</h4>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-300">
                           {pol.category}
                         </span>
                       </div>
-                      <span className="text-xs font-bold text-emerald-600">{pol.passedPercent}% Compliance</span>
+                      <span className="text-xs font-black text-emerald-700">{pol.passedPercent}% Compliance</span>
                     </div>
-                    <p className="text-xs text-gray-600 mb-2 break-words">{pol.description}</p>
-                    <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-100">
-                      <span>Enforcement: <strong className="text-gray-800 capitalize">{pol.complianceLevel}</strong></span>
-                      <span>Last Reviewed: {pol.lastUpdated}</span>
+                    <p className="text-xs text-slate-700 font-medium mb-2 break-words">{pol.description}</p>
+                    <div className="flex items-center justify-between text-[11px] text-slate-600 font-medium pt-2 border-t border-slate-200">
+                      <span>Enforcement: <strong className="text-slate-900 font-bold capitalize">{pol.complianceLevel}</strong></span>
+                      <span>Last Reviewed: <strong className="text-slate-800 font-bold">{pol.lastUpdated}</strong></span>
                       <button
                         onClick={() => setSelectedPolicyForModal(pol)}
-                        className="text-blue-600 hover:underline font-semibold"
+                        className="text-blue-700 hover:text-blue-900 hover:underline font-bold"
                       >
                         Edit Rule Definition
                       </button>
@@ -1558,11 +1558,11 @@ const StercsDashboardPage: React.FC = () => {
         {activeTab === 'erp-crm' && (
           <div className="space-y-6">
             {/* Header info */}
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">ERP & CRM Autonomous Operations Core</h3>
-                  <p className="text-xs text-gray-500">
+                  <h3 className="text-base font-bold text-slate-900">ERP & CRM Autonomous Operations Core</h3>
+                  <p className="text-xs text-slate-700 font-medium">
                     Automating core operations: Accounting, Procurement, Human Capital, Supply Chain, and Customer Pipelines.
                   </p>
                 </div>
@@ -1577,69 +1577,69 @@ const StercsDashboardPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Box 1: Financial & Ledgers */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+              <div className="bg-white rounded-lg border border-slate-300 p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                    <DollarSign className="w-4 h-4 text-emerald-600" />
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <DollarSign className="w-4 h-4 text-emerald-700" />
                     Finance & Ledgers
                   </span>
-                  <span className="text-emerald-600 font-bold">100% Synced</span>
+                  <span className="text-emerald-700 font-bold">100% Synced</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">Reconciliation across Infinity Coin and fiat bank accounts.</p>
-                <div className="text-2xl font-extrabold text-gray-900 mb-1">$4,892,140</div>
-                <div className="text-[11px] text-gray-500">Total Treasury Balance (Audit Complete)</div>
+                <p className="text-xs text-slate-700 font-medium mb-3">Reconciliation across Infinity Coin and fiat bank accounts.</p>
+                <div className="text-2xl font-black text-slate-900 mb-1">$4,892,140</div>
+                <div className="text-[11px] text-slate-700 font-medium">Total Treasury Balance (Audit Complete)</div>
               </div>
 
               {/* Box 2: Supply Chain & Procurement */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+              <div className="bg-white rounded-lg border border-slate-300 p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                    <Building className="w-4 h-4 text-blue-600" />
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Building className="w-4 h-4 text-blue-700" />
                     Procurement & Logistics
                   </span>
-                  <span className="text-blue-600 font-bold">48 Orders</span>
+                  <span className="text-blue-700 font-bold">48 Orders</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">Automated vendor purchase orders, logistics and tracking.</p>
-                <div className="text-2xl font-extrabold text-gray-900 mb-1">99.2%</div>
-                <div className="text-[11px] text-gray-500">On-Time Vendor Fulfillment</div>
+                <p className="text-xs text-slate-700 font-medium mb-3">Automated vendor purchase orders, logistics and tracking.</p>
+                <div className="text-2xl font-black text-slate-900 mb-1">99.2%</div>
+                <div className="text-[11px] text-slate-700 font-medium">On-Time Vendor Fulfillment</div>
               </div>
 
               {/* Box 3: Human Capital & Payroll */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+              <div className="bg-white rounded-lg border border-slate-300 p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                    <Users className="w-4 h-4 text-purple-600" />
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-purple-700" />
                     Human Capital & Payroll
                   </span>
-                  <span className="text-purple-600 font-bold">342 Staff</span>
+                  <span className="text-purple-700 font-bold">342 Staff</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">Smart contract payouts, performance reviews & recruitment.</p>
-                <div className="text-2xl font-extrabold text-gray-900 mb-1">Zero Delays</div>
-                <div className="text-[11px] text-gray-500">Next Payroll Epoch in 12 days</div>
+                <p className="text-xs text-slate-700 font-medium mb-3">Smart contract payouts, performance reviews & recruitment.</p>
+                <div className="text-2xl font-black text-slate-900 mb-1">Zero Delays</div>
+                <div className="text-[11px] text-slate-700 font-medium">Next Payroll Epoch in 12 days</div>
               </div>
 
               {/* Box 4: CRM Pipeline & Leads */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-2xs">
+              <div className="bg-white rounded-lg border border-slate-300 p-4 shadow-2xs">
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                    <Workflow className="w-4 h-4 text-amber-600" />
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Workflow className="w-4 h-4 text-amber-700" />
                     CRM Pipeline & Leads
                   </span>
-                  <span className="text-amber-600 font-bold">12.4k Leads</span>
+                  <span className="text-amber-700 font-bold">12.4k Leads</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">Lead scoring, automated replies, segmentation & support.</p>
-                <div className="text-2xl font-extrabold text-gray-900 mb-1">28.4%</div>
-                <div className="text-[11px] text-gray-500">High-Intent Conversion Rate</div>
+                <p className="text-xs text-slate-700 font-medium mb-3">Lead scoring, automated replies, segmentation & support.</p>
+                <div className="text-2xl font-black text-slate-900 mb-1">28.4%</div>
+                <div className="text-[11px] text-slate-700 font-medium">High-Intent Conversion Rate</div>
               </div>
             </div>
 
             {/* Sovereign Financial Economic Ecosystem & Accounting Ratios Core */}
-            <div className="mt-8 pt-8 border-t border-gray-200">
+            <div className="mt-8 pt-8 border-t border-slate-300">
               <div className="mb-4">
-                <h3 className="text-base font-bold text-gray-900">
+                <h3 className="text-base font-bold text-slate-900">
                   Platform Financial Economic Ecosystem & Accounting Ratios
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700 font-medium">
                   Full sovereign bank rails (Fidelity Bank Revenue vs Profit), live accounting ratio evaluators, growth engines, and modernized financial models.
                 </p>
               </div>
@@ -1653,11 +1653,11 @@ const StercsDashboardPage: React.FC = () => {
           <div className="space-y-6">
             <CorporateGovernanceConsole />
 
-            <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-2xs">
+            <div className="bg-white rounded-lg border border-slate-300 p-5 shadow-2xs">
               <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">Departmental AI Agents & Service Account Clearances</h3>
-                  <p className="text-xs text-gray-500">
+                  <h3 className="text-base font-bold text-slate-900">Departmental AI Agents & Service Account Clearances</h3>
+                  <p className="text-xs text-slate-700 font-medium">
                     Agentic operational matrix and autonomous service account permissions mapped to executive departmental portfolios.
                   </p>
                 </div>
@@ -1670,34 +1670,34 @@ const StercsDashboardPage: React.FC = () => {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-xs">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-slate-300 text-xs">
+                  <thead className="bg-slate-100 border-b border-slate-300">
                     <tr>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">ID</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Department</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Designated Officer / Role</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Officer Lead</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Clearance</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Active AI Agents</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
-                      <th className="px-4 py-3 text-right font-semibold text-gray-600">Action</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">ID</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Department</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Designated Officer / Role</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Officer Lead</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Clearance</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Active AI Agents</th>
+                      <th className="px-4 py-3 text-left font-bold text-slate-800">Status</th>
+                      <th className="px-4 py-3 text-right font-bold text-slate-800">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
+                  <tbody className="divide-y divide-slate-200 bg-white">
                     {departmentalRoles.map((r) => (
-                      <tr key={r.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 font-mono text-gray-500 font-semibold">{r.id}</td>
-                        <td className="px-4 py-3 font-bold text-gray-900">{r.department}</td>
-                        <td className="px-4 py-3 text-gray-700">{r.title}</td>
-                        <td className="px-4 py-3 text-blue-600 font-medium">{r.head}</td>
+                      <tr key={r.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="px-4 py-3 font-mono text-slate-700 font-bold">{r.id}</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">{r.department}</td>
+                        <td className="px-4 py-3 text-slate-800 font-medium">{r.title}</td>
+                        <td className="px-4 py-3 text-blue-700 font-bold">{r.head}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${getClearanceBadge(r.clearance)}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getClearanceBadge(r.clearance)}`}>
                             {r.clearance}
                           </span>
                         </td>
-                        <td className="px-4 py-3 font-semibold text-gray-800">{r.activeAgents} agents</td>
+                        <td className="px-4 py-3 font-bold text-slate-800">{r.activeAgents} agents</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full text-[11px]">
+                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-full text-[11px]">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             {r.status}
                           </span>
@@ -1705,7 +1705,7 @@ const StercsDashboardPage: React.FC = () => {
                         <td className="px-4 py-3 text-right">
                           <button
                             onClick={() => setIsRolesModalOpen(true)}
-                            className="text-blue-600 hover:underline font-semibold"
+                            className="text-blue-700 hover:text-blue-900 hover:underline font-bold"
                           >
                             Permissions
                           </button>
@@ -1722,31 +1722,31 @@ const StercsDashboardPage: React.FC = () => {
 
       {/* MODAL 1: AUTONOMOUS AGENTIC AI ENGINE MODAL */}
       {isAiAgentModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-2xl w-full border border-slate-300 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Bot className="w-5 h-5 text-purple-400" />
-                <h3 className="font-bold text-sm">Automated Generative & Agentic AI Engine</h3>
+                <h3 className="font-bold text-sm text-white">Automated Generative & Agentic AI Engine</h3>
               </div>
               <button
                 onClick={() => setIsAiAgentModalOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded"
+                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-5 space-y-4 overflow-y-auto flex-1">
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-slate-700 font-medium">
                 Test and execute autonomous multilingual agent workflows, conversational AI dispatchers, and automated policy enforcers.
               </p>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-900 mb-1">
                   Active Sovereign Model
                 </label>
-                <select className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-xs font-medium">
+                <select className="w-full bg-white border border-slate-300 rounded p-2 text-xs font-bold text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                   <option>Gemini 2.5 Sovereign Flash (Sub-50ms Heuristic Engine)</option>
                   <option>Gemini 2.5 Pro Neural Auditor (Multi-Modal Deep Inspector)</option>
                   <option>Camus Heuristic Isolator v4.2</option>
@@ -1754,14 +1754,14 @@ const StercsDashboardPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-900 mb-1">
                   Dispatch Prompt / Policy Verification Objective
                 </label>
                 <textarea
                   rows={3}
                   value={aiTestPrompt}
                   onChange={(e) => setAiTestPrompt(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded p-2.5 text-xs text-gray-800 focus:outline-hidden focus:ring-1 focus:ring-blue-500 font-mono"
+                  className="w-full bg-white border border-slate-300 rounded p-2.5 text-xs text-slate-900 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono"
                 />
               </div>
 
@@ -1769,7 +1769,7 @@ const StercsDashboardPage: React.FC = () => {
                 <button
                   disabled={isGeneratingAi}
                   onClick={handleExecuteAiTest}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded transition-colors shadow-xs disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded transition-colors shadow-xs disabled:opacity-50"
                 >
                   {isGeneratingAi ? (
                     <>
@@ -1792,11 +1792,11 @@ const StercsDashboardPage: React.FC = () => {
               )}
             </div>
 
-            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
-              <span className="text-gray-500">Autonomous Heuristic Accuracy: <strong>99.98%</strong></span>
+            <div className="bg-slate-100 px-5 py-3 border-t border-slate-300 flex justify-between items-center text-xs">
+              <span className="text-slate-700 font-medium">Autonomous Heuristic Accuracy: <strong className="text-slate-900 font-bold">99.98%</strong></span>
               <button
                 onClick={() => setIsAiAgentModalOpen(false)}
-                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+                className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold rounded border border-slate-300 transition-colors"
               >
                 Close Engine
               </button>
@@ -1807,16 +1807,16 @@ const StercsDashboardPage: React.FC = () => {
 
       {/* MODAL 2: ERP & CRM OPERATIONS MODAL */}
       {isErpModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-3xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="bg-emerald-800 text-white p-4 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-3xl w-full border border-slate-300 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-emerald-900 text-white p-4 flex items-center justify-between border-b border-emerald-800">
               <div className="flex items-center gap-2.5">
                 <Briefcase className="w-5 h-5 text-emerald-300" />
-                <h3 className="font-bold text-sm">ERP & CRM Enterprise Autonomous Bridge</h3>
+                <h3 className="font-bold text-sm text-white">ERP & CRM Enterprise Autonomous Bridge</h3>
               </div>
               <button
                 onClick={() => setIsErpModalOpen(false)}
-                className="text-emerald-200 hover:text-white p-1 rounded"
+                className="text-emerald-200 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1824,33 +1824,33 @@ const StercsDashboardPage: React.FC = () => {
 
             <div className="p-5 space-y-4 overflow-y-auto flex-1 text-xs">
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3.5 bg-gray-50 rounded border border-gray-200">
-                  <h4 className="font-bold text-gray-900 mb-1">Financial Ledgers & Double-Entry</h4>
-                  <p className="text-gray-500 mb-2">Automated accounts payable, receivables & tax reconciliation.</p>
-                  <div className="text-lg font-extrabold text-emerald-600">$4,892,140.00</div>
-                  <div className="text-[10px] text-gray-400">Zero delta vs Infinity Coin reserves</div>
+                <div className="p-3.5 bg-slate-50 rounded border border-slate-300">
+                  <h4 className="font-bold text-slate-900 mb-1">Financial Ledgers & Double-Entry</h4>
+                  <p className="text-slate-700 font-medium mb-2">Automated accounts payable, receivables & tax reconciliation.</p>
+                  <div className="text-lg font-black text-emerald-700">$4,892,140.00</div>
+                  <div className="text-[10px] text-slate-600 font-medium">Zero delta vs Infinity Coin reserves</div>
                 </div>
-                <div className="p-3.5 bg-gray-50 rounded border border-gray-200">
-                  <h4 className="font-bold text-gray-900 mb-1">Procurement & Sourcing</h4>
-                  <p className="text-gray-500 mb-2">Vendor purchase orders, inventory and supply chain tracking.</p>
-                  <div className="text-lg font-extrabold text-blue-600">142 Inbound Shipments</div>
-                  <div className="text-[10px] text-gray-400">All vendors verified</div>
+                <div className="p-3.5 bg-slate-50 rounded border border-slate-300">
+                  <h4 className="font-bold text-slate-900 mb-1">Procurement & Sourcing</h4>
+                  <p className="text-slate-700 font-medium mb-2">Vendor purchase orders, inventory and supply chain tracking.</p>
+                  <div className="text-lg font-black text-blue-700">142 Inbound Shipments</div>
+                  <div className="text-[10px] text-slate-600 font-medium">All vendors verified</div>
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-50 rounded border border-gray-200 space-y-2">
-                <h4 className="font-bold text-gray-900">CRM Customer Pipeline & Automated Dispatch</h4>
-                <div className="flex justify-between py-1 border-b border-gray-200">
-                  <span className="text-gray-600">Total Contacts & Leads Managed:</span>
-                  <strong className="text-gray-900">12,480 Active Records</strong>
+              <div className="p-4 bg-slate-50 rounded border border-slate-300 space-y-2">
+                <h4 className="font-bold text-slate-900">CRM Customer Pipeline & Automated Dispatch</h4>
+                <div className="flex justify-between py-1 border-b border-slate-200">
+                  <span className="text-slate-700 font-medium">Total Contacts & Leads Managed:</span>
+                  <strong className="text-slate-900 font-bold">12,480 Active Records</strong>
                 </div>
-                <div className="flex justify-between py-1 border-b border-gray-200">
-                  <span className="text-gray-600">Autonomous Email & Support Dispatch:</span>
-                  <strong className="text-emerald-600">4,120 replies sent today (0 wait time)</strong>
+                <div className="flex justify-between py-1 border-b border-slate-200">
+                  <span className="text-slate-700 font-medium">Autonomous Email & Support Dispatch:</span>
+                  <strong className="text-emerald-700 font-bold">4,120 replies sent today (0 wait time)</strong>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-gray-600">Lead Scoring Engine:</span>
-                  <strong className="text-purple-600">Active (Multi-modal heuristic)</strong>
+                  <span className="text-slate-700 font-medium">Lead Scoring Engine:</span>
+                  <strong className="text-purple-700 font-bold">Active (Multi-modal heuristic)</strong>
                 </div>
               </div>
 
@@ -1858,7 +1858,7 @@ const StercsDashboardPage: React.FC = () => {
                 <button
                   onClick={handleTriggerSyncLedger}
                   disabled={isSyncingLedger}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-xs transition disabled:opacity-50 inline-flex items-center gap-1.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded shadow-xs transition disabled:opacity-50 inline-flex items-center gap-1.5"
                 >
                   {isSyncingLedger && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                   {isSyncingLedger ? 'Syncing Double-Entry Ledgers...' : 'Run Full Enterprise Sync'}
@@ -1866,10 +1866,10 @@ const StercsDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-end">
+            <div className="bg-slate-100 px-5 py-3 border-t border-slate-300 flex justify-end">
               <button
                 onClick={() => setIsErpModalOpen(false)}
-                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+                className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold rounded border border-slate-300 transition-colors"
               >
                 Close
               </button>
@@ -1880,56 +1880,56 @@ const StercsDashboardPage: React.FC = () => {
 
       {/* MODAL 3: 19 DEPARTMENTAL ROLES EXPANDED MODAL */}
       {isRolesModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-4xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-4xl w-full border border-slate-300 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
               <div className="flex items-center gap-2.5">
                 <Users className="w-5 h-5 text-blue-400" />
-                <h3 className="font-bold text-sm">19 Corporate Departmental Leadership Structure</h3>
+                <h3 className="font-bold text-sm text-white">19 Corporate Departmental Leadership Structure</h3>
               </div>
               <button
                 onClick={() => setIsRolesModalOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded"
+                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-5 overflow-y-auto flex-1">
-              <p className="text-xs text-gray-600 mb-4">
+              <p className="text-xs text-slate-700 font-medium mb-4">
                 Full protocol governance structure mapping departmental executive directors, heads of service, and clearance boundaries.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 {departmentalRoles.map((r) => (
-                  <div key={r.id} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div key={r.id} className="p-3 bg-slate-50 rounded-lg border border-slate-300">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-mono text-[11px] font-bold text-blue-600">{r.id}</span>
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                      <span className="font-mono text-[11px] font-black text-blue-700">{r.id}</span>
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-900 border border-blue-300">
                         {r.clearance}
                       </span>
                     </div>
-                    <h4 className="font-bold text-gray-900">{r.title}</h4>
-                    <p className="text-gray-500 text-[11px]">Department: {r.department}</p>
-                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-200 text-[11px]">
-                      <span className="text-gray-600">Officer: <strong>{r.head}</strong></span>
-                      <span className="text-emerald-600 font-semibold">{r.activeAgents} Agents Active</span>
+                    <h4 className="font-bold text-slate-900">{r.title}</h4>
+                    <p className="text-slate-700 font-medium text-[11px]">Department: <strong className="text-slate-900">{r.department}</strong></p>
+                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-slate-200 text-[11px]">
+                      <span className="text-slate-700 font-medium">Officer: <strong className="text-slate-900">{r.head}</strong></span>
+                      <span className="text-emerald-700 font-bold">{r.activeAgents} Agents Active</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
+            <div className="bg-slate-100 px-5 py-3 border-t border-slate-300 flex justify-between items-center text-xs">
               <button
                 onClick={() => triggerToast('Direct role clearance delegation active. Permissions synced to sovereign directory.')}
-                className="text-blue-600 font-semibold hover:underline"
+                className="text-blue-700 font-bold hover:underline"
               >
                 Manage Permissions in Role Management Console →
               </button>
               <button
                 onClick={() => setIsRolesModalOpen(false)}
-                className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded"
+                className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold rounded border border-slate-300 transition-colors"
               >
                 Close
               </button>
@@ -1940,21 +1940,21 @@ const StercsDashboardPage: React.FC = () => {
 
       {/* DRAWER: MODULE TELEMETRY INSPECTION DRAWER */}
       {selectedModuleForDrawer && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-2xs flex justify-end">
-          <div className="bg-white w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto animate-in slide-in-from-right duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-2xs flex justify-end">
+          <div className="bg-white w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto animate-in slide-in-from-right duration-200 border-l border-slate-300">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-300 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-blue-50 text-blue-600 rounded">
+                <div className="p-2 bg-blue-50 text-blue-700 rounded border border-blue-200">
                   <selectedModuleForDrawer.icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-gray-900">{selectedModuleForDrawer.title}</h3>
-                  <span className="text-xs text-gray-500">{selectedModuleForDrawer.category}</span>
+                  <h3 className="font-bold text-base text-slate-900">{selectedModuleForDrawer.title}</h3>
+                  <span className="text-xs text-slate-700 font-medium">{selectedModuleForDrawer.category}</span>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedModuleForDrawer(null)}
-                className="text-gray-400 hover:text-gray-700 p-1 rounded"
+                className="text-slate-500 hover:text-slate-900 p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1962,32 +1962,32 @@ const StercsDashboardPage: React.FC = () => {
 
             <div className="space-y-4 flex-1 text-xs">
               <div>
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider text-[10px] mb-1">Description</h4>
-                <p className="text-gray-600">{selectedModuleForDrawer.description}</p>
+                <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px] mb-1">Description</h4>
+                <p className="text-slate-700 font-medium leading-relaxed">{selectedModuleForDrawer.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                  <span className="text-gray-500 block">Version</span>
-                  <strong className="text-gray-900 font-mono">{selectedModuleForDrawer.version}</strong>
+                <div className="p-3 bg-slate-50 rounded border border-slate-300">
+                  <span className="text-slate-700 font-medium block">Version</span>
+                  <strong className="text-slate-900 font-mono font-bold">{selectedModuleForDrawer.version}</strong>
                 </div>
-                <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                  <span className="text-gray-500 block">Health Score</span>
-                  <strong className="text-emerald-600 text-sm">{selectedModuleForDrawer.healthScore}%</strong>
+                <div className="p-3 bg-slate-50 rounded border border-slate-300">
+                  <span className="text-slate-700 font-medium block">Health Score</span>
+                  <strong className="text-emerald-700 font-black text-sm">{selectedModuleForDrawer.healthScore}%</strong>
                 </div>
-                <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                  <span className="text-gray-500 block">Socket Latency</span>
-                  <strong className="text-gray-900">{selectedModuleForDrawer.responseTime} ms</strong>
+                <div className="p-3 bg-slate-50 rounded border border-slate-300">
+                  <span className="text-slate-700 font-medium block">Socket Latency</span>
+                  <strong className="text-slate-900 font-bold">{selectedModuleForDrawer.responseTime} ms</strong>
                 </div>
-                <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                  <span className="text-gray-500 block">24h Requests</span>
-                  <strong className="text-gray-900 font-mono">{selectedModuleForDrawer.requests24h}</strong>
+                <div className="p-3 bg-slate-50 rounded border border-slate-300">
+                  <span className="text-slate-700 font-medium block">24h Requests</span>
+                  <strong className="text-slate-900 font-mono font-bold">{selectedModuleForDrawer.requests24h}</strong>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-bold text-gray-700 uppercase tracking-wider text-[10px] mb-2">Live Enclave Socket Activity</h4>
-                <div className="bg-slate-900 text-emerald-400 p-3 rounded font-mono text-[11px] space-y-1">
+                <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px] mb-2">Live Enclave Socket Activity</h4>
+                <div className="bg-slate-900 text-emerald-400 p-3 rounded font-mono text-[11px] space-y-1 border border-slate-800">
                   <div>[OK] Socket connected: wss://stercs.enclave.alpha</div>
                   <div>[OK] TLS 1.3 handshake verified (256-bit AES-GCM)</div>
                   <div>[OK] Hardware attestation digest validated</div>
@@ -2014,55 +2014,55 @@ const StercsDashboardPage: React.FC = () => {
       )}
       {/* MODAL 4: POLICY RULE DEFINITION EDITOR */}
       {selectedPolicyForModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-lg w-full border border-gray-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-lg w-full border border-slate-300 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
               <div>
-                <h3 className="font-bold text-sm">Edit Policy Rule: {selectedPolicyForModal.id}</h3>
-                <p className="text-xs text-gray-400">Configure sovereign threshold and compliance severity</p>
+                <h3 className="font-bold text-sm text-white">Edit Policy Rule: {selectedPolicyForModal.id}</h3>
+                <p className="text-xs text-slate-300 font-medium">Configure sovereign threshold and compliance severity</p>
               </div>
               <button
                 onClick={() => setSelectedPolicyForModal(null)}
-                className="text-gray-400 hover:text-white p-1"
+                className="text-slate-400 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-5 space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Policy Title</label>
+                <label className="block font-bold text-slate-900 mb-1">Policy Title</label>
                 <input
                   type="text"
                   value={selectedPolicyForModal.title}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, title: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Category</label>
+                <label className="block font-bold text-slate-900 mb-1">Category</label>
                 <input
                   type="text"
                   value={selectedPolicyForModal.category}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, category: e.target.value as any })}
-                  className="w-full p-2 border border-gray-300 rounded text-xs"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
                 />
               </div>
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Enforcement Description</label>
+                <label className="block font-bold text-slate-900 mb-1">Enforcement Description</label>
                 <textarea
                   rows={3}
                   value={selectedPolicyForModal.description}
                   onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, description: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2 border border-slate-300 rounded text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Compliance Level</label>
+                  <label className="block font-bold text-slate-900 mb-1">Compliance Level</label>
                   <select
                     value={selectedPolicyForModal.complianceLevel}
                     onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, complianceLevel: e.target.value as any })}
-                    className="w-full p-2 border border-gray-300 rounded text-xs"
+                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
                   >
                     <option value="strict">Strict (Auto-Block)</option>
                     <option value="moderate">Moderate (Flag & Review)</option>
@@ -2070,7 +2070,7 @@ const StercsDashboardPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Current Score (%)</label>
+                  <label className="block font-bold text-slate-900 mb-1">Current Score (%)</label>
                   <input
                     type="number"
                     min={0}
@@ -2078,21 +2078,21 @@ const StercsDashboardPage: React.FC = () => {
                     step={0.1}
                     value={selectedPolicyForModal.passedPercent}
                     onChange={(e) => setSelectedPolicyForModal({ ...selectedPolicyForModal, passedPercent: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-gray-300 rounded text-xs"
+                    className="w-full p-2 border border-slate-300 rounded text-xs font-bold text-slate-900 bg-white"
                   />
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-end gap-2 text-xs">
+            <div className="bg-slate-100 px-5 py-3 border-t border-slate-300 flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setSelectedPolicyForModal(null)}
-                className="px-3.5 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-100 rounded font-semibold"
+                className="px-3.5 py-1.5 border border-slate-300 text-slate-800 bg-white hover:bg-slate-200 rounded font-bold transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleSavePolicy(selectedPolicyForModal)}
-                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold shadow-xs"
+                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold shadow-xs transition-colors"
               >
                 Save Rule Definition
               </button>

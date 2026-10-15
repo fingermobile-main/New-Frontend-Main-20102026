@@ -663,20 +663,20 @@ export const SubscriptionsPage: React.FC = () => {
 
   return (
     <MainLayout pageTitle="Platform Subscriptions & Sovereign Passes">
-      <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-slate-50 text-slate-900 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-800 pb-8">
+          <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-gradient-to-tr from-amber-500/20 via-orange-500/15 to-transparent border border-amber-500/30 shadow-lg shadow-orange-500/10">
-                  <Crown className="w-8 h-8 text-amber-400" />
+                <div className="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-700 shadow-sm">
+                  <Crown className="w-8 h-8" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                  <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
                     Subscriptions, Passes & FIC Management
                   </h1>
-                  <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+                  <p className="text-xs sm:text-sm font-medium text-slate-700 mt-1 max-w-2xl leading-relaxed">
                     Centralized subscription studio for all 385 pages across 20 core platform modules. Manage graphical cards, audit gated screen matrices, configure FIC token allocation rules, and enforce FIAT settlement terms.
                   </p>
                 </div>
@@ -687,28 +687,28 @@ export const SubscriptionsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAddNewCard}
-                className="px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition-all shadow-lg flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Create New Card</span>
               </button>
 
-              <div className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
-                <span className="text-slate-400">Vault Balance: </span>
-                <span className="font-mono font-bold text-amber-400">{ficBalance.toLocaleString()} FIC</span>
+              <div className="px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-300 text-xs shadow-xs">
+                <span className="text-slate-800 font-bold">Vault Balance: </span>
+                <span className="font-mono font-black text-amber-800">{ficBalance.toLocaleString()} FIC</span>
               </div>
             </div>
           </div>
 
           {/* Navigation Mode Tabs */}
-          <div className="flex items-center gap-2 border-b border-slate-800 pb-4 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-2 border-b border-slate-300 pb-4 overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => setActiveTab('cards')}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 activeTab === 'cards'
-                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
               }`}
             >
               <Zap className="w-4 h-4" />
@@ -720,8 +720,8 @@ export const SubscriptionsPage: React.FC = () => {
               onClick={() => setActiveTab('matrix')}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 activeTab === 'matrix'
-                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
               }`}
             >
               <Sliders className="w-4 h-4" />
@@ -733,8 +733,8 @@ export const SubscriptionsPage: React.FC = () => {
               onClick={() => setActiveTab('fic_management')}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 activeTab === 'fic_management'
-                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
               }`}
             >
               <Coins className="w-4 h-4" />
@@ -746,8 +746,8 @@ export const SubscriptionsPage: React.FC = () => {
               onClick={() => setActiveTab('active')}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 activeTab === 'active'
-                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-300'
               }`}
             >
               <Crown className="w-4 h-4" />
@@ -759,11 +759,11 @@ export const SubscriptionsPage: React.FC = () => {
           {activeTab === 'cards' && (
             <div className="space-y-8">
               {/* Controls Bar: Category Filter & Billing Toggle */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-300 shadow-sm">
                 {/* Category Pills */}
                 <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
-                  <span className="text-xs text-slate-400 font-semibold mr-2 flex items-center gap-1">
-                    <Filter className="w-3.5 h-3.5" /> Domain:
+                  <span className="text-xs text-slate-900 font-bold mr-2 flex items-center gap-1">
+                    <Filter className="w-3.5 h-3.5 text-slate-700" /> Domain:
                   </span>
                   {[
                     { id: 'all', label: 'All Cards' },
@@ -780,8 +780,8 @@ export const SubscriptionsPage: React.FC = () => {
                       onClick={() => setSelectedCategory(cat.id)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                         selectedCategory === cat.id
-                          ? 'bg-orange-500 text-white shadow-md'
-                          : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                          ? 'bg-amber-600 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300'
                       }`}
                     >
                       {cat.label}
@@ -790,14 +790,14 @@ export const SubscriptionsPage: React.FC = () => {
                 </div>
 
                 {/* Monthly / Annual Toggle */}
-                <div className="p-1 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-1 self-start md:self-auto shrink-0">
+                <div className="p-1 rounded-xl bg-slate-100 border border-slate-300 flex items-center gap-1 self-start md:self-auto shrink-0 shadow-xs">
                   <button
                     type="button"
                     onClick={() => setBillingCycle('monthly')}
                     className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       billingCycle === 'monthly'
-                        ? 'bg-amber-400 text-slate-950 shadow-md'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-700 hover:text-slate-900'
                     }`}
                   >
                     Monthly
@@ -807,12 +807,12 @@ export const SubscriptionsPage: React.FC = () => {
                     onClick={() => setBillingCycle('annual')}
                     className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                       billingCycle === 'annual'
-                        ? 'bg-amber-400 text-slate-950 shadow-md'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-700 hover:text-slate-900'
                     }`}
                   >
                     Annual
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-300">
                       -20%
                     </span>
                   </button>
@@ -833,23 +833,23 @@ export const SubscriptionsPage: React.FC = () => {
                   return (
                     <div
                       key={card.id}
-                      className={`relative rounded-3xl p-6 border flex flex-col justify-between transition-all group backdrop-blur-xl ${
+                      className={`relative rounded-3xl p-6 border flex flex-col justify-between transition-all group shadow-sm bg-white ${
                         card.isPopular
-                          ? 'bg-gradient-to-b from-orange-950/40 via-slate-900/90 to-slate-950 border-orange-500/50 shadow-2xl shadow-orange-500/10'
-                          : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 shadow-xl'
+                          ? 'border-2 border-orange-500 shadow-orange-500/10'
+                          : 'border-slate-300 hover:border-orange-500 hover:shadow-md'
                       }`}
                     >
                       {/* Top Badges & Edit Button */}
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-slate-950/80 text-amber-300 border border-amber-500/30 shadow-xs">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-950 border border-amber-300 shadow-xs">
                             {card.badge}
                           </span>
 
                           <button
                             type="button"
                             onClick={() => openEditorModal(card)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-orange-500 hover:text-white text-slate-400 transition-all cursor-pointer shadow-xs"
+                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-orange-600 hover:text-white text-slate-700 transition-all cursor-pointer shadow-xs border border-slate-300"
                             title="Edit Subscription Card Details"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
@@ -858,51 +858,51 @@ export const SubscriptionsPage: React.FC = () => {
 
                         {card.isPopular && (
                           <div className="mb-2">
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-400 uppercase tracking-widest">
-                              <Sparkles className="w-3 h-3 text-orange-400" /> Highly Recommended Tier
+                            <span className="inline-flex items-center gap-1 text-[10px] font-black text-orange-700 uppercase tracking-widest">
+                              <Sparkles className="w-3 h-3 text-orange-600" /> Highly Recommended Tier
                             </span>
                           </div>
                         )}
 
-                        <h3 className="font-bold text-white text-lg tracking-tight group-hover:text-amber-300 transition-colors">
+                        <h3 className="font-extrabold text-slate-900 text-lg tracking-tight group-hover:text-orange-600 transition-colors">
                           {card.name}
                         </h3>
-                        <p className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center gap-1">
+                        <p className="text-[11px] text-slate-700 font-mono mt-0.5 flex items-center gap-1">
                           <span>Screen:</span>
-                          <span className="text-slate-300 font-semibold">{card.screenName}</span>
+                          <span className="text-slate-900 font-bold">{card.screenName}</span>
                         </p>
-                        <p className="text-xs text-slate-400 mt-2 min-h-[48px] leading-relaxed">
+                        <p className="text-xs font-medium text-slate-700 mt-2 min-h-[48px] leading-relaxed">
                           {card.description}
                         </p>
 
                         {/* Dual Currency Pricing Pill */}
-                        <div className="mt-4 p-4 rounded-2xl bg-slate-950/90 border border-slate-800/90 mb-5">
+                        <div className="mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-300 mb-5">
                           <div className="flex items-baseline gap-1.5">
-                            <span className="text-2xl font-mono font-black text-amber-400">
+                            <span className="text-2xl font-mono font-black text-amber-800">
                               {isFree ? 'FREE' : `${displayCost} FIC`}
                             </span>
                             {!isFree && (
-                              <span className="text-xs text-slate-500">
+                              <span className="text-xs font-bold text-slate-700">
                                 /{billingCycle === 'annual' ? 'yr' : 'mo'}
                               </span>
                             )}
                           </div>
                           {!isFree && (
-                            <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1 pt-1.5 border-t border-slate-800/60 font-mono">
-                              <span>FIAT Parity:</span>
-                              <span className="text-emerald-400 font-bold">₦{displayNaira.toLocaleString()} NGN</span>
+                            <div className="flex items-center justify-between text-[11px] text-slate-700 mt-1 pt-1.5 border-t border-slate-200 font-mono">
+                              <span className="font-bold">FIAT Parity:</span>
+                              <span className="text-emerald-800 font-black">₦{displayNaira.toLocaleString()} NGN</span>
                             </div>
                           )}
                         </div>
 
                         {/* Features List */}
                         <div className="space-y-2 mb-6">
-                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
+                          <p className="text-[10px] font-black text-slate-900 uppercase tracking-wider">
                             Gated Privileges & Quota:
                           </p>
                           {card.features.map((feature, idx) => (
-                            <div key={idx} className="text-xs text-slate-300 flex items-start gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                            <div key={idx} className="text-xs font-medium text-slate-800 flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0 mt-0.5" />
                               <span className="leading-snug">{feature}</span>
                             </div>
                           ))}
@@ -910,14 +910,14 @@ export const SubscriptionsPage: React.FC = () => {
                       </div>
 
                       {/* Card Action Button */}
-                      <div className="pt-2 border-t border-slate-800/80 flex items-center gap-2">
+                      <div className="pt-3 border-t border-slate-200 flex items-center gap-2">
                         <button
                           type="button"
                           onClick={() => setSelectedPlanForUpgrade(card)}
                           className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs transition-all cursor-pointer ${
                             card.isPopular
-                              ? 'bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 shadow-md shadow-orange-500/20'
-                              : 'bg-slate-800 hover:bg-slate-700 text-white'
+                              ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-sm'
+                              : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
                           }`}
                         >
                           {isFree ? 'Current Tier' : 'Select Pass'}
@@ -926,7 +926,7 @@ export const SubscriptionsPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => navigate(card.route)}
-                          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+                          className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-colors"
                           title={`Navigate to ${card.screenName} (${card.route})`}
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -942,31 +942,31 @@ export const SubscriptionsPage: React.FC = () => {
           {/* TAB 2: PLATFORM SCREEN AUDIT MATRIX (20 MODULES) */}
           {activeTab === 'matrix' && (
             <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-5 rounded-3xl border border-slate-300 shadow-sm">
                 <div>
-                  <h3 className="font-bold text-white text-base">Platform Subscription Scope Audit</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <h3 className="font-extrabold text-slate-900 text-base">Platform Subscription Scope Audit</h3>
+                  <p className="text-xs font-medium text-slate-700 mt-0.5">
                     Full architectural audit of every screen and module requiring gated subscriptions across the FingerMobile Protocol.
                   </p>
                 </div>
 
                 <div className="relative w-full sm:w-72">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input
                     type="text"
                     value={matrixSearchQuery}
                     onChange={(e) => setMatrixSearchQuery(e.target.value)}
                     placeholder="Search screen, route, or tier..."
-                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               {/* Table */}
-              <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/60 shadow-xl">
+              <div className="overflow-x-auto rounded-3xl border border-slate-300 bg-white shadow-sm">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 bg-slate-900/90 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
+                    <tr className="border-b border-slate-300 bg-slate-100 text-slate-900 uppercase tracking-wider text-[10px] font-bold">
                       <th className="p-4">#</th>
                       <th className="p-4">Screen / Module</th>
                       <th className="p-4">Route</th>
@@ -978,27 +978,27 @@ export const SubscriptionsPage: React.FC = () => {
                       <th className="p-4 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                  <tbody className="divide-y divide-slate-200 text-slate-800">
                     {filteredAuditData.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="p-4 font-mono text-slate-500 font-bold">{item.id}</td>
-                        <td className="p-4 font-bold text-white whitespace-nowrap">{item.screenName}</td>
-                        <td className="p-4 font-mono text-amber-400 whitespace-nowrap">{item.route}</td>
+                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="p-4 font-mono text-slate-600 font-bold">{item.id}</td>
+                        <td className="p-4 font-extrabold text-slate-900 whitespace-nowrap">{item.screenName}</td>
+                        <td className="p-4 font-mono font-bold text-blue-700 whitespace-nowrap">{item.route}</td>
                         <td className="p-4 whitespace-nowrap">
-                          <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 text-[10px]">
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-900 font-bold border border-slate-300 text-[10px]">
                             {item.category}
                           </span>
                         </td>
-                        <td className="p-4 font-semibold text-slate-200 whitespace-nowrap">{item.plans}</td>
+                        <td className="p-4 font-bold text-slate-800 whitespace-nowrap">{item.plans}</td>
                         <td className="p-4 whitespace-nowrap">
-                          <div className="font-mono font-bold text-amber-400">{item.ficPrice}</div>
-                          <div className="font-mono text-[10px] text-emerald-400">{item.fiatPrice}</div>
+                          <div className="font-mono font-black text-amber-800">{item.ficPrice}</div>
+                          <div className="font-mono text-[10px] font-bold text-emerald-800">{item.fiatPrice}</div>
                         </td>
-                        <td className="p-4 max-w-xs truncate text-slate-400" title={item.quotaBenefits}>
+                        <td className="p-4 max-w-xs truncate text-slate-700 font-medium" title={item.quotaBenefits}>
                           {item.quotaBenefits}
                         </td>
                         <td className="p-4 whitespace-nowrap">
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-orange-950/60 text-orange-300 border border-orange-800/50">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-300 shadow-xs">
                             {item.gatedStatus}
                           </span>
                         </td>
@@ -1006,10 +1006,10 @@ export const SubscriptionsPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => navigate(item.route)}
-                            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-[11px] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                            className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-bold text-[11px] transition-colors inline-flex items-center gap-1 cursor-pointer"
                           >
                             <span>Open</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <ExternalLink className="w-3 h-3 text-slate-700" />
                           </button>
                         </td>
                       </tr>
@@ -1026,70 +1026,70 @@ export const SubscriptionsPage: React.FC = () => {
               {/* Management Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Panel 1: FIC Allocation, Earning & Balance Adjustment */}
-                <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6">
+                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-300 shadow-sm space-y-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                    <div className="p-2.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-300">
                       <Coins className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">FIC Token Allocation & Earning Rules</h3>
-                      <p className="text-xs text-slate-400">Mint, allocate, adjust creator earning quotas, and track settlement balances</p>
+                      <h3 className="text-lg font-extrabold text-slate-900">FIC Token Allocation & Earning Rules</h3>
+                      <p className="text-xs font-medium text-slate-700">Mint, allocate, adjust creator earning quotas, and track settlement balances</p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Target Account Handle / Address</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Target Account Handle / Address</label>
                       <input
                         type="text"
                         value={ficTargetUser}
                         onChange={(e) => setFicTargetUser(e.target.value)}
                         placeholder="@username or 0x..."
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-xs font-semibold text-slate-300 block mb-1">FIC Amount</label>
+                        <label className="text-xs font-bold text-slate-900 block mb-1">FIC Amount</label>
                         <input
                           type="number"
                           value={ficAllocationAmount}
                           onChange={(e) => setFicAllocationAmount(e.target.value)}
                           placeholder="250"
-                          className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                         />
                       </div>
 
                       <div>
-                        <label className="text-xs font-semibold text-slate-300 block mb-1">FIAT Equivalent (1 FIC = ₦100)</label>
-                        <div className="px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-emerald-400 font-mono font-bold flex items-center">
+                        <label className="text-xs font-bold text-slate-900 block mb-1">FIAT Equivalent (1 FIC = ₦100)</label>
+                        <div className="px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-emerald-800 font-mono font-black flex items-center">
                           ₦{(Number(ficAllocationAmount || 0) * 100).toLocaleString()} NGN
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Cryptographic Audit Reason</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Cryptographic Audit Reason</label>
                       <input
                         type="text"
                         value={ficAllocationReason}
                         onChange={(e) => setFicAllocationReason(e.target.value)}
                         placeholder="e.g. Creator Incentive Pool Monthly Allocation"
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 space-y-2 text-xs">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-2 text-xs">
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Creator Earning Stream Status:</span>
-                        <span className={`font-bold ${earningSuspended ? 'text-rose-400' : 'text-emerald-400'}`}>
+                        <span className="text-slate-800 font-bold">Creator Earning Stream Status:</span>
+                        <span className={`font-black ${earningSuspended ? 'text-rose-700' : 'text-emerald-800'}`}>
                           {earningSuspended ? 'SUSPENDED' : 'ACTIVE (70% Net Share)'}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Wallet State:</span>
-                        <span className={`font-bold uppercase ${walletStatusState === 'active' ? 'text-emerald-400' : walletStatusState === 'suspended' ? 'text-amber-400' : 'text-rose-500'}`}>
+                        <span className="text-slate-800 font-bold">Wallet State:</span>
+                        <span className={`font-black uppercase ${walletStatusState === 'active' ? 'text-emerald-800' : walletStatusState === 'suspended' ? 'text-amber-800' : 'text-rose-700'}`}>
                           {walletStatusState}
                         </span>
                       </div>
@@ -1101,7 +1101,7 @@ export const SubscriptionsPage: React.FC = () => {
                         onClick={() => {
                           showToast?.(`Allocated ${ficAllocationAmount} FIC to ${ficTargetUser}. Ledger hash confirmed.`, 'success');
                         }}
-                        className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition shadow-md cursor-pointer"
+                        className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-extrabold transition shadow-sm cursor-pointer"
                       >
                         Allocate Tokens
                       </button>
@@ -1115,7 +1115,7 @@ export const SubscriptionsPage: React.FC = () => {
                             'info'
                           );
                         }}
-                        className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition cursor-pointer"
+                        className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-900 text-xs font-bold transition cursor-pointer"
                       >
                         {earningSuspended ? 'Resume Earning' : 'Suspend Earning'}
                       </button>
@@ -1129,8 +1129,8 @@ export const SubscriptionsPage: React.FC = () => {
                         }}
                         className={`px-4 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                           walletStatusState === 'active'
-                            ? 'bg-rose-950/60 text-rose-300 border border-rose-900/50 hover:bg-rose-900/60'
-                            : 'bg-emerald-950/60 text-emerald-300 border border-emerald-900/50 hover:bg-emerald-900/60'
+                            ? 'bg-rose-100 text-rose-950 border border-rose-300 hover:bg-rose-200'
+                            : 'bg-emerald-100 text-emerald-950 border border-emerald-300 hover:bg-emerald-200'
                         }`}
                       >
                         {walletStatusState === 'active' ? 'Suspend / Freeze Wallet' : 'Unfreeze Wallet'}
@@ -1140,44 +1140,44 @@ export const SubscriptionsPage: React.FC = () => {
                 </div>
 
                 {/* Panel 2: FIAT Pegging, Settlement Rails & Legal Terms */}
-                <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6">
+                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-300 shadow-sm space-y-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-300">
                       <DollarSign className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">FIAT Settlement Rules & Legal T&Cs</h3>
-                      <p className="text-xs text-slate-400">Immutable protocol peg, AML regulatory limits, and payout rails</p>
+                      <h3 className="text-lg font-extrabold text-slate-900">FIAT Settlement Rules & Legal T&Cs</h3>
+                      <p className="text-xs font-medium text-slate-700">Immutable protocol peg, AML regulatory limits, and payout rails</p>
                     </div>
                   </div>
 
                   <div className="space-y-3.5 text-xs">
-                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
-                      <span className="font-bold text-white block mb-1">1. Protocol Parity Peg Anchor</span>
-                      <p className="text-slate-400 leading-relaxed">
-                        1 FIC is formally anchored at <strong className="text-amber-400">₦100.00 NGN</strong> (Naira) and convertible at prevailing FX rates to USD ($0.065 USD). In-app passes must maintain synchronous FIC and FIAT parity.
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300">
+                      <span className="font-extrabold text-slate-900 block mb-1">1. Protocol Parity Peg Anchor</span>
+                      <p className="text-slate-700 font-medium leading-relaxed">
+                        1 FIC is formally anchored at <strong className="text-amber-800 font-bold">₦100.00 NGN</strong> (Naira) and convertible at prevailing FX rates to USD ($0.065 USD). In-app passes must maintain synchronous FIC and FIAT parity.
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
-                      <span className="font-bold text-white block mb-1">2. Payout Rails & Settlement Windows</span>
-                      <p className="text-slate-400 leading-relaxed">
-                        Approved settlement rails: <strong className="text-emerald-400">NIBSS Instant Payment (NIP), Paystack, Flutterwave, and Interswitch</strong>. Creator payouts clear automatically within 7 business days; Enterprise tiers clear within 3 business days.
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300">
+                      <span className="font-extrabold text-slate-900 block mb-1">2. Payout Rails & Settlement Windows</span>
+                      <p className="text-slate-700 font-medium leading-relaxed">
+                        Approved settlement rails: <strong className="text-emerald-800 font-bold">NIBSS Instant Payment (NIP), Paystack, Flutterwave, and Interswitch</strong>. Creator payouts clear automatically within 7 business days; Enterprise tiers clear within 3 business days.
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
-                      <span className="font-bold text-white block mb-1">3. KYC Tier Limits & Anti-Money Laundering</span>
-                      <ul className="text-slate-400 space-y-1 mt-1 pl-4 list-disc">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300">
+                      <span className="font-extrabold text-slate-900 block mb-1">3. KYC Tier Limits & Anti-Money Laundering</span>
+                      <ul className="text-slate-700 font-medium space-y-1.5 mt-1 pl-4 list-disc">
                         <li><strong>Tier 1 (Unverified):</strong> Maximum daily outflow of 200 FIC (₦20,000 NGN).</li>
                         <li><strong>Tier 2 (Biometric Face Verified):</strong> Maximum daily outflow of 2,000 FIC (₦200,000 NGN).</li>
                         <li><strong>Tier 3 (Government ID / Corporate):</strong> Maximum daily outflow of 20,000 FIC (₦2,000,000 NGN).</li>
                       </ul>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
-                      <span className="font-bold text-white block mb-1">4. Refund, Dispute & Anti-Fraud Chargeback Shield</span>
-                      <p className="text-slate-400 leading-relaxed">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300">
+                      <span className="font-extrabold text-slate-900 block mb-1">4. Refund, Dispute & Anti-Fraud Chargeback Shield</span>
+                      <p className="text-slate-700 font-medium leading-relaxed">
                         All transactions exceeding 500 FIC require Guardian AI Live-Motion Face verification. Disputed payments trigger automatic smart-contract escrow hold for 48 hours pending peer arbitration.
                       </p>
                     </div>
@@ -1191,13 +1191,13 @@ export const SubscriptionsPage: React.FC = () => {
           {activeTab === 'active' && (
             <div className="space-y-6">
               {isLoading ? (
-                <div className="py-20 text-center text-slate-400">Loading your subscribed passes...</div>
+                <div className="py-20 text-center font-bold text-slate-700">Loading your subscribed passes...</div>
               ) : subscriptions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {subscriptions.map((sub) => (
                     <div
                       key={sub.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between"
+                      className="bg-white border border-slate-300 rounded-3xl p-6 shadow-sm flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex justify-between items-start mb-4">
@@ -1206,43 +1206,43 @@ export const SubscriptionsPage: React.FC = () => {
                               <img
                                 src={sub.creatorAvatar}
                                 alt={sub.creatorName}
-                                className="w-12 h-12 rounded-2xl object-cover border border-amber-400/40"
+                                className="w-12 h-12 rounded-2xl object-cover border border-amber-400"
                               />
                             ) : (
-                              <div className="w-12 h-12 rounded-2xl bg-amber-400/10 text-amber-400 font-bold flex items-center justify-center text-lg border border-amber-400/30">
+                              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-800 font-black flex items-center justify-center text-lg border border-amber-300">
                                 {sub.creatorName.charAt(0).toUpperCase()}
                               </div>
                             )}
                             <div>
-                              <h4 className="font-bold text-white text-base leading-tight">{sub.creatorName}</h4>
-                              <p className="text-xs text-amber-400 mt-0.5">{sub.planName}</p>
+                              <h4 className="font-extrabold text-slate-900 text-base leading-tight">{sub.creatorName}</h4>
+                              <p className="text-xs font-bold text-amber-800 mt-0.5">{sub.planName}</p>
                             </div>
                           </div>
 
                           <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
                               sub.status === 'active'
-                                ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60'
-                                : 'bg-slate-800 text-slate-400'
+                                ? 'bg-emerald-100 text-emerald-950 border border-emerald-300'
+                                : 'bg-slate-100 text-slate-800 border border-slate-300'
                             }`}
                           >
                             {sub.status}
                           </span>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/80 mb-4 flex justify-between items-center text-xs">
+                        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-300 mb-4 flex justify-between items-center text-xs">
                           <div>
-                            <span className="text-base font-mono font-bold text-white">{sub.price} FIC</span>
-                            <span className="text-slate-500"> / month</span>
+                            <span className="text-base font-mono font-black text-slate-900">{sub.price} FIC</span>
+                            <span className="text-slate-700 font-bold"> / month</span>
                           </div>
-                          <span className="text-slate-400">Next Renewal: {sub.renewalDate}</span>
+                          <span className="text-slate-700 font-medium">Next Renewal: {sub.renewalDate}</span>
                         </div>
 
                         {sub.benefits && (
                           <div className="space-y-1.5 mb-6">
                             {sub.benefits.map((b: string, idx: number) => (
-                              <div key={idx} className="text-xs text-slate-300 flex items-center gap-2">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                              <div key={idx} className="text-xs font-medium text-slate-800 flex items-center gap-2">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
                                 <span>{b}</span>
                               </div>
                             ))}
@@ -1250,11 +1250,11 @@ export const SubscriptionsPage: React.FC = () => {
                         )}
                       </div>
 
-                      <div className="pt-4 border-t border-slate-800 flex gap-3">
+                      <div className="pt-4 border-t border-slate-200 flex gap-3">
                         <button
                           type="button"
                           onClick={() => navigate('/storefronts')}
-                          className="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-all cursor-pointer"
+                          className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all cursor-pointer shadow-sm"
                         >
                           Visit Storefront
                         </button>
@@ -1263,10 +1263,10 @@ export const SubscriptionsPage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="py-20 text-center bg-slate-900/60 rounded-3xl border border-slate-800 space-y-3">
-                  <Crown className="w-12 h-12 text-slate-600 mx-auto" />
-                  <h3 className="text-lg font-bold text-white">No Active Creator Passes</h3>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <div className="py-20 text-center bg-white rounded-3xl border border-slate-300 space-y-3 p-8 shadow-sm">
+                  <Crown className="w-12 h-12 text-slate-400 mx-auto" />
+                  <h3 className="text-lg font-extrabold text-slate-900">No Active Creator Passes</h3>
+                  <p className="text-xs font-medium text-slate-700 max-w-sm mx-auto leading-relaxed">
                     Subscribe to your favorite music producers and streamers on Storefronts or BeatwaveNG to access exclusive stems and private livestreams.
                   </p>
                 </div>
@@ -1276,45 +1276,45 @@ export const SubscriptionsPage: React.FC = () => {
 
           {/* MODAL 1: CARD EDITOR MODAL (NANO BANANA STUDIO) */}
           {editingCard && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[99999] p-4 overflow-y-auto">
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative my-8">
+            <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-[99999] p-4 overflow-y-auto">
+              <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative my-8 text-slate-900">
                 <button
                   type="button"
                   onClick={closeEditorModal}
-                  className="absolute top-5 right-5 p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition cursor-pointer"
+                  className="absolute top-5 right-5 p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  <div className="p-2.5 rounded-xl bg-orange-50 text-orange-700 border border-orange-300">
                     <Edit3 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">Edit Subscription Card</h3>
-                    <p className="text-xs text-slate-400">Modify title, pricing, features, and gated routing</p>
+                    <h3 className="text-xl font-extrabold text-slate-900">Edit Subscription Card</h3>
+                    <p className="text-xs font-medium text-slate-700">Modify title, pricing, features, and gated routing</p>
                   </div>
                 </div>
 
                 <form onSubmit={handleSaveCard} className="space-y-4 text-xs">
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Plan / Card Name</label>
+                    <label className="text-xs font-bold text-slate-900 block mb-1">Plan / Card Name</label>
                     <input
                       type="text"
                       required
                       value={editForm.name}
                       onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Domain Category</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Domain Category</label>
                       <select
                         value={editForm.category}
                         onChange={(e) => setEditForm({ ...editForm, category: e.target.value as any })}
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="platform">Platform Core</option>
                         <option value="media">Media & Streaming</option>
@@ -1326,19 +1326,19 @@ export const SubscriptionsPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Badge Tag</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Badge Tag</label>
                       <input
                         type="text"
                         value={editForm.badge}
                         onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly FIC Price</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Monthly FIC Price</label>
                       <input
                         type="number"
                         min="0"
@@ -1347,49 +1347,49 @@ export const SubscriptionsPage: React.FC = () => {
                           const fic = Number(e.target.value);
                           setEditForm({ ...editForm, monthlyFIC: fic, monthlyNaira: fic * 100 });
                         }}
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly FIAT (₦ NGN)</label>
+                      <label className="text-xs font-bold text-slate-900 block mb-1">Monthly FIAT (₦ NGN)</label>
                       <input
                         type="number"
                         min="0"
                         value={editForm.monthlyNaira}
                         onChange={(e) => setEditForm({ ...editForm, monthlyNaira: Number(e.target.value) })}
-                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-emerald-400 font-mono font-bold focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-emerald-800 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Target Screen Route</label>
+                    <label className="text-xs font-bold text-slate-900 block mb-1">Target Screen Route</label>
                     <input
                       type="text"
                       value={editForm.route}
                       onChange={(e) => setEditForm({ ...editForm, route: e.target.value })}
                       placeholder="/dancia4tv"
-                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-amber-400 font-mono focus:outline-none focus:border-amber-400"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-blue-700 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Description</label>
+                    <label className="text-xs font-bold text-slate-900 block mb-1">Description</label>
                     <textarea
                       rows={2}
                       value={editForm.description}
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   {/* Features List Editing */}
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Features / Gated Privileges</label>
+                    <label className="text-xs font-bold text-slate-900 block mb-1">Features / Gated Privileges</label>
                     <div className="space-y-2 mb-2 max-h-36 overflow-y-auto pr-1">
                       {editForm.features.map((feat, i) => (
-                        <div key={i} className="flex items-center gap-2 bg-slate-950 p-2 rounded-xl border border-slate-800">
+                        <div key={i} className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-300">
                           <input
                             type="text"
                             value={feat}
@@ -1398,7 +1398,7 @@ export const SubscriptionsPage: React.FC = () => {
                               updatedFeatures[i] = e.target.value;
                               setEditForm({ ...editForm, features: updatedFeatures });
                             }}
-                            className="flex-1 bg-transparent border-none text-white focus:outline-none text-xs"
+                            className="flex-1 bg-transparent border-none text-slate-900 font-bold focus:outline-none text-xs"
                           />
                           <button
                             type="button"
@@ -1406,7 +1406,7 @@ export const SubscriptionsPage: React.FC = () => {
                               const updatedFeatures = editForm.features.filter((_, idx) => idx !== i);
                               setEditForm({ ...editForm, features: updatedFeatures });
                             }}
-                            className="text-rose-400 hover:text-rose-300 p-1"
+                            className="text-rose-700 hover:text-rose-900 p-1"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1420,7 +1420,7 @@ export const SubscriptionsPage: React.FC = () => {
                         value={newFeatureText}
                         onChange={(e) => setNewFeatureText(e.target.value)}
                         placeholder="Add new perk (e.g. 4K Stem Downloads)..."
-                        className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-amber-400"
+                        className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <button
                         type="button"
@@ -1430,7 +1430,7 @@ export const SubscriptionsPage: React.FC = () => {
                             setNewFeatureText('');
                           }
                         }}
-                        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold"
+                        className="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold"
                       >
                         Add
                       </button>
@@ -1444,18 +1444,18 @@ export const SubscriptionsPage: React.FC = () => {
                       id="isPopular"
                       checked={!!editForm.isPopular}
                       onChange={(e) => setEditForm({ ...editForm, isPopular: e.target.checked })}
-                      className="rounded bg-slate-950 border-slate-800 text-orange-500 focus:ring-0"
+                      className="rounded border-slate-300 text-orange-600 focus:ring-0 w-4 h-4"
                     />
-                    <label htmlFor="isPopular" className="text-xs text-slate-300 font-semibold cursor-pointer">
+                    <label htmlFor="isPopular" className="text-xs text-slate-900 font-bold cursor-pointer">
                       Mark as "Recommended / Popular" Tier
                     </label>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-800 flex justify-between items-center gap-3">
+                  <div className="pt-4 border-t border-slate-200 flex justify-between items-center gap-3">
                     <button
                       type="button"
                       onClick={() => handleDeleteCard(editingCard.id)}
-                      className="px-3.5 py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 font-bold transition flex items-center gap-1.5"
+                      className="px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-bold transition flex items-center gap-1.5"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete Card</span>
@@ -1465,13 +1465,13 @@ export const SubscriptionsPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={closeEditorModal}
-                        className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700"
+                        className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-800 font-bold hover:bg-slate-200 border border-slate-300"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-bold shadow-md shadow-orange-500/20"
+                        className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold shadow-sm"
                       >
                         Save Card
                       </button>
@@ -1484,41 +1484,41 @@ export const SubscriptionsPage: React.FC = () => {
 
           {/* MODAL 2: UPGRADE CONFIRMATION MODAL */}
           {selectedPlanForUpgrade && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[99999] p-4">
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl relative">
+            <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-[99999] p-4">
+              <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-slate-900">
                 <button
                   type="button"
                   onClick={() => setSelectedPlanForUpgrade(null)}
-                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 cursor-pointer"
+                  className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
-                <h3 className="text-xl font-bold text-white mb-1">Subscribe to {selectedPlanForUpgrade.name}</h3>
-                <p className="text-xs text-slate-400 mb-4">{selectedPlanForUpgrade.description}</p>
+                <h3 className="text-xl font-extrabold text-slate-900 mb-1">Subscribe to {selectedPlanForUpgrade.name}</h3>
+                <p className="text-xs font-medium text-slate-700 mb-4">{selectedPlanForUpgrade.description}</p>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 mb-4 text-xs font-mono">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-2 mb-4 text-xs font-mono">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Billing Interval:</span>
-                    <span className="text-white font-bold capitalize">{billingCycle}</span>
+                    <span className="text-slate-700 font-bold">Billing Interval:</span>
+                    <span className="text-slate-900 font-black capitalize">{billingCycle}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Total Due Today:</span>
-                    <span className="text-amber-400 font-bold text-sm">
+                    <span className="text-slate-700 font-bold">Total Due Today:</span>
+                    <span className="text-amber-800 font-black text-sm">
                       {billingCycle === 'annual'
                         ? `${Math.round(selectedPlanForUpgrade.monthlyFIC * 12 * 0.8)} FIC`
                         : `${selectedPlanForUpgrade.monthlyFIC} FIC`}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">FIAT Value:</span>
-                    <span className="text-emerald-400 font-bold">
+                    <span className="text-slate-700 font-bold">FIAT Value:</span>
+                    <span className="text-emerald-800 font-black">
                       ≈ ₦{(billingCycle === 'annual' ? selectedPlanForUpgrade.monthlyNaira * 12 * 0.8 : selectedPlanForUpgrade.monthlyNaira).toLocaleString()} NGN
                     </span>
                   </div>
-                  <div className="flex justify-between pt-1 border-t border-slate-800">
-                    <span className="text-slate-400">Vault Balance:</span>
-                    <span className="text-slate-200">{ficBalance.toLocaleString()} FIC</span>
+                  <div className="flex justify-between pt-1 border-t border-slate-200">
+                    <span className="text-slate-700 font-bold">Vault Balance:</span>
+                    <span className="text-slate-900 font-bold">{ficBalance.toLocaleString()} FIC</span>
                   </div>
                 </div>
 
@@ -1526,7 +1526,7 @@ export const SubscriptionsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedPlanForUpgrade(null)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 rounded-xl hover:bg-slate-700 cursor-pointer"
+                    className="px-4 py-2 text-xs font-bold text-slate-800 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -1534,7 +1534,7 @@ export const SubscriptionsPage: React.FC = () => {
                     type="button"
                     onClick={handleUpgradePlan}
                     disabled={isProcessingUpgrade}
-                    className="px-5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <CreditCard className="w-3.5 h-3.5" />
                     {isProcessingUpgrade ? 'Confirming...' : 'Confirm Subscription'}

@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Sparkles,
   Edit3,
   Plus,
   Trash2,
   CheckCircle,
-  Shield,
-  Zap,
   RotateCcw,
   Save,
   Check,
-  Crown,
-  Radio,
-  FileText,
-  Users,
   Search,
-  Filter,
   Layers,
   ArrowRight,
   ExternalLink,
   PlayCircle,
-  HelpCircle,
-  Sliders,
-  DollarSign,
   Copy,
   Files,
   CheckSquare,
@@ -370,7 +360,9 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) return JSON.parse(saved);
-    } catch (_e) {}
+    } catch {
+      /* Fallback to CURATED_DEFAULT_MODELS */
+    }
     return CURATED_DEFAULT_MODELS;
   });
 
@@ -842,8 +834,8 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
                 model.isFreeTier
                   ? 'bg-gradient-to-b from-emerald-950/20 via-slate-900 to-slate-950 border-emerald-500/30 hover:border-emerald-500/60 shadow-emerald-500/5'
                   : model.isPopular
-                  ? 'bg-gradient-to-b from-blue-950/25 via-slate-900 to-slate-950 border-blue-500/40 hover:border-blue-500/70 shadow-blue-500/5'
-                  : 'bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 border-slate-800 hover:border-slate-700'
+                    ? 'bg-gradient-to-b from-blue-950/25 via-slate-900 to-slate-950 border-blue-500/40 hover:border-blue-500/70 shadow-blue-500/5'
+                    : 'bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 border-slate-800 hover:border-slate-700'
               }`}
             >
               {/* Header Badges & Select */}

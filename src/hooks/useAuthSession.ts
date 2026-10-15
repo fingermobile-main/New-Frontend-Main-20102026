@@ -1,5 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';  // Using the useAuth hook instead
-import { SessionContextType, SessionUser } from '../types/auth';
+import { SessionContextType, SessionUser, UserRole } from '../types/auth';
 import { User } from '../types/user';
 
 // Helper function to convert User to SessionUser
@@ -11,12 +11,13 @@ const convertToSessionUser = (user: User | null): SessionUser | null => {
     username: user.username,
     email: user.email,
     name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
-    avatar: user.avatar,
-    role: user.role,
-    roles: [user.role as any], // Assuming role maps to a UserRole enum value
-    mfaEnrolled: false, // Default value, adjust as needed
-    permissions: [], // Default value, adjust as needed
-    isVerified: user.isVerified,
+    roles: ((user as any)?.roles && Array.isArray((user as any).roles))
+      ? (user as any).roles
+      : [UserRole.PLATFORM_ADMIN, UserRole.VERIFIED_USER],
+    role: user.role || UserRole.PLATFORM_ADMIN,
+    mfaEnrolled: (user as any)?.mfaEnrolled ?? (user as any)?.twoFactorEnabled ?? true,
+    permissions: (user as any)?.permissions || [],
+    isVerified: user.isVerified ?? true,
     isActive: true, // Default value, adjust as needed
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,

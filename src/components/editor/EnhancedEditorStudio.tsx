@@ -77,7 +77,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
   const [audioBpm, setAudioBpm] = useState('128');
 
   const [voiceDuration, setVoiceDuration] = useState('45');
-  const [voiceUrl, setVoiceUrl] = useState('https://storage.fingermobile.com/audio/voice-sample.mp3');
+  const [voiceUrl, setVoiceUrl] = useState('https://storage.fingermobileprotocol.com/audio/voice-sample.mp3');
 
   const [uhdResolution, setUhdResolution] = useState('3840x2160 (4K UHD)');
   const [uhdMediaUrl, setUhdMediaUrl] = useState('');
@@ -131,7 +131,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
       handleAddAttachment('heavy_document', {
         filename: heavyFileName,
         sizeMb: parseFloat(heavyFileSizeMb) || 100,
-        streamingUrl: `https://storage.fingermobile.com/heavy/${encodeURIComponent(heavyFileName)}`,
+        streamingUrl: `https://storage.fingermobileprotocol.com/heavy/${encodeURIComponent(heavyFileName)}`,
         checksumVerified: true
       });
 
@@ -627,7 +627,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={audioUrl}
                     onChange={(e) => setAudioUrl(e.target.value)}
-                    placeholder="https://audio.fingermobile.com/tracks/123.mp3"
+                    placeholder="https://audio.fingermobileprotocol.com/tracks/123.mp3"
                     className="w-full p-2 text-xs border rounded-lg bg-white"
                   />
                 </div>
@@ -709,7 +709,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={uhdMediaUrl}
                     onChange={(e) => setUhdMediaUrl(e.target.value)}
-                    placeholder="https://media.fingermobile.com/uhd/4k-film.mp4"
+                    placeholder="https://media.fingermobileprotocol.com/uhd/4k-film.mp4"
                     className="w-full p-2 text-xs border rounded-lg bg-white"
                   />
                 </div>
@@ -739,7 +739,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="button"
                     onClick={() =>
                       handleAddAttachment('uhd_media', {
-                        url: uhdMediaUrl || 'https://storage.fingermobile.com/uhd/sample.mp4',
+                        url: uhdMediaUrl || 'https://storage.fingermobileprotocol.com/uhd/sample.mp4',
                         resolution: uhdResolution,
                         hdr: isHdr
                       })

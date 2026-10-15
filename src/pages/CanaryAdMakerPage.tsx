@@ -414,7 +414,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     type="text"
                     value={mediaUrl}
                     onChange={(e) => setMediaUrl(e.target.value)}
-                    placeholder="https://cdn.fingermobile.com/ads/my_canary_video.mp4"
+                    placeholder="https://cdn.fingermobileprotocol.com/ads/my_canary_video.mp4"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
@@ -425,7 +425,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     type="text"
                     value={thumbnailUrl}
                     onChange={(e) => setThumbnailUrl(e.target.value)}
-                    placeholder="https://cdn.fingermobile.com/ads/thumb1.jpg"
+                    placeholder="https://cdn.fingermobileprotocol.com/ads/thumb1.jpg"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
@@ -481,7 +481,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     type="text"
                     value={destinationUrl}
                     onChange={(e) => setDestinationUrl(e.target.value)}
-                    placeholder="https://store.fingermobile.com"
+                    placeholder="https://store.fingermobileprotocol.com"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>

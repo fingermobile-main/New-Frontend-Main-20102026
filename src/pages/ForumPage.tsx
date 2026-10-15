@@ -40,6 +40,7 @@ import {
   CheckCircleIcon as CheckCircleSolidIcon,
 } from '@heroicons/react/24/solid';
 import ForumService from '../services/forumService';
+import ForumPostCard from '../components/forum/ForumPostCard';
 import { ForumCategory } from '../types/forum';
 import WebRtcStudioDrawer from '../components/streaming/WebRtcStudioDrawer';
 import MediaEditorModal, { EditedMediaResult } from '../components/MediaEditorModal';
@@ -47,6 +48,8 @@ import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import userProfileSyncService from '../services/UserProfileSyncService';
 import openGraphService, { OpenGraphMetadata } from '../services/OpenGraphService';
 import locationService from '../services/LocationService';
+import RotatingWidgetRail from '../components/widgets/RotatingWidgetRail';
+import FingerMobileLogoViewerModal from '../components/modals/FingerMobileLogoViewerModal';
 
 // =============================================================================
 // MINI DRAWER / DROPDOWN MENU ENTITIES
@@ -670,6 +673,8 @@ export const ForumPage: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showMiniDrawer, setShowMiniDrawer] = useState<boolean>(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
+  const [isLogoViewerOpen, setIsLogoViewerOpen] = useState<boolean>(false);
 
   // Profile Data Synced Live from UserProfileSyncService
   const [syncedProfile, setSyncedProfile] = useState(() => userProfileSyncService.getProfile());
@@ -1511,104 +1516,71 @@ export const ForumPage: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Left: Orange Burger Menu, Brand & Mini Drawer */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Orange Burger Menu / Drawer Button */}
+            {/* Left Section: 1. Logo, 2. FingerMobile, 3. Burger Menu (Justified & Well-Spaced) */}
+            <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+              {/* 1. Logo (Click to View / Enlarge & Download in HD formats) */}
               <button
                 type="button"
-                onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
-                className="p-2 -ml-2 rounded-xl text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 dark:hover:bg-slate-800 transition flex items-center justify-center focus:outline-none cursor-pointer"
-                aria-label="Open Navigation Drawer"
-                title="Platform Navigation (385 Pages / 230+ Screens)"
+                onClick={() => setIsLogoViewerOpen(true)}
+                className="group relative cursor-pointer focus:outline-none transition-transform hover:scale-105 shrink-0"
+                aria-label="View and Download FingerMobile Logo in HD"
+                title="Click to Enlarge & Download FingerMobile™ Logo in Ultra HD (4K / SVG / PNG)"
               >
-                <Bars3Icon className="w-6 h-6 text-[#ff6b00]" />
+                <div className="h-10 w-10 rounded-2xl overflow-hidden bg-white p-1 border border-slate-300 dark:border-slate-700 shadow-xs flex items-center justify-center group-hover:ring-2 group-hover:ring-orange-500/50 transition-all">
+                  <img
+                    src="/assets/branding/fingermobile/logo-white.webp"
+                    alt="FingerMobile Logo"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/assets/branding/fingermobile/FingerMobile White Logo FRONT.webp';
+                    }}
+                  />
+                </div>
+                {/* HD indicator pill */}
+                <span className="absolute -bottom-1 -right-1 px-1 py-0.2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[8px] font-black rounded-md shadow-xs opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all tracking-wider">
+                  HD
+                </span>
               </button>
 
-              {/* Header H1 with FingerMobile White Logo */}
-              <h1 className="flex items-center">
+              {/* 2. FingerMobile Brand Name Typography */}
+              <h1 className="flex items-center m-0 p-0">
                 <button
                   type="button"
                   onClick={() => navigate('/forum')}
-                  className="cursor-pointer flex items-center gap-2.5 focus:outline-none text-left"
+                  className="cursor-pointer flex flex-col focus:outline-none text-left group"
                   aria-label="FingerMobile Protocol"
                 >
-                  <div className="h-9 w-9 rounded-xl overflow-hidden bg-white p-0.5 border border-slate-200/80 shadow-2xs flex items-center justify-center">
-                    <img
-                      src="/assets/branding/fingermobile/logo-white.webp"
-                      alt="FingerMobile White Logo"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = '/assets/branding/fingermobile/FingerMobile White Logo FRONT.webp';
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white flex items-center">
-                      FingerMobile<span className="text-[#ff6b00]">™</span>
-                    </span>
-                    <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500 -mt-1">
-                      Protocol
-                    </span>
-                  </div>
+                  <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                    FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
+                  </span>
+                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-slate-600 dark:text-slate-400 -mt-1">
+                    Protocol
+                  </span>
                 </button>
               </h1>
 
-              {/* Mini-Drawer Quick-Jump Dropdown */}
-              <div className="relative hidden sm:block">
-                <button
-                  type="button"
-                  onClick={() => setShowMiniDrawer(!showMiniDrawer)}
-                  className="p-1.5 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition flex items-center gap-1.5 text-xs font-bold"
-                  title="Quick-Jump Channels (Blog, Gems, Hallmarks, Groups, LoanSqr, Camus)"
-                >
-                  <ListBulletIcon className="w-4 h-4 text-[#ff6b00]" />
-                  <span>Explore</span>
-                  <ChevronDownIcon className="w-3 h-3 text-slate-400" />
-                </button>
-
-                {/* Mini-Drawer Dropdown Menu */}
-                {showMiniDrawer && (
-                  <div className="absolute left-0 top-10 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in duration-150">
-                    <div className="px-3 py-2 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800">
-                      Sovereign Multi-App Navigation
-                    </div>
-                    <div className="grid grid-cols-1 gap-1 py-1">
-                      {MINI_DRAWER_ITEMS.map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => {
-                            setShowMiniDrawer(false);
-                            navigate(item.path);
-                          }}
-                          className="w-full text-left p-2.5 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between group"
-                        >
-                          <div>
-                            <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-orange-600 flex items-center gap-1.5">
-                              <span>{item.name}</span>
-                              <span className="text-[10px] font-normal text-slate-400">({item.badge})</span>
-                            </div>
-                            <div className="text-[11px] text-slate-500 line-clamp-1">{item.description}</div>
-                          </div>
-                          <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400 group-hover:text-orange-500" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* 3. Orange Burger Menu / Drawer Button (Justified & Spaced) */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-drawer-menu'))}
+                className="p-2 sm:p-2.5 rounded-2xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer ml-1 sm:ml-2"
+                aria-label="Open Navigation Drawer"
+                title="Platform Navigation (385 Pages / 230+ Screens)"
+              >
+                <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#ff6b00]" />
+              </button>
             </div>
 
-            {/* Center: Search Bar */}
-            <div className="hidden md:flex flex-1 max-w-md mx-6">
+            {/* Center: Search Bar (Spacious & Justified) */}
+            <div className="hidden md:flex flex-1 max-w-lg mx-6">
               <div className="relative w-full">
-                <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search sovereign posts, stems, keycards, tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border-none rounded-xl text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium"
                 />
               </div>
             </div>
@@ -1720,39 +1692,122 @@ export const ForumPage: React.FC = () => {
               </button>
             </div>
 
-            {/* Quick Category Filter Selector */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-black uppercase text-slate-400">Categories</span>
-                <span className="text-[10px] text-orange-600 font-bold">{apiCategories.length} Topics</span>
+            {/* Explore Multi-App Navigation Card (Relocated from Header) */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-3.5 shadow-xs space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <ListBulletIcon className="w-4 h-4 text-[#ff6b00]" />
+                  Explore Channels
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-950 border border-orange-300 dark:bg-orange-950/60 dark:text-orange-300 dark:border-orange-800">
+                  Sovereign
+                </span>
               </div>
-              <div className="max-h-60 overflow-y-auto space-y-1 pr-1 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCategoryId('all')}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-xl font-bold transition flex items-center justify-between ${
-                    selectedCategoryId === 'all'
-                      ? 'bg-orange-50 text-orange-600 border border-orange-200'
-                      : 'hover:bg-slate-50 text-slate-600'
-                  }`}
-                >
-                  <span>🔥 All Feeds</span>
-                </button>
-                {apiCategories.slice(0, 15).map((cat) => (
+              <div className="grid grid-cols-1 gap-1">
+                {MINI_DRAWER_ITEMS.map((item) => (
                   <button
-                    key={cat.id}
+                    key={item.id}
                     type="button"
-                    onClick={() => setSelectedCategoryId(cat.name)}
-                    className={`w-full text-left px-2.5 py-1.5 rounded-xl font-semibold transition truncate flex items-center gap-1.5 ${
-                      selectedCategoryId.toLowerCase() === cat.name.toLowerCase()
-                        ? 'bg-orange-50 text-orange-600 border border-orange-200 font-bold'
-                        : 'hover:bg-slate-50 text-slate-600'
-                    }`}
+                    onClick={() => navigate(item.path)}
+                    className="w-full text-left p-2 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-orange-200 transition flex items-center justify-between group cursor-pointer bg-slate-50/50 dark:bg-slate-850"
                   >
-                    <span>{cat.icon}</span>
-                    <span className="truncate">{cat.name}</span>
+                    <div className="min-w-0 pr-2">
+                      <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-orange-600 flex items-center gap-1.5">
+                        <span>{item.name}</span>
+                        <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-400">({item.badge})</span>
+                      </div>
+                      <div className="text-[11px] text-slate-700 dark:text-slate-300 font-medium truncate mt-0.5">{item.description}</div>
+                    </div>
+                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-500 shrink-0" />
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Quick Category Filter Selector (Drop Down and Select Option) */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-3.5 shadow-xs relative">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black uppercase text-slate-900 dark:text-white">Topic Categories</span>
+                <span className="text-[10px] text-orange-950 dark:text-orange-300 font-bold bg-orange-100 dark:bg-orange-950/60 px-2 py-0.5 rounded-full border border-orange-300 dark:border-orange-800">
+                  {apiCategories.length} Topics
+                </span>
+              </div>
+
+              {/* Drop down and select trigger button */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryDropdownOpen((prev) => !prev)}
+                  className="w-full text-left px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-900 dark:text-white font-bold text-xs flex items-center justify-between shadow-2xs transition cursor-pointer"
+                  aria-haspopup="listbox"
+                  aria-expanded={isCategoryDropdownOpen}
+                >
+                  <span className="truncate flex items-center gap-2">
+                    {selectedCategoryId === 'all' ? (
+                      <>
+                        <span className="text-base">🔥</span>
+                        <span className="text-slate-900 dark:text-white font-bold">All Feeds & Topics</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-base">
+                          {apiCategories.find((c) => c.name.toLowerCase() === selectedCategoryId.toLowerCase())?.icon || '📁'}
+                        </span>
+                        <span className="truncate text-slate-900 dark:text-white font-bold">{selectedCategoryId}</span>
+                      </>
+                    )}
+                  </span>
+                  <ChevronDownIcon className={`w-4 h-4 text-slate-600 dark:text-slate-300 transition-transform duration-200 shrink-0 ml-2 ${isCategoryDropdownOpen ? 'rotate-180 text-orange-600' : ''}`} />
+                </button>
+
+                {/* Dropdown Menu Options */}
+                {isCategoryDropdownOpen && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xl z-50 p-1.5 max-h-64 overflow-y-auto space-y-0.5 text-xs animate-in fade-in duration-150">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedCategoryId('all');
+                        setIsCategoryDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-2.5 py-2 rounded-lg font-bold transition flex items-center justify-between cursor-pointer ${
+                        selectedCategoryId === 'all'
+                          ? 'bg-orange-500 text-white shadow-xs'
+                          : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-slate-100'
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>🔥</span>
+                        <span>All Feeds & Topics</span>
+                      </span>
+                      {selectedCategoryId === 'all' && <CheckIcon className="w-4 h-4 text-white" />}
+                    </button>
+
+                    {apiCategories.map((cat) => {
+                      const isSelected = selectedCategoryId.toLowerCase() === cat.name.toLowerCase();
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCategoryId(cat.name);
+                            setIsCategoryDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-lg transition flex items-center justify-between cursor-pointer ${
+                            isSelected
+                              ? 'bg-orange-500 text-white font-bold shadow-xs'
+                              : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold'
+                          }`}
+                        >
+                          <span className="truncate flex items-center gap-2">
+                            <span>{cat.icon}</span>
+                            <span className="truncate">{cat.name}</span>
+                          </span>
+                          {isSelected && <CheckIcon className="w-4 h-4 text-white shrink-0 ml-1.5" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -3282,504 +3337,21 @@ export const ForumPage: React.FC = () => {
             {/* 3. FEED POST STREAM */}
             <div className="space-y-4">
               {filteredPosts.map((post) => (
-                <article
+                <ForumPostCard
                   key={post.id}
-                  id={post.id}
-                  className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 shadow-xs transition hover:shadow-sm"
-                >
-                  {/* Post Header: Author, Verification, Time */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <img
-                        src={post.authorAvatar}
-                        alt={post.authorName}
-                        className="w-10 h-10 rounded-full object-cover border border-slate-200"
-                      />
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-black text-slate-900 dark:text-white text-xs">{post.authorName}</span>
-                          {post.isVerified && <CheckCircleSolidIcon className="w-3.5 h-3.5 text-orange-600" />}
-                          <span className="text-[10px] text-slate-400 font-mono">{post.authorHandle}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                          <span>{post.authorRole}</span>
-                          <span>•</span>
-                          <span>{post.categoryName}</span>
-                          <span>•</span>
-                          <span>{post.createdAt}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Options Menu Toggle */}
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setActivePostOptionsId(activePostOptionsId === post.id ? null : post.id)}
-                        className="p-1 rounded-lg hover:bg-slate-100 text-slate-400"
-                      >
-                        <EllipsisHorizontalIcon className="w-5 h-5" />
-                      </button>
-
-                      {activePostOptionsId === post.id && (
-                        <div className="absolute right-0 top-8 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-1 z-30 text-xs">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setActivePostOptionsId(null);
-                              handleSharePost(post);
-                            }}
-                            className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center gap-2"
-                          >
-                            <ShareIcon className="w-3.5 h-3.5" />
-                            <span>Share Post Link</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setActivePostOptionsId(null);
-                              triggerToast('Report submitted to Guardian Sentinel.', 'info');
-                            }}
-                            className="w-full text-left px-3 py-1.5 hover:bg-rose-50 text-rose-600 flex items-center gap-2"
-                          >
-                            <ShieldCheckIcon className="w-3.5 h-3.5" />
-                            <span>Report Post</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Location Pin Tag (if attached) */}
-                  {post.locationTag && (
-                    <div className="flex items-center gap-1 mt-2 text-[11px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100 w-fit">
-                      <MapPinIcon className="w-3.5 h-3.5" />
-                      <span>{post.locationTag}</span>
-                    </div>
-                  )}
-
-                  {/* Post Title & Content */}
-                  <div className="mt-2.5">
-                    <h3 className="text-sm font-black text-slate-900 dark:text-white leading-snug">{post.title}</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 whitespace-pre-wrap leading-relaxed">{post.content}</p>
-                  </div>
-
-                  {/* Multi-Media Gallery (Single or Multi-Photo & Video Carousel with UHD Lightbox) */}
-                  {((post.mediaUrls && post.mediaUrls.length > 0) || post.mediaUrl) && (
-                    <MultiMediaGallery
-                      urls={post.mediaUrls && post.mediaUrls.length > 0 ? post.mediaUrls : [post.mediaUrl!]}
-                      title={post.title}
-                      author={post.authorName}
-                      onOpenLightbox={setSelectedLightboxImage}
-                    />
-                  )}
-
-                  {/* INTERACTIVE POLL COMPONENT (With Real Voting) */}
-                  {post.poll && (
-                    <div className="mt-3 p-3.5 bg-gradient-to-br from-purple-50/70 to-slate-50 border border-purple-200/90 rounded-2xl space-y-2.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-purple-950 flex items-center gap-1.5">
-                          <ChartBarIcon className="w-4 h-4 text-purple-600" />
-                          {post.poll.question}
-                        </span>
-                        <span className="text-[10px] text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full font-semibold">
-                          {post.poll.totalVotes} votes • {post.poll.durationDays}d left
-                        </span>
-                      </div>
-                      <div className="space-y-1.5">
-                        {post.poll.options.map((opt, optIdx) => {
-                          const isSelected = post.poll?.userVotedIndex === optIdx;
-                          const pct = post.poll && post.poll.totalVotes > 0 ? Math.round((opt.votes / post.poll.totalVotes) * 100) : 0;
-                          return (
-                            <button
-                              key={optIdx}
-                              type="button"
-                              disabled={post.poll?.userVotedIndex !== undefined}
-                              onClick={() => handleVotePoll(post.id, optIdx)}
-                              className={`w-full text-left p-2.5 rounded-xl text-xs font-semibold relative overflow-hidden transition border cursor-pointer ${
-                                isSelected
-                                  ? 'border-purple-500 bg-purple-100/90 text-purple-950 font-bold'
-                                  : 'border-slate-200 bg-white hover:bg-purple-50/60 text-slate-800'
-                              }`}
-                            >
-                              {post.poll?.userVotedIndex !== undefined && (
-                                <div
-                                  className="absolute inset-y-0 left-0 bg-purple-200/50 transition-all duration-500"
-                                  style={{ width: `${pct}%` }}
-                                />
-                              )}
-                              <div className="relative flex items-center justify-between z-10">
-                                <span className="flex items-center gap-1.5">
-                                  {isSelected && <span className="text-purple-600 font-black">✓</span>}
-                                  {opt.text}
-                                </span>
-                                {post.poll?.userVotedIndex !== undefined && (
-                                  <span className="font-mono text-[11px] font-bold text-purple-700">
-                                    {pct}% ({opt.votes})
-                                  </span>
-                                )}
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* INTERACTIVE EVENT COMPONENT (With RSVP Toggle) */}
-                  {post.event && (
-                    <div className="mt-3 p-3.5 bg-gradient-to-r from-emerald-50/80 to-slate-50 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                      <div className="flex items-start gap-3">
-                        <div className="p-2.5 bg-emerald-100 text-emerald-800 rounded-xl font-bold flex flex-col items-center justify-center min-w-[50px]">
-                          <CalendarIcon className="w-5 h-5 text-emerald-700 mb-0.5" />
-                          <span className="text-[10px] uppercase tracking-wider">EVENT</span>
-                        </div>
-                        <div>
-                          <h4 className="text-xs font-black text-slate-900">{post.event.title}</h4>
-                          <div className="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-2">
-                            <span>📅 {post.event.date} • {post.event.time}</span>
-                            <span>📍 {post.event.location}</span>
-                          </div>
-                          <div className="text-[10px] font-semibold text-emerald-700 mt-1">
-                            {post.event.rsvpCount} members attending
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => handleRsvpEvent(post.id)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-xs flex-shrink-0 cursor-pointer ${
-                          post.event.isRsvpd
-                            ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                            : 'bg-white border border-emerald-300 text-emerald-700 hover:bg-emerald-50'
-                        }`}
-                      >
-                        {post.event.isRsvpd ? 'Attending ✓' : 'RSVP Now'}
-                      </button>
-                    </div>
-                  )}
-
-                  {/* DOCUMENT FILE ATTACHMENT BADGE */}
-                  {post.fileAttachment && (
-                    <div className="mt-3 p-2.5 bg-indigo-50/80 border border-indigo-200 rounded-xl flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <PaperClipIcon className="w-4 h-4 text-indigo-600 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-slate-900 truncate">{post.fileAttachment.name}</div>
-                          <div className="text-[10px] text-slate-500">{post.fileAttachment.size} • {post.fileAttachment.type}</div>
-                        </div>
-                      </div>
-                      <a
-                        href={post.fileAttachment.url || '#'}
-                        download={post.fileAttachment.name}
-                        onClick={(e) => {
-                          if (!post.fileAttachment?.url) {
-                            e.preventDefault();
-                            triggerToast(`Downloading ${post.fileAttachment?.name}...`, 'info');
-                          }
-                        }}
-                        className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition ml-2"
-                      >
-                        Download
-                      </a>
-                    </div>
-                  )}
-
-                  {/* RICH OPEN GRAPH (OG) LINK CARD */}
-                  {post.linkEmbed && (
-                    <a
-                      href={post.linkEmbed.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-3 p-3 bg-slate-50 hover:bg-blue-50/50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 group transition block text-xs"
-                    >
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        {post.linkEmbed.image ? (
-                          <img
-                            src={post.linkEmbed.image}
-                            alt={post.linkEmbed.title}
-                            className="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-200"
-                          />
-                        ) : (
-                          <div className="p-3 bg-blue-100 text-blue-600 rounded-xl flex-shrink-0">
-                            <LinkIcon className="w-5 h-5" />
-                          </div>
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <h4 className="font-black text-slate-900 group-hover:text-blue-700 transition truncate">{post.linkEmbed.title}</h4>
-                          {post.linkEmbed.description && (
-                            <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{post.linkEmbed.description}</p>
-                          )}
-                          <span className="text-[10px] text-slate-400 font-mono block mt-1">{post.linkEmbed.domain}</span>
-                        </div>
-                      </div>
-                      <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition flex-shrink-0" />
-                    </a>
-                  )}
-
-                  {/* BEATWAVENG AUDIO STEM EMBED */}
-                  {post.audioPreview && (
-                    <div className="mt-3 p-3 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-transparent border border-orange-200 rounded-2xl flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <div className="p-2.5 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-xl shadow-xs flex-shrink-0">
-                          <MusicalNoteIcon className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-slate-900 truncate">{post.audioPreview}</div>
-                          <div className="text-[10px] text-orange-600 font-semibold flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
-                            BeatwaveNG 24-Bit Spatial Audio Stem
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (playingAudioPostId === post.id) {
-                              setPlayingAudioPostId(null);
-                              triggerToast('Audio stem playback paused.', 'info');
-                            } else {
-                              setPlayingAudioPostId(post.id);
-                              triggerToast(`Streaming stem: ${post.audioPreview}`, 'success');
-                            }
-                          }}
-                          className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-bold rounded-xl transition flex items-center gap-1 shadow-xs cursor-pointer"
-                        >
-                          <PlayIcon className="w-3.5 h-3.5" />
-                          <span>{playingAudioPostId === post.id ? 'Pause' : 'Play Stem'}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => navigate('/beatwaveng')}
-                          className="px-2.5 py-1.5 bg-white border border-orange-200 hover:bg-orange-50 text-orange-800 text-[10px] font-bold rounded-xl transition"
-                        >
-                          DAW
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* DANCIA-4TV VIDEO STREAM EMBED */}
-                  {post.videoStreamUrl && (
-                    <div className="mt-3 p-3 bg-gradient-to-r from-purple-900 to-indigo-950 text-white rounded-2xl flex items-center justify-between text-xs border border-purple-800">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <div className="p-2 bg-rose-500 rounded-lg text-white animate-pulse flex-shrink-0">
-                          <TvIcon className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-white truncate">{post.videoStreamUrl}</div>
-                          <div className="text-[10px] text-purple-200 flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-rose-500" />
-                            <span>Live Broadcast Feed (Dancia-4Tv)</span>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => navigate('/dancia4tv')}
-                        className="px-3 py-1.5 bg-white text-purple-900 hover:bg-purple-100 text-[11px] font-bold rounded-xl transition ml-2 flex-shrink-0"
-                      >
-                        Watch Live
-                      </button>
-                    </div>
-                  )}
-
-                  {/* TAGGED PRODUCT CARD (MarketPlace, OwnIt, Flamingo, Storefront, FingerLux, Gift Cards, Tips, Coupons) */}
-                  {post.taggedProduct && (
-                    <div className="mt-3 p-3 bg-gradient-to-r from-amber-50/60 to-slate-50 dark:from-slate-800/60 dark:to-slate-900 rounded-2xl border border-amber-200 dark:border-amber-900/40 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        {post.taggedProduct.image ? (
-                          <img
-                            src={post.taggedProduct.image}
-                            alt={post.taggedProduct.name}
-                            className="w-10 h-10 rounded-xl object-cover border border-amber-200 dark:border-amber-800 flex-shrink-0"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center flex-shrink-0 text-amber-700 dark:text-amber-300">
-                            <ShoppingBagIcon className="w-5 h-5" />
-                          </div>
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-bold text-slate-900 dark:text-white truncate">{post.taggedProduct.name}</span>
-                            {post.taggedProduct.category === 'Gift Card' && (
-                              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
-                                🎁 Gift Card
-                              </span>
-                            )}
-                            {post.taggedProduct.category === 'FIC Tip' && (
-                              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-300">
-                                💸 FIC Tip
-                              </span>
-                            )}
-                            {post.taggedProduct.category === 'Coupon' && (
-                              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300">
-                                🏷️ Coupon
-                              </span>
-                            )}
-                            {(post.taggedProduct.platform === 'OwnIt' || post.taggedProduct.category === 'Luxury') && (
-                              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300">
-                                💎 Luxury
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[10px] text-amber-800 dark:text-amber-400 font-semibold truncate mt-0.5">
-                            {post.taggedProduct.platform} • {post.taggedProduct.category || 'Goods'}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">{post.taggedProduct.price}</span>
-                        {post.taggedProduct.category === 'Gift Card' ? (
-                          <button
-                            type="button"
-                            onClick={() => triggerToast(`Gift Card "${post.taggedProduct?.name}" redeemed to sovereign wallet!`, 'success')}
-                            className="px-2.5 py-1 text-[10px] font-bold bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg transition shadow-xs cursor-pointer"
-                          >
-                            Redeem Card
-                          </button>
-                        ) : post.taggedProduct.category === 'FIC Tip' ? (
-                          <button
-                            type="button"
-                            onClick={() => triggerToast(`Tip sent to author! (${post.taggedProduct?.price})`, 'success')}
-                            className="px-2.5 py-1 text-[10px] font-bold bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition shadow-xs cursor-pointer"
-                          >
-                            Send Tip
-                          </button>
-                        ) : post.taggedProduct.category === 'Coupon' ? (
-                          <button
-                            type="button"
-                            onClick={() => triggerToast(`Coupon discount "${post.taggedProduct?.name}" applied to cart!`, 'success')}
-                            className="px-2.5 py-1 text-[10px] font-bold bg-rose-700 hover:bg-rose-600 text-white rounded-lg transition shadow-xs cursor-pointer"
-                          >
-                            Claim Coupon
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const p = post.taggedProduct?.platform.toLowerCase();
-                              navigate(`/${p}`);
-                            }}
-                            className="px-2.5 py-1 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition"
-                          >
-                            View Store
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tags */}
-                  {post.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-3">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-semibold rounded-md"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Post Action Footer: Likes, Comments Toggle, Share, Bookmark */}
-                  <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
-                    <div className="flex items-center gap-4">
-                      {/* Like Button */}
-                      <button
-                        type="button"
-                        onClick={() => handleToggleLike(post.id)}
-                        className={`flex items-center gap-1.5 transition ${post.isLiked ? 'text-rose-600 font-bold' : 'hover:text-rose-600'}`}
-                      >
-                        {post.isLiked ? <HeartSolidIcon className="w-4 h-4 text-rose-600" /> : <HeartIcon className="w-4 h-4" />}
-                        <span>{post.likesCount}</span>
-                      </button>
-
-                      {/* Comments Toggle */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedComments((prev) => ({
-                            ...prev,
-                            [post.id]: !prev[post.id],
-                          }))
-                        }
-                        className="flex items-center gap-1.5 hover:text-orange-600 transition"
-                      >
-                        <ChatBubbleLeftRightIcon className="w-4 h-4" />
-                        <span>{post.commentsCount}</span>
-                      </button>
-
-                      {/* Share Button */}
-                      <button
-                        type="button"
-                        onClick={() => handleSharePost(post)}
-                        className="flex items-center gap-1.5 hover:text-sky-600 transition"
-                      >
-                        <ShareIcon className="w-4 h-4" />
-                        <span>{post.sharesCount}</span>
-                      </button>
-                    </div>
-
-                    {/* Bookmark */}
-                    <button
-                      type="button"
-                      onClick={() => handleToggleBookmark(post.id)}
-                      className={`p-1 rounded-lg transition ${post.isBookmarked ? 'text-amber-500' : 'hover:text-amber-500'}`}
-                    >
-                      {post.isBookmarked ? <BookmarkSolidIcon className="w-4 h-4 text-amber-500" /> : <BookmarkIcon className="w-4 h-4" />}
-                    </button>
-                  </div>
-
-                  {/* INLINE EXPANDED COMMENTS THREAD */}
-                  {expandedComments[post.id] && (
-                    <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                      {post.commentsList && post.commentsList.length > 0 && (
-                        <div className="space-y-2 max-h-48 overflow-y-auto">
-                          {post.commentsList.map((comm) => (
-                            <div key={comm.id} className="p-2 bg-slate-50 dark:bg-slate-800 rounded-xl text-xs flex items-start gap-2">
-                              <img src={comm.authorAvatar} alt={comm.authorName} className="w-6 h-6 rounded-full object-cover mt-0.5" />
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between">
-                                  <span className="font-bold text-slate-900 dark:text-white text-[11px]">{comm.authorName}</span>
-                                  <span className="text-[10px] text-slate-400">{comm.createdAt}</span>
-                                </div>
-                                <p className="text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">{comm.text}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Comment Input */}
-                      <div className="flex items-center gap-2 pt-1">
-                        <input
-                          type="text"
-                          placeholder="Write a sovereign comment..."
-                          value={commentInputTexts[post.id] || ''}
-                          onChange={(e) => setCommentInputTexts({ ...commentInputTexts, [post.id]: e.target.value })}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              handleAddComment(post.id);
-                            }
-                          }}
-                          className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleAddComment(post.id)}
-                          className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition"
-                        >
-                          Reply
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </article>
+                  post={post}
+                  onLike={handleToggleLike}
+                  onToggleBookmark={handleToggleBookmark}
+                  onShare={handleSharePost}
+                  onVotePoll={handleVotePoll}
+                  onRsvpEvent={handleRsvpEvent}
+                  onAddComment={(postId, text) => {
+                    setCommentInputTexts((prev) => ({ ...prev, [postId]: text }));
+                    handleAddComment(postId);
+                  }}
+                  onOpenLightbox={setSelectedLightboxImage}
+                  triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
+                />
               ))}
             </div>
           </div>
@@ -3833,6 +3405,9 @@ export const ForumPage: React.FC = () => {
                 Join Hallmark (148k Members)
               </button>
             </div>
+
+            {/* Dynamic 2-Hour Rotating Widgets + Permanent Canary Ads Bottom Rail */}
+            <RotatingWidgetRail />
 
             {/* Quick Links Footer */}
             <div className="p-3 text-[11px] text-slate-400 space-y-2">
@@ -4257,6 +3832,11 @@ export const ForumPage: React.FC = () => {
           <span>{toastNotification.message}</span>
         </div>
       )}
+      {/* 6. FingerMobile Ultra HD Logo Viewer & Exporter Modal */}
+      <FingerMobileLogoViewerModal
+        isOpen={isLogoViewerOpen}
+        onClose={() => setIsLogoViewerOpen(false)}
+      />
     </div>
   );
 };

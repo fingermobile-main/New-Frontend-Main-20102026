@@ -17,20 +17,20 @@ const Dancia4TvFooter: React.FC = () => {
             <h3 className="text-xl font-black tracking-tighter text-white flex items-center gap-2">
               <span className="text-red-500">DANCIA-4Tv</span>
             </h3>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-slate-200 leading-relaxed font-medium">
               The ultimate premium streaming experience for FingerMobile Protocol™ members. Quality content, anywhere, anytime.
             </p>
             <div className="flex space-x-4 pt-2">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-slate-300 hover:text-blue-400 transition-colors">
                 <Twitter size={18} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-pink-400 transition-colors">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-slate-300 hover:text-pink-400 transition-colors">
                 <Camera size={18} />
               </a>
-              <Link to="/communities" aria-label="Community" className="text-gray-400 hover:text-blue-500 transition-colors">
+              <Link to="/communities" aria-label="Community" className="text-slate-300 hover:text-blue-400 transition-colors">
                 <Users size={18} />
               </Link>
-              <Link to="/terminal" aria-label="Terminal" className="text-gray-400 hover:text-white transition-colors">
+              <Link to="/terminal" aria-label="Terminal" className="text-slate-300 hover:text-white transition-colors">
                 <Terminal size={18} />
               </Link>
             </div>
@@ -38,25 +38,25 @@ const Dancia4TvFooter: React.FC = () => {
 
           {/* Platform */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Platform</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="text-sm font-black uppercase tracking-wider text-white mb-6">Platform</h4>
+            <ul className="space-y-3 text-sm text-slate-200 font-medium">
               <li>
-                <Link to="/dancia4tv" className="hover:text-blue-400 transition-colors block">
+                <Link to="/dancia4tv" className="hover:text-blue-300 transition-colors block">
                   Movies & Series
                 </Link>
               </li>
               <li>
-                <Link to="/livestreaming" className="hover:text-blue-400 transition-colors block">
+                <Link to="/livestreaming" className="hover:text-blue-300 transition-colors block">
                   Live Streaming
                 </Link>
               </li>
               <li>
-                <Link to="/dancia4tv" className="hover:text-blue-400 transition-colors block">
+                <Link to="/dancia4tv" className="hover:text-blue-300 transition-colors block">
                   Original Content
                 </Link>
               </li>
               <li>
-                <Link to="/marketplace" className="hover:text-blue-400 transition-colors block">
+                <Link to="/marketplace" className="hover:text-blue-300 transition-colors block">
                   Digital Marketplace
                 </Link>
               </li>
@@ -65,25 +65,25 @@ const Dancia4TvFooter: React.FC = () => {
 
           {/* Support */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Support</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="text-sm font-black uppercase tracking-wider text-white mb-6">Support</h4>
+            <ul className="space-y-3 text-sm text-slate-200 font-medium">
               <li>
-                <Link to="/support" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/support" className="hover:text-blue-300 transition-colors flex items-center">
                   <HelpCircle size={14} className="mr-2 text-blue-400" /> Help Center
                 </Link>
               </li>
               <li>
-                <Link to="/communityguidelines" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/communityguidelines" className="hover:text-blue-300 transition-colors flex items-center">
                   <Shield size={14} className="mr-2 text-emerald-400" /> Content Policy
                 </Link>
               </li>
               <li>
-                <Link to="/contactus" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/contactus" className="hover:text-blue-300 transition-colors flex items-center">
                   <Mail size={14} className="mr-2 text-amber-400" /> Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/services" className="hover:text-blue-300 transition-colors flex items-center">
                   <Globe size={14} className="mr-2 text-indigo-400" /> Global Coverage
                 </Link>
               </li>
@@ -92,20 +92,20 @@ const Dancia4TvFooter: React.FC = () => {
 
           {/* Legal */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-6">Legal</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="text-sm font-black uppercase tracking-wider text-white mb-6">Legal</h4>
+            <ul className="space-y-3 text-sm text-slate-200 font-medium">
               <li>
-                <Link to="/termsofservice" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/termsofservice" className="hover:text-blue-300 transition-colors flex items-center">
                   <FileText size={14} className="mr-2 text-blue-400" /> Terms of Use
                 </Link>
               </li>
               <li>
-                <Link to="/privacypolicy" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/privacypolicy" className="hover:text-blue-300 transition-colors flex items-center">
                   <Shield size={14} className="mr-2 text-emerald-400" /> Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/governance" className="hover:text-blue-400 transition-colors flex items-center">
+                <Link to="/governance" className="hover:text-blue-300 transition-colors flex items-center">
                   <Shield size={14} className="mr-2 text-purple-400" /> AI Governance
                 </Link>
               </li>
@@ -113,15 +113,15 @@ const Dancia4TvFooter: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-xs font-medium text-gray-600">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <p className="text-xs font-semibold text-slate-300">
             © {currentYear} FingerMobile Protocol™ . All rights reserved. Intellectual Property of Mbah Israel Obinna.
           </p>
           <div className="flex items-center space-x-6">
-            <span className="text-xs font-bold text-blue-500/80 uppercase tracking-widest">Protocol v4.2.0</span>
+            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Protocol v4.2.0</span>
             <div className="flex items-center space-x-2">
               <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-[10px] font-bold text-gray-500 uppercase">System Operational</span>
+              <span className="text-[10px] font-bold text-slate-200 uppercase">System Operational</span>
             </div>
           </div>
         </div>

@@ -86,7 +86,7 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('https://fingermobile.com/share/video-editor-project-link');
+    navigator.clipboard.writeText('https://fingermobileprotocol.com/share/video-editor-project-link');
     showToast('Share link copied to clipboard!', 'success');
   };
 

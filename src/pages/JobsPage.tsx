@@ -67,7 +67,7 @@ const JobsPage: React.FC = () => {
 
     try {
       await jobsService.applyForJob(applyingJob.id, {
-        resumeUrl: resumeUrl || 'https://storage.fingermobile.com/resumes/default_cv.pdf',
+        resumeUrl: resumeUrl || 'https://storage.fingermobileprotocol.com/resumes/default_cv.pdf',
         coverLetter
       });
       setFeedbackMsg({ type: 'success', text: 'Application submitted successfully to ' + applyingJob.company + '!' });
@@ -295,7 +295,7 @@ const JobsPage: React.FC = () => {
                     <input
                       type="url"
                       required
-                      placeholder="https://storage.fingermobile.com/resumes/my_resume.pdf"
+                      placeholder="https://storage.fingermobileprotocol.com/resumes/my_resume.pdf"
                       value={resumeUrl}
                       onChange={(e) => setResumeUrl(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"

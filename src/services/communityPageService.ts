@@ -130,7 +130,7 @@ const mockCommunityInvitations: CommunityInvitation[] = [
     usedCount: 24,
     createdAt: new Date('2023-11-01'),
     expiresAt: new Date('2023-12-31'),
-    inviteLink: 'https://fingermobile.com/invite/gems-xyz123'
+    inviteLink: 'https://fingermobileprotocol.com/invite/gems-xyz123'
   }
 ];
 
@@ -415,7 +415,7 @@ export const createCommunityInvitation = async (
     ...invitationData,
     createdAt: new Date(),
     usedCount: 0,
-    inviteLink: `https://fingermobile.com/invite/${invitationData.pageId}-${Math.random().toString(36).substring(2, 10)}`
+    inviteLink: `https://fingermobileprotocol.com/invite/${invitationData.pageId}-${Math.random().toString(36).substring(2, 10)}`
   };
   mockCommunityInvitations.push(newInvitation);
   return newInvitation;

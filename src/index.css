@@ -96,15 +96,15 @@
   }
 
   /* Form controls */
-  html:not(.dark):not(.black-theme) input,
-  html:not(.dark):not(.black-theme) textarea,
-  html:not(.dark):not(.black-theme) select {
-    color: #111827;
+  html:not(.dark):not(.black-theme) input:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
+  html:not(.dark):not(.black-theme) textarea:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
+  html:not(.dark):not(.black-theme) select:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]) {
+    color: #0f172a; /* text-slate-900 core standard */
   }
 
-  html:not(.dark):not(.black-theme) input::placeholder,
-  html:not(.dark):not(.black-theme) textarea::placeholder {
-    color: #6b7280; /* Gray-500: readable placeholder */
+  html:not(.dark):not(.black-theme) input:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder,
+  html:not(.dark):not(.black-theme) textarea:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder {
+    color: #64748b; /* text-slate-500 core standard */
   }
 }
 

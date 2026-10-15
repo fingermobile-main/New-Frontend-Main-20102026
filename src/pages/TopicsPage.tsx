@@ -39,6 +39,7 @@ const TopicsPage: React.FC = () => {
   const [topics, setTopics] = useState<TopicItem[]>([]);
   const [hashtags, setHashtags] = useState<HashtagItem[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -93,6 +94,78 @@ const TopicsPage: React.FC = () => {
             category: 'media',
             thread_count: 640,
             followers_count: 4200,
+            is_following: false
+          },
+          {
+            id: 'top-05',
+            name: 'Zero-Knowledge Proofs & Enclave Computing',
+            description: 'Cryptographic privacy, biometric hardware attestation, and client-side ZKP circuits.',
+            category: 'security',
+            thread_count: 520,
+            followers_count: 3810,
+            is_following: false
+          },
+          {
+            id: 'top-06',
+            name: 'Biometric Fingerprint Hardware & IoT Relays',
+            description: 'Capacitive sensors, USB-FIDO keys, decentralized relay nodes, and embedded Linux devices.',
+            category: 'hardware',
+            thread_count: 410,
+            followers_count: 2950,
+            is_following: false
+          },
+          {
+            id: 'top-07',
+            name: 'Decentralized Merchant Escrows & Storefronts',
+            description: 'Trustless settlement, peer dispute councils, merchant verification, and global logistics.',
+            category: 'commerce',
+            thread_count: 680,
+            followers_count: 4670,
+            is_following: false
+          },
+          {
+            id: 'top-08',
+            name: 'Live Streaming, Dancia & Real-Time Haptics',
+            description: 'Ultra-low-latency WebRTC streams, interactive viewer gifting, and synchronized tactile pulses.',
+            category: 'streaming',
+            thread_count: 790,
+            followers_count: 5890,
+            is_following: true
+          },
+          {
+            id: 'top-09',
+            name: 'P2P Gaming, Virtual Arenas & Guild Quests',
+            description: 'Decentralized multiplayer lobbies, competitive hallmarks, wager pools, and leaderboard streaks.',
+            category: 'gaming',
+            thread_count: 890,
+            followers_count: 6720,
+            is_following: false
+          },
+          {
+            id: 'top-10',
+            name: 'Protocol Governance, Charter Amendments & DAOs',
+            description: 'Voting procedures, node consensus thresholds, legal enclaves, and pan-African digital sovereignty.',
+            category: 'governance',
+            thread_count: 1120,
+            followers_count: 8340,
+            is_following: true
+          },
+          {
+            id: 'top-11',
+            name: 'Guardian AI Sentinels & Decentralized Moderation',
+            description: 'Community-trained ML models, automated fraud detection, toxic content filtering, and transparency logs.',
+            category: 'ai',
+            thread_count: 630,
+            followers_count: 4190,
+            is_following: false
+          },
+          {
+            id: 'top-12',
+            name: 'Peer Micro-Lending & Sovereign Credit Pools',
+            description: 'Decentralized micro-loans, peer collateralization, interest rate auctions, and community credit scores.',
+            category: 'finance',
+            thread_count: 740,
+            followers_count: 5260,
             is_following: false
           }
         ]);
@@ -162,12 +235,16 @@ const TopicsPage: React.FC = () => {
     }
   };
 
-  const filteredTopics = topics.filter(t =>
-    t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredTopics = topics.filter((t) => {
+    const matchesSearch =
+      t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.category && t.category.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesCategory = selectedCategory === 'all' || t.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-  const filteredHashtags = hashtags.filter(h =>
+  const filteredHashtags = hashtags.filter((h) =>
     h.tag.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -175,10 +252,10 @@ const TopicsPage: React.FC = () => {
     <MainLayout pageTitle="Topics & Hashtags">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-black text-gray-900 tracking-tight">Forum Topics & Hashtags</h1>
-            <p className="text-gray-600 text-sm mt-0.5">Explore 60+ categorized cultural communities, discussions, and trending tags</p>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Forum Topics & Hashtags</h1>
+            <p className="text-slate-700 text-sm mt-0.5">Explore 12 curated protocol topics across sovereign culture, technology, media, and commerce</p>
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
@@ -189,56 +266,90 @@ const TopicsPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Search Input */}
-        <div className="mb-8 relative max-w-xl">
-          <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3.5 top-3.5" />
-          <input
-            type="text"
-            placeholder="Search topics, categories, or #hashtags..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
+        {/* Search Input & Category Pills */}
+        <div className="mb-8 space-y-3">
+          <div className="relative max-w-xl">
+            <MagnifyingGlassIcon className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
+            <input
+              type="text"
+              placeholder="Search topics, categories, or #hashtags..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+            />
+          </div>
+
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {[
+              { id: 'all', label: 'All Topics (12)' },
+              { id: 'culture', label: '🏛️ Culture & Heritage' },
+              { id: 'music', label: '🎵 Music & Audio' },
+              { id: 'business', label: '🪙 Business & Economy' },
+              { id: 'media', label: '🎬 Media & Directing' },
+              { id: 'security', label: '🛡️ Security & ZKP' },
+              { id: 'hardware', label: '📡 Hardware & Sensors' },
+              { id: 'commerce', label: '🛍️ Commerce & Escrows' },
+              { id: 'streaming', label: '📺 Live Streaming' },
+              { id: 'gaming', label: '🎮 P2P Gaming' },
+              { id: 'governance', label: '📜 DAOs & Governance' },
+              { id: 'ai', label: '🤖 Guardian AI' },
+              { id: 'finance', label: '💳 Micro-Lending' }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
+                  selectedCategory === cat.id
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                    : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Topics Column (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
-            <h2 className="text-lg font-black text-gray-900 mb-4">Active Forum Topics ({filteredTopics.length})</h2>
+            <h2 className="text-lg font-black text-slate-900 mb-4">Active Forum Topics ({filteredTopics.length})</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredTopics.map((topic) => (
                 <div
                   key={topic.id}
-                  className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-white rounded-3xl border border-slate-300 p-6 shadow-xs hover:shadow-sm transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-lg bg-blue-50 text-blue-700">
+                    <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-lg bg-sky-100 text-sky-950 border border-sky-300">
                       {topic.category}
                     </span>
-                    <h3 className="font-bold text-gray-900 text-base mt-2.5 hover:text-blue-600 transition-colors">
+                    <h3 className="font-black text-slate-900 text-base mt-2.5 hover:text-blue-700 transition-colors">
                       <ReactRouterDOM.NavLink to={`/news-feed/${topic.id}`}>
                         {topic.name}
                       </ReactRouterDOM.NavLink>
                     </h3>
-                    <p className="text-xs text-gray-600 mt-2 line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-slate-700 mt-2 line-clamp-3 leading-relaxed font-medium">
                       {topic.description}
                     </p>
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <div className="text-xs text-gray-500">
+                  <div className="mt-5 pt-4 border-t border-slate-200 flex items-center justify-between">
+                    <div className="text-xs text-slate-700 font-semibold">
                       <span>{topic.thread_count} discussions</span> • <span>{(topic.followers_count).toLocaleString()} followers</span>
                     </div>
                     <button
                       onClick={() => handleToggleFollow(topic.id)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
                         topic.is_following
-                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          ? 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300'
+                          : 'bg-blue-600 text-white hover:bg-blue-700 shadow-xs'
                       }`}
                     >
-                      {topic.is_following ? 'Following' : '+ Follow'}
+                      {topic.is_following ? '✓ Following' : '+ Follow'}
                     </button>
                   </div>
                 </div>
@@ -248,23 +359,23 @@ const TopicsPage: React.FC = () => {
 
           {/* Hashtags Column */}
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-              <h2 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-3xl border border-slate-300 p-6 shadow-xs">
+              <h2 className="text-base font-black text-slate-900 mb-4 flex items-center gap-2">
                 <ArrowTrendingUpIcon className="w-5 h-5 text-blue-600" />
                 Trending Hashtags
               </h2>
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-slate-100">
                 {filteredHashtags.map((ht) => (
                   <ReactRouterDOM.NavLink
                     key={ht.tag}
                     to={`/news-feed/${ht.tag.replace('#', '')}`}
-                    className="py-3 flex items-center justify-between hover:bg-gray-50 px-2 rounded-xl transition-colors"
+                    className="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded-xl transition-colors"
                   >
                     <div>
-                      <p className="font-black text-sm text-gray-900 hover:text-blue-600">{ht.tag}</p>
-                      <p className="text-xs text-gray-400">{ht.category}</p>
+                      <p className="font-black text-sm text-slate-900 hover:text-blue-600">{ht.tag}</p>
+                      <p className="text-xs text-slate-600">{ht.category}</p>
                     </div>
-                    <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                    <span className="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
                       {(ht.post_count).toLocaleString()} posts
                     </span>
                   </ReactRouterDOM.NavLink>
@@ -276,45 +387,51 @@ const TopicsPage: React.FC = () => {
 
         {/* Create Topic Modal */}
         {showCreateModal && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                <h3 className="text-lg font-black text-gray-900">Start New Topic Category</h3>
-                <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 space-y-4">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                <h3 className="text-lg font-black text-slate-900">Start New Topic Category</h3>
+                <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
 
-              <form onSubmit={handleCreateTopic} className="space-y-4 mt-4">
+              <form onSubmit={handleCreateTopic} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Topic Name</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase mb-1">Topic Name</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Lagos Street Food & Culinary Culture"
                     value={createForm.name}
                     onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase mb-1">Category Type</label>
                   <select
                     value={createForm.category}
                     onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                   >
-                    <option value="culture">Culture & Heritage</option>
-                    <option value="music">Music & Audio</option>
-                    <option value="business">Business & Tech</option>
-                    <option value="media">Media & Video</option>
-                    <option value="gaming">Gaming & Sports</option>
+                    <option value="culture">🏛️ Culture & Heritage</option>
+                    <option value="music">🎵 Music & Audio</option>
+                    <option value="business">🪙 Business & Tech</option>
+                    <option value="media">🎬 Media & Directing</option>
+                    <option value="security">🛡️ Security & ZKP</option>
+                    <option value="hardware">📡 Hardware & Sensors</option>
+                    <option value="commerce">🛍️ Commerce & Escrows</option>
+                    <option value="gaming">🎮 Gaming & Sports</option>
+                    <option value="governance">📜 Governance & DAOs</option>
+                    <option value="ai">🤖 AI & Sentinels</option>
+                    <option value="finance">💳 Micro-Lending</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Description & Guidelines</label>
+                  <label className="block text-xs font-bold text-slate-800 uppercase mb-1">Description & Guidelines</label>
                   <textarea
                     rows={3}
                     placeholder="What will members explore and discuss in this topic?"

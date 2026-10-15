@@ -49,18 +49,18 @@ const DashboardPage: React.FC = () => {
     },
     {
       id: 'analytics',
-      title: 'Analytics',
+      title: 'Analytics Console',
       description: 'Track platform performance and user engagement metrics',
       icon: BarChart3,
-      route: '/dashboard/analytics',
+      route: '/advancedanalytics',
       color: 'bg-gradient-to-r from-green-500 to-emerald-600'
     },
     {
       id: 'moderation',
-      title: 'Content Moderation',
+      title: 'Content Moderation Console',
       description: 'Monitor and manage user-generated content',
       icon: Shield,
-      route: '/dashboard/moderation',
+      route: '/contentmoderator',
       color: 'bg-gradient-to-r from-purple-500 to-fuchsia-600'
     },
     {
@@ -68,7 +68,7 @@ const DashboardPage: React.FC = () => {
       title: 'Member Management',
       description: 'Manage platform members and their accounts',
       icon: Users,
-      route: '/dashboard/members',
+      route: '/user-management',
       color: 'bg-gradient-to-r from-cyan-500 to-sky-600'
     },
     {
@@ -84,7 +84,7 @@ const DashboardPage: React.FC = () => {
       title: 'E-commerce',
       description: 'Manage products, orders, and payments',
       icon: ShoppingCart,
-      route: '/dashboard/commerce',
+      route: '/storefronttracking',
       color: 'bg-gradient-to-r from-orange-500 to-red-600'
     },
     {
@@ -92,7 +92,7 @@ const DashboardPage: React.FC = () => {
       title: 'Community',
       description: 'Manage groups, forums, and interactions',
       icon: MessageSquare,
-      route: '/dashboard/community',
+      route: '/communitymanagement',
       color: 'bg-gradient-to-r from-teal-500 to-cyan-600'
     },
     {
@@ -100,7 +100,7 @@ const DashboardPage: React.FC = () => {
       title: 'Platform Settings',
       description: 'Configure platform settings and preferences',
       icon: Settings,
-      route: '/dashboard/settings',
+      route: '/settings-hub',
       color: 'bg-gradient-to-r from-gray-500 to-slate-600'
     },
     {
@@ -108,7 +108,7 @@ const DashboardPage: React.FC = () => {
       title: 'Monetization',
       description: 'Manage revenue streams and monetization tools',
       icon: DollarSign,
-      route: '/dashboard/monetization',
+      route: '/monetizationdashboard',
       color: 'bg-gradient-to-r from-yellow-500 to-amber-600'
     },
     {
@@ -116,7 +116,7 @@ const DashboardPage: React.FC = () => {
       title: 'Live Streaming',
       description: 'Manage live streaming and broadcast features',
       icon: VideoCameraIcon,
-      route: '/dashboard/live-streaming',
+      route: '/livestreaming',
       color: 'bg-gradient-to-r from-red-500 to-rose-600'
     },
     {
@@ -124,32 +124,32 @@ const DashboardPage: React.FC = () => {
       title: 'Membership',
       description: 'Manage membership plans and subscriptions',
       icon: UsersRound,
-      route: '/dashboard/membership',
+      route: '/subscriptions',
       color: 'bg-gradient-to-r from-indigo-500 to-violet-600'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-xs border-b border-slate-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+              <h1 className="text-2xl font-black text-slate-900">Dashboard</h1>
+              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-300">
                 Platform Management
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-gray-500">
+              <button className="p-2 text-slate-600 hover:text-slate-900 transition-colors">
                 <Bell className="h-5 w-5" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-500">
+              <button className="p-2 text-slate-600 hover:text-slate-900 transition-colors">
                 <Mail className="h-5 w-5" />
               </button>
-              <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                <span className="text-white text-sm font-medium">A</span>
+              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center shadow-xs">
+                <span className="text-white text-sm font-bold">A</span>
               </div>
             </div>
           </div>
@@ -158,15 +158,15 @@ const DashboardPage: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
-        <div className="mb-8">
+        <div className="mb-8 border-b border-slate-300">
           <nav className="flex space-x-8">
             {['overview', 'recent', 'favorites'].map(tab => (
               <button
                 key={tab}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 px-1 border-b-2 font-bold text-sm transition-colors ${
                   activeTab === tab
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-blue-600 text-blue-700'
+                    : 'border-transparent text-slate-700 hover:text-slate-950 hover:border-slate-400'
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -192,13 +192,13 @@ const DashboardPage: React.FC = () => {
                       {React.createElement(card.icon, { className: `h-6 w-6 ${isLightBg ? 'text-slate-950' : 'text-white'}` })}
                     </div>
                     <div className="ml-4 flex-1">
-                      <h3 className={`text-lg font-bold ${isLightBg ? 'text-slate-950' : 'text-white'}`}>{card.title}</h3>
-                      <p className={`text-sm mt-1 ${isLightBg ? 'text-slate-900 font-semibold' : 'text-white/90'}`}>{card.description}</p>
+                      <h3 className={`text-lg font-black ${isLightBg ? 'text-slate-950' : 'text-white'}`}>{card.title}</h3>
+                      <p className={`text-xs mt-1 ${isLightBg ? 'text-slate-950 font-bold' : 'text-white/95 font-medium'}`}>{card.description}</p>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <button className={`inline-flex items-center text-sm font-bold ${isLightBg ? 'text-slate-950 hover:text-black' : 'text-white opacity-90 hover:opacity-100'}`}>
-                      Access Dashboard
+                    <button className={`inline-flex items-center text-xs font-black ${isLightBg ? 'text-slate-950 hover:underline' : 'text-white hover:underline'}`}>
+                      Access Console
                       <ChevronRight className="ml-1 h-4 w-4" />
                     </button>
                   </div>
@@ -210,56 +210,56 @@ const DashboardPage: React.FC = () => {
 
         {/* Quick Stats */}
         <div className="mt-12">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Platform Stats</h2>
+          <h2 className="text-xl font-black text-slate-900 mb-6">Quick Platform Stats</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-xs p-6 border border-slate-300">
               <div className="flex items-center">
                 <div className="p-3 bg-blue-100 rounded-lg">
-                  <Users className="h-6 w-6 text-blue-500" />
+                  <Users className="h-6 w-6 text-blue-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500">Total Members</p>
-                  <p className="text-2xl font-bold mt-1">2,842,901</p>
-                  <p className="text-sm text-green-500 mt-1">↑ 12.5% from last month</p>
+                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total Members</p>
+                  <p className="text-2xl font-black text-slate-900 mt-1">2,842,901</p>
+                  <p className="text-xs text-emerald-700 font-bold mt-1">↑ 12.5% from last month</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-xs p-6 border border-slate-300">
               <div className="flex items-center">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Activity className="h-6 w-6 text-green-500" />
+                <div className="p-3 bg-emerald-100 rounded-lg">
+                  <Activity className="h-6 w-6 text-emerald-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500">Active Sessions</p>
-                  <p className="text-2xl font-bold mt-1">142,832</p>
-                  <p className="text-sm text-green-500 mt-1">↑ 8.3% from yesterday</p>
+                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Active Sessions</p>
+                  <p className="text-2xl font-black text-slate-900 mt-1">142,832</p>
+                  <p className="text-xs text-emerald-700 font-bold mt-1">↑ 8.3% from yesterday</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-xs p-6 border border-slate-300">
               <div className="flex items-center">
-                <div className="p-3 bg-yellow-100 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-yellow-500" />
+                <div className="p-3 bg-amber-100 rounded-lg">
+                  <DollarSign className="h-6 w-6 text-amber-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-                  <p className="text-2xl font-bold mt-1">₦42.8M</p>
-                  <p className="text-sm text-green-500 mt-1">↑ 15.2% from last month</p>
+                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Total Revenue</p>
+                  <p className="text-2xl font-black text-slate-900 mt-1">₦42.8M</p>
+                  <p className="text-xs text-emerald-700 font-bold mt-1">↑ 15.2% from last month</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
+            <div className="bg-white rounded-xl shadow-xs p-6 border border-slate-300">
               <div className="flex items-center">
                 <div className="p-3 bg-purple-100 rounded-lg">
-                  <FileText className="h-6 w-6 text-purple-500" />
+                  <FileText className="h-6 w-6 text-purple-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500">Content Posts</p>
-                  <p className="text-2xl font-bold mt-1">12.4M</p>
-                  <p className="text-sm text-green-500 mt-1">↑ 5.7% from last month</p>
+                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Content Posts</p>
+                  <p className="text-2xl font-black text-slate-900 mt-1">12.4M</p>
+                  <p className="text-xs text-emerald-700 font-bold mt-1">↑ 5.7% from last month</p>
                 </div>
               </div>
             </div>

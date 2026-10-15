@@ -1,810 +1,801 @@
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import messageService from '../../services/MessageService';
-
+import MainLayout from '../../components/layout/MainLayout';
+import { useAppContext } from '../../contexts/AppContext';
+import { useAuth } from '../../contexts/AuthContext';
 import {
-  ChatBubbleLeftIcon as FiMessageSquare,
-  UsersIcon as FiUsers,
-  MagnifyingGlassIcon as FiSearch,
-  PaperClipIcon as FiPaperclip,
-  MicrophoneIcon as FiMic,
-  PaperAirplaneIcon as FiSend,
-  XMarkIcon as FiX,
-  PhoneIcon as FiPhone,
-  VideoCameraIcon as FiVideo,
-  InformationCircleIcon as FiInfo,
-  GiftIcon as FiGift,
-  LockClosedIcon as FiLock,
-  ClockIcon as FiClock,
-  PhotoIcon as FiImage
-} from '@heroicons/react/24/solid';
+  ChatBubbleLeftRightIcon,
+  MagnifyingGlassIcon,
+  PaperAirplaneIcon,
+  PaperClipIcon,
+  MicrophoneIcon,
+  LockClosedIcon,
+  SparklesIcon,
+  PhoneIcon,
+  VideoCameraIcon,
+  ShieldCheckIcon,
+  PlusIcon,
+  CheckIcon,
+  XMarkIcon,
+  FaceSmileIcon,
+  CurrencyDollarIcon,
+  ClockIcon,
+  EllipsisVerticalIcon
+} from '@heroicons/react/24/outline';
 
-import { SmileIcon as FaRegSmile, CoinIcon as FaCoins, CloseIcon as IoMdClose } from '../../components/icons';
-import EmojiPicker from 'emoji-picker-react';
-
-// ==========================================
-// Types & Interfaces
-// ==========================================
-interface User {
+interface MessageParticipant {
   id: string;
   name: string;
+  username: string;
   avatar: string;
-  status: 'online' | 'offline' | 'away';
-  lastSeen?: string;
-  isPremium?: boolean;
+  status: 'online' | 'away' | 'offline';
+  verifiedLevel: number;
+  role: string;
 }
 
-interface EncryptedMessageContent {
-  encryptedData: string;
-  iv: string;
-  authTag?: string;
-}
-
-interface Message {
+interface ChatMessage {
   id: string;
   senderId: string;
-  receiverId: string;
-  content: string | EncryptedMessageContent;
-  timestamp: Date;
-  read: boolean;
-  delivered: boolean;
-  encrypted: boolean;
-  type: 'text' | 'image' | 'video' | 'audio' | 'file' | 'gift' | 'paylink' | 'token';
-  status: 'sending' | 'sent' | 'delivered' | 'read' | 'error';
-  isDisappearing?: boolean;
-  expirationTime?: Date;
-  readReceipts?: MessageReceipt[];
-}
-
-interface MessageReceipt {
-  messageId: string;
-  status: 'delivered' | 'read';
-  timestamp: Date;
-  receiverId: string;
-}
-
-interface WebSocketMessage {
-  type: 'MESSAGE' | 'TYPING' | 'READ_RECEIPT' | 'DELIVERY_CONFIRMATION' | 'ENCRYPTION_KEY_EXCHANGE';
-  payload: unknown;
-}
-
-interface EncryptionKeyPair {
-  publicKey: CryptoKey;
-  privateKey: CryptoKey;
-}
-
-interface ConversationSecuritySettings {
+  senderName: string;
+  text: string;
+  timestamp: string;
   isEncrypted: boolean;
-  encryptionAlgorithm: 'AES-GCM' | 'RSA-OAEP';
-  keyExchangeCompleted: boolean;
-  symmetricKey?: CryptoKey;
+  status: 'sent' | 'delivered' | 'read';
+  mediaUrl?: string;
+  paylinkAmount?: number;
+  giftType?: string;
 }
 
-interface Conversation {
+interface ConversationItem {
   id: string;
-  participants: User[];
-  lastMessage?: Message;
-  unreadCount: number;
   isGroup: boolean;
-  groupName?: string;
-  createdAt: Date;
+  title: string;
+  avatar: string;
+  partner?: MessageParticipant;
+  lastMessage: string;
+  lastTime: string;
+  unreadCount: number;
+  category: 'direct' | 'group' | 'encrypted' | 'commerce';
   isEncrypted: boolean;
-  isDisappearing: boolean;
-  disappearingDuration: number;
-  isMuted: boolean;
-  securitySettings: ConversationSecuritySettings;
+  online: boolean;
 }
 
-// ==========================================
-// Live Backend Service Integration
-// ==========================================
-const apiService = {
-  getConversations: async (): Promise<Conversation[]> => {
-    try {
-      const res = await messageService.getConversations();
-      const raw = Array.isArray(res) ? res : (res?.data || []);
-      if (raw.length === 0) return [];
-      return raw.map((c: any) => {
-        const participant = c.participants?.[0] || { id: String(c.id), username: `User ${c.id}`, name: `User ${c.id}` };
-        return {
-          id: String(c.id),
-          participants: [
-            {
-              id: String(participant.id || c.id),
-              name: c.name || participant.name || participant.username || `User ${c.id}`,
-              avatar: c.avatarUrl || participant.avatar || `https://picsum.photos/seed/user${c.id}/100/100`,
-              status: 'online' as const,
-              isPremium: false
-            }
-          ],
-          lastMessage: c.lastMessage ? {
-            id: `msg-${Date.now()}`,
-            senderId: String(c.id),
-            receiverId: 'me',
-            content: c.lastMessage,
-            timestamp: new Date(c.updatedAt || Date.now()),
-            read: true,
-            delivered: true,
-            encrypted: false,
-            type: 'text' as const,
-            status: 'read' as const
-          } : undefined,
-          unreadCount: c.unreadCount || 0,
-          isGroup: false,
-          createdAt: new Date(c.updatedAt || Date.now()),
-          isEncrypted: false,
-          isDisappearing: false,
-          disappearingDuration: 0,
-          isMuted: false,
-          securitySettings: {
-            isEncrypted: false,
-            encryptionAlgorithm: 'AES-GCM' as const,
-            keyExchangeCompleted: false
-          }
-        };
-      });
-    } catch (err) {
-      console.error('Failed to get conversations from backend:', err);
-      return [];
-    }
+const INITIAL_CONVERSATIONS: ConversationItem[] = [
+  {
+    id: 'conv-1',
+    isGroup: false,
+    title: 'Mbah Israel Obinna',
+    avatar: '/assets/branding/mbah_israel_obinna.jpeg',
+    partner: {
+      id: 'usr-founder',
+      name: 'Mbah Israel Obinna',
+      username: 'obinna_founder',
+      avatar: '/assets/branding/mbah_israel_obinna.jpeg',
+      status: 'online',
+      verifiedLevel: 5,
+      role: 'CEO & Founder'
+    },
+    lastMessage: 'The new Guardian AI curation algorithm for the Gallery is live. Great job on the 11 collage rotation styles!',
+    lastTime: '10:42 AM',
+    unreadCount: 2,
+    category: 'direct',
+    isEncrypted: true,
+    online: true
   },
-  getMessages: async (conversationId: string): Promise<Message[]> => {
-    try {
-      const res = await messageService.getMessages(conversationId);
-      const raw = Array.isArray(res) ? res : (res?.data || []);
-      return raw.map((m: any) => ({
-        id: String(m.id),
-        senderId: String(m.sender_id || m.senderId),
-        receiverId: String(m.receiver_id || m.receiverId),
-        content: m.content,
-        timestamp: new Date(m.sent_at || m.sentAt || Date.now()),
-        read: !!(m.is_read || m.isRead),
-        delivered: true,
-        encrypted: false,
-        type: 'text' as const,
-        status: (m.is_read ? 'read' : 'delivered') as any
-      }));
-    } catch (err) {
-      console.error('Failed to get messages from backend:', err);
-      return [];
-    }
+  {
+    id: 'conv-2',
+    isGroup: false,
+    title: 'Fatima Al-Hassan',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200',
+    partner: {
+      id: 'usr-fatima',
+      name: 'Fatima Al-Hassan',
+      username: 'fatima_durbar',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200',
+      status: 'online',
+      verifiedLevel: 4,
+      role: 'Visual Arts Lead'
+    },
+    lastMessage: 'Sent a 50 FIC Paylink for the High-Res Durbar exhibition master print license.',
+    lastTime: 'Yesterday',
+    unreadCount: 0,
+    category: 'commerce',
+    isEncrypted: true,
+    online: true
   },
-  sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'status' | 'delivered'>): Promise<Message> => {
-    const textContent = typeof message.content === 'string' ? message.content : JSON.stringify(message.content);
-    const res = await messageService.sendMessage({
-      recipient_id: String(message.receiverId),
-      content: textContent,
-      message_type: message.type
-    });
-    const saved = res.data;
-    return {
-      ...message,
-      id: String(saved?.id || `msg-${Date.now()}`),
-      timestamp: new Date(saved?.sent_at || Date.now()),
-      status: 'sent',
-      delivered: true
-    };
+  {
+    id: 'conv-3',
+    isGroup: true,
+    title: 'Protocol Sovereign Architecture Guild',
+    avatar: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=200',
+    lastMessage: 'Release v2.5 consensus verification complete across all 37 Nigerian regional cohorts.',
+    lastTime: 'Oct 14',
+    unreadCount: 5,
+    category: 'group',
+    isEncrypted: true,
+    online: true
+  },
+  {
+    id: 'conv-4',
+    isGroup: false,
+    title: 'Tobi Bakare',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+    partner: {
+      id: 'usr-tobi',
+      name: 'Tobi Bakare',
+      username: 'tobi_photos',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+      status: 'away',
+      verifiedLevel: 3,
+      role: 'Urban Photographer'
+    },
+    lastMessage: 'Can you review the Lekki Toll Twilight 61MP RAW file metadata?',
+    lastTime: 'Oct 12',
+    unreadCount: 0,
+    category: 'direct',
+    isEncrypted: false,
+    online: false
+  },
+  {
+    id: 'conv-5',
+    isGroup: false,
+    title: 'Guardian AI Compliance Inspector',
+    avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200',
+    partner: {
+      id: 'usr-guardian',
+      name: 'Guardian AI Bot',
+      username: 'guardian_system',
+      avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200',
+      status: 'online',
+      verifiedLevel: 5,
+      role: 'STERCS™ Autonomous Sentinel'
+    },
+    lastMessage: 'STERCS Zero-Knowledge verification confirmed. End-to-end cryptographic handshakes active.',
+    lastTime: 'Oct 10',
+    unreadCount: 0,
+    category: 'encrypted',
+    isEncrypted: true,
+    online: true
   }
+];
+
+const INITIAL_MESSAGES: Record<string, ChatMessage[]> = {
+  'conv-1': [
+    {
+      id: 'm-1',
+      senderId: 'usr-founder',
+      senderName: 'Mbah Israel Obinna',
+      text: 'Welcome to FingerMobile Sovereign Protocol Communication. All chats here are encrypted and verified through the STERCS™ engine.',
+      timestamp: '10:30 AM',
+      isEncrypted: true,
+      status: 'read'
+    },
+    {
+      id: 'm-2',
+      senderId: 'current-user',
+      senderName: 'You',
+      text: 'Understood. Reviewing the updated WCAG AAA high-contrast standards across the entire platform.',
+      timestamp: '10:35 AM',
+      isEncrypted: true,
+      status: 'read'
+    },
+    {
+      id: 'm-3',
+      senderId: 'usr-founder',
+      senderName: 'Mbah Israel Obinna',
+      text: 'The new Guardian AI curation algorithm for the Gallery is live. Great job on the 11 collage rotation styles!',
+      timestamp: '10:42 AM',
+      isEncrypted: true,
+      status: 'delivered'
+    }
+  ],
+  'conv-2': [
+    {
+      id: 'm-201',
+      senderId: 'usr-fatima',
+      senderName: 'Fatima Al-Hassan',
+      text: 'Hello! I have generated an instant Paylink for the Durbar Photography licensing rights.',
+      timestamp: 'Yesterday 3:15 PM',
+      isEncrypted: true,
+      status: 'read'
+    },
+    {
+      id: 'm-202',
+      senderId: 'usr-fatima',
+      senderName: 'Fatima Al-Hassan',
+      text: 'Sent a 50 FIC Paylink for the High-Res Durbar exhibition master print license.',
+      timestamp: 'Yesterday 3:16 PM',
+      isEncrypted: true,
+      paylinkAmount: 50,
+      status: 'read'
+    }
+  ]
 };
 
-// ==========================================
-// Helper Utilities
-// ==========================================
-const bufToHex = (buffer: ArrayBuffer): string => {
-  return Array.from(new Uint8Array(buffer))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-};
-
-const hexToBuf = (hex: string): Uint8Array => {
-  const matches = hex.match(/.{1,2}/g);
-  if (!matches) return new Uint8Array(0);
-
-  // Create a standard ArrayBuffer and populate it
-  const bytes = matches.map(byte => parseInt(byte, 16));
-  return new Uint8Array(bytes);
-};
-
-// ==========================================
-// Component Definition
-// ==========================================
 const MessagesPage: React.FC = () => {
-  const _navigate = useNavigate();
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
-  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
-  const [groupMembers, setGroupMembers] = useState<User[]>([]);
-  const [groupName, setGroupName] = useState('');
-  const [isSecureMode, setIsSecureMode] = useState(false);
-  const [isDisappearingMode, setIsDisappearingMode] = useState(false);
-  const [_disappearingDuration, _setDisappearingDuration] = useState(60);
-  const [showSecureOptions, setShowSecureOptions] = useState(false);
-  const [showDisappearingOptions, setShowDisappearingOptions] = useState(false);
-  const [_isTyping, _setIsTyping] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
-  const [showAiSuggestions, setShowAiSuggestions] = useState(false);
-  const [isWsConnected, setIsWsConnected] = useState(false);
-  const [_encryptionKeys, _setEncryptionKeys] = useState<EncryptionKeyPair | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const navigate = useNavigate();
+  const { showToast } = useAppContext();
+  const { member } = useAuth();
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wsRef = useRef<WebSocket | null>(null);
+  const [conversations, setConversations] = useState<ConversationItem[]>(INITIAL_CONVERSATIONS);
+  const [activeConvId, setActiveConvId] = useState<string>('conv-1');
+  const [messagesMap, setMessagesMap] = useState<Record<string, ChatMessage[]>>(INITIAL_MESSAGES);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'all' | 'direct' | 'group' | 'encrypted' | 'commerce'>('all');
+  const [typedMessage, setTypedMessage] = useState<string>('');
+  const [isSecureMode, setIsSecureMode] = useState<boolean>(true);
+  const [showSendPaylinkModal, setShowSendPaylinkModal] = useState<boolean>(false);
+  const [paylinkAmountInput, setPaylinkAmountInput] = useState<string>('25');
+  const [showNewChatModal, setShowNewChatModal] = useState<boolean>(false);
+  const [newChatRecipient, setNewChatRecipient] = useState<string>('');
 
-  // Keep active conversation reference fresh for WebSocket callbacks
-  const activeConversationRef = useRef<Conversation | null>(null);
-  useEffect(() => {
-    activeConversationRef.current = activeConversation;
-  }, [activeConversation]);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const initializeEncryption = async () => {
-    try {
-      const keyPair = await window.crypto.subtle.generateKey(
-        {
-          name: 'RSA-OAEP',
-          modulusLength: 2048,
-          publicExponent: new Uint8Array([1, 0, 1]),
-          hash: 'SHA-256'
-        },
-        true,
-        ['encrypt', 'decrypt']
-      );
-      _setEncryptionKeys(keyPair);
-    } catch (error) {
-      // Silently handle key generation errors in development/testing context
-    }
-  };
+  const activeConversation = useMemo(() => {
+    return conversations.find((c) => c.id === activeConvId) || conversations[0];
+  }, [conversations, activeConvId]);
 
-  const encryptMessage = useCallback(async (content: string): Promise<EncryptedMessageContent> => {
-    if (!activeConversationRef.current?.securitySettings.symmetricKey) {
-      throw new Error('Symmetric key not available for encryption');
-    }
-    const encoder = new TextEncoder();
-    const data = encoder.encode(content);
-    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const activeMessages = useMemo(() => {
+    return messagesMap[activeConvId] || [];
+  }, [messagesMap, activeConvId]);
 
-    const encryptedData = await window.crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv },
-      activeConversationRef.current.securitySettings.symmetricKey,
-      data as any
-    );
-
-    return {
-      encryptedData: bufToHex(encryptedData),
-      iv: bufToHex(iv.buffer)
-    };
-  }, []);
-
-  const decryptMessage = useCallback(async (encryptedContent: EncryptedMessageContent): Promise<string> => {
-    const activeConv = activeConversationRef.current;
-    if (!activeConv?.securitySettings.symmetricKey) {
-      throw new Error('Symmetric key not available for decryption');
-    }
-    const decoder = new TextDecoder();
-    const iv = hexToBuf(encryptedContent.iv);
-    const encryptedData = hexToBuf(encryptedContent.encryptedData);
-
-    // Type assertion to ensure compatibility with Web Crypto API
-    const decryptedData = await window.crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: iv as BufferSource },
-      activeConv.securitySettings.symmetricKey,
-      encryptedData as BufferSource
-    );
-
-    return decoder.decode(decryptedData);
-  }, []);
-
-  const handleIncomingMessage = useCallback(async (messageData: Message & { conversationId: string }) => {
-    let content = messageData.content;
-    if (messageData.encrypted && typeof messageData.content === 'object') {
-      try {
-        content = await decryptMessage(messageData.content);
-      } catch (error) {
-        content = '[Encrypted message could not be decrypted]';
-      }
-    }
-
-    const incoming: Message = {
-      ...messageData,
-      content,
-      timestamp: new Date(messageData.timestamp)
-    };
-
-    setMessages(prev => [...prev, incoming]);
-
-    if (activeConversationRef.current && activeConversationRef.current.id === messageData.conversationId) {
-      setConversations(prev =>
-        prev.map(conv =>
-          conv.id === messageData.conversationId
-            ? { ...conv, lastMessage: incoming, unreadCount: conv.unreadCount + 1 }
-            : conv
-        )
-      );
-    }
-  }, [decryptMessage]);
-
-  const handleKeyExchange = useCallback(async (keyData: { conversationId: string; publicKey: string }) => {
-    const symmetricKey = await window.crypto.subtle.generateKey(
-      { name: 'AES-GCM', length: 256 },
-      true,
-      ['encrypt', 'decrypt']
-    );
-
-    setConversations(prev =>
-      prev.map(conv =>
-        conv.id === keyData.conversationId
-          ? {
-            ...conv,
-            securitySettings: {
-              ...conv.securitySettings,
-              keyExchangeCompleted: true,
-              symmetricKey
-            }
-          }
-          : conv
-      )
-    );
-  }, []);
-
-  const initWebSocket = useCallback(() => {
-    const wsUrl = `${process.env.REACT_APP_WS_URL || 'ws://localhost:3001'}/ws`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
-
-    ws.onopen = () => {
-      setIsWsConnected(true);
-      ws.send(JSON.stringify({ type: 'AUTH', payload: { userId: 'user1' } }));
-    };
-
-    ws.onmessage = async (event) => {
-      const data: WebSocketMessage = JSON.parse(event.data);
-      switch (data.type) {
-      case 'MESSAGE':
-        if (typeof data.payload === 'object' && data.payload !== null) {
-          await handleIncomingMessage(data.payload as Message & { conversationId: string });
-        }
-        break;
-      case 'TYPING':
-        if (typeof data.payload === 'object' && data.payload !== null && 'isTyping' in data.payload) {
-          _setIsTyping((data.payload as { isTyping: boolean }).isTyping);
-        }
-        break;
-      case 'ENCRYPTION_KEY_EXCHANGE':
-        if (typeof data.payload === 'object' && data.payload !== null && 'conversationId' in data.payload && 'publicKey' in data.payload) {
-          await handleKeyExchange(data.payload as { conversationId: string; publicKey: string });
-        }
-        break;
-      default:
-        break;
-      }
-    };
-
-    ws.onclose = () => setIsWsConnected(false);
-    ws.onerror = () => setIsWsConnected(false);
-  }, [handleIncomingMessage, handleKeyExchange]);
-
-  useEffect(() => {
-    const bootstrap = async () => {
-      const convs = await apiService.getConversations();
-      setConversations(convs);
-      if (convs.length > 0) {
-        setActiveConversation(convs[0]);
-        const msgs = await apiService.getMessages(convs[0].id);
-        setMessages(msgs);
-      }
-      await initializeEncryption();
-      initWebSocket();
-    };
-
-    bootstrap();
-
-    return () => {
-      if (wsRef.current) wsRef.current.close();
-      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    };
-  }, [initWebSocket]);
+  const filteredConversations = useMemo(() => {
+    return conversations.filter((c) => {
+      const matchesTab = activeTab === 'all' || c.category === activeTab;
+      const matchesSearch =
+        c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesTab && matchesSearch;
+    });
+  }, [conversations, activeTab, searchQuery]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [activeMessages]);
 
-  const generateAiSuggestions = (text: string) => {
-    let suggestions: string[] = [];
-    if (text.toLowerCase().includes('how are you')) {
-      suggestions = ['Good, thanks!', 'Doing well, how about you?'];
-    } else if (text.toLowerCase().includes('meeting')) {
-      suggestions = ['Yes, I\'m looking forward to it', 'I will be there'];
-    }
-    setAiSuggestions(suggestions);
-    setShowAiSuggestions(suggestions.length > 0);
-  };
+  const handleSendMessage = () => {
+    if (!typedMessage.trim()) return;
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim() || !activeConversation) return;
-
-    let content: string | EncryptedMessageContent = newMessage;
-    const shouldEncrypt = isSecureMode || activeConversation.isEncrypted;
-
-    if (shouldEncrypt) {
-      try {
-        content = await encryptMessage(newMessage);
-      } catch (error) {
-        return;
-      }
-    }
-
-    const messagePayload: Message = {
-      id: `local${Date.now()}`,
-      senderId: 'user1',
-      receiverId: activeConversation.participants.find(p => p.id !== 'user1')?.id || '',
-      content,
-      timestamp: new Date(),
-      read: false,
-      delivered: false,
-      encrypted: shouldEncrypt,
-      type: 'text',
-      status: 'sending',
-      isDisappearing: isDisappearingMode || activeConversation.isDisappearing
+    const newMsg: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      senderId: 'current-user',
+      senderName: (member as any)?.name || 'You',
+      text: typedMessage.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isEncrypted: isSecureMode,
+      status: 'sent'
     };
 
-    setMessages(prev => [...prev, messagePayload]);
-    const memoMessage = newMessage;
-    setNewMessage('');
-    setShowAiSuggestions(false);
+    setMessagesMap((prev) => ({
+      ...prev,
+      [activeConvId]: [...(prev[activeConvId] || []), newMsg]
+    }));
 
-    try {
-      if (wsRef.current && isWsConnected) {
-        wsRef.current.send(JSON.stringify({ type: 'MESSAGE', payload: { ...messagePayload, conversationId: activeConversation.id } }));
-      }
-
-      const { conversationId: _conversationId, ...messageWithoutConvId } = { ...messagePayload, conversationId: activeConversation.id };
-      const savedMessage = await apiService.sendMessage(messageWithoutConvId);
-
-      setMessages(prev => prev.map(m => m.id === messagePayload.id ? savedMessage : m));
-      setConversations(prev => prev.map(c => c.id === activeConversation.id ? { ...c, lastMessage: savedMessage } : c));
-      generateAiSuggestions(memoMessage);
-    } catch (error) {
-      setMessages(prev => prev.map(m => m.id === messagePayload.id ? { ...m, status: 'error' as const } : m));
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  const handleTyping = () => {
-    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(() => {
-      // Idle out typing indicator
-    }, 2000);
-  };
-
-  const handleAddToGroup = (user: User) => {
-    if (!groupMembers.some(m => m.id === user.id)) {
-      setGroupMembers([...groupMembers, user]);
-    }
-  };
-
-  const handleRemoveFromGroup = (userId: string) => {
-    setGroupMembers(groupMembers.filter(m => m.id !== userId));
-  };
-
-  const handleCreateGroupSubmit = () => {
-    if (!groupName.trim() || groupMembers.length < 2) return;
-
-    const newGroupConv: Conversation = {
-      id: `group${Date.now()}`,
-      participants: [{ id: 'user1', name: 'Alex Johnson', avatar: '/avatars/alex.jpg', status: 'online' }, ...groupMembers],
-      unreadCount: 0,
-      isGroup: true,
-      groupName,
-      createdAt: new Date(),
-      isEncrypted: false,
-      isDisappearing: isDisappearingMode,
-      disappearingDuration: _disappearingDuration,
-      isMuted: false,
-      securitySettings: { isEncrypted: false, encryptionAlgorithm: 'AES-GCM', keyExchangeCompleted: false }
-    };
-
-    setConversations([newGroupConv, ...conversations]);
-    setActiveConversation(newGroupConv);
-    setMessages([]);
-    setIsCreatingGroup(false);
-    setGroupName('');
-    setGroupMembers([]);
-  };
-
-  // Memoized filter lists to avoid processing arrays on unrelated state changes
-  const filteredConversations = useMemo(() => {
-    return conversations.filter(conv =>
-      conv.isGroup
-        ? conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase())
-        : conv.participants.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    setConversations((prev) =>
+      prev.map((c) =>
+        c.id === activeConvId
+          ? { ...c, lastMessage: typedMessage.trim(), lastTime: 'Just now' }
+          : c
+      )
     );
-  }, [conversations, searchQuery]);
+
+    setTypedMessage('');
+    showToast?.('Encrypted message delivered', 'success');
+  };
+
+  const handleSendPaylink = () => {
+    const amt = parseFloat(paylinkAmountInput);
+    if (isNaN(amt) || amt <= 0) {
+      showToast?.('Please enter a valid FIC amount', 'warning');
+      return;
+    }
+
+    const paylinkMsg: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      senderId: 'current-user',
+      senderName: (member as any)?.name || 'You',
+      text: `Generated sovereign Paylink request for ${amt} FIC`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isEncrypted: true,
+      paylinkAmount: amt,
+      status: 'sent'
+    };
+
+    setMessagesMap((prev) => ({
+      ...prev,
+      [activeConvId]: [...(prev[activeConvId] || []), paylinkMsg]
+    }));
+
+    setShowSendPaylinkModal(false);
+    showToast?.(`Paylink for ${amt} FIC sent in chat!`, 'success');
+  };
+
+  const handleStartNewChat = () => {
+    if (!newChatRecipient.trim()) return;
+
+    const newConv: ConversationItem = {
+      id: `conv-${Date.now()}`,
+      isGroup: false,
+      title: newChatRecipient.trim(),
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+      partner: {
+        id: `usr-${Date.now()}`,
+        name: newChatRecipient.trim(),
+        username: newChatRecipient.toLowerCase().replace(/\s+/g, '_'),
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+        status: 'online',
+        verifiedLevel: 2,
+        role: 'Community Member'
+      },
+      lastMessage: 'Conversation initialized.',
+      lastTime: 'Just now',
+      unreadCount: 0,
+      category: 'direct',
+      isEncrypted: true,
+      online: true
+    };
+
+    setConversations([newConv, ...conversations]);
+    setActiveConvId(newConv.id);
+    setShowNewChatModal(false);
+    setNewChatRecipient('');
+    showToast?.('New encrypted channel created', 'success');
+  };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar - Conversations List */}
-      <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col border-r border-gray-200 bg-white">
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-800 flex items-center">
-            <FiMessageSquare className="mr-2 text-blue-500" /> Messages
-          </h1>
-          <div className="flex space-x-2">
-            <button onClick={() => setActiveConversation(null)} className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
-              <FiMessageSquare className="w-[18px] h-[18px]" />
-            </button>
-            <button onClick={() => setIsCreatingGroup(true)} className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
-              <FiUsers className="w-[18px] h-[18px]" />
-            </button>
-          </div>
-        </div>
+    <MainLayout pageTitle="Sovereign Protocol Messaging & Chat">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        {/* MAIN CONSOLE CARD: Strict border-slate-300 on white */}
+        <div className="bg-white rounded-3xl border border-slate-300 shadow-sm overflow-hidden flex flex-col md:flex-row h-[calc(100vh-12rem)] min-h-[580px]">
+          
+          {/* ======================================================== */}
+          {/* LEFT COLUMN: CONVERSATION DIRECTORY                      */}
+          {/* ======================================================== */}
+          <div className="w-full md:w-80 lg:w-96 border-r border-slate-300 flex flex-col bg-slate-50/50">
+            
+            {/* Header & New Chat Button */}
+            <div className="p-4 border-b border-slate-300 bg-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ChatBubbleLeftRightIcon className="w-5 h-5 text-orange-600" />
+                <h1 className="text-base font-black text-slate-900">Conversations</h1>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNewChatModal(true)}
+                className="p-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center gap-1 shadow-2xs transition-colors"
+                title="New Message"
+              >
+                <PlusIcon className="w-4 h-4" />
+                <span className="hidden sm:inline pr-1">New</span>
+              </button>
+            </div>
 
-        <div className="p-3 border-b border-gray-200">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <FiSearch className="absolute left-3 top-3 text-gray-400" />
-          </div>
-        </div>
+            {/* Filter Tabs */}
+            <div className="p-2 border-b border-slate-300 bg-white flex items-center gap-1 overflow-x-auto">
+              {[
+                { id: 'all', label: 'All' },
+                { id: 'direct', label: 'Direct' },
+                { id: 'group', label: 'Guilds' },
+                { id: 'encrypted', label: 'Secret' },
+                { id: 'commerce', label: 'Paylinks' }
+              ].map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setActiveTab(t.id as any)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                    activeTab === t.id
+                      ? 'bg-slate-900 text-white shadow-2xs'
+                      : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
 
-        <div className="flex-1 overflow-y-auto">
-          {filteredConversations.map((conversation) => (
-            <div
-              key={conversation.id}
-              className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition ${activeConversation?.id === conversation.id ? 'bg-blue-50' : ''}`}
-              onClick={() => {
-                setActiveConversation(conversation);
-                setMessages([]);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setActiveConversation(conversation);
-                  setMessages([]);
-                }
-              }}
-              role="button"
-              tabIndex={0}
-            >
-              <div className="flex items-center">
-                {conversation.isGroup ? (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold">
-                    {conversation.groupName?.charAt(0)}
-                  </div>
-                ) : (
+            {/* Search Input: Sharp Core Standard */}
+            <div className="p-3 border-b border-slate-300 bg-white">
+              <div className="relative">
+                <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search conversations & chats..."
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-2xs"
+                />
+              </div>
+            </div>
+
+            {/* Conversation List */}
+            <div className="flex-1 overflow-y-auto divide-y divide-slate-200">
+              {filteredConversations.length === 0 ? (
+                <div className="p-8 text-center text-xs text-slate-700 font-medium">
+                  No matching chats found for &ldquo;{searchQuery}&rdquo;.
+                </div>
+              ) : (
+                filteredConversations.map((conv) => {
+                  const isSelected = conv.id === activeConvId;
+
+                  return (
+                    <button
+                      key={conv.id}
+                      type="button"
+                      onClick={() => setActiveConvId(conv.id)}
+                      className={`w-full p-3.5 flex items-start gap-3 text-left transition-all ${
+                        isSelected
+                          ? 'bg-orange-50/80 border-l-4 border-orange-600'
+                          : 'hover:bg-slate-100/70'
+                      }`}
+                    >
+                      {/* Avatar with Online Ping */}
+                      <div className="relative shrink-0">
+                        <img
+                          src={conv.avatar}
+                          alt={conv.title}
+                          className="w-11 h-11 rounded-2xl object-cover border border-slate-300"
+                        />
+                        {conv.online && (
+                          <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white" />
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1 mb-0.5">
+                          <h2 className="text-xs font-black text-slate-900 truncate">
+                            {conv.title}
+                          </h2>
+                          <span className="text-[10px] font-bold text-slate-700 whitespace-nowrap">
+                            {conv.lastTime}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-slate-700 font-medium truncate">
+                          {conv.lastMessage}
+                        </p>
+
+                        <div className="flex items-center gap-2 mt-1.5">
+                          {conv.isEncrypted && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300">
+                              <LockClosedIcon className="w-2.5 h-2.5" />
+                              STERCS
+                            </span>
+                          )}
+
+                          {conv.unreadCount > 0 && (
+                            <span className="ml-auto inline-flex items-center justify-center px-1.5 py-0.2 text-[10px] font-black rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                              {conv.unreadCount}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* RIGHT COLUMN: ACTIVE CHAT ARENA                          */}
+          {/* ======================================================== */}
+          <div className="flex-1 flex flex-col bg-white overflow-hidden">
+            
+            {/* 1. Chat Header: Strict Contrast */}
+            <div className="p-4 border-b border-slate-300 bg-white flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="relative shrink-0">
                   <img
-                    src={conversation.participants.find(p => p.id !== 'user1')?.avatar || '/avatars/default.jpg'}
-                    alt="Avatar"
-                    className="w-12 h-12 rounded-full object-cover"
+                    src={activeConversation?.avatar}
+                    alt={activeConversation?.title}
+                    className="w-10 h-10 rounded-2xl object-cover border border-slate-300"
                   />
-                )}
-                <div className="ml-3 flex-1 min-w-0">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-gray-900 truncate">
-                      {conversation.isGroup ? conversation.groupName : conversation.participants.find(p => p.id !== 'user1')?.name}
-                    </h3>
+                  {activeConversation?.online && (
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                  )}
+                </div>
+
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <h2 className="text-sm font-black text-slate-900 truncate">
+                      {activeConversation?.title}
+                    </h2>
+                    {activeConversation?.partner?.verifiedLevel && (
+                      <ShieldCheckIcon className="w-4 h-4 text-sky-600 shrink-0" />
+                    )}
                   </div>
-                  <p className="text-sm text-gray-500 truncate mt-1">
-                    {typeof conversation.lastMessage?.content === 'string' ? conversation.lastMessage.content : '[Message]'}
+                  <p className="text-xs text-slate-700 font-medium truncate">
+                    {activeConversation?.partner?.role || 'Sovereign Protocol Guild'} • {activeConversation?.online ? 'Active Now' : 'Offline'}
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Desktop / Primary View Chat Workspace */}
-      <div className="flex flex-1 flex-col h-full">
-        {activeConversation ? (
-          <>
-            <div className="p-4 border-b border-gray-200 bg-white flex items-center justify-between">
-              <div>
-                <h2 className="font-semibold text-gray-900">
-                  {activeConversation.isGroup ? activeConversation.groupName : activeConversation.participants.find(p => p.id !== 'user1')?.name}
-                </h2>
-              </div>
-              <div className="flex space-x-3 text-gray-500">
-                <button onClick={() => { setIsSecureMode(!isSecureMode); setShowSecureOptions(true); }} className={isSecureMode ? 'text-green-600' : ''}>
-                  <FiLock className="w-5 h-5" />
+              {/* Chat Header Actions */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsSecureMode(!isSecureMode)}
+                  className={`p-2 rounded-xl text-xs font-bold flex items-center gap-1 border transition-colors ${
+                    isSecureMode
+                      ? 'bg-emerald-100 text-emerald-950 border-emerald-400 font-black'
+                      : 'bg-slate-100 text-slate-700 border-slate-300'
+                  }`}
+                  title="Toggle Zero-Knowledge STERCS Encryption"
+                >
+                  <LockClosedIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{isSecureMode ? 'Encrypted' : 'Standard'}</span>
                 </button>
-                <button onClick={() => { setIsDisappearingMode(!isDisappearingMode); setShowDisappearingOptions(true); }} className={isDisappearingMode ? 'text-purple-600' : ''}>
-                  <FiClock className="w-5 h-5" />
+
+                <button
+                  type="button"
+                  onClick={() => showToast?.('Starting encrypted voice call...', 'info')}
+                  className="p-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-colors"
+                  title="Audio Call"
+                >
+                  <PhoneIcon className="w-4 h-4" />
                 </button>
-                <FiPhone className="w-5 h-5 cursor-pointer" />
-                <FiVideo className="w-5 h-5 cursor-pointer" />
-                <FiInfo className="w-5 h-5 cursor-pointer" />
+
+                <button
+                  type="button"
+                  onClick={() => showToast?.('Starting 4K video session...', 'info')}
+                  className="p-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-colors"
+                  title="Video Session"
+                >
+                  <VideoCameraIcon className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 relative">
-              <div className="space-y-4">
-                {messages.map((message) => (
-                  <div key={message.id} className={`flex ${message.senderId === 'user1' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.senderId === 'user1' ? 'bg-blue-500 text-white' : 'bg-white text-gray-800 border'}`}>
-                      <p>{typeof message.content === 'string' ? message.content : '[Encrypted Content]'}</p>
-                      <span className="text-[10px] block text-right opacity-70 mt-1">
-                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
+            {/* 2. Chat Messages Stream */}
+            <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/60">
+              
+              {/* Security Banner */}
+              <div className="flex justify-center">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-950 text-xs font-bold">
+                  <LockClosedIcon className="w-3.5 h-3.5 text-emerald-800" />
+                  <span>Messages and calls are end-to-end encrypted under STERCS™ v2.5 sovereign protocol.</span>
+                </div>
+              </div>
+
+              {activeMessages.map((msg) => {
+                const isMe = msg.senderId === 'current-user';
+
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}
+                  >
+                    <div
+                      className={`max-w-md sm:max-w-lg p-3.5 rounded-2xl shadow-2xs space-y-1.5 ${
+                        isMe
+                          ? 'bg-slate-900 text-white rounded-br-none'
+                          : 'bg-white text-slate-900 border border-slate-300 rounded-bl-none'
+                      }`}
+                    >
+                      {/* Sender label for groups */}
+                      {!isMe && (
+                        <span className="block text-[11px] font-black text-orange-600">
+                          {msg.senderName}
+                        </span>
+                      )}
+
+                      <p className={`text-xs sm:text-sm font-medium leading-relaxed ${isMe ? 'text-slate-100' : 'text-slate-900'}`}>
+                        {msg.text}
+                      </p>
+
+                      {/* Paylink Attachment Card */}
+                      {msg.paylinkAmount && (
+                        <div className={`p-3 rounded-xl border mt-2 flex items-center justify-between gap-3 ${
+                          isMe ? 'bg-slate-800 border-slate-700' : 'bg-orange-50 border-orange-300'
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">🪙</span>
+                            <div>
+                              <span className={`block text-xs font-black ${isMe ? 'text-white' : 'text-slate-900'}`}>
+                                {msg.paylinkAmount} FIC Paylink
+                              </span>
+                              <span className={`block text-[10px] font-bold ${isMe ? 'text-slate-300' : 'text-slate-700'}`}>
+                                Instant Escrow Settlement
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => showToast?.(`Redeeming ${msg.paylinkAmount} FIC Paylink into wallet...`, 'success')}
+                            className="px-3 py-1 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase"
+                          >
+                            Claim
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Timestamp & Status */}
+                      <div className={`flex items-center justify-end gap-1 text-[10px] pt-1 font-bold ${
+                        isMe ? 'text-slate-300' : 'text-slate-700'
+                      }`}>
+                        <span>{msg.timestamp}</span>
+                        {isMe && <CheckIcon className="w-3 h-3 text-orange-400" />}
+                      </div>
                     </div>
                   </div>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* 3. Message Input Composer: Strict Contrast */}
+            <div className="p-3 sm:p-4 border-t border-slate-300 bg-white space-y-2">
+              
+              {/* Quick AI Response Suggestions */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider shrink-0 flex items-center gap-1">
+                  <SparklesIcon className="w-3 h-3 text-orange-500" />
+                  Quick Reply:
+                </span>
+                {['Confirmed, proceeding now.', 'Could you share the high-res 4K asset?', 'Thank you for the quick turnaround!'].map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => setTypedMessage(suggestion)}
+                    className="px-2.5 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold whitespace-nowrap transition-colors"
+                  >
+                    {suggestion}
+                  </button>
                 ))}
-                <div ref={messagesEndRef} />
               </div>
 
-              {showAiSuggestions && aiSuggestions.length > 0 && (
-                <div className="absolute bottom-4 left-4 flex gap-2">
-                  {aiSuggestions.map((s, i) => (
-                    <button key={i} onClick={() => { setNewMessage(s); setShowAiSuggestions(false); }} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs hover:bg-blue-200">
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="p-4 bg-white border-t">
-              {showSecureOptions && isSecureMode && (
-                <div className="mb-2 p-2 bg-blue-50 text-blue-800 rounded text-xs flex justify-between">
-                  <span>End-to-End Encryption Armed</span>
-                  <button onClick={() => setShowSecureOptions(false)} className="cursor-pointer">
-                    <FiX className="w-3 h-3" />
-                  </button>
-                </div>
-              )}
-
-              {showDisappearingOptions && isDisappearingMode && (
-                <div className="mb-2 p-2 bg-purple-50 text-purple-800 rounded text-xs flex justify-between">
-                  <span>Disappearing Mode active ({_disappearingDuration}m)</span>
-                  <button onClick={() => setShowDisappearingOptions(false)} className="cursor-pointer">
-                    <FiX className="w-3 h-3" />
-                  </button>
-                </div>
-              )}
-
-              <div className="flex items-center space-x-2">
-                <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="text-gray-500">
-                  <FaRegSmile className="w-5 h-5" />
+              {/* Input Row */}
+              <div className="flex items-center gap-2">
+                
+                {/* Media & Attachments */}
+                <button
+                  type="button"
+                  onClick={() => showToast?.('Attach image or document', 'info')}
+                  className="p-2.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-colors"
+                  title="Attach File"
+                >
+                  <PaperClipIcon className="w-4 h-4" />
                 </button>
-                <button onClick={() => setShowAttachmentMenu(!showAttachmentMenu)} className="text-gray-500">
-                  <FiPaperclip className="w-5 h-5" />
+
+                <button
+                  type="button"
+                  onClick={() => setShowSendPaylinkModal(true)}
+                  className="p-2.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-colors"
+                  title="Send Paylink in FIC"
+                >
+                  <CurrencyDollarIcon className="w-4 h-4 text-emerald-600" />
                 </button>
+
+                {/* Primary Text Input: Strict Core Standard */}
                 <input
                   type="text"
-                  placeholder="Type a message..."
-                  value={newMessage}
-                  onChange={(e) => { setNewMessage(e.target.value); handleTyping(); }}
-                  onKeyDown={handleKeyDown}
-                  className="flex-1 p-2 bg-gray-100 rounded-lg focus:outline-none"
+                  value={typedMessage}
+                  onChange={(e) => setTypedMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder={`Write an encrypted message to ${activeConversation?.title}...`}
+                  className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-2xs"
                 />
-                <button onClick={handleSendMessage} className="p-2 bg-blue-500 text-white rounded-full">
-                  <FiSend className="w-[18px] h-[18px]" />
+
+                {/* Send Button */}
+                <button
+                  type="button"
+                  onClick={handleSendMessage}
+                  disabled={!typedMessage.trim()}
+                  className="p-2.5 sm:px-4 sm:py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+                >
+                  <PaperAirplaneIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">Send</span>
                 </button>
               </div>
-
-              {showEmojiPicker && (
-                <div className="absolute bottom-20 z-50">
-                  <EmojiPicker onEmojiClick={(emoji: any) => setNewMessage(p => p + emoji.emoji)} />
-                </div>
-              )}
-
-              {showAttachmentMenu && (
-                <div className="absolute bottom-20 bg-white border shadow rounded p-2 flex space-x-4">
-                  <FiMic className="w-5 h-5 text-gray-600 cursor-pointer" />
-                  <FaCoins className="w-[18px] h-[18px] text-yellow-500 cursor-pointer" />
-                  <FiImage className="w-5 h-5 text-gray-600 cursor-pointer" />
-                  <FiGift className="w-5 h-5 text-pink-500 cursor-pointer" />
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-400">Select a room to begin messaging</div>
-        )}
-      </div>
-
-      {/* Global Group Creation Modal */}
-      {isCreatingGroup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-4 flex flex-col">
-            <div className="flex justify-between items-center pb-2 border-b">
-              <h3 className="text-lg font-semibold">Create New Group</h3>
-              <button onClick={() => setIsCreatingGroup(false)}>
-                <IoMdClose className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="space-y-4 py-4">
-              <div>
-                <label htmlFor="groupName" className="text-xs font-medium text-gray-500">Group Designation</label>
-                <input
-                  id="groupName"
-                  type="text"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                  placeholder="Enter group name"
-                  className="w-full p-2 border rounded mt-1 outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-500">Selected Members ({groupMembers.length})</label>
-                <div className="flex flex-wrap gap-1 mt-1" role="list" aria-label="Selected group members">
-                  {groupMembers.map(m => (
-                    <span key={m.id} className="bg-gray-100 text-xs px-2 py-1 rounded flex items-center space-x-1" role="listitem">
-                      <span>{m.name}</span>
-                      <button
-                        onClick={() => handleRemoveFromGroup(m.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleRemoveFromGroup(m.id);
-                          }
-                        }}
-                        className="cursor-pointer text-red-500 bg-transparent border-none p-0"
-                        aria-label={`Remove ${m.name} from group`}
-                        type="button"
-                      >
-                        <FiX className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label htmlFor="availableContacts" className="text-xs font-medium text-gray-500">Available Roster Contacts</label>
-                <div id="availableContacts" className="border rounded max-h-32 overflow-y-auto divide-y mt-1" role="listbox" aria-label="Available contacts">
-                  {conversations.filter(c => !c.isGroup).map(c => {
-                    const candidate = c.participants.find(p => p.id !== 'user1');
-                    if (!candidate) return null;
-                    return (
-                      <div
-                        key={candidate.id}
-                        onClick={() => handleAddToGroup(candidate)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleAddToGroup(candidate);
-                          }
-                        }}
-                        role="option"
-                        aria-selected={groupMembers.some(m => m.id === candidate.id)}
-                        tabIndex={0}
-                        className="p-2 text-sm hover:bg-gray-50 cursor-pointer"
-                      >
-                        {candidate.name}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-end space-x-2 pt-2 border-t">
-              <button onClick={() => setIsCreatingGroup(false)} className="px-3 py-1.5 border rounded text-sm text-gray-600">Cancel</button>
-              <button
-                onClick={handleCreateGroupSubmit}
-                disabled={!groupName.trim() || groupMembers.length < 2}
-                className="px-3 py-1.5 bg-blue-500 disabled:bg-gray-200 text-white rounded text-sm"
-              >
-                Assemble Group
-              </button>
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* SEND PAYLINK MODAL */}
+        {showSendPaylinkModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+            <div className="bg-white rounded-3xl border border-slate-300 max-w-sm w-full p-6 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div className="flex items-center gap-2">
+                  <CurrencyDollarIcon className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-sm font-black text-slate-900">Send Direct Paylink in Chat</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSendPaylinkModal(false)}
+                  className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Amount in Infinite Coins (FIC)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={paylinkAmountInput}
+                  onChange={(e) => setPaylinkAmountInput(e.target.value)}
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSendPaylinkModal(false)}
+                  className="px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSendPaylink}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase"
+                >
+                  Send Paylink
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* NEW CHAT MODAL */}
+        {showNewChatModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+            <div className="bg-white rounded-3xl border border-slate-300 max-w-md w-full p-6 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 className="text-sm font-black text-slate-900">Start New Sovereign Chat</h3>
+                <button
+                  type="button"
+                  onClick={() => setShowNewChatModal(false)}
+                  className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  Member Name or Wallet Handle
+                </label>
+                <input
+                  type="text"
+                  value={newChatRecipient}
+                  onChange={(e) => setNewChatRecipient(e.target.value)}
+                  placeholder="e.g. @aminabello or Chidi Okonkwo"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowNewChatModal(false)}
+                  className="px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleStartNewChat}
+                  className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase"
+                >
+                  Open Chat
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </MainLayout>
   );
 };
 

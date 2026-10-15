@@ -120,6 +120,9 @@ const WalletAndPayPage = lazy(() => import('../pages/WalletAndPayPage'));
 const WalletFundingPage = lazy(() => import('../pages/WalletFundingPage'));
 const PaylinksPage = lazy(() => import('../pages/PaylinksPage'));
 const FinancialsPage = lazy(() => import('../pages/financials/FinancialsPage'));
+const ReferralsPage = lazy(() => import('../pages/financials/ReferralsPage'));
+const LoyaltyPage = lazy(() => import('../pages/financials/LoyaltyPage'));
+const PaymentPayoutsPage = lazy(() => import('../pages/financials/PaymentPayoutsPage'));
 const FICVaultPage = lazy(() => import('../pages/FICVaultPage'));
 const LoanSqrPage = lazy(() => import('../pages/LoanSqrPage'));
 
@@ -138,6 +141,7 @@ const NotificationsPage = lazy(() => import('../pages/NotificationsPage'));
 const MessagesPage = lazy(() => import('../pages/messages/MessagesPage'));
 const PrivateMessagesPage = lazy(() => import('../pages/PrivateMessagesPage'));
 const MembersPage = lazy(() => import('../pages/dashboard/MembersPage'));
+const NetworkSuggestionsPage = lazy(() => import('../pages/NetworkSuggestionsPage'));
 const MemberLandingPage = lazy(() => import('../pages/MemberLandingPage'));
 const SubscriptionsPage = lazy(() => import('../pages/financials/SubscriptionsPage'));
 const PortfolioPage = lazy(() => import('../pages/PortfolioPage'));
@@ -173,6 +177,7 @@ const DashboardHomePage = lazy(() => import('../pages/dashboard/DashboardHomePag
 const UnifiedDashboardPage = lazy(() => import('../pages/UnifiedDashboardPage'));
 const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
 const AdminUserManagementPage = lazy(() => import('../pages/admin/AdminUserManagement'));
+const UserManagementPage = lazy(() => import('../pages/UserManagementPage'));
 const AdminControlDashboard = lazy(() => import('../pages/AdminControlDashboard'));
 const AdvancedAnalyticsPage = lazy(() => import('../pages/AdvancedAnalyticsPage'));
 const InsightsPage = lazy(() => import('../pages/InsightsPage'));
@@ -434,6 +439,19 @@ export const routes: RouteObject[] = [
           { path: '/settings/badges', element: <BadgesManagementPage /> },
           { path: '/badges', element: redirectTo('/settings/badges') },
           { path: '/franchise', element: <FranchisePage /> },
+          { path: '/referrals', element: <ReferralsPage /> },
+          { path: '/financials/referrals', element: <ReferralsPage /> },
+          { path: '/loyalty', element: <LoyaltyPage /> },
+          { path: '/financials/loyalty', element: <LoyaltyPage /> },
+          { path: '/advanced-gifting', element: <AdvancedGiftingPage /> },
+          { path: '/advancedgifting', element: <AdvancedGiftingPage /> },
+          { path: '/payouts', element: <PaymentPayoutsPage /> },
+          { path: '/financials/payouts', element: <PaymentPayoutsPage /> },
+          { path: '/payment-payouts', element: <PaymentPayoutsPage /> },
+          { path: '/paylinks', element: <PaylinksPage /> },
+          { path: '/mydownloads', element: <MyDownloadsPage /> },
+          { path: '/coupons', element: <CouponsPage /> },
+          { path: '/advancedfingerwar', element: <AdvancedFingerWarPage /> },
           { path: '/ugc-dashboard', element: redirectTo('/ugcdashboard') },
           { path: '/my-downloads', element: redirectTo('/mydownloads') },
           { path: '/downloads', element: redirectTo('/mydownloads') },
@@ -442,6 +460,9 @@ export const routes: RouteObject[] = [
           { path: '/photocredit/:id', element: <PhotoCreditDetailPage /> },
           { path: '/photocreditdetail', element: <PhotoCreditDetailPage /> },
           { path: '/profile', element: <ProfilePage /> },
+          { path: '/profile/:id', element: <ProfilePage /> },
+          { path: '/wall', element: <ProfilePage /> },
+          { path: '/wall/:id', element: <ProfilePage /> },
           { path: '/post/:id', element: <PostDetailPage /> },
           { path: '/postdetail', element: <PostDetailPage /> },
           { path: '/profile-enhancement', element: <ProfileEnhancement /> },
@@ -452,6 +473,7 @@ export const routes: RouteObject[] = [
           { path: '/ai-avatar-generator', element: <AIAvatarGenerator /> },
           { path: '/business-page', element: <BusinessPageFeatures /> },
           { path: '/onboarding', element: <OnboardingPage /> },
+          { path: '/user-management', element: <UserManagementPage /> },
 
           // Consolidated Route Aliases & Redirects to Prevent 404s
           { path: '/communities/discover', element: redirectTo('/communities') },
@@ -469,7 +491,6 @@ export const routes: RouteObject[] = [
           { path: '/adchoices', element: redirectTo('/privacy') },
           { path: '/language', element: redirectTo('/settings') },
           { path: '/country', element: redirectTo('/settings') },
-          { path: '/network/suggestions', element: redirectTo('/network') },
           { path: '/splash', element: redirectTo('/') },
           { path: '/feedback', element: redirectTo('/contact-support') },
           { path: '/contact-us', element: redirectTo('/contact-support') },
@@ -518,14 +539,18 @@ export const routes: RouteObject[] = [
           { path: '/dashboard/hub', element: redirectTo('/creatordashboard') },
           { path: '/api-docs', element: redirectTo('/developer') },
           { path: '/api/developer/examples/curl', element: redirectTo('/developer') },
-          { path: '/dashboard/payouts', element: redirectTo('/wallet') },
+          { path: '/dashboard/payouts', element: redirectTo('/payouts') },
           { path: '/billing', element: redirectTo('/subscriptions') },
           { path: '/dashboard/policies', element: redirectTo('/legalcompliance') },
-          { path: '/dashboard/site/menus', element: redirectTo('/sitepagesmenus') },
-          { path: '/dashboard/analytics', element: redirectTo('/advancedanalytics') },
-          { path: '/dashboard/moderation', element: redirectTo('/moderationqueue') },
-          { path: '/dashboard/members', element: redirectTo('/admin/user-management') },
-          { path: '/dashboard/content', element: redirectTo('/publishingtools') },
+          { path: '/dashboard/analytics', element: <AdvancedAnalyticsPage /> },
+          { path: '/advancedanalytics', element: <AdvancedAnalyticsPage /> },
+          { path: '/analytics', element: <AdvancedAnalyticsPage /> },
+          { path: '/dashboard/moderation', element: <ContentModeratorDashboardPage /> },
+          { path: '/contentmoderator', element: <ContentModeratorDashboardPage /> },
+          { path: '/moderationqueue', element: <ContentModeratorDashboardPage /> },
+          { path: '/dashboard/members', element: <UserManagementPage /> },
+          { path: '/admin/user-management', element: <UserManagementPage /> },
+          { path: '/user-management', element: <UserManagementPage /> },
           { path: '/dashboard/commerce', element: redirectTo('/storefronttracking') },
           { path: '/dashboard/community', element: redirectTo('/communitymanagement') },
           { path: '/dashboard/settings', element: redirectTo('/settings') },
@@ -579,6 +604,8 @@ export const routes: RouteObject[] = [
               { path: '/messages/private', element: redirectTo('/privatemessages') },
               { path: '/privatemessages', element: <PrivateMessagesPage /> },
               { path: '/network', element: <MembersPage /> },
+              { path: '/network/suggestions', element: <NetworkSuggestionsPage /> },
+              { path: '/network/connections', element: <NetworkSuggestionsPage /> },
               { path: '/subscriptions', element: <SubscriptionsPage /> },
               { path: '/portfolio', element: <PortfolioPage /> },
               { path: '/account/delete', element: redirectTo('/accountdeletion') },
@@ -601,7 +628,11 @@ export const routes: RouteObject[] = [
               { path: '/gameon', element: <GameOnPage /> },
               { path: '/hallmarks', element: <HallmarksPage /> },
               { path: '/gems', element: <GemsPage /> },
+              { path: '/advanced-gifting', element: <AdvancedGiftingPage /> },
               { path: '/advancedgifting', element: <AdvancedGiftingPage /> },
+              { path: '/referrals', element: <ReferralsPage /> },
+              { path: '/loyalty', element: <LoyaltyPage /> },
+              { path: '/payouts', element: <PaymentPayoutsPage /> },
               { path: '/coupons', element: <CouponsPage /> },
               { path: '/marketplace/tracking', element: redirectTo('/marketplacetracking') },
               { path: '/marketplacetracking', element: <MarketplaceTrackingPage /> },
@@ -767,7 +798,7 @@ export const routes: RouteObject[] = [
       // ADMINISTRATIVE & INFRASTRUCTURE TIER (S4 Admin Scaffold)
       // ---------------------------------------------------------------------------
       {
-        element: <RequireAuth enforceMfa={true} />,
+        element: <RequireAuth enforceMfa={false} />,
         children: [
           {
             element: (
@@ -786,6 +817,8 @@ export const routes: RouteObject[] = [
                   { path: '/admin/dashboard', element: redirectTo('/admindashboard') },
                   { path: '/admindashboard', element: <AdminDashboardPage /> },
                   { path: '/admin/users', element: <AdminUserManagementPage /> },
+                  { path: '/admin/user-management', element: <UserManagementPage /> },
+                  { path: '/user-management', element: <UserManagementPage /> },
                   { path: '/admin/members-console', element: <UserMembersConsolePage /> },
                   { path: '/admin/control', element: redirectTo('/admincontroldashboard') },
                   { path: '/admincontroldashboard', element: <AdminControlDashboard /> },

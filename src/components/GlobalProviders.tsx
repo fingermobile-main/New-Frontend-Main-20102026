@@ -22,6 +22,9 @@ import { MarketplaceProvider } from '../contexts/MarketplaceContext';
 import { CamusProvider } from '../contexts/CamusContext';
 import { LushMatchProvider } from '../contexts/LushMatchContext';
 import { CommunityProvider } from '../contexts/CommunityContext';
+import { HallmarkProvider } from '../contexts/HallmarkContext';
+import { GemProvider } from '../contexts/GemContext';
+import { NotificationProvider } from '../contexts/NotificationContext';
 
 export const GlobalProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -30,47 +33,53 @@ export const GlobalProviders: React.FC<{ children: React.ReactNode }> = ({ child
         <SuperViAuthProvider>
           <AuthProvider> {/* AuthProvider should be near the top */}
             <AppProvider>
-              <Web3Provider>
-                <IdentityAuthProvider>
-                  <ProfileProvider>
-                    <MonetizationProvider>
-                      <ContentProvider>
-                        <PostProvider>
-                          <GroupProvider>
-                            <OnboardingProvider>
-                              <P2PProvider>
-                                <BeatwaveNGProvider>
-                                  <Dancia4TvProvider>
-                                    <MarketplaceProvider>
-                                      <CamusProvider> {/* Move CamusProvider inside AuthProvider */}
-                                        <CommunityProvider>
-                                          <ToastContainer
-                                            position="top-right"
-                                            autoClose={5000}
-                                            hideProgressBar={false}
-                                            newestOnTop
-                                            closeOnClick
-                                            rtl={false}
-                                            pauseOnFocusLoss
-                                            draggable
-                                            pauseOnHover
-                                            theme="light"
-                                          />
-                                          <LushMatchProvider>{children}</LushMatchProvider>
-                                        </CommunityProvider>
-                                      </CamusProvider> {/* Close CamusProvider here */}
-                                    </MarketplaceProvider>
-                                  </Dancia4TvProvider>
-                                </BeatwaveNGProvider>
-                              </P2PProvider>
-                            </OnboardingProvider>
-                          </GroupProvider>
-                        </PostProvider>
-                      </ContentProvider>
-                    </MonetizationProvider>
-                  </ProfileProvider>
-                </IdentityAuthProvider>
-              </Web3Provider>
+              <NotificationProvider>
+                <Web3Provider>
+                  <IdentityAuthProvider>
+                    <ProfileProvider>
+                      <MonetizationProvider>
+                        <ContentProvider>
+                          <PostProvider>
+                            <GroupProvider>
+                              <OnboardingProvider>
+                                <P2PProvider>
+                                  <BeatwaveNGProvider>
+                                    <Dancia4TvProvider>
+                                      <MarketplaceProvider>
+                                        <CamusProvider> {/* Move CamusProvider inside AuthProvider */}
+                                          <CommunityProvider>
+                                            <HallmarkProvider>
+                                              <GemProvider>
+                                                <ToastContainer
+                                                  position="top-right"
+                                                  autoClose={5000}
+                                                  hideProgressBar={false}
+                                                  newestOnTop
+                                                  closeOnClick
+                                                  rtl={false}
+                                                  pauseOnFocusLoss
+                                                  draggable
+                                                  pauseOnHover
+                                                  theme="light"
+                                                />
+                                                <LushMatchProvider>{children}</LushMatchProvider>
+                                              </GemProvider>
+                                            </HallmarkProvider>
+                                          </CommunityProvider>
+                                        </CamusProvider> {/* Close CamusProvider here */}
+                                      </MarketplaceProvider>
+                                    </Dancia4TvProvider>
+                                  </BeatwaveNGProvider>
+                                </P2PProvider>
+                              </OnboardingProvider>
+                            </GroupProvider>
+                          </PostProvider>
+                        </ContentProvider>
+                      </MonetizationProvider>
+                    </ProfileProvider>
+                  </IdentityAuthProvider>
+                </Web3Provider>
+              </NotificationProvider>
             </AppProvider>
           </AuthProvider>
         </SuperViAuthProvider>

@@ -46,7 +46,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onClick={() => window.dispatchEvent(new CustomEvent('open-universal-search'))}
                 placeholder="Search Canary, audio, tags..."
-                className="w-full pl-9 pr-14 py-1.5 text-xs bg-slate-800/80 border border-slate-700 rounded-full text-slate-200 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all cursor-pointer"
+                className="w-full pl-9 pr-14 py-1.5 text-xs bg-slate-800/90 border border-slate-600 rounded-full text-white placeholder-slate-300 font-bold focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all cursor-pointer"
               />
               <button
                 type="button"

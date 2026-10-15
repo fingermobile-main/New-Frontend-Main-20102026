@@ -728,8 +728,8 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
         const mockId = currentActiveStreamId;
         setStreamId(mockId);
         setStreamKey(`sk_live_${mockId}`);
-        setIngressUrl(`rtmp://live.fingermobile.com/app/${mockId}`);
-        setPlaybackUrl(`https://hls.fingermobile.com/live/${mockId}/master.m3u8`);
+        setIngressUrl(`rtmp://live.fingermobileprotocol.com/app/${mockId}`);
+        setPlaybackUrl(`https://hls.fingermobileprotocol.com/live/${mockId}/master.m3u8`);
       } else {
         const data = await res.json();
         const sid = data.streamId || data.id || currentActiveStreamId;
@@ -1352,7 +1352,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       <div className="grid grid-cols-1 gap-1 text-[11px] font-mono text-gray-300">
                         <div className="truncate">
                           <span className="text-gray-500">Ingress: </span>
-                          {ingressUrl || 'rtmp://live.fingermobile.com/app/live'}
+                          {ingressUrl || 'rtmp://live.fingermobileprotocol.com/app/live'}
                         </div>
                         <div className="truncate">
                           <span className="text-gray-500">Stream Key: </span>
@@ -1360,7 +1360,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                         </div>
                         <div className="truncate">
                           <span className="text-gray-500">HLS Playback: </span>
-                          {playbackUrl || 'https://hls.fingermobile.com/live/stream.m3u8'}
+                          {playbackUrl || 'https://hls.fingermobileprotocol.com/live/stream.m3u8'}
                         </div>
                       </div>
                     </div>

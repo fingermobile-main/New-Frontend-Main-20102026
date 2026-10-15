@@ -23,7 +23,11 @@ import {
   User,
   Settings,
   Wallet,
-  Sparkles
+  Sparkles,
+  Flame,
+  EyeOff,
+  Radio,
+  Star
 } from 'lucide-react';
 
 interface DrawerMenuContainerProps {
@@ -118,6 +122,9 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
 
   // Load sovereign user profile
   const [profile, setProfile] = useState(() => userProfileSyncService.getProfile());
+  const [isRadiating, setIsRadiating] = useState(true);
+  const [isIncognito, setIsIncognito] = useState(false);
+  const [isRewardsExpanded, setIsRewardsExpanded] = useState(true);
 
   useEffect(() => {
     const unsub = userProfileSyncService.subscribe((updated) => setProfile(updated));
@@ -164,16 +171,16 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
   const getBadgeStyle = (type?: 'primary' | 'success' | 'warning' | 'danger' | 'info') => {
     switch (type) {
     case 'danger':
-      return 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20';
+      return 'bg-red-500/20 text-red-300 border border-red-500/40 font-bold';
     case 'warning':
-      return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
+      return 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold';
     case 'success':
-      return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+      return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold';
     case 'info':
-      return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20';
+      return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold';
     case 'primary':
     default:
-      return 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20';
+      return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-bold';
     }
   };
 
@@ -182,17 +189,24 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
       {/* 1. TOP HEADER & CLOSE BUTTON */}
       <div className="p-3.5 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-red-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-orange-500/20">
-            FM
+          <div className="w-8 h-8 rounded-xl overflow-hidden bg-white/10 p-0.5 border border-orange-500/40 flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0">
+            <img
+              src="/assets/branding/fingermobile/logo-orange.webp"
+              alt="FingerMobile Orange Logo"
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/assets/branding/fingermobile/FingerMobile orange logo.webp';
+              }}
+            />
           </div>
           <div>
             <h2 className="font-bold text-white tracking-wide text-sm leading-tight flex items-center gap-1.5">
               FingerMobile Protocol
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-orange-500/30 text-orange-300 border border-orange-500/50 font-bold">
                 Menu
               </span>
             </h2>
-            <p className="text-[11px] text-slate-400 font-medium">
+            <p className="text-xs text-slate-200 font-bold">
               385 Sovereign Pages • 6 Core Clusters
             </p>
           </div>
@@ -201,7 +215,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
         {!isDesktopSidebar && (
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-slate-800 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -209,76 +223,217 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
         )}
       </div>
 
-      {/* 2. FingerMobile MEMBER PROFILE CARD AT TOP OF MENU */}
-      <div className="p-3.5 border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900 relative">
-        <div className="flex items-center gap-3">
-          <div className="relative shrink-0">
-            <img
-              src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
-              alt={profile.name || 'User Profile'}
-              className="w-12 h-12 rounded-2xl object-cover ring-2 ring-orange-500/80 shadow-lg"
-            />
-            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
+      {/* 2. FingerMobile MERGED MEMBER PROFILE & REWARDS CARD */}
+      <div className="border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+        {/* Cover Graphic Strip with Radiating Active Pulse */}
+        <div className="h-16 bg-gradient-to-r from-emerald-600 via-teal-700 to-orange-600 relative px-3 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-white font-black">
+              Sovereign Identity
+            </span>
           </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5">
-              <h3 className="font-bold text-sm text-white truncate">
-                {profile.name || 'Israel Mbah'}
-              </h3>
-              <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
-              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 border border-orange-500/30">
-                Lvl 3 Sovereign
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-400 truncate">
-              @{profile.username || 'israel_protocol'} • {profile.headline || 'Protocol Architect'}
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                #PIN-{profile.pinNumber || '749822'}
-              </span>
-              <span className="text-[10px] text-slate-300">
-                Quota: <strong className="text-orange-400">{profile.pinQuotaRemaining ?? 48}</strong> / {profile.pinQuotaMax ?? 50} Pins
-              </span>
-            </div>
-          </div>
+          {/* Radiating Active Badge & Quick Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsRadiating((prev) => !prev)}
+            className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition-all ${
+              isRadiating
+                ? 'bg-emerald-950/85 text-emerald-300 border-emerald-400/50 shadow-sm shadow-emerald-500/20'
+                : 'bg-slate-900/90 text-slate-200 border-slate-600'
+            }`}
+            title="Toggle Radiating Active Status"
+          >
+            <span className={`w-2 h-2 rounded-full ${isRadiating ? 'bg-emerald-400 animate-ping' : 'bg-slate-400'}`} />
+            <span>{isRadiating ? 'Radiating Active' : 'Beacon Inactive'}</span>
+          </button>
         </div>
 
-        {/* Quick Profile Shortcuts */}
-        <div className="grid grid-cols-4 gap-1.5 mt-3 pt-2.5 border-t border-slate-800/80">
-          <Link
-            to="/settings"
-            onClick={() => !isDesktopSidebar && onClose()}
-            className="flex flex-col items-center justify-center p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-center"
-          >
-            <User className="w-3.5 h-3.5 text-blue-400 mb-0.5" />
-            <span className="text-[10px] font-medium">Profile</span>
-          </Link>
-          <Link
-            to="/dashboard"
-            onClick={() => !isDesktopSidebar && onClose()}
-            className="flex flex-col items-center justify-center p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-center"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-orange-400 mb-0.5" />
-            <span className="text-[10px] font-medium">Dashboard</span>
-          </Link>
-          <Link
-            to="/gems"
-            onClick={() => !isDesktopSidebar && onClose()}
-            className="flex flex-col items-center justify-center p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-center"
-          >
-            <Wallet className="w-3.5 h-3.5 text-emerald-400 mb-0.5" />
-            <span className="text-[10px] font-medium">Wallet</span>
-          </Link>
-          <Link
-            to="/settings"
-            onClick={() => !isDesktopSidebar && onClose()}
-            className="flex flex-col items-center justify-center p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-center"
-          >
-            <Settings className="w-3.5 h-3.5 text-purple-400 mb-0.5" />
-            <span className="text-[10px] font-medium">Settings</span>
-          </Link>
+        {/* Member Profile Main Container */}
+        <div className="px-3.5 pb-3.5 pt-0 relative">
+          <div className="flex items-start gap-3 -mt-6">
+            {/* Clickable Profile Avatar -> Opens Profile Wall */}
+            <Link
+              to="/profile"
+              onClick={() => !isDesktopSidebar && onClose()}
+              className="relative shrink-0 group focus:outline-none"
+              title="Click to open Member Profile Page / Wall"
+            >
+              <img
+                src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
+                alt={profile.name || 'Member Profile Wall'}
+                className="w-14 h-14 rounded-2xl object-cover ring-3 ring-orange-500/90 shadow-xl group-hover:scale-105 transition-transform bg-slate-900"
+              />
+              <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full ring-2 ring-slate-950 ${isIncognito ? 'bg-purple-500' : 'bg-emerald-500'}`} />
+              <div className="absolute inset-0 rounded-2xl bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-[10px] text-white font-bold backdrop-blur-xs">
+                Wall →
+              </div>
+            </Link>
+
+            <div className="flex-1 min-w-0 pt-7">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <Link
+                  to="/profile"
+                  onClick={() => !isDesktopSidebar && onClose()}
+                  className="font-black text-sm text-white hover:text-orange-400 transition-colors truncate"
+                  title="Click to view full Profile Wall"
+                >
+                  {profile.name || 'Israel Mbah'}
+                </Link>
+                <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
+                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-orange-500/25 text-orange-300 border border-orange-500/50">
+                  Lvl 5 Sovereign
+                </span>
+              </div>
+
+              {/* 5-Star Reputation Rating */}
+              <div className="flex items-center gap-1 mt-0.5">
+                <div className="flex text-amber-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="text-[10px] font-mono text-slate-200 font-bold">@{profile.username || 'israel_protocol'}</span>
+              </div>
+
+              <p className="text-xs text-slate-100 font-semibold truncate mt-0.5">
+                {profile.headline || 'CEO & CTO, Founder | FingerMobile Protocol'}
+              </p>
+
+              {/* Consent Verified PIN & Security Grid */}
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-300">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                  Consent Verified PIN: ••91
+                </span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 border border-sky-500/50 text-sky-300">
+                  STERCS™ Active
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* PROTOCOL REWARDS & XP PROGRESS ACCORDION */}
+          <div className="mt-3 rounded-xl bg-slate-950 border border-slate-700/80 p-2.5 shadow-md">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-white flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+                Protocol Rewards
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsRewardsExpanded((prev) => !prev)}
+                className="text-[10px] font-black text-orange-400 hover:text-orange-300 flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-orange-500/15 border border-orange-500/40"
+              >
+                <span>Level 5</span>
+                <ChevronDown className={`w-3 h-3 transition-transform ${isRewardsExpanded ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            {/* XP Progress Bar */}
+            <div>
+              <div className="flex justify-between text-[10px] font-bold text-slate-100 mb-1">
+                <span>XP Progress</span>
+                <span className="text-orange-400 font-mono font-black">850 / 1000 XP</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/60">
+                <div className="h-full bg-gradient-to-r from-emerald-400 via-teal-400 to-orange-500 rounded-full w-[85%]" />
+              </div>
+            </div>
+
+            {isRewardsExpanded && (
+              <>
+                {/* 2 Key Balances: FIC Coins & Daily Streak */}
+                <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-800">
+                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-700 flex items-center gap-2">
+                    <span className="text-base">🪙</span>
+                    <div>
+                      <div className="text-[11px] font-black font-mono text-amber-300">2,850 FIC</div>
+                      <div className="text-[9px] text-slate-200 font-bold uppercase tracking-wider">Coins Balance</div>
+                    </div>
+                  </div>
+                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-700 flex items-center gap-2">
+                    <Flame className="w-4 h-4 text-orange-400" />
+                    <div>
+                      <div className="text-[11px] font-black text-orange-400">14 Days</div>
+                      <div className="text-[9px] text-slate-200 font-bold uppercase tracking-wider">Daily Streak</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Radar & Incognito Quick Toggles */}
+                <div className="grid grid-cols-2 gap-1.5 mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsRadiating((prev) => !prev)}
+                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition-all ${
+                      isRadiating
+                        ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/60 shadow-xs'
+                        : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-slate-600'
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <Radio className="w-3.5 h-3.5 text-emerald-400" />
+                      Radiate Radar
+                    </span>
+                    <span className="font-black px-1.5 py-0.2 rounded bg-slate-800 text-white">{isRadiating ? 'ON' : 'OFF'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsIncognito((prev) => !prev)}
+                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition-all ${
+                      isIncognito
+                        ? 'bg-purple-950/60 text-purple-300 border-purple-500/60 shadow-xs'
+                        : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-slate-600'
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <EyeOff className="w-3.5 h-3.5 text-purple-400" />
+                      Incognito
+                    </span>
+                    <span className="font-black px-1.5 py-0.2 rounded bg-slate-800 text-white">{isIncognito ? 'ON' : 'OFF'}</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Quick Profile Shortcuts */}
+          <div className="grid grid-cols-4 gap-1.5 mt-2.5 pt-2 border-t border-slate-800/80">
+            <Link
+              to="/profile"
+              onClick={() => !isDesktopSidebar && onClose()}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
+              title="Open Sovereign Member Profile Wall"
+            >
+              <User className="w-4 h-4 text-blue-400 mb-1 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Wall</span>
+            </Link>
+            <Link
+              to="/dashboard"
+              onClick={() => !isDesktopSidebar && onClose()}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
+            >
+              <Sparkles className="w-4 h-4 text-orange-400 mb-1 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Dashboard</span>
+            </Link>
+            <Link
+              to="/wallet"
+              onClick={() => !isDesktopSidebar && onClose()}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
+            >
+              <Wallet className="w-4 h-4 text-emerald-400 mb-1 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Wallet</span>
+            </Link>
+            <Link
+              to="/settings-hub"
+              onClick={() => !isDesktopSidebar && onClose()}
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white transition-all text-center group shadow-xs"
+            >
+              <Settings className="w-4 h-4 text-purple-400 mb-1 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-bold text-slate-200 group-hover:text-white">Settings</span>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -290,7 +445,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${
             activeTab === 'explore'
               ? 'bg-orange-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white'
+              : 'text-slate-300 hover:text-white font-semibold'
           }`}
         >
           Explore Ecosystem
@@ -301,7 +456,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'create'
               ? 'bg-orange-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white'
+              : 'text-slate-300 hover:text-white font-semibold'
           }`}
         >
           <PlusCircle className="w-3.5 h-3.5" />
@@ -316,20 +471,22 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           activeTab === 'explore' ? 'flex' : 'hidden md:flex'
         }`}>
           {/* Search Box */}
-          <div className="p-3 border-b border-slate-800/80 bg-slate-950/60">
+          <div className="p-3 border-b border-slate-800 bg-slate-950">
             <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-orange-600 z-10" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search 385 pages, features..."
-                className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-sans"
+                className="w-full pl-9 pr-14 py-2.5 text-xs rounded-xl bg-white border-2 border-slate-300 text-slate-900 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-sans shadow-sm"
+                style={{ color: '#0f172a', backgroundColor: '#ffffff' }}
               />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-white"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 rounded-md font-bold cursor-pointer transition-colors"
                 >
                   Clear
                 </button>
@@ -341,7 +498,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin scrollbar-thumb-slate-800">
             {filteredCategories.length === 0 ? (
               <div className="py-8 text-center px-4">
-                <p className="text-xs text-slate-400 font-medium">
+                <p className="text-xs text-slate-300 font-semibold">
                   No matching pages or features found for "{searchQuery}"
                 </p>
               </div>
@@ -356,20 +513,20 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                   >
                     <button
                       onClick={() => toggleCategory(cat.id)}
-                      className="w-full px-3.5 py-2.5 flex items-center justify-between bg-slate-800/60 hover:bg-slate-800 transition-colors text-left"
+                      className="w-full px-3.5 py-2.5 flex items-center justify-between bg-slate-800/70 hover:bg-slate-800 transition-colors text-left border-b border-slate-800/50"
                     >
                       <div className="flex items-center space-x-2.5 min-w-0">
-                        <span className="text-xs font-bold uppercase tracking-wider text-orange-400 truncate">
+                        <span className="text-xs font-black uppercase tracking-wider text-orange-400 truncate">
                           {cat.title}
                         </span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 text-slate-100 font-bold border border-slate-700">
                           {cat.items.length}
                         </span>
                       </div>
                       {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 text-slate-400 shrink-0 ml-1" />
+                        <ChevronDown className="w-4 h-4 text-slate-300 shrink-0 ml-1" />
                       ) : (
-                        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0 ml-1" />
+                        <ChevronRight className="w-4 h-4 text-slate-300 shrink-0 ml-1" />
                       )}
                     </button>
 
@@ -385,14 +542,14 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                               onClick={() => !isDesktopSidebar && onClose()}
                               className={`group flex items-start justify-between p-2 rounded-lg text-xs transition-all ${
                                 active
-                                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold shadow-md shadow-orange-500/20'
-                                  : 'text-slate-300 hover:bg-slate-800/90 hover:text-white'
+                                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold shadow-md shadow-orange-500/20'
+                                  : 'text-slate-100 hover:bg-slate-800/90 hover:text-white'
                               }`}
                             >
                               <div className="flex items-start space-x-2.5 min-w-0 flex-1">
                                 <div className="mt-0.5 shrink-0">
                                   {item.isPrivate ? (
-                                    <Lock className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-red-400'}`} />
+                                    <Lock className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-rose-400'}`} />
                                   ) : item.requiresPaidPlan ? (
                                     <Crown className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-amber-400'}`} />
                                   ) : (
@@ -401,7 +558,7 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex items-center space-x-1.5 flex-wrap">
-                                    <span className="font-medium truncate">{item.title}</span>
+                                    <span className="font-bold text-xs truncate text-white">{item.title}</span>
                                     {item.badge && (
                                       <span
                                         className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase ${
@@ -416,8 +573,8 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                                   </div>
                                   {item.description && (
                                     <p
-                                      className={`text-[10px] mt-0.5 line-clamp-1 ${
-                                        active ? 'text-white/80' : 'text-slate-400'
+                                      className={`text-[11px] mt-0.5 line-clamp-1 leading-normal ${
+                                        active ? 'text-white/95 font-medium' : 'text-slate-200 font-medium'
                                       }`}
                                     >
                                       {item.description}
@@ -442,11 +599,11 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
           activeTab === 'create' ? 'flex' : 'hidden md:flex'
         }`}>
           <div className="mb-2.5 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <span className="text-xs font-black uppercase tracking-wider text-slate-100 flex items-center gap-1.5">
               <PlusCircle className="w-3.5 h-3.5 text-orange-400" />
               Create & Quick Actions
             </span>
-            <span className="text-[10px] text-slate-500 font-mono">FingerMobile</span>
+            <span className="text-[11px] text-slate-300 font-mono font-semibold">FingerMobile</span>
           </div>
 
           <div className="space-y-2">
@@ -457,16 +614,16 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
                   key={q.id}
                   to={q.path}
                   onClick={() => !isDesktopSidebar && onClose()}
-                  className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 transition-all group"
+                  className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 transition-all group"
                 >
                   <div className={`p-2 rounded-lg bg-gradient-to-tr ${q.color} text-white shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
                     <IconComp className="w-4 h-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="text-xs font-bold text-white group-hover:text-orange-400 transition-colors">
+                    <h4 className="text-xs font-black text-white group-hover:text-orange-300 transition-colors">
                       {q.title}
                     </h4>
-                    <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-200 font-medium line-clamp-2 leading-relaxed mt-0.5">
                       {q.description}
                     </p>
                   </div>
@@ -478,12 +635,12 @@ export const DrawerMenuContainer: React.FC<DrawerMenuContainerProps> = ({
       </div>
 
       {/* 5. FOOTER */}
-      <div className="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-[11px] text-slate-400">
+      <div className="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-xs text-slate-300">
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="font-semibold text-slate-300">Live Network Consensus</span>
+          <span className="font-bold text-slate-200">Live Network Consensus</span>
         </div>
-        <span className="font-mono text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md font-medium border border-slate-700">
+        <span className="font-mono text-[10px] bg-slate-800 text-slate-100 px-2 py-0.5 rounded-md font-bold border border-slate-700">
           v2.5.0 • 385 Screens
         </span>
       </div>

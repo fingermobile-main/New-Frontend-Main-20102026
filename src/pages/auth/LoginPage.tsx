@@ -145,7 +145,7 @@ const LoginPage = () => {
           onboarding_completed: true,
           target: '/master-dashboard',
         },
-        'admin@fingermobile.com': {
+        'admin@fingermobileprotocol.com': {
           id: 'usr_admin',
           username: 'admin',
           firstName: 'System',
@@ -171,7 +171,7 @@ const LoginPage = () => {
           onboarding_completed: true,
           target: '/forum',
         },
-        'user@fingermobile.com': {
+        'user@fingermobileprotocol.com': {
           id: 'usr_test',
           username: 'testuser',
           firstName: 'Alexandria',
@@ -197,7 +197,7 @@ const LoginPage = () => {
           onboarding_completed: true,
           target: '/forum',
         },
-        'creator@fingermobile.com': {
+        'creator@fingermobileprotocol.com': {
           id: 'usr_creator',
           username: 'creator',
           firstName: 'Luxury',
@@ -223,7 +223,7 @@ const LoginPage = () => {
           onboarding_completed: true,
           target: '/forum',
         },
-        'merchant@fingermobile.com': {
+        'merchant@fingermobileprotocol.com': {
           id: 'usr_merchant',
           username: 'merchant',
           firstName: 'Premier',

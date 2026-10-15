@@ -22,22 +22,16 @@ import {
   ShoppingBag,
   ExternalLink,
   Cpu,
-  Radio,
   Shirt,
   Headphones,
   CheckCircle2,
   ThumbsUp,
   ThumbsDown,
   BarChart2,
-  Clock,
-  Layers,
   Bot,
   Send,
   Zap,
-  Tag,
   Copy,
-  Check,
-  MessageSquare,
   FileText
 } from 'lucide-react';
 
@@ -81,16 +75,8 @@ export interface FlagshipOrder {
   status: 'processing' | 'shipped' | 'delivered';
 }
 
-const CATEGORIES = [
-  { id: 'all', label: 'All Flagship Goods', icon: Layers },
-  { id: 'Hardware & Security', label: 'Hardware & Security', icon: Cpu },
-  { id: 'Wearables & IoT', label: 'Wearables & IoT', icon: Radio },
-  { id: 'Flagship Apparel', label: 'Flagship Apparel', icon: Shirt },
-  { id: 'Audio Gear', label: 'Studio Audio Gear', icon: Headphones }
-];
-
 const MarketplacePage: React.FC = () => {
-  const { member: user } = useAuth();
+  useAuth();
   const { showToast, ficBalance } = useAppContext();
 
   // Navigation tabs (strictly Flagship Store modules)
@@ -112,8 +98,6 @@ const MarketplacePage: React.FC = () => {
   const [selectedPaymentRail, setSelectedPaymentRail] = useState<'fic' | 'earnings' | 'card'>('fic');
   const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
   const [embedProduct, setEmbedProduct] = useState<any | null>(null);
-  const [selectedLedgerHash, setSelectedLedgerHash] = useState<string | null>(null);
-  const [copiedHash, setCopiedHash] = useState<boolean>(false);
 
   // AI Flagship Shopping Assistant state
   const [showAiAssistant, setShowAiAssistant] = useState<boolean>(false);
@@ -347,12 +331,12 @@ const MarketplacePage: React.FC = () => {
                 Platform Flagship Store • Company Sovereign Drops
               </span>
             </div>
-            <div className="flex items-center gap-4 text-xs text-slate-400">
+            <div className="flex items-center gap-4 text-xs text-slate-200 font-semibold">
               <span className="hidden sm:inline-block">FIC Balance: <strong className="text-emerald-400 font-bold">{ficBalance.toLocaleString()} FIC</strong></span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px] font-medium flex items-center gap-1">
+              <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" /> STERCS Governed
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[11px] font-medium hidden md:inline-flex items-center gap-1">
+              <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[11px] font-bold hidden md:inline-flex items-center gap-1">
                 <Zap className="w-3.5 h-3.5" /> Multi-Rail Active
               </span>
             </div>
@@ -367,7 +351,7 @@ const MarketplacePage: React.FC = () => {
               <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4">
                 The Platform&apos;s <span className="bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">Flagship Store</span>
               </h1>
-              <p className="text-base text-slate-300 leading-relaxed mb-6 font-normal">
+              <p className="text-base text-slate-100 leading-relaxed mb-6 font-medium">
                 Where FingerMobile Protocol™ showcases its finest hardware innovations, sovereign keycards, official studio reference gear, and limited apparel. Authenticated with cryptographic SHA-256 provenance hashes.
               </p>
 
@@ -386,7 +370,7 @@ const MarketplacePage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab('ledger')}
-                  className="px-5 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-700 text-sm font-medium transition-all flex items-center gap-2"
+                  className="px-5 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700 text-sm font-semibold transition-all flex items-center gap-2"
                 >
                   <FileText className="w-4 h-4" /> Provenance Ledger
                 </button>
@@ -399,13 +383,13 @@ const MarketplacePage: React.FC = () => {
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               {/* Search input with AI chip */}
               <div className="relative w-full md:w-1/2">
-                <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+                <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-300" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search Flagship hardware, SKU, specs, or ask AI..."
-                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
                 <button
                   onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
@@ -422,11 +406,11 @@ const MarketplacePage: React.FC = () => {
               {/* Filters & Sorting */}
               <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
                 <div className="flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
-                  <Filter className="w-4 h-4 text-slate-400" />
+                  <Filter className="w-4 h-4 text-slate-300" />
                   <select
                     value={sortBy}
                     onChange={(e: any) => setSortBy(e.target.value)}
-                    className="bg-transparent text-xs text-slate-300 font-medium focus:outline-none cursor-pointer"
+                    className="bg-transparent text-xs text-slate-100 font-semibold focus:outline-none cursor-pointer"
                   >
                     <option value="newest" className="bg-slate-900">Newest Drops</option>
                     <option value="price_asc" className="bg-slate-900">Price: Low to High</option>
@@ -440,14 +424,14 @@ const MarketplacePage: React.FC = () => {
 
             {/* AI Search Suggestion Chips */}
             <div className="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1">
                 <Bot className="w-3 h-3 text-emerald-400" /> AI Suggestions:
               </span>
               {['Sovereign Keycard V3', 'Comm-Badge', 'Graphene Parka', 'Reference Monitors', 'EAL6+ Security', 'Beatwave Audio'].map((chip) => (
                 <button
                   key={chip}
                   onClick={() => setSearchQuery(chip)}
-                  className="px-2.5 py-1 rounded-md text-xs bg-slate-800/70 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-300 border border-slate-700/60 hover:border-emerald-500/40 transition-colors"
+                  className="px-2.5 py-1 rounded-md text-xs bg-slate-800/80 hover:bg-emerald-500/20 text-slate-200 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 font-medium transition-colors"
                 >
                   {chip}
                 </button>
@@ -474,13 +458,13 @@ const MarketplacePage: React.FC = () => {
                   className={`px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all flex items-center gap-2 ${
                     isActive
                       ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 shadow-sm'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent'
+                      : 'text-slate-200 hover:text-white hover:bg-slate-900 border border-transparent'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
                   {tab.count !== undefined && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300 font-mono">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-200 font-mono font-bold">
                       {tab.count}
                     </span>
                   )}
@@ -498,7 +482,7 @@ const MarketplacePage: React.FC = () => {
                   <ShieldCheck className="w-6 h-6 text-emerald-400" />
                   <h2 className="text-xl font-bold text-white">FingerMobile Protocol™ Authenticity Ledger</h2>
                 </div>
-                <p className="text-sm text-slate-400 mb-6">
+                <p className="text-sm text-slate-200 font-medium mb-6">
                   Every product listed in the Flagship Store possesses a cryptographically verified SHA-256 genesis hash minted by the platform authorities. Verify provenance, hardware batch, and warranty legitimacy below.
                 </p>
 
@@ -507,29 +491,29 @@ const MarketplacePage: React.FC = () => {
                     <div key={p.id} className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition-colors">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div>
-                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
                             {p.sku}
                           </span>
                           <h3 className="text-base font-bold text-white mt-1">{p.name}</h3>
                         </div>
                         <span className="text-xs font-bold text-emerald-400">{p.priceFic.toLocaleString()} FIC</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-900/90 font-mono text-[11px] text-slate-400 break-all mb-3 border border-slate-800 flex items-center justify-between gap-2">
+                      <div className="p-3 rounded-xl bg-slate-900/90 font-mono text-[11px] text-slate-200 break-all mb-3 border border-slate-800 flex items-center justify-between gap-2">
                         <span>{p.authenticity_ledger_hash || '0x4f89acbe1209348123acde5678901234abcd5678'}</span>
                         <button
                           onClick={() => {
                             navigator.clipboard.writeText(p.authenticity_ledger_hash || '');
                             showToast('Copied ledger hash!', 'success');
                           }}
-                          className="p-1.5 hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 shrink-0"
+                          className="p-1.5 hover:bg-slate-800 rounded text-slate-300 hover:text-emerald-400 shrink-0"
                           title="Copy Hash"
                         >
                           <Copy className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <div className="flex items-center justify-between text-xs text-slate-500">
-                        <span>Category: <strong className="text-slate-300">{p.category}</strong></span>
-                        <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                      <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
+                        <span>Category: <strong className="text-slate-100">{p.category}</strong></span>
+                        <span className="text-emerald-400 flex items-center gap-1 font-bold">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Verified Drop
                         </span>
                       </div>
@@ -543,12 +527,12 @@ const MarketplacePage: React.FC = () => {
             <div className="space-y-6">
               <div className="p-6 rounded-3xl bg-slate-900/80 border border-slate-800">
                 <h2 className="text-xl font-bold text-white mb-2">My Flagship Orders & Settlements</h2>
-                <p className="text-sm text-slate-400 mb-6">
+                <p className="text-sm text-slate-200 font-medium mb-6">
                   Multi-rail order tracking settled via FIC tokens, creator wallet earnings, or cards with protocol escrow assurance.
                 </p>
 
                 {orders.length === 0 ? (
-                  <div className="text-center py-12 text-slate-500 text-sm">
+                  <div className="text-center py-12 text-slate-400 text-sm font-medium">
                     No flagship orders placed yet.
                   </div>
                 ) : (
@@ -557,13 +541,13 @@ const MarketplacePage: React.FC = () => {
                       <div key={ord.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-mono text-xs text-slate-400">{ord.id}</span>
+                            <span className="font-mono text-xs text-slate-200 font-bold">{ord.id}</span>
                             <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
                               {ord.status}
                             </span>
                           </div>
                           <h4 className="text-sm font-bold text-white">{ord.productName}</h4>
-                          <span className="text-xs text-slate-500">{ord.date} • Settled via {ord.paymentRail}</span>
+                          <span className="text-xs text-slate-300 font-medium">{ord.date} • Settled via {ord.paymentRail}</span>
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="font-bold text-emerald-400 text-base">{ord.total.toLocaleString()} {ord.currency}</span>
@@ -583,16 +567,22 @@ const MarketplacePage: React.FC = () => {
           ) : (
             /* FLAGSHIP PRODUCTS GRID */
             <div>
+              {error && (
+                <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs flex items-center justify-between">
+                  <span>{error}</span>
+                  <button onClick={() => setError(null)} className="text-amber-400 font-bold ml-3 hover:underline">Dismiss</button>
+                </div>
+              )}
               {loading ? (
                 <div className="text-center py-16">
                   <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-emerald-500 mb-4" />
-                  <p className="text-sm text-slate-400">Loading Flagship Store drops...</p>
+                  <p className="text-sm text-slate-200 font-semibold">Loading Flagship Store drops...</p>
                 </div>
               ) : filteredProducts.length === 0 ? (
-                <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-400">
-                  <ShoppingBag className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-                  <p className="text-base font-bold text-slate-300 mb-1">No Flagship Goods Match Query</p>
-                  <p className="text-xs text-slate-500 mb-4">Try clearing filters or search terms.</p>
+                <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-200">
+                  <ShoppingBag className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                  <p className="text-base font-bold text-white mb-1">No Flagship Goods Match Query</p>
+                  <p className="text-xs text-slate-300 mb-4">Try clearing filters or search terms.</p>
                   <button
                     onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
                     className="px-4 py-2 rounded-xl bg-slate-800 text-emerald-400 text-xs font-bold"
@@ -623,7 +613,7 @@ const MarketplacePage: React.FC = () => {
                             <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 shadow-md">
                               Company Flagship
                             </span>
-                            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-900/80 backdrop-blur-md text-slate-300 border border-slate-700 font-mono">
+                            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-900/80 backdrop-blur-md text-slate-200 border border-slate-700 font-mono">
                               {product.sku}
                             </span>
                           </div>
@@ -643,21 +633,21 @@ const MarketplacePage: React.FC = () => {
                             {product.tagline && (
                               <p className="text-xs font-semibold text-emerald-400 mb-2">{product.tagline}</p>
                             )}
-                            <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed mb-4">
+                            <p className="text-xs text-slate-200 line-clamp-3 leading-relaxed font-medium mb-4">
                               {product.description}
                             </p>
 
                             {/* Technical Specifications Chips */}
                             {product.specifications && Object.keys(product.specifications).length > 0 && (
                               <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800/80 mb-4 space-y-1.5">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block mb-1">
                                   Flagship Hardware Specifications
                                 </span>
                                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                                   {Object.entries(product.specifications).map(([key, val]) => (
                                     <div key={key} className="flex flex-col">
-                                      <span className="text-slate-500 text-[10px]">{key}</span>
-                                      <span className="text-slate-200 font-medium truncate">{val}</span>
+                                      <span className="text-slate-300 text-[10px] font-semibold">{key}</span>
+                                      <span className="text-slate-100 font-bold truncate">{val}</span>
                                     </div>
                                   ))}
                                 </div>
@@ -671,9 +661,9 @@ const MarketplacePage: React.FC = () => {
                                   <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
                                     <BarChart2 className="w-3.5 h-3.5 text-emerald-400" /> Community Flagship Poll
                                   </span>
-                                  <span className="text-[10px] font-mono text-slate-500">{totalVotes} Votes</span>
+                                  <span className="text-[10px] font-mono text-slate-300 font-bold">{totalVotes} Votes</span>
                                 </div>
-                                <p className="text-xs text-slate-300 font-medium mb-3">{poll.question}</p>
+                                <p className="text-xs text-slate-100 font-semibold mb-3">{poll.question}</p>
 
                                 <div className="space-y-2">
                                   {poll.options.map((opt) => {
@@ -690,7 +680,7 @@ const MarketplacePage: React.FC = () => {
                                           style={{ width: `${pct}%` }}
                                         />
                                         <div className="relative flex items-center justify-between font-medium">
-                                          <span className="text-slate-200">{opt.text}</span>
+                                          <span className="text-slate-100 font-semibold">{opt.text}</span>
                                           <span className="font-mono text-emerald-400 font-bold ml-2">{pct}%</span>
                                         </div>
                                       </button>
@@ -705,12 +695,12 @@ const MarketplacePage: React.FC = () => {
                           <div className="pt-4 border-t border-slate-800">
                             <div className="flex items-center justify-between mb-4">
                               <div>
-                                <span className="text-[10px] uppercase font-bold text-slate-500 block">Settlement Price</span>
+                                <span className="text-[10px] uppercase font-bold text-slate-300 block">Settlement Price</span>
                                 <div className="flex items-baseline gap-2">
                                   <span className="text-2xl font-black text-emerald-400">
                                     {product.priceFic.toLocaleString()} FIC
                                   </span>
-                                  <span className="text-xs text-slate-400 font-medium">
+                                  <span className="text-xs text-slate-200 font-bold">
                                     (~${product.price.toLocaleString()})
                                   </span>
                                 </div>
@@ -723,28 +713,28 @@ const MarketplacePage: React.FC = () => {
                                   className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
                                     product.userReaction === 'like'
                                       ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-medium'
                                   }`}
                                   title="Like"
                                 >
                                   <ThumbsUp className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px]">{product.likes}</span>
+                                  <span className="font-mono text-[11px] font-bold">{product.likes}</span>
                                 </button>
                                 <button
                                   onClick={() => handleReaction(product.id, 'dislike')}
                                   className={`p-2 rounded-xl border flex items-center gap-1 text-xs transition-colors ${
                                     product.userReaction === 'dislike'
                                       ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-medium'
                                   }`}
                                   title="Dislike"
                                 >
                                   <ThumbsDown className="w-3.5 h-3.5" />
-                                  <span className="font-mono text-[11px]">{product.dislikes}</span>
+                                  <span className="font-mono text-[11px] font-bold">{product.dislikes}</span>
                                 </button>
                                 <button
                                   onClick={() => setEmbedProduct(product)}
-                                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs"
+                                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs"
                                   title="Share & Embed"
                                 >
                                   <ExternalLink className="w-3.5 h-3.5" />
@@ -775,14 +765,14 @@ const MarketplacePage: React.FC = () => {
             <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase">
+                  <span className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase font-bold">
                     {checkoutProduct.sku}
                   </span>
                   <h3 className="text-xl font-bold text-white mt-1.5">{checkoutProduct.name}</h3>
                 </div>
                 <button
                   onClick={() => setCheckoutProduct(null)}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+                  className="p-1.5 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800"
                 >
                   ✕
                 </button>
@@ -790,7 +780,7 @@ const MarketplacePage: React.FC = () => {
 
               {/* Settlement Rails Selection */}
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-200 block mb-2">
                   Select Settlement Payment Rail
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -805,11 +795,11 @@ const MarketplacePage: React.FC = () => {
                       className={`p-3 rounded-2xl border text-left transition-all ${
                         selectedPaymentRail === rail.id
                           ? 'bg-emerald-500/15 border-emerald-500 text-white'
-                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                          : 'bg-slate-950 border-slate-800 text-slate-200 hover:border-slate-700'
                       }`}
                     >
-                      <span className="block text-xs font-bold text-slate-200">{rail.label}</span>
-                      <span className="block text-[10px] text-emerald-400 font-mono mt-0.5">{rail.sub}</span>
+                      <span className="block text-xs font-bold text-white">{rail.label}</span>
+                      <span className="block text-[10px] text-emerald-400 font-mono font-bold mt-0.5">{rail.sub}</span>
                     </button>
                   ))}
                 </div>
@@ -817,11 +807,11 @@ const MarketplacePage: React.FC = () => {
 
               {/* Summary */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-200 font-semibold">
                   <span>Product Subtotal</span>
-                  <span className="font-mono text-slate-200">{checkoutProduct.priceFic.toLocaleString()} FIC</span>
+                  <span className="font-mono text-white font-bold">{checkoutProduct.priceFic.toLocaleString()} FIC</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
+                <div className="flex justify-between text-slate-200 font-semibold">
                   <span>Protocol Escrow Protection</span>
                   <span className="text-emerald-400 font-bold">Included (0% Fee)</span>
                 </div>
@@ -834,7 +824,7 @@ const MarketplacePage: React.FC = () => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setCheckoutProduct(null)}
-                  className="flex-1 py-3 rounded-xl bg-slate-800 text-slate-300 text-sm font-semibold hover:bg-slate-700"
+                  className="flex-1 py-3 rounded-xl bg-slate-800 text-slate-200 text-sm font-bold hover:bg-slate-700"
                 >
                   Cancel
                 </button>
@@ -860,7 +850,7 @@ const MarketplacePage: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowAiAssistant(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-200 hover:text-white"
               >
                 ✕
               </button>
@@ -873,8 +863,8 @@ const MarketplacePage: React.FC = () => {
                   key={idx}
                   className={`p-3 rounded-2xl text-xs leading-relaxed ${
                     log.sender === 'ai'
-                      ? 'bg-slate-950 border border-slate-800 text-slate-300'
-                      : 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 ml-6'
+                      ? 'bg-slate-950 border border-slate-800 text-slate-100 font-medium'
+                      : 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 ml-6 font-medium'
                   }`}
                 >
                   <p>{log.text}</p>
@@ -888,7 +878,7 @@ const MarketplacePage: React.FC = () => {
                 <button
                   key={prompt}
                   onClick={() => handleSendAiQuery(prompt)}
-                  className="px-2.5 py-1 rounded-md text-[10px] bg-slate-800 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300"
+                  className="px-2.5 py-1 rounded-md text-[10px] bg-slate-800 text-slate-200 font-semibold hover:bg-emerald-500/20 hover:text-emerald-300"
                 >
                   {prompt}
                 </button>

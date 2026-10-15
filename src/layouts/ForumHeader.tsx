@@ -54,24 +54,44 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#242526] border-b border-gray-700 h-16">
       <div className="h-full px-4 flex items-center justify-between">
 
-        {/* COLUMN A: Left Section - Logo */}
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <button
-            onClick={onLeftMenuToggle}
-            className="lg:hidden p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <MenuIcon className="w-6 h-6 text-[#ff6b00]" />
-          </button>
-
-          <Link to="/" className="flex items-center gap-2 group">
-            {/* Pulsating FingerMobile Logo */}
-            <div className="relative w-10 h-10">
-              <img src="/assets/branding/fingermobile/FingerMobile orange logo.webp" alt="FingerMobile Logo" className="w-full h-full object-contain" />
+        {/* COLUMN A: Left Section: 1. Logo, 2. FingerMobile, 3. Burger Menu (Justified & Well-Spaced) */}
+        <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0">
+          {/* 1. Logo */}
+          <Link to="/" className="flex items-center shrink-0 hover:scale-105 transition-transform" aria-label="FingerMobile Home">
+            <div className="relative w-10 h-10 rounded-2xl bg-white p-1 border border-slate-300 shadow-xs flex items-center justify-center">
+              <img
+                src="/assets/branding/fingermobile/FingerMobile orange logo.webp"
+                alt="FingerMobile Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
-            <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-              FingerMobile
+          </Link>
+
+          {/* 2. FingerMobile Brand Text */}
+          <Link to="/" className="flex flex-col group focus:outline-none text-left">
+            <span className="text-lg font-black tracking-tight text-white flex items-center group-hover:text-orange-400 transition-colors">
+              FingerMobile<span className="text-[#ff6b00] ml-0.5">™</span>
+            </span>
+            <span className="text-[10px] uppercase font-extrabold tracking-widest text-slate-400 -mt-1">
+              Protocol
             </span>
           </Link>
+
+          {pageTitle && (
+            <span className="hidden xl:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-200 border border-slate-700">
+              {pageTitle}
+            </span>
+          )}
+
+          {/* 3. Burger Menu */}
+          <button
+            type="button"
+            onClick={onLeftMenuToggle}
+            className="p-2 sm:p-2.5 rounded-2xl border border-orange-200 dark:border-orange-500/30 bg-orange-50/80 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#ff6b00] hover:text-[#e05e00] transition-all shadow-xs flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 cursor-pointer ml-1"
+            aria-label="Open Navigation Drawer"
+          >
+            <MenuIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#ff6b00]" />
+          </button>
         </div>
 
         {/* COLUMN B: Middle Section - Search & Navigation Icons */}
@@ -99,7 +119,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
               { icon: GemIcon, label: 'Gems', path: '/gems' },
               { icon: MusicNoteIcon, label: 'BeatwaveNg', path: '/beatwaveng' },
               { icon: TvIcon, label: 'Dancia-4Tv', path: '/dancia4tv' }
-            ].map((item, index) => (
+            ].map((item) => (
               <Link
                 key={item.path}
                 to={item.path}

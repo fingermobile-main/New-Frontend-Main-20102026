@@ -869,6 +869,22 @@ export const GOVERNANCE_OPS_CONSOLES: ConsoleItem[] = [
     telemetry: 'Total revenue inflows, net profit sweep volume, Current Ratio (3.16x), Quick Ratio (2.81x), ROA (27.18%).',
     activeIncidents: 0,
     sparkline: [100, 100, 100, 100, 100, 100, 100]
+  },
+  {
+    id: 'widgets-rails',
+    name: 'Widgets & Rails Command Console',
+    group: 'governance-ops',
+    groupName: 'Platform Governance & Operations',
+    purpose: 'Canary Ads Permanent Anchor (Bottom Right Column), 2-Hour Auto-Rotation Engine, FingerLux, SuperVI, Loansqr & Edge Widget Creator (Operational)',
+    healthScore: 100,
+    status: 'online',
+    responseTime: 9,
+    route: '/master-dashboard?tab=widgets',
+    controls: 'Live rail matrix inspection, 2-hour rotation countdown ticker, manual rotation cycle trigger, professional edge Widget Creator, full CRUD on widgets database table.',
+    safeguards: 'Canary Ads permanent pinning guarantee, duplicate slug validation, automated fallback storage resilience.',
+    telemetry: 'Active rotational pool count, live CTR (6.88%), total impressions, conversion rates, community feedback sentiment (96.4% positive).',
+    activeIncidents: 0,
+    sparkline: [100, 100, 100, 100, 100, 100, 100]
   }
 ];
 

@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, Outlet } from 'react-router-dom';
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   Bars3Icon,
-  XMarkIcon,
   BellIcon,
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import NotificationsPanel from '../NotificationsPanel';
-import { ProtocolLushDrawer } from './ProtocolLushDrawer';
 
 interface MainLayoutProps {
   children?: React.ReactNode;
@@ -17,8 +15,7 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
-  const navigate = useNavigate();
-  const { member, logout } = useAuth();
+  const { member } = useAuth();
   const {
     unreadNotifications,
     toggleNotifications,
@@ -28,11 +25,8 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
     setShowSearch
   } = useAppContext();
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleOpenBurgerMenu = () => {
+    window.dispatchEvent(new CustomEvent('toggle-drawer-menu'));
   };
 
   return (
@@ -46,89 +40,25 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
         onClose={() => toggleNotifications?.()}
       />
 
-      {/* Mobile Drawer (Lushpressies consistent drawer) */}
-      <div className={`fixed inset-0 z-50 flex ${mobileMenuOpen ? '' : 'hidden'}`}>
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-xs lg:hidden transition-opacity"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-        <div className="relative flex flex-col w-80 max-w-[85vw] bg-[#F5F9F6] border-r border-emerald-100/80 z-50 p-3 overflow-y-auto">
-          <div className="flex items-center justify-between pb-3 mb-2 border-b border-emerald-100">
-            <Link
-              to="/"
-              className="flex items-center gap-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <img
-                src="/assets/logos/fingermobile_logo.webp"
-                alt="FingerMobile"
-                className="h-7 w-auto object-contain"
-              />
-              <span className="text-base font-bold text-gray-900 tracking-tight">
-                FingerMobile
-              </span>
-            </Link>
-            <button
-              type="button"
-              className="p-1.5 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-emerald-50 focus:outline-none"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-
-          <ProtocolLushDrawer
-            member={member}
-            ficBalance={ficBalance}
-            onLogout={handleLogout}
-            onCloseMobile={() => setMobileMenuOpen(false)}
-          />
-        </div>
-      </div>
-
-      {/* Desktop Sidebar (Lushpressies consistent drawer) */}
-      <div className="hidden lg:fixed lg:top-1 lg:bottom-0 lg:left-0 lg:flex lg:w-80 lg:flex-col z-30">
-        <div className="flex flex-col flex-grow bg-[#F5F9F6] border-r border-emerald-100/80 p-3 overflow-y-auto">
-          <div className="flex items-center gap-2 px-2 pb-3 mb-1 border-b border-emerald-100/70">
-            <Link to="/" className="flex items-center gap-2">
-              <img
-                src="/assets/logos/fingermobile_logo.webp"
-                alt="FingerMobile"
-                className="h-7 w-auto object-contain"
-              />
-              <span className="text-base font-extrabold text-gray-900 tracking-tight">
-                FingerMobile Protocol
-              </span>
-            </Link>
-          </div>
-
-          <ProtocolLushDrawer
-            member={member}
-            ficBalance={ficBalance}
-            onLogout={handleLogout}
-          />
-        </div>
-      </div>
-
       {/* Main Content Area */}
-      <div className="lg:pl-80 flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0">
         {/* Top Navigation Header */}
-        <header className="bg-white/90 backdrop-blur-md border-b border-emerald-100/70 shadow-2xs z-20 sticky top-1">
+        <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs z-20 sticky top-1">
           <div className="px-4 sm:px-6 lg:px-8 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <button
                   type="button"
                   className="inline-flex items-center justify-center rounded-xl p-2 text-[#ff6b00] hover:text-[#e05e00] hover:bg-orange-50 focus:outline-none border border-orange-200/80 transition cursor-pointer"
-                  onClick={() => setMobileMenuOpen(true)}
+                  onClick={handleOpenBurgerMenu}
                   aria-label="Open Platform Navigation Menu"
-                  title="Platform Navigation"
+                  title="Platform Mega Menu (385 Pages)"
                 >
                   <Bars3Icon className="h-6 w-6 text-[#ff6b00]" />
                 </button>
 
                 <div className="truncate">
-                  <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
+                  <h1 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
                     {pageTitle || 'FingerMobile Protocol'}
                   </h1>
                 </div>
@@ -150,11 +80,11 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                       <input
                         type="text"
                         placeholder="Search protocol..."
-                        className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-emerald-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs"
                         onBlur={() => setShowSearch?.(false)}
                         autoFocus
                       />
-                      <MagnifyingGlassIcon className="absolute left-2.5 top-2 h-4 w-4 text-gray-400" />
+                      <MagnifyingGlassIcon className="absolute left-2.5 top-2 h-4 w-4 text-slate-500" />
                     </div>
                   )}
                 </div>

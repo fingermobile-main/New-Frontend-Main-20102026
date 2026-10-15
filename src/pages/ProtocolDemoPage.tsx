@@ -83,7 +83,7 @@ const ProtocolDemoPage: React.FC = () => {
       }
 
       const result = await (protocolService as unknown as ProtocolService).connect(
-        'wss://api.fingermobile.com/protocol',
+        'wss://api.fingermobileprotocol.com/protocol',
       );
 
       if (result?.success) {
@@ -196,7 +196,7 @@ const ProtocolDemoPage: React.FC = () => {
 
               <div className="text-sm text-gray-500 mb-4">
                 <p>Client ID: {clientId}</p>
-                <p>Endpoint: wss://api.fingermobile.com/protocol</p>
+                <p>Endpoint: wss://api.fingermobileprotocol.com/protocol</p>
               </div>
 
               <div className="flex items-center mb-4">

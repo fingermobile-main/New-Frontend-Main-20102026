@@ -367,26 +367,26 @@ const Dancia4TvPage: React.FC = () => {
         {/* Top Secondary Tabs: Home / Browse / Subscriptions / My Library */}
         <div className="flex border-b border-gray-800 pb-2 space-x-4">
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'home' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'home' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('home')}
           >
             Stream Feed
           </button>
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'browse' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'browse' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('browse')}
           >
             Catalog Browse
           </button>
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'subscriptions' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'subscriptions' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('subscriptions')}
           >
             Subscriptions & Plans
           </button>
           {currentMember && (
             <button
-              className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'my-library' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+              className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'my-library' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
               onClick={() => setActiveTab('my-library')}
             >
               My Library
@@ -411,7 +411,7 @@ const Dancia4TvPage: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <span className="bg-sky-500 text-black font-extrabold text-xs px-2.5 py-1 rounded tracking-wider uppercase">PRIME EXCLUSIVE</span>
                   <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs px-2.5 py-1 rounded font-semibold">{activeHeroMovie.quality}</span>
-                  <span className="text-gray-300 text-xs font-semibold">{activeHeroMovie.releaseYear} • {activeHeroMovie.durationMinutes} mins • {activeHeroMovie.rating}</span>
+                  <span className="text-slate-100 text-xs font-bold">{activeHeroMovie.releaseYear} • {activeHeroMovie.durationMinutes} mins • {activeHeroMovie.rating}</span>
                   <span className="flex items-center text-amber-400 text-xs font-bold">
                     <Star className="w-3.5 h-3.5 fill-amber-400 mr-1" /> {activeHeroMovie.imdbRating}
                   </span>
@@ -421,17 +421,17 @@ const Dancia4TvPage: React.FC = () => {
                   {activeHeroMovie.title}
                 </h1>
 
-                <p className="text-gray-300 text-sm md:text-base line-clamp-3 font-light leading-relaxed">
+                <p className="text-slate-100 text-sm md:text-base line-clamp-3 font-medium leading-relaxed">
                   {activeHeroMovie.synopsis}
                 </p>
 
                 {/* AI Curated Summary Box */}
-                <div className="bg-slate-900/80 backdrop-blur-md border border-sky-500/30 p-3.5 rounded-xl text-xs text-sky-200 flex items-start space-x-3 shadow-lg">
+                <div className="bg-slate-900/90 backdrop-blur-md border border-sky-500/40 p-3.5 rounded-xl text-xs text-sky-100 flex items-start space-x-3 shadow-lg">
                   <Sparkles className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-sky-300 font-semibold block mb-0.5">Dancia AI Curated Captions & Summary:</strong>
+                    <strong className="text-sky-300 font-bold block mb-0.5">Dancia AI Curated Captions & Summary:</strong>
                     {activeHeroMovie.aiCuratedSummary}
-                    <div className="mt-1 text-gray-400 italic">
+                    <div className="mt-1 text-sky-200/95 font-medium italic">
                       Live Caption: "{activeHeroMovie.aiGeneratedCaptions.sampleCaption}"
                     </div>
                   </div>
@@ -530,12 +530,12 @@ const Dancia4TvPage: React.FC = () => {
                     onClick={() => setSelectedGenreFilter(g.name)}
                     className={`p-3 rounded-xl border text-left transition ${
                       selectedGenreFilter === g.name
-                        ? 'bg-amber-500/20 border-amber-400 text-amber-300'
-                        : 'bg-gray-900 border-white/10 text-gray-400 hover:border-gray-600'
+                        ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold'
+                        : 'bg-gray-900 border-white/10 text-slate-200 hover:border-slate-500'
                     }`}
                   >
                     <div className="font-bold text-xs text-white">{g.name}</div>
-                    <div className="text-[10px] text-gray-400 line-clamp-1 mt-0.5">{g.subGenres.slice(0, 2).join(', ')}</div>
+                    <div className="text-[10px] text-slate-300 line-clamp-1 mt-0.5 font-medium">{g.subGenres.slice(0, 2).join(', ')}</div>
                   </button>
                 ))}
               </div>
@@ -575,7 +575,7 @@ const Dancia4TvPage: React.FC = () => {
                     </div>
 
                     <div className="p-4 space-y-2">
-                      <div className="flex items-center justify-between text-[11px] text-gray-400">
+                      <div className="flex items-center justify-between text-[11px] text-slate-300 font-semibold">
                         <span>{movie.genre} • {movie.subGenre}</span>
                         <span className="flex items-center text-amber-400 font-bold">
                           <Star className="w-3 h-3 fill-amber-400 mr-1" /> {movie.imdbRating}
@@ -586,7 +586,7 @@ const Dancia4TvPage: React.FC = () => {
                         {movie.title}
                       </h4>
 
-                      <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-slate-200 line-clamp-2 leading-relaxed font-medium">
                         {movie.synopsis}
                       </p>
 
@@ -601,7 +601,7 @@ const Dancia4TvPage: React.FC = () => {
                           <Play className="w-3.5 h-3.5" />
                           <span>Play</span>
                         </button>
-                        <span className="text-[10px] text-gray-500 italic">{movie.durationMinutes} min</span>
+                        <span className="text-[10px] text-slate-300 italic font-medium">{movie.durationMinutes} min</span>
                       </div>
                     </div>
                   </div>
@@ -616,7 +616,7 @@ const Dancia4TvPage: React.FC = () => {
           <div className="space-y-6">
             <div className="border-l-4 border-blue-500 pl-4 py-1">
               <h2 className="text-2xl font-bold text-white">Dancia-4Tv{'\u00AE'} Original TV Series & Episodic Dramas</h2>
-              <p className="text-sm text-gray-400">Binge season premieres in 4K Ultra HD with AI live captions.</p>
+              <p className="text-sm text-slate-200 font-medium">Binge season premieres in 4K Ultra HD with AI live captions.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -629,7 +629,7 @@ const Dancia4TvPage: React.FC = () => {
                     </span>
                   </div>
                   <h3 className="font-bold text-lg text-white">{show.title} (TV Series)</h3>
-                  <p className="text-xs text-gray-400 line-clamp-2">{show.synopsis}</p>
+                  <p className="text-xs text-slate-200 line-clamp-2 font-medium">{show.synopsis}</p>
                   <button
                     onClick={() => setActivePlayingMovie(show)}
                     className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 rounded-lg transition flex items-center justify-center space-x-2"
@@ -652,7 +652,7 @@ const Dancia4TvPage: React.FC = () => {
                   <span className="w-3 h-3 bg-red-500 rounded-full animate-ping" />
                   Live Stream Broadcast Channels
                 </h2>
-                <p className="text-sm text-gray-400">24/7 Live OTT digital broadcast over the internet.</p>
+                <p className="text-sm text-slate-200 font-medium">24/7 Live OTT digital broadcast over the internet.</p>
               </div>
             </div>
 
@@ -697,7 +697,7 @@ const Dancia4TvPage: React.FC = () => {
           <div className="space-y-6">
             <div className="border-l-4 border-emerald-500 pl-4 py-1">
               <h2 className="text-2xl font-bold text-white">Dancia-4Tv Sports Arena</h2>
-              <p className="text-sm text-gray-400">Live sports matches, football tournaments, martial arts and combat highlights.</p>
+              <p className="text-sm text-slate-200 font-medium">Live sports matches, football tournaments, martial arts and combat highlights.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -731,7 +731,7 @@ const Dancia4TvPage: React.FC = () => {
           <div className="space-y-8">
             <div className="border-l-4 border-amber-500 pl-4 py-1">
               <h2 className="text-2xl font-bold text-white">Video on Demand (VoD) Streaming Models</h2>
-              <p className="text-sm text-gray-400">Explore SVoD, TVoD, AVoD, HVoD and 12+ Embedded YouTube Short Films curated for Dancia-4Tv{'\u00AE\u2122\u00A9'}.</p>
+              <p className="text-sm text-slate-200 font-medium">Explore SVoD, TVoD, AVoD, HVoD and 12+ Embedded YouTube Short Films curated for Dancia-4Tv{'\u00AE\u2122\u00A9'}.</p>
             </div>
 
             {/* VoD Filter Selector */}
@@ -743,7 +743,7 @@ const Dancia4TvPage: React.FC = () => {
                   className={`px-5 py-2.5 rounded-xl text-xs font-extrabold transition ${
                     selectedVodModel === model
                       ? 'bg-amber-400 text-black shadow-lg shadow-amber-400/20'
-                      : 'bg-gray-900 border border-white/10 text-gray-300 hover:bg-gray-800'
+                      : 'bg-gray-900 border border-white/20 text-slate-100 hover:bg-gray-800 font-bold'
                   }`}
                 >
                   {model}
@@ -757,7 +757,7 @@ const Dancia4TvPage: React.FC = () => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 pb-4 gap-2">
                   <div>
                     <h3 className="text-xl font-black text-white">{category.title}</h3>
-                    <p className="text-xs text-gray-400 mt-1">{category.description}</p>
+                    <p className="text-xs text-slate-200 mt-1 font-medium">{category.description}</p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-black uppercase ${category.badgeColor}`}>
                     {category.priceTag}
@@ -783,7 +783,7 @@ const Dancia4TvPage: React.FC = () => {
                         </span>
                       </div>
                       <h4 className="font-bold text-white text-sm truncate">{movie.title}</h4>
-                      <p className="text-[11px] text-gray-400 line-clamp-2">{movie.synopsis}</p>
+                      <p className="text-[11px] text-slate-200 line-clamp-2 font-medium">{movie.synopsis}</p>
                       <button
                         onClick={() => setActivePlayingMovie(movie)}
                         className="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs py-2 rounded-lg transition"
@@ -803,7 +803,7 @@ const Dancia4TvPage: React.FC = () => {
           <div className="space-y-8">
             <div className="border-l-4 border-purple-500 pl-4 py-1">
               <h2 className="text-2xl font-bold text-white">AI Movies Studio Channels (19 Curated Studios)</h2>
-              <p className="text-sm text-gray-400">Short AI Dramas, Afrobeats music videos, and cinematic micro-films powered by neural video synthesis.</p>
+              <p className="text-sm text-slate-200 font-medium">Short AI Dramas, Afrobeats music videos, and cinematic micro-films powered by neural video synthesis.</p>
             </div>
 
             {/* 19 Channel Selector Pills */}
@@ -815,7 +815,7 @@ const Dancia4TvPage: React.FC = () => {
                   className={`p-2.5 rounded-xl border text-center transition ${
                     selectedAiStudio === ch.name
                       ? 'bg-purple-600 border-purple-400 text-white font-extrabold shadow-lg shadow-purple-500/30'
-                      : 'bg-gray-900 border-white/10 text-gray-400 hover:bg-gray-800'
+                      : 'bg-gray-900 border-white/10 text-slate-200 hover:bg-gray-800 font-bold'
                   }`}
                 >
                   <div className="text-xs font-bold truncate">{ch.name}</div>
@@ -840,7 +840,7 @@ const Dancia4TvPage: React.FC = () => {
                       )}
                     </div>
                     <h3 className="text-3xl font-black text-white mt-2">{studio.name} AI Studio</h3>
-                    <p className="text-sm text-gray-300 mt-1 max-w-3xl leading-relaxed">{studio.description}</p>
+                    <p className="text-sm text-slate-100 mt-1 max-w-3xl leading-relaxed font-medium">{studio.description}</p>
                   </div>
                 </div>
 
@@ -854,7 +854,7 @@ const Dancia4TvPage: React.FC = () => {
                         </span>
                       </div>
                       <h4 className="font-bold text-white text-base">{movie.title}</h4>
-                      <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{movie.synopsis}</p>
+                      <p className="text-xs text-slate-200 leading-relaxed line-clamp-2 font-medium">{movie.synopsis}</p>
 
                       <div className="bg-purple-950/50 border border-purple-500/20 p-2.5 rounded-lg text-[11px] text-purple-200">
                         <strong className="block text-purple-300 font-bold">Studio AI Caption:</strong>
@@ -892,7 +892,7 @@ const Dancia4TvPage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setActivePlayingMovie(null)}
-                  className="p-2 text-gray-400 hover:text-white rounded-full bg-gray-800"
+                  className="p-2 text-slate-200 hover:text-white rounded-full bg-gray-800"
                 >
                   ✕
                 </button>
@@ -923,7 +923,7 @@ const Dancia4TvPage: React.FC = () => {
                   <span className="font-bold">AI Auto-Generated Caption Stream:</span>
                   <span>{activePlayingMovie.aiGeneratedCaptions?.sampleCaption}</span>
                 </div>
-                <p className="text-xs text-gray-300 leading-relaxed">{activePlayingMovie.synopsis}</p>
+                <p className="text-xs text-slate-100 leading-relaxed font-medium">{activePlayingMovie.synopsis}</p>
               </div>
             </div>
           </div>
@@ -935,10 +935,10 @@ const Dancia4TvPage: React.FC = () => {
             <div className="bg-gray-900 border border-white/10 rounded-3xl p-6 max-w-lg w-full space-y-4 text-white">
               <div className="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 className="text-xl font-bold">{activeDetailMovie.title}</h3>
-                <button onClick={() => setActiveDetailMovie(null)} className="text-gray-400 hover:text-white">✕</button>
+                <button onClick={() => setActiveDetailMovie(null)} className="text-slate-200 hover:text-white">✕</button>
               </div>
-              <p className="text-xs text-gray-300">{activeDetailMovie.synopsis}</p>
-              <div className="text-xs space-y-1 text-gray-400">
+              <p className="text-xs text-slate-100 font-medium">{activeDetailMovie.synopsis}</p>
+              <div className="text-xs space-y-1 text-slate-200 font-medium">
                 <p><strong>Director:</strong> {activeDetailMovie.director}</p>
                 <p><strong>Cast:</strong> {activeDetailMovie.cast.join(', ')}</p>
                 <p><strong>Quality:</strong> {activeDetailMovie.quality}</p>
@@ -1057,14 +1057,14 @@ const Dancia4TvPage: React.FC = () => {
                         className="w-16 h-10 object-cover rounded"
                       />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white truncate">
+                        <p className="text-sm font-semibold text-white truncate">
                           {video.title}
                         </p>
-                        <p className="text-xs text-gray-400">{video.genre}</p>
+                        <p className="text-xs text-slate-300 font-medium">{video.genre}</p>
                       </div>
                       <button
                         onClick={() => removeFromWatchlist(video.videoID)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-400 hover:text-red-300 font-semibold"
                       >
                         Remove
                       </button>
@@ -1089,10 +1089,10 @@ const Dancia4TvPage: React.FC = () => {
                         className="w-16 h-10 object-cover rounded"
                       />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white truncate">
+                        <p className="text-sm font-semibold text-white truncate">
                           {video.title}
                         </p>
-                        <p className="text-xs text-gray-400">{video.genre}</p>
+                        <p className="text-xs text-slate-300 font-medium">{video.genre}</p>
                       </div>
                     </div>
                   ))}
@@ -1115,10 +1115,10 @@ const Dancia4TvPage: React.FC = () => {
                         className="w-16 h-10 object-cover rounded"
                       />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white truncate">
+                        <p className="text-sm font-semibold text-white truncate">
                           {video.title}
                         </p>
-                        <p className="text-xs text-gray-400">{video.genre}</p>
+                        <p className="text-xs text-slate-300 font-medium">{video.genre}</p>
                       </div>
                     </div>
                   ))}
@@ -1378,7 +1378,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ videos }) => {
             <h4 className="text-white truncate">
               {video.title || `Video ${idx + 1}`}
             </h4>
-            <p className="text-gray-400 text-sm">
+            <p className="text-slate-200 text-sm font-medium">
               {video.description || 'Description coming soon'}
             </p>
           </div>
@@ -1401,10 +1401,10 @@ const TrendingVideosSection: React.FC<TrendingVideosSectionProps> = ({ videos })
           <div key={idx} className="flex items-center p-2 bg-gray-700 rounded">
             <div className="w-16 h-10 bg-gray-600 rounded mr-2"></div>
             <div>
-              <p className="text-white text-sm truncate">
+              <p className="text-white text-sm font-semibold truncate">
                 {video.title || `Trending ${idx + 1}`}
               </p>
-              <p className="text-gray-400 text-xs">{video.views || 0} views</p>
+              <p className="text-slate-300 text-xs font-medium">{video.views || 0} views</p>
             </div>
           </div>
         ))}
@@ -1417,7 +1417,7 @@ const NotificationsPanel: React.FC = () => {
   return (
     <div className="p-3 bg-gray-700 rounded">
       <h3 className="text-lg font-bold text-white mb-2">Notifications</h3>
-      <p className="text-gray-400 text-sm">No new notifications</p>
+      <p className="text-slate-200 text-sm font-medium">No new notifications</p>
     </div>
   );
 };
@@ -1426,7 +1426,7 @@ const AdsPanel: React.FC = () => {
   return (
     <div className="p-3 bg-gray-700 rounded">
       <h3 className="text-lg font-bold text-white mb-2">Sponsored</h3>
-      <p className="text-gray-400 text-sm">Advertisement content</p>
+      <p className="text-slate-200 text-sm font-medium">Advertisement content</p>
     </div>
   );
 };
@@ -1441,11 +1441,11 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ plan }) => 
   return (
     <div className="bg-gray-700 p-4 rounded-lg">
       <h4 className="text-white font-bold">{plan.name || 'Plan Name'}</h4>
-      <p className="text-gray-300 text-sm">
+      <p className="text-slate-200 text-sm font-medium">
         {plan.description || 'Plan details'}
       </p>
       <p className="text-white font-bold mt-2">{plan.price || '$0/month'}</p>
-      <button className="mt-2 w-full py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <button className="mt-2 w-full py-1 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">
         Subscribe
       </button>
     </div>
@@ -1461,10 +1461,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playerState, onPause }
   return (
     <div className="bg-black aspect-video rounded flex items-center justify-center">
       <div className="text-center">
-        <div className="text-white text-xl mb-2">Video Player</div>
-        <p className="text-gray-400">{video.title || 'Loading...'}</p>
+        <div className="text-white text-xl mb-2 font-bold">Video Player</div>
+        <p className="text-slate-200 font-semibold">{video.title || 'Loading...'}</p>
         {onPause && (
-          <button onClick={onPause} className="mt-2 text-red-500">Pause</button>
+          <button onClick={onPause} className="mt-2 text-red-400 font-bold hover:text-red-300">Pause</button>
         )}
       </div>
     </div>

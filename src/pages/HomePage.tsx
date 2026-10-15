@@ -261,46 +261,46 @@ const HomePage: React.FC = () => {
               </h1>
             </div>
 
-            <nav className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-zinc-300">
+            <nav className="hidden md:flex items-center gap-1.5 text-xs font-bold text-zinc-100">
               <Link
                 to="/forum"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 Forum
               </Link>
               <Link
                 to="/hallmarks"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 HallMarks
               </Link>
               <Link
                 to="/lushpressies"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 Lush-Pressies
               </Link>
               <Link
                 to="/fingerlux"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 FingerLux
               </Link>
               <Link
                 to="/beatwaveng"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 BeatwaveNG
               </Link>
               <Link
                 to="/dancia4tv"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 Dancia-4Tv
               </Link>
               <Link
                 to="/ownit"
-                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/5 transition-colors"
+                className="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/10 transition-colors"
               >
                 OwnIt
               </Link>
@@ -309,7 +309,7 @@ const HomePage: React.FC = () => {
             <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="px-4 py-2 text-xs font-bold text-zinc-300 hover:text-white transition-colors border border-white/10 hover:border-white/30 rounded-xl bg-white/5 backdrop-blur"
+                className="px-4 py-2 text-xs font-bold text-white hover:text-emerald-300 transition-colors border border-white/20 hover:border-white/40 rounded-xl bg-white/10 backdrop-blur"
               >
                 Sign In
               </Link>
@@ -325,8 +325,8 @@ const HomePage: React.FC = () => {
 
         {/* Hero Header Section */}
         <section className="pt-12 pb-8 sm:pt-16 sm:pb-12 text-center px-4 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold tracking-wide uppercase mb-6 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 text-xs font-bold tracking-wide uppercase mb-6 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-300" />
             <span>Sovereign Platform Ecosystem • 7 Core Modules</span>
           </div>
 
@@ -337,11 +337,11 @@ const HomePage: React.FC = () => {
             </span>
           </h1>
 
-          <p className="mt-5 text-lg sm:text-xl text-zinc-300 font-medium max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-5 text-lg sm:text-xl text-zinc-100 font-semibold max-w-3xl mx-auto leading-relaxed">
             Connect, share, and grow with our innovative social platform.
           </p>
 
-          <p className="mt-3 text-sm text-zinc-400 max-w-2xl mx-auto">
+          <p className="mt-3 text-sm text-zinc-200 font-medium max-w-2xl mx-auto leading-relaxed">
             Experience the complete two-tier platform showcase — curated
             community discourse, verified merits, bespoke gifting, VIP
             hospitality, high-fidelity music, 4K cinema, and celebrity
@@ -362,13 +362,13 @@ const HomePage: React.FC = () => {
                   <h2 className="text-xl font-black text-white tracking-tight">
                     Top Row: Community, Recognition & Luxury Gifting
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-200 font-medium">
                     Three (3) foundational interactive modules powering member
                     connection
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400">
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-zinc-200">
                 3 Screen Modules
               </span>
             </div>
@@ -380,15 +380,15 @@ const HomePage: React.FC = () => {
                 return (
                   <article
                     key={item.id}
-                    className={`group relative flex flex-col rounded-2xl bg-zinc-900/80 dark:bg-zinc-950/85 backdrop-blur-xl border border-white/10 ${item.borderAccent} shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex-1 overflow-hidden`}
+                    className={`group relative flex flex-col rounded-2xl bg-zinc-900/90 dark:bg-zinc-950/90 backdrop-blur-xl border border-white/15 ${item.borderAccent} shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex-1 overflow-hidden`}
                     style={{
                       boxShadow: `0 10px 30px -10px ${item.glowColor}`,
                     }}
                   >
                     {/* Top Row Badge Index */}
-                    <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-black text-white">
+                    <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md border border-white/20 text-[11px] font-black text-white">
                       <span className="text-emerald-400">0{index + 1}</span>
-                      <span className="text-zinc-500">•</span>
+                      <span className="text-zinc-400">•</span>
                       <span>{item.name}</span>
                     </div>
 
@@ -414,7 +414,7 @@ const HomePage: React.FC = () => {
                         >
                           {item.badge}
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                        <div className="w-8 h-8 rounded-full bg-black/75 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                           <IconComponent className="w-4 h-4 text-emerald-300" />
                         </div>
                       </div>
@@ -428,21 +428,21 @@ const HomePage: React.FC = () => {
                             {item.name}
                           </h3>
                         </div>
-                        <p className="text-xs font-semibold text-emerald-400/90 mb-3">
+                        <p className="text-xs font-bold text-emerald-300 mb-3">
                           {item.tagline}
                         </p>
-                        <p className="text-xs text-zinc-300 leading-relaxed text-justify">
+                        <p className="text-xs text-zinc-100 font-normal leading-relaxed text-justify">
                           {item.narrative}
                         </p>
                       </div>
 
                       {/* Feature Highlights Tags */}
-                      <div className="space-y-3 pt-2 border-t border-white/5">
+                      <div className="space-y-3 pt-2 border-t border-white/10">
                         <div className="flex flex-wrap gap-1.5">
                           {item.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-zinc-300 flex items-center gap-1"
+                              className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
                             >
                               <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
                               {tag}
@@ -453,7 +453,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-emerald-500 hover:text-black text-white text-xs font-bold border border-white/10 hover:border-emerald-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-emerald-500 hover:text-black text-white text-xs font-black border border-white/20 hover:border-emerald-400 transition-all duration-200 group/btn mt-1"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -477,12 +477,12 @@ const HomePage: React.FC = () => {
                   <h2 className="text-xl font-black text-white tracking-tight">
                     Bottom Row: Hospitality, Hi-Fi Audio, Cinema & Commerce
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-200 font-medium">
                     Four (4) ultra-luxury and media streaming platforms
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400">
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-zinc-200">
                 4 Screen Modules
               </span>
             </div>
@@ -494,15 +494,15 @@ const HomePage: React.FC = () => {
                 return (
                   <article
                     key={item.id}
-                    className={`group relative flex flex-col rounded-2xl bg-zinc-900/80 dark:bg-zinc-950/85 backdrop-blur-xl border border-white/10 ${item.borderAccent} shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex-1 overflow-hidden`}
+                    className={`group relative flex flex-col rounded-2xl bg-zinc-900/90 dark:bg-zinc-950/90 backdrop-blur-xl border border-white/15 ${item.borderAccent} shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex-1 overflow-hidden`}
                     style={{
                       boxShadow: `0 10px 30px -10px ${item.glowColor}`,
                     }}
                   >
                     {/* Bottom Row Badge Index */}
-                    <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-black text-white">
+                    <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md border border-white/20 text-[11px] font-black text-white">
                       <span className="text-cyan-400">0{index + 4}</span>
-                      <span className="text-zinc-500">•</span>
+                      <span className="text-zinc-400">•</span>
                       <span>{item.name}</span>
                     </div>
 
@@ -528,7 +528,7 @@ const HomePage: React.FC = () => {
                         >
                           {item.badge}
                         </span>
-                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform flex-shrink-0 ml-1">
+                        <div className="w-7 h-7 rounded-full bg-black/75 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition-transform flex-shrink-0 ml-1">
                           <IconComponent className="w-3.5 h-3.5 text-cyan-300" />
                         </div>
                       </div>
@@ -542,21 +542,21 @@ const HomePage: React.FC = () => {
                             {item.name}
                           </h3>
                         </div>
-                        <p className="text-[11px] font-semibold text-cyan-400/90 mb-2">
+                        <p className="text-[11px] font-bold text-cyan-300 mb-2">
                           {item.tagline}
                         </p>
-                        <p className="text-xs text-zinc-300 leading-relaxed text-justify">
+                        <p className="text-xs text-zinc-100 font-normal leading-relaxed text-justify">
                           {item.narrative}
                         </p>
                       </div>
 
                       {/* Feature Highlights Tags */}
-                      <div className="space-y-3 pt-2 border-t border-white/5">
+                      <div className="space-y-3 pt-2 border-t border-white/10">
                         <div className="flex flex-wrap gap-1">
                           {item.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-zinc-300 flex items-center gap-1"
+                              className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-zinc-100 flex items-center gap-1"
                             >
                               <CheckCircle2 className="w-2.5 h-2.5 text-cyan-400 flex-shrink-0" />
                               <span className="truncate">{tag}</span>
@@ -567,7 +567,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-cyan-500 hover:text-black text-white text-xs font-bold border border-white/10 hover:border-cyan-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-cyan-500 hover:text-black text-white text-xs font-black border border-white/20 hover:border-cyan-400 transition-all duration-200 group/btn mt-1"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -581,15 +581,15 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Quick Launchpad & Getting Started Bar */}
-          <section className="rounded-3xl p-8 sm:p-10 border border-white/15 bg-gradient-to-r from-zinc-900/90 via-black/80 to-zinc-900/90 backdrop-blur-2xl shadow-2xl text-center relative overflow-hidden">
+          <section className="rounded-3xl p-8 sm:p-10 border border-white/20 bg-gradient-to-r from-zinc-900/95 via-black/90 to-zinc-900/95 backdrop-blur-2xl shadow-2xl text-center relative overflow-hidden">
             <div className="relative z-10 max-w-3xl mx-auto space-y-4">
-              <span className="text-xs font-black tracking-widest uppercase text-emerald-400">
+              <span className="text-xs font-black tracking-widest uppercase text-emerald-300">
                 Join The Sovereign FingerMobile Experience
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Ready to explore all 7 ecosystems?
               </h2>
-              <p className="text-sm text-zinc-300 leading-relaxed">
+              <p className="text-sm text-zinc-100 font-medium leading-relaxed">
                 Create your verified profile today to participate in
                 discussions, earn milestone badges, gift custom plushies,
                 charter luxury travel, stream lossless audio, and collect
@@ -604,13 +604,13 @@ const HomePage: React.FC = () => {
                 </Link>
                 <Link
                   to="/login"
-                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-black border border-white/20 transition-all"
+                  className="px-6 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-black border border-white/25 transition-all"
                 >
                   Sign In to Dashboard
                 </Link>
                 <Link
                   to="/about"
-                  className="px-6 py-3 rounded-xl bg-transparent hover:bg-white/5 text-zinc-300 hover:text-white text-xs font-semibold transition-all"
+                  className="px-6 py-3 rounded-xl bg-transparent hover:bg-white/10 text-zinc-100 hover:text-white text-xs font-bold transition-all"
                 >
                   Learn About Protocol →
                 </Link>
@@ -620,43 +620,43 @@ const HomePage: React.FC = () => {
         </main>
 
         {/* Footer */}
-        <footer className="w-full border-t border-white/10 bg-black/60 backdrop-blur-xl py-8 mt-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
+        <footer className="w-full border-t border-white/15 bg-black/80 backdrop-blur-xl py-8 mt-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-200">
             <div className="flex items-center gap-3">
               <span className="font-bold text-white">
                 FingerMobile Protocol™
               </span>
-              <span>•</span>
-              <span>© 2026 Mbah Israel Obinna. All Rights Reserved.</span>
+              <span className="text-zinc-400">•</span>
+              <span className="text-zinc-200 font-medium">© 2026 Mbah Israel Obinna. All Rights Reserved.</span>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 font-semibold text-zinc-200">
               <Link
                 to="/privacy-policy"
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-emerald-300 transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-emerald-300 transition-colors"
               >
                 Terms of Service
               </Link>
               <Link
                 to="/platform-service-of-use"
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-emerald-300 transition-colors"
               >
                 Platform Service of Use
               </Link>
               <Link
                 to="/legal"
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-emerald-300 transition-colors"
               >
                 Legal Suite
               </Link>
               <Link
                 to="/support"
-                className="hover:text-emerald-400 transition-colors"
+                className="hover:text-emerald-300 transition-colors"
               >
                 Support
               </Link>

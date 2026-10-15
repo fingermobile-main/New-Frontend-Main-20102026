@@ -5,13 +5,13 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import userProfileSyncService from '../../services/UserProfileSyncService';
-import { 
-  ChevronDown, 
-  Grid, 
-  ShieldCheck, 
-  Sparkles,
-  ExternalLink
+import {
+  ChevronDown,
+  Grid,
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 
 interface MemberProfileMenuTriggerProps {
@@ -36,24 +36,28 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
   return (
     <div className="fixed top-2.5 left-3 z-[9995] pointer-events-auto transition-all duration-300">
       <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/90 hover:bg-slate-950 text-white border border-slate-800/90 shadow-2xl backdrop-blur-xl transition-all ring-1 ring-white/10 group">
-        {/* Main Member Profile Pill Button */}
+        {/* Clickable Member Profile Picture -> Opens Member Profile Page / Wall */}
+        <Link
+          to="/profile"
+          className="relative shrink-0 p-0.5 rounded-full hover:ring-2 hover:ring-orange-400 transition-all focus:outline-none"
+          title="Click to view Member Profile Page / Wall"
+        >
+          <img
+            src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
+            alt={profile.name || 'Member Profile'}
+            className="w-8 h-8 rounded-full object-cover ring-2 ring-orange-500/80 shadow-md"
+          />
+          <span className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
+        </Link>
+
+        {/* Platform Menu Toggle Button */}
         <button
           type="button"
           onClick={onToggleMenu}
-          className="flex items-center gap-2.5 py-1 px-1.5 rounded-xl hover:bg-slate-900 transition-all text-left focus:outline-none"
-          title="Open Sovereign Platform Menu & Account Hub"
+          className="flex items-center gap-2 py-1 px-1 rounded-xl hover:bg-slate-900 transition-all text-left focus:outline-none"
+          title="Open Sovereign Platform Burger Menu (385 Pages)"
           aria-expanded={isOpen}
         >
-          {/* User Avatar with Presence Indicator */}
-          <div className="relative shrink-0">
-            <img
-              src={profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'}
-              alt={profile.name || 'Member Profile'}
-              className="w-8 h-8 rounded-full object-cover ring-2 ring-orange-500/80 shadow-md"
-            />
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
-          </div>
-
           {/* User Details (Full view on larger screens, compact on small) */}
           {!isMinimized && (
             <div className="hidden sm:flex flex-col min-w-0 pr-1">
@@ -64,10 +68,10 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
                 <ShieldCheck className="w-3.5 h-3.5 text-sky-400 shrink-0" />
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] text-orange-400 font-semibold tracking-wide">
+                <span className="text-[10px] text-orange-400 font-bold tracking-wide">
                   #PIN-{profile.pinNumber || '749822'}
                 </span>
-                <span className="text-[9px] text-slate-400 font-medium hidden md:inline">
+                <span className="text-[10px] text-slate-200 font-semibold hidden md:inline">
                   • {profile.pinQuotaRemaining ?? 48} Pins
                 </span>
               </div>
@@ -75,7 +79,7 @@ export const MemberProfileMenuTrigger: React.FC<MemberProfileMenuTriggerProps> =
           )}
 
           {/* FingerMobile Dropdown Chevron */}
-          <div className="p-1 rounded-lg text-slate-400 group-hover:text-white transition-colors">
+          <div className="p-1 rounded-lg text-slate-200 group-hover:text-white transition-colors">
             <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-orange-500' : ''}`} />
           </div>
         </button>
