@@ -207,7 +207,7 @@ const MiiPage: React.FC = () => {
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
               {/* Live ShowCase Sync Panel */}
               <div className="xl:col-span-5 space-y-6">
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+                <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
                       <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
@@ -252,7 +252,7 @@ const MiiPage: React.FC = () => {
                 </div>
 
                 {/* Pulsating Ring Indicator Legend */}
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-3">
+                <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-3">
                   <h4 className="font-bold text-xs uppercase tracking-wider text-gray-500">Contact Ring State</h4>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-indigo-500 p-0.5 animate-pulse">
@@ -270,7 +270,7 @@ const MiiPage: React.FC = () => {
 
               {/* Mii Feed Cards */}
               <div className="lg:col-span-2 space-y-4">
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+                <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <h3 className="font-bold text-lg text-gray-900 dark:text-white">Active Followers Feed</h3>
@@ -293,7 +293,7 @@ const MiiPage: React.FC = () => {
                     ].map((story, i) => (
                       <div
                         key={i}
-                        className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow"
+                        className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow"
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
@@ -336,7 +336,7 @@ const MiiPage: React.FC = () => {
           {/* Tab 2: PIN Exchange & Contact Sync */}
           {activeTab === 'contacts' && (
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
@@ -370,7 +370,7 @@ const MiiPage: React.FC = () => {
           {/* Tab 3: FingerOrbit Folders */}
           {activeTab === 'orbit' && (
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
@@ -390,7 +390,7 @@ const MiiPage: React.FC = () => {
                 </div>
 
                 {/* Anti-Capture banner */}
-                <div className="bg-amber-500 text-black px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between">
+                <div className="bg-amber-500 text-slate-900 px-4 py-3 rounded-2xl text-xs font-bold flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShieldAlert className="w-4 h-4 text-black" />
                     <span>FingerOrbit™ Security: Strictly No Screenshots • No Screen Recording Permitted</span>
@@ -406,7 +406,7 @@ const MiiPage: React.FC = () => {
           {/* Tab 4: MiniStore 2-Page Catalogue */}
           {activeTab === 'ministore' && (
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
@@ -430,13 +430,13 @@ const MiiPage: React.FC = () => {
 
           {/* Tab 5: Encrypted Peer Chat */}
           {activeTab === 'chats' && (
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
               <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-emerald-600" />
               Direct Encrypted Mii Peer Chat
               </h3>
 
-              <div className="h-64 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700">
+              <div className="h-64 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-slate-300 dark:border-gray-700">
                 {messages.map((m) => (
                   <div
                     key={m.id}

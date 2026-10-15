@@ -113,15 +113,15 @@ const PayoutsPage: React.FC = () => {
   }> = ({ request, isPending }) => {
     const statusLower = String(request.status).toLowerCase();
     const statusStyles: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      completed: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
-      failed: 'bg-red-100 text-red-800'
+      pending: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold',
+      approved: 'bg-green-100 text-green-950 border border-green-400 font-bold',
+      completed: 'bg-green-100 text-green-950 border border-green-400 font-bold',
+      rejected: 'bg-red-100 text-red-950 border border-red-400 font-bold',
+      failed: 'bg-red-100 text-red-950 border border-red-400 font-bold'
     };
 
     return (
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
+      <div className="bg-white p-4 rounded-lg border border-slate-300">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
             <AnimatedAvatar
@@ -156,14 +156,14 @@ const PayoutsPage: React.FC = () => {
             <button
               onClick={() => handleUpdateStatus(request.id, 'reject')}
               disabled={isProcessing}
-              className="px-3 py-1 text-sm font-semibold bg-red-100 text-red-800 rounded-full hover:bg-red-200 disabled:opacity-50"
+              className="px-3 py-1 text-sm font-semibold bg-red-100 text-red-950 border border-red-400 font-bold rounded-full hover:bg-red-200 disabled:opacity-50"
             >
               Deny
             </button>
             <button
               onClick={() => handleUpdateStatus(request.id, 'approve')}
               disabled={isProcessing}
-              className="px-3 py-1 text-sm font-semibold bg-green-100 text-green-800 rounded-full hover:bg-green-200 disabled:opacity-50"
+              className="px-3 py-1 text-sm font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-full hover:bg-green-200 disabled:opacity-50"
             >
               Approve
             </button>

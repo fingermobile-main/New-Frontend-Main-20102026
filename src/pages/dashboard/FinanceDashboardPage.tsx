@@ -121,7 +121,7 @@ const FinanceDashboardPage: React.FC = () => {
           {financialStats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+              className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
             >
               <p className="text-sm font-medium text-gray-500">{stat.title}</p>
               <div className="mt-2">
@@ -134,7 +134,7 @@ const FinanceDashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Revenue Distribution Chart */}
-          <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
             <h3 className="text-lg font-bold mb-6">Revenue Sources</h3>
             <div className="space-y-4">
               {revenueSources.map((source, index) => (
@@ -157,7 +157,7 @@ const FinanceDashboardPage: React.FC = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
             <h3 className="text-lg font-bold mb-6">Financial Operations</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -269,7 +269,7 @@ const FinanceDashboardPage: React.FC = () => {
         </div>
 
         {/* Transaction History */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">Transaction History</h2>
             <div className="flex gap-2">
@@ -279,7 +279,7 @@ const FinanceDashboardPage: React.FC = () => {
                   onClick={() => setTimeRange(range)}
                   className={`px-3 py-1 text-sm rounded-full ${
                     timeRange === range
-                      ? 'bg-blue-100 text-blue-800 font-medium'
+                      ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
@@ -355,8 +355,8 @@ const FinanceDashboardPage: React.FC = () => {
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             transaction.type === 'credit'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                           }`}
                         >
                           {transaction.type === 'credit' ? 'Credit' : 'Debit'}

@@ -15,7 +15,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   trend
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
       <div className="flex items-center justify-between mb-2">
         <span className="text-2xl">{icon}</span>
         {trend && (

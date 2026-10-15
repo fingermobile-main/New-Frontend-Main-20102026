@@ -744,7 +744,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   className="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-300"
                 />
               ) : (
-                <div className="p-3 bg-blue-100 text-blue-700 rounded-xl flex-shrink-0 border border-blue-300">
+                <div className="p-3 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-xl flex-shrink-0 border border-blue-300">
                   <LinkIcon className="w-5 h-5" />
                 </div>
               )}
@@ -1161,7 +1161,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   placeholder="Enter custom FIC amount..."
                   value={customTip}
                   onChange={(e) => setCustomTip(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder:text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
                 />
                 <span className="absolute right-3.5 top-2.5 text-xs font-black text-amber-700">FIC</span>
               </div>
@@ -1175,7 +1175,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 placeholder="Awesome insight! Keep building..."
                 value={tipNote}
                 onChange={(e) => setTipNote(e.target.value)}
-                className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
+                className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-hidden"
               />
             </div>
 

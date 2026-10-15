@@ -58,7 +58,7 @@ const CommunitiesSection: React.FC = () => {
 
       <div className="space-y-4">
         {communities.map(community => (
-          <div key={community.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <div key={community.id} className="flex items-center justify-between p-3 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 rounded-full bg-fm-orange bg-opacity-10 flex items-center justify-center text-xl">
                 {community.icon}
@@ -71,7 +71,7 @@ const CommunitiesSection: React.FC = () => {
             </div>
 
             {community.isJoined ? (
-              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+              <span className="text-xs bg-green-100 text-green-950 border border-green-400 font-bold px-2 py-1 rounded-full">
                 Joined
               </span>
             ) : (

@@ -110,7 +110,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
           <div className="space-y-2 flex-1 max-w-xl">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
               <span className="text-blue-600 dark:text-blue-400 font-bold">{seats.availableSeats} collaborator seats left</span>
-              <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
+              <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
               <span className="text-xs text-slate-500 dark:text-slate-400 font-mono ml-auto">
                 {seats.usedSeats}/{seats.totalSeats}
               </span>
@@ -153,7 +153,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
               <span>Filter</span>
             </button>
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
               <input
                 type="text"
                 placeholder="Search..."
@@ -168,7 +168,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-700 uppercase tracking-wider font-semibold">
               <tr>
                 <th className="py-3 px-4">Name</th>
                 <th className="py-3 px-4">Roles</th>

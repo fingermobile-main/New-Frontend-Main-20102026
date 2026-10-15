@@ -20,8 +20,8 @@ const PartnerHouseWidget: React.FC<PartnerHouseWidgetProps> = ({
             <span>{partner.name}</span>
             <span className={`px-2 py-1 rounded text-xs ${
               partner.status === 'Active'
-                ? 'bg-green-100 text-green-800'
-                : 'bg-yellow-100 text-yellow-800'
+                ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
             }`}>
               {partner.status}
             </span>

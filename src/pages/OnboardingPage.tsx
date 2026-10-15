@@ -639,7 +639,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="email">Email Address (Mandatory)</Label>
                   <div className="relative mt-1">
-                    <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                     <Input
                       id="email"
                       type="email"
@@ -680,7 +680,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <div className="relative mt-1">
-                    <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                     <Input
                       id="password"
                       type="password"
@@ -919,7 +919,7 @@ const OnboardingPage: React.FC = () => {
                   <div>
                     <Label htmlFor="location">Location</Label>
                     <div className="relative mt-1">
-                      <GlobeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <GlobeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                       <Input
                         id="location"
                         type="text"
@@ -1044,7 +1044,7 @@ const OnboardingPage: React.FC = () => {
                 <div>
                   <Label htmlFor="username">Username</Label>
                   <div className="relative mt-1">
-                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                     <Input
                       id="username"
                       type="text"
@@ -1335,7 +1335,7 @@ const OnboardingPage: React.FC = () => {
                   Select your creator tier according to regional eligibility:
                 </p>
 
-                <div className="bg-white dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-lg p-4 mb-4 shadow-sm text-left">
+                <div className="bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg p-4 mb-4 shadow-sm text-left">
                   <h3 className="font-semibold text-gray-800 dark:text-white mb-3 text-sm">Select Creator Tier</h3>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-2">
@@ -1404,7 +1404,7 @@ const OnboardingPage: React.FC = () => {
                   )}
 
                   {/* Dynamic Regional Quota Status */}
-                  <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded text-sm">
+                  <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded text-sm">
                     <div className="font-semibold mb-2 text-gray-800 dark:text-slate-200 text-xs">
                       Live Regional Quota Status ({tempData.countryCode || 'NG'})
                     </div>

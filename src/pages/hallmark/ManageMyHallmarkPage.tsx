@@ -210,7 +210,7 @@ const ManageMyHallmarkPage: React.FC = () => {
 
                     <div className="mt-2 flex flex-wrap gap-2">
                       {tags && tags.length > 0 ? tags.map((tag, index) => (
-                        <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center">
+                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center">
                           {tag}
                           <button
                             onClick={() => handleRemoveTag(index)}
@@ -220,7 +220,7 @@ const ManageMyHallmarkPage: React.FC = () => {
                           </button>
                         </div>
                       )) : (selectedHallmark.tags || []).map((tag: string, index: number) => (
-                        <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center">
+                        <div key={index} className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full flex items-center">
                           {tag}
                           <button
                             onClick={() => handleRemoveTag(index)}

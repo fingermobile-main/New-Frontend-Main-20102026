@@ -77,7 +77,7 @@ const ModerationPage: React.FC = () => {
       ) : items.length > 0 ? (
         <div className="space-y-4">
           {items.map((item) => (
-            <div key={item.id} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+            <div key={item.id} className="bg-white p-5 rounded-lg border border-slate-300 shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm font-medium text-gray-900">
@@ -104,7 +104,7 @@ const ModerationPage: React.FC = () => {
                 <button
                   onClick={() => handleApprove(String(item.id))}
                   disabled={actionId === String(item.id)}
-                  className="px-4 py-1.5 text-xs font-semibold bg-green-100 text-green-800 rounded-md hover:bg-green-200 disabled:opacity-50 flex items-center gap-1"
+                  className="px-4 py-1.5 text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-md hover:bg-green-200 disabled:opacity-50 flex items-center gap-1"
                 >
                   {actionId === String(item.id) ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
                   Approve
@@ -112,7 +112,7 @@ const ModerationPage: React.FC = () => {
                 <button
                   onClick={() => handleRemove(String(item.id))}
                   disabled={actionId === String(item.id)}
-                  className="px-4 py-1.5 text-xs font-semibold bg-red-100 text-red-800 rounded-md hover:bg-red-200 disabled:opacity-50 flex items-center gap-1"
+                  className="px-4 py-1.5 text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold rounded-md hover:bg-red-200 disabled:opacity-50 flex items-center gap-1"
                 >
                   {actionId === String(item.id) ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
                   Remove Content
@@ -122,7 +122,7 @@ const ModerationPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-16 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div className="text-center text-gray-500 py-16 bg-white rounded-xl border border-slate-300 shadow-sm">
           <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
           <p className="text-lg font-semibold text-gray-800">The moderation queue is clear!</p>
           <p className="text-sm text-gray-500 mt-1">No content is currently flagged or awaiting review.</p>

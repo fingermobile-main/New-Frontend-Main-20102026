@@ -213,7 +213,7 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
                       </div>
                     ) : (
                       <>
-                        <ArrowUpTrayIcon className="w-12 h-12 mx-auto text-gray-400" />
+                        <ArrowUpTrayIcon className="w-12 h-12 mx-auto text-slate-500" />
                         <p className="mt-2 text-sm text-gray-400">Drag & drop files or</p>
                         <label htmlFor="file-upload" className="cursor-pointer text-blue-400 hover:text-blue-300">
                           Browse

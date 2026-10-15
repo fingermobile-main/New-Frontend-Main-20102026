@@ -82,7 +82,7 @@ const ContactUsPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Information */}
             <div>
-              <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
+              <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-slate-300">
                 <div className="px-6 py-8 sm:p-10">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Get In Touch
@@ -210,7 +210,7 @@ const ContactUsPage: React.FC = () => {
 
             {/* Contact Form */}
             <div>
-              <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
+              <div className="bg-white shadow-xl rounded-lg overflow-hidden border border-slate-300">
                 <div className="px-6 py-8 sm:p-10">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Send us a message
@@ -343,7 +343,7 @@ const ContactUsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-12 bg-white shadow-xl rounded-lg p-8 border border-gray-200">
+          <div className="mt-12 bg-white shadow-xl rounded-lg p-8 border border-slate-300">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Join Our Community
             </h2>

@@ -73,7 +73,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Sidebar</span>
         <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
-          <XIcon className="w-6 h-6 text-gray-400" />
+          <XIcon className="w-6 h-6 text-slate-500" />
         </button>
       </div>
 
@@ -99,7 +99,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <BellIcon className="w-5 h-5 text-gray-400" />
+              <BellIcon className="w-5 h-5 text-slate-500" />
               <h3 className="text-sm font-semibold text-gray-300">Notifications</h3>
             </div>
             <Link to="/notifications" className="text-xs text-orange-500 hover:text-orange-400">
@@ -166,13 +166,13 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
             className="flex items-center justify-between w-full mb-3"
           >
             <div className="flex items-center gap-2">
-              <CalendarIcon className="w-5 h-5 text-gray-400" />
+              <CalendarIcon className="w-5 h-5 text-slate-500" />
               <h3 className="text-sm font-semibold text-gray-300">Events</h3>
             </div>
             {showEvents ? (
-              <ChevronDownIcon className="w-4 h-4 text-gray-400" />
+              <ChevronDownIcon className="w-4 h-4 text-slate-500" />
             ) : (
-              <ChevronRightIcon className="w-4 h-4 text-gray-400" />
+              <ChevronRightIcon className="w-4 h-4 text-slate-500" />
             )}
           </button>
 
@@ -237,7 +237,7 @@ const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ isOpen, onClose }
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <UserGroupIcon className="w-5 h-5 text-gray-400" />
+              <UserGroupIcon className="w-5 h-5 text-slate-500" />
               <h3 className="text-sm font-semibold text-gray-300">Online Friends</h3>
             </div>
             <span className="text-xs text-green-400">{onlineFriends.length} online</span>

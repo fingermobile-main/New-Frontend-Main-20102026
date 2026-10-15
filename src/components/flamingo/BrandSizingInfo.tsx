@@ -17,12 +17,12 @@ const fitPatternIcons = {
 };
 
 const fitPatternColors = {
-  true_to_size: 'bg-green-100 text-green-800',
-  runs_small: 'bg-red-100 text-red-800',
+  true_to_size: 'bg-green-100 text-green-950 border border-green-400 font-bold',
+  runs_small: 'bg-red-100 text-red-950 border border-red-400 font-bold',
   runs_large: 'bg-orange-100 text-orange-800',
-  slim_fit: 'bg-blue-100 text-blue-800',
-  relaxed_fit: 'bg-purple-100 text-purple-800',
-  oversized: 'bg-yellow-100 text-yellow-800'
+  slim_fit: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold',
+  relaxed_fit: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold',
+  oversized: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
 };
 
 const getFitIcon = (pattern: string | undefined): string => {
@@ -172,7 +172,7 @@ const BrandSizingInfo: React.FC<BrandSizingInfoProps> = ({ brandName }) => {
                 {Object.entries(selectedSizing.category_patterns).map(([category, pattern]) => (
                   <div
                     key={category}
-                    className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                    className="bg-white border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <h5 className="font-medium text-gray-900 capitalize">

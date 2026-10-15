@@ -5,7 +5,7 @@ interface CrmWidgetProps {}
 
 const CrmWidget: React.FC<CrmWidgetProps> = () => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <BuildingOfficeIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">CRM Widget</h3>

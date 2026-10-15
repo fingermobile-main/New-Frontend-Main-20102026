@@ -32,7 +32,7 @@ const MiiUpdates: React.FC<MiiUpdatesProps> = ({ userId, limit = 5 }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300">
       <div className="p-6 border-b border-gray-200 flex items-center gap-2">
         <BellIcon className="w-5 h-5 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Your Updates</h3>

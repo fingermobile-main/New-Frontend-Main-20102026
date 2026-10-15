@@ -182,7 +182,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden my-8">
+      <div className="relative w-full max-w-xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden my-8">
         {/* Header */}
         <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
           <div>
@@ -374,7 +374,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
                 </div>
 
                 {cards.map((card, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 space-y-2">
+                  <div key={idx} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-slate-300 dark:border-gray-700 space-y-2">
                     <div className="flex items-center justify-between text-xs font-semibold">
                       <span className="text-purple-600 dark:text-purple-400">Card #{idx + 1}</span>
                       {cards.length > 1 && (

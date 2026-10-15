@@ -51,7 +51,7 @@ export const DigitalNotarizationModal: React.FC<Props> = ({ isOpen, onClose }) =
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-full text-slate-700 hover:text-white hover:bg-white/10 transition-colors"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />

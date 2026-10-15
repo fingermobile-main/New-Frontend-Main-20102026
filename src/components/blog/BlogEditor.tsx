@@ -109,7 +109,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-gray-900">
           {editingPost ? 'Edit Post' : 'Create New Post'}
@@ -117,7 +117,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
         <button
           type="button"
           onClick={() => setPreviewMode(!previewMode)}
-          className="px-3 py-1 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium"
+          className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium"
         >
           {previewMode ? '✏️ Edit' : '👁️ Preview'}
         </button>
@@ -253,7 +253,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                 {formData.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1"
+                    className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1"
                   >
                     {tag}
                     <button

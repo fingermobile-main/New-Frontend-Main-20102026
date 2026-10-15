@@ -220,7 +220,7 @@ const PerksAndRosterComponent: React.FC = () => {
       </div>
 
       {/* Tier Perks Configuration Studio */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
             <h3 className="text-lg font-bold text-gray-900">
@@ -282,7 +282,7 @@ const PerksAndRosterComponent: React.FC = () => {
               <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Monthly Tier Price
               </label>
-              <div className="p-2.5 text-xs font-mono font-bold bg-gray-50 border border-gray-200 rounded-xl text-gray-800">
+              <div className="p-2.5 text-xs font-mono font-bold bg-gray-50 border border-slate-300 rounded-xl text-gray-800">
                 ₦{activeTier.monthlyPriceNaira.toLocaleString()} / month
               </div>
             </div>
@@ -296,7 +296,7 @@ const PerksAndRosterComponent: React.FC = () => {
               {activeTier.perks.map((perk, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs text-gray-800"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-slate-300 text-xs text-gray-800"
                 >
                   <span className="flex items-center gap-2">
                     <span className="text-green-600 font-bold">✓</span> {perk}
@@ -333,7 +333,7 @@ const PerksAndRosterComponent: React.FC = () => {
       </div>
 
       {/* Subscriber Roster Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h3 className="text-lg font-bold text-gray-900">VIP Subscriber Roster</h3>
@@ -388,9 +388,9 @@ const PerksAndRosterComponent: React.FC = () => {
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-bold text-[11px] ${
                         sub.tier === 'tier_3'
-                          ? 'bg-purple-100 text-purple-800'
+                          ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
                           : sub.tier === 'tier_2'
-                            ? 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                             : 'bg-gray-100 text-gray-800'
                       }`}
                     >
@@ -405,7 +405,7 @@ const PerksAndRosterComponent: React.FC = () => {
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded-md font-medium text-[11px] ${
                         sub.status === 'active'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : 'bg-orange-100 text-orange-800'
                       }`}
                     >

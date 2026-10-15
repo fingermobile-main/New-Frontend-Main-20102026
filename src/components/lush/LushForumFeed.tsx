@@ -389,7 +389,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                     onChange={(e) => setNewPostText(e.target.value)}
                     placeholder="Share a thoughtful thought, answer a Lapidaire question, or post a date idea..."
                     rows={3}
-                    className="w-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs"
+                    className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl p-3 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-400/30 focus:outline-hidden transition resize-none shadow-xs"
                   />
 
                   {/* Attached Media Preview (Photo or Video) */}
@@ -749,7 +749,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                 alt={c.authorName}
                                 className="w-7 h-7 rounded-full object-cover border border-gray-200 mt-0.5"
                               />
-                              <div className="flex-1 bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs">
+                              <div className="flex-1 bg-white p-2.5 rounded-xl border border-slate-300 shadow-2xs">
                                 <div className="flex items-center justify-between mb-1">
                                   <span className="font-bold text-gray-900">
                                     {c.authorName}
@@ -809,7 +809,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                 })
                               }
                               placeholder="Write a thoughtful comment..."
-                              className="w-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
+                              className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
                             />
                             <button
                               type="button"

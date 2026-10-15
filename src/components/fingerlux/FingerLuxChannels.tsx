@@ -70,7 +70,7 @@ export const FingerLuxChannels: React.FC<FingerLuxChannelsProps> = ({
                 type="text"
                 readOnly
                 value={MASTER_BOOKING_LINK}
-                className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-mono text-gray-700 select-all"
+                className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono text-gray-700 select-all"
               />
               <button
                 type="button"
@@ -113,7 +113,7 @@ export const FingerLuxChannels: React.FC<FingerLuxChannelsProps> = ({
                   <button
                     type="button"
                     onClick={() => copyToClipboard(specLink, `${sm.name}'s link`)}
-                    className="px-2.5 py-1.5 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-bold text-indigo-600 transition cursor-pointer shrink-0"
+                    className="px-2.5 py-1.5 bg-white border border-slate-300 hover:border-indigo-400 rounded-xl text-xs font-bold text-indigo-600 transition cursor-pointer shrink-0"
                   >
                     {isCopied ? '✓ Copied' : 'Copy Link'}
                   </button>
@@ -135,7 +135,7 @@ export const FingerLuxChannels: React.FC<FingerLuxChannelsProps> = ({
           {/* Social Bio Snippet */}
           <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-2 text-xs">
             <span className="font-bold text-gray-800 block">Instagram / TikTok Link-in-Bio</span>
-            <div className="p-2.5 bg-white rounded-xl border border-gray-200 font-mono text-[11px] text-gray-600">
+            <div className="p-2.5 bg-white rounded-xl border border-slate-300 font-mono text-[11px] text-gray-600">
               💎 Book VIP Luxury Concierge & Suites: fingerlux.protocol/bio/vip
             </div>
             <button

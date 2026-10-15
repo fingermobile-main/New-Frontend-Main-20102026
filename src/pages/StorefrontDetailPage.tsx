@@ -272,7 +272,7 @@ const StorefrontDetailPage: React.FC = () => {
         description="Verified creator storefront on FingerMobile Protocol"
       />
 
-      <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+      <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-300">
         {/* Storefront Banner */}
         <div className="h-64 sm:h-80 bg-gray-200 relative">
           <img
@@ -345,7 +345,7 @@ const StorefrontDetailPage: React.FC = () => {
         </div>
 
         {/* Store Stats */}
-        <div className="px-6 py-4 bg-gray-50 flex items-center justify-between flex-wrap gap-4 border-b border-gray-200">
+        <div className="px-6 py-4 bg-gray-50 flex items-center justify-between flex-wrap gap-4 border-b border-slate-300">
           <div className="flex items-center gap-8">
             <div>
               <span className="text-lg font-bold text-gray-900">{storefront.productCount}</span>
@@ -381,7 +381,7 @@ const StorefrontDetailPage: React.FC = () => {
           <h3 className="text-xl font-bold text-gray-900 mb-6">Available Products & Digital Releases</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {storefront.products.map((product) => (
-              <div key={product.id} className="border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-200 bg-white flex flex-col justify-between">
+              <div key={product.id} className="border border-slate-300 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-200 bg-white flex flex-col justify-between">
                 <div>
                   <div className="h-48 bg-gray-100 relative overflow-hidden">
                     <img

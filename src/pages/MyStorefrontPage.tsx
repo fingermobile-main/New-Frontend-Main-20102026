@@ -86,16 +86,16 @@ const MyStorefrontPage: React.FC = () => {
 
         {/* Storefront Header */}
         {isLoading ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8 h-64 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden mb-8 h-64 flex items-center justify-center">
             <p className="text-gray-500">Loading storefront data...</p>
           </div>
         ) : error ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8 h-64 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden mb-8 h-64 flex items-center justify-center">
             <p className="text-red-500">{error}</p>
           </div>
         ) : (
           <>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden mb-8">
               <div className="relative">
                 <img
                   src={storefrontData.coverImage}
@@ -166,7 +166,7 @@ const MyStorefrontPage: React.FC = () => {
                     </>
                   )}
                   <div className="flex items-center mt-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                       {storefrontData.category || 'General'}
                     </span>
                     <span className="ml-2 text-sm text-gray-500">
@@ -299,7 +299,7 @@ const MyStorefrontPage: React.FC = () => {
             </div>
 
             {/* Renewal Pricing Schedule */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 border border-slate-300 shadow-sm">
               <h3 className="text-lg font-bold text-gray-900 mb-1">Storefront Renewal Schedule</h3>
               <p className="text-xs text-gray-500 mb-6">Select your preferred subscription renewal cadence for uninterrupted hosting.</p>
 
@@ -322,7 +322,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="font-bold text-sm text-gray-900">{plan.title}</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                           {plan.badge}
                         </span>
                       </div>
@@ -366,13 +366,13 @@ const MyStorefrontPage: React.FC = () => {
         {activeTab === 'overview' && analytics && (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <p className="text-sm font-medium text-gray-500">Total Sales</p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">
                   {analytics.totalSales || 10}
                 </p>
               </div>
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <p className="text-sm font-medium text-gray-500">
                   Gross Revenue
                 </p>
@@ -397,7 +397,7 @@ const MyStorefrontPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Top Products
                 </h3>
@@ -420,7 +420,7 @@ const MyStorefrontPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Recent Orders
                 </h3>
@@ -486,7 +486,7 @@ const MyStorefrontPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -549,8 +549,8 @@ const MyStorefrontPage: React.FC = () => {
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             product.status === 'published'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                           }`}
                         >
                           {product.category}
@@ -569,8 +569,8 @@ const MyStorefrontPage: React.FC = () => {
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             product.status === 'published'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                           }`}
                         >
                           {product.status}
@@ -605,7 +605,7 @@ const MyStorefrontPage: React.FC = () => {
             <h2 className="text-xl font-bold mb-6">Store Analytics</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Sales Overview
                 </h3>
@@ -614,7 +614,7 @@ const MyStorefrontPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Traffic Sources
                 </h3>
@@ -623,7 +623,7 @@ const MyStorefrontPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Customer Demographics
                 </h3>
@@ -633,7 +633,7 @@ const MyStorefrontPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 Performance Metrics
               </h3>
@@ -690,7 +690,7 @@ const MyStorefrontPage: React.FC = () => {
           <div>
             <h2 className="text-xl font-bold mb-6">Order History</h2>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -757,7 +757,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 15, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                         Completed
                       </span>
                     </td>
@@ -786,7 +786,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 14, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                         Completed
                       </span>
                     </td>
@@ -815,7 +815,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 12, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold">
                         Processing
                       </span>
                     </td>
@@ -832,7 +832,7 @@ const MyStorefrontPage: React.FC = () => {
             <h2 className="text-xl font-bold mb-6">Storefront Settings</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Store Information
                 </h3>
@@ -919,7 +919,7 @@ const MyStorefrontPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Store Appearance
                 </h3>

@@ -280,9 +280,9 @@ export const NetworkSuggestionsPage: React.FC = () => {
                 placeholder="Search by name, handle, role, or guild..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-sky-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-sky-500"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
             </div>
 
             <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
@@ -430,7 +430,7 @@ export const NetworkSuggestionsPage: React.FC = () => {
 
         {filteredPeers.length === 0 && (
           <div className="bg-white p-12 rounded-3xl border border-slate-300 text-center space-y-3">
-            <Users className="w-10 h-10 text-slate-400 mx-auto" />
+            <Users className="w-10 h-10 text-slate-500 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No matching connections found</h3>
             <p className="text-xs text-slate-600">Try modifying your search keywords or category filters.</p>
             <button

@@ -82,7 +82,7 @@ const SessionManagementPage: React.FC = () => {
             Loading active sessions...
           </div>
         ) : sessions.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-8 text-center text-gray-500">
             No active sessions found.
           </div>
         ) : (
@@ -90,7 +90,7 @@ const SessionManagementPage: React.FC = () => {
             {sessions.map((session) => (
               <div
                 key={session.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-gray-300 transition"
+                className="bg-white rounded-xl shadow-sm border border-slate-300 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-gray-300 transition"
               >
                 <div className="flex items-start sm:items-center gap-4">
                   <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex-shrink-0">

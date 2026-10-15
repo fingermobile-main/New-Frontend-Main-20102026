@@ -531,7 +531,7 @@ const MyWalletPage: React.FC = () => {
                         <td className="py-2.5 px-3 font-bold text-blue-600">{tx.amount} FIC</td>
                         <td className="py-2.5 px-3 text-slate-500">{tx.date}</td>
                         <td className="py-2.5 px-3">
-                          <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                          <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                             {tx.status}
                           </span>
                         </td>

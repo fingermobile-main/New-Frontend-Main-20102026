@@ -144,7 +144,7 @@ const CodeAgentPage: React.FC = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Describe the code you want the AI to generate or modify..."
-          className="flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+          className="flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
           disabled={isLoading || !consentGiven}
         />
         <button

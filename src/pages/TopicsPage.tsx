@@ -269,13 +269,13 @@ const TopicsPage: React.FC = () => {
         {/* Search Input & Category Pills */}
         <div className="mb-8 space-y-3">
           <div className="relative max-w-xl">
-            <MagnifyingGlassIcon className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
+            <MagnifyingGlassIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
             <input
               type="text"
               placeholder="Search topics, categories, or #hashtags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-700 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
             />
           </div>
 

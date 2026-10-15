@@ -15,7 +15,7 @@ const ComponentLibrary: React.FC<ComponentLibraryProps> = ({ onDrop }) => {
   ];
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 p-4 overflow-y-auto">
+    <div className="w-64 bg-white border-r border-slate-300 p-4 overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4 text-gray-800">Components</h2>
       <div className="space-y-2">
         {componentTypes.map((comp) => (

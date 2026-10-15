@@ -111,7 +111,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
 
           <div className="p-6 space-y-6">
             {/* Post Preview */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
               <p className="text-sm text-gray-600 mb-1">Boosting:</p>
               <p className="font-semibold text-gray-900">{postTitle}</p>
             </div>
@@ -270,7 +270,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
             </div>
 
             {/* Cost Summary */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Total Cost:</span>
                 <span className="text-2xl font-bold text-gray-900">{formatCurrency(budget)}</span>

@@ -76,7 +76,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
 
     return (
       <div key={comment.id} className={`mb-4 ${depth > 0 ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <div className="bg-white rounded-lg p-4 border border-slate-300">
           {/* Comment Header */}
           <div className="flex items-start justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -207,7 +207,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({ postId, currentUserId }) 
 
       {/* New Comment Form */}
       {currentUserId && (
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <div className="bg-white rounded-lg p-4 border border-slate-300">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}

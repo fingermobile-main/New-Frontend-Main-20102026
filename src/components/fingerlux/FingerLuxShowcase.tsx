@@ -219,7 +219,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
           <select
             value={selectedDelivery}
             onChange={(e) => setSelectedDelivery(e.target.value as any)}
-            className="bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-xl focus:outline-none cursor-pointer"
+            className="bg-gray-50 border border-slate-300 text-gray-700 text-xs font-bold px-3 py-2 rounded-xl focus:outline-none cursor-pointer"
           >
             <option value="all">Any Delivery (Online & Physical)</option>
             <option value="in_person">In-Person Only (Suites/Rooms)</option>
@@ -232,7 +232,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
             placeholder="Search offerings..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-gray-50 border border-gray-200 text-xs font-semibold px-3 py-2 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none w-36 sm:w-48"
+            className="bg-gray-50 border border-slate-300 text-xs font-semibold px-3 py-2 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none w-36 sm:w-48"
           />
 
           {/* Add Service Button */}
@@ -541,7 +541,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   value={selectedDate}
                   min={new Date().toISOString().split('T')[0]}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="col-span-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold focus:bg-white outline-none cursor-pointer"
+                  className="col-span-1 px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-bold focus:bg-white outline-none cursor-pointer"
                 />
                 <div className="col-span-2 flex flex-wrap gap-1.5">
                   {AVAILABLE_SLOTS.map((slot) => {
@@ -567,7 +567,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
 
             {/* Step 3: Client Intake Form */}
             {bookingModalService.intakeFormFields.length > 0 && (
-              <div className="my-4 p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+              <div className="my-4 p-4 rounded-2xl bg-gray-50 border border-slate-300 space-y-3">
                 <span className="text-xs font-black uppercase tracking-wider text-gray-700 block">
                   Client Intake Questionnaire
                 </span>
@@ -582,7 +582,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                         onChange={(e) =>
                           setIntakeResponses({ ...intakeResponses, [field.id]: e.target.value })
                         }
-                        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                       >
                         <option value="">Select an option...</option>
                         {field.options?.map((opt, i) => (
@@ -599,7 +599,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                         onChange={(e) =>
                           setIntakeResponses({ ...intakeResponses, [field.id]: e.target.value })
                         }
-                        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                       />
                     ) : (
                       <input
@@ -609,7 +609,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                         onChange={(e) =>
                           setIntakeResponses({ ...intakeResponses, [field.id]: e.target.value })
                         }
-                        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                       />
                     )}
                   </div>
@@ -744,7 +744,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   placeholder="e.g. Master Horology Calibration"
                   value={newServiceName}
                   onChange={(e) => setNewServiceName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
@@ -754,7 +754,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   <select
                     value={newServiceType}
                     onChange={(e) => setNewServiceType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   >
                     <option value="appointment">1-on-1 Appointment</option>
                     <option value="class">Group Class</option>
@@ -766,7 +766,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   <select
                     value={newServiceDelivery}
                     onChange={(e) => setNewServiceDelivery(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   >
                     <option value="hybrid">Hybrid (Online & Physical)</option>
                     <option value="in_person">In-Person Only</option>
@@ -782,7 +782,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                     type="number"
                     value={newServicePrice}
                     onChange={(e) => setNewServicePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   />
                 </div>
                 <div>
@@ -791,7 +791,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                     type="number"
                     value={newServiceDuration}
                     onChange={(e) => setNewServiceDuration(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   />
                 </div>
                 <div>
@@ -800,7 +800,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                     type="number"
                     value={newServiceBuffer}
                     onChange={(e) => setNewServiceBuffer(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   />
                 </div>
               </div>
@@ -811,7 +811,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   <select
                     value={newServiceFreeCancelHours}
                     onChange={(e) => setNewServiceFreeCancelHours(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   >
                     <option value={12}>12 Hours Prior</option>
                     <option value={24}>24 Hours Prior</option>
@@ -824,7 +824,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   <select
                     value={newServiceLateCancelFee}
                     onChange={(e) => setNewServiceLateCancelFee(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                   >
                     <option value={30}>30% Fee</option>
                     <option value={50}>50% Fee</option>
@@ -840,7 +840,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   value={newServiceDesc}
                   onChange={(e) => setNewServiceDesc(e.target.value)}
                   placeholder="Detailed description of the luxury session..."
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                 />
               </div>
             </div>

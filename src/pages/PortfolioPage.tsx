@@ -297,7 +297,7 @@ const PortfolioPage: React.FC = () => {
 
         {/* Profile Card & Stats Header */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-10">
-          <div className="bg-white rounded-3xl shadow-xl border border-gray-200/80 p-6 sm:p-8">
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-300/80 p-6 sm:p-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               {/* Avatar & Bio */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
@@ -320,7 +320,7 @@ const PortfolioPage: React.FC = () => {
                       {creatorProfile.name}
                     </h1>
                     {creatorProfile.isOpenForCommissions && (
-                      <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full border border-green-200">
+                      <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold text-xs font-bold rounded-full border border-green-200">
                         ● Open for Commissions
                       </span>
                     )}
@@ -458,7 +458,7 @@ const PortfolioPage: React.FC = () => {
               {SAMPLE_PROJECTS.map((proj) => (
                 <div
                   key={proj.id}
-                  className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+                  className="bg-white rounded-2xl border border-slate-300 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="relative h-52 bg-slate-900 overflow-hidden">
@@ -504,7 +504,7 @@ const PortfolioPage: React.FC = () => {
               {SAMPLE_PHOTOS.map((ph) => {
                 const isLiked = likedPhotoIds.includes(ph.id);
                 return (
-                  <div key={ph.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
+                  <div key={ph.id} className="bg-white rounded-2xl border border-slate-300 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
                     <div className="relative h-60 bg-slate-100 overflow-hidden">
                       <img
                         src={ph.imageUrl}
@@ -549,7 +549,7 @@ const PortfolioPage: React.FC = () => {
                 return (
                   <div
                     key={au.id}
-                    className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-indigo-300 transition-colors"
+                    className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-indigo-300 transition-colors"
                   >
                     <div className="flex items-center gap-4">
                       <button
@@ -599,7 +599,7 @@ const PortfolioPage: React.FC = () => {
           {activeTab === 'reviews' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
               {SAMPLE_REVIEWS.map((rev) => (
-                <div key={rev.id} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div key={rev.id} className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <img
@@ -633,7 +633,7 @@ const PortfolioPage: React.FC = () => {
         {/* Commission Modal */}
         {isCommissionModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-center pb-4 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <BriefcaseIcon className="w-6 h-6 text-indigo-600" />
@@ -653,7 +653,7 @@ const PortfolioPage: React.FC = () => {
                   <select
                     value={commissionForm.projectType}
                     onChange={(e) => setCommissionForm({ ...commissionForm, projectType: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                   >
                     <option value="Commercial Photography">Commercial Photography / Studio Shoot</option>
                     <option value="Audio Sync Production">Audio Sync Production / Beatwave Beat</option>
@@ -669,7 +669,7 @@ const PortfolioPage: React.FC = () => {
                     placeholder="Describe your creative requirements, deliverables, and vision..."
                     value={commissionForm.scopeDescription}
                     onChange={(e) => setCommissionForm({ ...commissionForm, scopeDescription: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                     required
                   />
                 </div>
@@ -678,13 +678,13 @@ const PortfolioPage: React.FC = () => {
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Budget (FIC)</label>
                     <div className="relative">
-                      <CurrencyDollarIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                      <CurrencyDollarIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                       <input
                         type="number"
                         min="25"
                         value={commissionForm.budgetFic}
                         onChange={(e) => setCommissionForm({ ...commissionForm, budgetFic: Number(e.target.value) })}
-                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none font-bold"
+                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none font-bold"
                       />
                     </div>
                   </div>
@@ -692,12 +692,12 @@ const PortfolioPage: React.FC = () => {
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Timeline Deadline</label>
                     <div className="relative">
-                      <CalendarIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                      <CalendarIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                       <input
                         type="text"
                         value={commissionForm.timeline}
                         onChange={(e) => setCommissionForm({ ...commissionForm, timeline: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                        className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                       />
                     </div>
                   </div>

@@ -23,7 +23,7 @@ const ImportedDataDemo: React.FC<ImportedDataDemoProps> = ({
   }, [data]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <DocumentTextIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Imported Data Preview</h3>
@@ -48,7 +48,7 @@ const ImportedDataDemo: React.FC<ImportedDataDemoProps> = ({
                 <td className="px-4 py-3 text-sm text-gray-600">{row.value}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    row.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    row.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
                   }`}>
                     {row.status}
                   </span>

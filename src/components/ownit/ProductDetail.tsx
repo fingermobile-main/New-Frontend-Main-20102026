@@ -51,11 +51,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
     const daysLeft = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
     if (daysLeft < 0) {
-      return { label: 'Expired', color: 'bg-red-100 text-red-800' };
+      return { label: 'Expired', color: 'bg-red-100 text-red-950 border border-red-400 font-bold' };
     } else if (daysLeft < 30) {
-      return { label: `Expiring in ${daysLeft} days`, color: 'bg-yellow-100 text-yellow-800' };
+      return { label: `Expiring in ${daysLeft} days`, color: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' };
     }
-    return { label: `Active (${daysLeft} days left)`, color: 'bg-green-100 text-green-800' };
+    return { label: `Active (${daysLeft} days left)`, color: 'bg-green-100 text-green-950 border border-green-400 font-bold' };
   };
 
   if (loading) {
@@ -83,7 +83,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
   const warrantyStatus = getWarrantyStatus(product);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-slate-300 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex items-center justify-between">
         <h2 className="text-xl font-bold text-white">{product.title}</h2>
@@ -144,7 +144,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onClose }) => 
               </div>
               <div>
                 <p className="text-sm text-gray-600 mb-1">Category</p>
-                <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full">
                   {product.category_id}
                 </span>
               </div>

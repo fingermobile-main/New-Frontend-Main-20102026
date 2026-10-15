@@ -55,7 +55,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({
           className="relative bg-white shadow-xl max-w-md w-full max-h-screen overflow-y-auto"
           onClick={(e) => e.stopPropagation()} role="button" tabIndex={0}
         >
-          <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+          <div className="sticky top-0 bg-white border-b border-slate-300 p-4 flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
               ✕

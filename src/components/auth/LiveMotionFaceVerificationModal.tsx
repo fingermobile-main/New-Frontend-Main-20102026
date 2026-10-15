@@ -218,7 +218,7 @@ export const LiveMotionFaceVerificationModal: React.FC<Props> = ({
               {/* Center Icon */}
               {step === 'INITIAL' && (
                 <div className="text-center text-slate-400 p-2">
-                  <Camera className="w-8 h-8 mx-auto mb-1 text-slate-400 animate-pulse" />
+                  <Camera className="w-8 h-8 mx-auto mb-1 text-slate-500 animate-pulse" />
                   <span className="text-[10px] font-mono">ALIGN FACE IN HUD</span>
                 </div>
               )}

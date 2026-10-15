@@ -20,11 +20,11 @@ const occasionIcons = {
 };
 
 const seasonColors = {
-  spring: 'bg-green-100 text-green-800',
-  summer: 'bg-yellow-100 text-yellow-800',
+  spring: 'bg-green-100 text-green-950 border border-green-400 font-bold',
+  summer: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold',
   fall: 'bg-orange-100 text-orange-800',
-  winter: 'bg-blue-100 text-blue-800',
-  all_seasons: 'bg-purple-100 text-purple-800'
+  winter: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold',
+  all_seasons: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
 };
 
 const OutfitCard: React.FC<OutfitCardProps> = ({
@@ -42,7 +42,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
       {/* Header Image or Placeholder */}
       <div className="h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center relative">
         <div className="text-6xl">

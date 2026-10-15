@@ -21,7 +21,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Integrations</p>
@@ -31,7 +31,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Connected</p>
@@ -41,7 +41,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Errors</p>
@@ -54,7 +54,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-300">
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6">
             {(['overview', 'connections', 'logs'] as const).map((tab) => (
@@ -83,9 +83,9 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
                     <p className="text-sm text-gray-500">Last sync: {integration.lastSync}</p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    integration.status === 'connected' ? 'bg-green-100 text-green-800' :
-                      integration.status === 'error' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
+                    integration.status === 'connected' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                      integration.status === 'error' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' :
+                        'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                   }`}>
                     {integration.status.charAt(0).toUpperCase() + integration.status.slice(1)}
                   </span>

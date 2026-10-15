@@ -39,7 +39,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden">
       {/* Main Filter Bar */}
       <div className="p-4 space-y-3">
         {/* Category Tabs */}
@@ -98,7 +98,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
           {/* Advanced Filters Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium flex items-center gap-2"
+            className="px-4 py-2 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium flex items-center gap-2"
           >
             <span>⚙️</span>
             Advanced Filters
@@ -184,23 +184,23 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
 
       {/* Active Filters Display */}
       {(selectedCategory !== 'All' || sortBy !== 'recent' || dateRange !== 'all') && (
-        <div className="border-t border-gray-200 px-4 py-3 bg-gray-50 flex items-center gap-2 flex-wrap">
+        <div className="border-t border-slate-300 px-4 py-3 bg-gray-50 flex items-center gap-2 flex-wrap">
           <span className="text-sm text-gray-600 font-medium">Active filters:</span>
 
           {selectedCategory !== 'All' && (
-            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-xs font-medium">
               {selectedCategory} ✕
             </span>
           )}
 
           {sortBy !== 'recent' && (
-            <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
+            <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-xs font-medium capitalize">
               {sortBy} ✕
             </span>
           )}
 
           {dateRange !== 'all' && (
-            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
               {dateRange} ✕
             </span>
           )}

@@ -133,7 +133,7 @@ const AIAvatarGenerator: React.FC = () => {
           </div>
 
           <div className="md:w-1/2">
-            <div className="bg-white p-4 rounded-lg border border-gray-200 h-full">
+            <div className="bg-white p-4 rounded-lg border border-slate-300 h-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">Preview</h3>
               {selectedImage ? (
                 <div className="flex justify-center">
@@ -161,7 +161,7 @@ const AIAvatarGenerator: React.FC = () => {
       </div>
 
       {error && (
-        <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-md">
+        <div className="mb-6 p-3 bg-red-100 text-red-950 border border-red-400 font-bold rounded-md">
           {error}
         </div>
       )}
@@ -198,7 +198,7 @@ const AIAvatarGenerator: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+      <div className="bg-gray-50 p-6 rounded-lg border border-slate-300">
         <h2 className="text-xl font-semibold text-gray-800 mb-3">About AI Avatar Generation</h2>
         <ul className="list-disc pl-5 space-y-2 text-gray-600">
           <li>AI avatars are generated using advanced neural networks</li>

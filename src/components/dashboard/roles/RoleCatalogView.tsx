@@ -99,7 +99,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
         {/* Search */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Search roles by title or scope..."
@@ -136,7 +136,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-700 uppercase tracking-wider font-semibold">
               <tr>
                 <th className="py-3 px-4">Category</th>
                 <th className="py-3 px-4">Role Title</th>
@@ -162,7 +162,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
                       <span>{role.name}</span>
                       {role.isSystemDefault && (
                         <span title="System default role">
-                          <Lock className="w-3 h-3 text-slate-400" />
+                          <Lock className="w-3 h-3 text-slate-500" />
                         </span>
                       )}
                     </div>

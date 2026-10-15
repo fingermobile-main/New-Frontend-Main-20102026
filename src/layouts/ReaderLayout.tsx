@@ -15,7 +15,7 @@ export const ReaderLayout: React.FC = () => {
           <Outlet />
         </Suspense>
       </main>
-      <footer className="bg-white mt-8 border-t border-gray-200">
+      <footer className="bg-white mt-8 border-t border-slate-300">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-500">
             &copy; 2025 FingerMobile. All rights reserved.

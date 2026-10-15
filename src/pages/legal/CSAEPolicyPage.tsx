@@ -19,7 +19,7 @@ const CSAEPolicyPage: React.FC = () => {
 
   return (
     <LegalLayout>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-8">
         <LegalDocumentBanner
           slug="csae-policy"
           defaultTitle="Child Sexual Abuse and Exploitation (CSAE) Prevention Policy"
@@ -28,7 +28,7 @@ const CSAEPolicyPage: React.FC = () => {
         />
 
         <div className="flex items-center gap-4 mb-6">
-          <div className="p-3 bg-red-100 text-red-600 rounded-xl">
+          <div className="p-3 bg-red-100 text-red-950 border border-red-400 font-bold rounded-xl">
             <PolicyIcon className="w-10 h-10" />
           </div>
           <div>

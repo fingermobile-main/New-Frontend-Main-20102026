@@ -87,7 +87,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Total Followers</p>
           <p className="text-3xl font-bold text-gray-900">{analytics.totalFollowers.toLocaleString()}</p>
           <p className={`text-sm mt-2 ${analytics.followerGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -95,19 +95,19 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
           </p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Engagement Rate</p>
           <p className="text-3xl font-bold text-blue-600">{analytics.engagement.engagementRate}%</p>
           <p className="text-sm text-gray-500 mt-2">Avg. across all posts</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Likes</p>
           <p className="text-3xl font-bold text-purple-600">{analytics.engagement.averageLikes}</p>
           <p className="text-sm text-gray-500 mt-2">Per post</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Avg. Comments</p>
           <p className="text-3xl font-bold text-orange-600">{analytics.engagement.averageComments}</p>
           <p className="text-sm text-gray-500 mt-2">Per post</p>
@@ -117,7 +117,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
       {/* Demographics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Age Distribution */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-slate-300 rounded-lg p-6">
           <h3 className="font-semibold text-gray-900 mb-4">Age Distribution</h3>
           <div className="space-y-3">
             {Object.entries(analytics.demographics.age).map(([ageGroup, percentage]) => (
@@ -138,7 +138,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
         </div>
 
         {/* Gender Distribution */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-slate-300 rounded-lg p-6">
           <h3 className="font-semibold text-gray-900 mb-4">Gender Distribution</h3>
           <div className="space-y-3">
             {Object.entries(analytics.demographics.gender).map(([gender, percentage]) => (
@@ -163,7 +163,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
       </div>
 
       {/* Top Countries */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Top Countries</h3>
         <div className="space-y-3">
           {analytics.demographics.topCountries.map((item: any, idx: number) => (

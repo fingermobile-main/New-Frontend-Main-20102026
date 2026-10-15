@@ -386,7 +386,7 @@ const CanaryPage: React.FC = () => {
             {/* Ad Submission Form */}
             {showSubmissionForm && (
               <div className="mb-8">
-                <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+                <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-300">
                   <h2 className="text-xl font-bold mb-4 text-gray-900">
                     Submit New Advertisement
                   </h2>
@@ -458,7 +458,7 @@ const CanaryPage: React.FC = () => {
             </div>
 
             {/* System Status */}
-            <div className="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+            <div className="bg-white shadow-lg rounded-2xl p-6 border border-slate-300">
               <div className="flex items-center gap-2 mb-4">
                 <ShieldIcon className="w-5 h-5 text-green-500" />
                 <h2 className="text-lg font-semibold text-gray-900">
@@ -484,7 +484,7 @@ const CanaryPage: React.FC = () => {
                         Last checked: 5 minutes ago
                       </p>
                     </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
                       {service.status}
                     </span>
                   </div>
@@ -493,7 +493,7 @@ const CanaryPage: React.FC = () => {
             </div>
 
             {/* Ad Guidelines */}
-            <div className="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+            <div className="bg-white shadow-lg rounded-2xl p-6 border border-slate-300">
               <div className="flex items-center gap-2 mb-4">
                 <BellIcon className="w-5 h-5 text-blue-500" />
                 <h2 className="text-lg font-semibold text-gray-900">

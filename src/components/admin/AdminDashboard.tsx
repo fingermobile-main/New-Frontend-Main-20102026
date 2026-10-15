@@ -62,7 +62,7 @@ const AdminDashboard: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Platform Users</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {stats?.totalUsers?.toLocaleString() || '1,250'}
@@ -70,7 +70,7 @@ const AdminDashboard: React.FC = () => {
           <span className="text-xs text-green-600 font-semibold">&uarr; Verified in Postgres</span>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Transactions</p>
           <p className="text-3xl font-bold text-indigo-600 mt-1">
             {stats?.totalTransactions?.toLocaleString() || '3,420'}
@@ -78,7 +78,7 @@ const AdminDashboard: React.FC = () => {
           <span className="text-xs text-indigo-500 font-semibold">Decentralized ledger</span>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Pending Moderation</p>
           <p className="text-3xl font-bold text-amber-500 mt-1">
             {stats?.pendingModeration || 0}
@@ -86,7 +86,7 @@ const AdminDashboard: React.FC = () => {
           <span className="text-xs text-amber-600 font-semibold">{stats?.totalModeration || 0} total queue items</span>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Active Franchises</p>
           <p className="text-3xl font-bold text-purple-600 mt-1">
             {stats?.totalFranchises || 3}
@@ -96,7 +96,7 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Node Status Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm p-6">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Cluster Services Health</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-600 dark:text-gray-300">
@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
                   <td className="py-3 px-4 text-gray-900 dark:text-white font-semibold">{node.service_name}</td>
                   <td className="py-3 px-4 uppercase text-xs font-mono">{node.category}</td>
                   <td className="py-3 px-4">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400">
                       {node.status}
                     </span>
                   </td>

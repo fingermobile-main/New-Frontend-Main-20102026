@@ -92,7 +92,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Users */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">👥</span>
             <span className={`text-sm font-medium ${stats.users.growth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -105,10 +105,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
         </div>
 
         {/* Content Posts */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">📝</span>
-            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-full text-xs font-medium">
               {stats.content.flagged} flagged
             </span>
           </div>
@@ -131,11 +131,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
         </div>
 
         {/* System Health */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-slate-300 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-3xl">⚙️</span>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-              stats.system.uptime >= 99 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              stats.system.uptime >= 99 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'
             }`}>
               {stats.system.uptime}% uptime
             </span>
@@ -147,7 +147,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <button className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all">
@@ -198,7 +198,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ adminId }) => {
       )}
 
       {/* Recent Activity Summary */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Today's Activity</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-blue-50 rounded-lg">

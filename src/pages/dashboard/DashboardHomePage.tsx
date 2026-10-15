@@ -160,7 +160,7 @@ const DashboardHomePage: React.FC = () => {
 
         {/* Trends and Wallet Balance */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold">Trends & Insights</h2>
               <div className="flex gap-2">
@@ -170,7 +170,7 @@ const DashboardHomePage: React.FC = () => {
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1 text-sm rounded-full ${
                       timeRange === range
-                        ? 'bg-blue-100 text-blue-800 font-medium'
+                        ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium'
                         : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
@@ -187,7 +187,7 @@ const DashboardHomePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
             <h2 className="text-lg font-bold mb-6">Wallet Balance</h2>
             <div className="text-center">
               <p className="text-3xl font-bold text-gray-900">
@@ -222,7 +222,7 @@ const DashboardHomePage: React.FC = () => {
         </div>
 
         {/* Recent Content */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">Recent Content</h2>
             <button
@@ -251,12 +251,12 @@ const DashboardHomePage: React.FC = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <h2 className="text-lg font-bold mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => navigate('/createpost')}
-              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+              className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
                 <svg
@@ -279,7 +279,7 @@ const DashboardHomePage: React.FC = () => {
 
             <button
               onClick={() => navigate('/stercs')}
-              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+              className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
                 <svg
@@ -302,7 +302,7 @@ const DashboardHomePage: React.FC = () => {
 
             <button
               onClick={() => navigate('/subscriptions')}
-              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+              className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
                 <svg
@@ -325,7 +325,7 @@ const DashboardHomePage: React.FC = () => {
 
             <button
               onClick={() => navigate('/advancedanalytics')}
-              className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
+              className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
               <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
                 <svg

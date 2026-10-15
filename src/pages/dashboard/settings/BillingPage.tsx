@@ -52,7 +52,7 @@ const BillingPage: React.FC = () => {
           <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
             <h2 className="text-xl font-bold mb-4">Payment Method</h2>
             <div className="flex items-center gap-3">
-              <CreditCardIcon className="w-8 h-8 text-gray-400" />
+              <CreditCardIcon className="w-8 h-8 text-slate-500" />
               <div>
                 <p className="font-semibold text-gray-900">Corporate Settlement Ledger</p>
                 <p className="text-sm text-gray-500 font-mono">Net 30 Direct Treasury</p>
@@ -86,7 +86,7 @@ const BillingPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold text-gray-900">{item.invoice_number}</p>
                       <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
-                        item.status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                        item.status === 'paid' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                       }`}>
                         {item.status}
                       </span>

@@ -15,7 +15,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
 
   if (!component) {
     return (
-      <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-full">
+      <div className="w-80 bg-white border-l border-slate-300 flex flex-col h-full">
         <div className="p-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">Properties</h2>
         </div>
@@ -39,7 +39,7 @@ const EnhancedPropertiesPanel: React.FC<EnhancedPropertiesPanelProps> = ({
   };
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-full">
+    <div className="w-80 bg-white border-l border-slate-300 flex flex-col h-full">
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800">Properties</h2>
       </div>

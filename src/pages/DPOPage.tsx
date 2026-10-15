@@ -267,7 +267,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.fullName}
                     onChange={(e) => setSarForm({ ...sarForm, fullName: e.target.value })}
                     placeholder="e.g. Israel Obinna Mbah"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
@@ -280,7 +280,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.email}
                     onChange={(e) => setSarForm({ ...sarForm, email: e.target.value })}
                     placeholder="your-account@fingerprotocol.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
@@ -295,7 +295,7 @@ const DPOPage: React.FC = () => {
                     value={sarForm.accountIdentifier}
                     onChange={(e) => setSarForm({ ...sarForm, accountIdentifier: e.target.value })}
                     placeholder="@username or Sovereign ID"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
@@ -305,7 +305,7 @@ const DPOPage: React.FC = () => {
                   <select
                     value={sarForm.requestType}
                     onChange={(e) => setSarForm({ ...sarForm, requestType: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="access">Right of Access (Copy of Data Records)</option>
                     <option value="rectification">Right to Rectification (Correct Inaccurate Info)</option>
@@ -327,7 +327,7 @@ const DPOPage: React.FC = () => {
                   value={sarForm.details}
                   onChange={(e) => setSarForm({ ...sarForm, details: e.target.value })}
                   placeholder="Detail the specific telemetry, transactions, or records you wish to review or redact..."
-                  className="w-full p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 

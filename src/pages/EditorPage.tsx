@@ -134,7 +134,7 @@ const ComponentLibrarySidebar: React.FC<ComponentLibrarySidebarProps> = React.me
   ];
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 p-4 overflow-y-auto">
+    <div className="w-64 bg-white border-r border-slate-300 p-4 overflow-y-auto">
       <h2 className="font-bold text-gray-700 mb-4 flex items-center">
         <CogIcon className="h-5 w-5 mr-2 text-blue-500" />
         Components
@@ -525,7 +525,7 @@ const EditorPage: React.FC = () => {
             />
           </div>
 
-          <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+          <div className="w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
             <PropertiesPanelSidebar
               selectedComponent={selectedComponent}
               onUpdate={updateComponent}

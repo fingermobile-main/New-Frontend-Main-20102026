@@ -378,7 +378,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
           placeholder="Post title or headline (optional)..."
           value={composerTitle}
           onChange={(e) => setComposerTitle(e.target.value)}
-          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none"
+          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:ring-1 focus:ring-orange-500 focus:outline-none"
         />
 
         {/* Mandatory Category Dropdown */}
@@ -1068,7 +1068,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
                       }
                     }
                   }}
-                  className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
+                  className="flex-1 px-3 py-2 bg-white border border-rose-300 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
                 />
                 <button
                   type="button"

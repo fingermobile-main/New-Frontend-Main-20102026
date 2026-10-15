@@ -96,7 +96,7 @@ const DomainsPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`text-sm font-semibold px-2.5 py-0.5 rounded-full ${
-                    d.ssl_status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    d.ssl_status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                   }`}>
                     {d.ssl_status}
                   </span>

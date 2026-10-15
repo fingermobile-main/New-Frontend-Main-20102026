@@ -445,7 +445,7 @@ const PlatformServiceOfUsePage: React.FC = () => {
                 Search Sections
               </h2>
               <div className="relative mb-4">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Filter clauses..."

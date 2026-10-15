@@ -340,7 +340,7 @@ const FingerWarsPage: React.FC = () => {
               {tournaments.map((t) => (
                 <div
                   key={t.id}
-                  className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm flex flex-col justify-between relative overflow-hidden"
+                  className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col justify-between relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl pointer-events-none" />
                   <div>
@@ -401,7 +401,7 @@ const FingerWarsPage: React.FC = () => {
             {challenges.map((c) => {
               const isComplete = c.progress >= 100;
               return (
-                <div key={c.id} className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
+                <div key={c.id} className="bg-white rounded-2xl border border-slate-300 p-6 shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start gap-2">
                       <h3 className="font-black text-gray-900 text-base">{c.title}</h3>
@@ -465,7 +465,7 @@ const FingerWarsPage: React.FC = () => {
             </div>
 
             {lobbyMatches.map((m) => (
-              <div key={m.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div key={m.id} className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -488,7 +488,7 @@ const FingerWarsPage: React.FC = () => {
 
         {/* TAB 4: LEADERBOARD */}
         {activeTab === 'leaderboard' && (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">

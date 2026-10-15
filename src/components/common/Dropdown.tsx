@@ -46,11 +46,11 @@ const Dropdown: React.FC<DropdownProps> = ({
         <span className={selectedOption ? 'text-gray-900' : 'text-gray-500'}>
           {selectedOption?.label || placeholder}
         </span>
-        <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+        <ChevronDownIcon className="w-5 h-5 text-slate-500" />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {options.map((option) => (
             <button
               key={option.value}

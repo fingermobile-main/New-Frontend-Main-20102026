@@ -62,7 +62,7 @@ const FlamingoApprovalPage: React.FC = () => {
       {submissions.length > 0 ? (
         <div className="space-y-4">
           {submissions.map((item) => (
-            <div key={item.id} className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div key={item.id} className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 text-xs font-semibold rounded bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-400">

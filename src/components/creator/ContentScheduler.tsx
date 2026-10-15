@@ -95,7 +95,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-slate-300 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
         <h2 className="text-xl font-bold text-white">Schedule Content</h2>

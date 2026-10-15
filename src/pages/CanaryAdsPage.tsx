@@ -224,7 +224,7 @@ const CanaryAdsPage: React.FC = () => {
             </div>
             <NavLink
               to="/canary-ad-maker"
-              className="px-5 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black font-black rounded-2xl shadow-lg transition-all text-sm shrink-0 flex items-center gap-2"
+              className="px-5 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-slate-900 font-black rounded-2xl shadow-lg transition-all text-sm shrink-0 flex items-center gap-2"
             >
               <SparklesIcon className="w-4 h-4" />
               Canary Ad Maker
@@ -234,7 +234,7 @@ const CanaryAdsPage: React.FC = () => {
 
         {/* Top Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Impressions</span>
             <span className="text-2xl font-black text-gray-900 mt-1 block">
               {marketingStats?.reach || '450,000+'}
@@ -244,7 +244,7 @@ const CanaryAdsPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Clicks</span>
             <span className="text-2xl font-black text-gray-900 mt-1 block">
               {(marketingStats?.totalClicks || 18400).toLocaleString()}
@@ -254,7 +254,7 @@ const CanaryAdsPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Active Campaigns</span>
             <span className="text-2xl font-black text-blue-600 mt-1 block">
               {marketingStats?.activeCampaigns || (campaigns.length > 0 ? campaigns.length : 4)}
@@ -262,7 +262,7 @@ const CanaryAdsPage: React.FC = () => {
             <span className="text-xs text-gray-500 mt-1 block">Across 8 placements</span>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-5 border border-slate-300 shadow-sm">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Total Spend</span>
             <span className="text-2xl font-black text-amber-600 mt-1 block">
               {(marketingStats?.totalSpend || 1560).toLocaleString()} FIC
@@ -298,7 +298,7 @@ const CanaryAdsPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Create Campaign Form (2 cols) */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm">
                 <div className="flex justify-between items-center mb-6">
                   <div>
                     <h2 className="text-xl font-black text-gray-900">Launch New Campaign</h2>
@@ -321,7 +321,7 @@ const CanaryAdsPage: React.FC = () => {
                         placeholder="e.g. Summer Visuals Showcase"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
                       />
                     </div>
 
@@ -334,7 +334,7 @@ const CanaryAdsPage: React.FC = () => {
                         placeholder="https://brand.com/collection"
                         value={destinationUrl}
                         onChange={(e) => setDestinationUrl(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
                       />
                     </div>
                   </div>
@@ -374,7 +374,7 @@ const CanaryAdsPage: React.FC = () => {
                       placeholder="Write a captivating headline for your audience..."
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full px-4 py-3 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     />
                   </div>
 
@@ -405,7 +405,7 @@ const CanaryAdsPage: React.FC = () => {
                   </div>
 
                   {/* Budget Slider */}
-                  <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-4">
+                  <div className="bg-gray-50 p-4 rounded-2xl border border-slate-300 space-y-4">
                     <div className="flex justify-between items-center text-xs font-bold text-gray-700">
                       <span>Daily Budget: {dailyBudget} FIC</span>
                       <span>Duration: {budgetDays} Days</span>
@@ -454,7 +454,7 @@ const CanaryAdsPage: React.FC = () => {
               </div>
 
               {/* Active Campaigns List */}
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-black text-gray-900">Live Campaigns</h2>
                   <button
@@ -483,14 +483,14 @@ const CanaryAdsPage: React.FC = () => {
                           {ad.imageUrl ? (
                             <img src={ad.imageUrl} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0" />
                           ) : (
-                            <div className="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center font-black text-xs shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-950 border border-amber-400 font-bold flex items-center justify-center font-black text-xs shrink-0">
                               AD
                             </div>
                           )}
                           <div>
                             <div className="flex items-center gap-2">
                               <h3 className="text-sm font-bold text-gray-900">{ad.title}</h3>
-                              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
                                 Running
                               </span>
                             </div>
@@ -543,7 +543,7 @@ const CanaryAdsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded-3xl p-6 border border-slate-300 shadow-sm">
                 <h3 className="font-black text-gray-900 text-sm mb-3 flex items-center gap-2">
                   <ShieldCheckIcon className="w-5 h-5 text-emerald-600" />
                   Content Safety Filter
@@ -576,7 +576,7 @@ const CanaryAdsPage: React.FC = () => {
             {AD_PLACEMENTS.map((p) => {
               const Icon = p.icon;
               return (
-                <div key={p.id} className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
+                <div key={p.id} className="bg-white rounded-3xl p-6 border border-slate-300 shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="p-3 bg-yellow-50 text-yellow-700 rounded-2xl w-fit mb-4">
                       <Icon className="w-6 h-6" />
@@ -601,7 +601,7 @@ const CanaryAdsPage: React.FC = () => {
         {/* TAB 3: PERFORMANCE ANALYTICS */}
         {activeTab === 'analytics' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-lg font-black text-gray-900">Cross-Placement Yield & Performance</h3>
@@ -637,7 +637,7 @@ const CanaryAdsPage: React.FC = () => {
 
         {/* TAB 4: COMPLIANCE & KYC */}
         {activeTab === 'compliance' && (
-          <div className="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-6">
+          <div className="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm space-y-6">
             <div>
               <h3 className="text-xl font-black text-gray-900">Advertiser Verification & Policy</h3>
               <p className="text-xs text-gray-500 mt-1">
@@ -646,17 +646,17 @@ const CanaryAdsPage: React.FC = () => {
             </div>
 
             <div className="space-y-4 text-xs text-gray-700">
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-slate-300">
                 <h4 className="font-bold text-gray-900 mb-1">1. Zero Politics & Zero Religious Solicitations</h4>
                 <p>Canary strictly prohibits election campaign ads, partisan discourse, lobbying, or religious proselytizing.</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-slate-300">
                 <h4 className="font-bold text-gray-900 mb-1">2. Transparent Pricing & Verified Merchandising</h4>
                 <p>All destination pages offering physical or digital products must display explicit price points and contact information.</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-slate-300">
                 <h4 className="font-bold text-gray-900 mb-1">3. Automated Smart Contract Payouts</h4>
                 <p>70% of every FIC token spent is automatically transferred to content creators hosting the ads without delayed billing cycles.</p>
               </div>

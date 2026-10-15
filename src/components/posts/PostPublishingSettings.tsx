@@ -357,7 +357,7 @@ const PostPublishingSettings = () => {
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="p-4 bg-gray-50 rounded-lg border border-slate-300">
               <span className="text-sm font-medium text-gray-900 block mb-1">
                 Custom Geofence Heatmap Perimeter
               </span>
@@ -365,7 +365,7 @@ const PostPublishingSettings = () => {
                 Restricts viewability strictly to members inside your active GPS polygon or regional cluster.
               </p>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono text-gray-600 bg-white px-3 py-1.5 rounded border border-gray-200">
+                <span className="text-xs font-mono text-gray-600 bg-white px-3 py-1.5 rounded border border-slate-300">
                   Polygon Boundary: {(currentDemographics.geofencePolygon || []).length} vertices
                 </span>
                 <button

@@ -126,22 +126,22 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
     <div className="space-y-4">
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Total</p>
           <p className="text-2xl font-bold text-gray-900">{formatMetricValue(stats.total)}</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Average</p>
           <p className="text-2xl font-bold text-blue-600">{formatMetricValue(stats.average)}</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Peak</p>
           <p className="text-2xl font-bold text-purple-600">{formatMetricValue(stats.peak)}</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Growth</p>
           <p className={`text-2xl font-bold ${stats.growth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {stats.growth >= 0 ? '↑' : '↓'} {Math.abs(stats.growth).toFixed(1)}%
@@ -150,7 +150,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
       </div>
 
       {/* Chart */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4 capitalize">
           {metric.replace('_', ' ')} Over Time
         </h3>

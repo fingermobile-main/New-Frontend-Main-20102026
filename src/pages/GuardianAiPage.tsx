@@ -550,62 +550,62 @@ const GuardianAiPage: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'threat_detection': return 'bg-red-100 text-red-800';
-      case 'content_moderation': return 'bg-yellow-100 text-yellow-800';
-      case 'behavioral_analysis': return 'bg-blue-100 text-blue-800';
-      case 'privacy_protection': return 'bg-green-100 text-green-800';
+      case 'threat_detection': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'content_moderation': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'behavioral_analysis': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'privacy_protection': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800';
+      case 'critical': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'low': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'training': return 'bg-blue-100 text-blue-800';
-      case 'maintenance': return 'bg-yellow-100 text-yellow-800';
-      case 'new': return 'bg-blue-100 text-blue-800';
-      case 'investigating': return 'bg-yellow-100 text-yellow-800';
-      case 'resolved': return 'bg-green-100 text-green-800';
-      case 'escalated': return 'bg-red-100 text-red-800';
+      case 'training': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'maintenance': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'new': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'investigating': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'resolved': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'escalated': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'review': return 'bg-yellow-100 text-yellow-800';
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'published': return 'bg-blue-100 text-blue-800';
-      case 'success': return 'bg-green-100 text-green-800';
-      case 'failure': return 'bg-red-100 text-red-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
+      case 'review': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'approved': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'published': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'success': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'failure': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'partial': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800';
+      case 'critical': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'low': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getActionColor = (action: string) => {
     switch (action) {
-      case 'block': return 'bg-red-100 text-red-800';
-      case 'flag': return 'bg-yellow-100 text-yellow-800';
-      case 'allow': return 'bg-green-100 text-green-800';
-      case 'notify': return 'bg-blue-100 text-blue-800';
-      case 'quarantine': return 'bg-purple-100 text-purple-800';
+      case 'block': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'flag': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'allow': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'notify': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'quarantine': return 'bg-purple-100 text-purple-950 border border-purple-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -758,7 +758,7 @@ const GuardianAiPage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -994,7 +994,7 @@ const GuardianAiPage: React.FC = () => {
                               {event.systemName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.eventType === 'threat_detected' ? 'bg-red-100 text-red-800' : event.eventType === 'anomaly_found' ? 'bg-yellow-100 text-yellow-800' : event.eventType === 'policy_violation' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.eventType === 'threat_detected' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.eventType === 'anomaly_found' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : event.eventType === 'policy_violation' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
                                 {event.eventType.replace('_', ' ')}
                               </span>
                             </td>
@@ -1110,7 +1110,7 @@ const GuardianAiPage: React.FC = () => {
                               {response.executedByName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${response.outcome === 'success' ? 'bg-green-100 text-green-800' : response.outcome === 'failure' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${response.outcome === 'success' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : response.outcome === 'failure' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {response.outcome}
                               </span>
                             </td>
@@ -1203,7 +1203,7 @@ const GuardianAiPage: React.FC = () => {
                               <div className="text-sm text-gray-500 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'daily' ? 'bg-blue-100 text-blue-800' : report.type === 'weekly' ? 'bg-green-100 text-green-800' : report.type === 'monthly' ? 'bg-purple-100 text-purple-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'daily' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'weekly' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : report.type === 'monthly' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {report.type}
                               </span>
                             </td>
@@ -1381,7 +1381,7 @@ const GuardianAiPage: React.FC = () => {
                             <p className="font-medium">{event.name}</p>
                             <p className="text-sm text-gray-500">{event.system} • {event.timestamp}</p>
                           </div>
-                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${event.severity === 'critical' ? 'bg-red-100 text-red-800' : event.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${event.severity === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                             {event.severity}
                           </span>
                         </div>
@@ -1412,7 +1412,7 @@ const GuardianAiPage: React.FC = () => {
 
         {/* Pagination */}
         {['systems', 'events', 'responses', 'reports'].includes(activeTab) && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

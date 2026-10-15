@@ -22,7 +22,7 @@ interface ProfileData {
 
 // Shared input class — explicitly sets dark text so it stays visible on light/white backgrounds
 const inputClass =
-  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400';
+  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500';
 
 const ProfileEnhancement: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData>({
@@ -151,7 +151,7 @@ const ProfileEnhancement: React.FC = () => {
                 onChange={handleInputChange}
                 placeholder="Tell us about yourself..."
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
               />
             </div>
 
@@ -242,7 +242,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={currentSkill.name}
                 onChange={(e) => setCurrentSkill({...currentSkill, name: e.target.value})}
                 placeholder="Add a skill"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddSkill(); } }}
               />
               <select
@@ -264,7 +264,7 @@ const ProfileEnhancement: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-2">
               {profile.skills.map(skill => (
-                <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
+                <div key={skill.id} className="flex items-center justify-between bg-white p-2 rounded border border-slate-300">
                   <div>
                     <span className="font-medium text-gray-900">{skill.name}</span>
                     <div className="flex mt-1">
@@ -305,7 +305,7 @@ const ProfileEnhancement: React.FC = () => {
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
                 placeholder="https://example.com"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-400"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder:text-slate-500"
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddLink(); } }}
               />
               <button
@@ -318,7 +318,7 @@ const ProfileEnhancement: React.FC = () => {
 
             <ul className="space-y-2">
               {profile.links.map((link, index) => (
-                <li key={index} className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
+                <li key={index} className="flex items-center justify-between bg-white p-2 rounded border border-slate-300">
                   <a
                     href={link}
                     target="_blank"

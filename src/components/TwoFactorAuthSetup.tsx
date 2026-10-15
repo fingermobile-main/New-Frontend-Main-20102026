@@ -120,7 +120,7 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden max-w-2xl mx-auto">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden max-w-2xl mx-auto">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -200,7 +200,7 @@ const TwoFactorAuthSetup: React.FC<TwoFactorAuthSetupProps> = ({
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Scan QR Code</h3>
               <p className="text-sm text-gray-600 mb-4">Open your authenticator app and scan this QR code</p>
 
-              <div className="inline-block bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm mb-4">
+              <div className="inline-block bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm mb-4">
                 <img src={qrCodeUrl} alt="QR Code" width={200} height={200} className="rounded"  />
               </div>
 

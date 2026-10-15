@@ -99,7 +99,7 @@ const InvestorRelationsPage: React.FC = () => {
               <p className="text-xs text-emerald-800 mt-2">Accredited institutional tiers earn preferential staking yields on protocol dividends.</p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-300">
               <h2 className="text-base font-bold text-gray-900 mb-4">Investor Direct Portal</h2>
               <div className="space-y-2.5">
                 <button

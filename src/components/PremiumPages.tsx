@@ -126,7 +126,7 @@ const PremiumPages: React.FC = () => {
       </div>
 
       {selectedTierDetails && (
-        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <div className="bg-gray-50 p-6 rounded-lg border border-slate-300">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Subscribe to {selectedTierDetails.name}</h2>
 
           <div className="mb-4">
@@ -163,13 +163,13 @@ const PremiumPages: React.FC = () => {
           </div>
 
           {successMessage && (
-            <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
+            <div className="mt-4 p-3 bg-green-100 text-green-950 border border-green-400 font-bold rounded-md">
               {successMessage}
             </div>
           )}
 
           {errorMessage && (
-            <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
+            <div className="mt-4 p-3 bg-red-100 text-red-950 border border-red-400 font-bold rounded-md">
               {errorMessage}
             </div>
           )}

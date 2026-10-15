@@ -118,7 +118,7 @@ const TagCloud: React.FC<TagCloudProps> = ({
       </div>
 
       {/* Tag Cloud */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <div className="flex flex-wrap gap-3 justify-center">
           {tags.map((tag, index) => {
             const fontSize = calculateFontSize(tag.usage_count || 0, minCount, maxCount);
@@ -152,7 +152,7 @@ const TagCloud: React.FC<TagCloudProps> = ({
       </div>
 
       {/* Top Tags List */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+      <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
         <h3 className="font-semibold text-gray-900 mb-3">Top 10 Most Popular</h3>
         <div className="space-y-2">
           {tags.slice(0, 10).map((tag, index) => (

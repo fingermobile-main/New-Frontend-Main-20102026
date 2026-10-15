@@ -18,7 +18,7 @@ const EnhancedForum: React.FC<EnhancedForumProps> = ({ categoryId }) => {
   }, [categoryId]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300">
       <div className="p-6 border-b border-gray-200 flex items-center justify-between">
         <h3 className="text-lg font-bold text-gray-900">Community Forum</h3>
         <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">

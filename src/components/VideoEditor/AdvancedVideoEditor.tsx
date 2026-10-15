@@ -16,7 +16,7 @@ const AdvancedVideoEditor: React.FC<AdvancedVideoEditorProps> = ({
   const [filter, setFilter] = React.useState('none');
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-lg border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-6">
         <VideoCameraIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Advanced Video Editor</h3>

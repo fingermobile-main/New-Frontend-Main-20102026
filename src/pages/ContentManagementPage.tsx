@@ -170,20 +170,20 @@ const ContentManagementPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'bg-green-100 text-green-800';
+      case 'published': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
+      case 'pending': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'rejected': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'tutorial': return 'bg-blue-100 text-blue-800';
-      case 'guide': return 'bg-purple-100 text-purple-800';
+      case 'tutorial': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'guide': return 'bg-purple-100 text-purple-950 border border-purple-400 font-bold';
       case 'best-practices': return 'bg-indigo-100 text-indigo-800';
-      case 'security': return 'bg-red-100 text-red-800';
+      case 'security': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -220,7 +220,7 @@ const ContentManagementPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search content..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -415,7 +415,7 @@ const ContentManagementPage: React.FC = () => {
           
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6">
               <div className="flex-1 flex justify-between sm:hidden">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

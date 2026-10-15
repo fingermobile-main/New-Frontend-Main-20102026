@@ -39,7 +39,7 @@ export const UniversalHeader: React.FC<UniversalHeaderProps> = ({ pageTitle }) =
           {/* COLUMN 2: Search bar, FIC, Live Wallet Balance, Profile image with dropdown */}
           <div className="flex-1 flex items-center justify-center max-w-xl mx-2 gap-3">
             <div className="relative w-full max-w-xs sm:max-w-sm">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
                 type="text"
                 value={searchQuery}

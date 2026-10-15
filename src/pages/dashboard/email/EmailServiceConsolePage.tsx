@@ -444,13 +444,13 @@ const EmailServiceConsolePage: React.FC = () => {
             {/* Filter & Search Bar */}
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-2 flex-1 max-w-md">
-                <Search className="w-4 h-4 text-slate-400" />
+                <Search className="w-4 h-4 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Search 16 categories by name, topic, or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full text-sm border-0 focus:ring-0 text-slate-800 placeholder-slate-400"
+                  className="w-full text-sm border-0 focus:ring-0 text-slate-800 placeholder:text-slate-500"
                 />
               </div>
 
@@ -703,7 +703,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   <div key={wf.event} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                        <span className="text-[11px] font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded">
                           {wf.event}
                         </span>
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -824,7 +824,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
                     {warmupStatus.remainingToday} Remaining Today
                   </span>
                 </div>

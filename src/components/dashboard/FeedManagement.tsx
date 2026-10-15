@@ -171,7 +171,7 @@ const FeedManagement: React.FC = () => {
       {/* Personal Feed Tab */}
       {activeTab === 'personal' && (
         <div className="space-y-8">
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiGrid className="mr-2" />
               Feed Type Preferences
@@ -180,7 +180,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Object.entries(preferences.personal.feedTypes).map(([type, enabled]) => (
-                <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
+                <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-300">
                   <span className="capitalize text-gray-700">{type}</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -196,7 +196,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiBell className="mr-2" />
               Notification Preferences
@@ -205,7 +205,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.personal.notificationPreferences).map(([activity, enabled]) => (
-                <div key={activity} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
+                <div key={activity} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-300">
                   <span className="capitalize text-gray-700">{activity} notifications</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -224,7 +224,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiSettings className="mr-2" />
               Content Frequency
@@ -253,7 +253,7 @@ const FeedManagement: React.FC = () => {
       {/* Platform Content Tab */}
       {activeTab === 'platform' && (
         <div className="space-y-8">
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiGrid className="mr-2" />
               Allowed Content Types
@@ -262,7 +262,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.platform.allowedContent).map(([type, enabled]) => (
-                <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
+                <div key={type} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-300">
                   <span className="capitalize text-gray-700">
                     {type === 'sponsored' ? 'Sponsored Content' :
                       type === 'promoted' ? 'Promoted Content' :
@@ -285,7 +285,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiFilter className="mr-2" />
               Content Filters
@@ -294,7 +294,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(preferences.platform.contentFilters).map(([filter, enabled]) => (
-                <div key={filter} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
+                <div key={filter} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-300">
                   <span className="capitalize text-gray-700">
                     {filter === 'explicit' ? 'Explicit Content Filter' :
                       filter === 'political' ? 'Political Content Filter' :
@@ -314,7 +314,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiSettings className="mr-2" />
               Content Frequency
@@ -343,7 +343,7 @@ const FeedManagement: React.FC = () => {
       {/* Content Filters Tab */}
       {activeTab === 'content' && (
         <div className="space-y-8">
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiX className="mr-2" />
               Blocked Keywords
@@ -368,7 +368,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="flex flex-wrap gap-2">
               {preferences.content.blockedKeywords.map((keyword: string) => (
-                <div key={keyword} className="flex items-center bg-red-100 text-red-800 px-3 py-1 rounded-full">
+                <div key={keyword} className="flex items-center bg-red-100 text-red-950 border border-red-400 font-bold px-3 py-1 rounded-full">
                   <span className="mr-2">{keyword}</span>
                   <button
                     onClick={() => handleRemoveKeyword(keyword)}
@@ -381,7 +381,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiStar className="mr-2" />
               Favorite Topics
@@ -406,7 +406,7 @@ const FeedManagement: React.FC = () => {
 
             <div className="flex flex-wrap gap-2">
               {preferences.content.favoriteTopics.map((topic: string) => (
-                <div key={topic} className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                <div key={topic} className="flex items-center bg-green-100 text-green-950 border border-green-400 font-bold px-3 py-1 rounded-full">
                   <span className="mr-2">{topic}</span>
                   <button
                     onClick={() => handleRemoveTopic(topic)}
@@ -419,7 +419,7 @@ const FeedManagement: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+          <div className="bg-gray-50 p-6 rounded-xl border border-slate-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <FiHeart className="mr-2" />
               Muted Accounts
@@ -429,7 +429,7 @@ const FeedManagement: React.FC = () => {
             <div className="space-y-3">
               {preferences.content.mutedAccounts.length > 0 ? (
                 preferences.content.mutedAccounts.map((account: any) => (
-                  <div key={account.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                  <div key={account.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-300">
                     <div className="flex items-center">
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8 mr-3" />
                       <span>{account.name}</span>

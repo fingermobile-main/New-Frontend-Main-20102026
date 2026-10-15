@@ -2451,7 +2451,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                   {payoutRails.map((rail) => (
                     <tr key={rail.id} className="hover:bg-zinc-800/40">
                       <td className="p-3 font-bold text-white flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-zinc-400" />
+                        <Building2 className="w-4 h-4 text-slate-500" />
                         <span>{rail.railName}</span>
                       </td>
                       <td className="p-3">

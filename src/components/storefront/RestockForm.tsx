@@ -147,7 +147,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-slate-300 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-teal-600 px-6 py-4">
         <h2 className="text-xl font-bold text-white">Restock Inventory</h2>
@@ -177,9 +177,9 @@ const RestockForm: React.FC<RestockFormProps> = ({
               <div>
                 <p className="text-blue-700 mb-1">Status</p>
                 <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                  inventory.quantity > 10 ? 'bg-green-100 text-green-800' :
-                    inventory.quantity > 0 ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
+                  inventory.quantity > 10 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                    inventory.quantity > 0 ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
+                      'bg-red-100 text-red-950 border border-red-400 font-bold'
                 }`}>
                   {inventory.status ? inventory.status.toUpperCase() : 'UNKNOWN'}
                 </span>
@@ -298,7 +298,7 @@ const RestockForm: React.FC<RestockFormProps> = ({
 
         {/* Summary */}
         {quantity > 0 && inventory && (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
             <h4 className="font-semibold text-gray-900 mb-2">Restock Summary</h4>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">

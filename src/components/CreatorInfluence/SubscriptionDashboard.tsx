@@ -154,7 +154,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 </p>
               </div>
               <div className="mt-4 md:mt-0">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Active
                 </span>
               </div>
@@ -205,8 +205,8 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 <div className="mt-4">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                     subscription.auto_renew
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
+                      ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                      : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                   }`}>
                     {subscription.auto_renew ? 'Enabled' : 'Disabled'}
                   </span>
@@ -296,7 +296,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       {formatCurrency(item.amount || 0)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                         {item.status || 'Completed'}
                       </span>
                     </td>

@@ -453,7 +453,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-emerald-500 hover:text-black text-white text-xs font-black border border-white/20 hover:border-emerald-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-emerald-500 hover:text-slate-900 text-white text-xs font-black border border-white/20 hover:border-emerald-400 transition-all duration-200 group/btn mt-1"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -567,7 +567,7 @@ const HomePage: React.FC = () => {
                         {/* Interactive Action CTA */}
                         <Link
                           to={item.link}
-                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-cyan-500 hover:text-black text-white text-xs font-black border border-white/20 hover:border-cyan-400 transition-all duration-200 group/btn mt-1"
+                          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-cyan-500 hover:text-slate-900 text-white text-xs font-black border border-white/20 hover:border-cyan-400 transition-all duration-200 group/btn mt-1"
                         >
                           <span>{item.ctaText}</span>
                           <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
@@ -598,7 +598,7 @@ const HomePage: React.FC = () => {
               <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
                 <Link
                   to="/register"
-                  className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-black tracking-wide shadow-lg shadow-emerald-500/30 transition-all transform hover:-translate-y-0.5"
+                  className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-900 text-xs font-black tracking-wide shadow-lg shadow-emerald-500/30 transition-all transform hover:-translate-y-0.5"
                 >
                   Create Free Account
                 </Link>

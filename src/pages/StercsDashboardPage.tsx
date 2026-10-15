@@ -1166,7 +1166,7 @@ const StercsDashboardPage: React.FC = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search module or tool..."
-                      className="pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder-slate-500 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-600 w-64 shadow-2xs"
+                      className="pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-900 placeholder:text-slate-500 font-bold focus:outline-hidden focus:ring-2 focus:ring-blue-600 w-64 shadow-2xs"
                     />
                     {searchQuery.trim() && (
                       <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-950 font-black border border-emerald-400">

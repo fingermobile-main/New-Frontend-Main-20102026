@@ -373,17 +373,17 @@ const AdminControlDashboard: React.FC = () => {
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {action.requiresOTP && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
                                 OTP Required
                               </span>
                             )}
                             {action.requiresBiometric && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                                 Biometric
                               </span>
                             )}
                             {action.requiresConfirmation && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-950 border border-red-400 font-bold">
                                 Confirmation
                               </span>
                             )}
@@ -469,8 +469,8 @@ const AdminControlDashboard: React.FC = () => {
                             <span
                               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 member.isActive
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-red-100 text-red-800'
+                                  ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                                  : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                               }`}
                             >
                               {member.isActive ? 'Active' : 'Inactive'}
@@ -479,8 +479,8 @@ const AdminControlDashboard: React.FC = () => {
                               onClick={() => toggleMemberStatus(member.id)}
                               className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${
                                 member.isActive
-                                  ? 'bg-red-100 text-red-800 hover:bg-red-200'
-                                  : 'bg-green-100 text-green-800 hover:bg-green-200'
+                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold hover:bg-red-200'
+                                  : 'bg-green-100 text-green-950 border border-green-400 font-bold hover:bg-green-200'
                               }`}
                             >
                               {member.isActive ? 'Deactivate' : 'Activate'}
@@ -530,8 +530,8 @@ const AdminControlDashboard: React.FC = () => {
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               log.status === 'success'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-red-100 text-red-800'
+                                ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                                : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                             }`}
                           >
                             {log.status}
@@ -567,7 +567,7 @@ const AdminControlDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Admin Actions</h2>
               <div className="space-y-3">
                 <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-red-50 hover:to-orange-50 transition-colors flex items-center">

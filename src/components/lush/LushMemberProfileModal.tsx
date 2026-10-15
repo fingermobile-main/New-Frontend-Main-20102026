@@ -117,11 +117,11 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
 
           {/* Compatibility Highlights */}
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 bg-white rounded-xl border border-gray-200">
+            <div className="p-3 bg-white rounded-xl border border-slate-300">
               <span className="text-[10px] text-gray-400 font-bold uppercase">Matching Intent</span>
               <p className="font-bold text-emerald-800 mt-0.5">Thoughtful Interactions</p>
             </div>
-            <div className="p-3 bg-white rounded-xl border border-gray-200">
+            <div className="p-3 bg-white rounded-xl border border-slate-300">
               <span className="text-[10px] text-gray-400 font-bold uppercase">Lapidaire Score</span>
               <p className="font-bold text-teal-800 mt-0.5">28 / 30 Core Values Aligned</p>
             </div>

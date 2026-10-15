@@ -20,7 +20,7 @@ const MonetizationPage: React.FC = () => {
         </button>
       </header>
 
-      <main className="flex-1 bg-white p-6 rounded-lg shadow border border-gray-200">
+      <main className="flex-1 bg-white p-6 rounded-lg shadow border border-slate-300">
         <div className="text-center py-12">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
             <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

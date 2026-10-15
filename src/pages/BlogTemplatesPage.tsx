@@ -207,7 +207,7 @@ const BlogTemplatesPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold flex items-center gap-1">
+            <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-bold flex items-center gap-1">
               <CheckBadgeIcon className="w-4 h-4 text-green-600" /> 100% Free Forever
             </span>
           </div>
@@ -240,7 +240,7 @@ const BlogTemplatesPage: React.FC = () => {
           </div>
 
           <div className="relative w-full sm:w-72">
-            <MagnifyingGlassIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+            <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
             <input
               type="text"
               value={searchQuery}
@@ -256,7 +256,7 @@ const BlogTemplatesPage: React.FC = () => {
           {filteredTemplates.map((tmpl) => (
             <div
               key={tmpl.id}
-              className="bg-white rounded-3xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between overflow-hidden group"
+              className="bg-white rounded-3xl border border-slate-300/80 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between overflow-hidden group"
             >
               <div className="p-6 space-y-4">
                 {/* Meta Badge Bar */}
@@ -311,7 +311,7 @@ const BlogTemplatesPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setActiveJsonLdModal(tmpl)}
-                  className="px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-700 rounded-xl text-xs font-semibold border border-gray-200 flex items-center gap-1 transition-all"
+                  className="px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-700 rounded-xl text-xs font-semibold border border-slate-300 flex items-center gap-1 transition-all"
                 >
                   <CodeBracketIcon className="w-3.5 h-3.5" /> Schema JSON-LD
                 </button>

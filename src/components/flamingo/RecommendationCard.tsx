@@ -7,9 +7,9 @@ interface RecommendationCardProps {
 }
 
 const confidenceColors = {
-  high: 'bg-green-100 text-green-800 border-green-300',
-  medium: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-  low: 'bg-red-100 text-red-800 border-red-300'
+  high: 'bg-green-100 text-green-950 border border-green-400 font-bold border-green-300',
+  medium: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold border-yellow-300',
+  low: 'bg-red-100 text-red-950 border border-red-400 font-bold border-red-300'
 };
 
 const confidenceIcons = {
@@ -48,7 +48,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
   };
 
   return (
-    <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
+    <div className="bg-white border-2 border-slate-300 rounded-lg p-6 hover:border-blue-300 transition-colors">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
@@ -133,9 +133,9 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
           <p className="text-sm font-medium text-gray-700 mb-2">How did it fit?</p>
           <div className="flex items-center gap-2 mb-3">
             <span className={`px-2 py-1 rounded text-xs font-medium ${
-              recommendation.confidence_level === 'high' ? 'bg-green-100 text-green-800' :
-                recommendation.confidence_level === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-red-100 text-red-800'
+              recommendation.confidence_level === 'high' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                recommendation.confidence_level === 'medium' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
+                  'bg-red-100 text-red-950 border border-red-400 font-bold'
             }`}>
               {recommendation.confidence_level
                 ? recommendation.confidence_level.charAt(0).toUpperCase() + recommendation.confidence_level.slice(1)

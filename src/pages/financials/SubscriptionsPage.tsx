@@ -957,7 +957,7 @@ export const SubscriptionsPage: React.FC = () => {
                     value={matrixSearchQuery}
                     onChange={(e) => setMatrixSearchQuery(e.target.value)}
                     placeholder="Search screen, route, or tier..."
-                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -1264,7 +1264,7 @@ export const SubscriptionsPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-20 text-center bg-white rounded-3xl border border-slate-300 space-y-3 p-8 shadow-sm">
-                  <Crown className="w-12 h-12 text-slate-400 mx-auto" />
+                  <Crown className="w-12 h-12 text-slate-500 mx-auto" />
                   <h3 className="text-lg font-extrabold text-slate-900">No Active Creator Passes</h3>
                   <p className="text-xs font-medium text-slate-700 max-w-sm mx-auto leading-relaxed">
                     Subscribe to your favorite music producers and streamers on Storefronts or BeatwaveNG to access exclusive stems and private livestreams.

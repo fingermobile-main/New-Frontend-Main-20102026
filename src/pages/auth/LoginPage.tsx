@@ -145,32 +145,6 @@ const LoginPage = () => {
           onboarding_completed: true,
           target: '/master-dashboard',
         },
-        'admin@fingermobileprotocol.com': {
-          id: 'usr_admin',
-          username: 'admin',
-          firstName: 'System',
-          lastName: 'Admin',
-          name: 'System Admin',
-          email: 'admin@fingermobileprotocol.com',
-          phone: '+2348011112222',
-          role: 'Admin',
-          onboardingComplete: true,
-          onboarding_completed: true,
-          target: '/master-dashboard',
-        },
-        'user@fingermobileprotocol.com': {
-          id: 'usr_test',
-          username: 'testuser',
-          firstName: 'Alexandria',
-          lastName: 'Chen',
-          name: 'Alexandria Chen',
-          email: 'user@fingermobileprotocol.com',
-          phone: '+2348099998888',
-          role: 'Member',
-          onboardingComplete: true,
-          onboarding_completed: true,
-          target: '/forum',
-        },
         'user@fingermobileprotocol.com': {
           id: 'usr_test',
           username: 'testuser',
@@ -193,32 +167,6 @@ const LoginPage = () => {
           email: 'creator@fingermobileprotocol.com',
           phone: '+2348077776666',
           role: 'Creator',
-          onboardingComplete: true,
-          onboarding_completed: true,
-          target: '/forum',
-        },
-        'creator@fingermobileprotocol.com': {
-          id: 'usr_creator',
-          username: 'creator',
-          firstName: 'Luxury',
-          lastName: 'Creator',
-          name: 'Luxury Creator',
-          email: 'creator@fingermobileprotocol.com',
-          phone: '+2348077776666',
-          role: 'Creator',
-          onboardingComplete: true,
-          onboarding_completed: true,
-          target: '/forum',
-        },
-        'merchant@fingermobileprotocol.com': {
-          id: 'usr_merchant',
-          username: 'merchant',
-          firstName: 'Premier',
-          lastName: 'Merchant',
-          name: 'Premier Merchant',
-          email: 'merchant@fingermobileprotocol.com',
-          phone: '+2348055554444',
-          role: 'Merchant',
           onboardingComplete: true,
           onboarding_completed: true,
           target: '/forum',
@@ -556,7 +504,7 @@ const LoginPage = () => {
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-slate-700">
                   Or continue with
                 </span>
               </div>

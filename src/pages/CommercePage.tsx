@@ -135,7 +135,7 @@ const CommercePage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦15,000</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       In Stock
                     </span>
                   </td>
@@ -162,7 +162,7 @@ const CommercePage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦8,500</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-950 border border-red-400 font-bold">
                       Out of Stock
                     </span>
                   </td>
@@ -189,7 +189,7 @@ const CommercePage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₦22,000</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       In Stock
                     </span>
                   </td>

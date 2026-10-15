@@ -281,7 +281,7 @@ const PaymentPayoutsPage: React.FC = () => {
               </div>
             ) : (
               <div className="bg-white p-8 rounded-3xl border border-slate-300 text-center space-y-1 shadow-sm">
-                <Clock className="w-8 h-8 text-slate-400 mx-auto" />
+                <Clock className="w-8 h-8 text-slate-500 mx-auto" />
                 <p className="text-sm font-bold text-slate-800">No Pending Payouts</p>
                 <p className="text-xs text-slate-700 font-medium">All previous withdrawal requests have settled.</p>
               </div>
@@ -308,7 +308,7 @@ const PaymentPayoutsPage: React.FC = () => {
               </div>
             ) : (
               <div className="bg-white p-8 rounded-3xl border border-slate-300 text-center space-y-1 shadow-sm">
-                <AlertCircle className="w-8 h-8 text-slate-400 mx-auto" />
+                <AlertCircle className="w-8 h-8 text-slate-500 mx-auto" />
                 <p className="text-sm font-bold text-slate-800">No Processed Payouts Yet</p>
                 <p className="text-xs text-slate-700 font-medium">Completed bank payouts will be archived here with NUBAN traces.</p>
               </div>

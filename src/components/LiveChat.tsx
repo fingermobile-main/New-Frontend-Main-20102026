@@ -76,7 +76,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
   }, [messages]);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col h-full max-h-[600px]">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden flex flex-col h-full max-h-[600px]">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
 
       {/* Emoji Picker */}
       {isEmojiPickerOpen && (
-        <div className="border-t border-gray-200 p-2 bg-white">
+        <div className="border-t border-slate-300 p-2 bg-white">
           <div className="grid grid-cols-6 gap-2">
             {emojis.map((emoji, idx) => (
               <button
@@ -136,7 +136,7 @@ const LiveChat: React.FC<LiveChatProps> = ({
       )}
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 p-3 bg-white">
+      <div className="border-t border-slate-300 p-3 bg-white">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}

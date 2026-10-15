@@ -11,7 +11,7 @@ const MemberManagement: React.FC<MemberManagementProps> = () => {
   ]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <UsersIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Member Management</h3>
@@ -24,7 +24,7 @@ const MemberManagement: React.FC<MemberManagementProps> = () => {
               <p className="text-xs text-gray-500">Joined {new Date(member.joined).toLocaleDateString()}</p>
             </div>
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-              member.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+              member.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
             }`}>
               {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
             </span>

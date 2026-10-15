@@ -1003,17 +1003,17 @@ const MasterDashboardPage: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300">
                 {rawGroup.length} Consoles Cataloged
               </span>
               {degradedInGroup.length > 0 && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   {degradedInGroup.length} Degraded (&lt;85%)
                 </span>
               )}
               {benchmarkTelemetry && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
                   ⚡ B-Tree Seek: {benchmarkTelemetry.executionTimeMs.toFixed(2)}ms
                 </span>
               )}
@@ -1029,13 +1029,13 @@ const MasterDashboardPage: React.FC = () => {
           {/* Quick Search & Status Filter */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search controls, safeguards, telemetry..."
                 value={consoleSearchTerm}
                 onChange={(e) => setConsoleSearchTerm(e.target.value)}
-                className="pl-9 pr-24 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono"
+                className="pl-9 pr-24 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-500 w-full sm:w-72 focus:outline-hidden focus:ring-2 focus:ring-blue-500 font-mono"
               />
               {consoleSearchTerm && (
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -1073,7 +1073,7 @@ const MasterDashboardPage: React.FC = () => {
         {/* Consoles Grid */}
         {groupConsoles.length === 0 ? (
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-500 mb-3">
               <Search className="w-6 h-6" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">No Consoles Found</h3>
@@ -1577,11 +1577,11 @@ const MasterDashboardPage: React.FC = () => {
                 <span
                   className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                     section.status === 'online'
-                      ? 'bg-green-100 text-green-800'
+                      ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                       : section.status === 'offline'
-                        ? 'bg-red-100 text-red-800'
+                        ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                         : section.status === 'maintenance'
-                          ? 'bg-yellow-100 text-yellow-800'
+                          ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                           : 'bg-orange-100 text-orange-800'
                   }`}
                 >
@@ -1617,11 +1617,11 @@ const MasterDashboardPage: React.FC = () => {
                   <span
                     className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       component.status === 'online'
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                         : component.status === 'offline'
-                          ? 'bg-red-100 text-red-800'
+                          ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                           : component.status === 'maintenance'
-                            ? 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                             : 'bg-orange-100 text-orange-800'
                     }`}
                   >
@@ -1770,7 +1770,7 @@ const MasterDashboardPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-xs overflow-x-auto border border-gray-200">
+      <div className="bg-white rounded-xl shadow-xs overflow-x-auto border border-slate-300">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -1863,11 +1863,11 @@ const MasterDashboardPage: React.FC = () => {
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                       section.status === 'online'
-                        ? 'bg-green-100 text-green-800'
+                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                         : section.status === 'offline'
-                          ? 'bg-red-100 text-red-800'
+                          ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                           : section.status === 'maintenance'
-                            ? 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                             : 'bg-orange-100 text-orange-800'
                     }`}
                   >
@@ -2101,11 +2101,11 @@ const MasterDashboardPage: React.FC = () => {
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         component.status === 'online'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : component.status === 'offline'
-                            ? 'bg-red-100 text-red-800'
+                            ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                             : component.status === 'maintenance'
-                              ? 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                               : 'bg-orange-100 text-orange-800'
                       }`}
                     >
@@ -2318,7 +2318,7 @@ const MasterDashboardPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-gray-900 ml-3">
                 Master Dashboard
               </h1>
-              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+              <span className="ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                 Platform Management
               </span>
             </div>
@@ -2424,7 +2424,7 @@ const MasterDashboardPage: React.FC = () => {
                   <span
                     className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
                       activeTab === tab.id
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                        ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
                         : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                     }`}
                   >
@@ -2486,7 +2486,7 @@ const MasterDashboardPage: React.FC = () => {
                             {categorySections.map((section) => (
                               <div
                                 key={section.id}
-                                className="flex items-center justify-between p-2.5 bg-white border border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer transition-colors shadow-2xs"
+                                className="flex items-center justify-between p-2.5 bg-white border border-slate-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer transition-colors shadow-2xs"
                                 onClick={() =>
                                   handleSectionClick(section.route)
                                 }
@@ -2495,11 +2495,11 @@ const MasterDashboardPage: React.FC = () => {
                                   <div
                                     className={`p-1.5 rounded-md shrink-0 ${
                                       section.status === 'online'
-                                        ? 'bg-green-100 text-green-600'
+                                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                         : section.status === 'offline'
-                                          ? 'bg-red-100 text-red-600'
+                                          ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                           : section.status === 'maintenance'
-                                            ? 'bg-yellow-100 text-yellow-600'
+                                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                                             : 'bg-orange-100 text-orange-600'
                                     }`}
                                   >
@@ -2522,11 +2522,11 @@ const MasterDashboardPage: React.FC = () => {
                                 <span
                                   className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 ${
                                     section.status === 'online'
-                                      ? 'bg-green-100 text-green-800'
+                                      ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                       : section.status === 'offline'
-                                        ? 'bg-red-100 text-red-800'
+                                        ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                         : section.status === 'maintenance'
-                                          ? 'bg-yellow-100 text-yellow-800'
+                                          ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                                           : 'bg-orange-100 text-orange-800'
                                   }`}
                                 >
@@ -2565,7 +2565,7 @@ const MasterDashboardPage: React.FC = () => {
                   ).map((section) => (
                     <div
                       key={section.id}
-                      className="border border-gray-200 rounded-xl p-5 bg-white hover:shadow-lg transition cursor-pointer hover:border-blue-400"
+                      className="border border-slate-300 rounded-xl p-5 bg-white hover:shadow-lg transition cursor-pointer hover:border-blue-400"
                       onClick={() => handleSectionClick(section.route)}
                     >
                       <div className="flex items-center mb-3">
@@ -2581,11 +2581,11 @@ const MasterDashboardPage: React.FC = () => {
                           <span
                             className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold mt-1 ${
                               section.status === 'online'
-                                ? 'bg-green-100 text-green-800'
+                                ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                 : section.status === 'offline'
-                                  ? 'bg-red-100 text-red-800'
+                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                   : section.status === 'maintenance'
-                                    ? 'bg-yellow-100 text-yellow-800'
+                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                                     : 'bg-orange-100 text-orange-800'
                             }`}
                           >
@@ -2785,11 +2785,11 @@ const MasterDashboardPage: React.FC = () => {
                           <span
                             className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                               section.status === 'online'
-                                ? 'bg-green-100 text-green-800'
+                                ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                 : section.status === 'offline'
-                                  ? 'bg-red-100 text-red-800'
+                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                   : section.status === 'maintenance'
-                                    ? 'bg-yellow-100 text-yellow-800'
+                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                                     : 'bg-orange-100 text-orange-800'
                             }`}
                           >
@@ -2833,7 +2833,7 @@ const MasterDashboardPage: React.FC = () => {
       {isNotificationsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
                   System Notifications
@@ -2858,7 +2858,7 @@ const MasterDashboardPage: React.FC = () => {
                 alerts.map((a) => (
                   <div
                     key={a.id}
-                    className="p-3 rounded-xl border border-gray-200 bg-gray-50/70 flex items-start gap-3"
+                    className="p-3 rounded-xl border border-slate-300 bg-gray-50/70 flex items-start gap-3"
                   >
                     <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                     <div className="flex-1 min-w-0">
@@ -2874,7 +2874,7 @@ const MasterDashboardPage: React.FC = () => {
                     </div>
                     <button
                       onClick={() => handleDismissAlert(a.id)}
-                      className="text-gray-400 hover:text-gray-600 text-xs px-2 py-1 rounded bg-white border border-gray-200 hover:bg-gray-100"
+                      className="text-slate-700 hover:text-gray-600 text-xs px-2 py-1 rounded bg-white border border-slate-300 hover:bg-gray-100"
                     >
                       Dismiss
                     </button>
@@ -2882,7 +2882,7 @@ const MasterDashboardPage: React.FC = () => {
                 ))
               )}
             </div>
-            <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end">
+            <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end">
               <button
                 onClick={() => setIsNotificationsModalOpen(false)}
                 className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-xs font-semibold transition"
@@ -2898,7 +2898,7 @@ const MasterDashboardPage: React.FC = () => {
       {isMessagesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
                   Protocol In-Box
@@ -2929,7 +2929,7 @@ const MasterDashboardPage: React.FC = () => {
                   dashboard services mapped and operational.
                 </p>
               </div>
-              <div className="p-3.5 rounded-xl border border-gray-200 bg-gray-50">
+              <div className="p-3.5 rounded-xl border border-slate-300 bg-gray-50">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-gray-900">
                     Guardian Enclave Subsystem
@@ -2944,7 +2944,7 @@ const MasterDashboardPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end">
+            <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end">
               <button
                 onClick={() => setIsMessagesModalOpen(false)}
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition"
@@ -2960,7 +2960,7 @@ const MasterDashboardPage: React.FC = () => {
       {selectedSectionForEdit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
                   Edit Section: {selectedSectionForEdit.title}
@@ -3046,7 +3046,7 @@ const MasterDashboardPage: React.FC = () => {
                 </select>
               </div>
             </div>
-            <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+            <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end gap-2">
               <button
                 onClick={() => setSelectedSectionForEdit(null)}
                 className="px-4 py-2 border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold transition"
@@ -3068,7 +3068,7 @@ const MasterDashboardPage: React.FC = () => {
       {isAddSectionModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <div className="px-6 py-4 bg-gray-50 border-b border-slate-300 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900 text-base">
                   Add New Platform Section
@@ -3137,7 +3137,7 @@ const MasterDashboardPage: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+            <div className="px-6 py-3 bg-gray-50 border-t border-slate-300 flex justify-end gap-2">
               <button
                 onClick={() => setIsAddSectionModalOpen(false)}
                 className="px-4 py-2 border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold transition"

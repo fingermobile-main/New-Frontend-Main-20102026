@@ -129,7 +129,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 Send Lush Escrow Gift
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
                   FIC Vault Protected
                 </span>
               </h2>
@@ -149,7 +149,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
         {/* Modal Body */}
         <div className="p-5 sm:p-6 space-y-5">
           {/* 1. Selected Product Card Preview */}
-          <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700">
+          <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700">
             <div className="w-full sm:w-28 h-28 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-700 flex-shrink-0 relative">
               {product.product_image && product.product_image.startsWith('http') ? (
                 <img
@@ -204,7 +204,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
             <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
               Gift Recipient
             </label>
-            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-between gap-3">
+            <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <img
                   src={
@@ -254,7 +254,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
               value={cardMessage}
               onChange={(e) => setCardMessage(e.target.value)}
               placeholder="Write a sweet or thoughtful message to accompany your gift..."
-              className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC582A]/30 focus:border-[#DC582A] transition"
+              className="w-full px-4 py-2.5 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC582A]/30 focus:border-[#DC582A] transition"
             />
           </div>
 
@@ -311,7 +311,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
           </div>
 
           {/* 5. Anonymous Gifting Toggle */}
-          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">
             <div className="flex items-center gap-2.5">
               <LockClosedIcon className="w-4 h-4 text-indigo-500" />
               <div>

@@ -151,7 +151,7 @@ const GiftCardsPage: React.FC = () => {
           ) : yourGiftCards.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {yourGiftCards.map((card: GiftCard) => (
-                <div key={card.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                <div key={card.id} className="bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
                   <div className="h-32 bg-gradient-to-r from-brand-blue to-purple-600 flex items-center justify-center">
                     <span className="text-white font-bold text-3xl">{card.value} FIC</span>
                   </div>
@@ -163,10 +163,10 @@ const GiftCardsPage: React.FC = () => {
                       </div>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         card.status === 'active'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : card.status === 'used'
                             ? 'bg-gray-100 text-gray-800'
-                            : 'bg-red-100 text-red-800'
+                            : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                       }`}>
                         {card.status.charAt(0).toUpperCase() + card.status.slice(1)}
                       </span>
@@ -219,7 +219,7 @@ const GiftCardsPage: React.FC = () => {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Buy Gift Cards</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[25, 50, 100, 250].map((amount) => (
-              <div key={amount} className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-md transition-shadow">
+              <div key={amount} className="bg-white border border-slate-300 rounded-xl p-6 text-center hover:shadow-md transition-shadow">
                 <div className="w-16 h-16 mx-auto bg-gradient-to-r from-brand-blue to-purple-600 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-xl">{amount}</span>
                 </div>
@@ -236,7 +236,7 @@ const GiftCardsPage: React.FC = () => {
 
             <div className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-gray-400 transition-colors">
               <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
               </div>

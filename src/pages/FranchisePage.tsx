@@ -248,7 +248,7 @@ const FranchisePage: React.FC = () => {
         {/* Global Operational Metrics Deck */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-md flex items-center gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-300/80 shadow-md flex items-center gap-4">
               <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
                 <BuildingStorefrontIcon className="w-6 h-6" />
               </div>
@@ -258,7 +258,7 @@ const FranchisePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-md flex items-center gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-300/80 shadow-md flex items-center gap-4">
               <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
                 <MapPinIcon className="w-6 h-6" />
               </div>
@@ -268,7 +268,7 @@ const FranchisePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-md flex items-center gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-300/80 shadow-md flex items-center gap-4">
               <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
                 <CurrencyDollarIcon className="w-6 h-6" />
               </div>
@@ -278,7 +278,7 @@ const FranchisePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-md flex items-center gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-300/80 shadow-md flex items-center gap-4">
               <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
                 <ShieldCheckIcon className="w-6 h-6" />
               </div>
@@ -346,14 +346,14 @@ const FranchisePage: React.FC = () => {
           {activeTab === 'network' && (
             <div className="space-y-6">
               {/* Filter Toolbar */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="bg-white rounded-2xl border border-slate-300 p-4 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="relative w-full sm:w-80">
                   <input
                     type="text"
                     placeholder="Search by name, license # or city..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    className="w-full px-4 py-2 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
 
@@ -379,7 +379,7 @@ const FranchisePage: React.FC = () => {
                 {filteredFranchises.map((f) => (
                   <div
                     key={f.id}
-                    className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all p-6 flex flex-col justify-between"
+                    className="bg-white rounded-2xl border border-slate-300 shadow-sm hover:shadow-xl transition-all p-6 flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex justify-between items-start gap-2 mb-3">
@@ -388,8 +388,8 @@ const FranchisePage: React.FC = () => {
                         </span>
                         <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-full ${
                           f.status === 'active'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-amber-100 text-amber-800'
+                            ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                         }`}>
                           <CheckCircleIcon className="w-3.5 h-3.5" />
                           {f.status === 'active' ? 'Operational' : 'Onboarding'}
@@ -401,11 +401,11 @@ const FranchisePage: React.FC = () => {
 
                       <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5 text-xs">
                         <div className="flex items-center gap-2 text-gray-600">
-                          <MapPinIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <MapPinIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
                           <span className="truncate">{f.address}</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600">
-                          <PhoneIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <PhoneIcon className="w-4 h-4 text-slate-500 flex-shrink-0" />
                           <span>{f.contactPhone}</span>
                         </div>
                       </div>
@@ -429,13 +429,13 @@ const FranchisePage: React.FC = () => {
                     <div className="mt-6 pt-3 border-t border-gray-100 flex gap-2">
                       <button
                         onClick={() => setInspectingFranchise(f)}
-                        className="flex-1 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl text-xs font-bold transition-colors"
+                        className="flex-1 py-2 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-xl text-xs font-bold transition-colors"
                       >
                         Inspect Hub
                       </button>
                       <button
                         onClick={() => showToast(`Initiating operational audit for ${f.operatingLicenseNo}`, 'info')}
-                        className="p-2 border border-gray-200 rounded-xl hover:bg-gray-50 text-gray-600"
+                        className="p-2 border border-slate-300 rounded-xl hover:bg-gray-50 text-gray-600"
                         title="Audit Terminal"
                       >
                         <ArrowPathIcon className="w-4 h-4" />
@@ -549,7 +549,7 @@ const FranchisePage: React.FC = () => {
 
           {/* Tab 3: Smart Payouts Ledger */}
           {activeTab === 'payouts' && (
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
               <div className="p-5 border-b border-gray-100 flex justify-between items-center">
                 <div>
                   <h3 className="font-black text-gray-900 text-base">Smart Payouts Settlement Ledger</h3>
@@ -587,7 +587,7 @@ const FranchisePage: React.FC = () => {
                         <td className="py-4 px-5 font-bold text-purple-700">{f.revenueSharePercentage}%</td>
                         <td className="py-4 px-5 font-black text-emerald-700">{f.netPayoutFic.toLocaleString()} FIC</td>
                         <td className="py-4 px-5">
-                          <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold">
+                          <span className="px-2.5 py-1 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-full font-bold">
                             Settled On-Chain
                           </span>
                         </td>
@@ -601,7 +601,7 @@ const FranchisePage: React.FC = () => {
 
           {/* Tab 4: Application Wizard */}
           {activeTab === 'apply' && (
-            <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-gray-200 shadow-xl p-6 sm:p-8">
+            <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-300 shadow-xl p-6 sm:p-8">
               <div className="mb-6 pb-4 border-b border-gray-100">
                 <h3 className="text-xl font-black text-gray-900">Franchise Territory Application</h3>
                 <p className="text-xs text-gray-500 mt-1">
@@ -611,7 +611,7 @@ const FranchisePage: React.FC = () => {
 
               {appSuccessData ? (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full flex items-center justify-center mx-auto mb-4">
                     <CheckCircleIcon className="w-10 h-10" />
                   </div>
                   <h4 className="text-xl font-black text-gray-900">Application Submitted!</h4>
@@ -645,7 +645,7 @@ const FranchisePage: React.FC = () => {
                       placeholder="e.g. Apex Meridian Digital Ventures Ltd"
                       value={applyForm.legalEntityName}
                       onChange={(e) => setApplyForm({ ...applyForm, legalEntityName: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                     />
                   </div>
 
@@ -658,7 +658,7 @@ const FranchisePage: React.FC = () => {
                         placeholder="e.g. RC-1849204"
                         value={applyForm.registrationNo}
                         onChange={(e) => setApplyForm({ ...applyForm, registrationNo: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none font-mono"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none font-mono"
                       />
                     </div>
                     <div>
@@ -669,7 +669,7 @@ const FranchisePage: React.FC = () => {
                         placeholder="e.g. Lekki Phase 1, Lagos"
                         value={applyForm.regionCity}
                         onChange={(e) => setApplyForm({ ...applyForm, regionCity: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -681,7 +681,7 @@ const FranchisePage: React.FC = () => {
                       placeholder="Street address of proposed commercial terminal location..."
                       value={applyForm.proposedAddress}
                       onChange={(e) => setApplyForm({ ...applyForm, proposedAddress: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                     />
                   </div>
 
@@ -691,7 +691,7 @@ const FranchisePage: React.FC = () => {
                       <select
                         value={applyForm.tier}
                         onChange={(e) => setApplyForm({ ...applyForm, tier: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                       >
                         <option value="Regional Affiliate">Regional Affiliate (10.0%)</option>
                         <option value="Standard Metro">Standard Metro (12.5%)</option>
@@ -706,7 +706,7 @@ const FranchisePage: React.FC = () => {
                         max="10"
                         value={applyForm.terminalsCount}
                         onChange={(e) => setApplyForm({ ...applyForm, terminalsCount: Number(e.target.value) })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -720,7 +720,7 @@ const FranchisePage: React.FC = () => {
                         placeholder="ops@company.com"
                         value={applyForm.contactEmail}
                         onChange={(e) => setApplyForm({ ...applyForm, contactEmail: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -731,7 +731,7 @@ const FranchisePage: React.FC = () => {
                         placeholder="+234 801 234 5678"
                         value={applyForm.contactPhone}
                         onChange={(e) => setApplyForm({ ...applyForm, contactPhone: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -766,7 +766,7 @@ const FranchisePage: React.FC = () => {
         {/* Modal: Franchise Node Inspection */}
         {inspectingFranchise && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div>
                   <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-purple-50 text-purple-700">
@@ -805,14 +805,14 @@ const FranchisePage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <a
                     href={`mailto:${inspectingFranchise.contactEmail}`}
-                    className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 flex items-center gap-2 text-xs font-bold text-gray-700"
+                    className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl border border-slate-300 flex items-center gap-2 text-xs font-bold text-gray-700"
                   >
                     <EnvelopeIcon className="w-4 h-4 text-purple-600" />
                     <span>Contact Operations</span>
                   </a>
                   <a
                     href={`tel:${inspectingFranchise.contactPhone}`}
-                    className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 flex items-center gap-2 text-xs font-bold text-gray-700"
+                    className="p-3 bg-gray-50 hover:bg-gray-100 rounded-xl border border-slate-300 flex items-center gap-2 text-xs font-bold text-gray-700"
                   >
                     <PhoneIcon className="w-4 h-4 text-purple-600" />
                     <span>Direct Hotline</span>

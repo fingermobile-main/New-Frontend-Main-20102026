@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-40 flex items-center justify-between h-16 px-4 bg-white border-b border-slate-300 shadow-sm">
       {/* Left section */}
       <div className="flex items-center">
         <button
@@ -46,11 +46,11 @@ const Header: React.FC<HeaderProps> = ({
             <form onSubmit={handleSearch} className="flex-1">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
+                  <MagnifyingGlassIcon className="w-5 h-5 text-slate-500" aria-hidden="true" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -89,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({
                   </span>
                 </div>
               )}
-              <ChevronDownIcon className="w-5 h-5 ml-1 text-gray-400" aria-hidden="true" />
+              <ChevronDownIcon className="w-5 h-5 ml-1 text-slate-500" aria-hidden="true" />
             </Menu.Button>
           </div>
           <Transition

@@ -98,7 +98,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
         <div className="flex-1 max-w-2xl mx-4 hidden md:flex flex-col gap-2">
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="relative w-full">
-            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
             <input
               type="text"
               placeholder="Search FingerMobile..."
@@ -177,16 +177,16 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
               )}
             </div>
             {showEarnings ? (
-              <EyeSlashIcon className="w-4 h-4 text-gray-400" />
+              <EyeSlashIcon className="w-4 h-4 text-slate-500" />
             ) : (
-              <EyeIcon className="w-4 h-4 text-gray-400" />
+              <EyeIcon className="w-4 h-4 text-slate-500" />
             )}
           </div>
 
           {/* Utility Icons */}
           <div className="flex items-center gap-1">
             <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative">
-              <ChatBubbleIcon className="w-6 h-6 text-gray-400 hover:text-white" />
+              <ChatBubbleIcon className="w-6 h-6 text-slate-500 hover:text-white" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
 
@@ -194,7 +194,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
               onClick={onRightMenuToggle}
               className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
             >
-              <BellIcon className="w-6 h-6 text-gray-400 hover:text-white" />
+              <BellIcon className="w-6 h-6 text-slate-500 hover:text-white" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 20+
               </span>
@@ -229,7 +229,7 @@ const ForumHeader: React.FC<ForumHeaderProps> = ({
                 onClick={() => setShowMoreNav(false)}
                 className="flex flex-col items-center gap-1 p-2 hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <item.icon className="w-6 h-6 text-gray-400" />
+                <item.icon className="w-6 h-6 text-slate-500" />
                 <span className="text-xs text-gray-300">{item.label}</span>
               </Link>
             ))}

@@ -240,7 +240,7 @@ const SeadsPage: React.FC = () => {
             return (
               <div
                 key={proj.id}
-                className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all p-6 flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-slate-300 shadow-sm hover:shadow-md transition-all p-6 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-start gap-2">

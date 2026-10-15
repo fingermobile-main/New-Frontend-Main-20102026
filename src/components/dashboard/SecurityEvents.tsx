@@ -11,7 +11,7 @@ const SecurityEvents: React.FC<SecurityEventsProps> = () => {
   ]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <ShieldExclamationIcon className="w-6 h-6 text-red-600" />
         <h3 className="text-lg font-bold text-gray-900">Security Events</h3>
@@ -25,7 +25,7 @@ const SecurityEvents: React.FC<SecurityEventsProps> = () => {
                 <p className="text-xs text-gray-500 mt-1">{event.time}</p>
               </div>
               <span className={`px-2 py-1 text-xs font-medium rounded ${
-                event.status === 'blocked' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                event.status === 'blocked' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-green-100 text-green-950 border border-green-400 font-bold'
               }`}>
                 {event.status}
               </span>

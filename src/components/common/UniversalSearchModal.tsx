@@ -466,7 +466,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a screen, product, radio, or ask Guardian AI..."
-            className="w-full bg-transparent text-slate-900 dark:text-white placeholder-slate-400 text-base focus:outline-none font-medium"
+            className="w-full bg-transparent text-slate-900 dark:text-white placeholder:text-slate-500 text-base focus:outline-none font-medium"
           />
           {query ? (
             <button
@@ -476,7 +476,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
               <X className="w-4 h-4" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-mono text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-xs">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-mono text-slate-700 dark:text-slate-500 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded shadow-xs">
               ESC
             </kbd>
           )}
@@ -540,7 +540,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
             })
           ) : (
             <div className="text-center py-12 px-4">
-              <Bot className="w-10 h-10 text-slate-400 mx-auto mb-3" />
+              <Bot className="w-10 h-10 text-slate-500 mx-auto mb-3" />
               <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                 No exact matches found for "{query}"
               </h4>
@@ -560,7 +560,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({ isOp
         </div>
 
         {/* Modal Footer Controls */}
-        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/80 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/80 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-700">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">

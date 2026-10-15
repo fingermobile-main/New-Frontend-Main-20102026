@@ -334,7 +334,7 @@ const BlogsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Blog Actions</h2>
               <div className="space-y-3">
                 <button
@@ -398,7 +398,7 @@ const BlogsPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-4 mb-6 shadow-md border border-gray-100">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                   <input
                     type="text"
                     placeholder="Search blog posts..."

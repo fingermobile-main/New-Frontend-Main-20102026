@@ -20,8 +20,8 @@ const CrmIntegrationsWidget: React.FC<CrmIntegrationsWidgetProps> = ({
             <span>{integration.name}</span>
             <span className={`px-2 py-1 rounded text-xs ${
               integration.connected
-                ? 'bg-green-100 text-green-800'
-                : 'bg-red-100 text-red-800'
+                ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                : 'bg-red-100 text-red-950 border border-red-400 font-bold'
             }`}>
               {integration.connected ? 'Connected' : 'Disconnected'}
             </span>

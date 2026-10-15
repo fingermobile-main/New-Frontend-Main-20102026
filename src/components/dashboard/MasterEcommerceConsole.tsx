@@ -444,7 +444,7 @@ const MasterEcommerceConsole: React.FC = () => {
           {/* Search & Filter Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search flagship products by name, category, SKU..."
@@ -472,7 +472,7 @@ const MasterEcommerceConsole: React.FC = () => {
           {/* Flagship Catalog Table */}
           <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
             <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Flagship Item</th>
                   <th className="py-3 px-4">Category / SKU</th>
@@ -568,7 +568,7 @@ const MasterEcommerceConsole: React.FC = () => {
           {/* Search & Category Filter */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search creator items by name, creator, category..."
@@ -808,7 +808,7 @@ const MasterEcommerceConsole: React.FC = () => {
 
           <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
             <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-800/70 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Order # / Date</th>
                   <th className="py-3 px-4">Customer</th>
@@ -850,12 +850,12 @@ const MasterEcommerceConsole: React.FC = () => {
                     <td className="py-3.5 px-4 text-center">
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                         o.status === 'ESCROW_RELEASED'
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                          ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300'
                           : o.status === 'DELIVERED'
-                            ? 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
                             : o.status === 'IN_TRANSIT'
                               ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
-                              : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300'
                       }`}>
                         {o.status.replace('_', ' ')}
                       </span>
@@ -910,7 +910,7 @@ const MasterEcommerceConsole: React.FC = () => {
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                     ven.tier === 'FLAMINGO_VIP'
                       ? 'bg-rose-500 text-white font-mono'
-                      : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                      : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
                   }`}>
                     {ven.tier.replace('_', ' ')}
                   </span>

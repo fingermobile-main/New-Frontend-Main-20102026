@@ -98,7 +98,7 @@ const ProfileEnhancement: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSave} className="space-y-6">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 space-y-4">
               <h2 className="text-lg font-bold text-gray-900">Professional Headline & Bio</h2>
               <div>
                 <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Headline</label>
@@ -114,7 +114,7 @@ const ProfileEnhancement: React.FC = () => {
               <div>
                 <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Portfolio / Website Link</label>
                 <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
-                  <span className="px-3 bg-gray-50 text-gray-400 border-r border-gray-300 text-sm">
+                  <span className="px-3 bg-gray-50 text-slate-700 border-r border-gray-300 text-sm">
                     <LinkIcon className="h-4 w-4" />
                   </span>
                   <input
@@ -128,7 +128,7 @@ const ProfileEnhancement: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 space-y-4">
               <h2 className="text-lg font-bold text-gray-900">Skills & Competencies</h2>
               <div className="flex gap-2">
                 <input
@@ -175,7 +175,7 @@ const ProfileEnhancement: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 space-y-4">
               <h2 className="text-lg font-bold text-gray-900">Certifications & Honors</h2>
               <div className="flex gap-2">
                 <input
@@ -202,7 +202,7 @@ const ProfileEnhancement: React.FC = () => {
 
               <div className="space-y-2 pt-2">
                 {certifications.map((cert) => (
-                  <div key={cert} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-gray-800">
+                  <div key={cert} className="flex items-center justify-between p-3 bg-gray-50 border border-slate-300 rounded-lg text-xs font-medium text-gray-800">
                     <span>{cert}</span>
                     <button
                       type="button"

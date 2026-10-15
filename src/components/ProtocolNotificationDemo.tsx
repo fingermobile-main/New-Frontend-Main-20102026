@@ -126,14 +126,14 @@ const ProtocolNotificationDemo: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+        <div className="bg-gray-50 p-4 rounded-md border border-slate-300">
           <h3 className="font-medium text-gray-800 mb-2">Connection Status</h3>
           <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
             connectionStatus === 'connected'
-              ? 'bg-green-100 text-green-800'
+              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
               : connectionStatus === 'disconnected'
-                ? 'bg-red-100 text-red-800'
-                : 'bg-yellow-100 text-yellow-800'
+                ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
           }`}>
             {connectionStatus.charAt(0).toUpperCase() + connectionStatus.slice(1)}
           </div>
@@ -152,7 +152,7 @@ const ProtocolNotificationDemo: React.FC = () => {
           <span className="text-sm text-gray-500">{logs.length} entries</span>
         </div>
 
-        <div className="bg-gray-50 rounded-md border border-gray-200 h-64 overflow-y-auto p-4 font-mono text-sm">
+        <div className="bg-gray-50 rounded-md border border-slate-300 h-64 overflow-y-auto p-4 font-mono text-sm">
           {logs.length > 0 ? (
             <ul className="space-y-1">
               {logs.map((log, index) => (

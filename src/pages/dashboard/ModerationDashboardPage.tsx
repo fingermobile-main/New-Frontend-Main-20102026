@@ -107,7 +107,7 @@ const ModerationDashboardPage: React.FC = () => {
           {moderationStats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+              className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
             >
               <p className="text-sm font-medium text-gray-500">{stat.name}</p>
               <div className="mt-2 flex items-baseline">
@@ -121,7 +121,7 @@ const ModerationDashboardPage: React.FC = () => {
         </div>
 
         {/* Dashboard Tabs */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300">
           <div className="border-b border-gray-200">
             <nav className="flex space-x-8 px-6">
               <button
@@ -216,10 +216,10 @@ const ModerationDashboardPage: React.FC = () => {
                             <span
                               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 item.priority === 'urgent' || item.priority === 'high'
-                                  ? 'bg-red-100 text-red-800'
+                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                   : item.priority === 'medium'
-                                    ? 'bg-yellow-100 text-yellow-800'
-                                    : 'bg-green-100 text-green-800'
+                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
+                                    : 'bg-green-100 text-green-950 border border-green-400 font-bold'
                               }`}
                             >
                               {(item.priority || 'normal').toUpperCase()} Priority
@@ -338,8 +338,8 @@ const ModerationDashboardPage: React.FC = () => {
                             <span
                               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                 member.status === 'active'
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-red-100 text-red-800'
+                                  ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                                  : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                               }`}
                             >
                               {member.status.charAt(0).toUpperCase() +
@@ -423,7 +423,7 @@ const ModerationDashboardPage: React.FC = () => {
                             <td className="px-6 py-4 text-sm text-gray-600">{r.reason}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-2 py-0.5 text-xs rounded-full font-semibold ${
-                                r.status === 'resolved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                r.status === 'resolved' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                               }`}>
                                 {r.status}
                               </span>

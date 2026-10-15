@@ -32,7 +32,7 @@ const MarketingDashboard: React.FC = () => {
             <p className="text-xs text-slate-500 font-medium">Real-time aggregate platform delivery & conversion telemetry</p>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Live Telemetry
         </span>
       </div>

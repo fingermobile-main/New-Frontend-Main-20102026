@@ -37,7 +37,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
   }, [valueUp, valueDown, targetUp, targetDown, isVerified]);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm max-w-sm mx-auto">
+    <div className="bg-white border border-slate-300 rounded-xl p-6 shadow-sm max-w-sm mx-auto">
       <h3 className="font-semibold text-lg mb-4 text-center text-gray-800">Prove you're human</h3>
       
       {isVerified ? (
@@ -67,7 +67,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -rotate-90 origin-center"
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">{valueUp}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full">{valueUp}</span>
             </div>
 
             {/* Horizontal Slider */}
@@ -86,7 +86,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   style={{ direction: 'rtl' }}
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">{valueDown}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full">{valueDown}</span>
             </div>
           </div>
           

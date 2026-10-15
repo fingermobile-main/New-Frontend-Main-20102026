@@ -30,7 +30,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-lg border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <MusicalNoteIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Music Search</h3>
@@ -46,7 +46,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
             className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Search for tracks, artists..."
           />
-          <MagnifyingGlassIcon className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-2.5 w-5 h-5 text-slate-500" />
         </div>
 
         <button
@@ -63,7 +63,7 @@ const MusicSearch: React.FC<MusicSearchProps> = ({ onSearch, onSelect }) => {
               <button
                 key={track.id}
                 onClick={() => onSelect?.(track)}
-                className="w-full p-3 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                className="w-full p-3 text-left border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <p className="font-medium text-gray-900">{track.title}</p>
                 <p className="text-sm text-gray-500">{track.artist} • {track.duration}</p>

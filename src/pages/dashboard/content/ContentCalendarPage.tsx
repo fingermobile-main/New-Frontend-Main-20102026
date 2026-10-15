@@ -107,7 +107,7 @@ const ContentCalendarPage: React.FC = () => {
                   {filteredPosts.map((post: any) => (
                     <div
                       key={post.id}
-                      className="text-xs bg-blue-100 text-blue-800 p-1 rounded cursor-pointer hover:bg-blue-200 sm:text-sm"
+                      className="text-xs bg-blue-100 text-blue-950 border border-blue-400 font-bold p-1 rounded cursor-pointer hover:bg-blue-200 sm:text-sm"
                     >
                       <p className="truncate font-medium">
                         {post.title || post.content?.replace(/<[^>]*>?/gm, '').substring(0, 30) + '...'}

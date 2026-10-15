@@ -73,7 +73,7 @@ const LegalIndexPage: React.FC = () => {
 
   return (
     <LegalLayout>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-10">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-10">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full mb-3 border border-blue-200">
             <ShieldCheckIcon className="w-4 h-4" />

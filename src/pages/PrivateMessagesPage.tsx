@@ -174,9 +174,9 @@ const PrivateMessagesPage: React.FC = () => {
 
   const getPrivacyColor = (level: string) => {
     switch (level) {
-    case 'strict': return 'bg-red-100 text-red-800';
-    case 'standard': return 'bg-yellow-100 text-yellow-800';
-    case 'open': return 'bg-green-100 text-green-800';
+    case 'strict': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+    case 'standard': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+    case 'open': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
     default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -224,7 +224,7 @@ const PrivateMessagesPage: React.FC = () => {
                   <div className="flex flex-col md:flex-row h-[calc(100vh-200px)]">
                     {/* Conversations sidebar */}
                     <div className="md:w-1/3 border-r border-gray-200 flex flex-col">
-                      <div className="p-4 border-b border-gray-200 bg-gray-50">
+                      <div className="p-4 border-b border-slate-300 bg-gray-50">
                         <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                           Channels ({conversations.length})
                         </span>
@@ -369,7 +369,7 @@ const PrivateMessagesPage: React.FC = () => {
                             )}
                           </div>
 
-                          <div className="p-4 border-t border-gray-200 bg-white">
+                          <div className="p-4 border-t border-slate-300 bg-white">
                             <div className="flex items-center">
                               <input
                                 type="text"

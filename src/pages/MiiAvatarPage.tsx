@@ -334,7 +334,7 @@ const MiiAvatarPage: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Avatar Preview */}
               <div className="lg:col-span-1">
-                <Card className="bg-white shadow-md rounded-xl border border-gray-200">
+                <Card className="bg-white shadow-md rounded-xl border border-slate-300">
                   <CardHeader>
                     <CardTitle>Preview</CardTitle>
                     <CardDescription>Your avatar will appear as you customize it</CardDescription>
@@ -358,7 +358,7 @@ const MiiAvatarPage: React.FC = () => {
 
               {/* Customization Controls */}
               <div className="lg:col-span-2">
-                <Card className="bg-white shadow-md rounded-xl border border-gray-200">
+                <Card className="bg-white shadow-md rounded-xl border border-slate-300">
                   <CardHeader>
                     <CardTitle>Customization Panel</CardTitle>
                     <CardDescription>Adjust your avatar's appearance</CardDescription>

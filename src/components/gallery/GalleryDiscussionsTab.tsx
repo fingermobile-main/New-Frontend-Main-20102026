@@ -200,7 +200,7 @@ export const GalleryDiscussionsTab: React.FC<GalleryDiscussionsTabProps> = ({
                       Board: {linkedPin.boardName}
                     </span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-slate-400" />
+                  <ChevronRightIcon className="w-4 h-4 text-slate-500" />
                 </div>
               )}
 

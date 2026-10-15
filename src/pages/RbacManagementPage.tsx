@@ -207,7 +207,7 @@ const RbacManagementPage: React.FC = () => {
                             'Investor Communications',
                             'Support Ticket Management'
                           ].map((permission, index) => (
-                            <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-gray-200">
+                            <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-slate-300">
                               <input
                                 type="checkbox"
                                 id={`perm-${index}`}
@@ -358,7 +358,7 @@ const RbacManagementPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">RBAC Actions</h2>
               <div className="space-y-3">
                 <button className="w-full text-left px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-indigo-50 transition-colors flex items-center">

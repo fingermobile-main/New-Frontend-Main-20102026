@@ -42,7 +42,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
                 <span className="text-xs text-gray-500">v1.5.7</span>
@@ -72,7 +72,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
                 <span className="text-xs text-gray-500">v3.0.2</span>
@@ -102,7 +102,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
                 <span className="text-xs text-gray-500">v1.2.1</span>
@@ -132,7 +132,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold">
                   Maintenance
                 </span>
                 <span className="text-xs text-gray-500">v0.9.8</span>
@@ -162,7 +162,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
                 <span className="text-xs text-gray-500">v1.3.2</span>
@@ -192,7 +192,7 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Online
                 </span>
                 <span className="text-xs text-gray-500">v1.4.0</span>

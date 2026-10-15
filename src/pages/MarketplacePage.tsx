@@ -389,7 +389,7 @@ const MarketplacePage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search Flagship hardware, SKU, specs, or ask AI..."
-                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full pl-12 pr-28 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
                 <button
                   onClick={() => setAiSearchAssistActive(!aiSearchAssistActive)}
@@ -580,7 +580,7 @@ const MarketplacePage: React.FC = () => {
                 </div>
               ) : filteredProducts.length === 0 ? (
                 <div className="p-12 text-center rounded-3xl bg-slate-900/60 border border-slate-800 text-slate-200">
-                  <ShoppingBag className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                  <ShoppingBag className="w-12 h-12 text-slate-500 mx-auto mb-3" />
                   <p className="text-base font-bold text-white mb-1">No Flagship Goods Match Query</p>
                   <p className="text-xs text-slate-300 mb-4">Try clearing filters or search terms.</p>
                   <button

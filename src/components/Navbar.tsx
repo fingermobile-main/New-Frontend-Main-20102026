@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
+    <nav className="bg-white dark:bg-gray-800 border-b border-slate-300 dark:border-gray-700 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <h1 className="text-xl font-bold text-orange-500">FingerMobile</h1>

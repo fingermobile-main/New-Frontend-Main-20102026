@@ -250,12 +250,12 @@ const PostCard: React.FC<PostCardProps> = ({
         </Link>
         <div className="flex items-center gap-2">
           {pollData && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs">
               📊 Live Poll
             </span>
           )}
           {((post as any).is_ai_generated || (post as any).isAiGenerated) && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-800 border border-purple-200 shadow-xs flex-shrink-0">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-200 shadow-xs flex-shrink-0">
               🤖 {((post as any).ai_badge_label || (post as any).aiBadgeLabel || 'AI Synthetic')}
             </span>
           )}
@@ -425,7 +425,7 @@ const PostCard: React.FC<PostCardProps> = ({
                           ✓
                         </span>
                       ) : (
-                        <span className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center text-[10px] text-gray-400">
+                        <span className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center text-[10px] text-slate-500">
                           {idx + 1}
                         </span>
                       )}
@@ -448,7 +448,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {(post as any).attachments.map((att: any, idx: number) => (
             <div
               key={idx}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-700 dark:text-gray-300 shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-lg text-xs text-gray-700 dark:text-gray-300 shadow-xs"
             >
               <span className="font-bold text-gray-900 dark:text-white capitalize">{att.type?.replace('_', ' ')}</span>
               {att.data?.amount && (
@@ -472,7 +472,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {(post as any).tagged_products.map((prod: any, pIdx: number) => (
               <div
                 key={pIdx}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-2xs hover:border-emerald-400 transition"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-2xs hover:border-emerald-400 transition"
               >
                 {prod.image && <img src={prod.image} alt={prod.title} className="w-6 h-6 rounded-md object-cover" />}
                 <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">{prod.title}</span>
@@ -552,7 +552,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {handleComment && (
           <button
             onClick={() => handleComment(String(post.id), '')}
-            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-slate-300 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             💬 Comment
           </button>
@@ -561,7 +561,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {handleShare && (
           <button
             onClick={() => handleShare(String(post.id))}
-            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-slate-300 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             📤 Share
           </button>
@@ -583,7 +583,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {/* Direct Encrypted Message */}
         <button
           onClick={handleMessageAuthor}
-          className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 hover:text-emerald-600 transition-colors text-xs font-bold"
+          className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-slate-300 dark:border-gray-700 rounded-full hover:bg-gray-50 hover:text-emerald-600 transition-colors text-xs font-bold"
           title="Message Creator"
         >
           ✉️ Message
@@ -605,7 +605,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {handleView && (
           <button
             onClick={() => handleView(String(post.id))}
-            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
+            className="px-3 py-1.5 bg-white/60 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-slate-300 dark:border-gray-700 rounded-full hover:bg-gray-50 transition-colors text-xs font-bold"
           >
             👁️ View
           </button>

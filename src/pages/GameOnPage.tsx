@@ -279,7 +279,7 @@ const GameOnPage: React.FC = () => {
               {events.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-white rounded-3xl border border-slate-300 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
                 >
                   <div>
                     {event.image_url ? (
@@ -324,7 +324,7 @@ const GameOnPage: React.FC = () => {
 
                   <div className="p-6 pt-0 border-t border-gray-100 flex items-center justify-between">
                     <span className="text-xs text-gray-500 flex items-center gap-1">
-                      <UserGroupIcon className="w-4 h-4 text-gray-400" />
+                      <UserGroupIcon className="w-4 h-4 text-slate-500" />
                       Max {event.max_participants}
                     </span>
                     <button
@@ -346,7 +346,7 @@ const GameOnPage: React.FC = () => {
             {matches.map((m) => (
               <div
                 key={m.id}
-                className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+                className="bg-white rounded-3xl border border-slate-300 p-6 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
@@ -393,7 +393,7 @@ const GameOnPage: React.FC = () => {
 
         {/* TAB 3: LEADERBOARD */}
         {activeTab === 'leaderboard' && (
-          <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-3xl border border-slate-300 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">

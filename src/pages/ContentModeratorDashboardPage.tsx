@@ -320,7 +320,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                     Platform Governance & Moderation Console
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                     64-Bit Bitmask RBAC
                   </span>
                 </div>

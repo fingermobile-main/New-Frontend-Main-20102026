@@ -35,7 +35,7 @@ const EnhancedMessaging: React.FC<EnhancedMessagingProps> = ({ userId, conversat
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-[600px] flex flex-col">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 h-[600px] flex flex-col">
       <div className="p-4 border-b border-gray-200 flex items-center gap-2">
         <ChatBubbleLeftIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Messages</h3>

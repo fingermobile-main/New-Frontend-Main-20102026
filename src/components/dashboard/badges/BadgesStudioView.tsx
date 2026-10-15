@@ -126,7 +126,7 @@ export const BadgesStudioView: React.FC<BadgesStudioViewProps> = (props) => {
 
         <div className="flex items-center gap-3">
           <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Search by badge or role..."
@@ -340,7 +340,7 @@ export const BadgesStudioView: React.FC<BadgesStudioViewProps> = (props) => {
                       <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                         <span>{assignment.memberName}</span>
                         {assignment.isMuted && (
-                          <span className="text-[10px] px-1.5 py-0.2 bg-red-100 text-red-700 rounded font-medium">
+                          <span className="text-[10px] px-1.5 py-0.2 bg-red-100 text-red-950 border border-red-400 font-bold rounded font-medium">
                             Muted
                           </span>
                         )}

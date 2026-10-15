@@ -109,7 +109,7 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
             {item.description}
           </p>
           <div className="flex items-center mt-2 text-xs text-gray-500">
-            <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+            <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full">
               {item.category}
             </span>
             {item.mutualConnections && (

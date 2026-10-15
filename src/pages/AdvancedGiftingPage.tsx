@@ -48,7 +48,7 @@ const AdvancedGiftingPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Gifting Actions</h2>
               <div className="space-y-3">
                 <button

@@ -112,7 +112,7 @@ const SocialLinksPanel: React.FC = () => {
 
         {/* Add Link Form */}
         {showAddForm && (
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-slate-300">
             <h3 className="text-lg font-medium text-gray-900 mb-3">Add New Social Link</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -236,7 +236,7 @@ const SocialLinksPanel: React.FC = () => {
                       <div className="flex items-center">
                         <h3 className="text-sm font-medium text-gray-900">{link.platform}</h3>
                         {link.isVerified && (
-                          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                             Verified
                           </span>
                         )}

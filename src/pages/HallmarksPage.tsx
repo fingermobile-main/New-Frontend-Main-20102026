@@ -531,13 +531,13 @@ const HallmarksPage: React.FC = () => {
           {/* Main Dashboard & Content Column */}
           <div className="lg:col-span-3 space-y-6">
             {/* 1. HallMarks Page Creation Quota Dashboard Bar */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-300">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-bold text-gray-900">HallMarks Page Creation Quota</h3>
                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                  createdCount >= maxAllowed ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+                  createdCount >= maxAllowed ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
                 }`}>
                   {createdCount} / {maxAllowed} Pages Active
                 </span>
@@ -548,7 +548,7 @@ const HallmarksPage: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+              <div className="flex items-center gap-1.5 bg-gray-50 p-1.5 rounded-xl border border-slate-300">
                 <div className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 ${
                   createdCount >= 1 ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-400 border border-dashed border-gray-300'
                 }`}>
@@ -607,7 +607,7 @@ const HallmarksPage: React.FC = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="communities" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white shadow-sm rounded-xl p-1 mb-6 border border-gray-200">
+          <TabsList className="grid w-full grid-cols-3 bg-white shadow-sm rounded-xl p-1 mb-6 border border-slate-300">
             <TabsTrigger value="communities" className="data-[state=active]:bg-[#ff6b00] data-[state=active]:text-white rounded-lg py-2 font-bold text-xs">
               Communities ({allCommunities.length})
             </TabsTrigger>
@@ -641,7 +641,7 @@ const HallmarksPage: React.FC = () => {
                 const isFrozen = community.status === 'frozen' || (community.is_frozen && (!community.frozen_until || new Date(community.frozen_until) > new Date()));
 
                 return (
-                  <Card key={community.id} className="overflow-hidden bg-white shadow-sm rounded-2xl border border-gray-200 hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <Card key={community.id} className="overflow-hidden bg-white shadow-sm rounded-2xl border border-slate-300 hover:shadow-md transition-shadow flex flex-col justify-between">
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start gap-2">
                         <CardTitle className="text-lg font-bold text-gray-900">{community.name}</CardTitle>
@@ -724,7 +724,7 @@ const HallmarksPage: React.FC = () => {
                             <>
                               <button
                                 onClick={() => openModAction('warn', community)}
-                                className="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 text-[11px] font-bold transition"
+                                className="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold text-[11px] font-bold transition"
                                 title="Issue formal policy warning (0 PINs)"
                               >
                                 ⚠️ Warn
@@ -738,7 +738,7 @@ const HallmarksPage: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => openModAction('freeze', community)}
-                                className="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 text-[11px] font-bold transition"
+                                className="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold text-[11px] font-bold transition"
                                 title="Freeze for 6 hours (Consumes 1 PIN)"
                               >
                                 ❄️ Freeze (-1 PIN)
@@ -748,7 +748,7 @@ const HallmarksPage: React.FC = () => {
                           {isSuspended && (
                             <button
                               onClick={() => handleUnsuspend(community.id)}
-                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] font-bold transition"
+                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px] font-bold transition"
                             >
                               🔄 Restore / Unsuspend
                             </button>
@@ -756,7 +756,7 @@ const HallmarksPage: React.FC = () => {
                           {isFrozen && (
                             <button
                               onClick={() => handleUnfreeze(community.id)}
-                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] font-bold transition"
+                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px] font-bold transition"
                             >
                               🔄 Restore / Unfreeze
                             </button>
@@ -790,7 +790,7 @@ const HallmarksPage: React.FC = () => {
             <h2 className="text-xl font-bold text-gray-900">Your Earned Hallmarks</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {myHallmarks.map((hallmark) => (
-                <Card key={hallmark.id} className="overflow-hidden bg-white shadow-sm rounded-2xl border border-gray-200">
+                <Card key={hallmark.id} className="overflow-hidden bg-white shadow-sm rounded-2xl border border-slate-300">
                   <CardHeader className="pb-3">
                     <div className="flex items-center">
                       <div className="text-3xl mr-4">{hallmark.icon || '🏅'}</div>
@@ -821,7 +821,7 @@ const HallmarksPage: React.FC = () => {
 
           {/* Discover Tab */}
           <TabsContent value="discover" className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 space-y-4">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-300 space-y-4">
               <h2 className="text-xl font-bold text-gray-900">Sovereign Community Governance Rules</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-600">
                 <div className="p-4 rounded-xl bg-orange-50/50 border border-orange-100">
@@ -862,7 +862,7 @@ const HallmarksPage: React.FC = () => {
         </Tabs>
 
         {/* Discourse / Commendations */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 space-y-5">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-300 space-y-5">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div>
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -883,7 +883,7 @@ const HallmarksPage: React.FC = () => {
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
               placeholder="Leave an encouraging comment or commendation..."
-              className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
+              className="flex-1 bg-gray-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
             />
             <Button type="submit" className="bg-[#ff6b00] hover:bg-[#e05e00] text-white font-bold text-xs px-5 rounded-xl">
               Post
@@ -961,7 +961,7 @@ const HallmarksPage: React.FC = () => {
               <div className="space-y-2">
                 {quota?.myPages && quota.myPages.length > 0 ? (
                   quota.myPages.map((page: any) => (
-                    <div key={page.id} className="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between">
+                    <div key={page.id} className="p-3 bg-gray-50 rounded-xl border border-slate-300 flex items-center justify-between">
                       <div>
                         <div className="text-xs font-bold text-gray-900">{page.name}</div>
                         <div className="text-[10px] text-gray-500">Status: <span className="font-semibold text-emerald-600">{page.status}</span></div>
@@ -1033,8 +1033,8 @@ const HallmarksPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                           log.action_type === 'suspend' ? 'bg-rose-100 text-rose-800' :
-                          log.action_type === 'freeze' ? 'bg-blue-100 text-blue-800' :
-                          'bg-amber-100 text-amber-800'
+                          log.action_type === 'freeze' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
+                          'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                         }`}>
                           {log.action_type}
                         </span>
@@ -1145,7 +1145,7 @@ const HallmarksPage: React.FC = () => {
                 value={modModal.reason}
                 onChange={(e) => setModModal(prev => ({ ...prev, reason: e.target.value }))}
                 placeholder="Enter specific protocol rule violation reason..."
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
+                className="w-full bg-gray-50 border border-slate-300 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#ff6b00]"
               />
             </div>
 

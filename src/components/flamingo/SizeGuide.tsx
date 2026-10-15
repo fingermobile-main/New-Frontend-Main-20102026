@@ -101,7 +101,7 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
           {sizeCharts.map((chart) => (
             <div
               key={chart.id}
-              className="bg-white border border-gray-200 rounded-lg p-6"
+              className="bg-white border border-slate-300 rounded-lg p-6"
             >
               {/* Chart Header */}
               <div className="mb-4">
@@ -109,10 +109,10 @@ const SizeGuide: React.FC<SizeGuideProps> = ({ brandName, categoryId }) => {
                   {chart.brand_name} - {chart.category_id}
                 </h3>
                 <div className="flex gap-2 mt-2">
-                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full">
                     {chart.region}
                   </span>
-                  <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
+                  <span className="px-2 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold text-xs rounded-full">
                     {chart.gender}
                   </span>
                 </div>

@@ -247,7 +247,7 @@ const ReferralsPage: React.FC = () => {
           </div>
         ) : (
           <div className="p-12 text-center space-y-2">
-            <Users className="w-10 h-10 text-slate-400 mx-auto" />
+            <Users className="w-10 h-10 text-slate-500 mx-auto" />
             <p className="text-sm font-bold text-slate-800">No members referred yet</p>
             <p className="text-xs text-slate-700 font-medium">Share your invite link above to start earning 50 FIC per activation!</p>
           </div>

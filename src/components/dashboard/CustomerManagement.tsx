@@ -123,9 +123,9 @@ const CustomerManagement: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-    case 'active': return 'bg-green-100 text-green-800';
-    case 'inactive': return 'bg-yellow-100 text-yellow-800';
-    case 'suspended': return 'bg-red-100 text-red-800';
+    case 'active': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+    case 'inactive': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+    case 'suspended': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
     default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -367,17 +367,17 @@ const CustomerManagement: React.FC = () => {
           Segment your customers based on their purchase history, engagement, and demographics to deliver personalized experiences.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="bg-white p-4 rounded-lg border border-slate-300">
             <h4 className="font-medium text-gray-700 mb-2">High Value</h4>
             <p className="text-sm text-gray-600">Customers who spend $1000+</p>
             <div className="mt-2 text-lg font-bold text-green-600">12</div>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="bg-white p-4 rounded-lg border border-slate-300">
             <h4 className="font-medium text-gray-700 mb-2">Repeat Buyers</h4>
             <p className="text-sm text-gray-600">Customers with 5+ purchases</p>
             <div className="mt-2 text-lg font-bold text-blue-600">28</div>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="bg-white p-4 rounded-lg border border-slate-300">
             <h4 className="font-medium text-gray-700 mb-2">New Signups</h4>
             <p className="text-sm text-gray-600">Customers in last 30 days</p>
             <div className="mt-2 text-lg font-bold text-purple-600">42</div>

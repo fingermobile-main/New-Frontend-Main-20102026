@@ -1306,7 +1306,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                               <>
                                 <button
                                   onClick={() => handleToggleStoreStatus(st.id, 'suspended')}
-                                  className="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded font-bold text-[10px]"
+                                  className="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-300 rounded font-bold text-[10px]"
                                   title="Suspend Checkout"
                                 >
                                   Suspend
@@ -1322,7 +1322,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                             ) : (
                               <button
                                 onClick={() => handleToggleStoreStatus(st.id, 'active')}
-                                className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded font-bold text-[10px]"
+                                className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300 rounded font-bold text-[10px]"
                                 title="Reactivate Store"
                               >
                                 Reactivate
@@ -1333,7 +1333,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                                 setTargetStoreForWarning(st);
                                 setIsWarningModalOpen(true);
                               }}
-                              className="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-300 rounded font-bold text-[10px]"
+                              className="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-300 rounded font-bold text-[10px]"
                               title="Issue Warning"
                             >
                               Warn

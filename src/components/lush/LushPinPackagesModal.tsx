@@ -154,7 +154,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-emerald-50/70 via-white to-teal-50/70">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-emerald-100 text-emerald-800 rounded-xl">
+            <div className="p-2 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl">
               <ShieldCheckIcon className="w-5 h-5 text-emerald-700" />
             </div>
             <div>
@@ -242,7 +242,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
                         className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
                           pkg.highlight
                             ? 'bg-[#DC582A] text-white'
-                            : 'bg-emerald-100 text-emerald-800'
+                            : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
                         }`}
                       >
                         {pkg.badge}
@@ -294,7 +294,7 @@ export const LushPinPackagesModal: React.FC<LushPinPackagesModalProps> = ({
           </div>
 
           {/* Payment Method Selector */}
-          <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 rounded-2xl bg-gray-50 border border-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <span className="font-bold text-gray-800 block">Payment Method</span>
               <p className="text-[11px] text-gray-500">

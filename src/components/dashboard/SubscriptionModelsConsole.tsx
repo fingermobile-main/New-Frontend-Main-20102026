@@ -700,7 +700,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
               placeholder="Search tiers or perks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-44 sm:w-56 pl-8 pr-3 py-1.5 text-xs bg-slate-950/70 border border-slate-800 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+              className="w-44 sm:w-56 pl-8 pr-3 py-1.5 text-xs bg-slate-950/70 border border-slate-800 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
@@ -716,7 +716,7 @@ export const SubscriptionModelsConsole: React.FC<Props> = ({ sourceDashboard = '
             {selectedIds.length === filteredModels.length && filteredModels.length > 0 ? (
               <CheckSquare className="w-4 h-4 text-blue-400" />
             ) : (
-              <Square className="w-4 h-4 text-slate-400" />
+              <Square className="w-4 h-4 text-slate-500" />
             )}
             <span>
               {selectedIds.length === filteredModels.length && filteredModels.length > 0

@@ -43,7 +43,7 @@ const FollowSuggestions: React.FC<FollowSuggestionsProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3">
         <h3 className="font-semibold text-white flex items-center gap-2">
@@ -93,7 +93,7 @@ const FollowSuggestions: React.FC<FollowSuggestionsProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 px-4 py-3 bg-gray-50">
+      <div className="border-t border-slate-300 px-4 py-3 bg-gray-50">
         <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
           See all suggestions →
         </button>

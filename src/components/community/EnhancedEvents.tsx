@@ -25,7 +25,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300">
       <div className="p-6 border-b border-gray-200">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Events</h3>
         <div className="flex space-x-2">
@@ -35,7 +35,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === tab
-                  ? 'bg-blue-100 text-blue-700'
+                  ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
@@ -63,7 +63,7 @@ const EnhancedEvents: React.FC<EnhancedEventsProps> = ({ userId }) => {
                 </div>
                 <p className="text-xs text-gray-500 mt-1">{event.location}</p>
               </div>
-              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 capitalize">
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-950 border border-purple-400 font-bold capitalize">
                 {event.type}
               </span>
             </div>

@@ -73,7 +73,7 @@ export const LuminaAIModal: React.FC<LuminaModalProps> = ({ isOpen, onClose }) =
       <div className="p-4 space-y-3">
         <textarea
           autoFocus
-          className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:outline-none resize-none min-h-[100px] text-sm"
+          className="w-full bg-gray-50 dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl p-3 focus:ring-2 focus:ring-violet-500 focus:outline-none resize-none min-h-[100px] text-sm"
           placeholder="Ask Lumina anything about the community, forum rules, FIC tokens, events..."
           value={question}
           onChange={e => setQuestion(e.target.value)}
@@ -249,7 +249,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
         <div>
           <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Room Name</label>
           <input autoFocus type="text" maxLength={60}
-            className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm"
+            className="w-full bg-gray-50 dark:bg-gray-900 border border-slate-300 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm"
             placeholder="e.g. Friday Night Hangout"
             value={roomName} onChange={e => setRoomName(e.target.value)}
           />

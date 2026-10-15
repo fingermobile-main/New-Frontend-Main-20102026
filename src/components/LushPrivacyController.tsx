@@ -151,7 +151,7 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
             This content has special privacy requirements that must be met before viewing.
           </p>
 
-          <div className="mt-6 bg-white rounded-lg p-4 border border-gray-200">
+          <div className="mt-6 bg-white rounded-lg p-4 border border-slate-300">
             <h4 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h4>
             <ul className="text-xs text-gray-600 space-y-1">
               {settings.visibility && (

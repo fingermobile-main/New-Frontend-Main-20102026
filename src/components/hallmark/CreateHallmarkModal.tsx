@@ -280,7 +280,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-3xl my-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex flex-col max-h-[92vh] overflow-hidden">
+      <div className="relative w-full max-w-3xl my-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-slate-300 dark:border-gray-800 flex flex-col max-h-[92vh] overflow-hidden">
         
         {/* Header Bar */}
         <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:to-gray-800">
@@ -305,7 +305,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
         </div>
 
         {/* Multi-step Breadcrumb */}
-        <div className="px-6 py-2.5 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between text-xs font-medium">
+        <div className="px-6 py-2.5 bg-gray-50 dark:bg-gray-800/50 border-b border-slate-300 dark:border-gray-800 flex items-center justify-between text-xs font-medium">
           <div className={`flex items-center gap-1.5 ${step === 1 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">1</span>
             <span>Tier Selection</span>
@@ -656,7 +656,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
                 Your HallMarks page application for <strong>&quot;{pageName}&quot;</strong> has been logged with the FingerMobile Protocol Community Council.
               </p>
               
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl max-w-sm mx-auto text-xs space-y-1.5 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl max-w-sm mx-auto text-xs space-y-1.5 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Reference Token:</span>
                   <span className="font-mono font-bold text-[#ff6b00]">{referenceId}</span>

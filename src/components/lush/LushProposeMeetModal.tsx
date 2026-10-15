@@ -175,7 +175,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                   Propose Date, Meet or Expedition
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-200">
                   FingerLux™ Protocol
                 </span>
               </div>
@@ -207,7 +207,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
 
         {isSent ? (
           <div className="py-12 text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl shadow-inner">
+            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center text-3xl shadow-inner">
               ✨
             </div>
             <h3 className="text-xl font-bold text-gray-900">

@@ -77,7 +77,7 @@ const ForumLeftSidebar: React.FC<ForumLeftSidebarProps> = ({ isOpen, onClose }) 
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700">
         <span className="text-lg font-semibold text-white">Navigation</span>
         <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg">
-          <XIcon className="w-6 h-6 text-gray-400" />
+          <XIcon className="w-6 h-6 text-slate-500" />
         </button>
       </div>
 

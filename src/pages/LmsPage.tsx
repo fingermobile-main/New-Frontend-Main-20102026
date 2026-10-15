@@ -411,10 +411,10 @@ const LmsPage: React.FC = () => {
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           assignment.submitted
-                            ? 'bg-green-100 text-green-800'
+                            ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                             : assignment.completed
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
+                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                         }`}
                       >
                         {assignment.submitted

@@ -55,13 +55,13 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
 
   const getStockStatus = (item: InventoryItem & { reorder_point?: number }) => {
     if (item.quantity === 0) {
-      return { label: 'Out of Stock', color: 'bg-red-100 text-red-800' };
+      return { label: 'Out of Stock', color: 'bg-red-100 text-red-950 border border-red-400 font-bold' };
     } else if (item.quantity < (item.reorder_point || 0)) {
-      return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-800' };
+      return { label: 'Low Stock', color: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' };
     } else if (item.quantity < (item.reorder_point || 0) * 2) {
-      return { label: 'Medium Stock', color: 'bg-blue-100 text-blue-800' };
+      return { label: 'Medium Stock', color: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' };
     }
-    return { label: 'In Stock', color: 'bg-green-100 text-green-800' };
+    return { label: 'In Stock', color: 'bg-green-100 text-green-950 border border-green-400 font-bold' };
   };
 
   const formatCurrency = (amount: number) => {
@@ -100,23 +100,23 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Total Items</p>
           <p className="text-2xl font-bold text-gray-900">{inventory.length}</p>
         </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">In Stock</p>
           <p className="text-2xl font-bold text-green-600">
             {inventory.filter(i => i.quantity >= (i.reorder_point || 0)).length}
           </p>
         </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Low Stock</p>
           <p className="text-2xl font-bold text-yellow-600">
             {inventory.filter(i => i.quantity < (i.reorder_point || 0) && i.quantity > 0).length}
           </p>
         </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Out of Stock</p>
           <p className="text-2xl font-bold text-red-600">
             {inventory.filter(i => i.quantity === 0).length}
@@ -151,7 +151,7 @@ const InventoryTracker: React.FC<InventoryTrackerProps> = ({ storeId }) => {
           <p className="text-gray-500">No inventory items found</p>
         </div>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <div className="bg-white border border-slate-300 rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

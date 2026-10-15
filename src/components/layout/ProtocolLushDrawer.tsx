@@ -57,19 +57,19 @@ export function ProtocolLushDrawer({
 
   const navItems = [
     { name: 'Home', href: '/', icon: HomeIcon },
-    { name: 'Live Feed', href: '/feed', icon: NewspaperIcon, badge: 'Live', badgeColor: 'bg-emerald-100 text-emerald-800' },
+    { name: 'Live Feed', href: '/feed', icon: NewspaperIcon, badge: 'Live', badgeColor: 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' },
     { name: 'Wallet & Vault', href: '/wallet', icon: WalletIcon, badge: '🪙 FIC', badgeColor: 'bg-amber-100 text-amber-900 font-bold' },
-    { name: 'Guardian Protection', href: '/guardian-protection', icon: ShieldCheckIcon, badge: 'STERCS™', badgeColor: 'bg-red-100 text-red-800 font-bold' },
-    { name: 'Flamingo Luxury', href: '/flamingo', icon: SparklesIcon, badge: '19+ Store', badgeColor: 'bg-purple-100 text-purple-800' },
+    { name: 'Guardian Protection', href: '/guardian-protection', icon: ShieldCheckIcon, badge: 'STERCS™', badgeColor: 'bg-red-100 text-red-950 border border-red-400 font-bold font-bold' },
+    { name: 'Flamingo Luxury', href: '/flamingo', icon: SparklesIcon, badge: '19+ Store', badgeColor: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' },
     { name: 'Lush-Pressies', href: '/lush-pressies', icon: HeartIcon, badge: 'VIP Bonds', badgeColor: 'bg-pink-100 text-pink-800 font-bold' },
-    { name: 'BeatWaveNg', href: '/beatwave-ng', icon: MusicalNoteIcon, badge: 'Beats', badgeColor: 'bg-emerald-100 text-emerald-800' },
-    { name: 'Dancia-4Tv', href: '/dancia-tv', icon: TvIcon, badge: '4K TV', badgeColor: 'bg-blue-100 text-blue-800' },
+    { name: 'BeatWaveNg', href: '/beatwave-ng', icon: MusicalNoteIcon, badge: 'Beats', badgeColor: 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' },
+    { name: 'Dancia-4Tv', href: '/dancia-tv', icon: TvIcon, badge: '4K TV', badgeColor: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' },
     { name: 'Corporate Offices', href: '/business', icon: BuildingOfficeIcon, badge: 'HQ', badgeColor: 'bg-slate-200 text-slate-800' },
     { name: 'Marketplace', href: '/marketplace', icon: ShoppingBagIcon, badge: 'Store', badgeColor: 'bg-orange-100 text-orange-800' },
     { name: 'Plushies Gifts', href: '/gifts', icon: GiftIcon, badge: 'Plushies', badgeColor: 'bg-teal-100 text-teal-800' },
     { name: 'Chat & Audio', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Blogs & Articles', href: '/blogs', icon: DocumentTextIcon },
-    { name: 'Hallmarks', href: '/hallmarks', icon: StarIcon, badge: 'VIP', badgeColor: 'bg-amber-100 text-amber-800' },
+    { name: 'Hallmarks', href: '/hallmarks', icon: StarIcon, badge: 'VIP', badgeColor: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' },
     { name: 'Canary Radar', href: '/canary', icon: GlobeAltIcon },
     { name: 'Settings', href: '/settings', icon: Cog6ToothIcon }
   ];

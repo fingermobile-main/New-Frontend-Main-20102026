@@ -66,7 +66,7 @@ contract Fiat2IFCBridge is Ownable {
 
   return (
     <LegalLayout>
-      <div className="p-6 lg:p-8 bg-white rounded-2xl shadow-sm border border-gray-200 min-h-full">
+      <div className="p-6 lg:p-8 bg-white rounded-2xl shadow-sm border border-slate-300 min-h-full">
         <div className="max-w-4xl mx-auto">
           <LegalDocumentBanner
             slug="whitepaper"

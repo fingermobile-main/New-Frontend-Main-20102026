@@ -80,7 +80,7 @@ const SupportPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-md border border-gray-200">
+            <div className="bg-white rounded-xl shadow-md border border-slate-300">
               <div className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Submit a Support Ticket</h2>
 
@@ -221,7 +221,7 @@ const SupportPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Contact Information</h2>
               <div className="space-y-4">
                 <div>
@@ -242,7 +242,7 @@ const SupportPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-8 bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <div className="mt-8 bg-white rounded-xl shadow-md p-6 border border-slate-300">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
 
           <div className="space-y-4">

@@ -179,7 +179,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <span>Core Web Vitals Real-Time Health Gauges</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-bold">
                   ALL PASSING (GOOD)
                 </span>
               </h2>
@@ -202,7 +202,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">{key}</span>
-                      <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                         GOOD
                       </span>
                     </div>
@@ -334,7 +334,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-sm">
                     PSI
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                     PASSED
                   </span>
                 </div>
@@ -364,7 +364,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black text-sm">
                     GTM
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                     GRADE A
                   </span>
                 </div>
@@ -394,7 +394,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-sm">
                     PNG
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                     GRADE 97
                   </span>
                 </div>
@@ -424,7 +424,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-sm">
                     WPT
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                     CATCHPOINT
                   </span>
                 </div>
@@ -476,7 +476,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.renderMs} ms</td>
                       <td className="py-3 px-3 font-mono text-slate-700 dark:text-slate-300">{b.speedIndexMs} ms</td>
                       <td className="py-3 px-3 text-right">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 uppercase">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 uppercase">
                           {b.status}
                         </span>
                       </td>
@@ -505,7 +505,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                     <p className="text-[11px] text-slate-400">CPU Usage, Layout Shifts, and Server Response Timeline</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                   HEALTHY
                 </span>
               </div>
@@ -556,7 +556,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                     <p className="text-[11px] text-slate-400">Real-world crawl stats, URL inspection &amp; Rich Results</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300">
                   100% INDEXED
                 </span>
               </div>
@@ -774,13 +774,13 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
 
             {/* Input Search Box */}
             <div className="relative">
-              <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+              <Search className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search across Database tables, MasterDashboard consoles, Stercs modules, or routes (e.g. 'auth', 'fic', 'render', 'orders')..."
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-inner"
               />
             </div>
 
@@ -799,7 +799,7 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                   Index Structure: {searchBenchmark.indexStructureUsed}
                 </span>
               </div>
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                 SCAN TYPE: {searchBenchmark.scanType}
               </span>
             </div>
@@ -815,12 +815,12 @@ export const GuardianAISeoPerformanceConsole: React.FC = () => {
                     <div className="flex items-center justify-between mb-1.5">
                       <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase font-mono ${
                         entity.category === 'Database'
-                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                          ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
                           : entity.category === 'MasterDashboard'
-                          ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                          ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300'
                           : entity.category === 'Stercs'
-                          ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
-                          : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                          ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold dark:bg-purple-950 dark:text-purple-300'
+                          : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300'
                       }`}>
                         {entity.category} • {entity.subCategory}
                       </span>

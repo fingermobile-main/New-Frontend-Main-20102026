@@ -86,7 +86,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
       <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden flex flex-col">
         <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center">
               <Camera className="w-4 h-4" />
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Create Mii™ Status</h2>
@@ -123,7 +123,7 @@ export const CreateMiiStatusModal: React.FC<CreateMiiStatusModalProps> = ({ isOp
                 ))}
                 {cards.length < 20 && (
                   <label className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center cursor-pointer hover:border-emerald-500">
-                    <Plus className="w-6 h-6 text-gray-400" />
+                    <Plus className="w-6 h-6 text-slate-500" />
                     <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileChange} />
                   </label>
                 )}

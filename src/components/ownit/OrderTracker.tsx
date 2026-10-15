@@ -6,11 +6,11 @@ interface OrderTrackerProps {
 }
 
 const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  processing: 'bg-blue-100 text-blue-800',
-  shipped: 'bg-purple-100 text-purple-800',
-  delivered: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800',
+  pending: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold',
+  processing: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold',
+  shipped: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold',
+  delivered: 'bg-green-100 text-green-950 border border-green-400 font-bold',
+  cancelled: 'bg-red-100 text-red-950 border border-red-400 font-bold',
   returned: 'bg-gray-100 text-gray-800'
 };
 
@@ -125,7 +125,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({ userId }) => {
           {filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+              className="bg-white border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>

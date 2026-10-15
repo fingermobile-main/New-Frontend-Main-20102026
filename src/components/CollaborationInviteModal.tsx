@@ -116,7 +116,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
 
           <div className="p-6 space-y-6">
             {/* Project Info */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
               <p className="text-sm text-gray-600 mb-1">Inviting to:</p>
               <p className="font-semibold text-gray-900">{projectName}</p>
             </div>

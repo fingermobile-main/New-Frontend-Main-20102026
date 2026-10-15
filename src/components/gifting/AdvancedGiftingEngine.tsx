@@ -186,7 +186,7 @@ const AdvancedGiftingEngine: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-purple-700 via-pink-600 to-rose-600 p-6 text-white">
         <div className="flex items-center justify-between">

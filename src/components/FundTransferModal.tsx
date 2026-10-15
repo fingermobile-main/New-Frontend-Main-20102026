@@ -224,7 +224,7 @@ const FundTransferModal: React.FC<FundTransferModalProps> = ({
 
             {/* Summary */}
             {amount && recipient && (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <div className="bg-gray-50 border border-slate-300 rounded-lg p-4">
                 <h4 className="font-semibold text-gray-900 mb-2">Transfer Summary</h4>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">

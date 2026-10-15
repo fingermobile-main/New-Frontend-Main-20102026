@@ -53,12 +53,12 @@ const CourseContentPage: React.FC = () => {
         </header>
 
         {loading ? (
-          <div className="p-8 text-center bg-white rounded-lg shadow border border-gray-200">
+          <div className="p-8 text-center bg-white rounded-lg shadow border border-slate-300">
             Loading course content...
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <aside className="md:col-span-1 bg-white p-4 rounded-lg shadow border border-gray-200 h-fit">
+            <aside className="md:col-span-1 bg-white p-4 rounded-lg shadow border border-slate-300 h-fit">
               <h2 className="font-semibold text-lg mb-4">Modules</h2>
               <ul className="space-y-2">
                 {content?.modules?.map((mod: any) => (
@@ -69,7 +69,7 @@ const CourseContentPage: React.FC = () => {
               </ul>
             </aside>
 
-            <main className="md:col-span-3 bg-white p-6 rounded-lg shadow border border-gray-200">
+            <main className="md:col-span-3 bg-white p-6 rounded-lg shadow border border-slate-300">
               <div className="aspect-video bg-gray-900 rounded-lg mb-6 flex items-center justify-center text-white shadow-inner">
                 {content?.currentModule?.videoUrl === 'placeholder' ? (
                   <div className="flex flex-col items-center">

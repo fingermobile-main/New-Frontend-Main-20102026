@@ -5,7 +5,7 @@ interface SecurityMonitoringProps {}
 
 const SecurityMonitoring: React.FC<SecurityMonitoringProps> = () => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <EyeIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Security Monitoring</h3>

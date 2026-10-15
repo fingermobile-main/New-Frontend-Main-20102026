@@ -1717,7 +1717,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       value={schedTitle}
                       onChange={(e) => setSchedTitle(e.target.value)}
                       placeholder="e.g. Sovereign WebRTC Protocol Keynote & AMA Session"
-                      className="w-full p-3 bg-gray-800/90 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 shadow-inner"
+                      className="w-full p-3 bg-gray-800/90 border border-gray-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 shadow-inner"
                     />
                   </div>
 
@@ -1879,7 +1879,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       value={schedCoHosts}
                       onChange={(e) => setSchedCoHosts(e.target.value)}
                       placeholder="@israelobinna, @eunicembah, @superadmin"
-                      className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                      className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                     />
                     <p className="text-[10px] text-gray-500 mt-1">Comma-separated usernames to automatically invite</p>
                   </div>
@@ -1894,7 +1894,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       value={schedDescription}
                       onChange={(e) => setSchedDescription(e.target.value)}
                       placeholder="Share what this live broadcast is about, topics to discuss, or special announcements..."
-                      className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 resize-none"
+                      className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 resize-none"
                     />
                   </div>
 
@@ -2459,7 +2459,7 @@ const WebRtcStudioDrawer: React.FC<WebRtcStudioDrawerProps> = ({
                       <button
                         type="button"
                         onClick={() => handlePerformUpgrade('MASTER_200000')}
-                        className="w-full py-2 bg-gradient-to-r from-amber-600 to-yellow-500 hover:opacity-90 text-black font-black rounded-xl text-xs transition shadow-xl"
+                        className="w-full py-2 bg-gradient-to-r from-amber-600 to-yellow-500 hover:opacity-90 text-slate-900 font-black rounded-xl text-xs transition shadow-xl"
                       >
                         Upgrade to 200,000 Capacity (1,200 FIC)
                       </button>

@@ -445,7 +445,7 @@ const PhotosPage: React.FC = () => {
         {/* 4. PHOTO GALLERY GRID */}
         {filteredPhotos.length === 0 ? (
           <div className="p-12 text-center bg-white rounded-3xl border border-slate-300 space-y-3">
-            <Camera className="w-12 h-12 text-slate-400 mx-auto" />
+            <Camera className="w-12 h-12 text-slate-500 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No Visual Captures Found</h3>
             <p className="text-xs text-slate-700 max-w-sm mx-auto">
               No photographs matching &ldquo;{searchQuery}&rdquo; in this category. Try adjusting your query or category filter.

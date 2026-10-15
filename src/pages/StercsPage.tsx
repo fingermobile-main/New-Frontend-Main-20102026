@@ -575,52 +575,52 @@ const StercsPage: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'governance': return 'bg-blue-100 text-blue-800';
-      case 'control': return 'bg-green-100 text-green-800';
-      case 'monitoring': return 'bg-purple-100 text-purple-800';
-      case 'compliance': return 'bg-yellow-100 text-yellow-800';
-      case 'security': return 'bg-red-100 text-red-800';
+      case 'governance': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'control': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'monitoring': return 'bg-purple-100 text-purple-950 border border-purple-400 font-bold';
+      case 'compliance': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'security': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800';
+      case 'critical': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'low': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'maintenance': return 'bg-yellow-100 text-yellow-800';
-      case 'deprecated': return 'bg-red-100 text-red-800';
-      case 'implemented': return 'bg-green-100 text-green-800';
-      case 'planned': return 'bg-blue-100 text-blue-800';
+      case 'maintenance': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'deprecated': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'implemented': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'planned': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
       case 'not_implemented': return 'bg-gray-100 text-gray-800';
-      case 'waived': return 'bg-yellow-100 text-yellow-800';
-      case 'passed': return 'bg-green-100 text-green-800';
-      case 'failed': return 'bg-red-100 text-red-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
+      case 'waived': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'passed': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'failed': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'partial': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
       case 'not_applicable': return 'bg-gray-100 text-gray-800';
-      case 'active-policy': return 'bg-green-100 text-green-800';
+      case 'active-policy': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'inactive-policy': return 'bg-gray-100 text-gray-800';
       case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'review': return 'bg-yellow-100 text-yellow-800';
+      case 'review': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getEnvironmentColor = (env: string) => {
     switch (env) {
-      case 'production': return 'bg-red-100 text-red-800';
-      case 'staging': return 'bg-yellow-100 text-yellow-800';
-      case 'development': return 'bg-green-100 text-green-800';
+      case 'production': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'staging': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'development': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -773,7 +773,7 @@ const StercsPage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -993,7 +993,7 @@ const StercsPage: React.FC = () => {
                               {policy.moduleName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.type === 'access_control' ? 'bg-blue-100 text-blue-800' : policy.type === 'data_protection' ? 'bg-green-100 text-green-800' : policy.type === 'monitoring' ? 'bg-purple-100 text-purple-800' : policy.type === 'compliance' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.type === 'access_control' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : policy.type === 'data_protection' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : policy.type === 'monitoring' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' : policy.type === 'compliance' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'}`}>
                                 {policy.type.replace('_', ' ')}
                               </span>
                             </td>
@@ -1003,7 +1003,7 @@ const StercsPage: React.FC = () => {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.status === 'active' ? 'bg-green-100 text-green-800' : policy.status === 'inactive' ? 'bg-gray-100 text-gray-800' : policy.status === 'draft' ? 'bg-gray-100 text-gray-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : policy.status === 'inactive' ? 'bg-gray-100 text-gray-800' : policy.status === 'draft' ? 'bg-gray-100 text-gray-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {policy.status}
                               </span>
                             </td>
@@ -1091,12 +1091,12 @@ const StercsPage: React.FC = () => {
                               {control.controlId}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${control.framework === 'NIST' ? 'bg-blue-100 text-blue-800' : control.framework === 'ISO 27001' ? 'bg-green-100 text-green-800' : control.framework === 'GDPR' ? 'bg-purple-100 text-purple-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${control.framework === 'NIST' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : control.framework === 'ISO 27001' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : control.framework === 'GDPR' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {control.framework}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${control.category === 'preventive' ? 'bg-green-100 text-green-800' : control.category === 'detective' ? 'bg-blue-100 text-blue-800' : control.category === 'corrective' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${control.category === 'preventive' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : control.category === 'detective' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : control.category === 'corrective' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'}`}>
                                 {control.category}
                               </span>
                             </td>
@@ -1371,7 +1371,7 @@ const StercsPage: React.FC = () => {
 
         {/* Pagination */}
         {['modules', 'policies', 'controls', 'audits'].includes(activeTab) && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -1592,7 +1592,7 @@ const StercsPage: React.FC = () => {
       {/* STERCS DETAILS & EVIDENCE INSPECTOR MODAL */}
       {selectedInspectorItem && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full border border-gray-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl max-w-2xl w-full border border-slate-300 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <div className="bg-slate-900 text-white p-5 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
@@ -1644,7 +1644,7 @@ const StercsPage: React.FC = () => {
             <div className="p-6 max-h-[60vh] overflow-y-auto text-xs space-y-4">
               {selectedInspectorItem.subTab === 'details' && (
                 <div className="space-y-3">
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="p-3 bg-gray-50 rounded-xl border border-slate-300">
                     <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Description</div>
                     <div className="text-gray-800 leading-relaxed">
                       {selectedInspectorItem.data.description || selectedInspectorItem.data.findings || 'No description provided.'}
@@ -1688,7 +1688,7 @@ const StercsPage: React.FC = () => {
               )}
             </div>
 
-            <div className="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-between items-center text-xs">
+            <div className="px-6 py-3.5 bg-gray-50 border-t border-slate-300 flex justify-between items-center text-xs">
               <button
                 onClick={() => {
                   triggerToast(`Attestation verified for ${selectedInspectorItem.type} #${selectedInspectorItem.data.id}`);

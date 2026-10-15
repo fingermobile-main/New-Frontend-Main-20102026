@@ -324,7 +324,7 @@ export const ContactsPage: React.FC = () => {
           <div className="mt-6 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/40 p-3 rounded-lg border border-zinc-800">
               <div className="flex items-center gap-2 w-full md:w-96 bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-800">
-                <Search className="w-4 h-4 text-zinc-400" />
+                <Search className="w-4 h-4 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Search member, username, ID, email..."

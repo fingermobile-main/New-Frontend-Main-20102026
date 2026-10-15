@@ -74,7 +74,7 @@ const JobsOpportunities: React.FC = () => {
 
       <div className="space-y-4">
         {jobs.map(job => (
-          <div key={job.id} className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
+          <div key={job.id} className="border border-slate-300 rounded-lg p-3 hover:bg-gray-50 transition-colors">
             <div className="flex justify-between">
               <h4 className="font-semibold text-fm-gray-900">{job.title}</h4>
               <span className="text-xs bg-fm-orange bg-opacity-10 text-fm-orange px-2 py-1 rounded">

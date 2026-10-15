@@ -81,7 +81,7 @@ export const GiftsShopPage: React.FC = () => {
                 <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                   Lush Luxury Gift Shop
                 </h1>
-                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
                   Escrow Protected
                 </span>
               </div>
@@ -281,7 +281,7 @@ export const GiftsShopPage: React.FC = () => {
       {showSuccessModal && selectedProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-md w-full p-6 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold mx-auto flex items-center justify-center">
               <CheckBadgeIcon className="w-10 h-10" />
             </div>
             <h3 className="text-lg font-black text-gray-900">

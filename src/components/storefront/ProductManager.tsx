@@ -270,7 +270,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
           {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+              className="bg-white border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
@@ -278,8 +278,8 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                   <p className="text-sm text-gray-600 mt-1">SKU: {product.sku || 'N/A'}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  product.status === 'active' ? 'bg-green-100 text-green-800' :
-                    product.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                  product.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                    product.status === 'draft' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
                       'bg-gray-100 text-gray-800'
                 }`}>
                   {product.status}

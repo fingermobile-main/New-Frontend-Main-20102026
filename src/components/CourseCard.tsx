@@ -115,7 +115,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   };
 
   return (
-    <Card className="w-full flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 group">
+    <Card className="w-full flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-300 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 group">
       <div>
         {/* Course Banner / Visual */}
         <div className="relative h-44 w-full overflow-hidden bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-700 p-4 flex flex-col justify-between text-white">

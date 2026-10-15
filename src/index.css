@@ -74,37 +74,90 @@
 @layer utilities {
   /* Enforce readable muted colors in light mode regardless of container nesting */
   html:not(.dark):not(.black-theme) {
-    /* Baseline colors for faint utility classes on light backgrounds */
+    /* 1. Descriptions, Captions & Notes: Minimum 7.2:1 AAA contrast */
     .text-gray-400,
     .text-slate-400,
     .text-zinc-400,
     .text-neutral-400 {
-      color: #4b5563 !important; /* Gray-600: 4.6:1 contrast ratio */
+      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
     }
 
-    .text-gray-500,
-    .text-slate-500,
-    .text-zinc-500,
-    .text-neutral-500 {
-      color: #374151 !important; /* Gray-700: 6.8:1 contrast ratio */
+    /* Paragraphs, labels, descriptions with 500 shade */
+    p.text-gray-500, p.text-slate-500, p.text-zinc-500, p.text-neutral-500,
+    span.text-gray-500, span.text-slate-500, span.text-zinc-500, span.text-neutral-500,
+    div.text-gray-500, div.text-slate-500, div.text-zinc-500, div.text-neutral-500,
+    label.text-gray-500, label.text-slate-500, label.text-zinc-500, label.text-neutral-500 {
+      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
+    }
+
+    /* Primary Titles: Remap blanket text-black to text-slate-900 (15.9:1 AAA) */
+    h1.text-black, h2.text-black, h3.text-black, h4.text-black, h5.text-black, h6.text-black {
+      color: #0f172a !important; /* text-slate-900 */
     }
 
     /* Subtitles, labels, and small descriptions */
     .text-muted-foreground {
-      color: hsl(var(--muted-foreground)) !important;
+      color: #334155 !important; /* text-slate-700 (>7:1 AAA contrast) */
+    }
+
+    /* Badges on light tints (*-100): Deep 950 text shades with visible borders */
+    .bg-emerald-100 {
+      color: #022c22 !important;
+      border-color: #34d399 !important;
+      font-weight: 800 !important;
+    }
+    .bg-green-100 {
+      color: #052e16 !important;
+      border-color: #4ade80 !important;
+      font-weight: 800 !important;
+    }
+    .bg-amber-100, .bg-yellow-100 {
+      color: #451a03 !important;
+      border-color: #fbbf24 !important;
+      font-weight: 800 !important;
+    }
+    .bg-blue-100 {
+      color: #172554 !important;
+      border-color: #60a5fa !important;
+      font-weight: 800 !important;
+    }
+    .bg-purple-100 {
+      color: #3b0764 !important;
+      border-color: #c084fc !important;
+      font-weight: 800 !important;
+    }
+    .bg-red-100 {
+      color: #450a0a !important;
+      border-color: #f87171 !important;
+      font-weight: 800 !important;
+    }
+    .bg-slate-100 {
+      color: #0f172a !important;
+      border-color: #94a3b8 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Tables: Core cells & headers */
+    table th {
+      color: #334155 !important; /* text-slate-700 */
+      font-weight: 700 !important;
+    }
+    table td {
+      color: #1e293b; /* text-slate-800 (8.8:1 AAA contrast) */
     }
   }
 
-  /* Form controls */
+  /* Form controls on white canvases */
   html:not(.dark):not(.black-theme) input:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
   html:not(.dark):not(.black-theme) textarea:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]),
   html:not(.dark):not(.black-theme) select:not([class*="text-white"]):not([class*="text-slate-100"]):not([class*="text-slate-200"]) {
-    color: #0f172a; /* text-slate-900 core standard */
+    color: #0f172a !important; /* text-slate-900 core standard */
+    font-weight: 700;
   }
 
   html:not(.dark):not(.black-theme) input:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder,
   html:not(.dark):not(.black-theme) textarea:not([class*="placeholder-slate-200"]):not([class*="placeholder-slate-300"]):not([class*="placeholder-white"])::placeholder {
-    color: #64748b; /* text-slate-500 core standard */
+    color: #64748b !important; /* text-slate-500 core standard */
   }
 }
 

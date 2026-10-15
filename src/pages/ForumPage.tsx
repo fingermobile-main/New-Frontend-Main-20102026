@@ -1574,13 +1574,13 @@ export const ForumPage: React.FC = () => {
             {/* Center: Search Bar (Spacious & Justified) */}
             <div className="hidden md:flex flex-1 max-w-lg mx-6">
               <div className="relative w-full">
-                <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search sovereign posts, stems, keycards, tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-500 focus:ring-2 focus:ring-orange-500 focus:outline-none font-medium"
                 />
               </div>
             </div>
@@ -2068,7 +2068,7 @@ export const ForumPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => mediaFileInputRef.current?.click()}
-                        className="flex-shrink-0 w-28 h-28 rounded-xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-slate-900/40 hover:bg-slate-900 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-sky-300 transition cursor-pointer"
+                        className="flex-shrink-0 w-28 h-28 rounded-xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-slate-900/40 hover:bg-slate-900 flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-sky-300 transition cursor-pointer"
                       >
                         <PlusIcon className="w-6 h-6" />
                         <span className="text-[10px] font-bold">Add Media</span>
@@ -3163,7 +3163,7 @@ export const ForumPage: React.FC = () => {
                           filteredCatalog.map((prod) => {
                             const storeBadgeColor =
                               prod.platform === 'MarketPlace'
-                                ? 'bg-blue-100 text-blue-800 border-blue-200'
+                                ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold border-blue-200'
                                 : prod.platform === 'OwnIt'
                                   ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
                                   : prod.platform === 'Flamingo'

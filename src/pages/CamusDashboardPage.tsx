@@ -357,7 +357,7 @@ const CamusDashboardPage: React.FC = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <BookOpenIcon className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                      <BookOpenIcon className="w-10 h-10 text-slate-500 mx-auto mb-2" />
                       <h4 className="font-bold text-sm text-gray-900 dark:text-white">No courses in progress</h4>
                       <p className="text-xs text-gray-500 mt-1">Enroll in your first course to begin learning.</p>
                       <button
@@ -394,7 +394,7 @@ const CamusDashboardPage: React.FC = () => {
                   {enrolledCourses.map((course) => (
                     <div
                       key={course.id}
-                      className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-4"
+                      className="p-5 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-4"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
@@ -456,7 +456,7 @@ const CamusDashboardPage: React.FC = () => {
                   ].map((cert) => (
                     <div
                       key={cert.id}
-                      className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                      className="p-5 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                     >
                       <div>
                         <div className="flex items-center gap-2">
@@ -474,7 +474,7 @@ const CamusDashboardPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => showToast(`Verifying certificate ${cert.id}... Cryptographically Authentic!`, 'success')}
-                          className="px-3 py-2 text-xs font-bold bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 flex items-center gap-1.5 transition"
+                          className="px-3 py-2 text-xs font-bold bg-white dark:bg-gray-700 border border-slate-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 flex items-center gap-1.5 transition"
                         >
                           <ShieldCheck className="w-4 h-4 text-emerald-500" />
                           Verify
@@ -507,7 +507,7 @@ const CamusDashboardPage: React.FC = () => {
                   ].map((q, i) => (
                     <div
                       key={i}
-                      className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex items-center justify-between text-xs"
+                      className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex items-center justify-between text-xs"
                     >
                       <div>
                         <h4 className="font-bold text-gray-900 dark:text-white">{q.title}</h4>
@@ -515,7 +515,7 @@ const CamusDashboardPage: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-mono font-bold text-emerald-600 text-sm">{q.score}</span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-bold text-[10px]">
                           {q.status}
                         </span>
                       </div>
@@ -565,7 +565,7 @@ const CamusDashboardPage: React.FC = () => {
                 <h2 className="text-xl font-black text-gray-900 dark:text-white">
                   Your Course Reviews
                 </h2>
-                <div className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-2">
+                <div className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 space-y-2">
                   <div className="flex items-center justify-between">
                     <h4 className="font-bold text-sm text-gray-900 dark:text-white">Complete Web Development Bootcamp</h4>
                     <span className="flex text-yellow-400">★★★★★</span>

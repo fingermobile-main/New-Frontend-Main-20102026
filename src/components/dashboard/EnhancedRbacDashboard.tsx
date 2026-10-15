@@ -11,7 +11,7 @@ const EnhancedRbacDashboard: React.FC<EnhancedRbacDashboardProps> = () => {
   ]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <ShieldCheckIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Role Management</h3>
@@ -24,7 +24,7 @@ const EnhancedRbacDashboard: React.FC<EnhancedRbacDashboardProps> = () => {
                 <p className="font-medium text-gray-900">{role.name}</p>
                 <p className="text-sm text-gray-500">{role.permissions}</p>
               </div>
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">{role.members} members</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium">{role.members} members</span>
             </div>
           </div>
         ))}

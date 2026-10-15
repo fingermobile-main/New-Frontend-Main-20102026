@@ -306,7 +306,7 @@ const PrometheusMetricsPage: React.FC = () => {
               <button
                 key={metricName}
                 onClick={() => setQuery(metricName)}
-                className="p-4 bg-gray-50 rounded-lg hover:bg-orange-50 hover:border-orange-300 border border-gray-200 transition-colors text-left"
+                className="p-4 bg-gray-50 rounded-lg hover:bg-orange-50 hover:border-orange-300 border border-slate-300 transition-colors text-left"
               >
                 <code className="text-sm font-mono text-orange-600">{metricName}</code>
               </button>

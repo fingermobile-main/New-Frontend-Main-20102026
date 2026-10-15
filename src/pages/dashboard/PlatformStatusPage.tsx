@@ -39,11 +39,11 @@ const PlatformStatusPage: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
     case 'healthy':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Operational</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400">Operational</span>;
     case 'degraded':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">Degraded</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-yellow-900/30 dark:text-yellow-400">Degraded</span>;
     case 'offline':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Offline</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-900/30 dark:text-red-400">Offline</span>;
     default:
       return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300">Maintenance</span>;
     }
@@ -67,7 +67,7 @@ const PlatformStatusPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {nodes.map((node) => (
-          <div key={node.id} className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div key={node.id} className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-slate-300 dark:border-gray-700 shadow-sm">
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-base">{node.service_name}</h3>

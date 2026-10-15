@@ -971,7 +971,7 @@ const WalletPage: React.FC = () => {
                       <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                         1. Treasury Staff Confirmation
                       </span>
-                      <span className="text-[10px] font-mono bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">
+                      <span className="text-[10px] font-mono bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-0.5 rounded-full font-bold">
                         Staff 1 to 7
                       </span>
                     </div>
@@ -1183,7 +1183,7 @@ const WalletPage: React.FC = () => {
                         <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                           <div className="flex items-center gap-3">
                             <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs ${
-                              tx.type === 'received' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                              tx.type === 'received' ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' : 'bg-rose-100 text-rose-800'
                             }`}>
                               {tx.type === 'received' ? '↓' : '↑'}
                             </div>
@@ -1484,7 +1484,7 @@ const WalletPage: React.FC = () => {
                           <p className="text-[11px] text-slate-600">{role.responsibilities}</p>
                           <div className="flex gap-2 pt-1">
                             {role.canConfirmPayment && (
-                              <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[10px] font-bold">
+                              <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-950 border border-blue-400 font-bold text-[10px] font-bold">
                                 Confirms Alternative Bank
                               </span>
                             )}

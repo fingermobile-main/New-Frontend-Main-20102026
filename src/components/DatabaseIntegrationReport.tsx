@@ -24,7 +24,7 @@ const DatabaseIntegrationReport: React.FC<DatabaseIntegrationReportProps> = ({ r
   if (!report) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <DatabaseIcon className="w-8 h-8 text-blue-600" />
@@ -35,9 +35,9 @@ const DatabaseIntegrationReport: React.FC<DatabaseIntegrationReportProps> = ({ r
         </div>
 
         <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-          report.status === 'healthy' ? 'bg-green-100 text-green-800' :
-            report.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-red-100 text-red-800'
+          report.status === 'healthy' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+            report.status === 'warning' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
+              'bg-red-100 text-red-950 border border-red-400 font-bold'
         }`}>
           {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
         </span>

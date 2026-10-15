@@ -293,14 +293,14 @@ const EcommercePage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'low-stock': return 'bg-yellow-100 text-yellow-800';
-      case 'out-of-stock': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'processing': return 'bg-blue-100 text-blue-800';
-      case 'fulfilled': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'low-stock': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'out-of-stock': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'pending': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'processing': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'fulfilled': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'cancelled': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -308,7 +308,7 @@ const EcommercePage: React.FC = () => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'clothing': return 'bg-pink-100 text-pink-800';
-      case 'accessories': return 'bg-purple-100 text-purple-800';
+      case 'accessories': return 'bg-purple-100 text-purple-950 border border-purple-400 font-bold';
       case 'footwear': return 'bg-indigo-100 text-indigo-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -385,7 +385,7 @@ const EcommercePage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`${activeTab === 'products' ? 'Search products...' : activeTab === 'orders' ? 'Search orders...' : 'Search inventory...'}`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -768,7 +768,7 @@ const EcommercePage: React.FC = () => {
 
         {/* Pagination */}
         {(activeTab === 'products' || activeTab === 'orders') && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

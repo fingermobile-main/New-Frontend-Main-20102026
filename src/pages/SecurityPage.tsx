@@ -358,21 +358,21 @@ const SecurityPage: React.FC = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800';
+      case 'critical': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'low': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-red-100 text-red-800';
-      case 'detected': return 'bg-yellow-100 text-yellow-800';
-      case 'analyzed': return 'bg-blue-100 text-blue-800';
-      case 'mitigated': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'inactive': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'detected': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'analyzed': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'mitigated': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       case 'false_positive': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -523,7 +523,7 @@ const SecurityPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search security data..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -627,7 +627,7 @@ const SecurityPage: React.FC = () => {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.resolved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.resolved ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                                 {event.resolved ? 'Resolved' : 'Open'}
                               </span>
                             </td>
@@ -836,7 +836,7 @@ const SecurityPage: React.FC = () => {
                               <div className="text-sm font-medium text-gray-900">{policy.name}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                                 {policy.type.replace(/_/g, ' ')}
                               </span>
                             </td>
@@ -844,7 +844,7 @@ const SecurityPage: React.FC = () => {
                               {policy.description}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.isActive ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'}`}>
                                 {policy.isActive ? 'Active' : 'Inactive'}
                               </span>
                             </td>
@@ -1077,7 +1077,7 @@ const SecurityPage: React.FC = () => {
 
         {/* Pagination */}
         {['events', 'threats', 'policies'].includes(activeTab) && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

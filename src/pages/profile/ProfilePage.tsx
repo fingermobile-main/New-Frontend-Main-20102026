@@ -1559,7 +1559,7 @@ export const ProfilePage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2.5 text-slate-500 italic text-[11px]">
-                    <Lock className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Lock className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Birthday hidden or restricted</span>
                   </div>
                 )}
@@ -1572,7 +1572,7 @@ export const ProfilePage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2.5 text-slate-500 italic text-[11px]">
-                    <Lock className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Lock className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Contact details restricted</span>
                   </div>
                 )}
@@ -2327,8 +2327,8 @@ export const ProfilePage: React.FC = () => {
                           <div className="flex items-center gap-3">
                             <div className={`p-3 rounded-2xl ${
                               folder.isPrivate
-                                ? isUnlocked ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'
-                                : 'bg-blue-100 text-blue-700'
+                                ? isUnlocked ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold' : 'bg-orange-100 text-orange-700'
+                                : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                             }`}>
                               {folder.isPrivate ? <FolderLock className="w-6 h-6" /> : <Folder className="w-6 h-6" />}
                             </div>

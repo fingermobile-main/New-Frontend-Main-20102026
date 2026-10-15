@@ -410,7 +410,7 @@ const GuardianProtectionPage: React.FC = () => {
           <div className="space-y-6">
             {/* Top Quick Status Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
                 <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
                   <span>Cryptographic Lock</span>
                   <Lock className="w-4 h-4 text-emerald-500" />
@@ -421,7 +421,7 @@ const GuardianProtectionPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
                 <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
                   <span>Detection Latency</span>
                   <Zap className="w-4 h-4 text-amber-500" />
@@ -430,7 +430,7 @@ const GuardianProtectionPage: React.FC = () => {
                 <div className="text-xs text-gray-500 mt-1">Real-time heuristics pipeline</div>
               </div>
 
-              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
                 <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
                   <span>Kill Switch State</span>
                   <Radio className="w-4 h-4 text-blue-500" />
@@ -439,7 +439,7 @@ const GuardianProtectionPage: React.FC = () => {
                 <div className="text-xs text-gray-500 mt-1">Requires tripartite co-signature</div>
               </div>
 
-              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-gray-800 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-300 dark:border-gray-800 shadow-sm">
                 <div className="flex items-center justify-between text-gray-500 text-xs font-bold uppercase">
                   <span>Sentinel Version</span>
                   <Terminal className="w-4 h-4 text-purple-500" />
@@ -450,7 +450,7 @@ const GuardianProtectionPage: React.FC = () => {
             </div>
 
             {/* 9 Guardian Modules Grid */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-md">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-gray-800 shadow-md">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -461,7 +461,7 @@ const GuardianProtectionPage: React.FC = () => {
                     Comprehensive continuous surveillance across client runtimes, gateway proxies, and database tiers.
                   </p>
                 </div>
-                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit">
+                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit">
                   9 / 9 Subsystems Online
                 </span>
               </div>
@@ -502,7 +502,7 @@ const GuardianProtectionPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Column: Authorized Personnel Registry */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-md">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-gray-800 shadow-md">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
                   <Users className="w-5 h-5 text-red-600" />
                   Authorized Personnel Registry
@@ -533,7 +533,7 @@ const GuardianProtectionPage: React.FC = () => {
             </div>
 
             {/* Right Column: 5-Step Interactive Protocol */}
-            <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-gray-200 dark:border-gray-800 shadow-md">
+            <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-300 dark:border-gray-800 shadow-md">
               <div className="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800 mb-6">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -576,7 +576,7 @@ const GuardianProtectionPage: React.FC = () => {
                       type="email"
                       value={emailInput}
                       onChange={e => setEmailInput(e.target.value)}
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                     />
                   </div>
                   <button
@@ -606,7 +606,7 @@ const GuardianProtectionPage: React.FC = () => {
                       value={firstPinInput}
                       onChange={e => setFirstPinInput(e.target.value)}
                       placeholder="e.g. 849201"
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-xl font-mono tracking-widest text-center text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-xl font-mono tracking-widest text-center text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                     />
                   </div>
                   <button
@@ -635,7 +635,7 @@ const GuardianProtectionPage: React.FC = () => {
                         value={backupPin1}
                         onChange={e => setBackupPin1(e.target.value)}
                         placeholder="••••••"
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                        className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -647,7 +647,7 @@ const GuardianProtectionPage: React.FC = () => {
                         value={backupPin2}
                         onChange={e => setBackupPin2(e.target.value)}
                         placeholder="••••••"
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                        className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -728,7 +728,7 @@ const GuardianProtectionPage: React.FC = () => {
                       value={actionReason}
                       onChange={e => setActionReason(e.target.value)}
                       rows={2}
-                      className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      className="w-full bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                     />
                   </div>
 
@@ -756,7 +756,7 @@ const GuardianProtectionPage: React.FC = () => {
 
         {/* Tab 3: Sentinel Rules Table */}
         {activeTab === 'rules' && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-md space-y-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-gray-800 shadow-md space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -773,7 +773,7 @@ const GuardianProtectionPage: React.FC = () => {
                 <select
                   value={selectedRuleCategory}
                   onChange={e => setSelectedRuleCategory(e.target.value)}
-                  className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-1.5 text-xs text-gray-900 dark:text-white"
+                  className="bg-gray-50 dark:bg-slate-800 border border-slate-300 dark:border-gray-700 rounded-xl px-3 py-1.5 text-xs text-gray-900 dark:text-white"
                 >
                   <option value="all">All Categories</option>
                   <option value="aiThreatMonitor">AI Threat Monitor</option>
@@ -808,10 +808,10 @@ const GuardianProtectionPage: React.FC = () => {
                       <td className="py-3">
                         <span className={`px-2 py-0.5 rounded-full font-bold uppercase text-[10px] ${
                           rule.severity === 'critical'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300'
+                            ? 'bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-950/60 dark:text-red-300'
                             : rule.severity === 'high'
-                              ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300'
-                              : 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'
+                              ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950/60 dark:text-amber-300'
+                              : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950/60 dark:text-blue-300'
                         }`}>
                           {rule.severity}
                         </span>
@@ -833,7 +833,7 @@ const GuardianProtectionPage: React.FC = () => {
 
         {/* Tab 4: Cryptographic Audit Ledger */}
         {activeTab === 'logs' && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-md space-y-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-300 dark:border-gray-800 shadow-md space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -856,12 +856,12 @@ const GuardianProtectionPage: React.FC = () => {
               {logs.map(log => (
                 <div
                   key={log.id}
-                  className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                  className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/60 border border-slate-300 dark:border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-gray-900 dark:text-white font-mono">{log.event_type}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-900/40 dark:text-blue-300">
                         {log.action_taken}
                       </span>
                     </div>

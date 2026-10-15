@@ -247,23 +247,23 @@ const VideosPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-200">
+            <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-slate-300">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
                   <input
                     type="text"
                     placeholder="Search videos or creators..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-50 text-gray-900 pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-gray-200"
+                    className="w-full bg-gray-50 text-gray-900 pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-slate-300"
                   />
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="bg-gray-50 text-gray-900 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-gray-200"
+                    className="bg-gray-50 text-gray-900 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none border border-slate-300"
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -271,7 +271,7 @@ const VideosPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  <button className="p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 border border-gray-200">
+                  <button className="p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 border border-slate-300">
                     <FilterIcon className="w-5 h-5" />
                   </button>
                 </div>
@@ -282,7 +282,7 @@ const VideosPage: React.FC = () => {
               {filteredVideos.map((video) => (
                 <div
                   key={video.id}
-                  className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+                  className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-300 hover:shadow-lg transition-shadow duration-300"
                 >
                   <div className="relative">
                     <img
@@ -362,7 +362,7 @@ const VideosPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Trending Categories</h2>
               <div className="space-y-3">
                 {categories.slice(1, 5).map((category) => (

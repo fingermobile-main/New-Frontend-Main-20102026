@@ -23,7 +23,7 @@ const CommunityMonetizationDashboard: React.FC<CommunityMonetizationDashboardPro
           <p className="text-3xl font-bold mt-1">12.5%</p>
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Revenue Streams</h3>
         <div className="space-y-3">
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

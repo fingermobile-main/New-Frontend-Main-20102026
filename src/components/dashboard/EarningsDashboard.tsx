@@ -125,7 +125,7 @@ const EarningsDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+        <div className="bg-gray-50 p-5 rounded-xl border border-slate-300">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Earnings Breakdown</h3>
           <div className="space-y-4">
             {Object.entries(earningsData.breakdown as Record<string, number>).map(([key, value]: [string, number]) => (
@@ -145,7 +145,7 @@ const EarningsDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+        <div className="bg-gray-50 p-5 rounded-xl border border-slate-300">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Transactions</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -165,9 +165,9 @@ const EarningsDashboard: React.FC = () => {
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900 font-semibold">${txn.amount.toFixed(2)}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${txn.type === 'commission' ? 'bg-green-100 text-green-800' :
-                    txn.type === 'ad-revenue' ? 'bg-blue-100 text-blue-800' :
-                      'bg-purple-100 text-purple-800'}`}>
+                        ${txn.type === 'commission' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                    txn.type === 'ad-revenue' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
+                      'bg-purple-100 text-purple-950 border border-purple-400 font-bold'}`}>
                         {txn.type.replace('-', ' ')}
                       </span>
                     </td>
@@ -179,7 +179,7 @@ const EarningsDashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-5">
+      <div className="bg-white border border-slate-300 rounded-xl p-5">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">Earnings Projection</h3>
         <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
           <p className="text-gray-500">Earnings chart visualization would appear here</p>

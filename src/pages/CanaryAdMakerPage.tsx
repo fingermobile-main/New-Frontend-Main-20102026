@@ -230,7 +230,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder="e.g. Apex Audio Ltd"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                     />
                   </div>
                   <div>
@@ -240,7 +240,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                       value={billingEmail}
                       onChange={(e) => setBillingEmail(e.target.value)}
                       placeholder="merchant@company.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                     />
                   </div>
                   <div>
@@ -250,7 +250,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                       value={digitalSignature}
                       onChange={(e) => setDigitalSignature(e.target.value)}
                       placeholder="e.g. Jane Doe, CEO"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                     />
                   </div>
 
@@ -340,7 +340,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     value={campaignTitle}
                     onChange={(e) => setCampaignTitle(e.target.value)}
                     placeholder="e.g. Q4 Flagship Product Launch"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
 
@@ -415,7 +415,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     value={mediaUrl}
                     onChange={(e) => setMediaUrl(e.target.value)}
                     placeholder="https://cdn.fingermobileprotocol.com/ads/my_canary_video.mp4"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
 
@@ -426,7 +426,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     value={thumbnailUrl}
                     onChange={(e) => setThumbnailUrl(e.target.value)}
                     placeholder="https://cdn.fingermobileprotocol.com/ads/thumb1.jpg"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
 
@@ -443,7 +443,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     onChange={(e) => setHeadline(e.target.value)}
                     placeholder="e.g. Stream Beats on BeatwaveNG"
                     maxLength={40}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
 
@@ -460,7 +460,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     placeholder="e.g. High fidelity listening with exclusive artist drops."
                     maxLength={160}
                     rows={2}
-                    className="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 resize-none"
                   />
                 </div>
 
@@ -471,7 +471,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     value={primaryText}
                     onChange={(e) => setPrimaryText(e.target.value)}
                     placeholder="e.g. Elevate your brand across FingerMobile today"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
 
@@ -482,7 +482,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                     value={destinationUrl}
                     onChange={(e) => setDestinationUrl(e.target.value)}
                     placeholder="https://store.fingermobileprotocol.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
 

@@ -513,7 +513,7 @@ const TrendsPage: React.FC = () => {
             <button
               onClick={() => fetchTrends()}
               disabled={loading}
-              className="p-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 hover:text-red-500 hover:border-red-200 transition-colors shadow-sm"
+              className="p-2.5 bg-white border border-slate-300 rounded-xl text-gray-600 hover:text-red-500 hover:border-red-200 transition-colors shadow-sm"
               title="Refresh Trends"
             >
               <ArrowPathIcon className={`w-4 h-4 ${loading ? 'animate-spin text-red-500' : ''}`} />
@@ -561,13 +561,13 @@ const TrendsPage: React.FC = () => {
           {/* Main Trends Stream (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
             {loading ? (
-              <div className="p-12 text-center bg-white rounded-2xl border border-gray-200">
+              <div className="p-12 text-center bg-white rounded-2xl border border-slate-300">
                 <ArrowPathIcon className="w-8 h-8 text-red-500 animate-spin mx-auto mb-3" />
                 <p className="text-sm font-bold text-gray-700">Syncing Worldwide Trends...</p>
                 <p className="text-xs text-gray-400 mt-1">Filtering feeds through Guardian AI</p>
               </div>
             ) : trends.length === 0 ? (
-              <div className="p-12 text-center bg-white rounded-2xl border border-gray-200">
+              <div className="p-12 text-center bg-white rounded-2xl border border-slate-300">
                 <p className="text-sm font-bold text-gray-700">No trends found in this category.</p>
                 <p className="text-xs text-gray-400 mt-1">Check back soon as new topics emerge globally.</p>
               </div>
@@ -577,7 +577,7 @@ const TrendsPage: React.FC = () => {
                 return (
                   <div
                     key={trend.id}
-                    className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden"
+                    className="bg-white rounded-2xl border border-slate-300 p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
@@ -676,7 +676,7 @@ const TrendsPage: React.FC = () => {
             </div>
 
             {/* Fastest Rising Creators & Faces */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-6 border border-slate-300 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-black text-gray-900 text-sm">Trending Creators & Faces</h3>
                 <span className="text-[10px] uppercase font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">

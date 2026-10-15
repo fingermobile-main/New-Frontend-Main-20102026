@@ -58,7 +58,7 @@ export default function CensorshipSelector({ options, onChange }: CensorshipSele
         </svg>
         Censorship & Tags
         {activeCount > 0 && (
-          <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">
+          <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-950 border border-red-400 font-bold">
             {activeCount}
           </span>
         )}

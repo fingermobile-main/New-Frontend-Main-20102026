@@ -147,7 +147,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
               value={dailyAnswer}
               onChange={(e) => setDailyAnswer(e.target.value)}
               placeholder="Your answer..."
-              className="w-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
+              className="w-full bg-white text-gray-900 placeholder:text-slate-500 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs"
             />
             <div className="flex gap-2">
               <button
@@ -160,7 +160,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
               <button
                 type="button"
                 onClick={onOpenLapidaireModal}
-                className="py-1.5 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded-xl text-xs transition"
+                className="py-1.5 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-semibold rounded-xl text-xs transition"
                 title="Browse all 30 Questions"
               >
                 All 30
@@ -303,12 +303,12 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
                         </p>
                         <VerificationBadge level={4} size="small" />
                         {match.pinExchanged ? (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800">
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
                             <ShieldCheckIcon className="w-2.5 h-2.5 text-emerald-600" />
                             Unlocked
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800">
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-950 border border-amber-400 font-bold">
                             <LockClosedIcon className="w-2.5 h-2.5 text-amber-600" />
                             PIN Locked
                           </span>

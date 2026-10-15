@@ -21,12 +21,12 @@ const UserMembersConsolePage: React.FC = () => {
             <LayoutDashboard className="w-3.5 h-3.5" />
             Master Dashboard
           </Link>
-          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <ChevronRight className="w-3 h-3 text-slate-500" />
           <span className="text-slate-700 dark:text-slate-200 flex items-center gap-1">
             <Users className="w-3.5 h-3.5 text-orange-500" />
             User & Members Console
           </span>
-          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <ChevronRight className="w-3 h-3 text-slate-500" />
           <span className="text-orange-600 dark:text-orange-400 font-mono text-[11px] font-bold">
             Sovereign RBAC V4.2
           </span>

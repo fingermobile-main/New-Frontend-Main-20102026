@@ -16,7 +16,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
   const range = max - min || 1;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
       <h4 className="text-sm font-medium text-gray-700 mb-3">{title}</h4>
       <div className="relative h-32">
         <svg viewBox="0 0 100 50" className="w-full h-full" preserveAspectRatio="none">

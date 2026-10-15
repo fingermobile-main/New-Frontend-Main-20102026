@@ -159,7 +159,7 @@ const FingerShortsPage: React.FC = () => {
         )}
 
         {activeTab === 'duets' && (
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
               <Scissors className="w-5 h-5 text-indigo-500" />
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">Duets & Stitches Collaboration</h3>
@@ -204,7 +204,7 @@ const FingerShortsPage: React.FC = () => {
         )}
 
         {activeTab === 'sounds' && (
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
               <Music className="w-5 h-5 text-purple-500" />
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">Sounds & BeatwaveNG Audio Library</h3>
@@ -214,7 +214,7 @@ const FingerShortsPage: React.FC = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
               {displaySounds.map((sound, idx) => (
-                <div key={idx} className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
+                <div key={idx} className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
                   <div>
                     <h5 className="font-bold text-sm text-gray-900 dark:text-white">{sound.title}</h5>
                     <p className="text-xs text-gray-500">{sound.artist} • {sound.duration}</p>

@@ -201,7 +201,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-md font-bold flex items-center gap-1 ${
                           sm.calendarSync.googleCalendar
-                            ? 'bg-blue-100 text-blue-800'
+                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                             : 'bg-gray-200 text-gray-500 line-through'
                         }`}
                       >
@@ -219,7 +219,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-md font-bold flex items-center gap-1 ${
                           sm.calendarSync.appleCalendar
-                            ? 'bg-purple-100 text-purple-800'
+                            ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
                             : 'bg-gray-200 text-gray-500 line-through'
                         }`}
                       >
@@ -570,7 +570,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-gray-200 rounded-lg text-xs"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs"
                       />
                       <span>to</span>
                       <input
@@ -585,7 +585,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-gray-200 rounded-lg text-xs"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs"
                       />
                     </div>
                   ) : (
@@ -641,7 +641,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="e.g. Lord Julian Vance"
                   value={newStaffName}
                   onChange={(e) => setNewStaffName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
                 />
               </div>
 
@@ -650,7 +650,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                 <select
                   value={newStaffRole}
                   onChange={(e) => setNewStaffRole(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                 >
                   <option value="Master Concierge">Master Concierge</option>
                   <option value="Senior Specialist">Senior Specialist</option>
@@ -666,7 +666,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="specialist@fingerlux.protocol"
                   value={newStaffEmail}
                   onChange={(e) => setNewStaffEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
                 />
               </div>
 
@@ -677,7 +677,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="+1 800 589 8478"
                   value={newStaffPhone}
                   onChange={(e) => setNewStaffPhone(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
                 />
               </div>
             </div>
@@ -725,7 +725,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="e.g. VIP Penthouse Salon B, Audio Suite"
                   value={newResourceName}
                   onChange={(e) => setNewResourceName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
                 />
               </div>
 
@@ -735,7 +735,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   <select
                     value={newResourceType}
                     onChange={(e) => setNewResourceType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                   >
                     <option value="room">Room / Suite</option>
                     <option value="equipment">Equipment</option>
@@ -748,7 +748,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                     type="number"
                     value={newResourceCapacity}
                     onChange={(e) => setNewResourceCapacity(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                   />
                 </div>
               </div>
@@ -758,7 +758,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                 <select
                   value={newResourceLocationId}
                   onChange={(e) => setNewResourceLocationId(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                 >
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -775,7 +775,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   placeholder="Features, amenities, specifications..."
                   value={newResourceDesc}
                   onChange={(e) => setNewResourceDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                 />
               </div>
             </div>

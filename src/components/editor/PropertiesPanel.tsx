@@ -9,7 +9,7 @@ interface PropertiesPanelProps {
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ component, onUpdate }) => {
   if (!component) {
     return (
-      <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+      <div className="w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
         <div className="text-center py-10 text-gray-500">
           <p className="text-lg mb-2">No component selected</p>
           <p className="text-sm">Click on a component to edit its properties</p>
@@ -29,7 +29,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ component, onUpdate }
   };
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+    <div className="w-80 bg-white border-l border-slate-300 p-4 overflow-y-auto">
       <h2 className="text-lg font-semibold mb-4 text-gray-800">Properties</h2>
 
       <div className="space-y-4">

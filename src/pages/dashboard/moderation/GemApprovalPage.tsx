@@ -98,11 +98,11 @@ const GemApprovalPage: React.FC = () => {
       {submissions.length > 0 ? (
         <div className="space-y-4">
           {submissions.map((sub) => (
-            <div key={sub.id} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div key={sub.id} className="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900 text-lg">{sub.title}</span>
-                  <span className="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-700 rounded-full">
+                  <span className="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full">
                     💎 {sub.gemAmount} Gems
                   </span>
                 </div>

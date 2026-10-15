@@ -694,7 +694,7 @@ export const SovereignMediaCropperModal: React.FC<SovereignMediaCropperModalProp
                           {isSelected ? (
                             <CheckSquare className="w-4 h-4 text-emerald-600" />
                           ) : (
-                            <Square className="w-4 h-4 text-slate-400" />
+                            <Square className="w-4 h-4 text-slate-500" />
                           )}
                         </button>
                         <span className="text-xs font-mono font-black text-slate-800">

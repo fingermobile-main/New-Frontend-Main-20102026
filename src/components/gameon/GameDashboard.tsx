@@ -196,8 +196,8 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
             >
               <div className="flex items-center space-x-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xl font-bold ${
-                  game.result === 'win' ? 'bg-green-100 text-green-600' :
-                    game.result === 'loss' ? 'bg-red-100 text-red-600' :
+                  game.result === 'win' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                    game.result === 'loss' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' :
                       'bg-gray-200 text-gray-600'
                 }`}>
                   {game.result === 'win' ? 'W' : game.result === 'loss' ? 'L' : 'D'}

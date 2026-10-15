@@ -123,7 +123,7 @@ const GiftCardQRModal: React.FC<GiftCardQRModalProps> = ({
                 </div>
               ) : (
                 <div className="flex justify-center">
-                  <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm">
+                  <div className="bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm">
                     <img
                       src={qrCodeUrl}
                       alt="Gift Card QR Code"

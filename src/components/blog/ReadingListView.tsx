@@ -9,8 +9,8 @@ interface ReadingListViewProps {
 
 const progressColors = {
   unread: 'bg-gray-100 text-gray-800',
-  reading: 'bg-blue-100 text-blue-800',
-  completed: 'bg-green-100 text-green-800'
+  reading: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold',
+  completed: 'bg-green-100 text-green-950 border border-green-400 font-bold'
 };
 
 const progressIcons = {
@@ -131,7 +131,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">My Reading List</h2>
         {currentList && (
-          <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold">
+          <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-semibold">
             {listItems.length} item{listItems.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -198,7 +198,7 @@ const ReadingListView: React.FC<ReadingListViewProps> = ({
             return (
               <div
                 key={item.id}
-                className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                className="bg-white border border-slate-300 rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">

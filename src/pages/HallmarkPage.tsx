@@ -239,10 +239,10 @@ const HallmarkPage: React.FC = () => {
                       <h3 className="font-semibold text-lg text-gray-900">{achievement.title}</h3>
                       <div className="flex items-center mt-1">
                         <span className={`text-sm font-medium px-2 py-0.5 rounded ${
-                          achievement.level === 'Gold' ? 'bg-yellow-100 text-yellow-800' :
+                          achievement.level === 'Gold' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
                             achievement.level === 'Silver' ? 'bg-gray-100 text-gray-800' :
-                              achievement.level === 'Platinum' ? 'bg-purple-100 text-purple-800' :
-                                'bg-blue-100 text-blue-800'
+                              achievement.level === 'Platinum' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' :
+                                'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                         }`}>
                           {achievement.level}
                         </span>

@@ -23,7 +23,7 @@ interface StatsCardProps {
 }
 
 const StatsCard: React.FC<StatsCardProps> = React.memo(({ title, value, icon }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
     <div className="flex items-center">
       <div className="p-3 bg-blue-100 rounded-lg">
         {icon}
@@ -44,7 +44,7 @@ interface FeatureCardProps {
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = React.memo(({ title, description, icon }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300 hover:shadow-md transition-shadow">
     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
       {icon}
     </div>

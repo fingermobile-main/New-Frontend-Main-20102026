@@ -73,7 +73,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between py-2 border-b border-gray-100">
@@ -97,7 +97,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
 
       {/* Courses Tab */}
       {activeTab === 'courses' && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300">
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-lg font-semibold">My Courses</h2>
           </div>
@@ -115,8 +115,8 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
                     </div>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    course.status === 'published' ? 'bg-green-100 text-green-800' :
-                      course.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                    course.status === 'published' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                      course.status === 'draft' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
                         'bg-gray-100 text-gray-800'
                   }`}>
                     {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
@@ -130,7 +130,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
 
       {/* Analytics Tab */}
       {activeTab === 'analytics' && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <h2 className="text-lg font-semibold mb-4">Performance Analytics</h2>
           <div className="space-y-4">
             <div>
@@ -157,7 +157,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               activeTab === tab
-                ? 'bg-blue-100 text-blue-700'
+                ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >

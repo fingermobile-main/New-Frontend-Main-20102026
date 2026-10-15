@@ -107,7 +107,7 @@ const MyLearningPage: React.FC = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
               <div className="flex items-center">
                 <div className="p-3 bg-blue-50 rounded-lg">
                   {stat.icon}
@@ -122,7 +122,7 @@ const MyLearningPage: React.FC = () => {
         </div>
 
         {/* Overall Progress Bar */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 mb-8">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold text-gray-900">Overall Course Progress</h2>
             <span className="text-sm font-semibold text-blue-600">{Math.round(overallProgress)}% Complete</span>
@@ -139,7 +139,7 @@ const MyLearningPage: React.FC = () => {
         </div>
 
         {/* Courses List */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">My Enrolled Courses</h2>
             <button
@@ -159,7 +159,7 @@ const MyLearningPage: React.FC = () => {
               {courses.map((course) => (
                 <div
                   key={course.id}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-shadow"
+                  className="bg-white rounded-xl border border-slate-300 overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-shadow"
                 >
                   <img
                     src={course.thumbnail_url}
@@ -169,7 +169,7 @@ const MyLearningPage: React.FC = () => {
                   <div className="p-6 flex flex-col justify-between flex-1">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                           {course.category}
                         </span>
                         <span className="text-xs font-medium text-gray-500">

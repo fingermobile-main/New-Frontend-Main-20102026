@@ -375,9 +375,9 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm">
+    <div className="flex flex-col h-full border border-slate-300 rounded-lg bg-white overflow-hidden shadow-sm">
       {/* Header with connection status */}
-      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+      <div className="bg-gray-50 px-4 py-3 border-b border-slate-300 flex items-center justify-between">
         <div className="flex items-center">
           {connectionStatus.isConnected ? (
             <FiWifi className="text-green-500 mr-2" />
@@ -409,8 +409,8 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
             onClick={connectionStatus.isConnected ? disconnect : connect}
             className={`p-1.5 rounded ${
               connectionStatus.isConnected
-                ? 'hover:bg-red-100 text-red-500'
-                : 'hover:bg-green-100 text-green-500'
+                ? 'hover:bg-red-100 text-red-950 border border-red-400 font-bold'
+                : 'hover:bg-green-100 text-green-950 border border-green-400 font-bold'
             }`}
             title={connectionStatus.isConnected ? 'Disconnect' : 'Connect'}
           >
@@ -526,7 +526,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
       </div>
 
       {/* Message input area */}
-      <div className="p-3 bg-white border-t border-gray-200">
+      <div className="p-3 bg-white border-t border-slate-300">
         <div className="flex items-center">
           <div className="flex-1 relative">
             <textarea

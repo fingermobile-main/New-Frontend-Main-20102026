@@ -349,7 +349,7 @@ const ComboEmoticonDisplay: React.FC = () => {
           return (
             <div
               key={index}
-              className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
+              className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-slate-300 hover:shadow-md transition-shadow duration-200"
             >
               <div className="w-12 h-12 flex items-center justify-center">
                 <IconComponent className="w-10 h-10 text-indigo-600" />

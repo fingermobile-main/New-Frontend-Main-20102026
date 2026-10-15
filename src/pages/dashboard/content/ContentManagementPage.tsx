@@ -87,7 +87,7 @@ const ContentManagementPage: React.FC = () => {
         </button>
       </div>
       {activeTab === 'cms' ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 divide-y divide-gray-200">
           {loadingCms ? (
             <div className="p-8 text-center text-gray-500">Loading CMS Pages...</div>
           ) : cmsPages.length > 0 ? (
@@ -98,7 +98,7 @@ const ContentManagementPage: React.FC = () => {
                   <p className="text-sm text-gray-500">/{page.slug} &bull; Status: {page.status || 'published'}</p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+                  <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">Active</span>
                 </div>
               </div>
             ))

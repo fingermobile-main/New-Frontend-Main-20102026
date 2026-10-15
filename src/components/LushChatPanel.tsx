@@ -187,7 +187,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                 <div>
                   <h4 className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
                     {activeConversation.partner_name}
-                    <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-semibold">
+                    <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[9px] font-semibold">
                       PIN Verified
                     </span>
                   </h4>
@@ -215,7 +215,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
                 <div className="text-center py-12 text-xs text-gray-400">Loading conversation history...</div>
               ) : messages.length === 0 ? (
                 <div className="text-center py-12 space-y-2">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold mx-auto flex items-center justify-center">
                     <Sparkles className="w-6 h-6" />
                   </div>
                   <p className="text-xs font-bold text-gray-800">Start the conversation</p>
@@ -318,7 +318,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-gray-400 space-y-3">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center">
               <MessageSquare className="w-8 h-8" />
             </div>
             <div>

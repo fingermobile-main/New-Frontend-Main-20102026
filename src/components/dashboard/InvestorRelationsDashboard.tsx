@@ -190,7 +190,7 @@ STATUS: AUDITED & SEC REGISTERED`;
       </div>
 
       {/* Main Tabbed Container */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
         <div className="p-5 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -239,7 +239,7 @@ STATUS: AUDITED & SEC REGISTERED`;
                       <div className="text-xs text-gray-400">Filed on: {new Date(r.filing_date).toLocaleDateString()}</div>
                     </td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold">
                         {r.report_type}
                       </span>
                     </td>

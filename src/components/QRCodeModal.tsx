@@ -73,7 +73,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
           <div className="p-6 space-y-6">
             {/* QR Code Display */}
             <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm">
+              <div className="bg-white p-4 rounded-lg border-2 border-slate-300 shadow-sm">
                 <img
                   src={qrCodeUrl}
                   alt="QR Code"

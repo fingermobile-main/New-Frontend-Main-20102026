@@ -282,7 +282,7 @@ const ForumsManagement: React.FC = () => {
         <div className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="relative flex-1 max-w-md">
-              <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <MagnifyingGlassIcon className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search categories by name, slug or description..."
@@ -302,7 +302,7 @@ const ForumsManagement: React.FC = () => {
 
           <div className="overflow-x-auto border border-slate-200 rounded-2xl">
             <table className="w-full text-left text-xs text-slate-600">
-              <thead className="bg-slate-50 text-[11px] uppercase font-black tracking-wider text-slate-400 border-b border-slate-200">
+              <thead className="bg-slate-50 text-[11px] uppercase font-black tracking-wider text-slate-700 border-b border-slate-200">
                 <tr>
                   <th className="py-3 px-4">Icon / Name</th>
                   <th className="py-3 px-4">Slug</th>

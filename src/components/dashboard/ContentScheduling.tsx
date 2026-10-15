@@ -13,20 +13,20 @@ const ContentScheduling: React.FC<ContentSchedulingProps> = ({ userId }) => {
   ]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <CalendarIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">Content Scheduler</h3>
       </div>
       <div className="space-y-3">
         {scheduled.map((item) => (
-          <div key={item.id} className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+          <div key={item.id} className="p-3 border border-slate-300 rounded-lg hover:bg-gray-50">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">{item.title}</p>
                 <p className="text-sm text-gray-500 mt-1">{new Date(item.date).toLocaleString()}</p>
               </div>
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">{item.platform}</span>
+              <span className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded text-xs font-medium">{item.platform}</span>
             </div>
           </div>
         ))}

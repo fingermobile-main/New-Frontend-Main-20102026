@@ -542,7 +542,7 @@ const StorefrontsPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-20 text-center bg-white rounded-2xl border border-slate-300 shadow-sm space-y-3">
-                  <Store className="w-12 h-12 text-slate-400 mx-auto" />
+                  <Store className="w-12 h-12 text-slate-500 mx-auto" />
                   <h3 className="text-lg font-black text-slate-900">No Storefronts Found</h3>
                   <p className="text-xs text-slate-700 font-medium">No stores match your search or filter criteria.</p>
                 </div>

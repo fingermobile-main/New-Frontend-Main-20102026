@@ -37,7 +37,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             <div className="ml-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Database Integration Dashboard</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300">
                   B-Tree Indexed
                 </span>
               </div>
@@ -310,7 +310,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-md p-6 border border-slate-300">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <DbIcon className="w-5 h-5 text-indigo-600" />
                 Database Engine Actions

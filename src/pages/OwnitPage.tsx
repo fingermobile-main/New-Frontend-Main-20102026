@@ -510,7 +510,7 @@ const OwnitPage: React.FC = () => {
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => setActiveTab('4k-mall')}
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition-all shadow-xl shadow-amber-500/20 flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-wider transition-all shadow-xl shadow-amber-500/20 flex items-center gap-2"
                 >
                   <Eye className="w-4 h-4" /> View 4K Showcase Gallery
                 </button>
@@ -638,7 +638,7 @@ const OwnitPage: React.FC = () => {
                         {p.video_showcase_url && (
                           <button
                             onClick={() => setActiveVideoUrl(p.video_showcase_url || null)}
-                            className="absolute bottom-4 right-4 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-amber-500 hover:text-black text-amber-300 backdrop-blur-md border border-amber-500/40 font-bold text-xs flex items-center gap-2 transition-all shadow-xl"
+                            className="absolute bottom-4 right-4 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-amber-500 hover:text-slate-900 text-amber-300 backdrop-blur-md border border-amber-500/40 font-bold text-xs flex items-center gap-2 transition-all shadow-xl"
                           >
                             <Play className="w-4 h-4 fill-current" /> Watch 4K Cinematic Reel
                           </button>
@@ -773,7 +773,7 @@ const OwnitPage: React.FC = () => {
 
                           <button
                             onClick={() => setSelectedProductForEscrow(p)}
-                            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2"
+                            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2"
                           >
                             <Lock className="w-4 h-4" /> Sovereign Escrow Acquisition
                           </button>
@@ -837,7 +837,7 @@ const OwnitPage: React.FC = () => {
                             setActiveTab('4k-mall');
                             showToast(`Navigated to ${store.name} showcase`, 'info');
                           }}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs uppercase tracking-wider"
+                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs uppercase tracking-wider"
                         >
                           Enter Pavilion
                         </button>
@@ -886,7 +886,7 @@ const OwnitPage: React.FC = () => {
                         </button>
                         <button
                           onClick={() => setActiveCertificate(p)}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold uppercase"
+                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold uppercase"
                         >
                           View Certificate
                         </button>
@@ -935,7 +935,7 @@ const OwnitPage: React.FC = () => {
                 />
                 <button
                   onClick={handleSendConcierge}
-                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs"
+                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs"
                 >
                   Send
                 </button>
@@ -999,7 +999,7 @@ const OwnitPage: React.FC = () => {
 
               <button
                 onClick={() => setActiveCertificate(null)}
-                className="w-full py-3 rounded-xl bg-amber-500 text-black font-bold text-xs uppercase"
+                className="w-full py-3 rounded-xl bg-amber-500 text-slate-900 font-bold text-xs uppercase"
               >
                 Close Certificate
               </button>
@@ -1040,7 +1040,7 @@ const OwnitPage: React.FC = () => {
                 <button
                   onClick={handleInitiateEscrow}
                   disabled={isProcessingEscrow}
-                  className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-black uppercase tracking-wider"
+                  className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-black uppercase tracking-wider"
                 >
                   {isProcessingEscrow ? 'Signing...' : 'Lock Sovereign Escrow'}
                 </button>

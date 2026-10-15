@@ -175,16 +175,16 @@ const CommunityGroupFeatures: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          member.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                            member.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
-                              'bg-green-100 text-green-800'
+                          member.role === 'admin' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' :
+                            member.role === 'moderator' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
+                              'bg-green-100 text-green-950 border border-green-400 font-bold'
                         }`}>
                           {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          member.online ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                          member.online ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
                         }`}>
                           {member.online ? 'Online' : 'Offline'}
                         </span>

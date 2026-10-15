@@ -57,10 +57,10 @@ export const LegalDocumentBanner: React.FC<LegalDocumentBannerProps> = ({
               <span className="font-bold text-slate-900 dark:text-white text-base">
                 {doc?.title || defaultTitle}
               </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/40 dark:text-emerald-300">
                 v{version} • Active Protocol Law
               </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-900/40 dark:text-blue-300">
                 NDPA 2023 / GDPR
               </span>
             </div>

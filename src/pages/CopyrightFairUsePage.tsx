@@ -59,7 +59,7 @@ const CopyrightFairUsePage: React.FC = () => {
 
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">3. DMCA Disclaimer & Limitations</h2>
-            <p className="text-sm bg-gray-50 p-4 rounded border border-gray-200">
+            <p className="text-sm bg-gray-50 p-4 rounded border border-slate-300">
               Statements such as &quot;No Copyright Intended&quot; do not prevent infringement claims. However, asserting explicit Fair Use disclaimers helps demonstrate good faith in legal determinations.
             </p>
           </section>

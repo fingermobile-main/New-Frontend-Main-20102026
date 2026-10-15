@@ -173,7 +173,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
             </div>
 
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
               <input
                 type="text"
                 placeholder="Search member roles & plans..."
@@ -187,7 +187,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
           {/* Roles Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-700 uppercase tracking-wider font-semibold">
                 <tr>
                   <th className="py-3 px-4">Role Name</th>
                   <th className="py-3 px-4">Linked Subscription Tier</th>
@@ -292,7 +292,7 @@ export const SiteMemberAccessView: React.FC<SiteMemberAccessViewProps> = ({
             </div>
             <button
               onClick={() => onNavigateToPricingPlans?.()}
-              className="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold rounded-xl transition flex items-center gap-1.5 self-start sm:self-auto"
+              className="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs font-bold rounded-xl transition flex items-center gap-1.5 self-start sm:self-auto"
             >
               <span>Manage Subscription Models on /subscriptions &rarr;</span>
             </button>

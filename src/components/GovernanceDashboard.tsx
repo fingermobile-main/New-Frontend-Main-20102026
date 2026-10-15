@@ -157,7 +157,7 @@ const GovernanceDashboard: React.FC = () => {
                 <span className="text-indigo-400 font-bold uppercase">Ready</span>
               </div>
             </div>
-            <button className="w-full py-2 border border-white/10 text-gray-400 text-xs font-bold rounded-xl hover:bg-white/5 transition-colors uppercase tracking-widest flex items-center justify-center">
+            <button className="w-full py-2 border border-white/10 text-slate-700 text-xs font-bold rounded-xl hover:bg-white/5 transition-colors uppercase tracking-widest flex items-center justify-center">
               <Fingerprint size={14} className="mr-2" /> Verify Identity
             </button>
           </div>

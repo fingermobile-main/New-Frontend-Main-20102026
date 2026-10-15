@@ -114,7 +114,7 @@ const LegalPage: React.FC = () => {
             <Link
               key={idx}
               to={item.to}
-              className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between"
+              className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-4">

@@ -57,19 +57,19 @@ const TierSelector: React.FC<TierSelectorProps> = ({
         bg: 'from-blue-50 to-blue-100',
         border: 'border-blue-300',
         button: 'bg-blue-600 hover:bg-blue-700',
-        badge: 'bg-blue-100 text-blue-800'
+        badge: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
       },
       purple: {
         bg: 'from-purple-50 to-purple-100',
         border: 'border-purple-300',
         button: 'bg-purple-600 hover:bg-purple-700',
-        badge: 'bg-purple-100 text-purple-800'
+        badge: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
       },
       green: {
         bg: 'from-green-50 to-green-100',
         border: 'border-green-300',
         button: 'bg-green-600 hover:bg-green-700',
-        badge: 'bg-green-100 text-green-800'
+        badge: 'bg-green-100 text-green-950 border border-green-400 font-bold'
       }
     };
 

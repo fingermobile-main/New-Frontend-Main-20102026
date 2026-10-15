@@ -116,7 +116,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-gray-900">{wallet.name}</h3>
                     {wallet.popular && (
-                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                      <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
                         Popular
                       </span>
                     )}
@@ -133,7 +133,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 px-6 py-4 bg-gray-50">
+          <div className="border-t border-slate-300 px-6 py-4 bg-gray-50">
             <div className="text-center text-sm text-gray-600">
               <p className="mb-2">New to crypto wallets?</p>
               <a

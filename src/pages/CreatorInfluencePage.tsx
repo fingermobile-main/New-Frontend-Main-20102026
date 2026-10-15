@@ -90,10 +90,10 @@ const CreatorInfluencePage: React.FC = () => {
               Creator &amp; Influence Infrastructure Program
             </h1>
             <div className="flex space-x-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                 Followers: {followers.toLocaleString()}
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                 Engagement: {engagementRate}%
               </span>
             </div>

@@ -7,7 +7,7 @@ const EventsCalendar: React.FC<EventsCalendarProps> = () => {
   const [currentMonth] = React.useState(new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-6 h-6 text-blue-600" />

@@ -610,7 +610,7 @@ const CamusPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xs p-6 border border-gray-200 dark:border-gray-800">
+            <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xs p-6 border border-slate-300 dark:border-gray-800">
               <h2 className="text-sm font-bold text-gray-900 dark:text-white mb-4">Learning Actions</h2>
               <div className="space-y-2.5">
                 <button
@@ -669,7 +669,7 @@ const CamusPage: React.FC = () => {
        * ========================================================================= */}
       {isCertificatesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
+          <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
             <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-blue-600 font-bold">Credential Verification</span>
@@ -712,11 +712,11 @@ const CamusPage: React.FC = () => {
               ].map((cert, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300">
                         {cert.id}
                       </span>
                       <span className="text-[10px] text-gray-400 font-semibold">{cert.date}</span>
@@ -728,7 +728,7 @@ const CamusPage: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => showToast(`Verifying cryptographic signature for ${cert.id}... Valid!`, 'success')}
-                      className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 flex items-center gap-1.5 transition"
+                      className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-gray-700 border border-slate-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 flex items-center gap-1.5 transition"
                     >
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                       Verify
@@ -762,7 +762,7 @@ const CamusPage: React.FC = () => {
        * ========================================================================= */}
       {isLiveSessionsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
+          <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
             <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-red-600 font-bold flex items-center gap-1.5">
@@ -859,7 +859,7 @@ const CamusPage: React.FC = () => {
        * ========================================================================= */}
       {isLessonPreviewModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
+          <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl">
             <div className="flex items-start justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
               <div>
                 <span className="text-xs font-mono uppercase text-blue-600 font-bold">Interactive Lesson Stream</span>

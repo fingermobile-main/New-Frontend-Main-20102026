@@ -32,7 +32,7 @@ const AIContentAssistant: React.FC<AIContentAssistantProps> = ({
   if (!isOpen && onClose) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-lg border border-slate-300 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <SparklesIcon className="w-6 h-6 text-purple-600" />

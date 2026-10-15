@@ -226,7 +226,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   type="number"
                   value={posAmount}
                   onChange={(e) => setPosAmount(Number(e.target.value))}
-                  className="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl text-xl font-black text-gray-900 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-xl font-black text-gray-900 focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
                 <span className="text-sm font-bold text-gray-500">
                   ≈ {formatPrice(posAmount)}
@@ -240,7 +240,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     key={amt}
                     type="button"
                     onClick={() => setPosAmount(amt)}
-                    className="px-3 py-1 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-bold text-gray-700 transition cursor-pointer"
+                    className="px-3 py-1 bg-white border border-slate-300 hover:border-indigo-400 rounded-xl text-xs font-bold text-gray-700 transition cursor-pointer"
                   >
                     {amt.toLocaleString()} FIC
                   </button>
@@ -256,7 +256,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   value={customerRef}
                   onChange={(e) => setCustomerRef(e.target.value)}
                   placeholder="e.g. Penthouse Suite 5401 - Sir Reginald Vance"
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
                 />
               </div>
             </div>
@@ -404,7 +404,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   placeholder="e.g. Countess Vivian Chen"
                   value={invoiceClientName}
                   onChange={(e) => setInvoiceClientName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
                 />
               </div>
 
@@ -415,7 +415,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   placeholder="client@chenholdings.sg"
                   value={invoiceClientEmail}
                   onChange={(e) => setInvoiceClientEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
                 />
               </div>
 
@@ -426,7 +426,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     type="number"
                     value={invoiceAmount}
                     onChange={(e) => setInvoiceAmount(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-semibold focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
                   />
                 </div>
                 <div>
@@ -435,7 +435,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     type="text"
                     value={invoiceBookingCode}
                     onChange={(e) => setInvoiceBookingCode(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-semibold focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
                   />
                 </div>
               </div>

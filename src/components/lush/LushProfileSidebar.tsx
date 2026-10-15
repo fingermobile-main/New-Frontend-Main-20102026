@@ -367,7 +367,7 @@ export const LushProfileSidebar: React.FC<LushProfileSidebarProps> = ({
             <Square2StackIcon className="w-4 h-4 text-emerald-600" />
             Discover Deck
           </span>
-          <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full font-bold">
+          <span className="text-[10px] bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-1.5 py-0.5 rounded-full font-bold">
             Swipe
           </span>
         </button>

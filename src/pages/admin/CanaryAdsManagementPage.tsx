@@ -216,7 +216,7 @@ export const CanaryAdsManagementPage: React.FC = () => {
                       onChange={(e) => setRejectionReason(e.target.value)}
                       placeholder="e.g. Thumbnail exceeds 20% text rule, or landing page link is unreachable."
                       rows={2}
-                      className="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-500 resize-none"
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500 resize-none"
                     />
                   </div>
 

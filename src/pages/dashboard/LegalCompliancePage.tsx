@@ -142,10 +142,10 @@ const LegalCompliancePage: React.FC = () => {
                     <td className="p-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                         req.status === 'completed'
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
                           : req.status === 'processing'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-amber-100 text-amber-800'
+                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
+                            : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                       }`}>
                         {req.status}
                       </span>
@@ -211,7 +211,7 @@ const LegalCompliancePage: React.FC = () => {
                       {new Date(del.scheduled_purge_at).toLocaleDateString()}
                     </td>
                     <td className="p-3">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold">
                         {del.status}
                       </span>
                     </td>

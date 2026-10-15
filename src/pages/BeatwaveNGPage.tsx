@@ -200,13 +200,13 @@ const BeatwaveNGPage: React.FC = () => {
 
           {/* Quick Search Bar */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search library & 70+ genres..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
 
@@ -327,7 +327,7 @@ const BeatwaveNGPage: React.FC = () => {
                       : 'text-slate-400 hover:text-white hover:bg-slate-900/60'
                   }`}
                 >
-                  <Clock className="w-4 h-4 text-slate-400" />
+                  <Clock className="w-4 h-4 text-slate-500" />
                   Recently Played
                 </button>
               </nav>
@@ -659,7 +659,7 @@ const BeatwaveNGPage: React.FC = () => {
                       </div>
 
                       {isActive && (
-                        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500 text-black font-bold text-[10px]">
+                        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500 text-slate-900 font-bold text-[10px]">
                           <span className="w-2 h-2 rounded-full bg-black animate-ping" />
                           LIVE BROADCAST
                         </div>

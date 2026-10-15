@@ -52,7 +52,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
     <div className="space-y-6">
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
           <div className="flex items-center justify-between mb-2">
             <UsersIcon className="w-6 h-6 text-blue-500" />
             <span className="text-xs text-green-600 font-medium">
@@ -65,7 +65,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
           <div className="flex items-center justify-between mb-2">
             <ArrowTrendingUpIcon className="w-6 h-6 text-purple-500" />
             <span className="text-xs text-green-600 font-medium">{avgRetentionRate}%</span>
@@ -74,7 +74,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
           <p className="text-2xl font-bold text-gray-900">{avgRetentionRate}%</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
           <div className="flex items-center justify-between mb-2">
             <ChartBarIcon className="w-6 h-6 text-green-500" />
             <span className="text-xs text-blue-600 font-medium">LTV</span>
@@ -85,7 +85,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-4">
           <div className="flex items-center justify-between mb-2">
             <CurrencyDollarIcon className="w-6 h-6 text-yellow-500" />
             <span className="text-xs text-red-600 font-medium">Churn</span>
@@ -98,7 +98,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
       </div>
 
       {/* Retention Trend Chart */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">User Retention Trend</h3>
         {retentionData.length > 0 ? (
           <div className="space-y-3">
@@ -126,7 +126,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
       </div>
 
       {/* Cohort Analysis Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Cohort Analysis</h3>
         {cohortData.length > 0 ? (
           <div className="overflow-x-auto">
@@ -149,9 +149,9 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
                     {cohort.retention_data.slice(0, 4).map((ret, retIdx) => (
                       <td key={retIdx} className="px-4 py-3 whitespace-nowrap text-sm">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                          ret.retention_rate >= 70 ? 'bg-green-100 text-green-800' :
-                            ret.retention_rate >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
+                          ret.retention_rate >= 70 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
+                            ret.retention_rate >= 40 ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
+                              'bg-red-100 text-red-950 border border-red-400 font-bold'
                         }`}>
                           {ret.retention_rate.toFixed(1)}%
                         </span>
@@ -168,7 +168,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
       </div>
 
       {/* Churn Insights */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Churn Insights</h3>
         {dashboardData?.churn?.data && dashboardData.churn.data.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

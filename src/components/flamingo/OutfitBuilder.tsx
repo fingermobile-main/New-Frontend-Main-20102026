@@ -19,11 +19,11 @@ const occasions = [
 ];
 
 const seasons = [
-  { value: 'spring', label: 'Spring', color: 'bg-green-100 text-green-800' },
-  { value: 'summer', label: 'Summer', color: 'bg-yellow-100 text-yellow-800' },
+  { value: 'spring', label: 'Spring', color: 'bg-green-100 text-green-950 border border-green-400 font-bold' },
+  { value: 'summer', label: 'Summer', color: 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' },
   { value: 'fall', label: 'Fall', color: 'bg-orange-100 text-orange-800' },
-  { value: 'winter', label: 'Winter', color: 'bg-blue-100 text-blue-800' },
-  { value: 'all_season', label: 'All Seasons', color: 'bg-purple-100 text-purple-800' }
+  { value: 'winter', label: 'Winter', color: 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' },
+  { value: 'all_season', label: 'All Seasons', color: 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' }
 ];
 
 const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
@@ -116,7 +116,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
       <h3 className="text-xl font-bold text-gray-900 mb-4">Build New Outfit</h3>
 
       {error && (
@@ -231,7 +231,7 @@ const OutfitBuilder: React.FC<OutfitBuilderProps> = ({
               {formData.style_tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1"
+                  className="px-2 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs rounded-full flex items-center gap-1"
                 >
                   {tag}
                   <button

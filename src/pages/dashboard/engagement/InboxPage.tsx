@@ -212,10 +212,10 @@ const InboxPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex h-[calc(100vh-230px)] overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-300 flex h-[calc(100vh-230px)] overflow-hidden">
         {/* Contact List */}
-        <div className="w-1/3 border-r border-gray-200 flex flex-col bg-gray-50/50">
-          <div className="p-3 border-b border-gray-200 bg-white">
+        <div className="w-1/3 border-r border-slate-300 flex flex-col bg-gray-50/50">
+          <div className="p-3 border-b border-slate-300 bg-white">
             <input
               type="text"
               value={searchQuery}
@@ -276,7 +276,7 @@ const InboxPage: React.FC = () => {
         <div className="w-2/3 flex flex-col bg-white">
           {selectedContact ? (
             <>
-              <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white">
+              <div className="p-4 border-b border-slate-300 flex items-center justify-between bg-white">
                 <div className="flex items-center gap-3">
                   <AnimatedAvatar
                     staticUrl={selectedContact.avatarUrl}
@@ -313,7 +313,7 @@ const InboxPage: React.FC = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              <div className="p-4 bg-white border-t border-gray-200">
+              <div className="p-4 bg-white border-t border-slate-300">
                 <form onSubmit={handleSend} className="relative flex items-center gap-2">
                   <input
                     type="text"

@@ -21,7 +21,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="bg-white border-b border-slate-300">
       {/* Banner */}
       <div className="h-48 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 relative">
         <div className="absolute inset-0 bg-black opacity-10"></div>
@@ -91,7 +91,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
                         {showDropdown && (
                           <div
-                            className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10"
+                            className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-300 py-2 z-10"
                             role="menu"
                             aria-orientation="vertical"
                           >
@@ -138,13 +138,13 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 
               {/* Tags */}
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-full text-sm font-medium">
                   #technology
                 </span>
-                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium">
                   #community
                 </span>
-                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm font-medium">
                   #learning
                 </span>
               </div>

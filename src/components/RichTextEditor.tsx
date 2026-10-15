@@ -70,7 +70,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
             onClick={btn.action}
             title={btn.title}
             className={`px-3 py-1.5 rounded hover:bg-gray-200 transition-colors ${
-              btn.active ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
+              btn.active ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : 'text-gray-700'
             }`}
           >
             {btn.icon}

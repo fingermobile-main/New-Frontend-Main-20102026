@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-100 text-red-700 rounded-md">
+            <div className="p-3 bg-red-100 text-red-950 border border-red-400 font-bold rounded-md">
               {error}
             </div>
           )}

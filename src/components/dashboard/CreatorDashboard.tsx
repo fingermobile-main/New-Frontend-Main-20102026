@@ -237,7 +237,7 @@ const CreatorDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden p-4 sm:p-6 lg:p-8">
+      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden p-4 sm:p-6 lg:p-8">
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -246,7 +246,7 @@ const CreatorDashboard: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
         <div>
@@ -303,7 +303,7 @@ const CreatorDashboard: React.FC = () => {
             {/* Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {creatorMetrics.map((metric, index) => (
-                <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                   <div className="flex justify-between items-start">
                     <div>
                       <p className="text-gray-600 dark:text-gray-400 text-sm">{metric.name}</p>
@@ -325,7 +325,7 @@ const CreatorDashboard: React.FC = () => {
             {/* Content Performance and Scheduled Content */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Top Performing Content */}
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-bold">Top Performing Content</h3>
                   <button className="text-sm text-blue-600 dark:text-blue-400">View All</button>
@@ -335,11 +335,11 @@ const CreatorDashboard: React.FC = () => {
                     <div key={content.id} className="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg">
                       <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center mr-4">
                         {content.thumbnail === 'video' ? (
-                          <VideoCameraIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                          <VideoCameraIcon className="w-6 h-6 text-gray-600 dark:text-slate-500" />
                         ) : content.thumbnail === 'photo' ? (
-                          <PhotoIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                          <PhotoIcon className="w-6 h-6 text-gray-600 dark:text-slate-500" />
                         ) : (
-                          <DocumentTextIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                          <DocumentTextIcon className="w-6 h-6 text-gray-600 dark:text-slate-500" />
                         )}
                       </div>
                       <div className="flex-1">
@@ -369,7 +369,7 @@ const CreatorDashboard: React.FC = () => {
               </div>
 
               {/* Scheduled Content */}
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-bold">Scheduled Content</h3>
                   <button className="text-sm text-blue-600 dark:text-blue-400">View All</button>
@@ -396,7 +396,7 @@ const CreatorDashboard: React.FC = () => {
             </div>
 
             {/* Performance Chart */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold">Performance Overview</h3>
                 <div className="flex space-x-2">
@@ -445,7 +445,7 @@ const CreatorDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div key={item} className="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden">
                   <div className="h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     {item % 3 === 1 ? (
                       <PhotoIcon className="w-10 h-10 text-gray-500" />
@@ -501,7 +501,7 @@ const CreatorDashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Engagement Over Time</h4>
                 <div className="h-64 flex items-end space-x-2">
                   {[45, 65, 30, 75, 50, 80, 55, 90, 40, 70, 60, 85].map((value, index) => (
@@ -518,7 +518,7 @@ const CreatorDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Content Type Performance</h4>
                 <div className="h-64 flex items-end space-x-2">
                   {[30, 50, 45, 65, 40, 75, 55, 80, 35, 60, 50, 70].map((value, index) => (
@@ -536,7 +536,7 @@ const CreatorDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
               <h4 className="font-bold mb-6">Detailed Metrics</h4>
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -584,7 +584,7 @@ const CreatorDashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Age Distribution</h4>
                 <div className="space-y-3">
                   {ageDistribution.map((age, index) => (
@@ -607,7 +607,7 @@ const CreatorDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Gender Split</h4>
                 <div className="flex items-center justify-center h-40">
                   <div className="relative w-32 h-32 rounded-full border-4 border-blue-500">
@@ -629,7 +629,7 @@ const CreatorDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Top Interests</h4>
                 <div className="space-y-3">
                   {topInterests.map((item, index) => (
@@ -650,7 +650,7 @@ const CreatorDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
               <h4 className="font-bold mb-6">Geographic Reach</h4>
               <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                 <div className="text-center">
@@ -685,7 +685,7 @@ const CreatorDashboard: React.FC = () => {
             {earnings && (
               <>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">Total Earnings</p>
@@ -700,7 +700,7 @@ const CreatorDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">Content Revenue</p>
@@ -713,7 +713,7 @@ const CreatorDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">Affiliate Earnings</p>
@@ -729,7 +729,7 @@ const CreatorDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                   <h4 className="font-bold mb-6">Earnings Sources</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
@@ -792,7 +792,7 @@ const CreatorDashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="lg:col-span-2 bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                 <h4 className="font-bold mb-4">Calendar View</h4>
                 <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                   <div className="text-center">
@@ -803,7 +803,7 @@ const CreatorDashboard: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                   <h4 className="font-bold mb-4">Scheduled Content</h4>
                   <div className="space-y-3">
                     {scheduledContent.map((content) => (
@@ -820,7 +820,7 @@ const CreatorDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-slate-300 dark:border-gray-700">
                   <h4 className="font-bold mb-4">Best Posting Times</h4>
                   <div className="space-y-3">
                     {bestPostingTimes.map((time, index) => (

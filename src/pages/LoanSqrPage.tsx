@@ -568,9 +568,9 @@ export const LoanSqrPage: React.FC = () => {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search e.g. 'Fast Inventory Advance', 'POS settlement rate', '₦5,000 refundable fee', 'Margin calculation'..."
-              className="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-3.5 pl-11 pr-28 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="w-full bg-slate-950/90 border border-slate-800 rounded-xl py-3.5 pl-11 pr-28 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             />
-            <SearchIcon className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
+            <SearchIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
             <button
               type="submit"
               className="absolute right-2 top-2 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer"

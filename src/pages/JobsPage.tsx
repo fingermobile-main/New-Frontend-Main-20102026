@@ -138,10 +138,10 @@ const JobsPage: React.FC = () => {
         </div>
 
         {/* Search & Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-4 mb-8">
           <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="relative flex-1">
-              <SearchIcon className="w-5 h-5 absolute left-3 top-3.5 text-gray-400" />
+              <SearchIcon className="w-5 h-5 absolute left-3 top-3.5 text-slate-500" />
               <input
                 type="text"
                 placeholder="Search jobs by role, company, or keyword..."
@@ -199,7 +199,7 @@ const JobsPage: React.FC = () => {
 
         {/* Listings */}
         {loading ? (
-          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-slate-300">
             Loading opportunities from PostgreSQL database...
           </div>
         ) : jobs.length > 0 ? (
@@ -207,17 +207,17 @@ const JobsPage: React.FC = () => {
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col md:flex-row md:items-center justify-between gap-6"
+                className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 hover:shadow-md transition-shadow flex flex-col md:flex-row md:items-center justify-between gap-6"
               >
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                       {job.type}
                     </span>
-                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800">
+                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-400 font-bold">
                       {job.category || 'Engineering'}
                     </span>
-                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 font-mono">
+                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-mono">
                       {job.salary_range || job.salaryRange || 'Competitive'}
                     </span>
                   </div>
@@ -226,7 +226,7 @@ const JobsPage: React.FC = () => {
                   <div className="flex items-center text-sm text-gray-600 mt-1 gap-4">
                     <span className="font-semibold text-gray-800">{job.company}</span>
                     <span className="flex items-center text-gray-500">
-                      <LocationMarkerIcon className="w-4 h-4 mr-1 text-gray-400" />
+                      <LocationMarkerIcon className="w-4 h-4 mr-1 text-slate-500" />
                       {job.location}
                     </span>
                   </div>
@@ -263,7 +263,7 @@ const JobsPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+          <div className="text-center py-16 bg-white rounded-xl border border-slate-300">
             <BriefcaseIcon className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-lg font-bold text-gray-900">No job vacancies match your criteria</h3>
             <p className="mt-1 text-sm text-gray-500">Try adjusting your search terms or filters.</p>
@@ -285,7 +285,7 @@ const JobsPage: React.FC = () => {
               </div>
 
               {feedbackMsg ? (
-                <div className={`p-4 rounded-xl mb-4 text-sm font-medium ${feedbackMsg.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <div className={`p-4 rounded-xl mb-4 text-sm font-medium ${feedbackMsg.type === 'success' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'}`}>
                   {feedbackMsg.text}
                 </div>
               ) : (

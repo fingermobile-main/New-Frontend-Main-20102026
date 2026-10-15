@@ -112,7 +112,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-bold text-gray-900">Low Stock Alerts</h2>
           {lowStockItems.length > 0 && (
-            <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
+            <span className="px-3 py-1 bg-red-100 text-red-950 border border-red-400 font-bold rounded-full text-sm font-semibold">
               {lowStockItems.length} items need attention
             </span>
           )}

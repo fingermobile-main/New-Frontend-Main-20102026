@@ -212,7 +212,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
               ))}
 
               {isAiThinking && (
-                <div className="flex items-center gap-2 text-xs text-gray-400 bg-white p-3 rounded-2xl max-w-xs border border-gray-100">
+                <div className="flex items-center gap-2 text-xs text-slate-700 bg-white p-3 rounded-2xl max-w-xs border border-gray-100">
                   <div className="w-2 h-2 rounded-full bg-indigo-600 animate-ping"></div>
                   <span>LuxAI is verifying calendar availability...</span>
                 </div>
@@ -227,7 +227,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="flex-1 px-4 py-3 bg-gray-50 border border-slate-300 rounded-2xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
               />
               <button
                 type="button"
@@ -361,7 +361,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 <button
                   type="button"
                   onClick={() => handleDispatchTestReminder('WhatsApp')}
-                  className="py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-[11px] font-bold transition cursor-pointer"
+                  className="py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl text-[11px] font-bold transition cursor-pointer"
                 >
                   Test WhatsApp
                 </button>
@@ -375,7 +375,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 <button
                   type="button"
                   onClick={() => handleDispatchTestReminder('Email')}
-                  className="py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-xl text-[11px] font-bold transition cursor-pointer"
+                  className="py-2 bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-xl text-[11px] font-bold transition cursor-pointer"
                 >
                   Test Email
                 </button>

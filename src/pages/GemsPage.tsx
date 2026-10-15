@@ -514,13 +514,13 @@ const GemsPage: React.FC = () => {
             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
               {/* Search Bar */}
               <div className="relative flex-1">
-                <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-5 h-5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search gems by title, creator, or keyword..."
                   value={searchTermState}
                   onChange={(e) => setSearchTermState(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -543,7 +543,7 @@ const GemsPage: React.FC = () => {
 
               {/* Sort Selector */}
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-slate-400" />
+                <Filter className="w-4 h-4 text-slate-500" />
                 <select
                   value={sortByState}
                   onChange={(e) => setSortByState(e.target.value as any)}
@@ -759,7 +759,7 @@ const GemsPage: React.FC = () => {
                   value={newBroadcastText}
                   onChange={(e) => setNewBroadcastText(e.target.value)}
                   placeholder="Share a timely drop, salon invite, or exclusive update (expires in 24h)..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -917,7 +917,7 @@ const GemsPage: React.FC = () => {
                     value={moderationTestText}
                     onChange={(e) => setModerationTestText(e.target.value)}
                     placeholder="e.g. Try typing: '100% free make money click here' or regular compliant text..."
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                   <button
                     onClick={runModerationCheck}

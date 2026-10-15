@@ -434,21 +434,21 @@ const CompliancePage: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'data_protection': return 'bg-blue-100 text-blue-800';
-      case 'financial': return 'bg-green-100 text-green-800';
-      case 'healthcare': return 'bg-red-100 text-red-800';
-      case 'content': return 'bg-purple-100 text-purple-800';
-      case 'accessibility': return 'bg-yellow-100 text-yellow-800';
+      case 'data_protection': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'financial': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'healthcare': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'content': return 'bg-purple-100 text-purple-950 border border-purple-400 font-bold';
+      case 'accessibility': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800';
+      case 'critical': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
       case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'low': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -456,18 +456,18 @@ const CompliancePage: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'not_started': return 'bg-gray-100 text-gray-800';
-      case 'in_progress': return 'bg-blue-100 text-blue-800';
-      case 'compliant': return 'bg-green-100 text-green-800';
-      case 'non_compliant': return 'bg-red-100 text-red-800';
-      case 'requires_attention': return 'bg-yellow-100 text-yellow-800';
-      case 'passed': return 'bg-green-100 text-green-800';
-      case 'failed': return 'bg-red-100 text-red-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
+      case 'in_progress': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
+      case 'compliant': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'non_compliant': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'requires_attention': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'passed': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'failed': return 'bg-red-100 text-red-950 border border-red-400 font-bold';
+      case 'partial': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
       case 'not_applicable': return 'bg-gray-100 text-gray-800';
       case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'review': return 'bg-yellow-100 text-yellow-800';
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'published': return 'bg-blue-100 text-blue-800';
+      case 'review': return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
+      case 'approved': return 'bg-green-100 text-green-950 border border-green-400 font-bold';
+      case 'published': return 'bg-blue-100 text-blue-950 border border-blue-400 font-bold';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -629,7 +629,7 @@ const CompliancePage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-500 focus:outline-none focus:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -961,7 +961,7 @@ const CompliancePage: React.FC = () => {
                               <div className="text-sm text-gray-500 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'regulatory' ? 'bg-blue-100 text-blue-800' : report.type === 'internal' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'regulatory' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'internal' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'}`}>
                                 {report.type}
                               </span>
                             </td>
@@ -1139,7 +1139,7 @@ const CompliancePage: React.FC = () => {
                             <p className="font-medium">{item.name}</p>
                             <p className="text-sm text-gray-500">Due: {new Date(item.deadline).toLocaleDateString()}</p>
                           </div>
-                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.priority === 'critical' ? 'bg-red-100 text-red-800' : item.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.priority === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : item.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
                             {item.priority}
                           </span>
                         </div>
@@ -1313,7 +1313,7 @@ const CompliancePage: React.FC = () => {
 
         {/* Pagination */}
         {['requirements', 'audits', 'reports'].includes(activeTab) && totalPages > 1 && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6">
+          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-300 sm:px-6 mt-6">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}

@@ -157,7 +157,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden">
         {/* Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -170,7 +170,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
         </div>
 
         {/* Tab Buttons */}
-        <div className="flex border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+        <div className="flex border-b border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
           <button
             onClick={() => setActiveTab('exchange')}
             className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${
@@ -220,7 +220,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                   Contact Mobile Phone / Hash
                 </label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+                  <Phone className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
                   <input
                     type="text"
                     required
@@ -237,7 +237,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                   6 to 8 Digit PIN Code
                 </label>
                 <div className="relative">
-                  <KeyRound className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+                  <KeyRound className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
                   <input
                     type="password"
                     maxLength={8}
@@ -408,9 +408,9 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-2xl shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden">
         {/* Anti-Screen Recording / Screen Capture Warning Banner */}
-        <div className="bg-amber-500 text-black px-4 py-2 text-xs font-bold flex items-center justify-between">
+        <div className="bg-amber-500 text-slate-900 px-4 py-2 text-xs font-bold flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <ShieldAlert className="w-4 h-4 text-black" />
             <span>FingerOrbit™ Protected Content: No Screenshots • No Screen Recording</span>
@@ -432,7 +432,7 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
         </div>
 
         {/* Folder Selectors (Folder 1: Video, Folder 2: Image) */}
-        <div className="grid grid-cols-2 p-4 gap-3 bg-gray-50 dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
+        <div className="grid grid-cols-2 p-4 gap-3 bg-gray-50 dark:bg-gray-800/40 border-b border-slate-300 dark:border-gray-800">
           <button
             onClick={() => setActiveFolder('video')}
             className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
@@ -464,7 +464,7 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
             {(activeFolder === 'video' ? videoFolderItems : imageFolderItems).map((item) => (
               <div
                 key={item.id}
-                className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-between hover:shadow-md transition-shadow"
+                className="p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-between hover:shadow-md transition-shadow"
               >
                 <div>
                   <h4 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -573,7 +573,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-3xl shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden">
         {/* Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-purple-700 to-indigo-800 text-white flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -586,7 +586,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
         </div>
 
         {/* Page Switcher indicator */}
-        <div className="flex items-center justify-between px-6 py-3 bg-gray-50 dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between px-6 py-3 bg-gray-50 dark:bg-gray-800/40 border-b border-slate-300 dark:border-gray-800">
           <div className="text-xs font-bold text-gray-700 dark:text-gray-300">
             {currentPage === 1 ? 'Page 1: Physical Merch & Collectibles' : 'Page 2: Digital Passes & Creative Packs'}
           </div>
@@ -625,7 +625,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
           {(currentPage === 1 ? pageOneProducts : pageTwoProducts).map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
             >
               <img
                 src={product.image}

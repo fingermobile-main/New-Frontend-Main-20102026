@@ -1562,7 +1562,7 @@ const ProgramsPage: React.FC = () => {
                 <div className="p-6 overflow-y-auto flex-1 space-y-6">
                   {examScoreResult ? (
                     <div className="text-center py-10 space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-3xl font-black border-4 border-emerald-400">
+                      <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center mx-auto text-3xl font-black border-4 border-emerald-400">
                         {examScoreResult.letterGrade}
                       </div>
                       <h4 className="text-2xl font-black text-slate-900">

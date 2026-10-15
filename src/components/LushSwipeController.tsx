@@ -245,7 +245,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
 
             {currentProfile.isVerified && (
               <div className="flex items-center mt-1">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
                   Verified
                 </span>
               </div>
@@ -261,7 +261,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
 
           <div className="flex flex-wrap gap-1 mb-3">
             {currentProfile.interests.slice(0, 3).map((interest, index) => (
-              <span key={index} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+              <span key={index} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold">
                 {interest}
               </span>
             ))}

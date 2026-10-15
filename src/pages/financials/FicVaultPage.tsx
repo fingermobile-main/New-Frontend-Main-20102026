@@ -392,11 +392,11 @@ const FicVaultPage: React.FC = () => {
                               Claimed / Withdrawn
                             </span>
                           ) : isMatured ? (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 animate-pulse">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 animate-pulse">
                               Matured (Ready)
                             </span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-950 border border-purple-400 font-bold dark:bg-purple-950 dark:text-purple-300">
                               Active Locked
                             </span>
                           )}

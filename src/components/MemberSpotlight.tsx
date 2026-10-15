@@ -80,7 +80,7 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div className="bg-white border border-slate-300 rounded-lg overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4">
         <h3 className="font-bold text-white text-xl flex items-center gap-2">
@@ -175,7 +175,7 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 px-6 py-3 bg-gray-50">
+      <div className="border-t border-slate-300 px-6 py-3 bg-gray-50">
         <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
           View All Members →
         </button>

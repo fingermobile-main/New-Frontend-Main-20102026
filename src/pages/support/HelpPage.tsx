@@ -99,7 +99,7 @@ const HelpPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search guides, FIC vault, privacy, or error codes..."
-              className="block w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder-slate-400 text-base"
+              className="block w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-500 text-base"
             />
           </div>
         </div>
@@ -164,7 +164,7 @@ const HelpPage: React.FC = () => {
             ))
           ) : (
             <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <QuestionMarkCircleIcon className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <QuestionMarkCircleIcon className="w-12 h-12 text-slate-500 mx-auto mb-3" />
               <p className="text-slate-600 dark:text-slate-400 font-medium">
                 No matching help articles found for "{searchQuery}".
               </p>

@@ -149,7 +149,7 @@ const SwitchProfilePage: React.FC = () => {
                       </div>
                     </div>
                     {isActive ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950/60 dark:text-emerald-300">
                         <CheckCircle className="w-3.5 h-3.5" />
                         Active
                       </span>

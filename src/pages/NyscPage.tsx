@@ -118,7 +118,7 @@ const NyscPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
           <div className="flex items-center mb-3">
             <MembersIcon className="w-6 h-6 text-blue-600 mr-2" />
             <h2 className="text-xl font-bold text-gray-800">Networking</h2>
@@ -135,7 +135,7 @@ const NyscPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
           <div className="flex items-center mb-3">
             <AcademicCapIcon className="w-6 h-6 text-blue-600 mr-2" />
             <h2 className="text-xl font-bold text-gray-800">Resources</h2>
@@ -151,7 +151,7 @@ const NyscPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <div className="bg-white rounded-xl shadow-md p-6 border border-slate-300">
           <div className="flex items-center mb-3">
             <CalendarIcon className="w-6 h-6 text-blue-600 mr-2" />
             <h2 className="text-xl font-bold text-gray-800">Events</h2>
@@ -182,7 +182,7 @@ const NyscPage: React.FC = () => {
                 <h3 className="font-semibold text-lg text-gray-800">
                   {event.title}
                 </h3>
-                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                <span className="bg-blue-100 text-blue-950 border border-blue-400 font-bold text-xs font-medium px-2.5 py-0.5 rounded-full">
                   {event.date}
                 </span>
               </div>

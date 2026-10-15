@@ -84,7 +84,7 @@ export const BlogCommentModal: React.FC<CommentModalProps> = ({
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Join the discussion... Share your thoughts, critique, or insights."
               rows={3}
-              className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <div className="flex justify-end">
               <button
@@ -214,7 +214,7 @@ export const BlogSendGiftModal: React.FC<SendGiftModalProps> = ({
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
               placeholder="Add an encouraging note..."
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
@@ -300,7 +300,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
               />
             </div>
             <div>
@@ -310,7 +310,7 @@ export const BlogPaylinkModal: React.FC<PaylinkModalProps> = ({
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
               >
                 <option value="FIC">FIC Token</option>
                 <option value="NGN">NGN (₦)</option>
@@ -423,7 +423,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
                   max={25}
                   value={royaltyRate}
                   onChange={(e) => setRoyaltyRate(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-900 dark:text-white"
                 />
                 <span className="text-[10px] text-gray-400 mt-0.5 block">
                   Earn {royaltyRate}% perpetually on every secondary trade and ad revenue commission.
@@ -441,7 +441,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
             </>
           ) : (
             <div className="py-6 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-2xl mx-auto font-bold">
+              <div className="w-12 h-12 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold flex items-center justify-center text-2xl mx-auto font-bold">
                 ✓
               </div>
               <h4 className="font-bold text-gray-900 dark:text-white text-base">Token Minted Successfully!</h4>

@@ -49,7 +49,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
   }
 
   return (
-    <div className="p-6 border border-gray-200 shadow-sm rounded-xl bg-white flex flex-col items-center justify-center space-y-6">
+    <div className="p-6 border border-slate-300 shadow-sm rounded-xl bg-white flex flex-col items-center justify-center space-y-6">
       <div className="text-center">
         <h3 className="font-semibold text-lg text-slate-800">
           Prove you are human

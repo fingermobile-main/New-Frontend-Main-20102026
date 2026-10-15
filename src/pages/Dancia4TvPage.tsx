@@ -409,7 +409,7 @@ const Dancia4TvPage: React.FC = () => {
 
               <div className="absolute bottom-10 left-10 max-w-2xl space-y-4 z-10 text-white">
                 <div className="flex items-center space-x-3">
-                  <span className="bg-sky-500 text-black font-extrabold text-xs px-2.5 py-1 rounded tracking-wider uppercase">PRIME EXCLUSIVE</span>
+                  <span className="bg-sky-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded tracking-wider uppercase">PRIME EXCLUSIVE</span>
                   <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs px-2.5 py-1 rounded font-semibold">{activeHeroMovie.quality}</span>
                   <span className="text-slate-100 text-xs font-bold">{activeHeroMovie.releaseYear} • {activeHeroMovie.durationMinutes} mins • {activeHeroMovie.rating}</span>
                   <span className="flex items-center text-amber-400 text-xs font-bold">
@@ -440,7 +440,7 @@ const Dancia4TvPage: React.FC = () => {
                 <div className="flex items-center space-x-4 pt-2">
                   <button
                     onClick={() => setActivePlayingMovie(activeHeroMovie)}
-                    className="flex items-center space-x-2 bg-sky-500 hover:bg-sky-400 text-black font-extrabold px-7 py-3.5 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-sky-500/30"
+                    className="flex items-center space-x-2 bg-sky-500 hover:bg-sky-400 text-slate-900 font-extrabold px-7 py-3.5 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-sky-500/30"
                   >
                     <Play className="w-5 h-5 fill-black" />
                     <span>Watch Now</span>
@@ -478,7 +478,7 @@ const Dancia4TvPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setActiveNavTab('vod-models')}
-                className="whitespace-nowrap bg-purple-500 hover:bg-purple-400 text-black font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-md"
+                className="whitespace-nowrap bg-purple-500 hover:bg-purple-400 text-slate-900 font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-md"
               >
                 Stream Unlimited
               </button>
@@ -568,7 +568,7 @@ const Dancia4TvPage: React.FC = () => {
                       <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold text-sky-300 border border-sky-400/30">
                         {movie.regionalCategory}
                       </div>
-                      <div className="absolute top-3 right-3 bg-amber-400 text-black font-extrabold text-[10px] px-2 py-0.5 rounded">
+                      <div className="absolute top-3 right-3 bg-amber-400 text-slate-900 font-extrabold text-[10px] px-2 py-0.5 rounded">
                         {movie.quality}
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent opacity-80" />
@@ -596,7 +596,7 @@ const Dancia4TvPage: React.FC = () => {
                             e.stopPropagation();
                             setActivePlayingMovie(movie);
                           }}
-                          className="flex items-center space-x-1.5 bg-sky-500/20 text-sky-300 hover:bg-sky-500 hover:text-black font-bold text-xs px-3.5 py-1.5 rounded-lg border border-sky-500/40 transition"
+                          className="flex items-center space-x-1.5 bg-sky-500/20 text-sky-300 hover:bg-sky-500 hover:text-slate-900 font-bold text-xs px-3.5 py-1.5 rounded-lg border border-sky-500/40 transition"
                         >
                           <Play className="w-3.5 h-3.5" />
                           <span>Play</span>
@@ -709,14 +709,14 @@ const Dancia4TvPage: React.FC = () => {
                 <div key={i} className="bg-gray-900 rounded-2xl border border-white/10 overflow-hidden p-4 space-y-3">
                   <div className="relative aspect-video rounded-xl overflow-hidden">
                     <img src={sport.image} alt={sport.title} className="w-full h-full object-cover" />
-                    <span className="absolute top-2 left-2 bg-emerald-500 text-black font-extrabold text-[10px] px-2 py-0.5 rounded">
+                    <span className="absolute top-2 left-2 bg-emerald-500 text-slate-900 font-extrabold text-[10px] px-2 py-0.5 rounded">
                       {sport.category}
                     </span>
                   </div>
                   <h3 className="font-bold text-white text-base">{sport.title}</h3>
                   <button
                     onClick={() => setActivePlayingMovie(CURATED_DANCIA_MOVIES[0])}
-                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold text-xs py-2.5 rounded-lg transition"
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-900 font-extrabold text-xs py-2.5 rounded-lg transition"
                   >
                     Watch Live Match
                   </button>
@@ -786,7 +786,7 @@ const Dancia4TvPage: React.FC = () => {
                       <p className="text-[11px] text-slate-200 line-clamp-2 font-medium">{movie.synopsis}</p>
                       <button
                         onClick={() => setActivePlayingMovie(movie)}
-                        className="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs py-2 rounded-lg transition"
+                        className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-extrabold text-xs py-2 rounded-lg transition"
                       >
                         Stream Now ({movie.vodModel})
                       </button>
@@ -949,7 +949,7 @@ const Dancia4TvPage: React.FC = () => {
                   setActivePlayingMovie(activeDetailMovie);
                   setActiveDetailMovie(null);
                 }}
-                className="w-full bg-sky-500 text-black font-extrabold py-2.5 rounded-xl"
+                className="w-full bg-sky-500 text-slate-900 font-extrabold py-2.5 rounded-xl"
               >
                 Play Now
               </button>

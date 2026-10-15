@@ -170,7 +170,7 @@ const MemberManagementPage: React.FC = () => {
             </thead>
             <tbody>
               {members.map((member) => (
-                <tr key={member.id} className="h-12 border-b border-gray-200 hover:bg-gray-50">
+                <tr key={member.id} className="h-12 border-b border-slate-300 hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-700">{member.id}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">{member.email}</td>
                   <td className="px-4 py-2 text-sm">

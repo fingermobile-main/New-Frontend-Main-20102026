@@ -192,7 +192,7 @@ const AdminDashboard: React.FC = () => {
                   {recentActivity.map((activity) => (
                     <li key={activity.id} className="px-5 py-3.5 hover:bg-slate-50 transition-colors">
                       <div className="flex items-center">
-                        <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center border border-blue-200 shrink-0">
+                        <div className="h-9 w-9 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center border border-blue-200 shrink-0">
                           <Activity className="h-4 w-4" />
                         </div>
                         <div className="ml-3 flex-1">

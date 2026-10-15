@@ -444,7 +444,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
 
         {/* Active Attachment Configuration Drawer */}
         {activeAttachmentDrawer && (
-          <div className="p-5 bg-gray-50 rounded-xl border border-gray-200 animate-fade-in space-y-4">
+          <div className="p-5 bg-gray-50 rounded-xl border border-slate-300 animate-fade-in space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-gray-200">
               <h4 className="text-sm font-bold text-gray-900 capitalize">
                 Configure {activeAttachmentDrawer.replace('_', ' ')}

@@ -275,7 +275,7 @@ const LoyaltyPage: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <SparklesIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                  <SparklesIcon className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                   <p className="text-sm text-slate-700 font-medium">
                     You haven&apos;t earned any loyalty reward points yet.
                   </p>

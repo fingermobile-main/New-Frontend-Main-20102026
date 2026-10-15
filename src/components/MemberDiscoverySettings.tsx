@@ -27,11 +27,11 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <h3 className="text-lg font-bold text-gray-900 mb-6">Discovery Settings</h3>
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center justify-between p-4 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.profileVisible ? 'bg-green-100' : 'bg-gray-100'
@@ -58,7 +58,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           </label>
         </div>
 
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center justify-between p-4 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.showInSearch ? 'bg-green-100' : 'bg-gray-100'
@@ -83,7 +83,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           </label>
         </div>
 
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center justify-between p-4 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.allowDirectMessages ? 'bg-green-100' : 'bg-gray-100'
@@ -108,7 +108,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           </label>
         </div>
 
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center justify-between p-4 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.showActivityStatus ? 'bg-green-100' : 'bg-gray-100'

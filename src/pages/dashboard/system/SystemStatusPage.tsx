@@ -40,11 +40,11 @@ const SystemStatusPage: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
     case 'healthy':
-      return 'bg-green-100 text-green-800';
+      return 'bg-green-100 text-green-950 border border-green-400 font-bold';
     case 'degraded':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-amber-100 text-amber-950 border border-amber-400 font-bold';
     case 'offline':
-      return 'bg-red-100 text-red-800';
+      return 'bg-red-100 text-red-950 border border-red-400 font-bold';
     default:
       return 'bg-gray-100 text-gray-800';
     }
@@ -70,17 +70,17 @@ const SystemStatusPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm text-gray-500 dark:text-gray-400">Overall Status</p>
           <p className="text-2xl font-bold text-green-600 mt-1">
             {nodes.some(n => n.status === 'offline') ? 'System Degradation' : 'All Systems Operational'}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm text-gray-500 dark:text-gray-400">Total Monitored Nodes</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{nodes.length}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-slate-300 dark:border-gray-700 shadow-sm">
           <p className="text-sm text-gray-500 dark:text-gray-400">Average Node Latency</p>
           <p className="text-2xl font-bold text-indigo-600 mt-1">
             {nodes.length > 0 ? Math.round(nodes.reduce((acc, curr) => acc + curr.latency_ms, 0) / nodes.length) : 12} ms
@@ -88,7 +88,7 @@ const SystemStatusPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-gray-700 overflow-hidden shadow-sm">
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {nodes.map((node) => (
             <div key={node.id} className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">

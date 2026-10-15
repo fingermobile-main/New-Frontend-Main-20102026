@@ -96,9 +96,9 @@ const RoleManagementPage: React.FC = () => {
       )}
 
       {!loading && !error && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-50 border-b border-slate-300">
               <tr>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600">Role Title</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider text-gray-600">Access Level</th>
@@ -219,12 +219,12 @@ const RoleManagementPage: React.FC = () => {
             </div>
             <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
               {permissions.map((perm) => (
-                <div key={perm.id} className="p-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between">
+                <div key={perm.id} className="p-3 bg-gray-50 border border-slate-300 rounded-lg flex items-center justify-between">
                   <div>
                     <h4 className="text-sm font-semibold text-gray-900">{perm.name}</h4>
                     <p className="text-xs text-gray-500">{perm.description || `${perm.action} on ${perm.resource_type}`}</p>
                   </div>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-800 rounded">
+                  <span className="px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded">
                     Granted
                   </span>
                 </div>

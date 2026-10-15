@@ -111,7 +111,7 @@ const SubscriptionManager = () => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-blue"></div>
         </div>
@@ -120,7 +120,7 @@ const SubscriptionManager = () => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300">
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-6">Subscription Management</h2>
 

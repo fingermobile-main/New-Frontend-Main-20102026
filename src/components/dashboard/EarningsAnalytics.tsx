@@ -14,7 +14,7 @@ const EarningsAnalytics: React.FC<EarningsAnalyticsProps> = ({ userId }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-6">
         <CurrencyDollarIcon className="w-6 h-6 text-green-600" />
         <h3 className="text-lg font-bold text-gray-900">Earnings Analytics</h3>
@@ -40,7 +40,7 @@ const EarningsAnalytics: React.FC<EarningsAnalyticsProps> = ({ userId }) => {
           <p className="text-xl font-bold text-yellow-900">{earnings.pending.toLocaleString()} FIC</p>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-gray-50 border border-slate-300 rounded-lg">
           <div>
             <p className="text-sm font-medium text-gray-900">Withdrawn</p>
             <p className="text-xs text-gray-600 mt-1">Lifetime withdrawals</p>

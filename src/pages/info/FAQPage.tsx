@@ -103,7 +103,7 @@ const FAQPage: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by keywords (e.g. FIC, payout, privacy, security)..."
-              className="block w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder-slate-400"
+              className="block w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 dark:text-white placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ const FAQPage: React.FC = () => {
                       </span>
                     </div>
                     <ChevronDownIcon
-                      className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200 ${
+                      className={`w-5 h-5 text-slate-500 shrink-0 transition-transform duration-200 ${
                         isOpen ? 'rotate-180 text-blue-600' : ''
                       }`}
                     />

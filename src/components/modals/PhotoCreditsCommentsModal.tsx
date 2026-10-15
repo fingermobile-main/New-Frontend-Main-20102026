@@ -203,7 +203,7 @@ export const PhotoCreditsCommentsModal: React.FC<PhotoCreditsCommentsModalProps>
               placeholder="Leave artistic feedback, critique or appreciation..."
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-750 rounded-xl p-3 pr-10 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
+              className="w-full bg-slate-950 border border-slate-750 rounded-xl p-3 pr-10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
             />
             <button
               type="submit"

@@ -94,7 +94,7 @@ export const RegionalCreatorControlsPanel: React.FC = () => {
 
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">
-            <GlobeIcon className="w-4 h-4 text-gray-400" />
+            <GlobeIcon className="w-4 h-4 text-slate-500" />
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}

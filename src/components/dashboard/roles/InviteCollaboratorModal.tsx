@@ -105,7 +105,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
               Email Address <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="email"
                 required
@@ -122,7 +122,7 @@ export const InviteCollaboratorModal: React.FC<InviteCollaboratorModalProps> = (
               Full Name (Optional)
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="text"
                 placeholder="Marcus Ellery"

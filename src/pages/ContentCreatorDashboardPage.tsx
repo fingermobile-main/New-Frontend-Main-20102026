@@ -98,10 +98,10 @@ const ContentCreatorDashboardPage: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-4 sm:gap-6 text-sm font-medium text-slate-600 pl-14 sm:pl-0">
                       <div className="flex items-center gap-1.5">
-                        <EyeIcon className="w-4 h-4 text-slate-400" /> {content.views}
+                        <EyeIcon className="w-4 h-4 text-slate-500" /> {content.views}
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <HeartIcon className="w-4 h-4 text-slate-400" /> {content.likes}
+                        <HeartIcon className="w-4 h-4 text-slate-500" /> {content.likes}
                       </div>
                       <button className="p-2 text-slate-400 hover:text-emerald-600 transition-colors">
                         <ChartBarIcon className="w-5 h-5" />

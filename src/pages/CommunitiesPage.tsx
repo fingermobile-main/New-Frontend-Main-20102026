@@ -105,7 +105,7 @@ const CommunitiesPage: React.FC = () => {
                     onClick={() => handleJoin(community.id)}
                     className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${
                       joinedMap[community.id]
-                        ? 'bg-green-100 text-green-700'
+                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                         : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
                     }`}
                   >

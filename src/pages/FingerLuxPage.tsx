@@ -652,7 +652,7 @@ const FingerLuxPage: React.FC = () => {
     return (
       <MainLayout>
         <div className="flex justify-center items-center h-screen bg-gray-50 px-4">
-          <div className="bg-white border border-gray-200 text-gray-800 p-6 rounded-2xl shadow-sm max-w-md w-full text-center">
+          <div className="bg-white border border-slate-300 text-gray-800 p-6 rounded-2xl shadow-sm max-w-md w-full text-center">
             <strong className="block font-bold text-lg text-red-600 mb-1">Execution Interrupted</strong>
             <span className="block text-sm text-gray-600 mb-4">{hookError}</span>
             <button

@@ -105,7 +105,7 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
         {/* Global Controls: Location Filter, Currency Selector & Quick Book */}
         <div className="flex flex-wrap items-center gap-3">
           {/* Location Selector */}
-          <div className="flex items-center gap-1.5 bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-xs">
+          <div className="flex items-center gap-1.5 bg-white px-3 py-2 rounded-2xl border border-slate-300 shadow-xs">
             <span className="text-sm">📍</span>
             <select
               value={selectedLocationId}
@@ -125,7 +125,7 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
           <button
             type="button"
             onClick={() => setShowCurrencyModal(true)}
-            className="flex items-center gap-2 bg-white px-3.5 py-2 rounded-2xl border border-gray-200 hover:border-indigo-400 shadow-xs transition group cursor-pointer"
+            className="flex items-center gap-2 bg-white px-3.5 py-2 rounded-2xl border border-slate-300 hover:border-indigo-400 shadow-xs transition group cursor-pointer"
             title="Switch from 40+ Currencies with live conversion"
           >
             <span className="text-base">{currentCurrencyConfig.flag}</span>
@@ -287,7 +287,7 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
                 placeholder="Search currency by name or code (e.g. USD, EUR, NGN, AED)..."
                 value={currencySearch}
                 onChange={(e) => setCurrencySearch(e.target.value)}
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none"
               />
             </div>
 

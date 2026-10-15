@@ -120,7 +120,7 @@ const MemberLandingPage: React.FC = () => {
             {forumCategories.map((category) => (
               <div
                 key={category.id}
-                className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                className="border border-slate-300 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
                 onClick={() => navigateToCategory(category.slug)} role="button" tabIndex={0}
               >
                 <h3 className="font-semibold text-base sm:text-lg mb-1">{category.name}</h3>

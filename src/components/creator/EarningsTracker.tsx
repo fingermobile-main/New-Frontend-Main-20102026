@@ -106,7 +106,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
           <p className="text-xs text-green-600 mt-2">All time</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">This Month</p>
           <p className="text-3xl font-bold text-blue-600">{formatCurrency(earnings.currentMonth)}</p>
           <p className={`text-sm mt-2 ${earnings.growth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -114,13 +114,13 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
           </p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Last Month</p>
           <p className="text-3xl font-bold text-purple-600">{formatCurrency(earnings.previousMonth)}</p>
           <p className="text-xs text-gray-500 mt-2">Completed</p>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-slate-300 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Next Payout</p>
           <p className="text-3xl font-bold text-orange-600">{formatCurrency(earnings.nextPayout.estimatedAmount)}</p>
           <p className="text-xs text-gray-500 mt-2">
@@ -130,7 +130,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
       </div>
 
       {/* Revenue Breakdown */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Revenue Breakdown</h3>
         <div className="space-y-4">
           {Object.entries(earnings.breakdown).map(([source, amount]) => {
@@ -161,7 +161,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
       </div>
 
       {/* Recent Transactions */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Recent Transactions</h3>
         <div className="space-y-3">
           {earnings.transactions.map((txn: any) => {
@@ -191,7 +191,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
       </div>
 
       {/* Payout History */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white border border-slate-300 rounded-lg p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Payout History</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -216,7 +216,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
                     {payout.method.replace('_', ' ')}
                   </td>
                   <td className="py-3 px-3">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
                       {payout.status}
                     </span>
                   </td>

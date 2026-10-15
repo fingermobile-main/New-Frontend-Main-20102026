@@ -60,7 +60,7 @@ const DeveloperPortalPage: React.FC = () => {
         {/* Stats Cards */}
         {!loading && stats && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
                 <CodeBracketIcon className="w-8 h-8 text-blue-500" />
               </div>
@@ -68,7 +68,7 @@ const DeveloperPortalPage: React.FC = () => {
               <p className="text-3xl font-bold text-gray-900">{stats.total_endpoints}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
                 <BookOpenIcon className="w-8 h-8 text-green-500" />
               </div>
@@ -76,7 +76,7 @@ const DeveloperPortalPage: React.FC = () => {
               <p className="text-3xl font-bold text-gray-900">{stats.documented_endpoints}</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
               <div className="flex items-center justify-between mb-2">
                 <ArrowDownTrayIcon className="w-8 h-8 text-purple-500" />
               </div>
@@ -91,7 +91,7 @@ const DeveloperPortalPage: React.FC = () => {
         {/* Documentation Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* API Documentation */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <div className="flex items-center mb-4">
               <DocumentTextIcon className="w-6 h-6 text-blue-500 mr-2" />
               <h2 className="text-xl font-bold text-gray-900">API Documentation</h2>
@@ -104,7 +104,7 @@ const DeveloperPortalPage: React.FC = () => {
                 href="/api-docs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium py-3 px-4 rounded-lg transition-colors text-center"
+                className="block w-full bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors text-center"
               >
                 View Swagger UI →
               </a>
@@ -120,7 +120,7 @@ const DeveloperPortalPage: React.FC = () => {
           </div>
 
           {/* SDK Downloads */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <div className="flex items-center mb-4">
               <CodeBracketIcon className="w-6 h-6 text-purple-500 mr-2" />
               <h2 className="text-xl font-bold text-gray-900">SDK Downloads</h2>
@@ -131,14 +131,14 @@ const DeveloperPortalPage: React.FC = () => {
             <div className="space-y-3">
               <button
                 onClick={() => downloadSDK('javascript')}
-                className="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                className="w-full bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
               >
                 <span className="mr-2">📦</span>
                 JavaScript/TypeScript SDK
               </button>
               <button
                 onClick={() => downloadSDK('python')}
-                className="w-full bg-yellow-50 hover:bg-yellow-100 text-yellow-700 font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+                className="w-full bg-yellow-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
               >
                 <span className="mr-2">🐍</span>
                 Python SDK
@@ -147,7 +147,7 @@ const DeveloperPortalPage: React.FC = () => {
           </div>
 
           {/* Code Examples */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <div className="flex items-center mb-4">
               <span className="text-2xl mr-2">💻</span>
               <h2 className="text-xl font-bold text-gray-900">Code Examples</h2>
@@ -158,14 +158,14 @@ const DeveloperPortalPage: React.FC = () => {
             <a
               href="/api/developer/examples/curl"
               download="curl-examples.sh"
-              className="block w-full bg-green-50 hover:bg-green-100 text-green-700 font-medium py-3 px-4 rounded-lg transition-colors text-center"
+              className="block w-full bg-green-50 hover:bg-green-100 text-green-950 border border-green-400 font-bold font-medium py-3 px-4 rounded-lg transition-colors text-center"
             >
               Download cURL Examples
             </a>
           </div>
 
           {/* Quick Start Guide */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-300 p-6">
             <div className="flex items-center mb-4">
               <BookOpenIcon className="w-6 h-6 text-orange-500 mr-2" />
               <h2 className="text-xl font-bold text-gray-900">Quick Start</h2>
@@ -189,7 +189,7 @@ const dashboard = await sdk.getDashboardData('monthly');`}</pre>
         </div>
 
         {/* API Categories */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="mt-8 bg-white rounded-lg shadow-sm border border-slate-300 p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6">API Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[

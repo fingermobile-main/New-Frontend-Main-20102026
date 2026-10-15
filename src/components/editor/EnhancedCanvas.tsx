@@ -16,7 +16,7 @@ const EnhancedCanvas: React.FC<EnhancedCanvasProps> = ({
   return (
     <div className="flex-1 bg-gray-50 overflow-auto">
       <div className="max-w-6xl mx-auto p-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-[800px] p-8">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-300 min-h-[800px] p-8">
           <div className="mb-6 pb-4 border-b border-gray-200">
             <h2 className="text-2xl font-bold text-gray-800">Enhanced Canvas</h2>
             <p className="text-sm text-gray-600 mt-1">

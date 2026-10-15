@@ -156,7 +156,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
 
         {/* 4 Metric KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Audience Reach</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{(stats?.totalReach || 14250).toLocaleString()}</p>
             <span className="inline-block mt-2 text-xs font-bold text-green-600">
@@ -164,7 +164,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
             </span>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Published Assets</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{stats?.totalPosts || 38}</p>
             <span className="inline-block mt-2 text-xs font-bold text-blue-600">
@@ -172,7 +172,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
             </span>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Interactions</p>
             <p className="text-3xl font-black text-gray-900 mt-1">{(stats?.totalEngagement || 2840).toLocaleString()}</p>
             <span className="inline-block mt-2 text-xs font-bold text-green-600">
@@ -180,7 +180,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
             </span>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <div className="bg-white p-6 rounded-2xl border border-slate-300 shadow-sm">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Engagement Rate</p>
             <p className="text-3xl font-black text-purple-700 mt-1">{stats?.engagementRate || '6.4%'}</p>
             <span className="inline-block mt-2 text-xs font-bold text-purple-600">
@@ -232,7 +232,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
         </div>
 
         {/* Community Performance Table */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-300 shadow-sm overflow-hidden">
           <div className="p-5 border-b border-gray-100">
             <h2 className="text-base font-black text-gray-900">Community Channel Breakdown</h2>
           </div>
@@ -260,7 +260,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
                   <td className="py-4 px-5 text-gray-600">{c.posts}</td>
                   <td className="py-4 px-5 font-bold text-purple-700">{(c.engagement).toLocaleString()}</td>
                   <td className="py-4 px-5">
-                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800">
+                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
                       {c.trend}
                     </span>
                   </td>

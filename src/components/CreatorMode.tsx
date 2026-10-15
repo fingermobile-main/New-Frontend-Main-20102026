@@ -131,7 +131,7 @@ const CreatorMode: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 text-center">
+          <div className="p-6 bg-gray-50 rounded-lg border border-slate-300 text-center">
             <p className="text-gray-600">No badges earned yet. Participate in collaborative articles to earn your first Top Voice badge!</p>
           </div>
         )}
@@ -171,10 +171,10 @@ const CreatorMode: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         article.status === 'published'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : article.status === 'draft'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-blue-100 text-blue-800'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
+                            : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                       }`}>
                         {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
                       </span>
@@ -189,7 +189,7 @@ const CreatorMode: React.FC = () => {
             </table>
           </div>
         ) : (
-          <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 text-center">
+          <div className="p-6 bg-gray-50 rounded-lg border border-slate-300 text-center">
             <p className="text-gray-600">No collaborative articles available. Join one to start contributing!</p>
           </div>
         )}
@@ -201,15 +201,15 @@ const CreatorMode: React.FC = () => {
           As a creator, you have access to exclusive tools and resources to grow your audience and monetize your content effectively.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-white rounded border border-gray-200">
+          <div className="p-4 bg-white rounded border border-slate-300">
             <h3 className="font-medium text-gray-800">Analytics Dashboard</h3>
             <p className="text-sm text-gray-600 mt-1">Detailed insights on your content performance</p>
           </div>
-          <div className="p-4 bg-white rounded border border-gray-200">
+          <div className="p-4 bg-white rounded border border-slate-300">
             <h3 className="font-medium text-gray-800">Monetization Tools</h3>
             <p className="text-sm text-gray-600 mt-1">Ways to earn from your content</p>
           </div>
-          <div className="p-4 bg-white rounded border border-gray-200">
+          <div className="p-4 bg-white rounded border border-slate-300">
             <h3 className="font-medium text-gray-800">Collaboration Hub</h3>
             <p className="text-sm text-gray-600 mt-1">Connect with other creators</p>
           </div>

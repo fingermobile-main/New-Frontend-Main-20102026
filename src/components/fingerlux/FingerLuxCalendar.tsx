@@ -147,7 +147,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           </div>
 
           {/* Date Picker */}
-          <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-800">
+          <div className="flex items-center gap-1.5 bg-gray-50 border border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-800">
             <CalendarIcon className="w-4 h-4 text-indigo-600" />
             <input
               type="date"
@@ -172,7 +172,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           <select
             value={selectedStaffFilter}
             onChange={(e) => setSelectedStaffFilter(e.target.value)}
-            className="bg-gray-50 border border-gray-200 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
+            className="bg-gray-50 border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
           >
             <option value="all">All Specialists</option>
             {staff.map((sm) => (
@@ -186,7 +186,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           <select
             value={selectedStatusFilter}
             onChange={(e) => setSelectedStatusFilter(e.target.value)}
-            className="bg-gray-50 border border-gray-200 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
+            className="bg-gray-50 border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
           >
             <option value="all">All Statuses</option>
             <option value="checked_in">Checked In</option>
@@ -356,7 +356,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                           <button
                             type="button"
                             onClick={() => onUpdateAttendance(b.id, 'late_cancelled')}
-                            className="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                            className="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-200 rounded-xl text-xs font-bold transition cursor-pointer"
                             title="Charge late cancellation fee"
                           >
                             Late Cancel
@@ -511,7 +511,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                   placeholder="e.g. VIP Penthouse Sanitization, Staff Training"
                   value={blockReason}
                   onChange={(e) => setBlockReason(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
@@ -522,7 +522,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                     type="time"
                     value={blockStartTime}
                     onChange={(e) => setBlockStartTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                   />
                 </div>
                 <div>
@@ -531,7 +531,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                     type="time"
                     value={blockEndTime}
                     onChange={(e) => setBlockEndTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                   />
                 </div>
               </div>
@@ -541,7 +541,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                 <select
                   value={blockLocationId}
                   onChange={(e) => setBlockLocationId(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
                 >
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>

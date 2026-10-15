@@ -5,7 +5,7 @@ interface SecurityDashboardProps {}
 
 const SecurityDashboard: React.FC<SecurityDashboardProps> = () => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <ShieldCheckIcon className="w-6 h-6 text-green-600" />
         <h3 className="text-lg font-bold text-gray-900">Security Dashboard</h3>

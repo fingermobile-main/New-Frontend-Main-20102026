@@ -222,7 +222,7 @@ const ContentModerationPage: React.FC = () => {
             <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
               {filteredItems.length === 0 ? (
                 <div className="p-8 text-center text-gray-500">
-                  <Shield className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                  <Shield className="w-12 h-12 mx-auto mb-3 text-slate-500" />
                   <p className="text-sm">No items match your search</p>
                 </div>
               ) : (
@@ -240,19 +240,19 @@ const ContentModerationPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-1 text-xs font-medium rounded ${
                           item.type === 'post'
-                            ? 'bg-purple-100 text-purple-800'
+                            ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
                             : item.type === 'comment'
-                              ? 'bg-blue-100 text-blue-800'
+                              ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                               : 'bg-orange-100 text-orange-800'
                         }`}>
                           {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           item.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                             : item.status === 'approved'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                              ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                         }`}>
                           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                         </span>
@@ -291,10 +291,10 @@ const ContentModerationPage: React.FC = () => {
                   <h2 className="text-xl font-semibold text-gray-900">Report Details</h2>
                   <span className={`text-sm px-3 py-1 rounded-full ${
                     selectedItem.status === 'pending'
-                      ? 'bg-yellow-100 text-yellow-800'
+                      ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
                       : selectedItem.status === 'approved'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                        ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
+                        : 'bg-red-100 text-red-950 border border-red-400 font-bold'
                   }`}>
                     {selectedItem.status.charAt(0).toUpperCase() + selectedItem.status.slice(1)}
                   </span>
@@ -329,14 +329,14 @@ const ContentModerationPage: React.FC = () => {
 
                 <div>
                   <p className="text-sm text-gray-500 mb-2">Reported Content</p>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="bg-gray-50 p-4 rounded-lg border border-slate-300">
                     <p className="text-gray-900">{selectedItem.content}</p>
                   </div>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-500 mb-2">Reason for Report</p>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="bg-gray-50 p-4 rounded-lg border border-slate-300">
                     <p className="text-gray-900">{selectedItem.reason}</p>
                   </div>
                 </div>

@@ -15,7 +15,7 @@ const ThreeColumnLayout: React.FC<ColumnLayoutProps> = ({
     <div className="three-column-layout flex w-full min-h-screen bg-gray-50">
       {/* Left Navigation - 20% */}
       {leftColumn && (
-        <aside className="left-column w-[20%] p-4 border-r border-gray-200 bg-white sticky top-0 h-screen overflow-y-auto">
+        <aside className="left-column w-[20%] p-4 border-r border-slate-300 bg-white sticky top-0 h-screen overflow-y-auto">
           {leftColumn}
         </aside>
       )}
@@ -27,7 +27,7 @@ const ThreeColumnLayout: React.FC<ColumnLayoutProps> = ({
 
       {/* Right Sidebar - 25% */}
       {rightColumn && (
-        <aside className="right-column w-[25%] p-4 border-l border-gray-200 bg-white sticky top-0 h-screen overflow-y-auto">
+        <aside className="right-column w-[25%] p-4 border-l border-slate-300 bg-white sticky top-0 h-screen overflow-y-auto">
           {rightColumn}
         </aside>
       )}

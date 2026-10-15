@@ -979,7 +979,7 @@ export const FlamingoPageContent: React.FC = () => {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder="AI Search Flamingo: garments, silk robes, corsetry, designers, Mulberry silk..."
-                  className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder-slate-500 outline-none transition"
+                  className="w-full pl-11 pr-10 py-2.5 bg-slate-900 border border-slate-800 focus:border-pink-500 rounded-xl text-sm text-white placeholder:text-slate-500 outline-none transition"
                 />
                 {searchQuery && (
                   <button

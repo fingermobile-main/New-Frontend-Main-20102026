@@ -329,7 +329,7 @@ const AuditLogAdminPage: React.FC = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full">
                           {log.action}
                         </span>
                       </td>

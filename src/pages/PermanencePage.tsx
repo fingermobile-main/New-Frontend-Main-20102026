@@ -360,8 +360,8 @@ const PermanencePage: React.FC = () => {
                   <span
                     className={`px-2 py-1 text-xs rounded-full ${
                       challenge.status === 'viral'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-blue-100 text-blue-800'
+                        ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                        : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
                     }`}
                   >
                     {challenge.status}
@@ -504,7 +504,7 @@ const PermanencePage: React.FC = () => {
                 <div className="p-5">
                   <div className="flex justify-between items-start">
                     <h3 className="text-lg font-semibold">{challenge.title}</h3>
-                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">
+                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold">
                       Viral
                     </span>
                   </div>
@@ -580,7 +580,7 @@ const PermanencePage: React.FC = () => {
                 <div className="flex justify-between items-start">
                   <h3 className="text-lg font-semibold">{stream.title}</h3>
                   {stream.isLive && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 flex items-center">
+                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold flex items-center">
                       <span className="w-2 h-2 bg-red-600 rounded-full mr-1"></span>
                       LIVE
                     </span>

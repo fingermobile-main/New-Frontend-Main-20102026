@@ -222,7 +222,7 @@ export const SocialEmbedModal: React.FC<SocialEmbedModalProps> = ({
               value={embedCustomNote}
               onChange={(e) => setEmbedCustomNote(e.target.value)}
               placeholder="Add your thoughts, recommendation, or discount code..."
-              className="w-full px-3.5 py-2.5 bg-slate-950/60 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              className="w-full px-3.5 py-2.5 bg-slate-950/60 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
             />
           </div>
 

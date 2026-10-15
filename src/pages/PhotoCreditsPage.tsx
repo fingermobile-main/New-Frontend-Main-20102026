@@ -1196,7 +1196,7 @@ const PhotoCreditsPage: React.FC = () => {
                     placeholder="Search model, demographic, location, camera..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+                    className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
                   />
                 </div>
 
@@ -3362,7 +3362,7 @@ const PhotoCreditsPage: React.FC = () => {
                   placeholder="e.g. Serengeti Cheetah Dawn Stride"
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+                  className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
                 />
               </div>
 
@@ -3373,7 +3373,7 @@ const PhotoCreditsPage: React.FC = () => {
                   placeholder="Describe the moment, lighting, and artistic intent..."
                   value={uploadForm.description}
                   onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+                  className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
                 />
               </div>
 
@@ -3402,7 +3402,7 @@ const PhotoCreditsPage: React.FC = () => {
                     placeholder="e.g. Lagos, Nigeria"
                     value={uploadForm.location}
                     onChange={(e) => setUploadForm({ ...uploadForm, location: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+                    className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
                   />
                 </div>
               </div>
@@ -3418,28 +3418,28 @@ const PhotoCreditsPage: React.FC = () => {
                     placeholder="Camera Body (e.g. Sony A7R V)"
                     value={uploadForm.camera}
                     onChange={(e) => setUploadForm({ ...uploadForm, camera: e.target.value })}
-                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder-slate-400 text-xs font-medium"
+                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder:text-slate-500 text-xs font-medium"
                   />
                   <input
                     type="text"
                     placeholder="Lens (e.g. 24-70mm GM II)"
                     value={uploadForm.lens}
                     onChange={(e) => setUploadForm({ ...uploadForm, lens: e.target.value })}
-                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder-slate-400 text-xs font-medium"
+                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder:text-slate-500 text-xs font-medium"
                   />
                   <input
                     type="text"
                     placeholder="Aperture (e.g. f/2.8)"
                     value={uploadForm.aperture}
                     onChange={(e) => setUploadForm({ ...uploadForm, aperture: e.target.value })}
-                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder-slate-400 text-xs font-medium"
+                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder:text-slate-500 text-xs font-medium"
                   />
                   <input
                     type="text"
                     placeholder="Shutter (e.g. 1/250s)"
                     value={uploadForm.shutter}
                     onChange={(e) => setUploadForm({ ...uploadForm, shutter: e.target.value })}
-                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder-slate-400 text-xs font-medium"
+                    className="bg-slate-900 border border-slate-750 rounded-lg p-2 text-white placeholder:text-slate-500 text-xs font-medium"
                   />
                 </div>
               </div>
@@ -3466,7 +3466,7 @@ const PhotoCreditsPage: React.FC = () => {
                       placeholder="Poll Question (e.g. Which framing tells the story best?)"
                       value={pollQuestion}
                       onChange={(e) => setPollQuestion(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-750 rounded-lg p-2 text-xs text-white placeholder-slate-400 font-medium"
+                      className="w-full bg-slate-900 border border-slate-750 rounded-lg p-2 text-xs text-white placeholder:text-slate-500 font-medium"
                     />
                     <div className="space-y-1.5">
                       <span className="text-[10px] text-slate-200 font-bold block">Poll Options:</span>
@@ -3481,7 +3481,7 @@ const PhotoCreditsPage: React.FC = () => {
                             newOpts[i] = e.target.value;
                             setPollOptions(newOpts);
                           }}
-                          className="w-full bg-slate-900 border border-slate-750 rounded-lg p-2 text-xs text-white placeholder-slate-400 font-medium"
+                          className="w-full bg-slate-900 border border-slate-750 rounded-lg p-2 text-xs text-white placeholder:text-slate-500 font-medium"
                         />
                       ))}
                     </div>

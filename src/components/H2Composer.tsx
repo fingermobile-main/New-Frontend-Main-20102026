@@ -19,7 +19,7 @@ const H2Composer: React.FC<H2ComposerProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <div className="flex items-center gap-2 mb-4">
         <CodeBracketIcon className="w-6 h-6 text-blue-600" />
         <h3 className="text-lg font-bold text-gray-900">H2 Composer</h3>
@@ -38,7 +38,7 @@ const H2Composer: React.FC<H2ComposerProps> = ({
           />
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <div className="bg-gray-50 rounded-lg p-4 border border-slate-300">
           <p className="text-xs text-gray-500 mb-2">Preview:</p>
           <h2 className="text-2xl font-bold text-gray-900">{value || 'Your heading will appear here'}</h2>
         </div>

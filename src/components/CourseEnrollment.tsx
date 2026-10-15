@@ -37,7 +37,7 @@ const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
       <h3 className="text-lg font-bold text-gray-900 mb-2">{courseTitle}</h3>
 
       <div className="mb-4">

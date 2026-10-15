@@ -349,16 +349,16 @@ const EventsPage: React.FC = () => {
 
         {/* Toolbar & Filter Deck */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-200/80 p-5 space-y-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-300/80 p-5 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="relative w-full md:w-96">
-                <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3.5 top-3" />
+                <MagnifyingGlassIcon className="w-5 h-5 text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   placeholder="Search events, venues, organizers..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all"
                 />
               </div>
 
@@ -415,7 +415,7 @@ const EventsPage: React.FC = () => {
               </div>
 
               {filteredEvents.length === 0 ? (
-                <div className="bg-white rounded-3xl p-12 text-center border border-gray-200 shadow-sm">
+                <div className="bg-white rounded-3xl p-12 text-center border border-slate-300 shadow-sm">
                   <CalendarIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                   <h3 className="text-base font-bold text-gray-800">No events found</h3>
                   <p className="text-xs text-gray-500 mt-1">Try resetting the search filters or view all categories.</p>
@@ -435,7 +435,7 @@ const EventsPage: React.FC = () => {
                   {filteredEvents.map((event) => (
                     <div
                       key={event.id}
-                      className="bg-white rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col md:flex-row group"
+                      className="bg-white rounded-3xl border border-slate-300/90 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col md:flex-row group"
                     >
                       {/* Event Banner */}
                       <div className="md:w-72 h-48 md:h-auto relative bg-slate-900 flex-shrink-0 overflow-hidden">
@@ -533,7 +533,7 @@ const EventsPage: React.FC = () => {
 
                           <button
                             onClick={() => setGiftTicketEvent(event)}
-                            className="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+                            className="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
                           >
                             <GiftIcon className="w-4 h-4" />
                             <span>Gift</span>
@@ -541,7 +541,7 @@ const EventsPage: React.FC = () => {
 
                           <button
                             onClick={() => setPaylinkEvent(event)}
-                            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+                            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
                           >
                             <LinkIcon className="w-4 h-4" />
                             <span>Paylink</span>
@@ -550,7 +550,7 @@ const EventsPage: React.FC = () => {
                           <div className="ml-auto flex items-center gap-2">
                             <button
                               onClick={() => setSelectedEventForDetails(event)}
-                              className="px-4 py-2 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-bold transition-colors"
+                              className="px-4 py-2 border border-slate-300 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-bold transition-colors"
                             >
                               Overview
                             </button>
@@ -613,7 +613,7 @@ const EventsPage: React.FC = () => {
               </div>
 
               {/* Dancia-4Tv Live Spotlight */}
-              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded-3xl p-6 border border-slate-300 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
                   <h3 className="font-black text-gray-900 text-sm">Dancia-4Tv Virtual Stage</h3>
@@ -653,7 +653,7 @@ const EventsPage: React.FC = () => {
         {/* Modal 1: Ticket Checkout & RSVP */}
         {ticketCheckoutEvent && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div>
                   <span className="text-[10px] font-bold uppercase text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
@@ -719,7 +719,7 @@ const EventsPage: React.FC = () => {
         {/* Modal 2: Gift Ticket Modal */}
         {giftTicketEvent && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <GiftIcon className="w-6 h-6 text-purple-600" />
@@ -744,7 +744,7 @@ const EventsPage: React.FC = () => {
                     placeholder="e.g. emeka_creator or kofi_beats"
                     value={giftRecipient}
                     onChange={(e) => setGiftRecipient(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-purple-600 focus:outline-none"
                   />
                 </div>
 
@@ -771,7 +771,7 @@ const EventsPage: React.FC = () => {
         {/* Modal 3: Paylink Generator */}
         {paylinkEvent && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <LinkIcon className="w-6 h-6 text-emerald-600" />
@@ -795,7 +795,7 @@ const EventsPage: React.FC = () => {
                     placeholder="e.g. VIP Group Pass or Twitter Community Link"
                     value={paylinkDescription}
                     onChange={(e) => setPaylinkDescription(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"
                   />
                 </div>
 
@@ -822,7 +822,7 @@ const EventsPage: React.FC = () => {
         {/* Modal 4: Event Overview Details */}
         {selectedEventForDetails && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div>
                   <span className="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-bold uppercase">
@@ -900,7 +900,7 @@ const EventsPage: React.FC = () => {
         {/* Modal 5: Host New Event */}
         {isHostModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-start pb-4 border-b border-gray-100">
                 <div>
                   <h3 className="text-xl font-black text-gray-900">Host Community Event</h3>
@@ -920,7 +920,7 @@ const EventsPage: React.FC = () => {
                     placeholder="e.g. Afrobeats Sync Masterclass 2026"
                     value={hostForm.title}
                     onChange={(e) => setHostForm({ ...hostForm, title: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
 
@@ -930,7 +930,7 @@ const EventsPage: React.FC = () => {
                     <select
                       value={hostForm.category}
                       onChange={(e) => setHostForm({ ...hostForm, category: e.target.value as any })}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
                     >
                       <option value="Conferences">Conferences</option>
                       <option value="Music & Concerts">Music & Concerts</option>
@@ -966,7 +966,7 @@ const EventsPage: React.FC = () => {
                     placeholder={hostForm.isVirtual ? 'e.g. Dancia-4Tv Virtual Stage Room A' : 'e.g. Landmark Centre, Water Corporation Drive, Victoria Island'}
                     value={hostForm.location}
                     onChange={(e) => setHostForm({ ...hostForm, location: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
 
@@ -978,7 +978,7 @@ const EventsPage: React.FC = () => {
                       min="0"
                       value={hostForm.ticketPriceFic}
                       onChange={(e) => setHostForm({ ...hostForm, ticketPriceFic: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none font-bold"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none font-bold"
                     />
                   </div>
 
@@ -989,7 +989,7 @@ const EventsPage: React.FC = () => {
                       min="10"
                       value={hostForm.capacity}
                       onChange={(e) => setHostForm({ ...hostForm, capacity: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -1001,7 +1001,7 @@ const EventsPage: React.FC = () => {
                     placeholder="Describe agenda, keynote speakers, and what attendees should expect..."
                     value={hostForm.description}
                     onChange={(e) => setHostForm({ ...hostForm, description: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
 

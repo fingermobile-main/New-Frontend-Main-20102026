@@ -103,7 +103,7 @@ export const AssignBadgeModal: React.FC<AssignBadgeModalProps> = ({
           )}
 
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Search members by name or email..."

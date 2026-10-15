@@ -151,7 +151,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>

@@ -112,7 +112,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
           className="flex flex-col items-center flex-shrink-0 cursor-pointer group"
         >
           <div className="relative w-16 h-16 rounded-full p-0.5 border-2 border-dashed border-gray-300 dark:border-gray-600 group-hover:border-emerald-500 transition-colors flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-            <Plus className="w-6 h-6 text-gray-400 group-hover:text-emerald-500" />
+            <Plus className="w-6 h-6 text-slate-500 group-hover:text-emerald-500" />
             <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-gray-900">
               +
             </span>
@@ -217,7 +217,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
               <input
                 type="text"
                 placeholder="Reply to Mii..."
-                className="flex-1 px-3 py-2 text-xs rounded-full bg-white/20 text-white placeholder-gray-400 border border-white/20 focus:outline-none"
+                className="flex-1 px-3 py-2 text-xs rounded-full bg-white/20 text-white placeholder:text-slate-500 border border-white/20 focus:outline-none"
               />
               <button className="px-3 py-2 bg-emerald-500 rounded-full text-white text-xs font-bold">
                 Send

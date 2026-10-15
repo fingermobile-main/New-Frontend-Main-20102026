@@ -95,7 +95,7 @@ export const FingerShortsSection: React.FC<FingerShortsSectionProps> = ({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">FingerShorts</h2>
-              <span className="text-[11px] font-semibold uppercase tracking-wider bg-purple-100 text-purple-800 dark:bg-purple-950/80 dark:text-purple-300 px-2 py-0.5 rounded-full border border-purple-200 dark:border-purple-800 flex items-center gap-1">
+              <span className="text-[11px] font-semibold uppercase tracking-wider bg-purple-100 text-purple-950 border border-purple-400 font-bold dark:bg-purple-950/80 dark:text-purple-300 px-2 py-0.5 rounded-full border border-purple-200 dark:border-purple-800 flex items-center gap-1">
                 <Clock className="w-3 h-3" /> 48h TTL (Stories)
               </span>
             </div>
