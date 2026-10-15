@@ -192,6 +192,10 @@ const allVoiceLines: VoiceLine[] = [
   { id: 'cm-2', text: 'Gem found! <gasp> Goldmine!', category: 'gems', audioUrl: '/audio/african/gem-found.mp3', keywords: ['gems', 'find'] }
 ];
 
+OPtions: pip install google-cloud-texttospeech and pip install edge-tts
+
+
+
 Task 1: pip install google-cloud-texttospeech
 Task 2: Set Up Authentication
 
@@ -288,3 +292,33 @@ def batch_generate_lagos_voices(voice_lines):
 
 if __name__ == "__main__":
     batch_generate_lagos_voices(all_voice_lines)
+
+
+#### Completely Offline (pyttsx3)
+If you need the script to run locally without internet access, pyttsx3 uses the built-in text-to-speech engine on your operating system (SAPI5 on Windows, NSSpeechSynthesizer on macOS, espeak on Linux). The voices sound more robotic, but it works instantly anywhere.
+1. Install the library
+code
+Bash
+pip install pyttsx3
+2. Run the script
+code
+Python
+import pyttsx3
+
+engine = pyttsx3.init()
+
+# Optional: Adjust speed and volume
+engine.setProperty('rate', 160)     # Speed of speech
+engine.setProperty('volume', 0.9)   # Volume (0.0 to 1.0)
+
+VOICE_LINES = [
+    ("line_01.wav", "System initialized. Stand by for instructions."),
+    ("line_02.wav", "Target acquired. Engaging now.")
+]
+
+for filename, text in VOICE_LINES:
+    print(f"Saving {filename}...")
+    engine.save_to_file(text, filename)
+
+engine.runAndWait()
+print("All voice lines generated!")

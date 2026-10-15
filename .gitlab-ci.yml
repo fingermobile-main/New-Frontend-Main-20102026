@@ -185,7 +185,7 @@ deploy-staging:
       EOF
   environment:
     name: staging
-    url: https://staging.fingermobile.com
+    url: https://staging.fingermobileprotocol.com
   only:
     - development
   when: manual
@@ -219,7 +219,7 @@ deploy-production:
       EOF
   environment:
     name: production
-    url: https://fingermobile.com
+    url: https://fingermobileprotocol.com
   only:
     - main
   when: manual

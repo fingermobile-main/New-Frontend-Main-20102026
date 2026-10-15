@@ -60,7 +60,7 @@ export class DeliverabilityService {
   /**
    * Run live DNS and cryptographic checks for domain and server IP
    */
-  async checkDNSDeliverability(domain = 'fingermobile.com', serverIp = '198.51.100.25'): Promise<DNSValidationResult> {
+  async checkDNSDeliverability(domain = 'fingermobileprotocol.com', serverIp = '198.51.100.25'): Promise<DNSValidationResult> {
     const checks: DNSValidationResult['checks'] = {
       ptr: { valid: false },
       spf: { valid: false, hasIp4: false },

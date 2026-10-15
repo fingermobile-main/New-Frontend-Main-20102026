@@ -71,3 +71,4 @@ Before-and-After Arrangement: A dual or sequential layout designed to contrast a
 
 #### Photos/Videos Cards will only display information when clicked on. 
 #### Swipe Left or Up to dispaly next  Photo or Video
+

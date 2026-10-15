@@ -7,7 +7,7 @@ on:
     branches: [main, development]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: "18"
   POSTGRES_DB: fingermobile_test_db
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
@@ -21,72 +21,72 @@ jobs:
   code-quality-security:
     name: Code Quality & Security Analysis
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: |
             package.json
             apps/backend/package.json
             apps/frontend-main/package.json
             FingerMobile\ Business\ and\ Monetization\ Suite/package.json
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Install backend dependencies
         run: cd apps/backend && npm ci
-      
+
       - name: Install frontend dependencies
         run: cd apps/frontend-main && npm ci
-      
+
       - name: Install business suite dependencies
         run: cd "FingerMobile Business and Monetization Suite" && npm ci
-      
+
       - name: TypeScript compilation check (Backend)
         run: cd apps/backend && npx tsc --noEmit
-      
+
       - name: TypeScript compilation check (Frontend)
         run: cd apps/frontend-main && npx tsc --noEmit
-      
+
       - name: TypeScript compilation check (Business Suite)
         run: cd "FingerMobile Business and Monetization Suite" && npx tsc --noEmit
-      
+
       - name: ESLint check (Backend)
         run: cd apps/backend && npm run lint || echo "No lint script configured"
-      
+
       - name: ESLint check (Frontend)
         run: cd apps/frontend-main && npm run lint || echo "No lint script configured"
-      
+
       - name: ESLint check (Business Suite)
         run: cd "FingerMobile Business and Monetization Suite" && npm run lint || echo "No lint script configured"
-      
+
       - name: Security scan with npm audit
         run: |
           npm audit --audit-level=moderate || true
           cd apps/backend && npm audit --audit-level=moderate || true
           cd ../frontend-main && npm audit --audit-level=moderate || true
           cd ../.. && cd "FingerMobile Business and Monetization Suite" && npm audit --audit-level=moderate || true
-      
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.18.0
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-      
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
       - name: Upload Trivy results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
   # =============================================================================
   # Stage 2: Unit & Integration Tests
@@ -95,7 +95,7 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     needs: code-quality-security
-    
+
     services:
       postgres:
         image: postgres:15-alpine
@@ -110,7 +110,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      
+
       redis:
         image: redis:7-alpine
         ports:
@@ -120,32 +120,32 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: apps/backend/package.json
-      
+
       - name: Install dependencies
         run: |
           npm ci
           cd apps/backend && npm ci
           cd ../frontend-main && npm ci
           cd ../.. && cd "FingerMobile Business and Monetization Suite" && npm ci
-      
+
       - name: Wait for PostgreSQL
         run: |
           until pg_isready -h localhost -p 5432 -U $POSTGRES_USER; do
             echo "Waiting for PostgreSQL..."
             sleep 2
           done
-      
+
       - name: Initialize test database
         run: |
           cd apps/backend
@@ -161,7 +161,7 @@ jobs:
               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
           "
-      
+
       - name: Run backend unit tests
         run: cd apps/backend && npm test -- --coverage
         env:
@@ -169,18 +169,18 @@ jobs:
           REDIS_URL: ${{ env.REDIS_URL }}
           JWT_SECRET: ${{ env.JWT_SECRET }}
           NODE_ENV: test
-      
+
       - name: Run business suite tests
         run: cd "FingerMobile Business and Monetization Suite" && npm test || echo "No tests found in business suite"
         env:
           NODE_ENV: test
           JWT_SECRET: ${{ env.JWT_SECRET }}
-      
+
       - name: Run frontend tests
         run: cd apps/frontend-main && npm test -- --passWithNoTests
         env:
           NODE_ENV: test
-      
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         if: github.ref == 'refs/heads/main'
@@ -198,20 +198,20 @@ jobs:
     needs: [code-quality-security, test]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development' || github.ref == 'refs/heads/staging'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+
       - name: Extract metadata for backend
         id: backend-meta
         uses: docker/metadata-action@v4
@@ -221,7 +221,7 @@ jobs:
             type=sha,prefix={{branch}}-
             type=ref,event=branch
             latest
-      
+
       - name: Extract metadata for frontend
         id: frontend-meta
         uses: docker/metadata-action@v4
@@ -231,7 +231,7 @@ jobs:
             type=sha,prefix={{branch}}-
             type=ref,event=branch
             latest
-      
+
       - name: Extract metadata for business suite
         id: business-meta
         uses: docker/metadata-action@v4
@@ -241,7 +241,7 @@ jobs:
             type=sha,prefix={{branch}}-
             type=ref,event=branch
             latest
-      
+
       - name: Build and push backend image
         uses: docker/build-push-action@v4
         with:
@@ -252,7 +252,7 @@ jobs:
           labels: ${{ steps.backend-meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
+
       - name: Build and push frontend image
         uses: docker/build-push-action@v4
         with:
@@ -263,7 +263,7 @@ jobs:
           labels: ${{ steps.frontend-meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
+
       - name: Build and push business suite image
         uses: docker/build-push-action@v4
         with:
@@ -284,11 +284,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/staging'
     environment: staging
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Deploy to staging server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -298,37 +298,37 @@ jobs:
           port: 22
           script: |
             cd /opt/fingermobile
-            
+
             # Pull latest changes
             git pull origin development
-            
+
             # Update environment variables
             cp .env.staging.template .env.staging
-            
+
             # Stop old containers gracefully
             docker-compose -f docker-compose.staging.yml down --timeout 30
-            
+
             # Pull new images
             docker-compose -f docker-compose.staging.yml pull
-            
+
             # Start new containers
             docker-compose -f docker-compose.staging.yml up -d
-            
+
             # Wait for services to be healthy
             sleep 30
-            
+
             # Run health checks
             curl -f http://localhost:3001/health || exit 1
             curl -f http://localhost:3000/health || exit 1
-            
+
             # Clean up old images
             docker image prune -f
-      
+
       - name: Verify staging deployment
         run: |
           echo "Staging deployment completed"
-          echo "URL: https://staging.fingermobile.com"
-          echo "Health: http://staging.fingermobile.com/health"
+          echo "URL: https://staging.fingermobileprotocol.com"
+          echo "Health: http://staging.fingermobileprotocol.com/health"
 
   # =============================================================================
   # Stage 5: Deploy to Production (Manual Approval Required)
@@ -339,11 +339,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Create backup before deployment
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -353,16 +353,16 @@ jobs:
           port: 22
           script: |
             cd /opt/fingermobile
-            
+
             # Create database backup
             timestamp=$(date +%Y%m%d-%H%M%S)
             docker exec fingermobile-postgres pg_dump -U postgres fingermobile_production_db | gzip > backups/db-backup-${timestamp}.sql.gz
-            
+
             # Keep only last 7 backups
             find backups/ -name "db-backup-*.sql.gz" -mtime +7 -delete
-            
+
             echo "Backup created: db-backup-${timestamp}.sql.gz"
-      
+
       - name: Deploy to production server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -372,23 +372,23 @@ jobs:
           port: 22
           script: |
             cd /opt/fingermobile
-            
+
             # Pull latest changes
             git pull origin main
-            
+
             # Update environment
             cp .env.production.template .env.production
-            
+
             # Blue-Green Deployment Strategy
             # Step 1: Build new containers without stopping old ones
             docker-compose -f docker-compose.production.yml build --no-cache
-            
+
             # Step 2: Stop old containers gracefully (30s timeout)
             docker-compose -f docker-compose.production.yml down --timeout 30
-            
+
             # Step 3: Start new containers
             docker-compose -f docker-compose.production.yml up -d
-            
+
             # Step 4: Wait for health checks
             max_attempts=30
             attempt=1
@@ -401,23 +401,23 @@ jobs:
               sleep 5
               ((attempt++))
             done
-            
+
             if [ $attempt -gt $max_attempts ]; then
               echo "Deployment failed - rolling back"
               # Rollback would go here
               exit 1
             fi
-            
+
             # Step 5: Clean up
             docker image prune -f
-      
+
       - name: Run post-deployment smoke tests
         run: |
           echo "Running smoke tests against production..."
           # Add actual smoke test commands here
-          curl -f https://fingermobile.com/health || exit 1
-          curl -f https://api.fingermobile.com/health || exit 1
-      
+          curl -f https://fingermobileprotocol.com/health || exit 1
+          curl -f https://api.fingermobileprotocol.com/health || exit 1
+
       - name: Notify deployment success
         if: success()
         uses: slackapi/slack-github-action@v1.24.1
@@ -437,7 +437,7 @@ jobs:
                 ]
               }]
             }
-      
+
       - name: Notify deployment failure
         if: failure()
         uses: slackapi/slack-github-action@v1.24.1
@@ -466,11 +466,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: [deploy-production]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Generate release notes
         uses: mikepenz/release-changelog-builder-action@v3
         with:
@@ -499,7 +499,7 @@ jobs:
               "pr_template": "- #{{TITLE}} (#{{NUMBER}})",
               "empty_template": "- No changes"
             }
-      
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1

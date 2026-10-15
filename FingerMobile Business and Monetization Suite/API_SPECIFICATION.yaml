@@ -45,15 +45,15 @@ info:
   version: 1.0.0
   contact:
     name: FingerMobile API Support
-    email: api-support@fingermobile.com
+    email: api-support@fingermobileprotocol.com
   license:
     name: Proprietary
-    url: https://fingermobile.com/license
+    url: https://fingermobileprotocol.com/license
 
 servers:
   - url: http://localhost:3000/api
     description: Development server
-  - url: https://api.fingermobile.com/v1
+  - url: https://api.fingermobileprotocol.com/v1
     description: Production server
 
 tags:

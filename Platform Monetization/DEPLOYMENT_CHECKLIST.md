@@ -434,8 +434,8 @@ Before going live:
 
 ## 📞 Support Contacts
 
-- **Platform Engineering**: engineering@fingermobile.com
-- **Security Issues**: security@fingermobile.com
+- **Platform Engineering**: engineering@fingermobileprotocol.com
+- **Security Issues**: security@fingermobileprotocol.com
 - **Stripe Support**: support@stripe.com
 - **Emergency On-Call**: +1-XXX-XXX-XXXX
 

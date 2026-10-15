@@ -92,7 +92,7 @@ router.post('/track', async (req: Request, res: Response) => {
 // 3. DNS Deliverability Diagnostic (PTR, SPF, DKIM, DMARC)
 router.get('/deliverability', async (req: Request, res: Response) => {
   try {
-    const domain = (req.query.domain as string) || 'fingermobile.com';
+    const domain = (req.query.domain as string) || 'fingermobileprotocol.com';
     const serverIp = (req.query.ip as string) || '198.51.100.25';
 
     const diagnostics = await deliverabilityService.checkDNSDeliverability(domain, serverIp);

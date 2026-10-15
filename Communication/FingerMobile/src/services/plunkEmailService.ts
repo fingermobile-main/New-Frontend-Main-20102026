@@ -47,7 +47,7 @@ export class PlunkEmailService {
   constructor() {
     this.apiUrl = (process.env.PLUNK_API_URL || 'http://localhost:9000').replace(/\/+$/, '');
     this.apiKey = process.env.PLUNK_API_KEY || 'pk_test_fingermobile_plunk_key';
-    this.defaultFrom = process.env.EMAIL_FROM || 'notifications@fingermobile.com';
+    this.defaultFrom = process.env.EMAIL_FROM || 'notifications@fingermobileprotocol.com';
     this.defaultFromName = process.env.EMAIL_FROM_NAME || 'FingerMobile Protocol';
   }
 
@@ -68,7 +68,7 @@ export class PlunkEmailService {
         data: options.data || {},
         headers: {
           'X-Entity-Ref-ID': `fmp_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-          'List-Unsubscribe': `<mailto:unsubscribe@fingermobile.com>, <https://fingermobile.com/unsubscribe>`,
+          'List-Unsubscribe': `<mailto:unsubscribe@fingermobileprotocol.com>, <https://fingermobileprotocol.com/unsubscribe>`,
           ...(options.headers || {})
         }
       };

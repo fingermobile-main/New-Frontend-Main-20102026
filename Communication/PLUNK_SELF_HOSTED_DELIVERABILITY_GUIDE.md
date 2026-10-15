@@ -63,7 +63,7 @@ Before binding your email server to a newly provisioned VPS IP:
 
 ## 3. Phase 2: Technical DNS & Authentication Stack
 
-All outgoing mail from `fingermobile.com` must pass cryptographic and alignment validation:
+All outgoing mail from `fingermobileprotocol.com` must pass cryptographic and alignment validation:
 
 ```
                 ┌──────────────────────────────────────────────┐
@@ -89,12 +89,12 @@ All outgoing mail from `fingermobile.com` must pass cryptographic and alignment 
 
 | Record Type | Host / Name | Type | Value | Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **A Record** | `mail.fingermobile.com` | `A` | `<VPS_STATIC_IPV4>` | Points mail host to server IP |
-| **PTR / rDNS** | Set in VPS Provider Panel | `PTR` | `mail.fingermobile.com` | Reverses IP to domain hostname |
-| **MX Record** | `fingermobile.com` | `MX` | `10 mail.fingermobile.com` | Directs inbound routing |
-| **SPF Record** | `fingermobile.com` | `TXT` | `v=spf1 ip4:<VPS_STATIC_IPV4> -all` | Authorizes outgoing IPs |
-| **DKIM Record** | `s1._domainkey.fingermobile.com` | `TXT` | `v=DKIM1; k=rsa; p=<2048_BIT_PUBLIC_KEY>` | Cryptographic header signature |
-| **DMARC Record** | `_dmarc.fingermobile.com` | `TXT` | `v=DMARC1; p=reject; sp=reject; pct=100; aspf=r; adkim=r; rua=mailto:dmarc-reports@fingermobile.com; ruf=mailto:dmarc-forensics@fingermobile.com` | Enforcement & forensic reporting |
+| **A Record** | `mail.fingermobileprotocol.com` | `A` | `<VPS_STATIC_IPV4>` | Points mail host to server IP |
+| **PTR / rDNS** | Set in VPS Provider Panel | `PTR` | `mail.fingermobileprotocol.com` | Reverses IP to domain hostname |
+| **MX Record** | `fingermobileprotocol.com` | `MX` | `10 mail.fingermobileprotocol.com` | Directs inbound routing |
+| **SPF Record** | `fingermobileprotocol.com` | `TXT` | `v=spf1 ip4:<VPS_STATIC_IPV4> -all` | Authorizes outgoing IPs |
+| **DKIM Record** | `s1._domainkey.fingermobileprotocol.com` | `TXT` | `v=DKIM1; k=rsa; p=<2048_BIT_PUBLIC_KEY>` | Cryptographic header signature |
+| **DMARC Record** | `_dmarc.fingermobileprotocol.com` | `TXT` | `v=DMARC1; p=reject; sp=reject; pct=100; aspf=r; adkim=r; rua=mailto:dmarc-reports@fingermobileprotocol.com; ruf=mailto:dmarc-forensics@fingermobileprotocol.com` | Enforcement & forensic reporting |
 
 ---
 
