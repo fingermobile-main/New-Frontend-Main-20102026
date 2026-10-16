@@ -13,8 +13,7 @@ import {
   ClockIcon,
   CheckBadgeIcon,
   ArrowsRightLeftIcon,
-  CheckCircleIcon,
-  UserCheckIcon
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import {
   webRtcCallingService,
@@ -191,7 +190,6 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
 
       {/* Main Calling Card */}
       <div className="relative w-full max-w-lg bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col justify-between min-h-[600px] p-6 text-white">
-        
         {/* Top Header: Sovereign Protocol Security Bar */}
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
           <div className="flex items-center gap-2">
@@ -283,8 +281,11 @@ const AudioCallModal: React.FC<AudioCallModalProps> = ({
               </div>
 
               {/* Party 2: Recipient */}
-              <div className={`p-3 rounded-2xl border transition-all ${
-                recipientAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800'
+              <div
+                onClick={handleRecipientAcceptPin}
+                title="Click to simulate recipient accepting PIN"
+                className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                recipientAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800 hover:border-slate-700'
               }`}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Recipient</span>

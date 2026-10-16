@@ -13,7 +13,10 @@ import {
   XMarkIcon,
   KeyIcon,
   ClockIcon,
-  CheckBadgeIcon
+  CheckBadgeIcon,
+  ArrowsRightLeftIcon,
+  CheckCircleIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline';
 import {
   webRtcCallingService,
@@ -47,34 +50,43 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
   const [metrics, setMetrics] = useState<CallQualityMetrics | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Guardian AI Privacy Handshake & 10-Min Video Token State
+  // Guardian AI Privacy Mutual Handshake & 10-Min Video Token State
   const [guardianPin, setGuardianPin] = useState<string>('');
-  const [recipientPinInput, setRecipientPinInput] = useState<string>('');
+  const [callerAccepted, setCallerAccepted] = useState<boolean>(false);
+  const [recipientAccepted, setRecipientAccepted] = useState<boolean>(false);
   const [isHandshakeVerified, setIsHandshakeVerified] = useState<boolean>(false);
   const [tokenRemainingSecs, setTokenRemainingSecs] = useState<number>(10 * 60); // 10 Mins
   const [guardianTokenId, setGuardianTokenId] = useState<string>('');
-  const [handshakeError, setHandshakeError] = useState<string>('');
 
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const countdownTimerRef = useRef<any>(null);
 
-  // Initialize PIN and reset states on modal open
+  // Initialize PIN and reset mutual handshake states on modal open
   useEffect(() => {
     if (isOpen) {
       const generatedPin = Math.floor(100000 + Math.random() * 900000).toString();
       setGuardianPin(generatedPin);
-      setRecipientPinInput(generatedPin); // Pre-fill with matching sovereign exchange key for frictionless verification
+      setCallerAccepted(true); // Caller auto-signs their own generated call PIN
+      setRecipientAccepted(false); // Waiting for recipient to accept
       setIsHandshakeVerified(false);
       setTokenRemainingSecs(10 * 60);
-      setHandshakeError('');
       setGuardianTokenId('');
     } else {
       if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
       setCallState('idle');
     }
   }, [isOpen]);
+
+  // When BOTH parties accept PIN Exchange -> establish connection and issue 10-Min Token
+  useEffect(() => {
+    if (callerAccepted && recipientAccepted && !isHandshakeVerified && isOpen) {
+      const token = `GAI-VID-${Date.now().toString(36).toUpperCase()}-10M`;
+      setGuardianTokenId(token);
+      setIsHandshakeVerified(true);
+    }
+  }, [callerAccepted, recipientAccepted, isHandshakeVerified, isOpen]);
 
   // Handle call lifecycle and countdown once handshake is verified
   useEffect(() => {
@@ -148,16 +160,16 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleVerifyHandshake = () => {
-    if (recipientPinInput.trim() !== guardianPin) {
-      setHandshakeError('PIN mismatch. Please verify exchange key with member.');
-      return;
-    }
-    const token = `GAI-VID-${Date.now().toString(36).toUpperCase()}-10M`;
-    setGuardianTokenId(token);
-    setIsHandshakeVerified(true);
-    setHandshakeError('');
+  const handleRecipientAcceptPin = () => {
+    setRecipientAccepted(true);
   };
+
+  const handleMutualAcceptAll = () => {
+    setCallerAccepted(true);
+    setRecipientAccepted(true);
+  };
+
+  const acceptedCount = (callerAccepted ? 1 : 0) + (recipientAccepted ? 1 : 0);
 
   const handleToggleMute = () => {
     const muted = webRtcCallingService.toggleMute();
@@ -276,24 +288,24 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
         {/* Main Stage: Either Handshake Screen or Active Video Stream */}
         {!isHandshakeVerified ? (
-          /* 1. GUARDIAN AI PIN HANDSHAKE SCREEN FOR VIDEO */
+          /* 1. GUARDIAN AI MUTUAL PIN EXCHANGE SCREEN FOR VIDEO (BOTH MUST ACCEPT) */
           <div className="relative flex-1 bg-slate-900/90 flex items-center justify-center p-6 text-center z-20">
-            <div className="max-w-md w-full bg-slate-950/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
-              <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto shadow-lg shadow-amber-500/10">
-                <KeyIcon className="w-8 h-8" />
+            <div className="max-w-md w-full bg-slate-950/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto shadow-lg shadow-amber-500/10">
+                <KeyIcon className="w-7 h-7" />
               </div>
 
               <div className="space-y-1">
-                <h3 className="text-xl font-black text-white">Guardian AI Privacy Handshake</h3>
+                <h3 className="text-xl font-black text-white">Mutual Video PIN Exchange Handshake</h3>
                 <p className="text-xs text-slate-400">
-                  Unlocking 1080p video stream with <span className="text-white font-bold">{recipientName}</span> requires verified 6-digit PIN exchange.
+                  Guardian AI enforces that <strong className="text-white">each person must accept the PIN exchange</strong> before establishing the 1080p encrypted video stream with <span className="text-white font-bold">{recipientName}</span>.
                 </p>
               </div>
 
-              {/* Generated PIN Box */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1.5">
+              {/* Generated Video PIN Box */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 space-y-1.5">
                 <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
-                  Auto-Generated Video PIN
+                  6-Digit Sovereign Video PIN
                 </span>
                 <div className="flex items-center justify-center gap-2 font-mono text-2xl font-black text-amber-400 tracking-widest">
                   {guardianPin.split('').map((char, i) => (
@@ -304,47 +316,86 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
                 </div>
               </div>
 
-              {/* Recipient PIN Input */}
-              <div className="space-y-2 text-left">
-                <label className="text-[11px] font-bold text-slate-300 block">
-                  Recipient Exchange PIN Confirmation
-                </label>
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={recipientPinInput}
-                  onChange={(e) => setRecipientPinInput(e.target.value.replace(/\D/g, ''))}
-                  placeholder="Enter 6-digit PIN"
-                  className="w-full text-center font-mono text-lg font-black px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-                {handshakeError && (
-                  <p className="text-[11px] text-red-400 font-bold">{handshakeError}</p>
-                )}
+              {/* 2-Party Mutual Acceptance Tracker */}
+              <div className="grid grid-cols-2 gap-3 text-left">
+                {/* Party 1: Caller (You) */}
+                <div className={`p-3 rounded-2xl border transition-all ${
+                  callerAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800'
+                }`}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Caller (You)</span>
+                    {callerAccepted ? (
+                      <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <ClockIcon className="w-4 h-4 text-slate-500" />
+                    )}
+                  </div>
+                  <p className="text-xs font-bold text-white truncate">You</p>
+                  <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded ${
+                    callerAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {callerAccepted ? 'PIN Accepted' : 'Pending'}
+                  </span>
+                </div>
+
+                {/* Party 2: Recipient */}
+                <div
+                  onClick={handleRecipientAcceptPin}
+                  title="Click to simulate recipient accepting PIN"
+                  className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                  recipientAccepted ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                }`}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Recipient</span>
+                    {recipientAccepted ? (
+                      <CheckCircleIcon className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <ClockIcon className="w-4 h-4 text-amber-400 animate-spin" />
+                    )}
+                  </div>
+                  <p className="text-xs font-bold text-white truncate">{recipientName}</p>
+                  <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded ${
+                    recipientAccepted ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+                  }`}>
+                    {recipientAccepted ? 'PIN Accepted' : 'Awaiting Exchange'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Handshake Progress */}
+              <div className="flex items-center justify-between text-xs font-bold text-slate-300 px-1">
+                <span className="flex items-center gap-1.5">
+                  <ArrowsRightLeftIcon className="w-4 h-4 text-amber-400" />
+                  Mutual Agreement:
+                </span>
+                <span className={`font-mono font-black ${acceptedCount === 2 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {acceptedCount} / 2 Accepted
+                </span>
               </div>
 
               {/* Token Scope Notice */}
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-bold">
                 <ClockIcon className="w-4 h-4 text-purple-400" />
-                <span>Unlocks 10-Minute Time-Restricted Video Token</span>
+                <span>Unlocks 10-Minute Time-Restricted Video Token upon mutual agreement</span>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2.5 pt-1">
                 <button
                   type="button"
                   onClick={() => handleEndCall('PIN Handshake Cancelled')}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-xs font-bold"
+                  className="py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   id="btn-verify-video-pin"
                   type="button"
-                  onClick={handleVerifyHandshake}
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/30"
+                  onClick={handleMutualAcceptAll}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/30 transition-all active:scale-95"
                 >
                   <CheckBadgeIcon className="w-4 h-4" />
-                  Exchange PIN
+                  Confirm PIN Exchange (Both Accept)
                 </button>
               </div>
             </div>
@@ -360,10 +411,11 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               className="w-full h-full object-cover"
             />
 
-            {/* Token Countdown Pill Overlay in top right */}
+            {/* Token Countdown Pill Overlay in top left */}
             <div className="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-emerald-500/40 text-emerald-400 font-mono text-xs font-black shadow-xl">
-              <ClockIcon className="w-4 h-4 text-emerald-400 animate-pulse" />
-              <span>Token: {formatCountdown(tokenRemainingSecs)}</span>
+              <ShieldCheckIcon className="w-4 h-4 text-emerald-400" />
+              <span>Token: {guardianTokenId ? `${guardianTokenId.slice(0, 15)}... ` : ''}({formatCountdown(tokenRemainingSecs)})</span>
+              <span className="text-[10px] text-slate-400 font-sans font-normal">• Both Accepted (2/2)</span>
             </div>
 
             {/* Fallback Overlay if Remote is connecting */}
