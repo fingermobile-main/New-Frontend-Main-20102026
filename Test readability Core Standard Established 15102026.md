@@ -9,9 +9,5 @@ Card & Table Grid Borders	border-slate-300 or border-slate-200	Visible separatio
 Badges on Light Tints (*-100)	text-*-950 border border-*-400 font-black	High legibility
 
 
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
- http://localhost:3000/settings that displays gray text, so input and description text field labels and text are not vissible.
-
-
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ EOF $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
