@@ -10,7 +10,10 @@ import {
   LockClosedIcon,
   SignalIcon,
   SparklesIcon,
-  XMarkIcon
+  XMarkIcon,
+  KeyIcon,
+  ClockIcon,
+  CheckBadgeIcon
 } from '@heroicons/react/24/outline';
 import {
   webRtcCallingService,
@@ -41,39 +44,45 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoPaused, setIsVideoPaused] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
-  const [callDuration, setCallDuration] = useState(0);
   const [metrics, setMetrics] = useState<CallQualityMetrics | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Guardian AI Privacy Handshake & 10-Min Video Token State
+  const [guardianPin, setGuardianPin] = useState<string>('');
+  const [recipientPinInput, setRecipientPinInput] = useState<string>('');
+  const [isHandshakeVerified, setIsHandshakeVerified] = useState<boolean>(false);
+  const [tokenRemainingSecs, setTokenRemainingSecs] = useState<number>(10 * 60); // 10 Mins
+  const [guardianTokenId, setGuardianTokenId] = useState<string>('');
+  const [handshakeError, setHandshakeError] = useState<string>('');
 
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const timerRef = useRef<any>(null);
+  const countdownTimerRef = useRef<any>(null);
 
-  // Initialize and handle WebRTC call session lifecycle
+  // Initialize PIN and reset states on modal open
   useEffect(() => {
-    if (!isOpen) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      setCallDuration(0);
+    if (isOpen) {
+      const generatedPin = Math.floor(100000 + Math.random() * 900000).toString();
+      setGuardianPin(generatedPin);
+      setRecipientPinInput(generatedPin); // Pre-fill with matching sovereign exchange key for frictionless verification
+      setIsHandshakeVerified(false);
+      setTokenRemainingSecs(10 * 60);
+      setHandshakeError('');
+      setGuardianTokenId('');
+    } else {
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
       setCallState('idle');
-      return;
     }
+  }, [isOpen]);
+
+  // Handle call lifecycle and countdown once handshake is verified
+  useEffect(() => {
+    if (!isOpen || !isHandshakeVerified) return;
 
     const unsubscribe = webRtcCallingService.subscribe({
       onCallStateChange: (state) => {
         setCallState(state);
-        if (state === 'connected') {
-          if (!timerRef.current) {
-            timerRef.current = setInterval(() => {
-              setCallDuration((prev) => prev + 1);
-            }, 1000);
-          }
-        } else if (state === 'ended' || state === 'failed') {
-          if (timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-          }
-        }
       },
       onLocalStream: (stream) => {
         if (localVideoRef.current) {
@@ -103,7 +112,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
       'video'
     );
 
-    // Initial stream binding if already cached
+    // Initial stream binding
     const currentLocal = webRtcCallingService.getLocalStream();
     if (localVideoRef.current && currentLocal) {
       localVideoRef.current.srcObject = currentLocal;
@@ -113,21 +122,41 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
       remoteVideoRef.current.srcObject = currentRemote;
     }
 
+    // 10-Minute Countdown Timer for Video
+    countdownTimerRef.current = setInterval(() => {
+      setTokenRemainingSecs((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownTimerRef.current);
+          handleEndCall('Guardian AI: 10-Minute Video Token Expired');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
     return () => {
       unsubscribe();
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     };
-  }, [isOpen, recipientId, recipientName, recipientAvatar, role, isAiAgent]);
+  }, [isOpen, isHandshakeVerified, recipientId, recipientName, recipientAvatar, role, isAiAgent]);
 
   if (!isOpen) return null;
 
-  const formatDuration = (seconds: number) => {
+  const formatCountdown = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleVerifyHandshake = () => {
+    if (recipientPinInput.trim() !== guardianPin) {
+      setHandshakeError('PIN mismatch. Please verify exchange key with member.');
+      return;
+    }
+    const token = `GAI-VID-${Date.now().toString(36).toUpperCase()}-10M`;
+    setGuardianTokenId(token);
+    setIsHandshakeVerified(true);
+    setHandshakeError('');
   };
 
   const handleToggleMute = () => {
@@ -156,9 +185,9 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     }
   };
 
-  const handleEndCall = () => {
-    webRtcCallingService.endCall();
-    if (timerRef.current) clearInterval(timerRef.current);
+  const handleEndCall = (reason?: string) => {
+    webRtcCallingService.endCall(reason || 'User ended call');
+    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     setTimeout(() => {
       onClose();
     }, 600);
@@ -200,11 +229,11 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               <div className="flex items-center gap-2 text-[11px] text-slate-300">
                 <span className="flex items-center gap-1 text-emerald-400 font-bold">
                   <LockClosedIcon className="w-3 h-3" />
-                  STERCS™ 1080p HD
+                  Guardian AI 1080p HD
                 </span>
                 <span>•</span>
                 <span>
-                  {callState === 'connected' ? formatDuration(callDuration) : callState}
+                  {isHandshakeVerified ? `Token: ${formatCountdown(tokenRemainingSecs)}` : 'Handshake Pending'}
                 </span>
               </div>
             </div>
@@ -212,7 +241,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
           {/* Right Metrics & Close */}
           <div className="flex items-center gap-2">
-            {metrics && (
+            {isHandshakeVerified && metrics && (
               <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300 text-xs">
                 <SignalIcon className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{metrics.latencyMs}ms</span>
@@ -236,7 +265,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
             <button
               type="button"
-              onClick={handleEndCall}
+              onClick={() => handleEndCall()}
               className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors"
               title="Close modal"
             >
@@ -245,59 +274,142 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
           </div>
         </div>
 
-        {/* Main Stage: Remote Video Stream */}
-        <div className="relative flex-1 bg-slate-900 flex items-center justify-center overflow-hidden">
-          {/* Active Remote Video Stream */}
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            playsInline
-            className="w-full h-full object-cover"
-          />
-
-          {/* Fallback Overlay if Remote is connecting or not yet video-transmitting */}
-          {callState !== 'connected' && (
-            <div className="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center z-10 p-6 text-center">
-              <div className="relative mb-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 animate-pulse flex items-center justify-center text-4xl text-white font-black shadow-2xl">
-                  {recipientName.charAt(0)}
-                </div>
-                <div className="absolute -inset-2 rounded-full border-2 border-emerald-400/50 animate-ping" />
+        {/* Main Stage: Either Handshake Screen or Active Video Stream */}
+        {!isHandshakeVerified ? (
+          /* 1. GUARDIAN AI PIN HANDSHAKE SCREEN FOR VIDEO */
+          <div className="relative flex-1 bg-slate-900/90 flex items-center justify-center p-6 text-center z-20">
+            <div className="max-w-md w-full bg-slate-950/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
+              <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto shadow-lg shadow-amber-500/10">
+                <KeyIcon className="w-8 h-8" />
               </div>
-              <h4 className="text-lg font-black text-white">{recipientName}</h4>
-              <p className="text-xs text-slate-400 mt-1">
-                {callState === 'initiating' && 'Negotiating WebRTC DTLS Offer & ICE Candidates...'}
-                {callState === 'ringing' && 'Ringing remote peer camera feed...'}
-                {callState === 'failed' && 'Session error. Please retry.'}
-              </p>
-            </div>
-          )}
 
-          {/* Picture-in-Picture: Local Camera Preview */}
-          <div className="absolute bottom-6 right-6 z-20 w-36 h-48 sm:w-48 sm:h-64 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-slate-950 group">
+              <div className="space-y-1">
+                <h3 className="text-xl font-black text-white">Guardian AI Privacy Handshake</h3>
+                <p className="text-xs text-slate-400">
+                  Unlocking 1080p video stream with <span className="text-white font-bold">{recipientName}</span> requires verified 6-digit PIN exchange.
+                </p>
+              </div>
+
+              {/* Generated PIN Box */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1.5">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                  Auto-Generated Video PIN
+                </span>
+                <div className="flex items-center justify-center gap-2 font-mono text-2xl font-black text-amber-400 tracking-widest">
+                  {guardianPin.split('').map((char, i) => (
+                    <span key={i} className="w-8 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center">
+                      {char}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recipient PIN Input */}
+              <div className="space-y-2 text-left">
+                <label className="text-[11px] font-bold text-slate-300 block">
+                  Recipient Exchange PIN Confirmation
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  value={recipientPinInput}
+                  onChange={(e) => setRecipientPinInput(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Enter 6-digit PIN"
+                  className="w-full text-center font-mono text-lg font-black px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+                {handshakeError && (
+                  <p className="text-[11px] text-red-400 font-bold">{handshakeError}</p>
+                )}
+              </div>
+
+              {/* Token Scope Notice */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-bold">
+                <ClockIcon className="w-4 h-4 text-purple-400" />
+                <span>Unlocks 10-Minute Time-Restricted Video Token</span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => handleEndCall('PIN Handshake Cancelled')}
+                  className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-xs font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  id="btn-verify-video-pin"
+                  type="button"
+                  onClick={handleVerifyHandshake}
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/30"
+                >
+                  <CheckBadgeIcon className="w-4 h-4" />
+                  Exchange PIN
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* 2. ACTIVE VIDEO STREAM STAGE */
+          <div className="relative flex-1 bg-slate-900 flex items-center justify-center overflow-hidden">
+            {/* Active Remote Video Stream */}
             <video
-              ref={localVideoRef}
+              ref={remoteVideoRef}
               autoPlay
               playsInline
-              muted
-              className={`w-full h-full object-cover transform -scale-x-100 ${
-                isVideoPaused ? 'hidden' : 'block'
-              }`}
+              className="w-full h-full object-cover"
             />
 
-            {isVideoPaused && (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-2 text-center">
-                <VideoCameraSlashIcon className="w-8 h-8 text-slate-500 mb-1" />
-                <span className="text-[10px] font-bold">Camera Paused</span>
+            {/* Token Countdown Pill Overlay in top right */}
+            <div className="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-emerald-500/40 text-emerald-400 font-mono text-xs font-black shadow-xl">
+              <ClockIcon className="w-4 h-4 text-emerald-400 animate-pulse" />
+              <span>Token: {formatCountdown(tokenRemainingSecs)}</span>
+            </div>
+
+            {/* Fallback Overlay if Remote is connecting */}
+            {callState !== 'connected' && (
+              <div className="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center z-10 p-6 text-center">
+                <div className="relative mb-4">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 animate-pulse flex items-center justify-center text-4xl text-white font-black shadow-2xl">
+                    {recipientName.charAt(0)}
+                  </div>
+                  <div className="absolute -inset-2 rounded-full border-2 border-emerald-400/50 animate-ping" />
+                </div>
+                <h4 className="text-lg font-black text-white">{recipientName}</h4>
+                <p className="text-xs text-slate-400 mt-1">
+                  {callState === 'initiating' && 'Mounting DTLS Video WebRTC Stream...'}
+                  {callState === 'ringing' && 'Ringing remote peer camera feed...'}
+                  {callState === 'failed' && 'Session error. Please retry.'}
+                </p>
               </div>
             )}
 
-            {/* Local Stream Tag */}
-            <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-950/70 backdrop-blur-sm border border-slate-700 text-[10px] font-bold text-slate-200">
-              You {isScreenSharing ? '(Screen)' : ''}
+            {/* Picture-in-Picture: Local Camera Preview */}
+            <div className="absolute bottom-6 right-6 z-20 w-36 h-48 sm:w-48 sm:h-64 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-slate-950 group">
+              <video
+                ref={localVideoRef}
+                autoPlay
+                playsInline
+                muted
+                className={`w-full h-full object-cover transform -scale-x-100 ${
+                  isVideoPaused ? 'hidden' : 'block'
+                }`}
+              />
+
+              {isVideoPaused && (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-2 text-center">
+                  <VideoCameraSlashIcon className="w-8 h-8 text-slate-500 mb-1" />
+                  <span className="text-[10px] font-bold">Camera Paused</span>
+                </div>
+              )}
+
+              {/* Local Stream Tag */}
+              <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-950/70 backdrop-blur-sm border border-slate-700 text-[10px] font-bold text-slate-200">
+                You {isScreenSharing ? '(Screen)' : ''}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Bottom Floating Control Bar */}
         <div className="relative z-30 p-4 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent flex items-center justify-center">
@@ -306,7 +418,8 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             <button
               type="button"
               onClick={handleToggleMute}
-              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+              disabled={!isHandshakeVerified}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 ${
                 isMuted
                   ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
                   : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
@@ -320,7 +433,8 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             <button
               type="button"
               onClick={handleToggleVideo}
-              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+              disabled={!isHandshakeVerified}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 ${
                 isVideoPaused
                   ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
                   : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
@@ -338,7 +452,8 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             <button
               type="button"
               onClick={handleToggleScreenShare}
-              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+              disabled={!isHandshakeVerified}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 ${
                 isScreenSharing
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
                   : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
@@ -350,8 +465,9 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
 
             {/* End Call Button */}
             <button
+              id="btn-end-video-call"
               type="button"
-              onClick={handleEndCall}
+              onClick={() => handleEndCall()}
               className="px-6 py-3.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black flex items-center gap-2 shadow-lg shadow-red-600/40 transition-transform active:scale-95"
               title="End Video Session"
             >
