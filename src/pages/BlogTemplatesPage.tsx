@@ -72,7 +72,7 @@ const TEMPLATES: BlogTemplate[] = [
       '@context': 'https://schema.org',
       '@type': 'NewsArticle',
       headline: 'Sub-Saharan Liquidity Dynamics',
-      author: { '@type': 'Person', name: 'FingerProtocol Research' }
+      author: { '@type': 'Person', name: 'fingermobileprotocol Research' }
     }
   },
   {

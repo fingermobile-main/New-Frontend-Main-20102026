@@ -131,7 +131,7 @@ const DEFAULT_GUARDIAN_STATUS: GuardianStatus = {
       'fingermobileprotocol@gmail.com',
       'obinnambah100@gmail.com',
       'gracelinkbustech@gmail.com',
-      'obinnambah100@fingerprotocol.com'
+      'obinnambah100@fingermobileprotocol.com'
     ],
     authorizedIndividuals: [
       { name: 'MBAH ISRAEL OBINNA', phone: '+2348088855752', role: 'Protocol Architect & Founder' },
@@ -152,7 +152,7 @@ const GuardianProtectionPage: React.FC = () => {
 
   // Authentication & Kill Switch Form State
   const [authStep, setAuthStep] = useState<1 | 2 | 3 | 4 | 5>(1);
-  const [emailInput, setEmailInput] = useState('obinnambah100@fingerprotocol.com');
+  const [emailInput, setEmailInput] = useState('obinnambah100@fingermobileprotocol.com');
   const [firstPinInput, setFirstPinInput] = useState('');
   const [generatedFirstPin, setGeneratedFirstPin] = useState<string | null>(null);
   const [backupPin1, setBackupPin1] = useState('');

@@ -86,7 +86,7 @@ const TOP_ROW_ITEMS: ShowcaseItem[] = [
     tagline: '3D Plushies & Creator Rewards',
     narrative:
       'Next-generation digital gifting, meaningful connections, and luxury creator rewards. Surprise loved ones with 3D animated plushies, send radiant emerald gift boxes, tip your favorite creators, and experience gamified romance and appreciation.',
-    image: '/assets/showcase/lushpressies_screen_uhd.jpg',
+    image: '/assets/showcase/lushpressies_screen_uhd.jpg?v=2',
     fallbackImage:
       'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200&auto=format&fit=crop&q=85',
     link: '/lushpressies',

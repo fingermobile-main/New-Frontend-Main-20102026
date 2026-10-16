@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
 import MainLayout from '../components/layout/MainLayout';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 import {
   GameIcon,
   TrophyIcon,
@@ -170,11 +171,13 @@ const FingerWarsPage: React.FC = () => {
         prev.map(c => (c.id === id ? { ...c, is_claimed: true } : c))
       );
       showToast('Reward claimed into your FIC wallet!', 'success');
+      voiceLineServiceInstance.playCommentaryVoiceLine('earnings');
     } catch {
       setChallenges(prev =>
         prev.map(c => (c.id === id ? { ...c, is_claimed: true } : c))
       );
       showToast('Reward claimed into your FIC wallet!', 'success');
+      voiceLineServiceInstance.playCommentaryVoiceLine('earnings');
     }
   };
 
@@ -188,8 +191,10 @@ const FingerWarsPage: React.FC = () => {
     try {
       await ApiService.post(`/fingerwars/tournaments/${t.id}/join`);
       showToast(`Successfully registered for ${t.title}!`, 'success');
+      voiceLineServiceInstance.playCommentaryVoiceLine('fingerwars');
     } catch {
       showToast(`Registered for ${t.title}! You are queued for Round 1.`, 'success');
+      voiceLineServiceInstance.playCommentaryVoiceLine('fingerwars');
     }
   };
 

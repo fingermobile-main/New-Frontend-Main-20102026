@@ -7,16 +7,16 @@ import {
   SparklesIcon,
   ShieldIcon
 } from '../../icons';
-import { GalleryPinItem, UserProjectBoard } from '../../data/galleryData';
+import { TributPinItem, UserProjectBoard } from '../../data/tributData';
 
-interface GalleryDownloadModalProps {
-  pin: GalleryPinItem | null;
+interface TributDownloadModalProps {
+  pin: TributPinItem | null;
   board?: UserProjectBoard | null;
-  allPins: GalleryPinItem[];
+  allPins: TributPinItem[];
   onClose: () => void;
 }
 
-export const GalleryDownloadModal: React.FC<GalleryDownloadModalProps> = ({
+export const TributDownloadModal: React.FC<TributDownloadModalProps> = ({
   pin,
   board,
   allPins,
@@ -42,7 +42,7 @@ export const GalleryDownloadModal: React.FC<GalleryDownloadModalProps> = ({
       } else if (downloadFormat === 'blueprint' && pin) {
         // Generate JSON design blueprint
         const blueprint = {
-          protocol: 'FingerMobile Sovereign Gallery',
+          protocol: 'FingerMobile Sovereign Tribut',
           pinId: pin.id,
           title: pin.title,
           category: pin.categoryLabel,
@@ -68,7 +68,7 @@ export const GalleryDownloadModal: React.FC<GalleryDownloadModalProps> = ({
       } else if (downloadFormat === 'palette' && pin) {
         // Generate CSS palette variables
         const palette = pin.colorPalette || ['#1A2B4C', '#28467A'];
-        const cssContent = `:root {\n${palette.map((c, i) => `  --pin-color-${i + 1}: ${c};`).join('\n')}\n}\n/* Exported from FingerMobile Gallery for "${pin.title}" */`;
+        const cssContent = `:root {\n${palette.map((c, i) => `  --pin-color-${i + 1}: ${c};`).join('\n')}\n}\n/* Exported from FingerMobile Tribut for "${pin.title}" */`;
         const blob = new Blob([cssContent], { type: 'text/css' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -81,7 +81,7 @@ export const GalleryDownloadModal: React.FC<GalleryDownloadModalProps> = ({
       } else {
         // Full project board bundle
         const bundleManifest = {
-          boardName: board ? board.name : pin?.boardName || 'Sovereign Gallery Lookbook',
+          boardName: board ? board.name : pin?.boardName || 'Sovereign Tribut Lookbook',
           purpose: board ? board.purpose : 'Design Ideation',
           prioritizedItems: (pin ? [pin] : allPins.slice(0, 5)).map((p, idx) => ({
             priorityRank: idx + 1,
@@ -264,4 +264,4 @@ export const GalleryDownloadModal: React.FC<GalleryDownloadModalProps> = ({
   );
 };
 
-export default GalleryDownloadModal;
+export default TributDownloadModal;

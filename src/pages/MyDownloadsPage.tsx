@@ -396,7 +396,7 @@ const MyDownloadsPage: React.FC = () => {
             <FolderDown className="w-12 h-12 text-slate-500 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No Downloaded Items in this Category</h3>
             <p className="text-xs text-slate-700 max-w-sm mx-auto">
-              Download media stems, photo RAW files, and videos from the Gallery, BeatwaveNG, or Dancia-4Tv.
+              Download media stems, photo RAW files, and videos from Tribut, BeatwaveNG, or Dancia-4Tv.
             </p>
           </div>
         ) : (

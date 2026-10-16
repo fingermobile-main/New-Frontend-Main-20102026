@@ -74,7 +74,7 @@ const HallmarkCreatePage: React.FC = () => {
             <h3 className="font-bold text-lg border-b pb-2 mb-4">1. Branding</h3>
             <label htmlFor="communityName" className="block text-sm font-medium">Community Name</label>
             <input id="communityName" type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-2 border rounded-md" required />
-            <label htmlFor="customUrl" className="block text-sm font-medium mt-4">Custom URL (fingerprotocol.com/hallmark/...)</label>
+            <label htmlFor="customUrl" className="block text-sm font-medium mt-4">Custom URL (fingermobileprotocol.com/hallmark/...)</label>
             <input id="customUrl" type="text" value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="e.g., janes-art-hub" />
             <label htmlFor="logoUrl" className="block text-sm font-medium mt-4">Logo URL</label>
             <input id="logoUrl" type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="https://..." />

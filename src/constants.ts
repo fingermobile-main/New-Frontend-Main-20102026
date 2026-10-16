@@ -58,7 +58,7 @@ export const EVENTS = [
 // --- MEMBERS ---
 export const MOCK_MEMBERS: Member[] = [
   {id: '1',
-    email: 'info@fingerprotocol.com',
+    email: 'info@fingermobileprotocol.com',
     name: 'Mbah Obinna',
     membername: 'mbah',
     handle: 'mbah',

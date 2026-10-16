@@ -466,15 +466,15 @@ const MasterDashboardPage: React.FC = () => {
         route: '/photocredits',
       },
       {
-        id: 'gallery',
-        title: 'Gallery',
-        description: 'Media gallery and portfolio management',
+        id: 'tribut',
+        title: 'Tribut',
+        description: 'Media showcase and portfolio management',
         icon: Image,
         status: 'online',
         lastUpdated: '2024-10-07T11:30:00Z',
         responseTime: 0,
         healthScore: 100,
-        route: '/gallery',
+        route: '/tribut',
       },
       {
         id: 'beatwaven',
@@ -931,7 +931,7 @@ const MasterDashboardPage: React.FC = () => {
       ) {
         category = 'Marketplace & Commerce';
       } else if (
-        ['photocredits', 'gallery', 'beatwaven', 'dancia4tv'].includes(
+        ['photocredits', 'tribut', 'gallery', 'beatwaven', 'dancia4tv'].includes(
           section.id
         )
       ) {
@@ -2625,7 +2625,7 @@ const MasterDashboardPage: React.FC = () => {
               renderConsoleGroupContent(
                 'media-discovery',
                 'Media & Discovery Consoles',
-                'Media intelligence (Mi), trending topics, discovery recommendations, video platforms (FingerLux, Dancia-4Tv, VideoBox), audio (BeatwaveNG), user-owned digital assets (OwnIt, PhotoCredits), and portfolios (Gallery).'
+                'Media intelligence (Mi), trending topics, discovery recommendations, video platforms (FingerLux, Dancia-4Tv, VideoBox), audio (BeatwaveNG), user-owned digital assets (OwnIt, PhotoCredits), and portfolios (Tribut).'
               )}
 
             {/* Dedicated Financial Management & Treasury Console Tab */}

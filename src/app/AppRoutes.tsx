@@ -42,7 +42,7 @@ const PostDetailPage = lazy(() => import('../pages/PostDetailPage'));
 const VideosPage = lazy(() => import('../pages/VideosPage'));
 const FingerShortsPage = lazy(() => import('../pages/FingerShortsPage'));
 const PhotosPage = lazy(() => import('../pages/PhotosPage'));
-const GalleryPage = lazy(() => import('../pages/GalleryPage'));
+const TributPage = lazy(() => import('../pages/TributPage'));
 const ShowcasePage = lazy(() => import('../pages/ShowcasePage'));
 
 // Module 3: Creation, Editing & Media Production
@@ -211,7 +211,6 @@ const CamusDashboardPage = lazy(() => import('../pages/CamusDashboardPage'));
 
 // Module 14: Corporate, Legal, Compliance & Information
 const AboutPage = lazy(() => import('../pages/about/AboutPage'));
-const AboutUsPage = lazy(() => import('../pages/AboutUsPage'));
 const BlogsPage = lazy(() => import('../pages/BlogsPage'));
 const BlogTemplatesPage = lazy(() => import('../pages/BlogTemplatesPage'));
 const ContactUsPage = lazy(() => import('../pages/ContactUsPage'));
@@ -303,8 +302,8 @@ export const routes: RouteObject[] = [
         element: <ReaderLayout />,
         children: [
           { path: '/about', element: <AboutPage /> },
-          { path: '/about-us', element: redirectTo('/aboutus') },
-          { path: '/aboutus', element: <AboutUsPage /> },
+          { path: '/about-us', element: redirectTo('/about') },
+          { path: '/aboutus', element: redirectTo('/about') },
           { path: '/contact', element: redirectTo('/contactus') },
           { path: '/contactus', element: <ContactUsPage /> },
           { path: '/support', element: <SupportPage /> },
@@ -370,7 +369,8 @@ export const routes: RouteObject[] = [
           { path: '/fingershorts', element: <FingerShortsPage /> },
           { path: '/shorts', element: redirectTo('/fingershorts') },
           { path: '/photos', element: <PhotosPage /> },
-          { path: '/gallery', element: <GalleryPage /> },
+          { path: '/tribut', element: <TributPage /> },
+          { path: '/gallery', element: redirectTo('/tribut') },
           { path: '/showcase', element: <ShowcasePage /> },
           { path: '/blogs', element: <BlogsPage /> },
           { path: '/blogs/templates', element: <BlogTemplatesPage /> },
@@ -410,7 +410,7 @@ export const routes: RouteObject[] = [
           { path: '/canary-ads', element: redirectTo('/canaryads') },
           { path: '/photo-credits', element: redirectTo('/photocredits') },
           { path: '/photocredits', element: <PhotoCreditsPage /> },
-          { path: '/luminagallery', element: <GalleryPage /> },
+          { path: '/luminagallery', element: redirectTo('/tribut') },
           { path: '/business', element: <BusinessOfficesPage /> },
           { path: '/business-offices', element: redirectTo('/businessoffices') },
           { path: '/business/offices', element: redirectTo('/businessoffices') },
@@ -649,6 +649,13 @@ export const routes: RouteObject[] = [
               { path: '/walletfunding', element: <WalletFundingPage /> },
               { path: '/paylinks', element: <PaylinksPage /> },
               { path: '/earnings', element: redirectTo('/memberearning') },
+              { path: '/earnings/dashboard', element: redirectTo('/monetizationdashboard') },
+              { path: '/earnings/services', element: redirectTo('/services') },
+              { path: '/earnings/analytics', element: redirectTo('/ugc-dashboard') },
+              { path: '/earnings/wallet', element: redirectTo('/wallet') },
+              { path: '/network/invitations', element: redirectTo('/network/suggestions') },
+              { path: '/network/following', element: redirectTo('/network') },
+              { path: '/communities/my', element: redirectTo('/groups') },
               { path: '/memberearning', element: <MemberEarningPage /> },
               { path: '/loansqr', element: <LoanSqrPage /> },
               { path: '/loansq', element: <LoanSqrPage /> },
@@ -759,6 +766,7 @@ export const routes: RouteObject[] = [
                   { path: '/creatorinfluence', element: <CreatorInfluencePage /> },
                   { path: '/creators-center', element: <CreatorsCenterPage /> },
                   { path: '/monetization/dashboard', element: redirectTo('/monetizationdashboard') },
+                  { path: '/monetization-dashboard', element: redirectTo('/monetizationdashboard') },
                   { path: '/monetizationdashboard', element: <MonetizationDashboardPage /> },
                   { path: '/monetization', element: <MonetizationPage /> },
                   { path: '/financials', element: <FinancialsPage /> },

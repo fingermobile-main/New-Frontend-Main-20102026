@@ -667,7 +667,7 @@ const TrendsPage: React.FC = () => {
                 Cross-Platform Radar
               </h3>
               <p className="text-xs text-red-900 leading-relaxed">
-                FingerMobile Protocol scores viral momentum across all 6 microservices: Forum discussions, BeatwaveNG master audio plays, LushPressies gifts, and PhotoCredits gallery licenses.
+                FingerMobile Protocol scores viral momentum across all 6 microservices: Forum discussions, BeatwaveNG master audio plays, LushPressies gifts, and PhotoCredits &amp; Tribut creative licenses.
               </p>
               <div className="mt-4 pt-4 border-t border-red-200/60 flex items-center justify-between text-xs font-bold text-red-900">
                 <span>Algorithmic Scan Interval</span>

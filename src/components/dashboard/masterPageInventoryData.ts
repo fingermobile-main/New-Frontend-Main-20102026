@@ -332,10 +332,10 @@ export const PAGE_INVENTORY_DATA: PageGovernanceEntry[] = [
     completionPercentage: 93
   },
   {
-    id: 'gallery-media',
-    name: 'Lumina Gallery & Media Portfolio',
-    filePath: 'pages/GalleryPage.tsx',
-    route: '/gallery',
+    id: 'tribut-media',
+    name: 'Tribut & Creative Media Portfolio',
+    filePath: 'pages/TributPage.tsx',
+    route: '/tribut',
     domain: 'Media & Discovery',
     entityManaged: 'media_albums, media_assets, asset_derivatives',
     capabilities: { canView: true, canCreate: true, canEdit: true, canPublish: true, canArchive: true, canDelete: true },

@@ -77,7 +77,7 @@ const BeatwaveDemoPage: React.FC = () => {
             const fallback: BeatwaveTrack[] = [
               { id: 1, title: 'Lagos Night Pulse', artist_name: 'Dancia Beats', genre: 'Afrobeats', duration_seconds: 215, plays: 14200, likes: 920 },
               { id: 2, title: 'Amapiano Sunrise Grooves', artist_name: 'DJ Maphorisa Club', genre: 'Amapiano', duration_seconds: 240, plays: 28400, likes: 1850 },
-              { id: 3, title: 'Sovereign Frequency', artist_name: 'FingerProtocol Audio', genre: 'Electronic', duration_seconds: 180, plays: 9800, likes: 640 }
+              { id: 3, title: 'Sovereign Frequency', artist_name: 'fingermobileprotocol Audio', genre: 'Electronic', duration_seconds: 180, plays: 9800, likes: 640 }
             ];
             setTracks(fallback);
             setCurrentTrack(fallback[0]);

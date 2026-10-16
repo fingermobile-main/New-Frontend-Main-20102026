@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import {
-  GalleryPinItem,
-  GalleryDisplayStyle,
-  UserProjectBoard
-} from '../../data/galleryData';
+  TributPinItem,
+  TributDisplayStyle
+} from '../../data/tributData';
 import {
   BookmarkIcon,
-  EyeIcon,
   SparklesIcon,
   ShoppingBagIcon,
   ArrowsPointingOutIcon
 } from '../../icons';
+import { Check } from 'lucide-react';
 
-interface GalleryDisplayStyleRendererProps {
-  style: GalleryDisplayStyle;
-  pins: GalleryPinItem[];
+interface TributDisplayStyleRendererProps {
+  style: TributDisplayStyle;
+  pins: TributPinItem[];
   savedPinIds: string[];
-  onPinClick: (pin: GalleryPinItem) => void;
-  onMemberClick: (author: GalleryPinItem['author'], e: React.MouseEvent) => void;
-  onToggleSavePin: (pin: GalleryPinItem, e: React.MouseEvent) => void;
+  isSelectMode?: boolean;
+  selectedIds?: string[];
+  onToggleSelect?: (id: string, e: React.MouseEvent) => void;
+  onPinClick: (pin: TributPinItem) => void;
+  onMemberClick: (author: TributPinItem['author'], e: React.MouseEvent) => void;
+  onToggleSavePin: (pin: TributPinItem, e: React.MouseEvent) => void;
 }
 
-export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererProps> = ({
+export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProps> = ({
   style,
   pins,
   savedPinIds,
+  isSelectMode = false,
+  selectedIds = [],
+  onToggleSelect,
   onPinClick,
   onMemberClick,
   onToggleSavePin
@@ -34,17 +39,28 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
 
   // Clean Card rendering: Pure visual representation by default. Information displayed when clicked on!
   const renderCleanCard = (
-    pin: GalleryPinItem,
+    pin: TributPinItem,
     customAspectClass: string = 'aspect-[2/3]',
     customExtraClasses: string = ''
   ) => {
     const isSaved = savedPinIds.includes(pin.id);
+    const isSelected = selectedIds.includes(pin.id);
 
     return (
       <div
         key={pin.id}
-        onClick={() => onPinClick(pin)}
-        className={`group relative ${customAspectClass} rounded-2xl overflow-hidden bg-slate-900 shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer border border-slate-200 hover:border-purple-300 ${customExtraClasses}`}
+        onClick={() => {
+          if (isSelectMode && onToggleSelect) {
+            onToggleSelect(pin.id, {} as any);
+          } else {
+            onPinClick(pin);
+          }
+        }}
+        className={`group relative ${customAspectClass} rounded-2xl overflow-hidden bg-slate-900 shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer border ${
+          isSelected
+            ? 'ring-4 ring-purple-600 border-purple-500 shadow-purple-900/30'
+            : 'border-slate-200 hover:border-purple-300'
+        } ${customExtraClasses}`}
       >
         {/* Visual Media */}
         {pin.videoUrl ? (
@@ -64,12 +80,46 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
           />
         )}
 
+        {/* Multi-Select Floating Checkbox (Always visible if isSelectMode or isSelected) */}
+        {(isSelectMode || isSelected) && (
+          <div className="absolute top-2.5 left-2.5 z-30 pointer-events-auto">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleSelect?.(pin.id, e);
+              }}
+              className={`w-6 h-6 rounded-lg flex items-center justify-center border transition shadow-md ${
+                isSelected
+                  ? 'bg-purple-600 border-purple-400 text-white'
+                  : 'bg-black/70 border-white/60 text-transparent hover:text-white/70'
+              }`}
+              title={isSelected ? 'Deselect item' : 'Select item'}
+            >
+              <Check className="w-4 h-4 stroke-[3]" />
+            </button>
+          </div>
+        )}
+
         {/* Minimal subtle hover scrim with quick bookmark and member trigger */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-3.5 flex flex-col justify-between pointer-events-none">
-          {/* Top minimal icons */}
           {/* Top minimal icons & Guardian AI Rank badge */}
           <div className="flex justify-between items-start pointer-events-auto">
             <div className="flex flex-col gap-1 items-start">
+              {/* If not in select mode, allow hover selection toggle */}
+              {!isSelectMode && !isSelected && onToggleSelect && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleSelect(pin.id, e);
+                  }}
+                  className="w-5 h-5 rounded-md bg-black/60 border border-white/40 text-transparent hover:text-white/80 hover:bg-black/90 flex items-center justify-center transition mb-1"
+                  title="Select for batch action"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                </button>
+              )}
               {pin.guardianAiRank && (
                 <span className="px-2 py-0.5 rounded-md bg-purple-600/90 text-white text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow flex items-center gap-1 border border-purple-400/50">
                   <SparklesIcon className="w-3 h-3 text-amber-300" />
@@ -105,7 +155,7 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
               <button
                 onClick={(e) => onMemberClick(pin.author, e)}
                 className="flex items-center gap-1.5 hover:text-purple-300 transition text-left group/author"
-                title={`View ${pin.author.name}'s Gallery & Projects`}
+                title={`View ${pin.author.name}'s Tribut & Projects`}
               >
                 <img
                   src={pin.author.avatar}
@@ -144,7 +194,7 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
   // ================= 2. DIPTYCHS AND TRIPTYCHS (Pairing 2 or 3 images side-by-side) =================
   if (style === 'diptych-triptych') {
     // Group pins into diptychs (pairs) and triptychs (triplets)
-    const chunks: GalleryPinItem[][] = [];
+    const chunks: TributPinItem[][] = [];
     for (let i = 0; i < pins.length; i += 3) {
       chunks.push(pins.slice(i, i + 3));
     }
@@ -389,11 +439,11 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
     const beforeImg =
       beforeAfterPin.beforeAfter?.beforeUrl ||
       pins[1]?.mediaUrl ||
-      '/images/gallery/adire_male_patchwork_1792082376155.jpg';
+      '/images/tribut/adire_male_patchwork_1792082376155.jpg';
     const afterImg =
       beforeAfterPin.beforeAfter?.afterUrl ||
       beforeAfterPin.mediaUrl ||
-      '/images/gallery/adire_male_jacket_1792082249653.jpg';
+      '/images/tribut/adire_male_jacket_1792082249653.jpg';
 
     return (
       <div className="space-y-6">
@@ -488,4 +538,4 @@ export const GalleryDisplayStyleRenderer: React.FC<GalleryDisplayStyleRendererPr
   );
 };
 
-export default GalleryDisplayStyleRenderer;
+export default TributDisplayStyleRenderer;

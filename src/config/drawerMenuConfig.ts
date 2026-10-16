@@ -117,10 +117,10 @@ export const DRAWER_MENU_CONFIG: DrawerMenuCategory[] = [
         icon: 'Ticket'
       },
       {
-        id: 'gallery',
-        title: 'Gallery',
-        description: 'Public media stream & showcase',
-        path: '/gallery',
+        id: 'tribut',
+        title: 'Tribut',
+        description: 'Public media stream & creative showcase',
+        path: '/tribut',
         icon: 'Image'
       },
       {

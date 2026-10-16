@@ -3,6 +3,7 @@ import { useAppContext } from '../contexts/AppContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import gemsService, { GemItem } from '../services/gemsService';
 import UniversalProfileCard from '../components/common/UniversalProfileCard';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 import {
   Sparkles,
   Radio,
@@ -240,6 +241,7 @@ const GemsPage: React.FC = () => {
       const res = await gemsService.redeemItem(selectedItemForPurchase.id);
       if (res.success) {
         showToast(res.message || `Successfully redeemed ${selectedItemForPurchase.title}!`, 'success');
+        voiceLineServiceInstance.playCommentaryVoiceLine('acquisition');
         if (res.newBalance !== undefined) {
           setUserBalance(res.newBalance);
         } else {
@@ -269,6 +271,7 @@ const GemsPage: React.FC = () => {
       if (res.success) {
         setUserBalance(res.newBalance != null ? res.newBalance : userBalance + selectedGemPack.gems);
         showToast(`Successfully added ${selectedGemPack.gems.toLocaleString()} Gems to your balance! 💎`, 'success');
+        voiceLineServiceInstance.playCommentaryVoiceLine('gems');
         setIsAddGemsModalOpen(false);
         refreshBalance();
       } else {
@@ -1163,7 +1166,7 @@ const GemsPage: React.FC = () => {
 
             <div className="py-5 space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-2.5">
                   Select Gem Tier
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -1203,7 +1206,7 @@ const GemsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-2">
                   Payment Method
                 </label>
                 <div className="grid grid-cols-3 gap-2">

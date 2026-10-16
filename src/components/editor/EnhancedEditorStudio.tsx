@@ -762,7 +762,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={socialUrl}
                     onChange={(e) => setSocialUrl(e.target.value)}
-                    placeholder="https://fingerprotocol.org/doc"
+                    placeholder="https://fingermobileprotocol.com/doc"
                     className="w-full p-2 text-xs border rounded-lg bg-white"
                   />
                 </div>
@@ -773,7 +773,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
                     type="text"
                     value={socialTitle}
                     onChange={(e) => setSocialTitle(e.target.value)}
-                    placeholder="FingerProtocol Specification"
+                    placeholder="fingermobileprotocol Specification"
                     className="w-full p-2 text-xs border rounded-lg bg-white"
                   />
                 </div>

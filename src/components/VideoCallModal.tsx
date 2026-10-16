@@ -1,21 +1,126 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  PhoneXMarkIcon,
+  MicrophoneIcon,
+  VideoCameraIcon,
+  VideoCameraSlashIcon,
+  ArrowsPointingOutIcon,
+  ArrowsPointingInIcon,
+  TvIcon,
+  LockClosedIcon,
+  SignalIcon,
+  SparklesIcon,
+  XMarkIcon
+} from '@heroicons/react/24/outline';
+import {
+  webRtcCallingService,
+  CallState,
+  CallQualityMetrics
+} from '../services/webRtcCallingService';
+
 interface VideoCallModalProps {
   isOpen: boolean;
   onClose: () => void;
   recipientName?: string;
   recipientAvatar?: string;
+  recipientId?: string;
+  role?: string;
+  isAiAgent?: boolean;
 }
 
 const VideoCallModal: React.FC<VideoCallModalProps> = ({
   isOpen,
   onClose,
-  recipientName = 'User',
-  recipientAvatar
+  recipientName = 'Sovereign Peer',
+  recipientAvatar,
+  recipientId = 'usr-peer',
+  role = 'Member',
+  isAiAgent = false
 }) => {
-  const [callStatus, setCallStatus] = useState<'connecting' | 'connected' | 'ended'>('connecting');
+  const [callState, setCallState] = useState<CallState>('idle');
   const [isMuted, setIsMuted] = useState(false);
-  const [isVideoOff, setIsVideoOff] = useState(false);
+  const [isVideoPaused, setIsVideoPaused] = useState(false);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
+  const [metrics, setMetrics] = useState<CallQualityMetrics | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
+  const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<any>(null);
+
+  // Initialize and handle WebRTC call session lifecycle
+  useEffect(() => {
+    if (!isOpen) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setCallDuration(0);
+      setCallState('idle');
+      return;
+    }
+
+    const unsubscribe = webRtcCallingService.subscribe({
+      onCallStateChange: (state) => {
+        setCallState(state);
+        if (state === 'connected') {
+          if (!timerRef.current) {
+            timerRef.current = setInterval(() => {
+              setCallDuration((prev) => prev + 1);
+            }, 1000);
+          }
+        } else if (state === 'ended' || state === 'failed') {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+        }
+      },
+      onLocalStream: (stream) => {
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
+      },
+      onRemoteStream: (stream) => {
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = stream;
+          remoteVideoRef.current.play().catch(() => {});
+        }
+      },
+      onQualityMetrics: (qMetrics) => {
+        setMetrics(qMetrics);
+      }
+    });
+
+    // Start WebRTC Call
+    webRtcCallingService.startCall(
+      {
+        id: recipientId,
+        name: recipientName,
+        avatar: recipientAvatar,
+        role,
+        isAiAgent
+      },
+      'video'
+    );
+
+    // Initial stream binding if already cached
+    const currentLocal = webRtcCallingService.getLocalStream();
+    if (localVideoRef.current && currentLocal) {
+      localVideoRef.current.srcObject = currentLocal;
+    }
+    const currentRemote = webRtcCallingService.getRemoteStream();
+    if (remoteVideoRef.current && currentRemote) {
+      remoteVideoRef.current.srcObject = currentRemote;
+    }
+
+    return () => {
+      unsubscribe();
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [isOpen, recipientId, recipientName, recipientAvatar, role, isAiAgent]);
 
   if (!isOpen) return null;
 
@@ -25,134 +130,237 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleToggleMute = () => {
+    const muted = webRtcCallingService.toggleMute();
+    setIsMuted(muted);
+  };
+
+  const handleToggleVideo = () => {
+    const paused = webRtcCallingService.toggleVideo();
+    setIsVideoPaused(paused);
+  };
+
+  const handleToggleScreenShare = async () => {
+    const sharing = await webRtcCallingService.toggleScreenShare();
+    setIsScreenSharing(sharing);
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      setIsFullscreen(false);
+    }
+  };
+
   const handleEndCall = () => {
-    setCallStatus('ended');
+    webRtcCallingService.endCall();
+    if (timerRef.current) clearInterval(timerRef.current);
     setTimeout(() => {
       onClose();
-    }, 1500);
+    }, 600);
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Full Screen Video Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900" />
-
-      {/* Content */}
-      <div className="relative h-full flex flex-col items-center justify-between p-8">
-        {/* Top Bar */}
-        <div className="w-full flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/90 backdrop-blur-md animate-fadeIn">
+      {/* Video Call Modal Container */}
+      <div
+        ref={containerRef}
+        className="relative w-full max-w-5xl h-[88vh] max-h-[780px] bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between"
+      >
+        {/* Top Control Bar (Overlay) */}
+        <div className="relative z-30 flex items-center justify-between p-4 bg-gradient-to-b from-slate-950/90 via-slate-950/50 to-transparent">
+          {/* Peer Info & Cryptographic Status */}
           <div className="flex items-center gap-3">
             {recipientAvatar ? (
-              <img src={recipientAvatar} alt={recipientName} className="w-12 h-12 rounded-full border-2 border-white"  />
+              <img
+                src={recipientAvatar}
+                alt={recipientName}
+                className="w-10 h-10 rounded-full object-cover border-2 border-emerald-400"
+              />
             ) : (
-              <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white text-xl font-bold">
+              <div className="w-10 h-10 rounded-full bg-orange-600 flex items-center justify-center font-bold text-white text-sm">
                 {recipientName.charAt(0)}
               </div>
             )}
+
             <div>
-              <h3 className="text-white font-semibold">{recipientName}</h3>
-              <p className="text-gray-300 text-sm">
-                {callStatus === 'connecting' && 'Calling...'}
-                {callStatus === 'connected' && formatDuration(callDuration)}
-                {callStatus === 'ended' && 'Call ended'}
-              </p>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-black text-white">{recipientName}</h3>
+                {isAiAgent && (
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-500/30 text-purple-300 border border-purple-400/40 flex items-center gap-1 font-bold">
+                    <SparklesIcon className="w-3 h-3" />
+                    Pipecat Vision
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-[11px] text-slate-300">
+                <span className="flex items-center gap-1 text-emerald-400 font-bold">
+                  <LockClosedIcon className="w-3 h-3" />
+                  STERCS™ 1080p HD
+                </span>
+                <span>•</span>
+                <span>
+                  {callState === 'connected' ? formatDuration(callDuration) : callState}
+                </span>
+              </div>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="text-white hover:bg-white/20 rounded-full p-2 transition-colors"
-          >
-            ✕
-          </button>
+          {/* Right Metrics & Close */}
+          <div className="flex items-center gap-2">
+            {metrics && (
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300 text-xs">
+                <SignalIcon className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{metrics.latencyMs}ms</span>
+                <span>•</span>
+                <span>{metrics.resolution}</span>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleToggleFullscreen}
+              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+              title="Toggle Fullscreen"
+            >
+              {isFullscreen ? (
+                <ArrowsPointingInIcon className="w-4 h-4" />
+              ) : (
+                <ArrowsPointingOutIcon className="w-4 h-4" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleEndCall}
+              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+              title="Close modal"
+            >
+              <XMarkIcon className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Main Video Area */}
-        <div className="flex-1 flex items-center justify-center w-full max-w-4xl">
-          {callStatus === 'connecting' && (
-            <div className="text-center">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mb-4 animate-pulse">
-                {recipientAvatar ? (
-                  <img src={recipientAvatar} alt={recipientName} className="w-full h-full rounded-full object-cover"  />
-                ) : (
-                  <span className="text-6xl text-white font-bold">{recipientName.charAt(0)}</span>
-                )}
+        {/* Main Stage: Remote Video Stream */}
+        <div className="relative flex-1 bg-slate-900 flex items-center justify-center overflow-hidden">
+          {/* Active Remote Video Stream */}
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className="w-full h-full object-cover"
+          />
+
+          {/* Fallback Overlay if Remote is connecting or not yet video-transmitting */}
+          {callState !== 'connected' && (
+            <div className="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center z-10 p-6 text-center">
+              <div className="relative mb-4">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 animate-pulse flex items-center justify-center text-4xl text-white font-black shadow-2xl">
+                  {recipientName.charAt(0)}
+                </div>
+                <div className="absolute -inset-2 rounded-full border-2 border-emerald-400/50 animate-ping" />
               </div>
-              <p className="text-white text-xl">Connecting...</p>
+              <h4 className="text-lg font-black text-white">{recipientName}</h4>
+              <p className="text-xs text-slate-400 mt-1">
+                {callState === 'initiating' && 'Negotiating WebRTC DTLS Offer & ICE Candidates...'}
+                {callState === 'ringing' && 'Ringing remote peer camera feed...'}
+                {callState === 'failed' && 'Session error. Please retry.'}
+              </p>
             </div>
           )}
 
-          {callStatus === 'connected' && (
-            <div className="relative w-full h-full bg-black rounded-lg overflow-hidden">
-              {/* Remote Video (placeholder) */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                <span className="text-white text-lg">Remote video stream</span>
-              </div>
+          {/* Picture-in-Picture: Local Camera Preview */}
+          <div className="absolute bottom-6 right-6 z-20 w-36 h-48 sm:w-48 sm:h-64 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-slate-950 group">
+            <video
+              ref={localVideoRef}
+              autoPlay
+              playsInline
+              muted
+              className={`w-full h-full object-cover transform -scale-x-100 ${
+                isVideoPaused ? 'hidden' : 'block'
+              }`}
+            />
 
-              {/* Local Video Preview */}
-              <div className="absolute bottom-4 right-4 w-32 h-48 bg-gray-800 rounded-lg border-2 border-white overflow-hidden">
-                {!isVideoOff ? (
-                  <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                    <span className="text-white text-xs">You</span>
-                  </div>
-                ) : (
-                  <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-                    <span className="text-gray-500 text-2xl">📹</span>
-                  </div>
-                )}
+            {isVideoPaused && (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-2 text-center">
+                <VideoCameraSlashIcon className="w-8 h-8 text-slate-500 mb-1" />
+                <span className="text-[10px] font-bold">Camera Paused</span>
               </div>
-            </div>
-          )}
+            )}
 
-          {callStatus === 'ended' && (
-            <div className="text-center">
-              <div className="text-6xl mb-4">📞</div>
-              <p className="text-white text-2xl font-bold">Call Ended</p>
-              <p className="text-gray-300 mt-2">Duration: {formatDuration(callDuration)}</p>
+            {/* Local Stream Tag */}
+            <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-950/70 backdrop-blur-sm border border-slate-700 text-[10px] font-bold text-slate-200">
+              You {isScreenSharing ? '(Screen)' : ''}
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Control Buttons */}
-        <div className="flex items-center gap-4">
-          {/* Mute Button */}
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-              isMuted ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-          >
-            <span className="text-white text-2xl">{isMuted ? '🔇' : '🎤'}</span>
-          </button>
+        {/* Bottom Floating Control Bar */}
+        <div className="relative z-30 p-4 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent flex items-center justify-center">
+          <div className="flex items-center gap-3 sm:gap-4 p-2 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-lg">
+            {/* Microphone Toggle */}
+            <button
+              type="button"
+              onClick={handleToggleMute}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+                isMuted
+                  ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+              }`}
+              title={isMuted ? 'Unmute Mic' : 'Mute Mic'}
+            >
+              <MicrophoneIcon className="w-5 h-5" />
+            </button>
 
-          {/* Video Toggle */}
-          <button
-            onClick={() => setIsVideoOff(!isVideoOff)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-              isVideoOff ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-          >
-            <span className="text-white text-2xl">{isVideoOff ? '📹' : '🎥'}</span>
-          </button>
+            {/* Camera Toggle */}
+            <button
+              type="button"
+              onClick={handleToggleVideo}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+                isVideoPaused
+                  ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+              }`}
+              title={isVideoPaused ? 'Resume Camera' : 'Pause Camera'}
+            >
+              {isVideoPaused ? (
+                <VideoCameraSlashIcon className="w-5 h-5" />
+              ) : (
+                <VideoCameraIcon className="w-5 h-5" />
+              )}
+            </button>
 
-          {/* End Call */}
-          <button
-            onClick={handleEndCall}
-            className="w-16 h-16 rounded-full bg-red-600 hover:bg-red-700 flex items-center justify-center transition-all transform hover:scale-110"
-          >
-            <span className="text-white text-3xl">📞</span>
-          </button>
+            {/* Screen Sharing Toggle */}
+            <button
+              type="button"
+              onClick={handleToggleScreenShare}
+              className={`p-3.5 rounded-xl flex items-center justify-center transition-all ${
+                isScreenSharing
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+              }`}
+              title="Share Screen"
+            >
+              <TvIcon className="w-5 h-5" />
+            </button>
 
-          {/* Speaker */}
-          <button className="w-14 h-14 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-all">
-            <span className="text-white text-2xl">🔊</span>
-          </button>
-
-          {/* More Options */}
-          <button className="w-14 h-14 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-all">
-            <span className="text-white text-2xl">⋯</span>
-          </button>
+            {/* End Call Button */}
+            <button
+              type="button"
+              onClick={handleEndCall}
+              className="px-6 py-3.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black flex items-center gap-2 shadow-lg shadow-red-600/40 transition-transform active:scale-95"
+              title="End Video Session"
+            >
+              <PhoneXMarkIcon className="w-5 h-5" />
+              <span className="text-xs uppercase tracking-wider hidden sm:inline">End Call</span>
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   );

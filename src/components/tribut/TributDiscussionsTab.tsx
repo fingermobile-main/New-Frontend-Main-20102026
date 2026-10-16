@@ -9,16 +9,16 @@ import {
 import {
   DesignDiscussionItem,
   COMMUNITY_DESIGN_DISCUSSIONS,
-  GalleryPinItem
-} from '../../data/galleryData';
+  TributPinItem
+} from '../../data/tributData';
 
-interface GalleryDiscussionsTabProps {
-  allPins: GalleryPinItem[];
-  onSelectPin: (pin: GalleryPinItem) => void;
-  onMemberClick: (author: GalleryPinItem['author'], e: React.MouseEvent) => void;
+interface TributDiscussionsTabProps {
+  allPins: TributPinItem[];
+  onSelectPin: (pin: TributPinItem) => void;
+  onMemberClick: (author: TributPinItem['author'], e: React.MouseEvent) => void;
 }
 
-export const GalleryDiscussionsTab: React.FC<GalleryDiscussionsTabProps> = ({
+export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
   allPins,
   onSelectPin,
   onMemberClick
@@ -339,4 +339,4 @@ export const GalleryDiscussionsTab: React.FC<GalleryDiscussionsTabProps> = ({
   );
 };
 
-export default GalleryDiscussionsTab;
+export default TributDiscussionsTab;

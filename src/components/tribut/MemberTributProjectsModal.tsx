@@ -11,23 +11,23 @@ import {
   ChevronRightIcon
 } from '../../icons';
 import {
-  GalleryPinItem,
+  TributPinItem,
   UserProjectBoard,
   COMMUNITY_DESIGN_DISCUSSIONS
-} from '../../data/galleryData';
+} from '../../data/tributData';
 
-interface MemberGalleryProjectsModalProps {
-  author: GalleryPinItem['author'];
-  allPins: GalleryPinItem[];
+interface MemberTributProjectsModalProps {
+  author: TributPinItem['author'];
+  allPins: TributPinItem[];
   allBoards: UserProjectBoard[];
   savedPinIds: string[];
   onClose: () => void;
-  onSelectPin: (pin: GalleryPinItem) => void;
-  onToggleSavePin: (pin: GalleryPinItem, e?: React.MouseEvent) => void;
-  onOpenDownloadModal: (pin: GalleryPinItem) => void;
+  onSelectPin: (pin: TributPinItem) => void;
+  onToggleSavePin: (pin: TributPinItem, e?: React.MouseEvent) => void;
+  onOpenDownloadModal: (pin: TributPinItem) => void;
 }
 
-export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProps> = ({
+export const MemberTributProjectsModal: React.FC<MemberTributProjectsModalProps> = ({
   author,
   allPins,
   allBoards,
@@ -37,7 +37,7 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
   onToggleSavePin,
   onOpenDownloadModal
 }) => {
-  const [activeTab, setActiveTab] = useState<'gallery' | 'boards' | 'discussions' | 'store'>('gallery');
+  const [activeTab, setActiveTab] = useState<'tribut' | 'boards' | 'discussions' | 'store'>('tribut');
   const [isFollowing, setIsFollowing] = useState(false);
 
   // Filter member's pins
@@ -131,7 +131,7 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
           {/* Quick Stats Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 mt-6 border-t border-white/10 text-xs">
             <div>
-              <span className="block text-slate-400 font-medium">Published Gallery Pins</span>
+              <span className="block text-slate-400 font-medium">Published Tribut Pins</span>
               <strong className="text-lg font-black text-white">{displayPins.length} Pins</strong>
             </div>
             <div>
@@ -152,14 +152,14 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
         {/* ================= NAVIGATION TABS ================= */}
         <div className="px-6 py-3 border-b border-slate-200 bg-slate-50 flex items-center gap-2 overflow-x-auto">
           <button
-            onClick={() => setActiveTab('gallery')}
+            onClick={() => setActiveTab('tribut')}
             className={`py-2 px-4 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-              activeTab === 'gallery'
+              activeTab === 'tribut'
                 ? 'bg-purple-600 text-white shadow-sm'
                 : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200'
             }`}
           >
-            1. Member's Gallery ({displayPins.length})
+            1. Member's Tribut ({displayPins.length})
           </button>
 
           <button
@@ -196,9 +196,9 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
           </button>
         </div>
 
-        {/* ================= TAB 1: MEMBER'S GALLERY PINS ================= */}
+        {/* ================= TAB 1: MEMBER'S TRIBUT PINS ================= */}
         <div className="p-6 overflow-y-auto flex-1">
-          {activeTab === 'gallery' && (
+          {activeTab === 'tribut' && (
             <div className="space-y-4">
               <div className="flex justify-between items-center text-xs">
                 <span className="font-bold text-slate-800">
@@ -369,7 +369,7 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
           {activeTab === 'store' && (
             <div className="space-y-4">
               <div className="text-xs text-slate-700">
-                Products linked to {author.name}'s gallery pins with live e-commerce inventory sync. Earn commission on every Buy & Share.
+                Products linked to {author.name}'s tribut pins with live e-commerce inventory sync. Earn commission on every Buy & Share.
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -423,4 +423,4 @@ export const MemberGalleryProjectsModal: React.FC<MemberGalleryProjectsModalProp
   );
 };
 
-export default MemberGalleryProjectsModal;
+export default MemberTributProjectsModal;

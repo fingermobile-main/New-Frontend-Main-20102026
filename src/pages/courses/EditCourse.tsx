@@ -278,10 +278,10 @@ const EditCourse: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
           Edit Course
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-slate-700 dark:text-slate-300 font-semibold mt-2">
           Update your educational course content
         </p>
       </div>
@@ -292,7 +292,7 @@ const EditCourse: React.FC = () => {
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1"
               >
                 Course Title
               </label>
@@ -305,18 +305,18 @@ const EditCourse: React.FC = () => {
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.title
                     ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
-                } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                    : 'border-slate-300 dark:border-gray-600'
+                } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
                 placeholder="Enter course title" />
               {errors.title && (
-                <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+                <p className="mt-1 text-sm text-red-500 font-bold">{errors.title}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1"
               >
                 Category
               </label>
@@ -329,18 +329,18 @@ const EditCourse: React.FC = () => {
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.category
                     ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
-                } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                    : 'border-slate-300 dark:border-gray-600'
+                } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
                 placeholder="e.g., Music Production, Design, etc." />
               {errors.category && (
-                <p className="mt-1 text-sm text-red-500">{errors.category}</p>
+                <p className="mt-1 text-sm text-red-500 font-bold">{errors.category}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="price"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1"
               >
                 Price (FIC)
               </label>
@@ -355,19 +355,19 @@ const EditCourse: React.FC = () => {
                 className={`w-full px-3 py-2 border rounded-lg ${
                   errors.price
                     ? 'border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
-                } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                    : 'border-slate-300 dark:border-gray-600'
+                } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
                 placeholder="0.00"
               />
               {errors.price && (
-                <p className="mt-1 text-sm text-red-500">{errors.price}</p>
+                <p className="mt-1 text-sm text-red-500 font-bold">{errors.price}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="level"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1"
               >
                 Difficulty Level
               </label>
@@ -376,7 +376,7 @@ const EditCourse: React.FC = () => {
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -388,7 +388,7 @@ const EditCourse: React.FC = () => {
           <div className="mb-6">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1"
             >
               Description
             </label>
@@ -401,12 +401,12 @@ const EditCourse: React.FC = () => {
               className={`w-full px-3 py-2 border rounded-lg ${
                 errors.description
                   ? 'border-red-500'
-                  : 'border-gray-300 dark:border-gray-600'
-              } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                  : 'border-slate-300 dark:border-gray-600'
+              } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
               placeholder="Describe what students will learn in this course"
             />
             {errors.description && (
-              <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+              <p className="mt-1 text-sm text-red-500 font-bold">{errors.description}</p>
             )}
           </div>
 
@@ -431,7 +431,7 @@ const EditCourse: React.FC = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex-1 mr-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">
                       Module {moduleIndex + 1} Title
                     </label>
                     <input
@@ -442,15 +442,15 @@ const EditCourse: React.FC = () => {
                       className={`w-full px-3 py-2 border rounded-lg ${
                         errors[`module_${moduleIndex}_title`]
                           ? 'border-red-500'
-                          : 'border-gray-300 dark:border-gray-600'
-                      } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                          : 'border-slate-300 dark:border-gray-600'
+                      } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
                       placeholder="e.g., Introduction"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => removeModule(moduleIndex)}
-                    className="mt-6 text-red-500 hover:text-red-700"
+                    className="mt-6 text-red-500 hover:text-red-700 font-bold"
                   >
                     Remove
                   </button>
@@ -458,13 +458,13 @@ const EditCourse: React.FC = () => {
 
                 <div className="ml-6 space-y-4">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-200">
                       Lessons
                     </h3>
                     <button
                       type="button"
                       onClick={() => addLesson(moduleIndex)}
-                      className="text-xs font-medium text-purple-600 hover:text-purple-700"
+                      className="text-xs font-bold text-purple-600 hover:text-purple-700"
                     >
                       + Add Lesson
                     </button>
@@ -473,19 +473,19 @@ const EditCourse: React.FC = () => {
                   {module.lessons.map((lesson, lessonIndex) => (
                     <div
                       key={lessonIndex}
-                      className="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg relative"
+                      className="p-3 bg-slate-50 dark:bg-gray-900/50 rounded-lg relative border border-slate-200 dark:border-gray-800"
                     >
                       <button
                         type="button"
                         onClick={() => removeLesson(moduleIndex, lessonIndex)}
-                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                        className="absolute top-2 right-2 text-slate-500 hover:text-red-500 font-bold"
                       >
                         ×
                       </button>
 
                       <div className="grid grid-cols-1 gap-3">
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                          <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                             Lesson {lessonIndex + 1} Title
                           </label>
                           <input
@@ -498,19 +498,19 @@ const EditCourse: React.FC = () => {
                               e.target.value,
                             )
                             }
-                            className={`w-full px-2 py-1 text-sm border rounded ${
+                            className={`w-full px-3 py-2 text-sm border rounded-lg ${
                               errors[
                                 `module_${moduleIndex}_lesson_${lessonIndex}_title`
                               ]
                                 ? 'border-red-500'
-                                : 'border-gray-300 dark:border-gray-600'
-                            } bg-white dark:bg-gray-700 text-gray-900 dark:text-white`}
+                                : 'border-slate-300 dark:border-gray-600'
+                            } bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm`}
                             placeholder="Lesson title"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                          <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                             Content
                           </label>
                           <textarea
@@ -524,14 +524,14 @@ const EditCourse: React.FC = () => {
                               )
                             }
                             rows={2}
-                            className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
                             placeholder="Lesson content or description"
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                            <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                               Video URL
                             </label>
                             <input
@@ -544,13 +544,13 @@ const EditCourse: React.FC = () => {
                                 e.target.value,
                               )
                               }
-                              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
                               placeholder="https://example.com/video"
                             />
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                            <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                               Duration (minutes)
                             </label>
                             <input
@@ -565,7 +565,7 @@ const EditCourse: React.FC = () => {
                                 )
                               }
                               min="0"
-                              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              className="w-full px-2 py-1 text-sm border border-slate-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-slate-900 dark:text-white font-bold shadow-sm"
                               placeholder="0"
                             />
                           </div>

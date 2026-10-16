@@ -69,7 +69,7 @@ const COMMAND_BANK: CommandSnippet[] = [
     category: 'Overlays & Motion',
     title: 'Neon Hologram Watermark',
     code: 'OVERLAY watermark POSITION top-right OPACITY 85% GLOW #00ffcc',
-    description: 'Official FingerProtocol animated security watermark'
+    description: 'Official fingermobileprotocol animated security watermark'
   },
   {
     id: 'cmd-08',

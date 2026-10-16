@@ -1243,7 +1243,7 @@ const StorefrontPage: React.FC = () => {
 
               <form onSubmit={handleCreateProduct} className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-slate-400 font-bold mb-1">Item Name</label>
+                  <label className="block text-slate-200 font-bold mb-1">Item Name</label>
                   <input
                     type="text"
                     required
@@ -1256,7 +1256,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Goods Type</label>
+                    <label className="block text-slate-200 font-bold mb-1">Goods Type</label>
                     <select
                       value={newProductForm.goods_type}
                       onChange={(e: any) => setNewProductForm({ ...newProductForm, goods_type: e.target.value })}
@@ -1268,7 +1268,7 @@ const StorefrontPage: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">SKU</label>
+                    <label className="block text-slate-200 font-bold mb-1">SKU</label>
                     <input
                       type="text"
                       value={newProductForm.sku}
@@ -1281,7 +1281,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Base Price (FIC)</label>
+                    <label className="block text-slate-200 font-bold mb-1">Base Price (FIC)</label>
                     <input
                       type="number"
                       required
@@ -1291,7 +1291,7 @@ const StorefrontPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Promo Price</label>
+                    <label className="block text-slate-200 font-bold mb-1">Promo Price</label>
                     <input
                       type="number"
                       value={newProductForm.discount_price}
@@ -1300,7 +1300,7 @@ const StorefrontPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Stock Quantity</label>
+                    <label className="block text-slate-200 font-bold mb-1">Stock Quantity</label>
                     <input
                       type="number"
                       value={newProductForm.stock}
@@ -1311,7 +1311,7 @@ const StorefrontPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 font-bold mb-1">Description</label>
+                  <label className="block text-slate-200 font-bold mb-1">Description</label>
                   <textarea
                     rows={2}
                     value={newProductForm.description}
@@ -1394,7 +1394,7 @@ const StorefrontPage: React.FC = () => {
 
               <form onSubmit={handleUpdateProduct} className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-slate-400 font-bold mb-1">Item Name</label>
+                  <label className="block text-slate-200 font-bold mb-1">Item Name</label>
                   <input
                     type="text"
                     required
@@ -1406,7 +1406,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Goods Type</label>
+                    <label className="block text-slate-200 font-bold mb-1">Goods Type</label>
                     <select
                       value={editingProduct.goods_type}
                       onChange={(e: any) => setEditingProduct({ ...editingProduct, goods_type: e.target.value })}
@@ -1418,7 +1418,7 @@ const StorefrontPage: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">SKU</label>
+                    <label className="block text-slate-200 font-bold mb-1">SKU</label>
                     <input
                       type="text"
                       value={editingProduct.sku}
@@ -1430,7 +1430,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Price (FIC)</label>
+                    <label className="block text-slate-200 font-bold mb-1">Price (FIC)</label>
                     <input
                       type="number"
                       required
@@ -1440,7 +1440,7 @@ const StorefrontPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Promo Price</label>
+                    <label className="block text-slate-200 font-bold mb-1">Promo Price</label>
                     <input
                       type="number"
                       value={editingProduct.discount_price || ''}
@@ -1449,7 +1449,7 @@ const StorefrontPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Current Stock</label>
+                    <label className="block text-slate-200 font-bold mb-1">Current Stock</label>
                     <input
                       type="number"
                       value={editingProduct.stock}
@@ -1461,7 +1461,7 @@ const StorefrontPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Reorder Point Threshold</label>
+                    <label className="block text-slate-200 font-bold mb-1">Reorder Point Threshold</label>
                     <input
                       type="number"
                       value={editingProduct.reorder_point || 5}
@@ -1470,7 +1470,7 @@ const StorefrontPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-bold mb-1">Category</label>
+                    <label className="block text-slate-200 font-bold mb-1">Category</label>
                     <input
                       type="text"
                       value={editingProduct.category}
@@ -1481,7 +1481,7 @@ const StorefrontPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 font-bold mb-1">Description</label>
+                  <label className="block text-slate-200 font-bold mb-1">Description</label>
                   <textarea
                     rows={2}
                     value={editingProduct.description}

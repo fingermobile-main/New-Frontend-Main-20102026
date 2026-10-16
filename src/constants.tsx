@@ -278,7 +278,7 @@ export const FAQ_DATA = [
   {
     question: 'How do I contact customer support?',
     answer:
-      'You can reach our support team by submitting a ticket through this page, or by emailing support@fingerprotocol.com. Our team typically responds within 24 hours.'
+      'You can reach our support team by submitting a ticket through this page, or by emailing support@fingermobileprotocol.com. Our team typically responds within 24 hours.'
   },
   {
     question: 'What are Gems and how do I earn them?',

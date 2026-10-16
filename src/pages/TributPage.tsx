@@ -5,66 +5,69 @@ import {
   SparklesIcon,
   BookmarkIcon,
   ShoppingBagIcon,
-  ShareIcon,
   EyeIcon,
   PlusIcon,
   XMarkIcon,
-  ShieldIcon,
   InformationCircleIcon,
   MagnifyingGlassIcon,
   ChatBubbleIcon,
   ArrowDownTrayIcon,
   SwatchIcon,
-  Squares2X2Icon,
   GridIcon
 } from '../icons';
+import { Trash2, Layers, UploadCloud } from 'lucide-react';
 
 import {
-  GALLERY_PINS_DATA,
-  GalleryPinItem,
+  TRIBUT_PINS_DATA,
+  TributPinItem,
   USER_PROJECT_BOARDS,
   UserProjectBoard,
-  GALLERY_ECOSYSTEM_STATS,
-  GALLERY_DISPLAY_STYLES,
-  GalleryDisplayStyle,
+  TRIBUT_ECOSYSTEM_STATS,
+  TRIBUT_DISPLAY_STYLES,
+  TributDisplayStyle,
   PinCommentItem
-} from '../data/galleryData';
+} from '../data/tributData';
 
-import FingerMobilePinDetailModal from '../components/gallery/FingerMobilePinDetailModal';
-import GalleryDisplayStyleRenderer from '../components/gallery/GalleryDisplayStyleRenderer';
-import MemberGalleryProjectsModal from '../components/gallery/MemberGalleryProjectsModal';
-import GalleryCreatorUploadModal from '../components/gallery/GalleryCreatorUploadModal';
-import GalleryDownloadModal from '../components/gallery/GalleryDownloadModal';
-import GalleryDiscussionsTab from '../components/gallery/GalleryDiscussionsTab';
+import TributPinDetailModal from '../components/tribut/TributPinDetailModal';
+import TributDisplayStyleRenderer from '../components/tribut/TributDisplayStyleRenderer';
+import MemberTributProjectsModal from '../components/tribut/MemberTributProjectsModal';
+import TributCreatorUploadModal from '../components/tribut/TributCreatorUploadModal';
+import TributDownloadModal from '../components/tribut/TributDownloadModal';
+import TributDiscussionsTab from '../components/tribut/TributDiscussionsTab';
 
-type GalleryViewTab = 'smart-feed' | 'search-feed' | 'my-boards' | 'discussions' | 'monetization';
+type TributViewTab = 'smart-feed' | 'search-feed' | 'my-boards' | 'discussions' | 'monetization';
 
-const GalleryPage: React.FC = () => {
+export const TributPage: React.FC = () => {
   const { ficBalance, showToast } = useAppContext();
 
   // Navigation State
-  const [activeTab, setActiveTab] = useState<GalleryViewTab>('smart-feed');
+  const [activeTab, setActiveTab] = useState<TributViewTab>('smart-feed');
 
   // Pins & Board State
-  const [pinsList, setPinsList] = useState<GalleryPinItem[]>(GALLERY_PINS_DATA);
+  const [pinsList, setPinsList] = useState<TributPinItem[]>(TRIBUT_PINS_DATA);
   const [userBoards, setUserBoards] = useState<UserProjectBoard[]>(USER_PROJECT_BOARDS);
   const [savedPinIds, setSavedPinIds] = useState<string[]>(['pin-silver-fox', 'pin-diptych-01', 'pin-01', 'pin-02', 'pin-04']);
 
+  // Batch Selection & Deletion State
+  const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isBatchDeleting, setIsBatchDeleting] = useState<boolean>(false);
+
   // ================= 2-HOUR DISPLAY STYLE ROTATION & MEMBER SETTINGS =================
-  const get2HourRotationStyle = (): GalleryDisplayStyle => {
+  const get2HourRotationStyle = (): TributDisplayStyle => {
     const twoHoursMs = 2 * 60 * 60 * 1000;
-    const index = Math.floor(Date.now() / twoHoursMs) % GALLERY_DISPLAY_STYLES.length;
-    return GALLERY_DISPLAY_STYLES[index].id;
+    const index = Math.floor(Date.now() / twoHoursMs) % TRIBUT_DISPLAY_STYLES.length;
+    return TRIBUT_DISPLAY_STYLES[index].id;
   };
 
   const [autoRotateEvery2Hours, setAutoRotateEvery2Hours] = useState<boolean>(() => {
-    const saved = localStorage.getItem('fm_gallery_auto_rotate');
+    const saved = localStorage.getItem('fm_tribut_auto_rotate') || localStorage.getItem('fm_gallery_auto_rotate');
     return saved !== null ? saved === 'true' : true;
   });
 
-  const [displayStyle, setDisplayStyle] = useState<GalleryDisplayStyle>(() => {
-    const saved = localStorage.getItem('fm_gallery_display_style');
-    if (saved) return saved as GalleryDisplayStyle;
+  const [displayStyle, setDisplayStyle] = useState<TributDisplayStyle>(() => {
+    const saved = localStorage.getItem('fm_tribut_display_style') || localStorage.getItem('fm_gallery_display_style');
+    if (saved) return saved as TributDisplayStyle;
     return get2HourRotationStyle();
   });
 
@@ -101,26 +104,72 @@ const GalleryPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [autoRotateEvery2Hours]);
 
-  const handleSelectDisplayStyle = (styleId: GalleryDisplayStyle) => {
+  const handleSelectDisplayStyle = (styleId: TributDisplayStyle) => {
     setDisplayStyle(styleId);
     setAutoRotateEvery2Hours(false);
-    localStorage.setItem('fm_gallery_display_style', styleId);
-    localStorage.setItem('fm_gallery_auto_rotate', 'false');
+    localStorage.setItem('fm_tribut_display_style', styleId);
+    localStorage.setItem('fm_tribut_auto_rotate', 'false');
     setShowStyleMenu(false);
-    const chosen = GALLERY_DISPLAY_STYLES.find((s) => s.id === styleId);
+    const chosen = TRIBUT_DISPLAY_STYLES.find((s) => s.id === styleId);
     showToast(`Display style locked to: ${chosen?.label || styleId}`, 'info');
   };
 
   const handleToggleAutoRotate = () => {
     const nextVal = !autoRotateEvery2Hours;
     setAutoRotateEvery2Hours(nextVal);
-    localStorage.setItem('fm_gallery_auto_rotate', String(nextVal));
+    localStorage.setItem('fm_tribut_auto_rotate', String(nextVal));
     if (nextVal) {
       const current = get2HourRotationStyle();
       setDisplayStyle(current);
       showToast('Auto-rotation every 2 hours enabled!', 'success');
     } else {
       showToast('Auto-rotation paused. Manual display mode locked.', 'info');
+    }
+  };
+
+  // Batch Selection Handlers
+  const handleToggleSelect = (id: string, e?: React.MouseEvent) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedIds.length === filteredPins.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filteredPins.map((p) => p.id));
+    }
+  };
+
+  const handleBatchDelete = async () => {
+    if (selectedIds.length === 0) return;
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${selectedIds.length} selected item(s) from Tribut? This action cannot be undone.`
+    );
+    if (!confirmDelete) return;
+
+    setIsBatchDeleting(true);
+    try {
+      const res = await fetch('/api/tribut/pins/batch', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: selectedIds })
+      });
+
+      if (res.ok) {
+        showToast(`Successfully deleted ${selectedIds.length} item(s) from Tribut`, 'success');
+      } else {
+        showToast('Items marked as deleted in local session', 'info');
+      }
+    } catch (err) {
+      showToast('Items deleted locally (network notice)', 'info');
+    } finally {
+      setPinsList((prev) => prev.filter((p) => !selectedIds.includes(p.id)));
+      setSelectedIds([]);
+      setIsSelectMode(false);
+      setIsBatchDeleting(false);
     }
   };
 
@@ -137,13 +186,13 @@ const GalleryPage: React.FC = () => {
   const [ugcSourceFilter, setUgcSourceFilter] = useState<string>('all');
 
   // Modals & Drawers
-  const [activePinDetail, setActivePinDetail] = useState<GalleryPinItem | null>(null);
-  const [selectedMember, setSelectedMember] = useState<GalleryPinItem['author'] | null>(null);
+  const [activePinDetail, setActivePinDetail] = useState<TributPinItem | null>(null);
+  const [selectedMember, setSelectedMember] = useState<TributPinItem['author'] | null>(null);
   const [showPillarsModal, setShowPillarsModal] = useState<boolean>(false);
   const [showUploadPinModal, setShowUploadPinModal] = useState<boolean>(false);
-  const [showSaveToBoardModal, setShowSaveToBoardModal] = useState<GalleryPinItem | null>(null);
+  const [showSaveToBoardModal, setShowSaveToBoardModal] = useState<TributPinItem | null>(null);
   const [selectedBoardIdToSave, setSelectedBoardIdToSave] = useState<string>('brd-01');
-  const [downloadTargetPin, setDownloadTargetPin] = useState<GalleryPinItem | null>(null);
+  const [downloadTargetPin, setDownloadTargetPin] = useState<TributPinItem | null>(null);
   const [downloadTargetBoard, setDownloadTargetBoard] = useState<UserProjectBoard | null>(null);
 
   // Close modals on Escape key press
@@ -218,7 +267,7 @@ const GalleryPage: React.FC = () => {
     });
 
   // Handle Save (Pin Use)
-  const handleToggleSavePin = (pin: GalleryPinItem, e?: React.MouseEvent) => {
+  const handleToggleSavePin = (pin: TributPinItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const isSaved = savedPinIds.includes(pin.id);
 
@@ -248,9 +297,9 @@ const GalleryPage: React.FC = () => {
   };
 
   // Handle Share to Earn
-  const handleShareToEarn = (pin: GalleryPinItem, e?: React.MouseEvent) => {
+  const handleShareToEarn = (pin: TributPinItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const shareLink = `http://localhost:3000/gallery?pin=${pin.id}&ref=FM-MEMBER-0842`;
+    const shareLink = `http://localhost:3000/tribut?pin=${pin.id}&ref=FM-MEMBER-0842`;
     navigator.clipboard?.writeText?.(shareLink);
     const comm = pin.shopping ? `${pin.shopping.buyAndShareCommissionPercent}%` : '5%';
     showToast(
@@ -260,7 +309,7 @@ const GalleryPage: React.FC = () => {
   };
 
   // Handle Outbound Checkout
-  const handleOutboundCheckout = (pin: GalleryPinItem) => {
+  const handleOutboundCheckout = (pin: TributPinItem) => {
     if (!pin.shopping) return;
     showToast(
       `Initiating instant checkout via ${pin.shopping.storeEngine} gateway for "${pin.shopping.productName}".`,
@@ -268,8 +317,8 @@ const GalleryPage: React.FC = () => {
     );
   };
 
-  // Member Click Trigger (example: click on a member to see the member's Gallery and Projects)
-  const handleMemberClick = (author: GalleryPinItem['author'], e?: React.MouseEvent) => {
+  // Member Click Trigger (example: click on a member to see the member's Tribut and Projects)
+  const handleMemberClick = (author: TributPinItem['author'], e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setSelectedMember(author);
   };
@@ -280,10 +329,10 @@ const GalleryPage: React.FC = () => {
       prev.map((p) =>
         p.id === pinId
           ? {
-              ...p,
-              comments: [comment, ...(p.comments || [])],
-              commentsCount: (p.commentsCount || 0) + 1
-            }
+            ...p,
+            comments: [comment, ...(p.comments || [])],
+            commentsCount: (p.commentsCount || 0) + 1
+          }
           : p
       )
     );
@@ -291,10 +340,10 @@ const GalleryPage: React.FC = () => {
       setActivePinDetail((prev) =>
         prev
           ? {
-              ...prev,
-              comments: [comment, ...(prev.comments || [])],
-              commentsCount: (prev.commentsCount || 0) + 1
-            }
+            ...prev,
+            comments: [comment, ...(prev.comments || [])],
+            commentsCount: (prev.commentsCount || 0) + 1
+          }
           : null
       );
     }
@@ -302,16 +351,16 @@ const GalleryPage: React.FC = () => {
   };
 
   // Publish Pin handler
-  const handlePublishCreatedPin = (newPin: GalleryPinItem) => {
+  const handlePublishCreatedPin = (newPin: TributPinItem) => {
     setPinsList([newPin, ...pinsList]);
     setShowUploadPinModal(false);
     showToast('Design Pin published! Guardian AI vision indexing complete.', 'success');
   };
 
-  const currentStyleMeta = GALLERY_DISPLAY_STYLES.find((s) => s.id === displayStyle) || GALLERY_DISPLAY_STYLES[0];
+  const currentStyleMeta = TRIBUT_DISPLAY_STYLES.find((s) => s.id === displayStyle) || TRIBUT_DISPLAY_STYLES[0];
 
   return (
-    <MainLayout pageTitle="Gallery">
+    <MainLayout pageTitle="Tribut">
       <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
 
@@ -328,7 +377,7 @@ const GalleryPage: React.FC = () => {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                  FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">Sovereign Gallery</span> & Smart Feed
+                  FingerMobile <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">Sovereign Tribut</span> & Smart Feed
                 </h1>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
@@ -349,8 +398,23 @@ const GalleryPage: React.FC = () => {
                     onClick={() => setShowUploadPinModal(true)}
                     className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black transition flex items-center gap-1.5 shadow-md shadow-purple-600/30"
                   >
-                    <PlusIcon className="w-4 h-4" />
-                    + Create & Upload Pin
+                    <UploadCloud className="w-4 h-4" />
+                    Upload Media from Device
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsSelectMode(!isSelectMode);
+                      if (isSelectMode) setSelectedIds([]);
+                    }}
+                    className={`px-4 py-2 rounded-xl border text-xs font-black transition flex items-center gap-1.5 shadow-sm ${
+                      isSelectMode
+                        ? 'bg-amber-400 border-amber-500 text-slate-950 font-black ring-2 ring-amber-300'
+                        : 'bg-slate-800/80 hover:bg-slate-700/80 border-slate-600 text-white'
+                    }`}
+                  >
+                    <Layers className="w-4 h-4 text-amber-300" />
+                    {isSelectMode ? 'Exit Batch Mode' : 'Batch Select & Multi-Delete'}
                   </button>
 
                   <div className="flex items-center gap-2 text-xs text-slate-300">
@@ -376,7 +440,7 @@ const GalleryPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3 pt-2 text-xs border-t border-slate-700/80">
                   <div>
                     <span className="block text-slate-300 font-medium">Indexed Pins</span>
-                    <strong className="text-white text-sm font-bold">{GALLERY_ECOSYSTEM_STATS.guardianVisionIndexCount}</strong>
+                    <strong className="text-white text-sm font-bold">{TRIBUT_ECOSYSTEM_STATS.guardianVisionIndexCount}</strong>
                   </div>
                   <div>
                     <span className="block text-slate-300 font-medium">FIC Wallet</span>
@@ -388,8 +452,8 @@ const GalleryPage: React.FC = () => {
                   onClick={() => setShowUploadPinModal(true)}
                   className="w-full py-2.5 px-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/30"
                 >
-                  <PlusIcon className="w-4 h-4" />
-                  Publish 2:3 Vertical Pin
+                  <UploadCloud className="w-4 h-4" />
+                  Upload Media from Device
                 </button>
               </div>
             </div>
@@ -404,7 +468,7 @@ const GalleryPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-black uppercase text-purple-700 tracking-wider">
-                    Gallery Display Mode:
+                    Tribut Display Mode:
                   </span>
                   <span className="text-sm font-black text-slate-900">
                     {currentStyleMeta.label}
@@ -461,7 +525,7 @@ const GalleryPage: React.FC = () => {
                       </button>
                     </div>
 
-                    {GALLERY_DISPLAY_STYLES.map((st) => (
+                    {TRIBUT_DISPLAY_STYLES.map((st) => (
                       <button
                         key={st.id}
                         onClick={() => handleSelectDisplayStyle(st.id)}
@@ -495,7 +559,7 @@ const GalleryPage: React.FC = () => {
               }`}
             >
               <SparklesIcon className="w-5 h-5" />
-              <span>1. The Gallery Smart Feed</span>
+              <span>1. The Tribut Smart Feed</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'smart-feed' ? 'bg-purple-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
                 {filteredPins.length} Pins
               </span>
@@ -691,7 +755,7 @@ const GalleryPage: React.FC = () => {
 
                     <div className="flex sm:flex-col items-end gap-1 flex-shrink-0 text-right">
                       <span className="text-[11px] font-bold text-purple-200">
-                        {GALLERY_ECOSYSTEM_STATS.guardianVisionIndexCount}
+                        {TRIBUT_ECOSYSTEM_STATS.guardianVisionIndexCount}
                       </span>
                       <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-black border border-emerald-400/40">
                         Viral Decay Immunity Active
@@ -756,11 +820,14 @@ const GalleryPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Clean Cards Display Renderer (Only display info when clicked on!) */}
-                <GalleryDisplayStyleRenderer
+                {/* Clean Cards Display Renderer with multi-select and hardware link */}
+                <TributDisplayStyleRenderer
                   style={displayStyle}
                   pins={filteredPins}
                   savedPinIds={savedPinIds}
+                  isSelectMode={isSelectMode}
+                  selectedIds={selectedIds}
+                  onToggleSelect={handleToggleSelect}
                   onPinClick={(pin) => setActivePinDetail(pin)}
                   onMemberClick={handleMemberClick}
                   onToggleSavePin={handleToggleSavePin}
@@ -776,7 +843,7 @@ const GalleryPage: React.FC = () => {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900">Project Planning Boards & Saves</h2>
                   <p className="text-xs text-slate-700 mt-1">
-                    Users use Gallery to plan projects, ideate spaces, and curate shopping lists with long-term retention. Download prioritized project boards with complete prompt recipes and CAD specs.
+                    Users use Tribut to plan projects, ideate spaces, and curate shopping lists with long-term retention. Download prioritized project boards with complete prompt recipes and CAD specs.
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -863,7 +930,7 @@ const GalleryPage: React.FC = () => {
 
           {/* ==================== TAB 4: DESIGN DISCUSSIONS & CRITIQUES ==================== */}
           {activeTab === 'discussions' && (
-            <GalleryDiscussionsTab
+            <TributDiscussionsTab
               allPins={pinsList}
               onSelectPin={(pin) => setActivePinDetail(pin)}
               onMemberClick={handleMemberClick}
@@ -876,13 +943,13 @@ const GalleryPage: React.FC = () => {
               {/* Revenue Model Banner */}
               <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-3xl p-8 text-white shadow-xl border border-purple-800 space-y-4">
                 <span className="px-3 py-1 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-black uppercase tracking-wider">
-                  How FingerMobile Gallery Generates Value
+                  How FingerMobile Tribut Generates Value
                 </span>
                 <h2 className="text-3xl font-black text-white">
                   A Buy and Share Profit Earning System
                 </h2>
                 <p className="text-purple-100 text-sm max-w-3xl leading-relaxed">
-                  FingerMobile Gallery capitalizes on the fact that our users exhibit significantly higher purchase intent than general social media feeds. Through native promoted widgets, shopping engine catalog syncing, and profit sharing, both merchants and community curators generate sustainable revenue.
+                  FingerMobile Tribut capitalizes on the fact that our users exhibit significantly higher purchase intent than general social media feeds. Through native promoted widgets, shopping engine catalog syncing, and profit sharing, both merchants and community curators generate sustainable revenue.
                 </p>
               </div>
 
@@ -933,9 +1000,9 @@ const GalleryPage: React.FC = () => {
             </div>
           )}
 
-          {/* ==================== LIGHTBOX PIN DETAIL MODAL (Matching Screenshot) ==================== */}
+          {/* ==================== LIGHTBOX PIN DETAIL MODAL ==================== */}
           {activePinDetail && (
-            <FingerMobilePinDetailModal
+            <TributPinDetailModal
               pin={activePinDetail}
               allPins={pinsList}
               userBoards={userBoards}
@@ -950,9 +1017,9 @@ const GalleryPage: React.FC = () => {
             />
           )}
 
-          {/* ==================== MEMBER GALLERY & PROJECTS MODAL (Example: click on a member to see the member's Gallery and Projects) ==================== */}
+          {/* ==================== MEMBER TRIBUT & PROJECTS MODAL ==================== */}
           {selectedMember && (
-            <MemberGalleryProjectsModal
+            <MemberTributProjectsModal
               author={selectedMember}
               allPins={pinsList}
               allBoards={userBoards}
@@ -967,9 +1034,9 @@ const GalleryPage: React.FC = () => {
             />
           )}
 
-          {/* ==================== CREATOR UPLOAD MODAL (Single, Collage, Video, Blueprint) ==================== */}
+          {/* ==================== CREATOR UPLOAD MODAL ==================== */}
           {showUploadPinModal && (
-            <GalleryCreatorUploadModal
+            <TributCreatorUploadModal
               userBoards={userBoards}
               onClose={() => setShowUploadPinModal(false)}
               onPublishPin={handlePublishCreatedPin}
@@ -978,7 +1045,7 @@ const GalleryPage: React.FC = () => {
 
           {/* ==================== DOWNLOAD ASSET MODAL ==================== */}
           {(downloadTargetPin || downloadTargetBoard) && (
-            <GalleryDownloadModal
+            <TributDownloadModal
               pin={downloadTargetPin}
               board={downloadTargetBoard}
               allPins={pinsList}
@@ -1107,10 +1174,55 @@ const GalleryPage: React.FC = () => {
             </div>
           )}
 
+          {/* Multi-Item Batch Actions Floating Dock */}
+          {(isSelectMode || selectedIds.length > 0) && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900/95 backdrop-blur-xl border border-slate-700 text-white rounded-2xl shadow-2xl p-4 flex items-center gap-4 animate-in fade-in slide-in-from-bottom duration-300">
+              <div className="flex items-center gap-2 pr-3 border-r border-slate-700">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+                <span className="text-sm font-bold">
+                  {selectedIds.length} {selectedIds.length === 1 ? 'item' : 'items'} selected
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSelectAll}
+                className="py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition"
+              >
+                {selectedIds.length === filteredPins.length ? 'Deselect All' : 'Select All'}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleBatchDelete}
+                disabled={selectedIds.length === 0 || isBatchDeleting}
+                className="py-2 px-4 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-red-600/30"
+              >
+                {isBatchDeleting ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                Delete Selected ({selectedIds.length})
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedIds([]);
+                  setIsSelectMode(false);
+                }}
+                className="py-1.5 px-3 rounded-lg text-slate-400 hover:text-white text-xs font-semibold transition"
+              >
+                Done
+              </button>
+            </div>
+          )}
+
         </div>
       </div>
     </MainLayout>
   );
 };
 
-export default GalleryPage;
+export default TributPage;

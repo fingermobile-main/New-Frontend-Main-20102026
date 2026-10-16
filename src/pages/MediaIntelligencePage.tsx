@@ -489,13 +489,13 @@ export const MediaIntelligencePage: React.FC = () => {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-200 mb-1.5">
                     Primary Multimodal & LLM Pipeline
                   </label>
                   <select
                     value={primaryModel}
                     onChange={(e) => setPrimaryModel(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-sm text-zinc-200"
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-2.5 text-sm text-white font-semibold"
                   >
                     <option value="gemini-1.5-flash">Google Gemini 1.5 Flash (Default • Sub-150ms)</option>
                     <option value="gemini-1.5-pro">Google Gemini 1.5 Pro (Deep Multimodal Analysis)</option>
@@ -504,13 +504,13 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-200 mb-1.5">
                     Speech-to-Text Transcription Engine
                   </label>
                   <select
                     value={audioModel}
                     onChange={(e) => setAudioModel(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-sm text-zinc-200"
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-2.5 text-sm text-white font-semibold"
                   >
                     <option value="whisper-v3-turbo">OpenAI Whisper v3 Turbo (GPU Worker)</option>
                     <option value="google-speech-v2">Google Cloud Speech-to-Text v2</option>
@@ -518,13 +518,13 @@ export const MediaIntelligencePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-200 mb-1.5">
                     Optical Character Recognition (OCR)
                   </label>
                   <select
                     value={ocrModel}
                     onChange={(e) => setOcrModel(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-sm text-zinc-200"
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-2.5 text-sm text-white font-semibold"
                   >
                     <option value="cloud-vision-v2">Google Cloud Vision OCR v2</option>
                     <option value="tesseract-fast">Tesseract 5.3 Local Worker</option>

@@ -87,6 +87,7 @@ type ProfileTab =
   | 'groups'
   | 'gems'
   | 'blogs'
+  | 'tribut'
   | 'gallery'
   | 'events'
   | 'games'
@@ -664,7 +665,7 @@ export const ProfilePage: React.FC = () => {
       date: '02 Oct 2026',
       upvotes: 288,
       valueFic: 2400,
-      previewUrl: '/assets/showcase/lushpressies_screen_uhd.jpg'
+      previewUrl: '/assets/showcase/lushpressies_screen_uhd.jpg?v=2'
     }
   ];
 
@@ -1791,7 +1792,7 @@ export const ProfilePage: React.FC = () => {
                   { id: 'groups' as ProfileTab, label: 'Group Posts', icon: Users, count: groupPosts.length },
                   { id: 'gems' as ProfileTab, label: 'Gems Posts', icon: Gift, count: gemDrops.length },
                   { id: 'blogs' as ProfileTab, label: 'Blog Posts', icon: FileText, count: blogPosts.length },
-                  { id: 'gallery' as ProfileTab, label: 'Gallery', icon: ImageIcon, count: galleryItems.length },
+                  { id: 'tribut' as ProfileTab, label: 'Tribut', icon: ImageIcon, count: galleryItems.length },
                   { id: 'events' as ProfileTab, label: 'Events', icon: Calendar, count: events.length },
                   { id: 'games' as ProfileTab, label: 'Games', icon: Gamepad2, count: games.length },
                   { id: 'live-streams' as ProfileTab, label: 'Live Streams', icon: Tv, count: liveStreams.length },
@@ -2146,12 +2147,12 @@ export const ProfilePage: React.FC = () => {
             )}
 
             {/* ======================================================== */}
-            {/* TAB 9: GALLERY                                           */}
+            {/* TAB 9: TRIBUT MEDIA                                      */}
             {/* ======================================================== */}
-            {activeTab === 'gallery' && (
+            {(activeTab === 'tribut' || (activeTab as any) === 'gallery') && (
               <div className="bg-white rounded-3xl border border-slate-300 p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-black text-slate-900">Media Gallery (Images & 4K Stems)</h3>
+                  <h3 className="text-lg font-black text-slate-900">Tribut Media (Images &amp; 4K Stems)</h3>
                   <span className="text-xs font-bold text-slate-700">{galleryItems.length} items</span>
                 </div>
 

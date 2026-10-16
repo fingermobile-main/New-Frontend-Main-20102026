@@ -23,7 +23,7 @@ export interface CouponItem {
   code: string;
   title: string;
   description: string;
-  category: 'all' | 'storefront' | 'gallery' | 'academy' | 'beatwave' | 'subscriptions';
+  category: 'all' | 'storefront' | 'tribut' | 'academy' | 'beatwave' | 'subscriptions';
   discount_type: 'percentage' | 'fixed';
   discount_value: number;
   minimum_order_amount: number;
@@ -74,15 +74,15 @@ const DEFAULT_COUPONS: CouponItem[] = [
   },
   {
     id: 'coup-04',
-    code: 'GALLERY30',
-    title: 'High-Res Photo Licensing Early Bird',
+    code: 'TRIBUT30',
+    title: 'High-Res Tribut Photo & Media Licensing Early Bird',
     description: '30% rebate on commercial synchronization and billboard print master RAW files.',
-    category: 'gallery',
+    category: 'tribut',
     discount_type: 'percentage',
     discount_value: 30,
     minimum_order_amount: 50,
     valid_until: '2026-11-15',
-    merchantName: 'Lumina Gallery Exhibition'
+    merchantName: 'Tribut Media Exhibition'
   },
   {
     id: 'coup-05',
@@ -130,7 +130,7 @@ const CouponsPage: React.FC = () => {
   const [newDiscountType, setNewDiscountType] = useState<'percentage' | 'fixed'>('percentage');
   const [newDiscountVal, setNewDiscountVal] = useState('20');
   const [newMinOrder, setNewMinOrder] = useState('50');
-  const [newCategory, setNewCategory] = useState<'storefront' | 'gallery' | 'academy' | 'beatwave' | 'subscriptions'>('storefront');
+  const [newCategory, setNewCategory] = useState<'storefront' | 'tribut' | 'academy' | 'beatwave' | 'subscriptions'>('storefront');
 
   const filteredCoupons = useMemo(() => {
     return coupons.filter((c) => {
@@ -217,7 +217,7 @@ const CouponsPage: React.FC = () => {
                 Sovereign Coupons &amp; Promo Vouchers
               </h1>
               <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-medium">
-                Unlock platform fee waivers, storefront checkout rebates, and partner discounts across E-Learning, Beatwave audio, and Gallery master licenses.
+                Unlock platform fee waivers, storefront checkout rebates, and partner discounts across E-Learning, Beatwave audio, and Tribut master licenses.
               </p>
             </div>
 
@@ -280,7 +280,7 @@ const CouponsPage: React.FC = () => {
                 { id: 'storefront', label: 'Storefront' },
                 { id: 'academy', label: 'Academy' },
                 { id: 'beatwave', label: 'Beatwave' },
-                { id: 'gallery', label: 'Gallery' },
+                { id: 'tribut', label: 'Tribut' },
                 { id: 'subscriptions', label: 'Passes' }
               ].map((c) => (
                 <button
@@ -443,7 +443,7 @@ const CouponsPage: React.FC = () => {
                     className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
                   >
                     <option value="storefront">Storefront Products</option>
-                    <option value="gallery">Photo Licensing</option>
+                    <option value="tribut">Tribut &amp; Media Licensing</option>
                     <option value="academy">Academy Courses</option>
                     <option value="beatwave">Beatwave Audio</option>
                   </select>

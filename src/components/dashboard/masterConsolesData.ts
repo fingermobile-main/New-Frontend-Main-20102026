@@ -249,18 +249,18 @@ export const ALL_35_CONSOLES: ConsoleItem[] = [
     sparkline: [91, 92, 93, 91, 92, 93, 92]
   },
   {
-    id: 'gallery',
-    name: 'Gallery',
+    id: 'tribut',
+    name: 'Tribut',
     group: 'media-discovery',
     groupName: 'Media & Discovery',
-    purpose: 'Media portfolio management (100%)',
+    purpose: 'Media portfolio & creative showcase management (100%)',
     healthScore: 100,
     status: 'online',
     responseTime: 31,
-    route: '/gallery',
+    route: '/tribut',
     controls: 'Album access controls, mass metadata tagger, featured showcase curator.',
     safeguards: 'Background EXIF stripping, multi-resolution image derivative generators, CDN warmers.',
-    telemetry: 'Asset upload failure rate, storage footprint growth, average gallery render time.',
+    telemetry: 'Asset upload failure rate, storage footprint growth, average tribut render time.',
     activeIncidents: 0,
     sparkline: [99, 100, 100, 100, 100, 99, 100]
   },

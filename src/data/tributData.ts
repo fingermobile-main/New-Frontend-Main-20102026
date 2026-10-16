@@ -1,6 +1,6 @@
 /**
- * FingerMobile Sovereign Gallery & Guardian AI Smart Feed Data
- * Business Model Reference: Gallery Business Model 15102026.md
+ * FingerMobile Sovereign Tribut & Guardian AI Smart Feed Data
+ * Business Model Reference: Tribut Business Model 15102026.md
  *
  * Features:
  * - Guardian AI curation & 5 Algorithmic Pillars
@@ -9,7 +9,7 @@
  *   3. Topic Relevance & SEO (Guardian AI Vision)
  *   4. Pinner Quality (2:3 Vertical Consistency)
  *   5. Rich Profile Data Sync (OOC Live Pricing)
- * - 2 Primary Locations: Gallery Smart Feed & Personalized Search Feed (Sidebar)
+ * - 2 Primary Locations: Tribut Smart Feed & Personalized Search Feed (Sidebar)
  * - Shopping Engine Ad Ecosystem (MarketPlace, Storefront, OwnIt, Flamingo)
  * - Buy and Share Profit Earning System
  */
@@ -59,7 +59,7 @@ export interface PinCommentItem {
   critiqueTag?: string; // e.g. "Color Grading", "Fabric Texture", "Shape Up"
 }
 
-export interface GalleryPinItem {
+export interface TributPinItem {
   id: string;
   title: string;
   description: string;
@@ -131,7 +131,7 @@ export interface UserProjectBoard {
   discussionCount?: number;
 }
 
-export type GalleryDisplayStyle =
+export type TributDisplayStyle =
   | 'grid'
   | 'diptych-triptych'
   | 'magnetic-pages'
@@ -145,7 +145,7 @@ export type GalleryDisplayStyle =
   | 'before-and-after';
 
 export interface DisplayStyleOption {
-  id: GalleryDisplayStyle;
+  id: TributDisplayStyle;
   label: string;
   category: 'Multi-Photo & Collage' | 'Grid & Symmetrical' | 'Feature & Hierarchy';
   description: string;
@@ -153,7 +153,7 @@ export interface DisplayStyleOption {
   layoutCount: string;
 }
 
-export const GALLERY_DISPLAY_STYLES: DisplayStyleOption[] = [
+export const TRIBUT_DISPLAY_STYLES: DisplayStyleOption[] = [
   // Multi-Photo and Collage Display Styles
   {
     id: 'grid',
@@ -265,7 +265,7 @@ export interface DesignDiscussionItem {
 }
 
 // ==================== 1. CURATED PINS (GUARDIAN AI INDEXED) ====================
-export const GALLERY_PINS_DATA: GalleryPinItem[] = [
+export const TRIBUT_PINS_DATA: TributPinItem[] = [
   {
     id: 'pin-silver-fox',
     title: 'Flyyy Silver Fox!',
@@ -369,15 +369,15 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
     mediaType: 'collage',
-    mediaUrl: '/images/gallery/adire_male_jacket_1792082249653.jpg',
+    mediaUrl: '/images/tribut/adire_male_jacket_1792082249653.jpg',
     multiMediaUrls: [
-      '/images/gallery/adire_male_jacket_1792082249653.jpg',
-      '/images/gallery/adire_male_patchwork_1792082376155.jpg',
-      '/images/gallery/adire_male_safari_trousers.jpg'
+      '/images/tribut/adire_male_jacket_1792082249653.jpg',
+      '/images/tribut/adire_male_patchwork_1792082376155.jpg',
+      '/images/tribut/adire_male_safari_trousers.jpg'
     ],
     beforeAfter: {
-      beforeUrl: '/images/gallery/adire_male_patchwork_1792082376155.jpg',
-      afterUrl: '/images/gallery/adire_male_jacket_1792082249653.jpg',
+      beforeUrl: '/images/tribut/adire_male_patchwork_1792082376155.jpg',
+      afterUrl: '/images/tribut/adire_male_jacket_1792082249653.jpg',
       labelBefore: 'Raw Resist Dye Block',
       labelAfter: 'Finished Bespoke Blazer'
     },
@@ -845,7 +845,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_male_jacket_1792082249653.jpg',
+    mediaUrl: '/images/tribut/adire_male_jacket_1792082249653.jpg',
     author: {
       id: 'usr-adire-01',
       name: 'Tunde Bakare Bespoke',
@@ -899,7 +899,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_female_skirt_1792082266716.jpg',
+    mediaUrl: '/images/tribut/adire_female_skirt_1792082266716.jpg',
     author: {
       id: 'usr-adire-02',
       name: 'Zainab Danjuma Couture',
@@ -946,7 +946,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_male_shorts_1792082288008.jpg',
+    mediaUrl: '/images/tribut/adire_male_shorts_1792082288008.jpg',
     author: {
       id: 'usr-adire-03',
       name: 'Kolawole Indigo Guild',
@@ -993,7 +993,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_female_trousers_1792082307609.jpg',
+    mediaUrl: '/images/tribut/adire_female_trousers_1792082307609.jpg',
     author: {
       id: 'usr-adire-04',
       name: 'Simi Adeleke Fashion',
@@ -1047,7 +1047,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_male_trousers_1792082329775.jpg',
+    mediaUrl: '/images/tribut/adire_male_trousers_1792082329775.jpg',
     author: {
       id: 'usr-adire-05',
       name: 'Olawale Craft House',
@@ -1094,7 +1094,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_peplum_skirt_1792082352189.jpg',
+    mediaUrl: '/images/tribut/adire_peplum_skirt_1792082352189.jpg',
     author: {
       id: 'usr-adire-06',
       name: 'Bisi Ogunleye Couture',
@@ -1141,7 +1141,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_male_patchwork_1792082376155.jpg',
+    mediaUrl: '/images/tribut/adire_male_patchwork_1792082376155.jpg',
     author: {
       id: 'usr-adire-07',
       name: 'Akinwale Studio',
@@ -1188,7 +1188,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_wrap_trousers_1792082401236.jpg',
+    mediaUrl: '/images/tribut/adire_wrap_trousers_1792082401236.jpg',
     author: {
       id: 'usr-adire-08',
       name: 'Morayo Clothiers',
@@ -1235,7 +1235,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_male_safari_trousers.jpg',
+    mediaUrl: '/images/tribut/adire_male_safari_trousers.jpg',
     author: {
       id: 'usr-adire-09',
       name: 'Femi Sanni Menswear',
@@ -1282,7 +1282,7 @@ export const GALLERY_PINS_DATA: GalleryPinItem[] = [
     categoryLabel: 'Fashion & Wearables',
     boardName: 'Lagos Modern Adire Lookbook',
     aspectRatio: '2:3',
-    mediaUrl: '/images/gallery/adire_female_cowl_shorts.jpg',
+    mediaUrl: '/images/tribut/adire_female_cowl_shorts.jpg',
     author: {
       id: 'usr-adire-10',
       name: 'Kemi Balogun Studio',
@@ -1328,7 +1328,7 @@ export const USER_PROJECT_BOARDS: UserProjectBoard[] = [
     id: 'brd-adire',
     name: 'Lagos Modern Adire Lookbook',
     pinCount: 10,
-    coverImage: '/images/gallery/adire_female_trousers_1792082307609.jpg',
+    coverImage: '/images/tribut/adire_female_trousers_1792082307609.jpg',
     purpose: 'Project Planning',
     isPrivate: false
   },
@@ -1367,7 +1367,7 @@ export const USER_PROJECT_BOARDS: UserProjectBoard[] = [
 ];
 
 // ==================== 3. ADVERTISING & SHOPPING METRICS ====================
-export const GALLERY_ECOSYSTEM_STATS = {
+export const TRIBUT_ECOSYSTEM_STATS = {
   activeAdvertisers: 248,
   activeMerchants: 512,
   averageConversionRate: '4.8%', // Higher purchase intent than social platforms
@@ -1428,4 +1428,12 @@ export const COMMUNITY_DESIGN_DISCUSSIONS: DesignDiscussionItem[] = [
     resolved: false
   }
 ];
+
+// Tribut standardized naming aliases (legacy backward-compatibility)
+export type GalleryPinItem = TributPinItem;
+export type GalleryDisplayStyle = TributDisplayStyle;
+export const GALLERY_PINS_DATA = TRIBUT_PINS_DATA;
+export const GALLERY_ECOSYSTEM_STATS = TRIBUT_ECOSYSTEM_STATS;
+export const GALLERY_DISPLAY_STYLES = TRIBUT_DISPLAY_STYLES;
+
 

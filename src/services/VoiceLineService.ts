@@ -465,7 +465,7 @@ class VoiceLineService {
    * Plays the designated voice line at 35% system speaker volume (or user-defined volume).
    */
   public async playCommentaryVoiceLine(
-    microservice: 'forum' | 'hallmarks' | 'mii' | 'groups' | 'lushpressies' | 'blogs',
+    microservice: VoiceLineCategory,
     memberId?: string
   ): Promise<void> {
     if (!this.isMicroserviceVoiceLineEnabled(microservice)) {

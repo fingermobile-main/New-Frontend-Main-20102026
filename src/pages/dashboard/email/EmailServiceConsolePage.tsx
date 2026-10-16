@@ -534,13 +534,13 @@ const EmailServiceConsolePage: React.FC = () => {
               <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                    <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                       Target Audience Segment
                     </label>
                     <select
                       value={targetSegment}
                       onChange={(e) => setTargetSegment(e.target.value)}
-                      className="text-sm font-semibold border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 text-slate-800"
+                      className="text-sm font-bold border border-slate-300 rounded-lg px-3 py-2 bg-white text-slate-900 shadow-sm"
                     >
                       <option value="all">All Platform Members (Broad Audience)</option>
                       <option value="verified">Verified Identity Members Only</option>
@@ -561,7 +561,7 @@ const EmailServiceConsolePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                     Email Subject Line
                   </label>
                   <input
@@ -569,7 +569,7 @@ const EmailServiceConsolePage: React.FC = () => {
                     value={composerSubject}
                     onChange={(e) => setComposerSubject(e.target.value)}
                     placeholder="Enter email subject line..."
-                    className="w-full px-3.5 py-2 text-sm font-semibold border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2 text-sm font-bold border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-slate-900 bg-white shadow-sm"
                   />
                 </div>
               </div>
@@ -645,7 +645,7 @@ const EmailServiceConsolePage: React.FC = () => {
 
                 {/* Test Dispatch */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1">
                     Send Test Email (Admin Inbox)
                   </label>
                   <div className="flex gap-2">
@@ -653,7 +653,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       type="email"
                       value={testEmailAddress}
                       onChange={(e) => setTestEmailAddress(e.target.value)}
-                      className="flex-1 px-3 py-1.5 text-xs border border-slate-200 rounded-lg"
+                      className="flex-1 px-3 py-1.5 text-xs font-bold border border-slate-300 rounded-lg text-slate-900 bg-white shadow-sm"
                     />
                     <button
                       onClick={handleSendTest}

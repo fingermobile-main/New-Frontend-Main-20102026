@@ -1540,7 +1540,7 @@ export const FlamingoPageContent: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Height (cm)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Height (cm)</label>
                   <input
                     type="number"
                     value={userMeasurements.height_cm}
@@ -1553,7 +1553,7 @@ export const FlamingoPageContent: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Weight (kg)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Weight (kg)</label>
                   <input
                     type="number"
                     value={userMeasurements.weight_kg}
@@ -1566,7 +1566,7 @@ export const FlamingoPageContent: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Bust / Chest (cm)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Bust / Chest (cm)</label>
                   <input
                     type="number"
                     value={userMeasurements.chest_cm}
@@ -1579,7 +1579,7 @@ export const FlamingoPageContent: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Waist (cm)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Waist (cm)</label>
                   <input
                     type="number"
                     value={userMeasurements.waist_cm}
@@ -1592,7 +1592,7 @@ export const FlamingoPageContent: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Hips (cm)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Hips (cm)</label>
                   <input
                     type="number"
                     value={userMeasurements.hips_cm}
@@ -1605,7 +1605,7 @@ export const FlamingoPageContent: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Preferred Fit</label>
+                  <label className="block text-slate-200 font-bold mb-1">Preferred Fit</label>
                   <select
                     value={userMeasurements.preferred_fit}
                     onChange={e => {
@@ -1680,7 +1680,7 @@ export const FlamingoPageContent: React.FC = () => {
 
               <form onSubmit={handleSaveOutfit} className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Outfit Title</label>
+                  <label className="block text-slate-200 font-bold mb-1">Outfit Title</label>
                   <input
                     type="text"
                     required
@@ -1692,7 +1692,7 @@ export const FlamingoPageContent: React.FC = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Occasion</label>
+                    <label className="block text-slate-200 font-bold mb-1">Occasion</label>
                     <select
                       value={newOutfitOccasion}
                       onChange={e => setNewOutfitOccasion(e.target.value)}
@@ -1705,7 +1705,7 @@ export const FlamingoPageContent: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Season</label>
+                    <label className="block text-slate-200 font-bold mb-1">Season</label>
                     <select
                       value={newOutfitSeason}
                       onChange={e => setNewOutfitSeason(e.target.value)}
@@ -1718,7 +1718,7 @@ export const FlamingoPageContent: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Style Tags (comma-separated)</label>
+                  <label className="block text-slate-200 font-bold mb-1">Style Tags (comma-separated)</label>
                   <input
                     type="text"
                     value={newOutfitTags}

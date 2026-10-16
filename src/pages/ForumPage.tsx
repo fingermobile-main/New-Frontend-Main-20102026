@@ -50,6 +50,7 @@ import openGraphService, { OpenGraphMetadata } from '../services/OpenGraphServic
 import locationService from '../services/LocationService';
 import RotatingWidgetRail from '../components/widgets/RotatingWidgetRail';
 import FingerMobileLogoViewerModal from '../components/modals/FingerMobileLogoViewerModal';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 
 // =============================================================================
 // MINI DRAWER / DROPDOWN MENU ENTITIES
@@ -1234,6 +1235,7 @@ export const ForumPage: React.FC = () => {
     setActiveComposerTool(null);
 
     triggerToast('Post published successfully to the sovereign feed!', 'success');
+    voiceLineServiceInstance.playCommentaryVoiceLine('forum');
 
     // Persist to PostgreSQL via Backend API
     try {
@@ -1457,6 +1459,7 @@ export const ForumPage: React.FC = () => {
 
     setCommentInputTexts((prev) => ({ ...prev, [postId]: '' }));
     triggerToast('Comment posted to discussion thread!', 'success');
+    voiceLineServiceInstance.playCommentaryVoiceLine('forum');
 
     try {
       const rawId = postId.replace(/^post-/, '');

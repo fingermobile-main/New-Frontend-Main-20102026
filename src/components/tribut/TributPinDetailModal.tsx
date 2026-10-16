@@ -18,23 +18,23 @@ import {
   ShieldIcon,
   SearchIcon
 } from '../../icons';
-import { GalleryPinItem, PinCommentItem, UserProjectBoard } from '../../data/galleryData';
+import { TributPinItem, PinCommentItem, UserProjectBoard } from '../../data/tributData';
 
-interface FingerMobilePinDetailModalProps {
-  pin: GalleryPinItem;
-  allPins: GalleryPinItem[];
+interface TributPinDetailModalProps {
+  pin: TributPinItem;
+  allPins: TributPinItem[];
   userBoards: UserProjectBoard[];
   savedPinIds: string[];
   onClose: () => void;
-  onSelectPin: (pin: GalleryPinItem) => void;
-  onToggleSavePin: (pin: GalleryPinItem, e?: React.MouseEvent) => void;
-  onSharePin: (pin: GalleryPinItem, e?: React.MouseEvent) => void;
-  onCheckoutPin: (pin: GalleryPinItem) => void;
-  onOpenDownloadModal: (pin: GalleryPinItem) => void;
+  onSelectPin: (pin: TributPinItem) => void;
+  onToggleSavePin: (pin: TributPinItem, e?: React.MouseEvent) => void;
+  onSharePin: (pin: TributPinItem, e?: React.MouseEvent) => void;
+  onCheckoutPin: (pin: TributPinItem) => void;
+  onOpenDownloadModal: (pin: TributPinItem) => void;
   onAddComment: (pinId: string, comment: PinCommentItem) => void;
 }
 
-export const FingerMobilePinDetailModal: React.FC<FingerMobilePinDetailModalProps> = ({
+export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
   pin,
   allPins,
   userBoards,
@@ -253,7 +253,7 @@ export const FingerMobilePinDetailModal: React.FC<FingerMobilePinDetailModalProp
             </button>
             <div className="hidden sm:block">
               <span className="text-xs font-black uppercase tracking-wider text-purple-700 block">
-                {pin.categoryLabel || 'SOVEREIGN GALLERY'}
+                {pin.categoryLabel || 'SOVEREIGN TRIBUT'}
               </span>
               <span className="text-[11px] text-slate-600 font-semibold">
                 Board: <strong>{pin.boardName}</strong>
@@ -501,7 +501,7 @@ export const FingerMobilePinDetailModal: React.FC<FingerMobilePinDetailModalProp
                 </div>
 
                 <button
-                  onClick={() => alert(`Followed ${pin.author.name} on FingerMobile Gallery`)}
+                  onClick={() => alert(`Followed ${pin.author.name} on FingerMobile Tribut`)}
                   className="py-1.5 px-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs transition"
                 >
                   Follow
@@ -813,7 +813,7 @@ export const FingerMobilePinDetailModal: React.FC<FingerMobilePinDetailModalProp
             </div>
           </div>
 
-          {/* Related Pins Gallery (Clean visual cards as requested) */}
+          {/* Related Tribut Pins (Clean visual cards as requested) */}
           <div className="space-y-3">
             <h4 className="text-sm font-black text-slate-900">
               Related Pins from "{pin.boardName}" & Similar Aesthetics
@@ -846,4 +846,4 @@ export const FingerMobilePinDetailModal: React.FC<FingerMobilePinDetailModalProp
   );
 };
 
-export default FingerMobilePinDetailModal;
+export default TributPinDetailModal;

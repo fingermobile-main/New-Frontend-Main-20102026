@@ -90,7 +90,7 @@ const DPOPage: React.FC = () => {
               </div>
               <p className="text-slate-300">Nigeria (NDPA 2023) • EU (GDPR) • Global</p>
               <div className="text-[11px] text-slate-400 pt-1 border-t border-white/10">
-                Official Contact: <span className="text-white font-mono">dpo@fingerprotocol.com</span>
+                Official Contact: <span className="text-white font-mono">dpo@fingermobileprotocol.com</span>
               </div>
             </div>
           </div>
@@ -145,9 +145,9 @@ const DPOPage: React.FC = () => {
                 </div>
                 <h3 className="font-bold text-gray-900 dark:text-white text-base">Direct Legal Communications</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-mono">
-                  dpo@fingerprotocol.com<br />
+                  dpo@fingermobileprotocol.com<br />
                   fingermobileprotocol@gmail.com<br />
-                  statutory@fingerprotocol.com
+                  statutory@fingermobileprotocol.com
                 </p>
               </div>
 
@@ -258,7 +258,7 @@ const DPOPage: React.FC = () => {
             <form onSubmit={handleSarSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                     Full Legal Name *
                   </label>
                   <input
@@ -267,11 +267,11 @@ const DPOPage: React.FC = () => {
                     value={sarForm.fullName}
                     onChange={(e) => setSarForm({ ...sarForm, fullName: e.target.value })}
                     placeholder="e.g. Israel Obinna Mbah"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                     Verified Email Address *
                   </label>
                   <input
@@ -279,15 +279,15 @@ const DPOPage: React.FC = () => {
                     required
                     value={sarForm.email}
                     onChange={(e) => setSarForm({ ...sarForm, email: e.target.value })}
-                    placeholder="your-account@fingerprotocol.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="your-account@fingermobileprotocol.com"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                     Username / Sovereign Identity Tag
                   </label>
                   <input
@@ -295,17 +295,17 @@ const DPOPage: React.FC = () => {
                     value={sarForm.accountIdentifier}
                     onChange={(e) => setSarForm({ ...sarForm, accountIdentifier: e.target.value })}
                     placeholder="@username or Sovereign ID"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                     Statutory Request Category *
                   </label>
                   <select
                     value={sarForm.requestType}
                     onChange={(e) => setSarForm({ ...sarForm, requestType: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                   >
                     <option value="access">Right of Access (Copy of Data Records)</option>
                     <option value="rectification">Right to Rectification (Correct Inaccurate Info)</option>
@@ -318,7 +318,7 @@ const DPOPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
                   Specific Request Details & Context *
                 </label>
                 <textarea
@@ -327,7 +327,7 @@ const DPOPage: React.FC = () => {
                   value={sarForm.details}
                   onChange={(e) => setSarForm({ ...sarForm, details: e.target.value })}
                   placeholder="Detail the specific telemetry, transactions, or records you wish to review or redact..."
-                  className="w-full p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-4 rounded-xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                 />
               </div>
 
@@ -339,7 +339,7 @@ const DPOPage: React.FC = () => {
                   onChange={(e) => setSarForm({ ...sarForm, consentConfirmed: e.target.checked })}
                   className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500"
                 />
-                <label htmlFor="consentConfirmed" className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer">
+                <label htmlFor="consentConfirmed" className="text-xs text-slate-800 dark:text-slate-200 font-semibold cursor-pointer">
                   I confirm that I am the authorized account holder or legal representative making this statutory request, and I consent to cryptographic verification of my identity.
                 </label>
               </div>
@@ -369,26 +369,26 @@ const DPOPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-xs space-y-2">
-                <span className="text-[10px] uppercase font-bold text-gray-400">Ledger Standard</span>
-                <h4 className="font-bold text-gray-900 dark:text-white text-sm">SHA-256 Hash Chain</h4>
-                <p className="text-gray-600 dark:text-gray-400">
+              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-slate-300 dark:border-gray-800 text-xs space-y-2">
+                <span className="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300">Ledger Standard</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">SHA-256 Hash Chain</h4>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">
                   Every user consent event is cryptographically salted and written into immutable append-only logs.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-xs space-y-2">
-                <span className="text-[10px] uppercase font-bold text-gray-400">Data At Rest</span>
-                <h4 className="font-bold text-gray-900 dark:text-white text-sm">AES-256 Field Encryption</h4>
-                <p className="text-gray-600 dark:text-gray-400">
+              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-slate-300 dark:border-gray-800 text-xs space-y-2">
+                <span className="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300">Data At Rest</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">AES-256 Field Encryption</h4>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">
                   Personal identifiers and KYC documentation are stored with hardware-level envelope encryption.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-xs space-y-2">
-                <span className="text-[10px] uppercase font-bold text-gray-400">Data In Transit</span>
-                <h4 className="font-bold text-gray-900 dark:text-white text-sm">TLS 1.3 / mTLS Protocol</h4>
-                <p className="text-gray-600 dark:text-gray-400">
+              <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-slate-300 dark:border-gray-800 text-xs space-y-2">
+                <span className="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300">Data In Transit</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">TLS 1.3 / mTLS Protocol</h4>
+                <p className="text-slate-700 dark:text-slate-300 font-medium">
                   Continuous DNS and SSL watchdog verification monitoring certificate expiry and failover attacks.
                 </p>
               </div>

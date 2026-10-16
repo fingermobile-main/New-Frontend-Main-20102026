@@ -248,14 +248,14 @@ const VideoTranslationDashboard: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="source-lang-select" className="block text-xs font-semibold text-gray-400 mb-1.5">
+              <label htmlFor="source-lang-select" className="block text-xs font-bold text-slate-200 mb-1.5">
                 Spoken Source Language
               </label>
               <select
                 id="source-lang-select"
                 value={sourceLang}
                 onChange={(e) => setSourceLang(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
               >
                 {SUPPORTED_LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -266,14 +266,14 @@ const VideoTranslationDashboard: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="target-lang-select" className="block text-xs font-semibold text-gray-400 mb-1.5">
+              <label htmlFor="target-lang-select" className="block text-xs font-bold text-slate-200 mb-1.5">
                 Target Translation
               </label>
               <select
                 id="target-lang-select"
                 value={targetLang}
                 onChange={(e) => setTargetLang(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-indigo-500"
               >
                 {SUPPORTED_LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -306,14 +306,14 @@ const VideoTranslationDashboard: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="voice-gender-select" className="block text-xs font-semibold text-gray-400 mb-1.5">
+              <label htmlFor="voice-gender-select" className="block text-xs font-bold text-slate-200 mb-1.5">
                 Voice Timbre
               </label>
               <select
                 id="voice-gender-select"
                 value={voiceGender}
                 onChange={(e) => setVoiceGender(e.target.value as 'female' | 'male' | 'neutral')}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white"
+                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
               >
                 <option value="female">Natural Female</option>
                 <option value="male">Natural Male</option>
@@ -322,14 +322,14 @@ const VideoTranslationDashboard: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="voice-accent-select" className="block text-xs font-semibold text-gray-400 mb-1.5">
+              <label htmlFor="voice-accent-select" className="block text-xs font-bold text-slate-200 mb-1.5">
                 Regional Accent
               </label>
               <select
                 id="voice-accent-select"
                 value={accent}
                 onChange={(e) => setAccent(e.target.value)}
-                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white"
+                className="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-xs text-white font-bold"
               >
                 <option value="neutral_african">Neutral African English</option>
                 <option value="parisian_french">Parisian French</option>
@@ -339,9 +339,9 @@ const VideoTranslationDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-xs text-gray-400">
+          <div className="grid grid-cols-2 gap-4 text-xs text-slate-300">
             <div>
-              <label htmlFor="voice-speech-rate-slider" className="block text-[11px] mb-1">
+              <label htmlFor="voice-speech-rate-slider" className="block text-[11px] font-bold text-slate-200 mb-1">
                 Speech Rate: {speechRate}x
               </label>
               <input
