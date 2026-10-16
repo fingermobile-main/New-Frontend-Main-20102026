@@ -783,22 +783,22 @@ const FingerLuxPage: React.FC = () => {
 
       {/* --- Action Modal: Gift Experience --- */}
       {showGiftModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Gift Experience</h3>
-            <p className="text-xs text-gray-500 mb-4">{selectedServiceForLegacyAction?.name}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl border border-slate-300">
+            <h3 className="text-lg font-black text-slate-900 mb-1">Gift Experience</h3>
+            <p className="text-xs text-slate-700 font-semibold mb-4">{selectedServiceForLegacyAction?.name}</p>
             <input
               type="number"
               value={giftAmount}
               onChange={(e) => setGiftAmount(e.target.value)}
               placeholder="Amount in FIC"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl mb-4 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
             />
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setShowGiftModal(false)}
-                className="flex-1 py-2 text-xs font-bold text-gray-500 bg-gray-50 rounded-xl hover:bg-gray-100 cursor-pointer"
+                className="flex-1 py-2 text-xs font-bold text-slate-700 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 cursor-pointer"
               >
                 Cancel
               </button>
@@ -806,7 +806,7 @@ const FingerLuxPage: React.FC = () => {
                 type="button"
                 onClick={handleSendGift}
                 disabled={isProcessingLegacy}
-                className="flex-1 py-2 text-xs font-bold text-white bg-amber-500 rounded-xl hover:bg-amber-600 cursor-pointer"
+                className="flex-1 py-2 text-xs font-bold text-slate-950 bg-amber-400 border border-amber-500 rounded-xl hover:bg-amber-500 cursor-pointer"
               >
                 {isProcessingLegacy ? 'Sending...' : 'Send Gift'}
               </button>
@@ -817,22 +817,22 @@ const FingerLuxPage: React.FC = () => {
 
       {/* --- Action Modal: Paylink Interface --- */}
       {showPaylinkModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Generate Paylink</h3>
-            <p className="text-xs text-gray-500 mb-4">{selectedServiceForLegacyAction?.name}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl border border-slate-300">
+            <h3 className="text-lg font-black text-slate-900 mb-1">Generate Paylink</h3>
+            <p className="text-xs text-slate-700 font-semibold mb-4">{selectedServiceForLegacyAction?.name}</p>
             <input
               type="number"
               value={paylinkAmount}
               onChange={(e) => setPaylinkAmount(e.target.value)}
               placeholder="Request Price in FIC"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl mb-4 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-4 text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
             />
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setShowPaylinkModal(false)}
-                className="flex-1 py-2 text-xs font-bold text-gray-500 bg-gray-50 rounded-xl hover:bg-gray-100 cursor-pointer"
+                className="flex-1 py-2 text-xs font-bold text-slate-700 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 cursor-pointer"
               >
                 Cancel
               </button>
@@ -840,7 +840,7 @@ const FingerLuxPage: React.FC = () => {
                 type="button"
                 onClick={handleCreatePaylink}
                 disabled={isProcessingLegacy}
-                className="flex-1 py-2 text-xs font-bold text-white bg-emerald-500 rounded-xl hover:bg-emerald-600 cursor-pointer"
+                className="flex-1 py-2 text-xs font-bold text-white bg-emerald-600 border border-emerald-700 rounded-xl hover:bg-emerald-700 cursor-pointer"
               >
                 {isProcessingLegacy ? 'Creating...' : 'Create Link'}
               </button>
