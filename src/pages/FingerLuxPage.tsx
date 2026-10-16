@@ -639,8 +639,8 @@ const FingerLuxPage: React.FC = () => {
   if (hookLoading && services.length === 0) {
     return (
       <MainLayout>
-        <div className="flex justify-center items-center h-screen bg-gray-50">
-          <div className="text-gray-500 font-medium text-sm animate-pulse">
+        <div className="flex justify-center items-center h-screen bg-slate-50">
+          <div className="text-slate-700 font-bold text-sm animate-pulse">
             Loading FingerLux Scheduling & Calendar Engine...
           </div>
         </div>
@@ -651,12 +651,12 @@ const FingerLuxPage: React.FC = () => {
   if (hookError && services.length === 0) {
     return (
       <MainLayout>
-        <div className="flex justify-center items-center h-screen bg-gray-50 px-4">
-          <div className="bg-white border border-slate-300 text-gray-800 p-6 rounded-2xl shadow-sm max-w-md w-full text-center">
-            <strong className="block font-bold text-lg text-red-600 mb-1">Execution Interrupted</strong>
-            <span className="block text-sm text-gray-600 mb-4">{hookError}</span>
+        <div className="flex justify-center items-center h-screen bg-slate-50 px-4">
+          <div className="bg-white border border-slate-300 text-slate-800 p-6 rounded-2xl shadow-sm max-w-md w-full text-center">
+            <strong className="block font-black text-lg text-rose-700 mb-1">Execution Interrupted</strong>
+            <span className="block text-sm text-slate-700 font-medium mb-4">{hookError}</span>
             <button
-              className="w-full py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition"
+              className="w-full py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition"
               onClick={refreshData}
             >
               Retry Protocol Fetch

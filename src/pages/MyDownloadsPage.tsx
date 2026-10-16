@@ -31,13 +31,14 @@ export interface OfflineDownload {
   title: string;
   creator: string;
   type: 'audio' | 'video' | 'photo' | 'document';
+  sourceApp?: 'BeatwaveNG' | 'Dancia-4Tv' | 'Tribut' | 'ELib' | 'Camus' | 'General';
   format: string;
-  sovereignExtension: '.fma' | '.fmv' | '.fmp' | '.pdf';
+  sovereignExtension: string;
   sovereignFileName: string;
   fileSize: string;
   fileSizeBytes: number;
   downloadedAt: string;
-  ttlDays: number; // 10 days
+  ttlDays: number; // 10 or 30 days
   daysRemaining: number;
   isExpired: boolean;
   thumbnailUrl: string;
@@ -55,6 +56,7 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
     title: 'Midnight Lagos Grooves (Master Stems & Mix)',
     creator: 'Alex Johnson & Beatwave NG',
     type: 'audio',
+    sourceApp: 'BeatwaveNG',
     format: 'FingerMobile Sovereign Audio (.FMA) • 24-bit / 96kHz',
     sovereignExtension: '.fma',
     sovereignFileName: 'midnight_lagos_grooves_master.fma',
@@ -76,6 +78,7 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
     title: 'Dancia-4Tv Global Sound Clash - Full Live Replay',
     creator: 'Dancia-4Tv Broadcast Network',
     type: 'video',
+    sourceApp: 'Dancia-4Tv',
     format: 'FingerMobile Sovereign Video (.FMV) • 4K UHD HDR (HEVC)',
     sovereignExtension: '.fmv',
     sovereignFileName: 'dancia_sound_clash_4k_hdr.fmv',
@@ -94,9 +97,10 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
   },
   {
     id: 'dl-3',
-    title: 'Serengeti Golden Dawn at Mara River',
+    title: 'Serengeti Golden Dawn at Mara River (Tribut Collection)',
     creator: 'Amina Bello (Sony A7R V)',
     type: 'photo',
+    sourceApp: 'Tribut',
     format: 'FingerMobile Sovereign Package (.FMP) • RAW DNG Master',
     sovereignExtension: '.fmp',
     sovereignFileName: 'serengeti_golden_dawn_raw.fmp',
@@ -117,6 +121,7 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
     title: 'Afro-House Drum Roots (Old Stems Archive)',
     creator: 'Lagos Sound Lab',
     type: 'audio',
+    sourceApp: 'BeatwaveNG',
     format: 'FingerMobile Sovereign Audio (.FMA) • 48kHz HD',
     sovereignExtension: '.fma',
     sovereignFileName: 'afro_house_drum_roots_stems.fma',
@@ -138,6 +143,7 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
     title: 'Sovereign Protocol Developer Deed & Smart License v2.5',
     creator: 'FingerMobile Foundation',
     type: 'document',
+    sourceApp: 'ELib',
     format: 'Cryptographic Sovereign Package (.FMP) + SHA-256',
     sovereignExtension: '.fmp',
     sovereignFileName: 'sovereign_developer_deed_v2.5.fmp',
@@ -152,12 +158,81 @@ const INITIAL_OFFLINE_ITEMS: OfflineDownload[] = [
     licenseHash: '0xdeadbeef1337...c001',
     lotId: 'LOT-FMP-99014',
     rightsTier: 'Perpetual Sovereign Grant'
+  },
+  {
+    id: 'dl-6',
+    title: 'Chronicles of the Cyber-Griot (Episodes 1-3)',
+    creator: 'Adebayo Ogunlesi & Griot AI',
+    type: 'audio',
+    sourceApp: 'BeatwaveNG',
+    format: 'FingerMobile Sovereign AudioNovel (.FMNOVEL) • 30 Mins Master',
+    sovereignExtension: '.fmnovel',
+    sovereignFileName: 'cyber_griot_episodes.fmnovel',
+    fileSize: '34.2 MB',
+    fileSizeBytes: 35861299,
+    downloadedAt: '2026-10-15T18:30:00Z',
+    ttlDays: 30,
+    daysRemaining: 29,
+    isExpired: false,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80',
+    duration: '28:15',
+    isEncrypted: true,
+    licenseHash: '0x44bb8190ceda...12aa',
+    lotId: 'LOT-FMNOVEL-30219',
+    rightsTier: 'Sovereign AudioNovel License'
+  },
+  {
+    id: 'dl-7',
+    title: 'The Amapiano Formula & 3-Step Rhythms',
+    creator: 'DJ Spinall & Kabza Sound',
+    type: 'audio',
+    sourceApp: 'BeatwaveNG',
+    format: 'FingerMobile Sovereign Podcast (.FMPOD) • 30 Mins Master',
+    sovereignExtension: '.fmpod',
+    sovereignFileName: 'amapiano_formula_ep1.fmpod',
+    fileSize: '31.8 MB',
+    fileSizeBytes: 33344716,
+    downloadedAt: '2026-10-14T11:00:00Z',
+    ttlDays: 30,
+    daysRemaining: 28,
+    isExpired: false,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    duration: '29:50',
+    isEncrypted: true,
+    licenseHash: '0x99cc4412efaa...9911',
+    lotId: 'LOT-FMPOD-10492',
+    rightsTier: 'Sovereign Podcast License'
+  },
+  {
+    id: 'dl-8',
+    title: 'Camus 3D Spatial Audio Environment Master',
+    creator: 'Camus Spatial Labs',
+    type: 'audio',
+    sourceApp: 'Camus',
+    format: 'FingerMobile Sovereign Spatial Audio (.FMA) • Binaural 360',
+    sovereignExtension: '.fma',
+    sovereignFileName: 'camus_spatial_binaural_360.fma',
+    fileSize: '52.4 MB',
+    fileSizeBytes: 54945382,
+    downloadedAt: '2026-10-13T12:00:00Z',
+    ttlDays: 10,
+    daysRemaining: 7,
+    isExpired: false,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80',
+    duration: '15:20',
+    isEncrypted: true,
+    licenseHash: '0x77aa1290bb34...ff44',
+    lotId: 'LOT-CAMUS-44019',
+    rightsTier: 'Spatial License'
   }
 ];
 
 const MyDownloadsPage: React.FC = () => {
   const { showToast } = useAppContext();
   const [items, setItems] = useState<OfflineDownload[]>(INITIAL_OFFLINE_ITEMS);
+  const [selectedPlatform, setSelectedPlatform] = useState<
+    'All' | 'BeatwaveNG' | 'Dancia-4Tv' | 'Tribut' | 'ELib' | 'Camus'
+  >('All');
   const [selectedType, setSelectedType] = useState<'all' | 'audio' | 'video' | 'photo' | 'document'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activePlaybackId, setActivePlaybackId] = useState<string | null>(null);
@@ -185,6 +260,7 @@ const MyDownloadsPage: React.FC = () => {
   // Filtered Items
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
+      const matchesPlatform = selectedPlatform === 'All' || item.sourceApp === selectedPlatform;
       const matchesType = selectedType === 'all' || item.type === selectedType;
       const q = searchQuery.toLowerCase();
       const matchesSearch =
@@ -193,10 +269,11 @@ const MyDownloadsPage: React.FC = () => {
         item.sovereignFileName.toLowerCase().includes(q) ||
         item.sovereignExtension.toLowerCase().includes(q) ||
         item.lotId.toLowerCase().includes(q) ||
+        (item.sourceApp && item.sourceApp.toLowerCase().includes(q)) ||
         item.rightsTier.toLowerCase().includes(q);
-      return matchesType && matchesSearch;
+      return matchesPlatform && matchesType && matchesSearch;
     });
-  }, [items, selectedType, searchQuery]);
+  }, [items, selectedPlatform, selectedType, searchQuery]);
 
   const activePlayingItem = useMemo(() => {
     return items.find((i) => i.id === activePlaybackId) || null;
@@ -511,15 +588,59 @@ const MyDownloadsPage: React.FC = () => {
           </div>
         )}
 
-        {/* 3. TOOLBAR: FILTERS & SEARCH */}
+        {/* 3. PLATFORM ECOSYSTEM SOURCE TABS */}
+        <div className="bg-white p-3 rounded-2xl border border-slate-300 shadow-sm space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-[11px] font-black uppercase tracking-wider text-slate-700">
+              Filter by FingerMobile App Platform:
+            </span>
+            <span className="text-xs text-slate-600 font-bold">
+              Showing: <strong className="text-slate-900">{selectedPlatform}</strong> ({filteredItems.length} items)
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            {[
+              { id: 'All', label: 'All Ecosystem', badge: 'Global Vault' },
+              { id: 'BeatwaveNG', label: 'BeatwaveNG', badge: 'AudioNovels & Podcasts' },
+              { id: 'Dancia-4Tv', label: 'Dancia-4Tv', badge: '4K Live Replays' },
+              { id: 'Tribut', label: 'Tribut', badge: 'Sovereign Tributes' },
+              { id: 'ELib', label: 'ELib', badge: 'Deeds & Library' },
+              { id: 'Camus', label: 'Camus', badge: 'Spatial 3D Audio' }
+            ].map((tab) => {
+              const isActive = selectedPlatform === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedPlatform(tab.id as any)}
+                  className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black whitespace-nowrap transition-all border ${
+                    isActive
+                      ? 'bg-emerald-600 text-white border-emerald-600 shadow-md'
+                      : 'bg-slate-50 text-slate-800 hover:text-slate-900 border-slate-300 hover:border-slate-400'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                    isActive ? 'bg-emerald-950 text-emerald-200' : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {tab.badge}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 3.1 TOOLBAR: FORMAT FILTERS & SEARCH */}
         <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
             {[
-              { id: 'all', label: 'All Vault Items', icon: HardDrive },
-              { id: 'audio', label: '.FMA Audio Stems', icon: Music },
-              { id: 'video', label: '.FMV 4K Replays', icon: Video },
-              { id: 'photo', label: '.FMP RAW Photos', icon: ImageIcon },
-              { id: 'document', label: '.FMP Smart Deeds', icon: FileText }
+              { id: 'all', label: 'All Formats', icon: HardDrive },
+              { id: 'audio', label: 'Audio (.FMA, .FMNOVEL, .FMPOD)', icon: Music },
+              { id: 'video', label: 'Video (.FMV)', icon: Video },
+              { id: 'photo', label: 'RAW Photos (.FMP)', icon: ImageIcon },
+              { id: 'document', label: 'Smart Deeds (.FMP)', icon: FileText }
             ].map((tab) => {
               const TabIcon = tab.icon;
               const isActive = selectedType === tab.id;
@@ -597,6 +718,13 @@ const MyDownloadsPage: React.FC = () => {
 
                     <div className="min-w-0 space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
+                        {/* App Platform Origin Badge */}
+                        {item.sourceApp && (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-100 text-emerald-950 border border-emerald-400">
+                            {item.sourceApp}
+                          </span>
+                        )}
+
                         {/* Sovereign Extension Badge */}
                         <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-slate-900 text-amber-400 border border-slate-700">
                           {item.sovereignExtension}

@@ -127,7 +127,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
               className={`px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
                 activeAITab === tab.id
                   ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  : 'bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200'
               }`}
             >
               <span>{tab.icon}</span>
@@ -136,9 +136,9 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-bold text-gray-700">Autonomous Operations 24/7</span>
+        <div className="flex items-center gap-2 text-xs text-slate-700">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="font-bold text-slate-900">Autonomous Operations 24/7</span>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
       {activeAITab === 'concierge_chat' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Chat Window */}
-          <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-xs flex flex-col h-[600px] overflow-hidden">
+          <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200 shadow-xs flex flex-col h-[600px] overflow-hidden">
             {/* Chat Header */}
             <div className="p-4 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -169,7 +169,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
             </div>
 
             {/* Chat Messages Log */}
-            <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-gray-50/50">
+            <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-slate-50/60">
               {chatMessages.map((msg, i) => (
                 <div
                   key={i}
@@ -179,7 +179,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                     className={`max-w-md p-4 rounded-3xl text-xs leading-relaxed ${
                       msg.sender === 'user'
                         ? 'bg-indigo-600 text-white rounded-br-xs shadow-xs'
-                        : 'bg-white text-gray-800 border border-gray-100 rounded-bl-xs shadow-xs'
+                        : 'bg-white text-slate-900 border border-slate-200 rounded-bl-xs shadow-xs'
                     }`}
                   >
                     <p>{msg.text}</p>
@@ -187,15 +187,15 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                     {/* Action Suggestion Card if attached */}
                     {msg.actionCard && (
                       <div className="mt-3 p-3 bg-indigo-50 border border-indigo-200 rounded-2xl text-indigo-950 space-y-1.5">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 block">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 block">
                           Suggested Appointment
                         </span>
                         <div className="font-bold text-xs">{msg.actionCard.serviceName}</div>
-                        <div className="text-[11px] text-gray-600">
+                        <div className="text-[11px] text-slate-700 font-semibold">
                           Specialist: {msg.actionCard.specialist} • {msg.actionCard.time}
                         </div>
-                        <div className="flex justify-between items-center pt-1.5 border-t border-indigo-100">
-                          <span className="font-black text-amber-700">{msg.actionCard.price}</span>
+                        <div className="flex justify-between items-center pt-1.5 border-t border-indigo-200">
+                          <span className="font-black text-amber-800">{msg.actionCard.price}</span>
                           <button
                             type="button"
                             onClick={() => showToast('Appointment locked via LuxAI Concierge!', 'success')}
@@ -207,12 +207,12 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                       </div>
                     )}
                   </div>
-                  <span className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</span>
+                  <span className="text-[10px] text-slate-600 font-bold mt-1 px-1">{msg.time}</span>
                 </div>
               ))}
 
               {isAiThinking && (
-                <div className="flex items-center gap-2 text-xs text-slate-700 bg-white p-3 rounded-2xl max-w-xs border border-gray-100">
+                <div className="flex items-center gap-2 text-xs text-slate-800 font-bold bg-white p-3 rounded-2xl max-w-xs border border-slate-200">
                   <div className="w-2 h-2 rounded-full bg-indigo-600 animate-ping"></div>
                   <span>LuxAI is verifying calendar availability...</span>
                 </div>
@@ -220,14 +220,14 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
             </div>
 
             {/* Chat Input Bar */}
-            <div className="p-4 bg-white border-t border-gray-100 flex items-center gap-2">
+            <div className="p-4 bg-white border-t border-slate-200 flex items-center gap-2">
               <input
                 type="text"
                 placeholder="Ask LuxAI (e.g. 'What slots are open for Elena?', 'Check cancellation policy')..."
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 px-4 py-3 bg-gray-50 border border-slate-300 rounded-2xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-2xl text-xs font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
               />
               <button
                 type="button"
@@ -241,8 +241,8 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
 
           {/* Quick Prompts & AI Automation Capabilities */}
           <div className="space-y-4">
-            <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs space-y-3">
-              <h3 className="text-xs font-black uppercase tracking-wider text-gray-700">
+            <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-3">
+              <h3 className="text-xs font-black uppercase tracking-wider text-slate-900">
                 Interactive Assistant Prompts
               </h3>
               <div className="space-y-2">
@@ -258,7 +258,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                     onClick={() => {
                       setUserInput(prompt);
                     }}
-                    className="w-full text-left p-3 rounded-2xl bg-gray-50 hover:bg-indigo-50/60 hover:text-indigo-900 border border-transparent hover:border-indigo-100 text-xs font-bold text-gray-700 transition cursor-pointer"
+                    className="w-full text-left p-3 rounded-2xl bg-slate-50 hover:bg-indigo-50/80 hover:text-indigo-950 border border-slate-200 text-xs font-bold text-slate-800 transition cursor-pointer"
                   >
                     "{prompt}"
                   </button>
@@ -293,22 +293,22 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
       {activeAITab === 'reminders' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Multi-Channel Reminders Settings */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-6">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
             <div>
-              <h3 className="text-base font-black text-gray-900">Multi-Channel Reminder Dispatcher</h3>
-              <p className="text-xs text-gray-500">
+              <h3 className="text-base font-black text-slate-900">Multi-Channel Reminder Dispatcher</h3>
+              <p className="text-xs text-slate-700 font-medium">
                 Send automated reminders via email, SMS or WhatsApp to keep clients up-to-date and eliminate no-shows.
               </p>
             </div>
 
             {/* Channels Toggles */}
             <div className="space-y-3">
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">💬</span>
                   <div>
-                    <div className="text-xs font-bold text-gray-900">WhatsApp Business API</div>
-                    <div className="text-[10px] text-gray-400">98% Open Rate • Instant Template Delivery</div>
+                    <div className="text-xs font-bold text-slate-900">WhatsApp Business API</div>
+                    <div className="text-[10px] text-slate-700 font-semibold">98% Open Rate • Instant Template Delivery</div>
                   </div>
                 </div>
                 <input
@@ -319,12 +319,12 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 />
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">📱</span>
                   <div>
-                    <div className="text-xs font-bold text-gray-900">Direct SMS Shortcode</div>
-                    <div className="text-[10px] text-gray-400">Global Carrier Delivery • 2-Way Confirmation</div>
+                    <div className="text-xs font-bold text-slate-900">Direct SMS Shortcode</div>
+                    <div className="text-[10px] text-slate-700 font-semibold">Global Carrier Delivery • 2-Way Confirmation</div>
                   </div>
                 </div>
                 <input
@@ -335,12 +335,12 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                 />
               </div>
 
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">✉️</span>
                   <div>
-                    <div className="text-xs font-bold text-gray-900">Transactional Email Engine</div>
-                    <div className="text-[10px] text-gray-400">Includes .ICS Calendar Invite & Map Pin</div>
+                    <div className="text-xs font-bold text-slate-900">Transactional Email Engine</div>
+                    <div className="text-[10px] text-slate-700 font-semibold">Includes .ICS Calendar Invite & Map Pin</div>
                   </div>
                 </div>
                 <input
@@ -353,29 +353,29 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
             </div>
 
             {/* Test Trigger Buttons */}
-            <div className="pt-2 border-t border-gray-100 space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block">
+            <div className="pt-2 border-t border-slate-200 space-y-2">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700 block">
                 Instant Sandbox Dispatch
               </span>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() => handleDispatchTestReminder('WhatsApp')}
-                  className="py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl text-[11px] font-bold transition cursor-pointer"
+                  className="py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-black rounded-xl text-[11px] transition cursor-pointer"
                 >
                   Test WhatsApp
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDispatchTestReminder('SMS')}
-                  className="py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 rounded-xl text-[11px] font-bold transition cursor-pointer"
+                  className="py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-400 font-black rounded-xl text-[11px] transition cursor-pointer"
                 >
                   Test SMS
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDispatchTestReminder('Email')}
-                  className="py-2 bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-xl text-[11px] font-bold transition cursor-pointer"
+                  className="py-2 bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-black rounded-xl text-[11px] transition cursor-pointer"
                 >
                   Test Email
                 </button>
@@ -384,10 +384,10 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
           </div>
 
           {/* Right 2 Cols: Live Message Preview */}
-          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4">
+          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-base font-black text-gray-900">Trigger Sequence & Template Preview</h3>
-              <div className="flex gap-1 bg-gray-100 p-1 rounded-xl text-xs">
+              <h3 className="text-base font-black text-slate-900">Trigger Sequence & Template Preview</h3>
+              <div className="flex gap-1 bg-slate-100 border border-slate-200 p-1 rounded-xl text-xs">
                 {[
                   { id: 'confirmation', label: 'Booking Confirmed' },
                   { id: '24h', label: '24h Reminder' },
@@ -400,8 +400,8 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                     onClick={() => setSelectedReminderPreview(s.id as any)}
                     className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer ${
                       selectedReminderPreview === s.id
-                        ? 'bg-white text-indigo-950 shadow-xs'
-                        : 'text-gray-600 hover:text-gray-900'
+                        ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-black'
+                        : 'text-slate-700 hover:text-slate-900 font-bold'
                     }`}
                   >
                     {s.label}
@@ -411,8 +411,8 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
             </div>
 
             {/* Template Render Box */}
-            <div className="p-6 rounded-2xl bg-gray-900 text-white font-mono text-xs leading-relaxed space-y-4 border border-gray-800">
-              <div className="flex items-center justify-between text-[11px] text-gray-400 pb-2 border-b border-gray-800">
+            <div className="p-6 rounded-2xl bg-slate-900 text-white font-mono text-xs leading-relaxed space-y-4 border border-slate-800">
+              <div className="flex items-center justify-between text-[11px] text-slate-300 font-semibold pb-2 border-b border-slate-800">
                 <span>CHANNEL: WHATSAPP ENCRYPTED / SMS DISPATCH</span>
                 <span>STATUS: AUTOMATED SEQUENCE</span>
               </div>
@@ -427,7 +427,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   <p className="mt-2 text-indigo-300">
                     Specialist: Dr. Elena Rostova • Suite: Penthouse Salon A • Code: FLX-8041
                   </p>
-                  <p className="mt-2 text-gray-400">
+                  <p className="mt-2 text-slate-300">
                     Need to reschedule? Reply RESCHEDULE or manage directly at: fingerlux.protocol/manage/FLX-8041
                   </p>
                 </div>
@@ -454,7 +454,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   <p className="text-blue-400 font-bold mb-2">🚘 1-HOUR ARRIVAL & ESCORT NOTICE</p>
                   <p>Your session begins in 60 minutes. Your Armored Mercedes-Maybach escort driver is stationed at the terminal.</p>
                   <p className="mt-1 text-indigo-300">Driver: Protocol Escort Unit 04 • Contact: +971 4 800 5899</p>
-                  <p className="mt-2 text-gray-400">Penthouse airlock clearance verified. We look forward to receiving you.</p>
+                  <p className="mt-2 text-slate-300">Penthouse airlock clearance verified. We look forward to receiving you.</p>
                 </div>
               )}
 
@@ -463,7 +463,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   <p className="text-purple-400 font-bold mb-2">✨ THANK YOU FOR VISITING FINGERLUX</p>
                   <p>We trust your experience with Dr. Elena Rostova was exceptional.</p>
                   <p className="mt-1 text-indigo-300">Your digital receipt and loyalty points credit (1,200 FIC Tier XP) have been applied.</p>
-                  <p className="mt-2 text-gray-400">Rate your experience or rebook your next session: fingerlux.protocol/rebook</p>
+                  <p className="mt-2 text-slate-300">Rate your experience or rebook your next session: fingerlux.protocol/rebook</p>
                 </div>
               )}
             </div>
@@ -476,10 +476,10 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-base font-black text-gray-900">
+              <h3 className="text-base font-black text-slate-900">
                 Client Management & Member Profiles ({clients.length})
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700 font-medium">
                 Detailed member profiles, intake form history, notes and lifetime spending.
               </p>
             </div>
@@ -489,38 +489,38 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
             {clients.map((client) => (
               <div
                 key={client.id}
-                className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs hover:shadow-md transition space-y-4 flex flex-col justify-between"
+                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-md transition space-y-4 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <img
                       src={client.avatar}
                       alt={client.name}
-                      className="w-14 h-14 rounded-2xl object-cover border border-gray-200"
+                      className="w-14 h-14 rounded-2xl object-cover border border-slate-300"
                     />
                     <div>
-                      <h4 className="text-base font-black text-gray-900">{client.name}</h4>
-                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">
+                      <h4 className="text-base font-black text-slate-900">{client.name}</h4>
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-950 px-2 py-0.5 rounded-full border border-amber-400">
                         {client.vipTier} Tier
                       </span>
-                      <span className="text-[11px] text-gray-400 block mt-0.5">{client.email}</span>
+                      <span className="text-[11px] text-slate-700 font-semibold block mt-0.5">{client.email}</span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50 p-3 rounded-2xl">
+                  <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 border border-slate-200 p-3 rounded-2xl">
                     <div>
-                      <span className="text-[10px] text-gray-400 font-bold block uppercase">Bookings:</span>
-                      <span className="font-black text-gray-900">{client.totalBookings} Completed</span>
+                      <span className="text-[10px] text-slate-700 font-bold block uppercase">Bookings:</span>
+                      <span className="font-black text-slate-900">{client.totalBookings} Completed</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-gray-400 font-bold block uppercase">Lifetime Spend:</span>
-                      <span className="font-black text-indigo-600">{formatPrice(client.lifetimeSpend)}</span>
+                      <span className="text-[10px] text-slate-700 font-bold block uppercase">Lifetime Spend:</span>
+                      <span className="font-black text-indigo-700">{formatPrice(client.lifetimeSpend)}</span>
                     </div>
                   </div>
 
                   {client.notes && (
-                    <div className="mt-3 text-xs text-gray-600 bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100">
-                      <span className="text-[10px] font-bold text-indigo-900 block uppercase">Notes:</span>
+                    <div className="mt-3 text-xs text-slate-800 bg-indigo-50/70 p-2.5 rounded-xl border border-indigo-200">
+                      <span className="text-[10px] font-black text-indigo-950 block uppercase">Notes:</span>
                       <span>{client.notes}</span>
                     </div>
                   )}
@@ -530,7 +530,7 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                       {client.tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md font-semibold"
+                          className="text-[10px] bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded-md font-bold"
                         >
                           {tag}
                         </span>
@@ -539,11 +539,11 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-gray-100">
+                <div className="pt-3 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setInspectedClient(client)}
-                    className="w-full py-2 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 text-gray-800 font-bold text-xs rounded-xl transition cursor-pointer"
+                    className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
                   >
                     View Full Intake Profile & History
                   </button>
@@ -557,63 +557,63 @@ export const FingerLuxAIOps: React.FC<FingerLuxAIOpsProps> = ({
       {/* --- Modal: Client Full Profile & Intake Data --- */}
       {inspectedClient && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <div className="flex items-center gap-3">
                 <img
                   src={inspectedClient.avatar}
                   alt={inspectedClient.name}
-                  className="w-12 h-12 rounded-2xl object-cover"
+                  className="w-12 h-12 rounded-2xl object-cover border border-slate-300"
                 />
                 <div>
-                  <h3 className="text-base font-black text-gray-900">{inspectedClient.name}</h3>
-                  <span className="text-xs text-indigo-600 font-bold">{inspectedClient.vipTier} Member</span>
+                  <h3 className="text-base font-black text-slate-900">{inspectedClient.name}</h3>
+                  <span className="text-xs text-indigo-700 font-bold">{inspectedClient.vipTier} Member</span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setInspectedClient(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             <div className="space-y-3.5 my-4 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Email & Phone:</span>
-                <span className="font-semibold text-gray-800">
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Email & Phone:</span>
+                <span className="font-bold text-slate-900">
                   {inspectedClient.email} • {inspectedClient.phone}
                 </span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Total Reservations:</span>
-                <span className="font-bold text-gray-900">{inspectedClient.totalBookings} Sessions</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Total Reservations:</span>
+                <span className="font-black text-slate-900">{inspectedClient.totalBookings} Sessions</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Total Lifetime Protocol Spend:</span>
-                <span className="font-black text-indigo-600">{formatPrice(inspectedClient.lifetimeSpend)}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Total Lifetime Protocol Spend:</span>
+                <span className="font-black text-indigo-700">{formatPrice(inspectedClient.lifetimeSpend)}</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-100 space-y-2">
-                <span className="text-xs font-black uppercase tracking-wider text-gray-700 block">
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-900 block">
                   Intake Preferences & Medical / Dietary Records
                 </span>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-slate-700 font-medium leading-relaxed">
                   {inspectedClient.notes || 'No specialized dietary restrictions noted. Full clearance.'}
                 </p>
-                <div className="text-[11px] text-emerald-700 font-bold flex items-center gap-1">
+                <div className="text-[11px] text-emerald-800 font-bold flex items-center gap-1">
                   <CheckIcon className="w-3.5 h-3.5" />
                   <span>Card on File Verified • Pre-authorized for instant check-out</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-gray-100">
+            <div className="flex justify-end pt-3 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setInspectedClient(null)}
-                className="px-5 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black cursor-pointer"
+                className="px-5 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 cursor-pointer"
               >
                 Done
               </button>

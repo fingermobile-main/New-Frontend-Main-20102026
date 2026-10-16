@@ -9,12 +9,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Play, Pause, SkipBack, SkipForward, Volume2, VolumeX,
-  Repeat, Shuffle, Heart, MoreVertical, Download, Share2,
-  ListMusic, Mic2, Radio, Sliders, Clock, Sparkles, Check,
-  X, RotateCcw, FastForward, Rewind, Info, Waves, ChevronUp
+  Repeat, Shuffle, Heart,
+  ListMusic, Mic2, Sliders, Clock,
+  X, RotateCcw, FastForward, Rewind, Info,
+  Speaker
 } from 'lucide-react';
 import { useBeatwaveNG, EQ_FREQUENCIES, EQ_PRESETS } from '../contexts/BeatwaveNGContext';
 import { formatTime } from '../utils/timeUtils';
+import AudioDeviceSelectorModal from './beatwaveng/AudioDeviceSelectorModal';
 
 interface BeatwaveNGPlayerProps {
   className?: string;
@@ -54,12 +56,12 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
     setAbRepeatB,
     clearAbRepeat,
     setSleepTimer,
-    setAudioQuality,
     setEqGain,
     applyEqPreset,
     playNext,
     playPrevious,
-    likeTrack
+    likeTrack,
+    activeAudioDevice
   } = useBeatwaveNG();
 
   // Modals & Drawers
@@ -68,7 +70,7 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
   const [showQueueDrawer, setShowQueueDrawer] = useState(false);
   const [showSleepTimerModal, setShowSleepTimerModal] = useState(false);
   const [showAmeboModal, setShowAmeboModal] = useState(false);
-  const [showVolumePopup, setShowVolumePopup] = useState(false);
+  const [showDeviceModal, setShowDeviceModal] = useState(false);
 
   const progressBarRef = useRef<HTMLDivElement>(null);
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
@@ -384,6 +386,19 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
               <ListMusic size={16} />
             </button>
 
+            {/* Audio Device Selector Button */}
+            <button
+              onClick={() => setShowDeviceModal(true)}
+              className={`p-2 rounded-xl transition-colors ${
+                showDeviceModal
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300'
+              }`}
+              title={`Audio Output: ${activeAudioDevice.name} (${activeAudioDevice.bitrateSupport})`}
+            >
+              <Speaker size={16} className={activeAudioDevice.type !== 'system' ? 'text-emerald-400' : ''} />
+            </button>
+
             {/* Volume Slider with Mute */}
             <div className="flex items-center gap-1.5 ml-1">
               <button
@@ -406,6 +421,12 @@ const BeatwaveNGPlayer: React.FC<BeatwaveNGPlayerProps> = ({ className = '' }) =
           </div>
         </div>
       </aside>
+
+      {/* Audio Device Selector Modal */}
+      <AudioDeviceSelectorModal
+        isOpen={showDeviceModal}
+        onClose={() => setShowDeviceModal(false)}
+      />
 
       {/* ======================================================== */}
       {/* 10-BAND EQUALIZER MODAL */}

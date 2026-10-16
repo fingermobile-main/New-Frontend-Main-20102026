@@ -104,6 +104,173 @@ export interface AbRepeatState {
   enabled: boolean;
 }
 
+// Media Output Devices
+export interface AudioDevice {
+  id: string;
+  name: string;
+  type: 'system' | 'headphones' | 'dac' | 'bluetooth' | 'cast';
+  bitrateSupport: string;
+  isDefault?: boolean;
+}
+
+// Colabo+ Shared Playlists with PIN exchange
+export interface ColaboContributor {
+  id: string;
+  name: string;
+  pin: string;
+  avatar: string;
+  role: 'Host' | 'Contributor' | 'DJ';
+  joinedAt: string;
+}
+
+export interface ColaboSession {
+  id: string;
+  title: string;
+  pin: string;
+  hostId: string;
+  hostName: string;
+  coverArt: string;
+  contributors: ColaboContributor[];
+  tracks: Track[];
+  createdAt: string;
+  isActive: boolean;
+}
+
+// VirDrive: 3 or 7 Days Temporal Virtual Drive
+export interface VirDriveFile {
+  id: string;
+  title: string;
+  artist: string;
+  duration: string;
+  sizeMb: number;
+  sovereignExt: '.fmbw' | '.fma' | '.wav';
+  downloadUrl: string;
+}
+
+export interface VirDriveFolder {
+  id: string;
+  name: string;
+  ownerPin: string;
+  durationDays: 3 | 7;
+  createdAt: string;
+  expiresAt: string;
+  daysRemaining: number;
+  pinProtected: boolean;
+  pin?: string;
+  totalSizeMb: number;
+  files: VirDriveFile[];
+  downloadCount: number;
+}
+
+// AudioNovels: Up to 50 cards, 30 mins each, AI assisted / File Upload / Live Mic, 3/7/30 days TTL
+export interface AudioNovelCard {
+  id: string;
+  title: string;
+  author: string;
+  synopsis: string;
+  narratorVoice: string;
+  coverArt: string;
+  durationMinutes: number; // up to 30 mins
+  genre: string;
+  aiPromptUsed?: string;
+  createdAt: string;
+  ttlDays: 3 | 7 | 30; // 3 or 7 days temporal TTL, or 30 days standard
+  daysRemaining: number;
+  temporalExpiresAt?: string;
+  isDownloaded: boolean;
+  sovereignExt: '.fmnovel' | '.fmbw';
+  audioUrl: string;
+  chaptersCount: number;
+  sourceType?: 'ai_prompt' | 'text_upload' | 'audio_upload' | 'live_recording';
+  sourceFileName?: string;
+  sourceFileSizeMb?: number;
+  sourceFileType?: string;
+  recordingBlobUrl?: string;
+  manuscriptText?: string;
+  moderationStatus?: 'active' | 'frozen' | 'blocked' | 'suspended';
+  flag?: 'green' | 'yellow' | 'orange' | 'red';
+  warningCount?: number;
+  adminNotes?: string;
+}
+
+// Podcasts: Up to 50 cards, 30 mins each, 3/7/30 days TTL
+export interface PodcastCard {
+  id: string;
+  title: string;
+  host: string;
+  guest?: string;
+  description: string;
+  coverArt: string;
+  durationMinutes: number; // up to 30 mins
+  genre: string;
+  episodeNumber: number;
+  createdAt: string;
+  ttlDays: 3 | 7 | 30;
+  daysRemaining: number;
+  temporalExpiresAt?: string;
+  isDownloaded: boolean;
+  sovereignExt: '.fmpod' | '.fmbw';
+  audioUrl: string;
+  tags: string[];
+  sourceType?: 'ai_prompt' | 'text_upload' | 'audio_upload' | 'live_recording';
+  sourceFileName?: string;
+  sourceFileSizeMb?: number;
+  recordingBlobUrl?: string;
+  moderationStatus?: 'active' | 'frozen' | 'blocked' | 'suspended';
+  flag?: 'green' | 'yellow' | 'orange' | 'red';
+  warningCount?: number;
+  adminNotes?: string;
+}
+
+// BeatVlogs: Shared interest video/audio vlogs
+export interface BeatVlog {
+  id: string;
+  title: string;
+  creator: string;
+  creatorPin: string;
+  avatar: string;
+  thumbnailUrl: string;
+  videoUrl: string;
+  duration: string;
+  views: number;
+  likes: number;
+  tags: string[];
+  sharedInterest: string;
+  createdAt: string;
+}
+
+// MySub: Add members to subscription by PIN
+export interface MySubMember {
+  id: string;
+  name: string;
+  pin: string;
+  avatar: string;
+  tier: 'SoundOcean Lossless' | 'SoundRiver Standard';
+  status: 'Active' | 'Pending';
+  joinedAt: string;
+}
+
+// Mii: Top widget, followers, live listening broadcast, PIN acceptance/decline
+export interface MiiRequest {
+  id: string;
+  fromName: string;
+  fromPin: string;
+  avatar: string;
+  type: 'colabo_invite' | 'virdrive_share' | 'listen_follow';
+  targetTitle: string;
+  targetPin?: string;
+  timestamp: string;
+  status: 'pending' | 'accepted' | 'declined';
+}
+
+export interface MiiState {
+  privacyMode: 'public' | 'private' | 'incognito';
+  followersCount: number;
+  followingCount: number;
+  nowPlayingBroadcast: boolean;
+  incomingRequests: MiiRequest[];
+}
+
 export const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
 
 export const EQ_PRESETS: Record<string, number[]> = {
@@ -275,11 +442,66 @@ export interface BeatwaveNGContextType {
   importPublicTrackToLibrary: (track: Track, targetTier?: 'SoundRiver' | 'SoundOcean') => Promise<void>;
   getRecommendedTracks: (memberId: string) => Promise<Track[]>;
   getTrendingTracks: () => Promise<Track[]>;
-  getArtistById: (artistId: string) => Promise<Artist>;
-  getAlbumById: (albumId: string) => Promise<Album>;
-  addToAmeboHistory: (action: Omit<AmeboHistoryItem, 'id'>) => void;
-  getAmeboHistory: () => AmeboHistoryItem[];
-  getRecentlyPlayed: () => Track[];
+  // Audio Devices
+  audioDevices: AudioDevice[];
+  activeAudioDevice: AudioDevice;
+  setAudioDevice: (device: AudioDevice) => void;
+
+  // Colabo+
+  colaboSessions: ColaboSession[];
+  createColaboSession: (title: string, tracks?: Track[]) => Promise<ColaboSession>;
+  joinColaboSession: (pin: string) => Promise<boolean>;
+  addTrackToColaboSession: (sessionId: string, track: Track) => void;
+
+  // VirDrive (3 or 7 days temporal virtual drive)
+  virDrives: VirDriveFolder[];
+  createVirDrive: (name: string, durationDays: 3 | 7, pinProtected: boolean, pin?: string, files?: VirDriveFile[]) => Promise<VirDriveFolder>;
+  deleteVirDrive: (driveId: string) => void;
+
+  // AudioNovels (up to 50 cards, 30 mins each, AI assisted / Upload / Live Mic, 3/7/30 days TTL)
+  audioNovels: AudioNovelCard[];
+  createAudioNovel: (
+    title: string,
+    author: string,
+    synopsis: string,
+    narratorVoice: string,
+    genre: string,
+    durationMinutes: number,
+    aiPrompt?: string,
+    sourceType?: 'ai_prompt' | 'text_upload' | 'audio_upload' | 'live_recording',
+    sourceFile?: { name: string; sizeMb: number; type: string; url?: string; textContent?: string },
+    recordingBlobUrl?: string,
+    temporalTtlDays?: 3 | 7 | 30
+  ) => Promise<AudioNovelCard>;
+  downloadAudioNovel: (novelId: string) => void;
+  updateAudioNovelModeration: (id: string, updates: Partial<AudioNovelCard>) => void;
+  deleteAudioNovel: (id: string) => void;
+  freezeAudioNovel: (id: string) => void;
+  blockAudioNovel: (id: string) => void;
+  unblockAudioNovel: (id: string) => void;
+  setAudioNovelFlag: (id: string, flag: 'green' | 'yellow' | 'orange' | 'red') => void;
+  issueAudioNovelWarning: (id: string, warningText: string) => void;
+
+  // Podcasts (up to 50 cards, 30 mins each, 30 days TTL, download to .fmpod)
+  podcasts: PodcastCard[];
+  createPodcast: (title: string, host: string, description: string, durationMinutes: number, genre: string, tags: string[]) => Promise<PodcastCard>;
+  downloadPodcast: (podcastId: string) => void;
+
+  // BeatVlogs (Curated shared interest vlogs)
+  beatVlogs: BeatVlog[];
+  createBeatVlog: (title: string, tags: string[], sharedInterest: string, videoUrl: string, duration: string) => Promise<BeatVlog>;
+
+  // MySub (Subscription sharing by PIN)
+  mySubMembers: MySubMember[];
+  mySubMaxSeats: number;
+  addMySubMemberByPin: (pin: string, name: string) => Promise<boolean>;
+  removeMySubMember: (memberId: string) => void;
+
+  // Mii Widget (Followers, Privacy broadcast, PIN acceptance/decline)
+  miiState: MiiState;
+  setMiiPrivacyMode: (mode: 'public' | 'private' | 'incognito') => void;
+  acceptMiiRequest: (requestId: string) => void;
+  declineMiiRequest: (requestId: string) => void;
 }
 
 const BeatwaveNGContext = React.createContext<BeatwaveNGContextType | undefined>(undefined);
@@ -400,12 +622,414 @@ const SEED_TRACKS: Track[] = [
   }
 ];
 
+export const SEED_AUDIO_DEVICES: AudioDevice[] = [
+  {
+    id: 'dev-system',
+    name: 'MacBook Pro Speakers (System Default)',
+    type: 'system',
+    bitrateSupport: '24-bit / 96kHz Spatial Audio',
+    isDefault: true
+  },
+  {
+    id: 'dev-headphones',
+    name: 'AirPods Max / Studio Headphones',
+    type: 'headphones',
+    bitrateSupport: '24-bit / 48kHz Dynamic Head Tracking'
+  },
+  {
+    id: 'dev-dac',
+    name: 'FiiO / Chord Mojo 2 Hi-Res USB DAC',
+    type: 'dac',
+    bitrateSupport: 'Lossless 32-bit / 768kHz DSD512'
+  },
+  {
+    id: 'dev-bluetooth',
+    name: 'Sony WH-1000XM5 (LDAC Lossless)',
+    type: 'bluetooth',
+    bitrateSupport: '990 kbps 24-bit / 96kHz LDAC'
+  },
+  {
+    id: 'dev-cast',
+    name: 'Living Room Studio Monitors (AirPlay 2)',
+    type: 'cast',
+    bitrateSupport: 'Lossless 16-bit / 44.1kHz ALAC'
+  }
+];
+
+export const SEED_USER_PLAYLISTS: Playlist[] = [
+  {
+    id: 'pl-afro-prime',
+    title: 'Afrobeats Prime Frequency 2026',
+    description: 'High energy Afrobeats, Street-hop, and Amapiano floor fillers.',
+    owner: 'Mbah Obinna',
+    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop&q=80',
+    tracks: [SEED_TRACKS[0], SEED_TRACKS[1], SEED_TRACKS[2]],
+    isPinned: true
+  },
+  {
+    id: 'pl-focus-wave',
+    title: 'Deep Acoustic Study & Lofi Waves',
+    description: 'Calm ambient Afrofunk and instrumental lofi beats for intense deep work.',
+    owner: 'Mbah Obinna',
+    coverArt: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=800&auto=format&fit=crop&q=80',
+    tracks: [SEED_TRACKS[4]],
+    isPinned: false
+  }
+];
+
+export const SEED_COLABO_SESSIONS: ColaboSession[] = [
+  {
+    id: 'colabo-1',
+    title: 'Mainland Lagos Decibel Jam',
+    pin: '849201',
+    hostId: 'mem-1',
+    hostName: 'Mbah Obinna',
+    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop&q=80',
+    contributors: [
+      { id: 'c-1', name: 'Mbah Obinna', pin: '749822', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200', role: 'Host', joinedAt: '10 mins ago' },
+      { id: 'c-2', name: 'DJ Spinall', pin: '492014', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200', role: 'DJ', joinedAt: '5 mins ago' },
+      { id: 'c-3', name: 'Amina Bello', pin: '883920', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200', role: 'Contributor', joinedAt: 'Just now' }
+    ],
+    tracks: [
+      SEED_TRACKS[0],
+      SEED_TRACKS[1],
+      SEED_TRACKS[2]
+    ],
+    createdAt: '2026-10-16T10:00:00Z',
+    isActive: true
+  },
+  {
+    id: 'colabo-2',
+    title: 'Pretoria to Brixton 3-Step Exchange',
+    pin: '592813',
+    hostId: 'mem-2',
+    hostName: 'Kabza De Soul',
+    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&auto=format&fit=crop&q=80',
+    contributors: [
+      { id: 'c-4', name: 'Kabza De Soul', pin: '592813', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200', role: 'Host', joinedAt: '2 hours ago' },
+      { id: 'c-5', name: 'Tems Vibe', pin: '192847', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200', role: 'Contributor', joinedAt: '1 hour ago' }
+    ],
+    tracks: [
+      SEED_TRACKS[1],
+      SEED_TRACKS[3]
+    ],
+    createdAt: '2026-10-16T08:30:00Z',
+    isActive: true
+  }
+];
+
+export const SEED_VIRDRIVES: VirDriveFolder[] = [
+  {
+    id: 'virdrive-1',
+    name: 'Afro-Genesis Vol 2 Master Stems & Pre-Mixes',
+    ownerPin: '749822',
+    durationDays: 7,
+    createdAt: '2026-10-15T12:00:00Z',
+    expiresAt: '2026-10-22T12:00:00Z',
+    daysRemaining: 6,
+    pinProtected: true,
+    pin: '901244',
+    totalSizeMb: 420.5,
+    files: [
+      { id: 'vf-1', title: 'Lagos Night Energy - Drum Stem', artist: 'Burna Boy Pulse', duration: '03:34', sizeMb: 78.4, sovereignExt: '.fmbw', downloadUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { id: 'vf-2', title: 'Lagos Night Energy - Synth & Bass', artist: 'Burna Boy Pulse', duration: '03:34', sizeMb: 62.1, sovereignExt: '.fmbw', downloadUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+      { id: 'vf-3', title: 'Lagos Night Energy - Vocal Master Acapella', artist: 'Burna Boy Pulse', duration: '03:34', sizeMb: 94.0, sovereignExt: '.fmbw', downloadUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' }
+    ],
+    downloadCount: 14
+  },
+  {
+    id: 'virdrive-2',
+    name: 'Weekend Secret Club Set (Pre-Release)',
+    ownerPin: '492014',
+    durationDays: 3,
+    createdAt: '2026-10-16T06:00:00Z',
+    expiresAt: '2026-10-19T06:00:00Z',
+    daysRemaining: 3,
+    pinProtected: false,
+    totalSizeMb: 185.2,
+    files: [
+      { id: 'vf-4', title: 'Ibiza to Lekki Live Transition Mix', artist: 'DJ Spinall', duration: '28:45', sizeMb: 185.2, sovereignExt: '.fma', downloadUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' }
+    ],
+    downloadCount: 39
+  }
+];
+
+export const SEED_AUDIO_NOVELS: AudioNovelCard[] = [
+  {
+    id: 'an-1',
+    title: 'The Whispering Baobab of Ife',
+    author: 'Chimamanda N. & Gemini AI',
+    synopsis: 'In futuristic 2099 Neo-Ife, a cybernetic archaeologist awakens an ancient acoustic intelligence preserved inside sacred brass relics.',
+    narratorVoice: 'Standard English (Global Studio Narrator)',
+    coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 28,
+    genre: 'Afro-Futurism, Sci-Fi',
+    aiPromptUsed: 'Write a gripping 28-minute Afrofuturistic audio novel with rich folklore, cybernetic sound design, and atmospheric acoustic narration.',
+    createdAt: '2026-10-14T11:00:00Z',
+    ttlDays: 30,
+    daysRemaining: 28,
+    isDownloaded: false,
+    sovereignExt: '.fmnovel',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    chaptersCount: 4,
+    sourceType: 'ai_prompt',
+    moderationStatus: 'active',
+    flag: 'green',
+    warningCount: 0
+  },
+  {
+    id: 'an-2',
+    title: 'Shadows Along Marina Wharf',
+    author: 'Kalu Okafor',
+    synopsis: 'A classic 1970s Lagos noir mystery following private investigator Jide Santos through rainy alleys, jazz clubs, and sovereign crypto secrets.',
+    narratorVoice: 'British English (BBC Classic Documentarian)',
+    coverArt: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 30,
+    genre: 'Crime Noir, Historical Mystery',
+    createdAt: '2026-10-12T09:00:00Z',
+    ttlDays: 7,
+    daysRemaining: 6,
+    isDownloaded: true,
+    sovereignExt: '.fmnovel',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+    chaptersCount: 5,
+    sourceType: 'audio_upload',
+    sourceFileName: 'marina_wharf_master_narration.wav',
+    sourceFileSizeMb: 42.5,
+    moderationStatus: 'active',
+    flag: 'green',
+    warningCount: 0
+  },
+  {
+    id: 'an-3',
+    title: 'Chronicles of the Golden Drum',
+    author: 'Kwame Mensah & Studio Mic',
+    synopsis: 'A mythical journey across Ashanti kingdoms seeking the heartbeat of ancestral sound that heals fragmented timeline dimensions.',
+    narratorVoice: 'American English (Deep Cinematic Baritone)',
+    coverArt: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 25,
+    genre: 'Folklore & Myth, Spoken Word',
+    createdAt: '2026-10-15T14:00:00Z',
+    ttlDays: 3,
+    daysRemaining: 2,
+    isDownloaded: false,
+    sovereignExt: '.fmnovel',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+    chaptersCount: 3,
+    sourceType: 'live_recording',
+    recordingBlobUrl: 'blob:finger.live/drum-rec',
+    moderationStatus: 'active',
+    flag: 'yellow',
+    warningCount: 1,
+    adminNotes: 'Sample rate verification advisory issued.'
+  },
+  {
+    id: 'an-4',
+    title: 'The Cyber-Griot of New Eko',
+    author: 'Babatunde Vance',
+    synopsis: 'A street courier smuggles encrypted high-density neural poem scrolls across neon-lit skyway bridges while evading rogue corporate drones.',
+    narratorVoice: 'Nigerian Pidgin Griot AI',
+    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 22,
+    genre: 'Afro-Futurism, Cyberpunk, Urban Drama',
+    createdAt: '2026-10-16T08:00:00Z',
+    ttlDays: 7,
+    daysRemaining: 7,
+    isDownloaded: false,
+    sovereignExt: '.fmnovel',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    chaptersCount: 3,
+    sourceType: 'text_upload',
+    sourceFileName: 'cyber_griot_manuscript.docx',
+    sourceFileSizeMb: 3.2,
+    moderationStatus: 'active',
+    flag: 'green',
+    warningCount: 0
+  }
+];
+
+export const SEED_PODCASTS: PodcastCard[] = [
+  {
+    id: 'pod-1',
+    title: 'The Sovereign Soundscape #42',
+    host: 'Mbah Obinna',
+    guest: 'Sarz & Masterkraft',
+    description: 'Inside the evolution of 3-step log drums, acoustic royalty micro-settlements, and the future of African music sovereignty.',
+    coverArt: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 29,
+    genre: 'Music Production & Tech',
+    episodeNumber: 42,
+    createdAt: '2026-10-15T15:00:00Z',
+    ttlDays: 30,
+    daysRemaining: 29,
+    isDownloaded: false,
+    sovereignExt: '.fmpod',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
+    tags: ['Music Tech', 'Amapiano', 'Sovereignty', 'Interviews']
+  },
+  {
+    id: 'pod-2',
+    title: 'Decentralized Beats & Creator Rights',
+    host: 'Amina Bello',
+    guest: 'Legal Protocol Architect',
+    description: 'Why web2 streaming platforms pay $0.003 per stream and how FingerMobile BeatwaveNG pays 80% directly to creators in real-time FIC.',
+    coverArt: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 26,
+    genre: 'Creator Economics',
+    episodeNumber: 15,
+    createdAt: '2026-10-11T16:00:00Z',
+    ttlDays: 30,
+    daysRemaining: 25,
+    isDownloaded: true,
+    sovereignExt: '.fmpod',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
+    tags: ['Economics', 'Creator Rights', 'FIC', 'Streaming']
+  },
+  {
+    id: 'pod-3',
+    title: 'Acoustic Healing & Binaural Waves',
+    host: 'Dr. Chidi Eke',
+    description: 'Scientific exploration of 432Hz tuning, sleep architecture, and how traditional talking drums trigger alpha-brainwave states.',
+    coverArt: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop&q=80',
+    durationMinutes: 24,
+    genre: 'Wellness & Acoustics',
+    episodeNumber: 8,
+    createdAt: '2026-10-08T12:00:00Z',
+    ttlDays: 30,
+    daysRemaining: 22,
+    isDownloaded: false,
+    sovereignExt: '.fmpod',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3',
+    tags: ['Binaural', 'Brainwaves', 'Wellness', 'African Drums']
+  }
+];
+
+export const SEED_BEATVLOGS: BeatVlog[] = [
+  {
+    id: 'bv-1',
+    title: 'Building a 140BPM Amapiano Banger from Scratch in 20 Minutes',
+    creator: 'Producer Kel P',
+    creatorPin: '661902',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    duration: '18:40',
+    views: 48900,
+    likes: 3940,
+    tags: ['#AmapianoLogDrumSecrets', '#AbletonLive', '#AfrobeatsStudio'],
+    sharedInterest: 'Amapiano Production & Beatmaking',
+    createdAt: '2 days ago'
+  },
+  {
+    id: 'bv-2',
+    title: 'Live Backstage Soundcheck: Burna Boy Stadium Tour Lagos',
+    creator: 'Lagos Sound Crew',
+    creatorPin: '904128',
+    avatar: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop&q=80',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    duration: '14:22',
+    views: 82400,
+    likes: 7200,
+    tags: ['#LiveConcertVlog', '#StadiumTour', '#SoundDesign2026'],
+    sharedInterest: 'Live Sound Engineering & Touring',
+    createdAt: '3 days ago'
+  },
+  {
+    id: 'bv-3',
+    title: 'Digging for 1970s Highlife Vinyl in Old Ibadan Record Shops',
+    creator: 'Vintage Grooves NG',
+    creatorPin: '448102',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&auto=format&fit=crop&q=80',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    duration: '22:15',
+    views: 31200,
+    likes: 2850,
+    tags: ['#VinylSampling', '#HighlifeRoots', '#CrateDigging'],
+    sharedInterest: 'Vinyl Crate Digging & Heritage Audio',
+    createdAt: '5 days ago'
+  }
+];
+
+export const SEED_MYSUB_MEMBERS: MySubMember[] = [
+  {
+    id: 'sub-1',
+    name: 'Mbah Obinna (Host)',
+    pin: '749822',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+    tier: 'SoundOcean Lossless',
+    status: 'Active',
+    joinedAt: '2026-01-10'
+  },
+  {
+    id: 'sub-2',
+    name: 'Amina Bello',
+    pin: '883920',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200',
+    tier: 'SoundOcean Lossless',
+    status: 'Active',
+    joinedAt: '2026-03-14'
+  },
+  {
+    id: 'sub-3',
+    name: 'Chidi Eke',
+    pin: '492014',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+    tier: 'SoundOcean Lossless',
+    status: 'Active',
+    joinedAt: '2026-08-01'
+  }
+];
+
+export const SEED_MII_REQUESTS: MiiRequest[] = [
+  {
+    id: 'req-1',
+    fromName: 'DJ Spinall',
+    fromPin: '492014',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+    type: 'colabo_invite',
+    targetTitle: 'Mainland Lagos Decibel Jam',
+    targetPin: '849201',
+    timestamp: '5 mins ago',
+    status: 'pending'
+  },
+  {
+    id: 'req-2',
+    fromName: 'Amina Bello',
+    fromPin: '883920',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200',
+    type: 'virdrive_share',
+    targetTitle: 'Afro-Genesis Vol 2 Master Stems',
+    targetPin: '901244',
+    timestamp: '25 mins ago',
+    status: 'pending'
+  },
+  {
+    id: 'req-3',
+    fromName: 'Tems Vibe',
+    fromPin: '192847',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
+    type: 'listen_follow',
+    targetTitle: 'Follow your live listening broadcast',
+    timestamp: '1 hour ago',
+    status: 'pending'
+  }
+];
+
 export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { showToast } = useAppContext();
 
   // Core Playback State
   const [tracks, setTracks] = useState<Track[]>(SEED_TRACKS);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_playlists');
+      return saved ? JSON.parse(saved) : SEED_USER_PLAYLISTS;
+    } catch {
+      return SEED_USER_PLAYLISTS;
+    }
+  });
   const [artists, setArtists] = useState<Artist[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(SEED_TRACKS[0]);
@@ -415,6 +1039,142 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [volume, setVolume] = useState<number>(80);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Audio Output Devices
+  const [audioDevices] = useState<AudioDevice[]>(SEED_AUDIO_DEVICES);
+  const [activeAudioDevice, setActiveAudioDevice] = useState<AudioDevice>(SEED_AUDIO_DEVICES[0]);
+
+  // Colabo+ Shared Playlists
+  const [colaboSessions, setColaboSessions] = useState<ColaboSession[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_colabo_sessions');
+      return saved ? JSON.parse(saved) : SEED_COLABO_SESSIONS;
+    } catch {
+      return SEED_COLABO_SESSIONS;
+    }
+  });
+
+  // VirDrive 3 or 7 Days Temporal Virtual Drive
+  const [virDrives, setVirDrives] = useState<VirDriveFolder[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_virdrives');
+      return saved ? JSON.parse(saved) : SEED_VIRDRIVES;
+    } catch {
+      return SEED_VIRDRIVES;
+    }
+  });
+
+  // AudioNovels (up to 50 cards, 30 mins each)
+  const [audioNovels, setAudioNovels] = useState<AudioNovelCard[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_audio_novels');
+      return saved ? JSON.parse(saved) : SEED_AUDIO_NOVELS;
+    } catch {
+      return SEED_AUDIO_NOVELS;
+    }
+  });
+
+  // Podcasts (up to 50 cards, 30 mins each)
+  const [podcasts, setPodcasts] = useState<PodcastCard[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_podcasts');
+      return saved ? JSON.parse(saved) : SEED_PODCASTS;
+    } catch {
+      return SEED_PODCASTS;
+    }
+  });
+
+  // BeatVlogs
+  const [beatVlogs, setBeatVlogs] = useState<BeatVlog[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_beat_vlogs');
+      return saved ? JSON.parse(saved) : SEED_BEATVLOGS;
+    } catch {
+      return SEED_BEATVLOGS;
+    }
+  });
+
+  // MySub Shared Subscription Seats
+  const [mySubMembers, setMySubMembers] = useState<MySubMember[]>(() => {
+    try {
+      const saved = localStorage.getItem('bw_mysub_members');
+      return saved ? JSON.parse(saved) : SEED_MYSUB_MEMBERS;
+    } catch {
+      return SEED_MYSUB_MEMBERS;
+    }
+  });
+  const mySubMaxSeats = 5;
+
+  // Mii State (Followers, Privacy Broadcast, PIN Acceptance/Decline)
+  const [miiState, setMiiState] = useState<MiiState>(() => {
+    try {
+      const saved = localStorage.getItem('bw_mii_state');
+      return saved ? JSON.parse(saved) : {
+        privacyMode: 'public',
+        followersCount: 1420,
+        followingCount: 380,
+        nowPlayingBroadcast: true,
+        incomingRequests: SEED_MII_REQUESTS
+      };
+    } catch {
+      return {
+        privacyMode: 'public',
+        followersCount: 1420,
+        followingCount: 380,
+        nowPlayingBroadcast: true,
+        incomingRequests: SEED_MII_REQUESTS
+      };
+    }
+  });
+
+  // Sync to local storage
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_playlists', JSON.stringify(playlists));
+    } catch {}
+  }, [playlists]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_colabo_sessions', JSON.stringify(colaboSessions));
+    } catch {}
+  }, [colaboSessions]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_virdrives', JSON.stringify(virDrives));
+    } catch {}
+  }, [virDrives]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_audio_novels', JSON.stringify(audioNovels));
+    } catch {}
+  }, [audioNovels]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_podcasts', JSON.stringify(podcasts));
+    } catch {}
+  }, [podcasts]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_beat_vlogs', JSON.stringify(beatVlogs));
+    } catch {}
+  }, [beatVlogs]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_mysub_members', JSON.stringify(mySubMembers));
+    } catch {}
+  }, [mySubMembers]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bw_mii_state', JSON.stringify(miiState));
+    } catch {}
+  }, [miiState]);
 
   // Audio Processing & Modals
   const [playbackRate, setPlaybackRate] = useState<number>(1.0);
@@ -1033,6 +1793,366 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const getAmeboHistory = useCallback(() => ameboHistory, [ameboHistory]);
   const getRecentlyPlayed = useCallback(() => recentlyPlayed, [recentlyPlayed]);
 
+  // Audio Device Routing
+  const setAudioDevice = useCallback((device: AudioDevice) => {
+    setActiveAudioDevice(device);
+    showToast(`Media Output routed to ${device.name} (${device.bitrateSupport})`, 'success');
+  }, [showToast]);
+
+  // Colabo+ Handlers
+  const createColaboSession = useCallback(async (title: string, initialTracks?: Track[]): Promise<ColaboSession> => {
+    const pin = String(Math.floor(100000 + Math.random() * 900000));
+    const newSession: ColaboSession = {
+      id: `colabo-${Date.now()}`,
+      title,
+      pin,
+      hostId: 'mem-1',
+      hostName: 'Mbah Obinna',
+      coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800',
+      contributors: [
+        {
+          id: 'c-host',
+          name: 'Mbah Obinna',
+          pin: '749822',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+          role: 'Host',
+          joinedAt: 'Just now'
+        }
+      ],
+      tracks: initialTracks || [SEED_TRACKS[0]],
+      createdAt: new Date().toISOString(),
+      isActive: true
+    };
+    setColaboSessions((prev) => [newSession, ...prev]);
+    showToast(`Colabo+ Playlist created! Access PIN: #${pin}`, 'success');
+    return newSession;
+  }, [showToast]);
+
+  const joinColaboSession = useCallback(async (pin: string): Promise<boolean> => {
+    const cleanPin = pin.trim().replace('#', '');
+    const found = colaboSessions.find((s) => s.pin === cleanPin);
+    if (found) {
+      setColaboSessions((prev) =>
+        prev.map((s) =>
+          s.pin === cleanPin
+            ? {
+                ...s,
+                contributors: [
+                  ...s.contributors,
+                  {
+                    id: `c-${Date.now()}`,
+                    name: 'Mbah Obinna',
+                    pin: '749822',
+                    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+                    role: 'Contributor',
+                    joinedAt: 'Just now'
+                  }
+                ]
+              }
+            : s
+        )
+      );
+      showToast(`Joined Colabo+ session: "${found.title}" via PIN #${cleanPin}!`, 'success');
+      return true;
+    } else {
+      const adHoc: ColaboSession = {
+        id: `colabo-joined-${Date.now()}`,
+        title: `Colabo Room #${cleanPin}`,
+        pin: cleanPin,
+        hostId: 'remote-host',
+        hostName: 'Verified Member',
+        coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800',
+        contributors: [
+          { id: 'c-remote', name: 'Host Creator', pin: cleanPin, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200', role: 'Host', joinedAt: '1 hour ago' },
+          { id: 'c-self', name: 'Mbah Obinna', pin: '749822', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200', role: 'Contributor', joinedAt: 'Just now' }
+        ],
+        tracks: [SEED_TRACKS[1], SEED_TRACKS[2]],
+        createdAt: new Date().toISOString(),
+        isActive: true
+      };
+      setColaboSessions((prev) => [adHoc, ...prev]);
+      showToast(`Accepted PIN #${cleanPin}. Joined shared Colabo+ room!`, 'success');
+      return true;
+    }
+  }, [colaboSessions, showToast]);
+
+  const addTrackToColaboSession = useCallback((sessionId: string, track: Track) => {
+    setColaboSessions((prev) =>
+      prev.map((s) => (s.id === sessionId ? { ...s, tracks: [...s.tracks, track] } : s))
+    );
+    showToast(`Track "${track.title}" added to Colabo+ shared queue`, 'success');
+  }, [showToast]);
+
+  // VirDrive Handlers
+  const createVirDrive = useCallback(async (
+    name: string,
+    durationDays: 3 | 7,
+    pinProtected: boolean,
+    pin?: string,
+    files?: VirDriveFile[]
+  ): Promise<VirDriveFolder> => {
+    const now = new Date();
+    const expires = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
+    const newDrive: VirDriveFolder = {
+      id: `virdrive-${Date.now()}`,
+      name,
+      ownerPin: '749822',
+      durationDays,
+      createdAt: now.toISOString(),
+      expiresAt: expires.toISOString(),
+      daysRemaining: durationDays,
+      pinProtected,
+      pin: pin || (pinProtected ? String(Math.floor(100000 + Math.random() * 900000)) : undefined),
+      totalSizeMb: files?.reduce((acc, f) => acc + f.sizeMb, 0) || 120.4,
+      files: files || [
+        { id: `vf-${Date.now()}-1`, title: `${name} - Mixed Stem Pack`, artist: 'Mbah Obinna', duration: '04:12', sizeMb: 68.4, sovereignExt: '.fmbw', downloadUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
+      ],
+      downloadCount: 0
+    };
+    setVirDrives((prev) => [newDrive, ...prev]);
+    showToast(`VirDrive "${name}" created with ${durationDays}-day temporal expiration!`, 'success');
+    return newDrive;
+  }, [showToast]);
+
+  const deleteVirDrive = useCallback((driveId: string) => {
+    setVirDrives((prev) => prev.filter((d) => d.id !== driveId));
+    showToast('VirDrive folder removed', 'info');
+  }, [showToast]);
+
+  // AudioNovels Handlers
+  const createAudioNovel = useCallback(async (
+    title: string,
+    author: string,
+    synopsis: string,
+    narratorVoice: string,
+    genre: string,
+    durationMinutes: number,
+    aiPrompt?: string,
+    sourceType: 'ai_prompt' | 'text_upload' | 'audio_upload' | 'live_recording' = 'ai_prompt',
+    sourceFile?: { name: string; sizeMb: number; type: string; url?: string; textContent?: string },
+    recordingBlobUrl?: string,
+    temporalTtlDays: 3 | 7 | 30 = 30
+  ): Promise<AudioNovelCard> => {
+    if (audioNovels.length >= 50) {
+      showToast('Maximum quota of 50 AudioNovels reached.', 'error');
+      throw new Error('50 AudioNovels limit reached');
+    }
+    const cappedDuration = Math.min(30, Math.max(1, durationMinutes));
+    const now = new Date();
+    const expires = new Date(now.getTime() + temporalTtlDays * 24 * 60 * 60 * 1000);
+    const newCard: AudioNovelCard = {
+      id: `an-${Date.now()}`,
+      title,
+      author,
+      synopsis,
+      narratorVoice,
+      genre,
+      durationMinutes: cappedDuration,
+      coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
+      aiPromptUsed: aiPrompt || (sourceType === 'ai_prompt' ? 'AI Assisted Audio Storytelling Prompt' : undefined),
+      createdAt: now.toISOString(),
+      ttlDays: temporalTtlDays,
+      daysRemaining: temporalTtlDays,
+      temporalExpiresAt: expires.toISOString(),
+      isDownloaded: false,
+      sovereignExt: '.fmnovel',
+      audioUrl: recordingBlobUrl || sourceFile?.url || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+      chaptersCount: Math.ceil(cappedDuration / 7),
+      sourceType,
+      sourceFileName: sourceFile?.name,
+      sourceFileSizeMb: sourceFile?.sizeMb,
+      sourceFileType: sourceFile?.type,
+      recordingBlobUrl,
+      manuscriptText: sourceFile?.textContent,
+      moderationStatus: 'active',
+      flag: 'green',
+      warningCount: 0
+    };
+    setAudioNovels((prev) => [newCard, ...prev]);
+    showToast(`AudioNovel "${title}" registered (${sourceType}) with ${temporalTtlDays}-day temporal TTL!`, 'success');
+    return newCard;
+  }, [audioNovels.length, showToast]);
+
+  const downloadAudioNovel = useCallback((novelId: string) => {
+    setAudioNovels((prev) =>
+      prev.map((n) => (n.id === novelId ? { ...n, isDownloaded: true } : n))
+    );
+    showToast('AudioNovel downloaded as .fmnovel. TTL removed (Saved to MyDownloads permanent vault)!', 'success');
+  }, [showToast]);
+
+  const updateAudioNovelModeration = useCallback((id: string, updates: Partial<AudioNovelCard>) => {
+    setAudioNovels((prev) =>
+      prev.map((novel) => (novel.id === id ? { ...novel, ...updates } : novel))
+    );
+    showToast('Asset moderation record updated in sync with Master Dashboard.', 'info');
+  }, [showToast]);
+
+  const freezeAudioNovel = useCallback((id: string) => {
+    updateAudioNovelModeration(id, { moderationStatus: 'frozen', flag: 'orange' });
+    showToast('Asset stream has been frozen by administration.', 'warning');
+  }, [updateAudioNovelModeration, showToast]);
+
+  const blockAudioNovel = useCallback((id: string) => {
+    updateAudioNovelModeration(id, { moderationStatus: 'blocked', flag: 'red' });
+    showToast('Asset has been blocked from platform playback.', 'error');
+  }, [updateAudioNovelModeration, showToast]);
+
+  const unblockAudioNovel = useCallback((id: string) => {
+    updateAudioNovelModeration(id, { moderationStatus: 'active', flag: 'green' });
+    showToast('Asset unblocked. Normal playback restored.', 'success');
+  }, [updateAudioNovelModeration, showToast]);
+
+  const setAudioNovelFlag = useCallback((id: string, flag: 'green' | 'yellow' | 'orange' | 'red') => {
+    updateAudioNovelModeration(id, { flag });
+  }, [updateAudioNovelModeration]);
+
+  const issueAudioNovelWarning = useCallback((id: string, warningText: string) => {
+    setAudioNovels((prev) =>
+      prev.map((novel) => {
+        if (novel.id === id) {
+          const newCount = (novel.warningCount || 0) + 1;
+          const newFlag = newCount >= 3 ? 'red' : newCount >= 2 ? 'orange' : 'yellow';
+          return {
+            ...novel,
+            warningCount: newCount,
+            flag: newFlag,
+            adminNotes: warningText
+          };
+        }
+        return novel;
+      })
+    );
+    showToast('Warning issued to creator (Total: warning registered).', 'warning');
+  }, [showToast]);
+
+  const deleteAudioNovel = useCallback((id: string) => {
+    setAudioNovels((prev) => prev.filter((novel) => novel.id !== id));
+    showToast('Asset purged and removed from cloud temporal cache.', 'info');
+  }, [showToast]);
+
+  // Podcasts Handlers
+  const createPodcast = useCallback(async (
+    title: string,
+    host: string,
+    description: string,
+    durationMinutes: number,
+    genre: string,
+    tags: string[]
+  ): Promise<PodcastCard> => {
+    if (podcasts.length >= 50) {
+      showToast('Maximum quota of 50 Podcast cards reached.', 'error');
+      throw new Error('50 Podcasts limit reached');
+    }
+    const cappedDuration = Math.min(30, Math.max(1, durationMinutes));
+    const newCard: PodcastCard = {
+      id: `pod-${Date.now()}`,
+      title,
+      host,
+      description,
+      durationMinutes: cappedDuration,
+      genre,
+      tags,
+      episodeNumber: podcasts.length + 1,
+      coverArt: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
+      createdAt: new Date().toISOString(),
+      ttlDays: 30,
+      daysRemaining: 30,
+      isDownloaded: false,
+      sovereignExt: '.fmpod',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3'
+    };
+    setPodcasts((prev) => [newCard, ...prev]);
+    showToast(`Podcast episode "${title}" created! 30-day TTL active.`, 'success');
+    return newCard;
+  }, [podcasts.length, showToast]);
+
+  const downloadPodcast = useCallback((podcastId: string) => {
+    setPodcasts((prev) =>
+      prev.map((p) => (p.id === podcastId ? { ...p, isDownloaded: true } : p))
+    );
+    showToast('Podcast saved offline as .fmpod file in MyDownloads!', 'success');
+  }, [showToast]);
+
+  // BeatVlogs Handlers
+  const createBeatVlog = useCallback(async (
+    title: string,
+    tags: string[],
+    sharedInterest: string,
+    videoUrl: string,
+    duration: string
+  ): Promise<BeatVlog> => {
+    const newVlog: BeatVlog = {
+      id: `bv-${Date.now()}`,
+      title,
+      creator: 'Mbah Obinna',
+      creatorPin: '749822',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+      thumbnailUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800',
+      videoUrl: videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      duration: duration || '15:30',
+      views: 1,
+      likes: 1,
+      tags,
+      sharedInterest,
+      createdAt: 'Just now'
+    };
+    setBeatVlogs((prev) => [newVlog, ...prev]);
+    showToast(`BeatVlog "${title}" published under ${sharedInterest}!`, 'success');
+    return newVlog;
+  }, [showToast]);
+
+  // MySub Handlers
+  const addMySubMemberByPin = useCallback(async (pin: string, name: string): Promise<boolean> => {
+    if (mySubMembers.length >= mySubMaxSeats) {
+      showToast(`Subscription seat limit (${mySubMaxSeats} seats) reached. Upgrade tier for more seats.`, 'error');
+      return false;
+    }
+    const cleanPin = pin.trim().replace('#', '');
+    const newMember: MySubMember = {
+      id: `sub-${Date.now()}`,
+      name: name || `Member #${cleanPin}`,
+      pin: cleanPin,
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+      tier: 'SoundOcean Lossless',
+      status: 'Active',
+      joinedAt: new Date().toISOString().split('T')[0]
+    };
+    setMySubMembers((prev) => [...prev, newMember]);
+    showToast(`Member #${cleanPin} (${newMember.name}) granted BeatwaveNG Sovereign Subscription seat!`, 'success');
+    return true;
+  }, [mySubMembers.length, mySubMaxSeats, showToast]);
+
+  const removeMySubMember = useCallback((memberId: string) => {
+    setMySubMembers((prev) => prev.filter((m) => m.id !== memberId));
+    showToast('Subscription seat revoked and freed.', 'info');
+  }, [showToast]);
+
+  // Mii Widget Handlers
+  const setMiiPrivacyMode = useCallback((mode: 'public' | 'private' | 'incognito') => {
+    setMiiState((prev) => ({ ...prev, privacyMode: mode }));
+    showToast(`Mii Privacy Mode set to: ${mode.toUpperCase()}`, 'info');
+  }, [showToast]);
+
+  const acceptMiiRequest = useCallback((requestId: string) => {
+    setMiiState((prev) => ({
+      ...prev,
+      incomingRequests: prev.incomingRequests.map((r) =>
+        r.id === requestId ? { ...r, status: 'accepted' as const } : r
+      )
+    }));
+    showToast('PIN Request accepted. Access granted!', 'success');
+  }, [showToast]);
+
+  const declineMiiRequest = useCallback((requestId: string) => {
+    setMiiState((prev) => ({
+      ...prev,
+      incomingRequests: prev.incomingRequests.map((r) =>
+        r.id === requestId ? { ...r, status: 'declined' as const } : r
+      )
+    }));
+    showToast('PIN Request declined.', 'info');
+  }, [showToast]);
+
   const value = useMemo(
     () => ({
       tracks,
@@ -1065,6 +2185,55 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
       radioStations,
       activeRadioStation,
+
+      // Audio Devices
+      audioDevices,
+      activeAudioDevice,
+      setAudioDevice,
+
+      // Colabo+
+      colaboSessions,
+      createColaboSession,
+      joinColaboSession,
+      addTrackToColaboSession,
+
+      // VirDrive
+      virDrives,
+      createVirDrive,
+      deleteVirDrive,
+
+      // AudioNovels
+      audioNovels,
+      createAudioNovel,
+      downloadAudioNovel,
+      updateAudioNovelModeration,
+      deleteAudioNovel,
+      freezeAudioNovel,
+      blockAudioNovel,
+      unblockAudioNovel,
+      setAudioNovelFlag,
+      issueAudioNovelWarning,
+
+      // Podcasts
+      podcasts,
+      createPodcast,
+      downloadPodcast,
+
+      // BeatVlogs
+      beatVlogs,
+      createBeatVlog,
+
+      // MySub
+      mySubMembers,
+      mySubMaxSeats,
+      addMySubMemberByPin,
+      removeMySubMember,
+
+      // Mii
+      miiState,
+      setMiiPrivacyMode,
+      acceptMiiRequest,
+      declineMiiRequest,
 
       playTrack,
       pauseTrack,
@@ -1133,6 +2302,39 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       parsedLyrics,
       radioStations,
       activeRadioStation,
+      audioDevices,
+      activeAudioDevice,
+      setAudioDevice,
+      colaboSessions,
+      createColaboSession,
+      joinColaboSession,
+      addTrackToColaboSession,
+      virDrives,
+      createVirDrive,
+      deleteVirDrive,
+      audioNovels,
+      createAudioNovel,
+      downloadAudioNovel,
+      updateAudioNovelModeration,
+      deleteAudioNovel,
+      freezeAudioNovel,
+      blockAudioNovel,
+      unblockAudioNovel,
+      setAudioNovelFlag,
+      issueAudioNovelWarning,
+      podcasts,
+      createPodcast,
+      downloadPodcast,
+      beatVlogs,
+      createBeatVlog,
+      mySubMembers,
+      mySubMaxSeats,
+      addMySubMemberByPin,
+      removeMySubMember,
+      miiState,
+      setMiiPrivacyMode,
+      acceptMiiRequest,
+      declineMiiRequest,
       playTrack,
       pauseTrack,
       resumeTrack,

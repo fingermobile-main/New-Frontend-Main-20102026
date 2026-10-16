@@ -157,7 +157,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
               className={`px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
                 activePaymentSubTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  : 'bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200'
               }`}
             >
               <span>{tab.icon}</span>
@@ -166,9 +166,9 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-gray-500">
+        <div className="flex items-center gap-2 text-xs text-slate-700">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="font-bold text-gray-700">Settlement Gateway: PCI-DSS Level 1 & Protocol Vault</span>
+          <span className="font-bold text-slate-900">Settlement Gateway: PCI-DSS Level 1 & Protocol Vault</span>
         </div>
       </div>
 
@@ -176,17 +176,17 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
       {activePaymentSubTab === 'pos_terminal' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left 2 Cols: Terminal Simulator */}
-          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-6">
+          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-black text-gray-900 flex items-center gap-2">
+                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
                   <span>💳</span> FingerLux In-Person Payment Terminal
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-700 font-medium">
                   Accept payments in-person using Tap to Pay, Bluetooth card readers or POS terminals.
                 </p>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-full border border-emerald-300">
+              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-950 px-2.5 py-1 rounded-full border border-emerald-400">
                 Live Terminal
               </span>
             </div>
@@ -204,20 +204,20 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   onClick={() => setPosMethod(m.id as any)}
                   className={`p-3.5 rounded-2xl border text-center transition cursor-pointer ${
                     posMethod === m.id
-                      ? 'border-indigo-600 bg-indigo-50/60 font-black text-indigo-900 shadow-xs'
-                      : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                      ? 'border-indigo-600 bg-indigo-50/80 font-black text-indigo-950 shadow-xs'
+                      : 'border-slate-300 bg-white hover:border-slate-400 text-slate-800'
                   }`}
                 >
                   <span className="text-2xl block mb-1">{m.icon}</span>
                   <span className="text-xs font-bold block">{m.label}</span>
-                  <span className="text-[10px] text-gray-400 block">{m.sub}</span>
+                  <span className="text-[10px] text-slate-700 font-semibold block">{m.sub}</span>
                 </button>
               ))}
             </div>
 
             {/* Amount Selection & Input */}
-            <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 space-y-3">
-              <label className="text-xs font-black uppercase tracking-wider text-gray-700 block">
+            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
+              <label className="text-xs font-black uppercase tracking-wider text-slate-900 block">
                 Charge Amount ({selectedCurrency})
               </label>
 
@@ -226,9 +226,9 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   type="number"
                   value={posAmount}
                   onChange={(e) => setPosAmount(Number(e.target.value))}
-                  className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-xl font-black text-gray-900 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-xl font-black text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
-                <span className="text-sm font-bold text-gray-500">
+                <span className="text-sm font-bold text-slate-700">
                   ≈ {formatPrice(posAmount)}
                 </span>
               </div>
@@ -240,7 +240,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                     key={amt}
                     type="button"
                     onClick={() => setPosAmount(amt)}
-                    className="px-3 py-1 bg-white border border-slate-300 hover:border-indigo-400 rounded-xl text-xs font-bold text-gray-700 transition cursor-pointer"
+                    className="px-3 py-1 bg-white border border-slate-300 hover:border-indigo-500 rounded-xl text-xs font-bold text-slate-900 transition cursor-pointer"
                   >
                     {amt.toLocaleString()} FIC
                   </button>
@@ -248,7 +248,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600 block mt-2 mb-1">
+                <label className="text-[11px] font-bold text-slate-900 block mt-2 mb-1">
                   Customer / Room Reference
                 </label>
                 <input
@@ -256,7 +256,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                   value={customerRef}
                   onChange={(e) => setCustomerRef(e.target.value)}
                   placeholder="e.g. Penthouse Suite 5401 - Sir Reginald Vance"
-                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none"
                 />
               </div>
             </div>
@@ -281,7 +281,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                 <h4 className="text-xl font-black text-white">
                   Hold Phone or Card Here to Pay
                 </h4>
-                <p className="text-xs text-indigo-200/80 mt-1 max-w-sm mx-auto">
+                <p className="text-xs text-indigo-200/90 mt-1 max-w-sm mx-auto font-medium">
                   Supports Apple Pay, Google Pay, Contactless Visa/Mastercard/Amex, and Protocol NFC Keycards.
                 </p>
               </div>
@@ -302,79 +302,79 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
           {/* Right 1 Col: Bluetooth Reader Status & Live Receipt */}
           <div className="space-y-6">
             {/* Bluetooth Reader Status Card */}
-            <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs space-y-3">
+            <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                   <span>📡</span> Card Reader Hardware
                 </span>
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-black text-emerald-950 bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full">
                   Connected
                 </span>
               </div>
 
-              <div className="p-3 bg-gray-50 rounded-2xl space-y-2 text-xs">
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Device:</span>
-                  <span className="font-bold text-gray-900">FingerLux Reader B1</span>
+                  <span className="text-slate-700 font-bold">Device:</span>
+                  <span className="font-black text-slate-900">FingerLux Reader B1</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Battery:</span>
-                  <span className="font-bold text-emerald-600">🔋 94% Charged</span>
+                  <span className="text-slate-700 font-bold">Battery:</span>
+                  <span className="font-bold text-emerald-700">🔋 94% Charged</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Firmware:</span>
-                  <span className="font-bold text-gray-800">v3.4.1 (Latest)</span>
+                  <span className="text-slate-700 font-bold">Firmware:</span>
+                  <span className="font-bold text-slate-900">v3.4.1 (Latest)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Terminal ID:</span>
-                  <span className="font-mono font-bold text-gray-800">FLX-NFC-TERMINAL-01</span>
+                  <span className="text-slate-700 font-bold">Terminal ID:</span>
+                  <span className="font-mono font-bold text-slate-900">FLX-NFC-TERMINAL-01</span>
                 </div>
               </div>
             </div>
 
             {/* Digital Receipt Card if transaction was processed */}
             {lastReceipt && (
-              <div className="bg-white rounded-3xl p-5 border-2 border-emerald-500/30 shadow-md space-y-3 animate-slide-up">
-                <div className="flex items-center justify-between text-xs pb-2 border-b border-gray-100">
-                  <span className="font-black text-emerald-600 flex items-center gap-1">
+              <div className="bg-white rounded-3xl p-5 border-2 border-emerald-500/50 shadow-md space-y-3 animate-slide-up">
+                <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-200">
+                  <span className="font-black text-emerald-700 flex items-center gap-1">
                     <CheckIcon className="w-4 h-4" /> Approved
                   </span>
-                  <span className="text-[10px] text-gray-400">{lastReceipt.timestamp}</span>
+                  <span className="text-[10px] text-slate-700 font-semibold">{lastReceipt.timestamp}</span>
                 </div>
 
                 <div className="text-center py-2">
-                  <div className="text-[10px] uppercase font-bold text-gray-400">Amount Settled</div>
-                  <div className="text-2xl font-black text-gray-900">
+                  <div className="text-[10px] uppercase font-bold text-slate-700">Amount Settled</div>
+                  <div className="text-2xl font-black text-slate-900">
                     {formatPrice(lastReceipt.amount)}
                   </div>
-                  <div className="text-[11px] font-bold text-indigo-600">
+                  <div className="text-[11px] font-bold text-indigo-700">
                     {lastReceipt.amount.toLocaleString()} FIC
                   </div>
                 </div>
 
-                <div className="space-y-1.5 text-[11px] bg-gray-50 p-3 rounded-2xl text-gray-600">
+                <div className="space-y-1.5 text-[11px] bg-slate-50 border border-slate-200 p-3 rounded-2xl text-slate-800">
                   <div className="flex justify-between">
-                    <span>Receipt No:</span>
-                    <span className="font-mono font-bold text-gray-900">{lastReceipt.receiptNumber}</span>
+                    <span className="text-slate-700 font-bold">Receipt No:</span>
+                    <span className="font-mono font-bold text-slate-900">{lastReceipt.receiptNumber}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Auth Code:</span>
-                    <span className="font-mono font-bold text-gray-900">{lastReceipt.authCode}</span>
+                    <span className="text-slate-700 font-bold">Auth Code:</span>
+                    <span className="font-mono font-bold text-slate-900">{lastReceipt.authCode}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Client Ref:</span>
-                    <span className="font-bold text-gray-900 truncate max-w-[130px]">{lastReceipt.customerRef}</span>
+                    <span className="text-slate-700 font-bold">Client Ref:</span>
+                    <span className="font-bold text-slate-900 truncate max-w-[130px]">{lastReceipt.customerRef}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Settlement:</span>
-                    <span className="font-bold text-emerald-600">Instant Protocol Escrow</span>
+                    <span className="text-slate-700 font-bold">Settlement:</span>
+                    <span className="font-bold text-emerald-700">Instant Protocol Escrow</span>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => showToast(`Digital receipt ${lastReceipt.receiptNumber} dispatched to client via SMS & Email.`, 'success')}
-                  className="w-full py-2 bg-gray-900 hover:bg-black text-white rounded-xl text-xs font-bold transition cursor-pointer"
+                  className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer"
                 >
                   Send Digital Receipt (SMS / Email)
                 </button>
@@ -388,54 +388,54 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
       {subTabWrapper(activePaymentSubTab, 'invoicing', (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Invoice Creator Form */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
             <div>
-              <h3 className="text-base font-black text-gray-900">Issue Client Invoice & Payment Link</h3>
-              <p className="text-xs text-gray-500">
+              <h3 className="text-base font-black text-slate-900">Issue Client Invoice & Payment Link</h3>
+              <p className="text-xs text-slate-700 font-medium">
                 Collect deposits, store cards on file or generate shareable payment links.
               </p>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Client Name</label>
+                <label className="font-bold text-slate-900 block mb-1">Client Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Countess Vivian Chen"
                   value={invoiceClientName}
                   onChange={(e) => setInvoiceClientName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 block mb-1">Client Email</label>
+                <label className="font-bold text-slate-900 block mb-1">Client Email</label>
                 <input
                   type="email"
                   placeholder="client@chenholdings.sg"
                   value={invoiceClientEmail}
                   onChange={(e) => setInvoiceClientEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">Amount (FIC)</label>
+                  <label className="font-bold text-slate-900 block mb-1">Amount (FIC)</label>
                   <input
                     type="number"
                     value={invoiceAmount}
                     onChange={(e) => setInvoiceAmount(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">Booking Code</label>
+                  <label className="font-bold text-slate-900 block mb-1">Booking Code</label>
                   <input
                     type="text"
                     value={invoiceBookingCode}
                     onChange={(e) => setInvoiceBookingCode(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl font-semibold focus:bg-white outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 focus:bg-white outline-none"
                   />
                 </div>
               </div>
@@ -451,36 +451,36 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
           </div>
 
           {/* Invoices List */}
-          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4">
+          <div className="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-base font-black text-gray-900">
+              <h3 className="text-base font-black text-slate-900">
                 Issued Invoices & Shareable Payment Links ({issuedInvoices.length})
               </h3>
-              <span className="text-xs text-gray-500 font-semibold">Zero-fee settlement</span>
+              <span className="text-xs text-slate-700 font-bold">Zero-fee settlement</span>
             </div>
 
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-slate-200">
               {issuedInvoices.map((inv) => (
                 <div key={inv.id} className="py-3.5 flex items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-gray-900">{inv.invoiceNumber}</span>
+                      <span className="font-mono text-xs font-bold text-slate-900">{inv.invoiceNumber}</span>
                       <span
-                        className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                        className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full border ${
                           inv.status === 'paid'
-                            ? 'bg-emerald-100 text-emerald-900'
-                            : 'bg-amber-100 text-amber-900'
+                            ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                            : 'bg-amber-100 text-amber-950 border-amber-400'
                         }`}
                       >
                         {inv.status}
                       </span>
                     </div>
-                    <div className="text-xs font-bold text-gray-700 mt-0.5">{inv.clientName}</div>
-                    <div className="text-[11px] text-gray-400">Due: {inv.dueDate} • Booking: {inv.bookingCode}</div>
+                    <div className="text-xs font-bold text-slate-900 mt-0.5">{inv.clientName}</div>
+                    <div className="text-[11px] text-slate-700 font-medium">Due: {inv.dueDate} • Booking: {inv.bookingCode}</div>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <span className="text-sm font-black text-gray-900 block">
+                    <span className="text-sm font-black text-slate-900 block">
                       {formatPrice(inv.amount)}
                     </span>
                     <button
@@ -489,7 +489,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                         navigator.clipboard?.writeText(inv.paymentLink);
                         showToast(`Copied payment link: ${inv.paymentLink}`, 'info');
                       }}
-                      className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 transition cursor-pointer"
+                      className="text-[11px] font-bold text-indigo-700 hover:text-indigo-900 transition cursor-pointer"
                     >
                       Copy Pay Link ↗
                     </button>
@@ -511,7 +511,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                 <span className="text-xl">📊</span>
                 <h3 className="text-lg font-black text-white">QuickBooks & Xero Real-Time Ledger Synchronization</h3>
               </div>
-              <p className="text-xs text-indigo-200/80 mt-1 max-w-xl">
+              <p className="text-xs text-indigo-200/90 mt-1 max-w-xl font-medium">
                 Automatically reconcile deposits, appointments, and late fees into double-entry accounting ledgers.
                 Synchronized: {lastSyncTime}.
               </p>
@@ -529,12 +529,12 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
           </div>
 
           {/* Top 40+ Currencies Live Exchange Rates Grid */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
             <div>
-              <h3 className="text-base font-black text-gray-900">
+              <h3 className="text-base font-black text-slate-900">
                 Multi-Currency Matrix (40+ Currencies Supported)
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-700 font-medium">
                 Clients can book and pay in their native currency. All rates update dynamically against protocol vault reserves.
               </p>
             </div>
@@ -543,16 +543,16 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
               {Object.values(FORTY_PLUS_CURRENCIES).map((c) => (
                 <div
                   key={c.code}
-                  className="p-3 bg-gray-50 rounded-2xl border border-gray-100 space-y-1"
+                  className="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-lg">{c.flag}</span>
-                    <span className="text-xs font-black text-gray-900">{c.code}</span>
+                    <span className="text-xs font-black text-slate-900">{c.code}</span>
                   </div>
-                  <div className="text-[11px] font-bold text-indigo-600">
+                  <div className="text-[11px] font-bold text-indigo-700">
                     {c.symbol} {c.rate.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-gray-400 truncate">{c.label}</div>
+                  <div className="text-[10px] text-slate-700 font-semibold truncate">{c.label}</div>
                 </div>
               ))}
             </div>

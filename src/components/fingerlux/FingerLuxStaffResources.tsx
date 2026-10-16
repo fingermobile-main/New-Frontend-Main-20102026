@@ -119,7 +119,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
   return (
     <div className="space-y-6">
       {/* Sub-Tabs Selector Header */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-1.5">
           {[
             { id: 'staff', label: 'Staff Roster & Working Hours', icon: '👥' },
@@ -134,7 +134,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
               className={`px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
                 subTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  : 'bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200'
               }`}
             >
               <span>{tab.icon}</span>
@@ -147,7 +147,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
           <button
             type="button"
             onClick={() => setShowAddStaffModal(true)}
-            className="px-3.5 py-2 bg-gray-900 hover:bg-black text-white text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
+            className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
           >
             <PlusIcon className="w-3.5 h-3.5" />
             <span>Add Specialist</span>
@@ -158,7 +158,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
           <button
             type="button"
             onClick={() => setShowAddResourceModal(true)}
-            className="px-3.5 py-2 bg-gray-900 hover:bg-black text-white text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
+            className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shrink-0"
           >
             <PlusIcon className="w-3.5 h-3.5" />
             <span>Add Resource</span>
@@ -175,34 +175,34 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
             return (
               <div
                 key={sm.id}
-                className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs hover:shadow-md transition space-y-4 flex flex-col justify-between"
+                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-md transition space-y-4 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <img
                       src={sm.avatar}
                       alt={sm.name}
-                      className="w-14 h-14 rounded-2xl object-cover border border-gray-200"
+                      className="w-14 h-14 rounded-2xl object-cover border border-slate-300"
                     />
                     <div>
-                      <h3 className="text-base font-black text-gray-900">{sm.name}</h3>
-                      <span className="text-xs font-bold text-indigo-600 block">{sm.role}</span>
-                      <span className="text-[11px] text-gray-400 block truncate">{sm.email}</span>
+                      <h3 className="text-base font-black text-slate-900">{sm.name}</h3>
+                      <span className="text-xs font-bold text-indigo-700 block">{sm.role}</span>
+                      <span className="text-[11px] text-slate-700 font-semibold block truncate">{sm.email}</span>
                     </div>
                   </div>
 
                   {/* Personal Calendar Sync Badges */}
-                  <div className="p-3 bg-gray-50 rounded-2xl space-y-1.5 border border-gray-100">
-                    <div className="flex items-center justify-between text-[11px] font-bold text-gray-700">
+                  <div className="p-3 bg-slate-50 rounded-2xl space-y-1.5 border border-slate-200">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-slate-900">
                       <span>Personal Calendar Sync:</span>
-                      <span className="text-gray-400 font-semibold text-[10px]">{sm.calendarSync.lastSyncedAt}</span>
+                      <span className="text-slate-700 font-bold text-[10px]">{sm.calendarSync.lastSyncedAt}</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-md font-bold flex items-center gap-1 ${
                           sm.calendarSync.googleCalendar
                             ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                            : 'bg-gray-200 text-gray-500 line-through'
+                            : 'bg-slate-200 text-slate-700 font-semibold line-through'
                         }`}
                       >
                         {sm.calendarSync.googleCalendar ? '✓ Google Cal' : 'Google Cal'}
@@ -210,8 +210,8 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-md font-bold flex items-center gap-1 ${
                           sm.calendarSync.outlookCalendar
-                            ? 'bg-sky-100 text-sky-800'
-                            : 'bg-gray-200 text-gray-500 line-through'
+                            ? 'bg-sky-100 text-sky-950 border border-sky-400 font-bold'
+                            : 'bg-slate-200 text-slate-700 font-semibold line-through'
                         }`}
                       >
                         {sm.calendarSync.outlookCalendar ? '✓ Outlook' : 'Outlook'}
@@ -220,7 +220,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                         className={`text-[10px] px-2 py-0.5 rounded-md font-bold flex items-center gap-1 ${
                           sm.calendarSync.appleCalendar
                             ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
-                            : 'bg-gray-200 text-gray-500 line-through'
+                            : 'bg-slate-200 text-slate-700 font-semibold line-through'
                         }`}
                       >
                         {sm.calendarSync.appleCalendar ? '✓ Apple Cal' : 'Apple Cal'}
@@ -230,14 +230,14 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
 
                   {/* Assigned Services */}
                   <div className="mt-3">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-700 block mb-1">
                       Assigned Services ({assignedServices.length})
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {assignedServices.map((as) => (
                         <span
                           key={as.id}
-                          className="text-[10px] bg-indigo-50 text-indigo-900 border border-indigo-100 px-2 py-0.5 rounded-md font-semibold truncate max-w-[200px]"
+                          className="text-[10px] bg-indigo-50 text-indigo-950 border border-indigo-200 px-2 py-0.5 rounded-md font-bold truncate max-w-[200px]"
                         >
                           {as.name}
                         </span>
@@ -246,11 +246,11 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-gray-100 flex gap-2">
+                <div className="pt-3 border-t border-slate-200 flex gap-2">
                   <button
                     type="button"
                     onClick={() => setEditingStaff(sm)}
-                    className="flex-1 py-2 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 text-gray-800 font-bold text-xs rounded-xl transition cursor-pointer text-center"
+                    className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl transition cursor-pointer text-center"
                   >
                     Edit Working Hours & Sync
                   </button>
@@ -263,12 +263,12 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
 
       {/* --- SUB-TAB 2: CUSTOM ROLES & PERMISSIONS MATRIX --- */}
       {subTab === 'permissions' && (
-        <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4">
+        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
           <div>
-            <h3 className="text-base font-black text-gray-900">
+            <h3 className="text-base font-black text-slate-900">
               Role-Based Access Control & Permissions
             </h3>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-slate-700 font-medium">
               Control what team members can view, manage client finances, and handle refunds.
             </p>
           </div>
@@ -276,7 +276,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-gray-200 text-gray-400 uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-slate-200 text-slate-700 font-black uppercase tracking-wider text-[10px]">
                   <th className="py-3 px-4">Staff Member</th>
                   <th className="py-3 px-4">Assigned Role</th>
                   <th className="py-3 px-4 text-center">View Finances & POS</th>
@@ -285,18 +285,18 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   <th className="py-3 px-4 text-center">Manage Client VIP Notes</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-slate-200">
                 {staff.map((sm) => (
-                  <tr key={sm.id} className="hover:bg-gray-50 transition">
-                    <td className="py-3.5 px-4 font-bold text-gray-900 flex items-center gap-2.5">
+                  <tr key={sm.id} className="hover:bg-slate-50 transition">
+                    <td className="py-3.5 px-4 font-bold text-slate-900 flex items-center gap-2.5">
                       <img
                         src={sm.avatar}
                         alt={sm.name}
-                        className="w-7 h-7 rounded-full object-cover"
+                        className="w-7 h-7 rounded-full object-cover border border-slate-300"
                       />
                       <span>{sm.name}</span>
                     </td>
-                    <td className="py-3.5 px-4 font-semibold text-indigo-600">{sm.role}</td>
+                    <td className="py-3.5 px-4 font-bold text-indigo-700">{sm.role}</td>
                     <td className="py-3.5 px-4 text-center">
                       <input
                         type="checkbox"
@@ -366,7 +366,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
             return (
               <div
                 key={res.id}
-                className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs hover:shadow-md transition space-y-3 flex flex-col justify-between"
+                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-md transition space-y-3 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-start mb-2">
@@ -376,28 +376,28 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                       onClick={() => handleToggleResourceAvailability(res)}
                       className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border cursor-pointer ${
                         res.isAvailable
-                          ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                          : 'bg-rose-100 text-rose-900 border-rose-300'
+                          ? 'bg-emerald-100 text-emerald-950 border-emerald-400 font-bold'
+                          : 'bg-rose-100 text-rose-950 border-rose-400 font-bold'
                       }`}
                     >
                       {res.isAvailable ? '✓ Available' : '🔒 In Maintenance'}
                     </button>
                   </div>
 
-                  <h3 className="text-base font-black text-gray-900">{res.name}</h3>
-                  <div className="flex items-center gap-2 text-xs font-bold text-gray-500 mt-0.5">
-                    <span className="uppercase text-[10px] bg-gray-100 px-2 py-0.5 rounded">
+                  <h3 className="text-base font-black text-slate-900">{res.name}</h3>
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-700 mt-0.5">
+                    <span className="uppercase text-[10px] bg-slate-100 border border-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">
                       {res.type}
                     </span>
                     <span>• Capacity: {res.capacity}</span>
                   </div>
 
-                  <p className="text-xs text-gray-500 leading-relaxed mt-2">{res.description}</p>
+                  <p className="text-xs text-slate-700 font-medium leading-relaxed mt-2">{res.description}</p>
                 </div>
 
-                <div className="pt-3 border-t border-gray-100 flex justify-between items-center text-xs text-gray-400">
+                <div className="pt-3 border-t border-slate-200 flex justify-between items-center text-xs text-slate-700 font-semibold">
                   <span>📍 {loc?.name || 'Global'}</span>
-                  <span className="font-bold text-emerald-600">Zero Conflict Verified</span>
+                  <span className="font-bold text-emerald-700">Zero Conflict Verified</span>
                 </div>
               </div>
             );
@@ -415,41 +415,41 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
             return (
               <div
                 key={loc.id}
-                className="bg-white rounded-3xl p-6 border border-gray-100 shadow-xs space-y-4"
+                className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4"
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-950 bg-amber-100 px-2 py-0.5 rounded border border-amber-400 font-black">
                       {loc.badge || 'Global Hub'}
                     </span>
-                    <h3 className="text-lg font-black text-gray-900 mt-1">{loc.name}</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">{loc.address}</p>
+                    <h3 className="text-lg font-black text-slate-900 mt-1">{loc.name}</h3>
+                    <p className="text-xs text-slate-700 font-medium mt-0.5">{loc.address}</p>
                   </div>
                   <span className="text-2xl">{loc.isVirtual ? '🌐' : '🏙️'}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 text-xs bg-gray-50 p-3 rounded-2xl">
+                <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 border border-slate-200 p-3 rounded-2xl">
                   <div>
-                    <span className="text-gray-400 font-bold block text-[10px] uppercase">Timezone:</span>
-                    <span className="font-semibold text-gray-800">{loc.timezone}</span>
+                    <span className="text-slate-700 font-bold block text-[10px] uppercase">Timezone:</span>
+                    <span className="font-bold text-slate-900">{loc.timezone}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400 font-bold block text-[10px] uppercase">Phone:</span>
-                    <span className="font-semibold text-gray-800">{loc.contactPhone}</span>
+                    <span className="text-slate-700 font-bold block text-[10px] uppercase">Phone:</span>
+                    <span className="font-bold text-slate-900">{loc.contactPhone}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400 font-bold block text-[10px] uppercase">Specialists:</span>
-                    <span className="font-semibold text-indigo-600">{staffCount} Assigned</span>
+                    <span className="text-slate-700 font-bold block text-[10px] uppercase">Specialists:</span>
+                    <span className="font-bold text-indigo-700">{staffCount} Assigned</span>
                   </div>
                   <div>
-                    <span className="text-gray-400 font-bold block text-[10px] uppercase">Services:</span>
-                    <span className="font-semibold text-emerald-600">{servicesCount} Active</span>
+                    <span className="text-slate-700 font-bold block text-[10px] uppercase">Services:</span>
+                    <span className="font-bold text-emerald-700">{servicesCount} Active</span>
                   </div>
                 </div>
 
-                <div className="text-[11px] text-gray-500 flex justify-between items-center">
+                <div className="text-[11px] text-slate-700 font-semibold flex justify-between items-center">
                   <span>Synced with central master ledger</span>
-                  <span className="font-bold text-indigo-600">Operational</span>
+                  <span className="font-bold text-indigo-700">Operational</span>
                 </div>
               </div>
             );
@@ -460,30 +460,30 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
       {/* --- Modal: Edit Staff Working Hours & Calendar Sync --- */}
       {editingStaff && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <div>
-                <h3 className="text-lg font-black text-gray-900">
+                <h3 className="text-lg font-black text-slate-900">
                   Edit Availability: {editingStaff.name}
                 </h3>
-                <span className="text-xs text-indigo-600 font-bold">{editingStaff.role}</span>
+                <span className="text-xs text-indigo-700 font-bold">{editingStaff.role}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setEditingStaff(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Calendar Sync Toggles */}
-            <div className="my-4 p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 space-y-2">
-              <span className="text-xs font-black uppercase tracking-wider text-indigo-900 block">
+            <div className="my-4 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 space-y-2">
+              <span className="text-xs font-black uppercase tracking-wider text-indigo-950 block">
                 Personal Calendar Integration
               </span>
               <div className="grid grid-cols-3 gap-2">
-                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
+                <label className="flex items-center gap-2 text-xs font-bold text-slate-900 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editingStaff.calendarSync.googleCalendar}
@@ -497,7 +497,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   />
                   <span>Google Cal</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
+                <label className="flex items-center gap-2 text-xs font-bold text-slate-900 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editingStaff.calendarSync.outlookCalendar}
@@ -511,7 +511,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   />
                   <span>Outlook</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
+                <label className="flex items-center gap-2 text-xs font-bold text-slate-900 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editingStaff.calendarSync.appleCalendar}
@@ -530,15 +530,15 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
 
             {/* Weekly Schedule Days */}
             <div className="space-y-2.5 max-h-72 overflow-y-auto p-1">
-              <span className="text-xs font-black uppercase tracking-wider text-gray-700 block">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-900 block">
                 Weekly Operating Hours
               </span>
               {Object.entries(editingStaff.workingHours).map(([day, hours]) => (
                 <div
                   key={day}
-                  className="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl text-xs"
+                  className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
                 >
-                  <label className="flex items-center gap-2 font-bold text-gray-800 w-28 cursor-pointer">
+                  <label className="flex items-center gap-2 font-bold text-slate-900 w-28 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={hours.isWorking}
@@ -557,7 +557,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   </label>
 
                   {hours.isWorking ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-slate-700 font-bold">
                       <input
                         type="time"
                         value={hours.start}
@@ -570,7 +570,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
                       />
                       <span>to</span>
                       <input
@@ -585,21 +585,21 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                             }
                           })
                         }
-                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs"
+                        className="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
                       />
                     </div>
                   ) : (
-                    <span className="text-gray-400 font-semibold italic">Off-duty / Rest day</span>
+                    <span className="text-slate-600 font-bold italic">Off-duty / Rest day</span>
                   )}
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setEditingStaff(null)}
-                className="px-4 py-2 text-xs font-bold text-gray-600 hover:text-gray-800 cursor-pointer"
+                className="px-4 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl cursor-pointer"
               >
                 Cancel
               </button>
@@ -621,13 +621,13 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
       {/* --- Modal: Add New Staff Member --- */}
       {showAddStaffModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-              <h3 className="text-lg font-black text-gray-900">Add Team Specialist</h3>
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+              <h3 className="text-lg font-black text-slate-900">Add Team Specialist</h3>
               <button
                 type="button"
                 onClick={() => setShowAddStaffModal(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -635,22 +635,22 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
 
             <div className="space-y-3.5 my-4">
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Full Name</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Full Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Lord Julian Vance"
                   value={newStaffName}
                   onChange={(e) => setNewStaffName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Role</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Role</label>
                 <select
                   value={newStaffRole}
                   onChange={(e) => setNewStaffRole(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                 >
                   <option value="Master Concierge">Master Concierge</option>
                   <option value="Senior Specialist">Senior Specialist</option>
@@ -660,33 +660,33 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Email Address</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Email Address</label>
                 <input
                   type="email"
                   placeholder="specialist@fingerlux.protocol"
                   value={newStaffEmail}
                   onChange={(e) => setNewStaffEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Phone Number</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Phone Number</label>
                 <input
                   type="text"
                   placeholder="+1 800 589 8478"
                   value={newStaffPhone}
                   onChange={(e) => setNewStaffPhone(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setShowAddStaffModal(false)}
-                className="px-4 py-2 text-xs font-bold text-gray-600 hover:text-gray-800 cursor-pointer"
+                className="px-4 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl cursor-pointer"
               >
                 Cancel
               </button>
@@ -705,13 +705,13 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
       {/* --- Modal: Add New Bookable Resource --- */}
       {showAddResourceModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-              <h3 className="text-lg font-black text-gray-900">Add Bookable Resource</h3>
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+              <h3 className="text-lg font-black text-slate-900">Add Bookable Resource</h3>
               <button
                 type="button"
                 onClick={() => setShowAddResourceModal(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -719,23 +719,23 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
 
             <div className="space-y-3.5 my-4">
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Resource Name</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Resource Name</label>
                 <input
                   type="text"
                   placeholder="e.g. VIP Penthouse Salon B, Audio Suite"
                   value={newResourceName}
                   onChange={(e) => setNewResourceName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-gray-700 block mb-1">Type</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Type</label>
                   <select
                     value={newResourceType}
                     onChange={(e) => setNewResourceType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                   >
                     <option value="room">Room / Suite</option>
                     <option value="equipment">Equipment</option>
@@ -743,22 +743,22 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-gray-700 block mb-1">Capacity</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Capacity</label>
                   <input
                     type="number"
                     value={newResourceCapacity}
                     onChange={(e) => setNewResourceCapacity(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Facility Location</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Facility Location</label>
                 <select
                   value={newResourceLocationId}
                   onChange={(e) => setNewResourceLocationId(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                 >
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -769,22 +769,22 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Description</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Description</label>
                 <textarea
                   rows={2}
                   placeholder="Features, amenities, specifications..."
                   value={newResourceDesc}
                   onChange={(e) => setNewResourceDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setShowAddResourceModal(false)}
-                className="px-4 py-2 text-xs font-bold text-gray-600 hover:text-gray-800 cursor-pointer"
+                className="px-4 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl cursor-pointer"
               >
                 Cancel
               </button>

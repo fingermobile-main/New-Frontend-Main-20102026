@@ -17,9 +17,10 @@ import '../styles/Dancia4TvPage.css';
 import Dancia4TvHeader from '../components/Dancia4TvHeader';
 import Dancia4TvFooter from '../components/Dancia4TvFooter';
 import DanciaAppSettings from '../components/DanciaAppSettings';
-import { Play, Plus, Info, Sparkles, Film, Star } from 'lucide-react';
+import { Play, Plus, Info, Sparkles, Film, Star, Compass, Flame } from 'lucide-react';
 import apiService from '../services/apiService';
 import { CURATED_DANCIA_MOVIES, DANCIA_REGIONAL_CATEGORIES, DanciaMovie } from '../data/dancia4tvMovies';
+import { UniversalDiscoveryHub } from '../components/common/discovery/UniversalDiscoveryHub';
 
 // Define local types
 interface GenreHierarchy {
@@ -88,7 +89,7 @@ const Dancia4TvPage: React.FC = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<
-    'home' | 'browse' | 'subscriptions' | 'my-library'
+    'home' | 'browse' | 'subscriptions' | 'my-library' | 'discover' | 'lapidaire'
   >('home');
 
   // State for database integration
@@ -364,38 +365,52 @@ const Dancia4TvPage: React.FC = () => {
           />
         )}
 
-        {/* Top Secondary Tabs: Home / Browse / Subscriptions / My Library */}
-        <div className="flex border-b border-gray-800 pb-2 space-x-4">
+        {/* Top Secondary Tabs: Home / Browse / Subscriptions / My Library / Discover / Lapidaire */}
+        <div className="flex border-b border-gray-800 pb-2 space-x-3 overflow-x-auto">
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'home' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition shrink-0 ${activeTab === 'home' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('home')}
           >
             Stream Feed
           </button>
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'browse' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition shrink-0 ${activeTab === 'browse' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('browse')}
           >
             Catalog Browse
           </button>
           <button
-            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'subscriptions' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition shrink-0 ${activeTab === 'subscriptions' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
             onClick={() => setActiveTab('subscriptions')}
           >
             Subscriptions & Plans
           </button>
           {currentMember && (
             <button
-              className={`py-1.5 px-4 rounded-xl font-bold text-xs transition ${activeTab === 'my-library' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+              className={`py-1.5 px-4 rounded-xl font-bold text-xs transition shrink-0 ${activeTab === 'my-library' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
               onClick={() => setActiveTab('my-library')}
             >
               My Library
             </button>
           )}
+          <button
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shrink-0 ${activeTab === 'discover' ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-lg shadow-sky-900/30 ring-1 ring-sky-400/50' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+            onClick={() => setActiveTab('discover')}
+          >
+            <Compass className="w-3.5 h-3.5 mr-1 text-sky-400" />
+            <span>Discover Peers</span>
+          </button>
+          <button
+            className={`py-1.5 px-4 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shrink-0 ${activeTab === 'lapidaire' ? 'bg-gradient-to-r from-amber-500 to-rose-600 text-white shadow-lg shadow-amber-900/30 ring-1 ring-amber-400/50' : 'text-slate-200 hover:text-white bg-slate-800/80 border border-slate-700/80'}`}
+            onClick={() => setActiveTab('lapidaire')}
+          >
+            <Flame className="w-3.5 h-3.5 mr-1 text-amber-400" />
+            <span>Lapidaire Deck</span>
+          </button>
         </div>
 
         {/* MAIN MOVIES TAB (PRIME VIDEO STYLE) */}
-        {activeNavTab === 'movies' && (
+        {activeTab === 'home' && activeNavTab === 'movies' && (
           <div className="space-y-8">
             {/* Prime Video Hero Player Banner */}
             <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-slate-950">
@@ -1125,6 +1140,18 @@ const Dancia4TvPage: React.FC = () => {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'discover' && (
+          <div className="py-2">
+            <UniversalDiscoveryHub domain="dancia4tv" initialSubTab="discover" />
+          </div>
+        )}
+
+        {activeTab === 'lapidaire' && (
+          <div className="py-2">
+            <UniversalDiscoveryHub domain="dancia4tv" initialSubTab="lapidaire" />
           </div>
         )}
       </main>

@@ -125,11 +125,11 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
   return (
     <div className="space-y-6">
       {/* Calendar Controls & Filter Header */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Left: View Mode & Date Navigation */}
         <div className="flex flex-wrap items-center gap-2">
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-gray-100 p-1 rounded-2xl">
+          <div className="flex items-center bg-slate-100 border border-slate-200 p-1 rounded-2xl">
             {(['day', 'week', 'month'] as const).map((mode) => (
               <button
                 key={mode}
@@ -137,8 +137,8 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                 onClick={() => setViewMode(mode)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer ${
                   viewMode === mode
-                    ? 'bg-white text-indigo-950 shadow-xs'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white text-indigo-950 shadow-xs border border-slate-200'
+                    : 'text-slate-700 hover:text-slate-900 font-bold'
                 }`}
               >
                 {mode} View
@@ -147,20 +147,20 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           </div>
 
           {/* Date Picker */}
-          <div className="flex items-center gap-1.5 bg-gray-50 border border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-800">
+          <div className="flex items-center gap-1.5 bg-white border border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900">
             <CalendarIcon className="w-4 h-4 text-indigo-600" />
             <input
               type="date"
               value={currentDateStr}
               onChange={(e) => setCurrentDateStr(e.target.value)}
-              className="bg-transparent focus:outline-none cursor-pointer"
+              className="bg-transparent focus:outline-none cursor-pointer text-slate-900 font-bold"
             />
           </div>
 
           <button
             type="button"
             onClick={() => setCurrentDateStr(new Date().toISOString().split('T')[0])}
-            className="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition cursor-pointer"
+            className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold rounded-xl transition cursor-pointer"
           >
             Today
           </button>
@@ -172,7 +172,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           <select
             value={selectedStaffFilter}
             onChange={(e) => setSelectedStaffFilter(e.target.value)}
-            className="bg-gray-50 border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
+            className="bg-white border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-slate-900 focus:outline-none cursor-pointer"
           >
             <option value="all">All Specialists</option>
             {staff.map((sm) => (
@@ -186,7 +186,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           <select
             value={selectedStatusFilter}
             onChange={(e) => setSelectedStatusFilter(e.target.value)}
-            className="bg-gray-50 border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-gray-700 focus:outline-none cursor-pointer"
+            className="bg-white border border-slate-300 text-xs font-bold px-3 py-2 rounded-xl text-slate-900 focus:outline-none cursor-pointer"
           >
             <option value="all">All Statuses</option>
             <option value="checked_in">Checked In</option>
@@ -200,7 +200,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           <button
             type="button"
             onClick={() => setShowBlockModal(true)}
-            className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+            className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 text-xs font-black rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
             <PlusIcon className="w-3.5 h-3.5" />
             <span>Block Time Slot</span>
@@ -214,21 +214,21 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
         <div className="lg:col-span-2 space-y-4">
           {/* Blocked Slots Banner if any */}
           {blockedSlots.length > 0 && (
-            <div className="bg-rose-50/70 border border-rose-200 rounded-2xl p-4">
-              <span className="text-[10px] font-black uppercase tracking-wider text-rose-900 block mb-2">
+            <div className="bg-rose-50/90 border border-rose-300 rounded-2xl p-4">
+              <span className="text-[10px] font-black uppercase tracking-wider text-rose-950 block mb-2">
                 🔒 Blocked Time Slots & Maintenance Buffers (Double-Booking Protected)
               </span>
               <div className="space-y-1.5">
                 {blockedSlots.map((blk) => (
                   <div
                     key={blk.id}
-                    className="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-rose-100 text-xs"
+                    className="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-rose-200 text-xs"
                   >
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                      <span className="font-bold text-gray-800">{blk.reason}</span>
+                      <span className="font-bold text-slate-900">{blk.reason}</span>
                     </div>
-                    <span className="text-gray-500 font-semibold">
+                    <span className="text-slate-700 font-bold">
                       {blk.date} • {blk.startTime} - {blk.endTime}
                     </span>
                   </div>
@@ -240,13 +240,13 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
           {/* Bookings Timeline List */}
           <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-base font-black text-gray-900 flex items-center gap-2">
+              <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <span>📅</span>
                 <span>
                   {viewMode === 'day' ? `Appointments for ${currentDateStr}` : 'Scheduled Bookings Matrix'}
                 </span>
               </h2>
-              <span className="text-xs font-semibold text-gray-500">
+              <span className="text-xs font-bold text-slate-700">
                 {filteredBookings.length} Active Sessions
               </span>
             </div>
@@ -258,13 +258,13 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               return (
                 <div
                   key={b.id}
-                  className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                   {/* Left: Time Block & Client Details */}
                   <div className="flex items-start gap-4 min-w-0">
-                    <div className="bg-slate-900 text-white rounded-2xl p-3 text-center shrink-0 w-24">
+                    <div className="bg-slate-900 text-white rounded-2xl p-3 text-center shrink-0 w-24 border border-slate-800">
                       <span className="text-xs font-black block text-amber-400">{b.startTime}</span>
-                      <span className="text-[10px] text-gray-400 block">to {b.endTime}</span>
+                      <span className="text-[10px] text-slate-300 block font-semibold">to {b.endTime}</span>
                       <span className="text-[9px] font-bold text-indigo-300 block mt-1 uppercase">
                         {b.durationMinutes}m
                       </span>
@@ -272,7 +272,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <span className="text-xs font-mono font-bold text-gray-400">{b.bookingCode}</span>
+                        <span className="text-xs font-mono font-bold text-slate-700">{b.bookingCode}</span>
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border flex items-center gap-1.5 ${badge.color}`}
                         >
@@ -280,16 +280,16 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                           <span>{badge.label}</span>
                         </span>
                         {b.delivery === 'online' && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-blue-950 border border-blue-400">
                             📹 Zoom Bridge
                           </span>
                         )}
                       </div>
 
-                      <h3 className="text-base font-black text-gray-900 truncate">{b.serviceName}</h3>
+                      <h3 className="text-base font-black text-slate-900 truncate">{b.serviceName}</h3>
 
-                      <div className="flex items-center gap-3 text-xs text-gray-500 mt-1 flex-wrap">
-                        <span className="font-bold text-gray-800 flex items-center gap-1">
+                      <div className="flex items-center gap-3 text-xs text-slate-700 mt-1 flex-wrap font-medium">
+                        <span className="font-bold text-slate-900 flex items-center gap-1">
                           <span>👤</span> {b.client.name} ({b.client.vipTier})
                         </span>
                         <span>•</span>
@@ -299,7 +299,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                       </div>
 
                       {b.checkedInAt && (
-                        <div className="text-[10px] text-emerald-600 font-bold mt-1">
+                        <div className="text-[10px] text-emerald-800 font-bold mt-1">
                           ✓ Check-in timestamp verified: {b.checkedInAt}
                         </div>
                       )}
@@ -307,12 +307,12 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                   </div>
 
                   {/* Right: Payment Info & Live Attendance Action Buttons */}
-                  <div className="flex flex-col sm:flex-row md:flex-col items-end gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-gray-100">
+                  <div className="flex flex-col sm:flex-row md:flex-col items-end gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-200">
                     <div className="text-right">
-                      <span className="text-sm font-black text-gray-900 block">
+                      <span className="text-sm font-black text-slate-900 block">
                         {formatPrice(b.totalAmount)}
                       </span>
-                      <span className="text-[10px] text-gray-400 font-bold block uppercase">
+                      <span className="text-[10px] text-slate-700 font-bold block uppercase">
                         {b.paymentStatus === 'paid_full' ? 'Paid in Full' : b.paymentStatus === 'deposit_paid' ? `Deposit (${formatPrice(b.depositAmount)})` : b.paymentStatus}
                       </span>
                     </div>
@@ -348,7 +348,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                           <button
                             type="button"
                             onClick={() => onUpdateAttendance(b.id, 'no_show')}
-                            className="px-2 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                            className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 rounded-xl text-xs font-bold transition cursor-pointer"
                             title="Mark as no-show and charge policy fee"
                           >
                             No-Show
@@ -356,7 +356,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                           <button
                             type="button"
                             onClick={() => onUpdateAttendance(b.id, 'late_cancelled')}
-                            className="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                            className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold rounded-xl text-xs transition cursor-pointer"
                             title="Charge late cancellation fee"
                           >
                             Late Cancel
@@ -367,7 +367,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                       <button
                         type="button"
                         onClick={() => setInspectedBooking(b)}
-                        className="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                        className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold transition cursor-pointer"
                       >
                         Details
                       </button>
@@ -378,10 +378,10 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
             })}
 
             {filteredBookings.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-3xl border border-gray-100 shadow-xs">
+              <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 shadow-xs">
                 <div className="text-3xl mb-2">🏖️</div>
-                <h3 className="text-sm font-black text-gray-800">No Appointments for this Period</h3>
-                <p className="text-xs text-gray-500 mt-1">
+                <h3 className="text-sm font-black text-slate-900">No Appointments for this Period</h3>
+                <p className="text-xs text-slate-700 mt-1 font-medium">
                   Calendar is free of bookings. You can block time slots or accept incoming bookings.
                 </p>
               </div>
@@ -392,16 +392,16 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
         {/* Right 1 Col: Live Waitlists & Cancellation Policy Protection */}
         <div className="space-y-6">
           {/* Waitlist Queue Card */}
-          <div className="bg-white rounded-3xl p-5 border border-gray-100 shadow-xs">
+          <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+              <h3 className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                 <span>📋</span> Live Waitlist Queue ({waitlist.length})
               </h3>
-              <span className="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-indigo-950 font-black bg-indigo-100 border border-indigo-300 px-2 py-0.5 rounded-full">
                 Auto-Notify
               </span>
             </div>
-            <p className="text-[11px] text-gray-500 mb-4">
+            <p className="text-[11px] text-slate-700 mb-4 font-medium">
               When slots open up from cancellations, promote waitlisted clients with 1-click.
             </p>
 
@@ -409,22 +409,22 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               {waitlist.map((w) => (
                 <div
                   key={w.id}
-                  className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 space-y-2"
+                  className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/90 space-y-2"
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <div className="text-xs font-black text-gray-900">{w.clientName}</div>
-                      <div className="text-[10px] text-gray-500">{w.clientEmail}</div>
+                      <div className="text-xs font-black text-slate-900">{w.clientName}</div>
+                      <div className="text-[10px] text-slate-700 font-semibold">{w.clientEmail}</div>
                     </div>
-                    <span className="text-[9px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                    <span className="text-[9px] font-black text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
                       {w.status}
                     </span>
                   </div>
 
-                  <div className="text-[11px] font-semibold text-indigo-900 truncate">
+                  <div className="text-[11px] font-bold text-indigo-950 truncate">
                     {w.serviceName}
                   </div>
-                  <div className="flex justify-between items-center text-[10px] text-gray-400">
+                  <div className="flex justify-between items-center text-[10px] text-slate-700 font-semibold">
                     <span>Prefers: {w.preferredTime}</span>
                     <span>{w.addedAt}</span>
                   </div>
@@ -442,7 +442,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               ))}
 
               {waitlist.length === 0 && (
-                <div className="text-center py-6 text-xs text-gray-400">
+                <div className="text-center py-6 text-xs text-slate-700 font-semibold">
                   Waitlist queue is currently empty.
                 </div>
               )}
@@ -460,25 +460,25 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               </span>
             </div>
 
-            <p className="text-xs text-indigo-200/80 leading-relaxed">
+            <p className="text-xs text-indigo-200/90 leading-relaxed font-medium">
               Rules defined to protect staff time and automatically charge fees for late cancellations and no-shows.
             </p>
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                <span className="text-gray-300">Free Cancellation:</span>
+                <span className="text-slate-300 font-medium">Free Cancellation:</span>
                 <span className="font-bold text-white">Up to 24 Hours Prior</span>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                <span className="text-gray-300">Late Cancellation Fee:</span>
+                <span className="text-slate-300 font-medium">Late Cancellation Fee:</span>
                 <span className="font-bold text-amber-300">50% of Booking Total</span>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-white/10">
-                <span className="text-gray-300">No-Show Penalty Fee:</span>
+                <span className="text-slate-300 font-medium">No-Show Penalty Fee:</span>
                 <span className="font-bold text-rose-300">100% (Card on File)</span>
               </div>
               <div className="flex justify-between items-center py-1.5">
-                <span className="text-gray-300">Buffer Protection:</span>
+                <span className="text-slate-300 font-medium">Buffer Protection:</span>
                 <span className="font-bold text-emerald-300">15m Clean & Prep Time</span>
               </div>
             </div>
@@ -489,15 +489,15 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
       {/* --- Modal: Block Specific Time Slot --- */}
       {showBlockModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-              <h3 className="text-lg font-black text-gray-900 flex items-center gap-2">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
                 <span>🔒</span> Block Time Slot
               </h3>
               <button
                 type="button"
                 onClick={() => setShowBlockModal(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -505,43 +505,43 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
 
             <div className="space-y-3.5 my-4">
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Reason for Blocking</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Reason for Blocking</label>
                 <input
                   type="text"
                   placeholder="e.g. VIP Penthouse Sanitization, Staff Training"
                   value={blockReason}
                   onChange={(e) => setBlockReason(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-gray-700 block mb-1">Start Time</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Start Time</label>
                   <input
                     type="time"
                     value={blockStartTime}
                     onChange={(e) => setBlockStartTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-gray-700 block mb-1">End Time</label>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">End Time</label>
                   <input
                     type="time"
                     value={blockEndTime}
                     onChange={(e) => setBlockEndTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Facility / Location</label>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Facility / Location</label>
                 <select
                   value={blockLocationId}
                   onChange={(e) => setBlockLocationId(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-slate-300 rounded-xl text-xs font-semibold outline-none"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
                 >
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -552,11 +552,11 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setShowBlockModal(false)}
-                className="px-4 py-2 text-xs font-bold text-gray-600 hover:text-gray-800 cursor-pointer"
+                className="px-4 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl cursor-pointer"
               >
                 Cancel
               </button>
@@ -575,61 +575,61 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
       {/* --- Modal: Booking Inspection Details --- */}
       {inspectedBooking && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-gray-100 animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-300 animate-slide-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <div>
-                <span className="text-[10px] font-mono font-bold text-gray-400">
+                <span className="text-[10px] font-mono font-bold text-slate-700">
                   {inspectedBooking.bookingCode}
                 </span>
-                <h3 className="text-lg font-black text-gray-900 mt-0.5">
+                <h3 className="text-lg font-black text-slate-900 mt-0.5">
                   {inspectedBooking.serviceName}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setInspectedBooking(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-lg font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             <div className="space-y-3 my-4 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Client:</span>
-                <span className="font-black text-gray-900">
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Client:</span>
+                <span className="font-black text-slate-900">
                   {inspectedBooking.client.name} ({inspectedBooking.client.email})
                 </span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Specialist Handler:</span>
-                <span className="font-black text-gray-900">{inspectedBooking.staffName}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Specialist Handler:</span>
+                <span className="font-black text-slate-900">{inspectedBooking.staffName}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Location & Facility:</span>
-                <span className="font-black text-gray-900">{inspectedBooking.locationName}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Location & Facility:</span>
+                <span className="font-black text-slate-900">{inspectedBooking.locationName}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Date & Time:</span>
-                <span className="font-black text-indigo-600">
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Date & Time:</span>
+                <span className="font-black text-indigo-700">
                   {inspectedBooking.date} • {inspectedBooking.startTime} - {inspectedBooking.endTime}
                 </span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-gray-100">
-                <span className="text-gray-500 font-bold">Total Amount:</span>
-                <span className="font-black text-gray-900">
+              <div className="flex justify-between py-1.5 border-b border-slate-200">
+                <span className="text-slate-700 font-bold">Total Amount:</span>
+                <span className="font-black text-slate-900">
                   {formatPrice(inspectedBooking.totalAmount)}
                 </span>
               </div>
 
               {inspectedBooking.virtualMeetingUrl && (
                 <div className="p-3 rounded-xl bg-blue-50 border border-blue-200">
-                  <span className="font-bold text-blue-900 block mb-1">Encrypted Meeting Link</span>
+                  <span className="font-bold text-blue-950 block mb-1">Encrypted Meeting Link</span>
                   <a
                     href={inspectedBooking.virtualMeetingUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-blue-600 underline font-semibold truncate block"
+                    className="text-blue-700 underline font-bold truncate block"
                   >
                     {inspectedBooking.virtualMeetingUrl}
                   </a>
@@ -637,18 +637,18 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               )}
 
               {inspectedBooking.notes && (
-                <div className="p-3 rounded-xl bg-gray-50 text-gray-700">
-                  <span className="font-bold text-gray-500 block mb-0.5">Booking Notes:</span>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800">
+                  <span className="font-bold text-slate-700 block mb-0.5">Booking Notes:</span>
                   <span>{inspectedBooking.notes}</span>
                 </div>
               )}
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-gray-100">
+            <div className="flex justify-end pt-3 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setInspectedBooking(null)}
-                className="px-5 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black cursor-pointer"
+                className="px-5 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 cursor-pointer"
               >
                 Close
               </button>

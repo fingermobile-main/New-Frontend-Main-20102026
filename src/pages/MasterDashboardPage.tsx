@@ -80,6 +80,8 @@ import MasterMembersConsole from '../components/dashboard/MasterMembersConsole';
 import MasterEcommerceConsole from '../components/dashboard/MasterEcommerceConsole';
 import CorporateGovernanceConsole from '../components/dashboard/CorporateGovernanceConsole';
 import MasterWidgetConsole from '../components/dashboard/MasterWidgetConsole';
+import MasterBeatwaveNGConsole from '../components/dashboard/MasterBeatwaveNGConsole';
+import MasterDancia4TvConsole from '../components/dashboard/MasterDancia4TvConsole';
 import { guardianSearchIndexer, SearchBenchmarkResult } from '../services/GuardianSearchIndexingService';
 
 interface Section {
@@ -2396,6 +2398,8 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'seo', label: 'Guardian AI SEO & Indexing', badge: '100% Auto' },
               { id: 'community-identity', label: 'Community & Identity', badge: '9' },
               { id: 'media-discovery', label: 'Media & Discovery', badge: '10' },
+              { id: 'beatwaveng-console', label: 'BeatwaveNG Audio Console', badge: 'Live Sync' },
+              { id: 'dancia4tv-console', label: 'Dancia-4Tv Video Console', badge: 'Live Sync' },
               { id: 'commerce-growth', label: 'Commerce & Growth', badge: '7' },
               { id: 'creation-config', label: 'Creation & Config', badge: '9' },
               { id: 'governance-ops', label: 'Platform Governance', badge: '15' },
@@ -2627,6 +2631,20 @@ const MasterDashboardPage: React.FC = () => {
                 'Media & Discovery Consoles',
                 'Media intelligence (Mi), trending topics, discovery recommendations, video platforms (FingerLux, Dancia-4Tv, VideoBox), audio (BeatwaveNG), user-owned digital assets (OwnIt, PhotoCredits), and portfolios (Tribut).'
               )}
+
+            {/* Dedicated Master BeatwaveNG Audio Console Tab */}
+            {activeTab === 'beatwaveng-console' && (
+              <div className="space-y-6">
+                <MasterBeatwaveNGConsole />
+              </div>
+            )}
+
+            {/* Dedicated Master Dancia-4Tv Video Console Tab */}
+            {activeTab === 'dancia4tv-console' && (
+              <div className="space-y-6">
+                <MasterDancia4TvConsole />
+              </div>
+            )}
 
             {/* Dedicated Financial Management & Treasury Console Tab */}
             {activeTab === 'financials' && (
