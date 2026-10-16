@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: ElevatedButton.icon(
                               onPressed: _messageController.text.isEmpty ? null : () async {
-                                bool result = await widget.platformService.sendFingerProtocolData(_messageController.text);
+                                bool result = await widget.platformService.sendfingermobileprotocolData(_messageController.text);
                                 if (result) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text('Message sent successfully')),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: OutlinedButton.icon(
                               onPressed: () async {
-                                String data = await widget.platformService.receiveFingerProtocolData();
+                                String data = await widget.platformService.receivefingermobileprotocolData();
                                 setState(() {
                                   receivedData = data;
                                 });

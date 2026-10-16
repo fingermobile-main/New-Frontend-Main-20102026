@@ -33,7 +33,7 @@ class PlatformService {
   }
 
   /// Send data through finger protocol
-  Future<bool> sendFingerProtocolData(String data) async {
+  Future<bool> sendfingermobileprotocolData(String data) async {
     if (!_isInitialized) {
       print("Error: Platform not initialized");
       return false;
@@ -60,7 +60,7 @@ class PlatformService {
   }
 
   /// Receive data from finger protocol
-  Future<String> receiveFingerProtocolData() async {
+  Future<String> receivefingermobileprotocolData() async {
     if (!_isInitialized) {
       print("Error: Platform not initialized");
       return "Error: Platform not initialized";

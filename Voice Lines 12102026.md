@@ -131,6 +131,8 @@ I recommend starting with a small sample of five lines:
 
 
 These five will test the voice across different emotional styles before we apply it to the remaining library.
+
+
 Voice Lines
 /Users/user/Documents/FingerMobile Protocol Communication/FingerMobile Protocol/apps/frontend-main/src/services/VoiceLineService.ts
  #### // Cultured African Street-Style Lagos VoiceLines

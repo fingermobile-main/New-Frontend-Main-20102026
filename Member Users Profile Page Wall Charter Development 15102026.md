@@ -2,7 +2,7 @@ Member/Users Profile Page/Wall Charter
 
 1.Members/Users profile page/wall tabs should be as follows;
 
-Clicking on a Members profile picture is supposed to open the members profile page/wall and explore various Tabs of the members/users page/wall posts, hallamarks posts, Group post, Gems Posts, Blog Posts, Gallery (Members Media contents (Posted Images and Videos), proposed and attended Events, Games, past and Scheduled Live Streasms. Personal Folders and Public Folders for privacy there must be a Pin Exchange/handshake tpermission granted or declined to view members Private Media collections and Mii). 
+Clicking on a Members profile picture is supposed to open the members profile page/wall and explore various Tabs of the members/users page/wall posts, hallamarks posts, Group post, Gems Posts, Blog Posts, Tribut(Members Media contents (Posted Images and Videos), proposed and attended Events, Games, past and Scheduled Live Streasms. Personal Folders and Public Folders for privacy there must be a Pin Exchange/handshake tpermission granted or declined to view members Private Media collections and Mii). 
 
 A Social Media Member Profile Page or Wall Charter serves as a clear, foundational blueprint for building, designing, and regulating user profiles or personal feeds within a platform. It balances user expression and personalization with platform security, privacy, and community guidelines.
 Here is a comprehensive framework for a Profile Page and Wall Charter:
@@ -735,7 +735,7 @@ Tab	Intended purpose	FingerMobile implementation
 All	General profile content or combined activity	A consolidated view of eligible profile content
 About	Personal and profile information	Biography, personal details, work, education, and other profile fields
 Reels	Short-form videos	Video feed, creator tools, and reel management
-Photos	Images associated with the member	Photo gallery, albums, and image posts
+Photos	Images associated with the member	Photo tribut, albums, and image posts
 Friends	Connected members	Friend list, relationship status, and permitted friend information
 More	Additional profile destinations	Expandable menu for secondary content categories
 Ellipsis (…)	Additional profile actions	Contextual actions based on permissions and relationship status

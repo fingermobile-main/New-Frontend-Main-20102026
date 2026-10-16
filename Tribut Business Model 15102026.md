@@ -1,12 +1,12 @@
-Gallery Business Model 15102026.md
+Tribut Business Model 15102026.md
 
-http://localhost:3000/gallery
+http://localhost:3000/tribut
 
 The Guardian Ai curates the highest-ranking by all measures of the best UGC from all over the platform from all members Post and arranges and organizes all the media in various categories., sorting and filtering order.
-Users look at Gallery to plan projects, find ideas, and shop rather than to catch up with friends, the Gallery bridges the gap between digital inspiration and commercial transactions.
+Users look at tribut to plan projects, find ideas, and shop rather than to catch up with friends, the tribut bridges the gap between digital inspiration and commercial transactions.
 
 Instead of prioritizing real-time viral loops or friend networks the FingerMobile P2P algorithm acts as a sophisticated content curation and search indexing system. 
-It distributes the Platform AI Curated Members content across two primary locations: The Gallery Smart Feed (the Gallery home Feed page) and the personalized Search Feed (Side Bar).
+It distributes the Platform AI Curated Members content across two primary locations: The Tribut Smart Feed (the tribut home Feed page) and the personalized Search Feed (Side Bar).
 
 The algorithm determines what users see based on five primary pillars:
 1. Domain Quality: FingerMobile P2P evaluates the trustworthiness and popularity of the Members Platform Profile linked to the Members Profile Pin. 
@@ -23,7 +23,7 @@ While social media posts decay in value after hours, a well-optimized FingerMobi
 
 How FingerMobile P2P Works Financially (Revenue Model), A Buy and Share Profit Earning System.
 
-The FingerMobile Gallery will generate nearly all of its revenue through targeted digital advertising and commercial partnerships, capitalizing on the fact that its users exhibit significantly higher purchase intent than users on other platforms. 
+The FingerMobile tribut will generate nearly all of its revenue through targeted digital advertising and commercial partnerships, capitalizing on the fact that its users exhibit significantly higher purchase intent than users on other platforms. 
 
 1. Native Advertising (Promoted Ads)
 
@@ -46,7 +46,7 @@ Professional high fashion editorial 4k portrait of a handsome Nigerian male mode
 
 i am not seeing any place where Members Create and upload, communicate with one another to discuss, discuss desiigns or download prioritized Pins/designs Saves, Boards and Projects etc.
 
-#### The Gallery changes Display style every 2 hours to any of the below styles:-
+#### The Tribut changes Display style every 2 hours to any of the below styles:-
 
 Multi-Photo and Collage Display Styles
 Grid-Style Layouts: Uniform rows and columns of square or rectangular photos, creating a clean, modern, architectural look reminiscent of digital photo walls or design boards. (https://www.canva.com/ideas/photo-collage-ideas/)
@@ -67,7 +67,7 @@ Feature Layout: Places one large hero or primary image in the center or on one s
 Classic Four / Three-Stack with Feature: Features a large vertical photo on one side paired with a secondary photo and smaller side-by-side frames to tell a narrative (common for weddings or events).
 Before-and-After Arrangement: A dual or sequential layout designed to contrast a starting point with a final result
 
-#### the gallery display settings can be set to any mode of choice by the member in settings.
+#### the tribut display settings can be set to any mode of choice by the member in settings.
 
 #### Photos/Videos Cards will only display information when clicked on. 
 #### Swipe Left or Up to dispaly next  Photo or Video
