@@ -132,9 +132,9 @@ const ProtocolNotificationDemo: React.FC = () => {
             connectionStatus === 'connected'
               ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
               : connectionStatus === 'disconnected'
-                ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-          }`}>
+                ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+          }font-black`}>
             {connectionStatus.charAt(0).toUpperCase() + connectionStatus.slice(1)}
           </div>
 

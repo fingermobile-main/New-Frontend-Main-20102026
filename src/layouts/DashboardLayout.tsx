@@ -46,7 +46,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
           <nav className="flex-1 px-2 space-y-1 overflow-y-auto max-h-full">
             <DashboardNavigation sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
           </nav>
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-slate-300 dark:border-gray-700">
             <button
               onClick={toggleTheme}
               className="w-full flex items-center px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 mb-2"

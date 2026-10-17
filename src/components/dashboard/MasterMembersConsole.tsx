@@ -1038,9 +1038,9 @@ const MasterMembersConsole: React.FC = () => {
                     <td className="py-3.5 px-4 text-center">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                         m.biometricVerified
-                          ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                          : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-                      }`}>
+                          ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-300'
+                          : 'bg-slate-100 text-emerald-950 dark:bg-slate-800 dark:text-slate-400'
+                      }border border-emerald-400 font-black`}>
                         {m.biometricVerified ? <CheckCircle className="w-3 h-3 text-emerald-500" /> : null}
                         {m.biometricVerified ? 'Live Verified' : 'Tier 1 Basic'}
                       </span>
@@ -1056,9 +1056,9 @@ const MasterMembersConsole: React.FC = () => {
                         m.status === 'Active'
                           ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300'
                           : m.status === 'Frozen'
-                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
-                            : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                      }`}>
+                            ? 'bg-blue-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-blue-950 dark:text-blue-300'
+                            : 'bg-rose-100 text-emerald-950 dark:bg-rose-950 dark:text-rose-300'
+                      }font-black`}>
                         {m.status}
                       </span>
                     </td>
@@ -1114,7 +1114,7 @@ const MasterMembersConsole: React.FC = () => {
                           disabled={m.isRootSuperAdmin}
                           className={`p-1.5 rounded-lg transition ${
                             m.isRootSuperAdmin
-                              ? 'text-slate-300 dark:text-slate-700 cursor-not-allowed'
+                              ? 'text-slate-700 dark:text-slate-700 cursor-not-allowed'
                               : 'text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950'
                           }`}
                           title={m.isRootSuperAdmin ? 'Root SuperAdmin Cannot Be Deleted' : 'Delete Member Account Details & Information'}

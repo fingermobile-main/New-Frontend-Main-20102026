@@ -298,7 +298,7 @@ const FranchisePage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'network'
                   ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <BuildingStorefrontIcon className="w-4 h-4" />
@@ -309,7 +309,7 @@ const FranchisePage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'tiers'
                   ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <ChartBarIcon className="w-4 h-4" />
@@ -320,7 +320,7 @@ const FranchisePage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'payouts'
                   ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <CurrencyDollarIcon className="w-4 h-4" />
@@ -331,7 +331,7 @@ const FranchisePage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'apply'
                   ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <DocumentTextIcon className="w-4 h-4" />
@@ -389,8 +389,8 @@ const FranchisePage: React.FC = () => {
                         <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-full ${
                           f.status === 'active'
                             ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                            : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                        }`}>
+                            : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                        }font-black`}>
                           <CheckCircleIcon className="w-3.5 h-3.5" />
                           {f.status === 'active' ? 'Operational' : 'Onboarding'}
                         </span>
@@ -499,7 +499,7 @@ const FranchisePage: React.FC = () => {
                   className={`bg-white rounded-3xl p-6 sm:p-8 border shadow-sm flex flex-col justify-between ${
                     tier.recommended
                       ? 'border-purple-500 ring-2 ring-purple-500/20 shadow-xl'
-                      : 'border-gray-200'
+                      : 'border-slate-300'
                   }`}
                 >
                   <div>

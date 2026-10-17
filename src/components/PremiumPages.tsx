@@ -101,7 +101,7 @@ const PremiumPages: React.FC = () => {
             className={`border rounded-lg p-6 cursor-pointer transition-all ${
               selectedTier === tier.id
                 ? 'border-blue-500 ring-2 ring-blue-200 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'
+                : 'border-slate-300 hover:border-blue-300'
             }`}
             onClick={() => setSelectedTier(tier.id)} role="button" tabIndex={0}
           >

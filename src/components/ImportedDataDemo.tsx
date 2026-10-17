@@ -48,8 +48,8 @@ const ImportedDataDemo: React.FC<ImportedDataDemoProps> = ({
                 <td className="px-4 py-3 text-sm text-gray-600">{row.value}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    row.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
-                  }`}>
+                    row.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-green-950'
+                  }font-black`}>
                     {row.status}
                   </span>
                 </td>

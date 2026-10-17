@@ -129,7 +129,7 @@ const ModerationDashboardPage: React.FC = () => {
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'pending'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Pending Review
@@ -139,7 +139,7 @@ const ModerationDashboardPage: React.FC = () => {
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'flagged'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Flagged Members
@@ -149,7 +149,7 @@ const ModerationDashboardPage: React.FC = () => {
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'reports'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Reports
@@ -159,7 +159,7 @@ const ModerationDashboardPage: React.FC = () => {
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'settings'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 Settings
@@ -218,9 +218,9 @@ const ModerationDashboardPage: React.FC = () => {
                                 item.priority === 'urgent' || item.priority === 'high'
                                   ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
                                   : item.priority === 'medium'
-                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                                    : 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                              }`}
+                                    ? 'bg-amber-100 text-red-950 border border-red-400 font-bold'
+                                    : 'bg-green-100 text-red-950 border border-red-400 font-bold'
+                              }font-black`}
                             >
                               {(item.priority || 'normal').toUpperCase()} Priority
                             </span>
@@ -339,8 +339,8 @@ const ModerationDashboardPage: React.FC = () => {
                               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                 member.status === 'active'
                                   ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                                  : 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                              }`}
+                                  : 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                              }font-black`}
                             >
                               {member.status.charAt(0).toUpperCase() +
                                 member.status.slice(1)}
@@ -423,8 +423,8 @@ const ModerationDashboardPage: React.FC = () => {
                             <td className="px-6 py-4 text-sm text-gray-600">{r.reason}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`px-2 py-0.5 text-xs rounded-full font-semibold ${
-                                r.status === 'resolved' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                              }`}>
+                                r.status === 'resolved' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                              }font-black`}>
                                 {r.status}
                               </span>
                             </td>

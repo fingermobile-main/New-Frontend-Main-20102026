@@ -325,7 +325,7 @@ const CustomerManagement: React.FC = () => {
               disabled={currentPage === 1}
               className={`px-3 py-1 rounded-md border ${
                 currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  ? 'bg-gray-100 text-slate-700 cursor-not-allowed'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -351,7 +351,7 @@ const CustomerManagement: React.FC = () => {
               disabled={currentPage === totalPages}
               className={`px-3 py-1 rounded-md border ${
                 currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  ? 'bg-gray-100 text-slate-700 cursor-not-allowed'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >

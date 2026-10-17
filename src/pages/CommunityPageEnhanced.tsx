@@ -355,8 +355,8 @@ const CommunityPageEnhanced: React.FC = () => {
                             className={`px-2 py-1 rounded-full text-xs sm:text-sm lg:text-base ${
                               member.role === 'Creator Pro'
                                 ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
-                                : 'bg-gray-100 text-gray-800'
-                            }`}
+                                : 'bg-gray-100 text-purple-950'
+                            }font-black`}
                           >
                             {member.role}
                           </span>

@@ -32,7 +32,7 @@ const TabNavigation: React.FC<TabNavigationProps> = React.memo(({ activeTab, set
           className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             activeTab === tab.id
               ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
+              : 'text-slate-700 hover:text-gray-700'
           }`}
           onClick={() => setActiveTab(tab.id)}
         >

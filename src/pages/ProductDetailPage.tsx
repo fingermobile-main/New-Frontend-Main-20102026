@@ -178,7 +178,7 @@ const ProductDetailPage: React.FC = () => {
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
-                    className={`w-5 h-5 ${i < Math.floor(product.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`}
+                    className={`w-5 h-5 ${i < Math.floor(product.rating || 0) ? 'text-yellow-400' : 'text-slate-500'}`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -263,7 +263,7 @@ const ProductDetailPage: React.FC = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-slate-500'}`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >

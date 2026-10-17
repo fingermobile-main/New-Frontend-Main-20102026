@@ -172,7 +172,7 @@ const SwitchProfilePage: React.FC = () => {
                   <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
                     {isActive ? 'Current Session' : switchingThis ? 'Switching...' : 'Click to Activate'}
                   </span>
-                  <ArrowRight className={`w-4 h-4 ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+                  <ArrowRight className={`w-4 h-4 ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-700'}`} />
                 </div>
               </div>
             );

@@ -107,8 +107,8 @@ const MarketingPage: React.FC = () => {
                       className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                         camp.status === 'active'
                           ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
-                          : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                      }`}
+                          : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
+                      }font-black`}
                     >
                       {camp.status === 'active' ? <PlayIcon className="w-2.5 h-2.5" /> : <PauseIcon className="w-2.5 h-2.5" />}
                       {camp.status}

@@ -178,9 +178,9 @@ const RestockForm: React.FC<RestockFormProps> = ({
                 <p className="text-blue-700 mb-1">Status</p>
                 <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                   inventory.quantity > 10 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                    inventory.quantity > 0 ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
-                      'bg-red-100 text-red-950 border border-red-400 font-bold'
-                }`}>
+                    inventory.quantity > 0 ? 'bg-amber-100 text-green-950 border border-green-400 font-bold' :
+                      'bg-red-100 text-green-950 border border-green-400 font-bold'
+                }font-black`}>
                   {inventory.status ? inventory.status.toUpperCase() : 'UNKNOWN'}
                 </span>
               </div>

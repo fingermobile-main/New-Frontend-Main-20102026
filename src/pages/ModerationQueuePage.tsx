@@ -134,7 +134,7 @@ const ModerationQueuePage: React.FC = () => {
                           </Badge>
                           <p className="font-medium mt-2">#{item.id}</p>
                         </div>
-                        <span className="text-sm text-gray-500">{item.timestamp}</span>
+                        <span className="text-sm text-slate-700">{item.timestamp}</span>
                       </div>
                       <p className="text-sm text-gray-600 mt-2 truncate">{item.content}</p>
                       <div className="mt-2">

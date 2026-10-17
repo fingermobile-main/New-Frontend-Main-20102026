@@ -103,7 +103,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
                 onClick={() => handleConnect(wallet.id)}
                 disabled={connecting !== null}
                 className={`w-full flex items-center gap-4 p-4 border-2 rounded-lg transition-all hover:border-blue-500 hover:bg-blue-50 ${
-                  connecting === wallet.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                  connecting === wallet.id ? 'border-blue-500 bg-blue-50' : 'border-slate-300'
                 }`}
               >
                 {/* Icon */}

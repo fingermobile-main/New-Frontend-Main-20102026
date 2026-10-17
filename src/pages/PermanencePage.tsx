@@ -361,8 +361,8 @@ const PermanencePage: React.FC = () => {
                     className={`px-2 py-1 text-xs rounded-full ${
                       challenge.status === 'viral'
                         ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                        : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                    }`}
+                        : 'bg-blue-100 text-red-950 border border-red-400 font-bold'
+                    }font-black`}
                   >
                     {challenge.status}
                   </span>

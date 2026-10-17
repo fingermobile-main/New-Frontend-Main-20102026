@@ -35,7 +35,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.profileVisible ? 'bg-green-100' : 'bg-gray-100'
-            }`}>
+            }border text-green-950 border-green-400 font-black`}>
               {settings.profileVisible ? (
                 <EyeIcon className="w-5 h-5 text-green-600" />
               ) : (
@@ -62,7 +62,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.showInSearch ? 'bg-green-100' : 'bg-gray-100'
-            }`}>
+            }border text-green-950 border-green-400 font-black`}>
               <svg className={`w-5 h-5 ${settings.showInSearch ? 'text-green-600' : 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -87,7 +87,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.allowDirectMessages ? 'bg-green-100' : 'bg-gray-100'
-            }`}>
+            }border text-green-950 border-green-400 font-black`}>
               <svg className={`w-5 h-5 ${settings.allowDirectMessages ? 'text-green-600' : 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
@@ -112,7 +112,7 @@ const MemberDiscoverySettings: React.FC<MemberDiscoverySettingsProps> = ({
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
               settings.showActivityStatus ? 'bg-green-100' : 'bg-gray-100'
-            }`}>
+            }border text-green-950 border-green-400 font-black`}>
               <svg className={`w-5 h-5 ${settings.showActivityStatus ? 'text-green-600' : 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>

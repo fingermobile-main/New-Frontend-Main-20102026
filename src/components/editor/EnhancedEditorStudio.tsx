@@ -242,7 +242,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
             </label>
             <span
               className={`text-xs font-mono ${
-                isCaptionValid ? 'text-gray-500' : 'text-red-500 font-bold'
+                isCaptionValid ? 'text-slate-700' : 'text-red-500 font-bold'
               }`}
             >
               {caption.trim().length} chars
@@ -329,7 +329,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'gift_tip'
                   ? 'border-yellow-500 bg-yellow-50 text-yellow-800 shadow-sm'
-                  : 'border-gray-200 hover:border-yellow-300 hover:bg-yellow-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-yellow-300 hover:bg-yellow-50/50 text-gray-700'
               }`}
             >
               <GiftIcon className="w-5 h-5 text-yellow-600" />
@@ -342,7 +342,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'fic_transfer'
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-800 shadow-sm'
-                  : 'border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-emerald-300 hover:bg-emerald-50/50 text-gray-700'
               }`}
             >
               <CurrencyDollarIcon className="w-5 h-5 text-emerald-600" />
@@ -355,7 +355,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'commerce_embed'
                   ? 'border-blue-500 bg-blue-50 text-blue-800 shadow-sm'
-                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-blue-300 hover:bg-blue-50/50 text-gray-700'
               }`}
             >
               <ShoppingBagIcon className="w-5 h-5 text-blue-600" />
@@ -368,7 +368,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'audio_embed'
                   ? 'border-pink-500 bg-pink-50 text-pink-800 shadow-sm'
-                  : 'border-gray-200 hover:border-pink-300 hover:bg-pink-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-pink-300 hover:bg-pink-50/50 text-gray-700'
               }`}
             >
               <MusicalNoteIcon className="w-5 h-5 text-pink-600" />
@@ -381,7 +381,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'voice_note'
                   ? 'border-orange-500 bg-orange-50 text-orange-800 shadow-sm'
-                  : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-orange-300 hover:bg-orange-50/50 text-gray-700'
               }`}
             >
               <MicrophoneIcon className="w-5 h-5 text-orange-600" />
@@ -394,7 +394,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'uhd_media'
                   ? 'border-purple-500 bg-purple-50 text-purple-800 shadow-sm'
-                  : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-purple-300 hover:bg-purple-50/50 text-gray-700'
               }`}
             >
               <PhotoIcon className="w-5 h-5 text-purple-600" />
@@ -407,7 +407,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'social_link'
                   ? 'border-cyan-500 bg-cyan-50 text-cyan-800 shadow-sm'
-                  : 'border-gray-200 hover:border-cyan-300 hover:bg-cyan-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-cyan-300 hover:bg-cyan-50/50 text-gray-700'
               }`}
             >
               <LinkIcon className="w-5 h-5 text-cyan-600" />
@@ -420,7 +420,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'uhd_sticker'
                   ? 'border-teal-500 bg-teal-50 text-teal-800 shadow-sm'
-                  : 'border-gray-200 hover:border-teal-300 hover:bg-teal-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-teal-300 hover:bg-teal-50/50 text-gray-700'
               }`}
             >
               <FaceSmileIcon className="w-5 h-5 text-teal-600" />
@@ -433,7 +433,7 @@ const EnhancedEditorStudio: React.FC<EnhancedEditorStudioProps> = ({ onPostcardP
               className={`p-2.5 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
                 activeAttachmentDrawer === 'heavy_document'
                   ? 'border-indigo-500 bg-indigo-50 text-indigo-800 shadow-sm'
-                  : 'border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/50 text-gray-700'
+                  : 'border-slate-300 hover:border-indigo-300 hover:bg-indigo-50/50 text-gray-700'
               }`}
             >
               <DocumentArrowUpIcon className="w-5 h-5 text-indigo-600" />

@@ -381,16 +381,16 @@ const SecurityPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-sm border-b border-slate-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Shield className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-gray-900 ml-3">Security Dashboard</h1>
+              <Shield className="h-8 w-8 text-blue-600" />
+              <h1 className="text-2xl font-black text-slate-900 ml-3">Security Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                <Scan className="h-4 w-4 mr-1" />
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold flex items-center shadow-sm transition-colors">
+                <Scan className="h-4 w-4 mr-1.5" />
                 Run Security Scan
               </button>
             </div>
@@ -402,50 +402,50 @@ const SecurityPage: React.FC = () => {
         {/* Stats Overview */}
         {securityStats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-red-100">
-                  <AlertTriangle className="h-6 w-6 text-red-600" />
+                <div className="p-3 rounded-lg bg-red-100 border border-red-300">
+                  <AlertTriangle className="h-6 w-6 text-red-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Open Incidents</p>
-                  <p className="text-2xl font-semibold text-gray-900">{securityStats.openIncidents}</p>
+                  <p className="text-sm font-bold text-slate-700">Open Incidents</p>
+                  <p className="text-2xl font-black text-slate-900">{securityStats.openIncidents}</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-yellow-100">
-                  <Shield className="h-6 w-6 text-yellow-600" />
+                <div className="p-3 rounded-lg bg-amber-100 border border-amber-300">
+                  <Shield className="h-6 w-6 text-amber-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Threats</p>
-                  <p className="text-2xl font-semibold text-gray-900">{securityStats.activeThreats}</p>
+                  <p className="text-sm font-bold text-slate-700">Active Threats</p>
+                  <p className="text-2xl font-black text-slate-900">{securityStats.activeThreats}</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-green-100">
-                  <Lock className="h-6 w-6 text-green-600" />
+                <div className="p-3 rounded-lg bg-emerald-100 border border-emerald-300">
+                  <Lock className="h-6 w-6 text-emerald-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Security Score</p>
-                  <p className="text-2xl font-semibold text-gray-900">{securityStats.securityScore}%</p>
+                  <p className="text-sm font-bold text-slate-700">Security Score</p>
+                  <p className="text-2xl font-black text-slate-900">{securityStats.securityScore}%</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-purple-100">
-                  <Bug className="h-6 w-6 text-purple-600" />
+                <div className="p-3 rounded-lg bg-purple-100 border border-purple-300">
+                  <Bug className="h-6 w-6 text-purple-700" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Vulnerabilities</p>
-                  <p className="text-2xl font-semibold text-gray-900">{securityStats.vulnerabilitiesDetected}</p>
+                  <p className="text-sm font-bold text-slate-700">Vulnerabilities</p>
+                  <p className="text-2xl font-black text-slate-900">{securityStats.vulnerabilitiesDetected}</p>
                 </div>
               </div>
             </div>
@@ -459,9 +459,9 @@ const SecurityPage: React.FC = () => {
               onClick={() => setActiveTab('events')}
               className={`${
                 activeTab === 'events'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+                  ? 'border-blue-600 text-blue-700 font-black'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-bold'
+              } whitespace-nowrap py-4 px-1 border-b-2 text-sm flex items-center transition-colors`}
             >
               <Activity className="h-4 w-4 mr-2" />
               Security Events
@@ -470,9 +470,9 @@ const SecurityPage: React.FC = () => {
               onClick={() => setActiveTab('threats')}
               className={`${
                 activeTab === 'threats'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+                  ? 'border-blue-600 text-blue-700 font-black'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-bold'
+              } whitespace-nowrap py-4 px-1 border-b-2 text-sm flex items-center transition-colors`}
             >
               <AlertTriangle className="h-4 w-4 mr-2" />
               Threat Detection
@@ -481,9 +481,9 @@ const SecurityPage: React.FC = () => {
               onClick={() => setActiveTab('policies')}
               className={`${
                 activeTab === 'policies'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+                  ? 'border-blue-600 text-blue-700 font-black'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-bold'
+              } whitespace-nowrap py-4 px-1 border-b-2 text-sm flex items-center transition-colors`}
             >
               <Settings className="h-4 w-4 mr-2" />
               Security Policies
@@ -492,9 +492,9 @@ const SecurityPage: React.FC = () => {
               onClick={() => setActiveTab('monitoring')}
               className={`${
                 activeTab === 'monitoring'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+                  ? 'border-blue-600 text-blue-700 font-black'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-bold'
+              } whitespace-nowrap py-4 px-1 border-b-2 text-sm flex items-center transition-colors`}
             >
               <Network className="h-4 w-4 mr-2" />
               Monitoring
@@ -503,9 +503,9 @@ const SecurityPage: React.FC = () => {
               onClick={() => setActiveTab('incidents')}
               className={`${
                 activeTab === 'incidents'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+                  ? 'border-blue-600 text-blue-700 font-black'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 font-bold'
+              } whitespace-nowrap py-4 px-1 border-b-2 text-sm flex items-center transition-colors`}
             >
               <ShieldCheck className="h-4 w-4 mr-2" />
               Incidents
@@ -514,7 +514,7 @@ const SecurityPage: React.FC = () => {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -523,14 +523,14 @@ const SecurityPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search security data..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
+                className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm text-slate-900 font-bold"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
             <select
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
+              className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm text-slate-900 font-bold bg-white"
               value={filterSeverity}
               onChange={(e) => setFilterSeverity(e.target.value)}
             >
@@ -542,7 +542,7 @@ const SecurityPage: React.FC = () => {
             </select>
             
             <select
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2"
+              className="block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm text-slate-900 font-bold bg-white"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -627,7 +627,7 @@ const SecurityPage: React.FC = () => {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.resolved ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.resolved ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-green-950 border border-green-400 font-bold'}font-black`}>
                                 {event.resolved ? 'Resolved' : 'Open'}
                               </span>
                             </td>
@@ -844,7 +844,7 @@ const SecurityPage: React.FC = () => {
                               {policy.description}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.isActive ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-red-950 border border-red-400 font-bold'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${policy.isActive ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-red-100 text-green-950 border border-green-400 font-bold'}font-black`}>
                                 {policy.isActive ? 'Active' : 'Inactive'}
                               </span>
                             </td>
@@ -1082,8 +1082,8 @@ const SecurityPage: React.FC = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                className={`relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-lg transition-colors ${
+                  currentPage === 1 ? 'bg-slate-100 text-slate-700 cursor-not-allowed' : 'bg-white text-slate-800 hover:bg-slate-100'
                 }`}
               >
                 Previous
@@ -1091,8 +1091,8 @@ const SecurityPage: React.FC = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                className={`ml-3 relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-bold rounded-lg transition-colors ${
+                  currentPage === totalPages ? 'bg-slate-100 text-slate-700 cursor-not-allowed' : 'bg-white text-slate-800 hover:bg-slate-100'
                 }`}
               >
                 Next
@@ -1100,19 +1100,19 @@ const SecurityPage: React.FC = () => {
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-gray-700">
-                  Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
-                  <span className="font-medium">{Math.min(indexOfLastItem, (activeTab === 'events' ? filteredEvents : activeTab === 'threats' ? filteredThreats : filteredPolicies).length)}</span> of{' '}
-                  <span className="font-medium">{(activeTab === 'events' ? filteredEvents : activeTab === 'threats' ? filteredThreats : filteredPolicies).length}</span> results
+                <p className="text-sm text-slate-700 font-medium">
+                  Showing <span className="font-bold text-slate-900">{indexOfFirstItem + 1}</span> to{' '}
+                  <span className="font-bold text-slate-900">{Math.min(indexOfLastItem, (activeTab === 'events' ? filteredEvents : activeTab === 'threats' ? filteredThreats : filteredPolicies).length)}</span> of{' '}
+                  <span className="font-bold text-slate-900">{(activeTab === 'events' ? filteredEvents : activeTab === 'threats' ? filteredThreats : filteredPolicies).length}</span> results
                 </p>
               </div>
               <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-1" aria-label="Pagination">
+                <nav className="relative z-0 inline-flex rounded-lg shadow-xs -space-x-px" aria-label="Pagination">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === 1 ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                    className={`relative inline-flex items-center px-2.5 py-2 rounded-l-lg border border-slate-300 bg-white text-sm font-bold transition-colors ${
+                      currentPage === 1 ? 'text-slate-700 cursor-not-allowed' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     <span className="sr-only">Previous</span>
@@ -1123,10 +1123,10 @@ const SecurityPage: React.FC = () => {
                     <button
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-bold transition-colors ${
                         currentPage === i + 1
-                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          ? 'z-10 bg-blue-50 border-blue-600 text-blue-700 font-black'
+                          : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-100'
                       }`}
                     >
                       {i + 1}
@@ -1136,8 +1136,8 @@ const SecurityPage: React.FC = () => {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === totalPages ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                    className={`relative inline-flex items-center px-2.5 py-2 rounded-r-lg border border-slate-300 bg-white text-sm font-bold transition-colors ${
+                      currentPage === totalPages ? 'text-slate-700 cursor-not-allowed' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     <span className="sr-only">Next</span>

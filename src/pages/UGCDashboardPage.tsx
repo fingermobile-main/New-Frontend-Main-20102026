@@ -47,7 +47,7 @@ const UGCDashboardPage: React.FC = () => {
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
                 activeTab === 'studio'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
               onClick={() => setActiveTab('studio')}
             >
@@ -58,7 +58,7 @@ const UGCDashboardPage: React.FC = () => {
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
                 activeTab === 'analytics'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
               onClick={() => setActiveTab('analytics')}
             >
@@ -69,7 +69,7 @@ const UGCDashboardPage: React.FC = () => {
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
                 activeTab === 'monetization'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
               onClick={() => setActiveTab('monetization')}
             >
@@ -80,7 +80,7 @@ const UGCDashboardPage: React.FC = () => {
               className={`flex-1 py-4 px-1 text-center border-b-2 font-medium text-sm flex items-center justify-center ${
                 activeTab === 'scheduler'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
               onClick={() => setActiveTab('scheduler')}
             >

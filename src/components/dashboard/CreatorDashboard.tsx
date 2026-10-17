@@ -314,7 +314,7 @@ const CreatorDashboard: React.FC = () => {
                         {metric.change >= 0 ? '↑' : '↓'} {Math.abs(metric.change)}%
                       </p>
                     </div>
-                    <div className={`${metric.color} p-3 rounded-lg text-white`}>
+                    <div className={`${metric.color} p-3 rounded-lg text-slate-700`}>
                       {getIconComponent(metric.icon)}
                     </div>
                   </div>

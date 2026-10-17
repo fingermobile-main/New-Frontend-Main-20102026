@@ -378,7 +378,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
           placeholder="Post title or headline (optional)..."
           value={composerTitle}
           onChange={(e) => setComposerTitle(e.target.value)}
-          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300"
+          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300 focus:ring-2"
         />
 
         {/* Mandatory Category Dropdown */}
@@ -388,7 +388,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               value={composerCategory}
               onChange={(e) => setComposerCategory(e.target.value)}
               required
-              className="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-1 focus:ring-orange-500 focus:outline-none cursor-pointer border-slate-300"
+              className="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-1 focus:ring-orange-500 focus:outline-none cursor-pointer border-slate-300 focus:ring-2"
             >
               <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
               {MASTER_CATEGORIES_CATALOG.map((c) => (
@@ -408,7 +408,7 @@ export const ForumPostComposer: React.FC<ForumPostComposerProps> = ({
               placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
               value={composerContent}
               onChange={(e) => setComposerContent(e.target.value)}
-              className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed font-bold border-slate-300"
+              className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed font-bold border-slate-300 focus:ring-2"
             />
 
             {/* Markdown Inserters */}

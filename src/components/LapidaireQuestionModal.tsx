@@ -213,7 +213,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
                   className={`w-full p-3.5 rounded-2xl border text-left text-xs font-semibold flex items-center justify-between transition-all ${
                     isSelected
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-xs ring-2 ring-emerald-500/20'
-                      : 'border-gray-200 hover:border-emerald-300 text-gray-700 hover:bg-gray-50'
+                      : 'border-slate-300 hover:border-emerald-300 text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   <span>{opt}</span>

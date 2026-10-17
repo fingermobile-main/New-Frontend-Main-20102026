@@ -566,7 +566,7 @@ const CompliancePage: React.FC = () => {
               className={`${
                 activeTab === 'requirements'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <FolderKanban className="h-4 w-4 mr-2" />
@@ -577,7 +577,7 @@ const CompliancePage: React.FC = () => {
               className={`${
                 activeTab === 'audits'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <FileSpreadsheet className="h-4 w-4 mr-2" />
@@ -588,7 +588,7 @@ const CompliancePage: React.FC = () => {
               className={`${
                 activeTab === 'reports'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -599,7 +599,7 @@ const CompliancePage: React.FC = () => {
               className={`${
                 activeTab === 'dashboard'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <BarChart3 className="h-4 w-4 mr-2" />
@@ -610,7 +610,7 @@ const CompliancePage: React.FC = () => {
               className={`${
                 activeTab === 'settings'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <Settings className="h-4 w-4 mr-2" />
@@ -629,7 +629,7 @@ const CompliancePage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 focus:ring-2"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -961,7 +961,7 @@ const CompliancePage: React.FC = () => {
                               <div className="text-sm text-slate-700 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'regulatory' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'internal' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'regulatory' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'internal' ? 'bg-green-100 text-blue-950 border border-blue-400 font-bold' : 'bg-purple-100 text-blue-950 border border-blue-400 font-bold'}font-black`}>
                                 {report.type}
                               </span>
                             </td>
@@ -1139,7 +1139,7 @@ const CompliancePage: React.FC = () => {
                             <p className="font-medium">{item.name}</p>
                             <p className="text-sm text-slate-700">Due: {new Date(item.deadline).toLocaleDateString()}</p>
                           </div>
-                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.priority === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : item.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
+                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.priority === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : item.priority === 'high' ? 'bg-orange-100 text-red-950' : 'bg-amber-100 text-red-950 border border-red-400 font-bold'}font-black`}>
                             {item.priority}
                           </span>
                         </div>
@@ -1319,7 +1319,7 @@ const CompliancePage: React.FC = () => {
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  currentPage === 1 ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 Previous
@@ -1328,7 +1328,7 @@ const CompliancePage: React.FC = () => {
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  currentPage === totalPages ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 Next
@@ -1348,7 +1348,7 @@ const CompliancePage: React.FC = () => {
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                     className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === 1 ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                      currentPage === 1 ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="sr-only">Previous</span>
@@ -1362,7 +1362,7 @@ const CompliancePage: React.FC = () => {
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
                           ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          : 'bg-white border-gray-300 text-slate-700 hover:bg-gray-50'
                       }`}
                     >
                       {i + 1}
@@ -1373,7 +1373,7 @@ const CompliancePage: React.FC = () => {
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === totalPages ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                      currentPage === totalPages ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="sr-only">Next</span>

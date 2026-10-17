@@ -91,7 +91,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
 
             {/* Character Counter */}
             <div className="flex items-center justify-between text-sm">
-              <span className={`${remaining < 20 ? 'text-red-600' : 'text-gray-500'}`}>
+              <span className={`${remaining < 20 ? 'text-red-600' : 'text-slate-700'}`}>
                 {remaining} characters remaining
               </span>
               <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
@@ -134,7 +134,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                   className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
                     privacy === 'public'
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   🌍 Public
@@ -144,7 +144,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                   className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
                     privacy === 'followers'
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   👥 Followers
@@ -154,7 +154,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
                   className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
                     privacy === 'private'
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   🔒 Private

@@ -537,8 +537,8 @@ const HallmarksPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-bold text-gray-900">HallMarks Page Creation Quota</h3>
                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                  createdCount >= maxAllowed ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
-                }`}>
+                  createdCount >= maxAllowed ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : 'bg-emerald-100 text-amber-950 border border-amber-400 font-bold'
+                }font-black`}>
                   {createdCount} / {maxAllowed} Pages Active
                 </span>
               </div>

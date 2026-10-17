@@ -187,7 +187,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                     </div>
                   </div>
 
-                  <span className={`px-3 py-1 ${urgency.color} text-white rounded-full text-xs font-semibold`}>
+                  <span className={`px-3 py-1 ${urgency.color} text-slate-700 rounded-full text-xs font-semibold`}>
                     {urgency.level.toUpperCase()}
                   </span>
                 </div>

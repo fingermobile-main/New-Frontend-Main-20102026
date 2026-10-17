@@ -470,8 +470,8 @@ const AdminControlDashboard: React.FC = () => {
                               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                 member.isActive
                                   ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                                  : 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                              }`}
+                                  : 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                              }font-black`}
                             >
                               {member.isActive ? 'Active' : 'Inactive'}
                             </span>
@@ -531,8 +531,8 @@ const AdminControlDashboard: React.FC = () => {
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               log.status === 'success'
                                 ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                                : 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                            }`}
+                                : 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                            }font-black`}
                           >
                             {log.status}
                           </span>

@@ -78,10 +78,10 @@ const PulsatingBalance: React.FC<PulsatingBalanceProps> = ({
         <div className="flex flex-col items-end gap-1">
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
             balance > 1000 ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-              balance > 500 ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
-                balance > 100 ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' :
-                  'bg-orange-100 text-orange-800'
-          }`}>
+              balance > 500 ? 'bg-blue-100 text-green-950 border border-green-400 font-bold' :
+                balance > 100 ? 'bg-purple-100 text-green-950 border border-green-400 font-bold' :
+                  'bg-orange-100 text-green-950'
+          }font-black`}>
             {balance > 1000 ? 'Excellent' :
               balance > 500 ? 'Good' :
                 balance > 100 ? 'Fair' : 'Low'}

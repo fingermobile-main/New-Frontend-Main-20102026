@@ -121,7 +121,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
                     className={`p-3 rounded-2xl border flex items-center justify-center gap-2 font-bold text-xs transition-all ${
                       currency === 'GEMS'
                         ? 'border-yellow-500 bg-yellow-50 text-yellow-900 shadow-sm'
-                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                        : 'border-slate-300 text-gray-600 hover:bg-gray-50'
                     }`}
                   >
                     <span>💎 Gems</span>
@@ -132,7 +132,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
                     className={`p-3 rounded-2xl border flex items-center justify-center gap-2 font-bold text-xs transition-all ${
                       currency === 'FIC'
                         ? 'border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm'
-                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                        : 'border-slate-300 text-gray-600 hover:bg-gray-50'
                     }`}
                   >
                     <span>🪙 FIC Tokens</span>
@@ -157,7 +157,7 @@ const LiveStreamTipModal: React.FC<LiveStreamTipModalProps> = ({
                       className={`py-2 rounded-xl border text-xs font-bold font-mono transition-all ${
                         amount === amt && !customAmount
                           ? 'border-amber-500 bg-amber-50 text-amber-900 shadow-xs'
-                          : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                          : 'border-slate-300 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
                       {amt}

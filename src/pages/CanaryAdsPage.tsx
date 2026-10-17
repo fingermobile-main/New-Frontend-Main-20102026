@@ -393,7 +393,7 @@ const CanaryAdsPage: React.FC = () => {
                             className={`p-3 rounded-xl border cursor-pointer transition-all ${
                               isSelected
                                 ? 'bg-indigo-50 border-indigo-400 text-indigo-950 font-bold'
-                                : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
+                                : 'bg-gray-50 border-slate-300 text-gray-700 hover:bg-gray-100'
                             }`}
                           >
                             <span className="text-xs block truncate">{p.name}</span>

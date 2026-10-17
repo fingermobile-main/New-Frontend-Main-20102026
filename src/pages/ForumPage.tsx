@@ -1907,7 +1907,7 @@ export const ForumPage: React.FC = () => {
                   placeholder="Post title or headline (optional)..."
                   value={composerTitle}
                   onChange={(e) => setComposerTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold focus:ring-1 focus:ring-orange-500 focus:outline-none text-slate-900 border-slate-300 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold focus:ring-1 focus:ring-orange-500 focus:outline-none text-slate-900 border-slate-300 placeholder:text-slate-400 focus:ring-2"
                 />
 
                 {/* Mandatory Category Dropdown */}
@@ -1916,7 +1916,7 @@ export const ForumPage: React.FC = () => {
                     value={composerCategory}
                     onChange={(e) => setComposerCategory(e.target.value)}
                     required
-                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-200 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300"
+                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-200 focus:ring-1 focus:ring-orange-500 focus:outline-none border-slate-300 focus:ring-2"
                   >
                     <option value="">▼ Select Mandatory Category (54 Available Topics)...</option>
                     {apiCategories.map((c) => (
@@ -1935,7 +1935,7 @@ export const ForumPage: React.FC = () => {
                       placeholder="Share discussions, paste https:// URLs for instant OG previews, or attach media/stems..."
                       value={composerContent}
                       onChange={handleContentChange}
-                      className="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed text-slate-900 font-bold border-slate-300 placeholder:text-slate-400"
+                      className="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-1 focus:ring-orange-500 focus:outline-none resize-none leading-relaxed text-slate-900 font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                     />
 
                     {/* Markdown Inserters */}

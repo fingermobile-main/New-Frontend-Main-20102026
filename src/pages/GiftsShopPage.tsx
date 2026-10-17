@@ -243,7 +243,7 @@ export const GiftsShopPage: React.FC = () => {
                 onChange={(e) => setGiftNote(e.target.value)}
                 rows={2}
                 placeholder="A small luxury token in celebration of our mutual bond..."
-                className="w-full text-xs p-3 border border-gray-300 rounded-xl text-slate-900 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden resize-none font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                className="w-full text-xs p-3 border border-gray-300 rounded-xl text-slate-900 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden resize-none font-bold border-slate-300 bg-white placeholder:text-slate-400 focus:ring-2"
               />
             </div>
 

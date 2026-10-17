@@ -194,7 +194,7 @@ const SubscriptionManager = () => {
                 className={`border rounded-xl p-6 transition-all cursor-pointer ${
                   selectedPlan === key
                     ? 'border-brand-blue ring-2 ring-brand-blue ring-opacity-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-slate-300 hover:border-gray-300'
                 }`}
                 onClick={() => setSelectedPlan(key)} role="button" tabIndex={0}
               >

@@ -537,9 +537,9 @@ export const ConsoleCard: React.FC<{
           <div
             className={`px-2 py-0.5 rounded-full text-[11px] font-mono font-bold border flex items-center gap-1 ${
               isDegraded
-                ? 'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800'
-                : 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
-            }`}
+                ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800'
+                : 'bg-emerald-100 text-amber-950 border-amber-400 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+            }font-black`}
           >
             <span className={`w-1.5 h-1.5 rounded-full ${isDegraded ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
             <span>{item.healthScore}%</span>
@@ -619,9 +619,9 @@ export const ConsoleDetailModal: React.FC<{
               <span
                 className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
                   item.status === 'degraded'
-                    ? 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300'
-                    : 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300'
-                }`}
+                    ? 'bg-amber-100 text-amber-950 dark:bg-amber-950 dark:text-amber-300'
+                    : 'bg-emerald-100 text-amber-950 dark:bg-emerald-950 dark:text-emerald-300'
+                }border border-amber-400 font-black`}
               >
                 {item.healthScore}% {item.status.toUpperCase()}
               </span>

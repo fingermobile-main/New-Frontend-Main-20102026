@@ -238,7 +238,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                 placeholder="e.g. Zainab Bello"
               />
             </div>
@@ -253,7 +253,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
-                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                 placeholder="e.g. Victoria Island, Lagos"
               />
             </div>
@@ -269,7 +269,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               required
-              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400"
+              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
               placeholder="e.g. Contemporary Artist & Gallery Curator"
             />
           </div>
@@ -288,7 +288,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
               value={bio}
               onChange={(e) => setBio(e.target.value.slice(0, 300))}
               rows={3}
-              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition resize-none font-bold border-slate-300 placeholder:text-slate-400"
+              className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition resize-none font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
               placeholder="Tell other high-value members about your passions, lifestyle, and what brings you joy..."
             />
           </div>
@@ -307,7 +307,7 @@ export const LushEditProfileModal: React.FC<LushEditProfileModalProps> = ({
                   className={`p-2 rounded-xl text-left font-semibold text-[11px] border transition flex items-center justify-between ${
                     matchingIntent === intent
                       ? 'border-emerald-600 bg-emerald-50 text-emerald-900 font-bold'
-                      : 'border-gray-200 text-gray-700 hover:border-emerald-300 hover:bg-gray-50'
+                      : 'border-slate-300 text-gray-700 hover:border-emerald-300 hover:bg-gray-50'
                   }`}
                 >
                   <span className="truncate">{intent}</span>

@@ -1581,11 +1581,11 @@ const MasterDashboardPage: React.FC = () => {
                     section.status === 'online'
                       ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                       : section.status === 'offline'
-                        ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                        ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                         : section.status === 'maintenance'
-                          ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                          : 'bg-orange-100 text-orange-800'
-                  }`}
+                          ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                          : 'bg-orange-100 text-green-950'
+                  }font-black`}
                 >
                   {section.status}
                 </span>
@@ -1621,11 +1621,11 @@ const MasterDashboardPage: React.FC = () => {
                       component.status === 'online'
                         ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                         : component.status === 'offline'
-                          ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                          ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                           : component.status === 'maintenance'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-orange-100 text-orange-800'
-                    }`}
+                            ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-orange-100 text-green-950'
+                    }font-black`}
                   >
                     {component.status}
                   </span>
@@ -1665,7 +1665,7 @@ const MasterDashboardPage: React.FC = () => {
                         : alert.severity === 'medium'
                           ? 'bg-yellow-100'
                           : 'bg-blue-100'
-                  }`}
+                  }border text-red-950 border-red-400 font-black`}
                 >
                   {alert.severity === 'critical' ? (
                     <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -1867,11 +1867,11 @@ const MasterDashboardPage: React.FC = () => {
                       section.status === 'online'
                         ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                         : section.status === 'offline'
-                          ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                          ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                           : section.status === 'maintenance'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-orange-100 text-orange-800'
-                    }`}
+                            ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-orange-100 text-green-950'
+                    }font-black`}
                   >
                     {section.status}
                   </span>
@@ -2105,11 +2105,11 @@ const MasterDashboardPage: React.FC = () => {
                         component.status === 'online'
                           ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : component.status === 'offline'
-                            ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                            ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                             : component.status === 'maintenance'
-                              ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                              : 'bg-orange-100 text-orange-800'
-                      }`}
+                              ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-orange-100 text-green-950'
+                      }font-black`}
                     >
                       {component.status}
                     </span>
@@ -2202,7 +2202,7 @@ const MasterDashboardPage: React.FC = () => {
                           : alert.severity === 'medium'
                             ? 'bg-yellow-100'
                             : 'bg-blue-100'
-                    }`}
+                    }border text-red-950 border-red-400 font-black`}
                   >
                     {alert.severity === 'critical' ? (
                       <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -2415,7 +2415,7 @@ const MasterDashboardPage: React.FC = () => {
                 className={`py-3 px-2 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-1.5 ${
                   activeTab === tab.id
                     ? 'border-blue-600 text-blue-600 font-bold'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                 }`}
                 onClick={() => {
                   setActiveTab(tab.id);
@@ -2429,8 +2429,8 @@ const MasterDashboardPage: React.FC = () => {
                     className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
                       activeTab === tab.id
                         ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
-                        : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                    }`}
+                        : 'bg-gray-100 text-blue-950 dark:bg-gray-800 dark:text-gray-400'
+                    }font-black`}
                   >
                     {tab.badge}
                   </span>
@@ -2466,7 +2466,7 @@ const MasterDashboardPage: React.FC = () => {
                           className={`${
                             activeTab === `category-${category}`
                               ? 'border-blue-500 text-blue-600 font-semibold'
-                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                              : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
                           } whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm transition`}
                         >
                           {category}
@@ -2528,11 +2528,11 @@ const MasterDashboardPage: React.FC = () => {
                                     section.status === 'online'
                                       ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                       : section.status === 'offline'
-                                        ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                                        ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                                         : section.status === 'maintenance'
-                                          ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                                          : 'bg-orange-100 text-orange-800'
-                                  }`}
+                                          ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                                          : 'bg-orange-100 text-green-950'
+                                  }font-black`}
                                 >
                                   {section.status}
                                 </span>
@@ -2587,11 +2587,11 @@ const MasterDashboardPage: React.FC = () => {
                               section.status === 'online'
                                 ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                 : section.status === 'offline'
-                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                                  ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                                   : section.status === 'maintenance'
-                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                                    : 'bg-orange-100 text-orange-800'
-                            }`}
+                                    ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                                    : 'bg-orange-100 text-green-950'
+                            }font-black`}
                           >
                             {section.status}
                           </span>
@@ -2805,11 +2805,11 @@ const MasterDashboardPage: React.FC = () => {
                               section.status === 'online'
                                 ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                                 : section.status === 'offline'
-                                  ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
+                                  ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
                                   : section.status === 'maintenance'
-                                    ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                                    : 'bg-orange-100 text-orange-800'
-                            }`}
+                                    ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                                    : 'bg-orange-100 text-green-950'
+                            }font-black`}
                           >
                             {section.status}
                           </span>

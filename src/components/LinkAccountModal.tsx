@@ -102,7 +102,7 @@ const LinkAccountModal: React.FC<LinkAccountModalProps> = ({
                       </div>
                       <div>
                         <h3 className="font-semibold">{account.name}</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-slate-700">
                           {account.description}
                         </p>
                       </div>

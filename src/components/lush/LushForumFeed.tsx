@@ -461,7 +461,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                     className={`p-1.5 rounded-lg transition ${
                       showComposerEmojis
                         ? 'text-emerald-700 bg-emerald-100'
-                        : 'text-gray-500 hover:text-emerald-700 hover:bg-emerald-50'
+                        : 'text-slate-700 hover:text-emerald-700 hover:bg-emerald-50'
                     }`}
                     title="Attach Smileys & Emojis"
                   >
@@ -809,7 +809,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                                 })
                               }
                               placeholder="Write a thoughtful comment..."
-                              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300"
+                              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300 focus:ring-2"
                             />
                             <button
                               type="button"

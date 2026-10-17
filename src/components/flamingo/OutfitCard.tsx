@@ -95,8 +95,8 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
 
           {outfit.season && (
             <span className={`px-2 py-1 text-xs rounded-full ${
-              seasonColors[outfit.season as keyof typeof seasonColors] || 'bg-gray-100 text-gray-700'
-            }`}>
+              seasonColors[outfit.season as keyof typeof seasonColors] || 'bg-gray-100 text-gray-950'
+            }border border-gray-400 font-black`}>
               {outfit.season}
             </span>
           )}

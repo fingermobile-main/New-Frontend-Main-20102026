@@ -154,7 +154,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
                 className={`px-3 py-2 rounded-lg border-2 transition-colors ${
                   selectedFeedback === option.value
                     ? 'border-purple-500 bg-purple-50 text-purple-700'
-                    : `border-gray-200 bg-white text-gray-700 ${option.color}`
+                    : `border-slate-300 bg-white text-gray-700 ${option.color}`
                 }`}
               >
                 {option.label}

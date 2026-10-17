@@ -112,8 +112,8 @@ const AdminDashboardPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-black text-slate-900">Admin Dashboard</h1>
+          <p className="text-sm font-semibold text-slate-700 mt-1">
             Manage platform settings, members, and monitor activity
           </p>
         </div>
@@ -123,12 +123,12 @@ const AdminDashboardPage: React.FC = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-sm border border-slate-300 p-6"
+              className="bg-white rounded-2xl shadow-xs border border-slate-300 p-6"
             >
-              <p className="text-sm font-medium text-slate-700">{stat.title}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700">{stat.title}</p>
               <div className="mt-2 flex items-baseline">
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="ml-2 text-sm font-medium text-green-500">
+                <p className="text-2xl font-black text-slate-900">{stat.value}</p>
+                <p className="ml-2 text-xs font-bold text-emerald-800">
                   {stat.change}
                 </p>
               </div>
@@ -137,49 +137,27 @@ const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Dashboard Tabs */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-300">
-          <div className="border-b border-slate-300">
+        <div className="bg-white rounded-2xl shadow-xs border border-slate-300 overflow-hidden">
+          <div className="border-b border-slate-300 bg-slate-50/50">
             <nav className="flex space-x-8 px-6">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'overview'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('members')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'members'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Member Management
-              </button>
-              <button
-                onClick={() => setActiveTab('roles')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'roles'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Roles & Permissions
-              </button>
-              <button
-                onClick={() => setActiveTab('activity')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'activity'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Activity Log
-              </button>
+              {[
+                { id: 'overview', label: 'Overview' },
+                { id: 'members', label: 'Member Management' },
+                { id: 'roles', label: 'Roles & Permissions' },
+                { id: 'activity', label: 'Activity Log' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`py-4 px-1 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+                    activeTab === tab.id
+                      ? 'border-blue-600 text-blue-700'
+                      : 'border-transparent text-slate-700 hover:text-slate-900 hover:border-slate-400'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </nav>
           </div>
 
@@ -189,24 +167,24 @@ const AdminDashboardPage: React.FC = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    <h3 className="text-lg font-black text-slate-900 mb-4">
                       Recent Activity
                     </h3>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {recentActivity.map((activity) => (
                         <div
                           key={activity.id}
-                          className="flex items-center justify-between py-3 border-b border-slate-200"
+                          className="flex items-center justify-between py-3 px-4 border border-slate-200 rounded-xl bg-slate-50/50"
                         >
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-bold text-slate-900">
                               {activity.member}
                             </p>
-                            <p className="text-sm text-slate-700">
+                            <p className="text-xs font-semibold text-slate-700 mt-0.5">
                               {activity.action}
                             </p>
                           </div>
-                          <p className="text-sm text-slate-700">
+                          <p className="text-xs font-bold text-slate-600">
                             {activity.time}
                           </p>
                         </div>
@@ -215,39 +193,39 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    <h3 className="text-lg font-black text-slate-900 mb-4">
                       Platform Status
                     </h3>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                        <span className="text-sm font-medium text-gray-900">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl">
+                        <span className="text-sm font-bold text-slate-900">
                           API Services
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                           Operational
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                        <span className="text-sm font-medium text-gray-900">
+                      <div className="flex items-center justify-between p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl">
+                        <span className="text-sm font-bold text-slate-900">
                           Database
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                           Operational
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                        <span className="text-sm font-medium text-gray-900">
+                      <div className="flex items-center justify-between p-3.5 bg-amber-50 border border-amber-300 rounded-xl">
+                        <span className="text-sm font-bold text-slate-900">
                           Media Processing
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400 font-black">
                           Degraded
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                        <span className="text-sm font-medium text-gray-900">
+                      <div className="flex items-center justify-between p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl">
+                        <span className="text-sm font-bold text-slate-900">
                           Wallet System
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                           Operational
                         </span>
                       </div>
@@ -261,200 +239,97 @@ const AdminDashboardPage: React.FC = () => {
             {activeTab === 'members' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-medium text-gray-900">
+                  <h3 className="text-xl font-black text-slate-900">
                     Member Management
                   </h3>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  <button className="px-4 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-xs cursor-pointer text-sm">
                     Add New Member
                   </button>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                <div className="overflow-x-auto border border-slate-300 rounded-2xl shadow-xs">
+                  <table className="min-w-full divide-y divide-slate-300">
+                    <thead className="bg-slate-50 border-b border-slate-300">
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
+                          className="px-6 py-3.5 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
                         >
                           Member
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
+                          className="px-6 py-3.5 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
                         >
                           Role
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
+                          className="px-6 py-3.5 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
                         >
                           Status
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
+                          className="px-6 py-3.5 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
                         >
                           Last Active
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
+                          className="px-6 py-3.5 text-left text-xs font-bold text-slate-800 uppercase tracking-wider"
                         >
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-slate-200">
                       <tr>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
                               <img
-                                className="h-10 w-10 rounded-full"
+                                className="h-10 w-10 rounded-full border border-slate-300 object-cover"
                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                 alt=""
                               />
                             </div>
                             <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-bold text-slate-900">
                                 Alex Johnson
                               </div>
-                              <div className="text-sm text-slate-700">
+                              <div className="text-xs font-semibold text-slate-700">
                                 alex@example.com
                               </div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">Admin</div>
+                          <div className="text-sm font-bold text-slate-800">Admin</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
+                          <span className="px-2.5 py-0.5 inline-flex text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-black">
                             Active
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
+                        <td className="px-6 py-4 whitespace-nowrap text-xs font-bold text-slate-700">
                           2 hours ago
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <a
-                            href="#"
-                            className="text-blue-600 hover:text-blue-900"
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold space-x-3">
+                          <button
+                            type="button"
+                            className="text-blue-700 hover:text-blue-900 hover:underline cursor-pointer"
                           >
                             Edit
-                          </a>
-                          <a
-                            href="#"
-                            className="ml-4 text-red-600 hover:text-red-900"
+                          </button>
+                          <button
+                            type="button"
+                            className="text-red-700 hover:text-red-900 hover:underline cursor-pointer"
                           >
                             Suspend
-                          </a>
+                          </button>
                         </td>
                       </tr>
-                      {/* More member rows would go here */}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {/* Member Management Tab */}
-            {activeTab === 'members' && (
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-medium text-gray-900">
-                    Member Management
-                  </h3>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Add New Member
-                  </button>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
-                        >
-                          Member
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
-                        >
-                          Role
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
-                        >
-                          Status
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
-                        >
-                          Last Active
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider"
-                        >
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10">
-                              <img
-                                className="h-10 w-10 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
-                              />
-                            </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                Alex Johnson
-                              </div>
-                              <div className="text-sm text-slate-700">
-                                alex@example.com
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">Admin</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
-                            Active
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
-                          2 hours ago
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <a
-                            href="#"
-                            className="text-blue-600 hover:text-blue-900"
-                          >
-                            Edit
-                          </a>
-                          <a
-                            href="#"
-                            className="ml-4 text-red-600 hover:text-red-900"
-                          >
-                            Suspend
-                          </a>
-                        </td>
-                      </tr>
-                      {/* More member rows would go here */}
                     </tbody>
                   </table>
                 </div>
@@ -465,10 +340,10 @@ const AdminDashboardPage: React.FC = () => {
             {activeTab === 'roles' && (
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-medium text-gray-900">
+                  <h3 className="text-xl font-black text-slate-900">
                     Roles & Permissions
                   </h3>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  <button className="px-4 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-xs cursor-pointer text-sm">
                     Add New Role
                   </button>
                 </div>
@@ -477,24 +352,24 @@ const AdminDashboardPage: React.FC = () => {
                   {memberRoles.map((role) => (
                     <div
                       key={role.id}
-                      className="border border-slate-300 rounded-lg p-5 hover:shadow-md transition-shadow"
+                      className="bg-white border border-slate-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition-shadow"
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <h4 className="font-medium text-gray-900">
+                          <h4 className="font-bold text-slate-900">
                             {role.name}
                           </h4>
-                          <p className="text-sm text-slate-700 mt-1">
+                          <p className="text-xs font-semibold text-slate-700 mt-1">
                             {role.members} members
                           </p>
                         </div>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 font-black">
                           {role.permissions} permissions
                         </span>
                       </div>
                       <div className="mt-4">
-                        <button className="text-sm font-medium text-blue-600 hover:text-blue-500">
-                          View Details
+                        <button className="text-xs font-bold text-blue-700 hover:text-blue-900 cursor-pointer">
+                          View Details →
                         </button>
                       </div>
                     </div>
@@ -506,35 +381,32 @@ const AdminDashboardPage: React.FC = () => {
             {/* Activity Log Tab */}
             {activeTab === 'activity' && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                <h3 className="text-xl font-black text-slate-900 mb-4">
                   Activity Log
                 </h3>
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-white rounded-2xl border border-slate-300 p-5 shadow-xs">
                   <div className="flow-root">
-                    <ul className="divide-y divide-gray-200">
-                      <li className="py-4">
+                    <ul className="divide-y divide-slate-200">
+                      <li className="py-3.5">
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
-                            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                              <span className="text-white text-xs font-medium">
-                                AJ
-                              </span>
+                            <div className="h-9 w-9 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-xs shadow-xs">
+                              AJ
                             </div>
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-bold text-slate-900">
                               Alex Johnson
                             </p>
-                            <p className="text-sm text-slate-700">
+                            <p className="text-xs font-semibold text-slate-700 mt-0.5">
                               Created new post in Forum category
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-slate-700">2 min ago</p>
+                            <p className="text-xs font-bold text-slate-600">2 min ago</p>
                           </div>
                         </div>
                       </li>
-                      {/* More activity items would go here */}
                     </ul>
                   </div>
                 </div>

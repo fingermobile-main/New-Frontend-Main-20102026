@@ -122,8 +122,8 @@ const WalletComponent: React.FC<WalletProps> = ({
                     className={`p-2 rounded-full ${
                       transaction.type === 'deposit'
                         ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                        : 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                    }`}
+                        : 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                    }font-black`}
                   >
                     {transaction.type === 'deposit' ? (
                       <TrendingUp className="h-5 w-5" />

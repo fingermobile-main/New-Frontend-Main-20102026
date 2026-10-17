@@ -166,8 +166,8 @@ const EarningsDashboard: React.FC = () => {
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         ${txn.type === 'commission' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                    txn.type === 'ad-revenue' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' :
-                      'bg-purple-100 text-purple-950 border border-purple-400 font-bold'}`}>
+                    txn.type === 'ad-revenue' ? 'bg-blue-100 text-green-950 border border-green-400 font-bold' :
+                      'bg-purple-100 text-green-950 border border-green-400 font-bold'}font-black`}>
                         {txn.type.replace('-', ' ')}
                       </span>
                     </td>

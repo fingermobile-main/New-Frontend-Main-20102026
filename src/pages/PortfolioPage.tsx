@@ -408,7 +408,7 @@ const PortfolioPage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'projects'
                   ? 'border-indigo-600 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <BriefcaseIcon className="w-4 h-4" />
@@ -419,7 +419,7 @@ const PortfolioPage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'photos'
                   ? 'border-indigo-600 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <PhotoIcon className="w-4 h-4" />
@@ -430,7 +430,7 @@ const PortfolioPage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'audio'
                   ? 'border-indigo-600 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <MusicalNoteIcon className="w-4 h-4" />
@@ -441,7 +441,7 @@ const PortfolioPage: React.FC = () => {
               className={`pb-3.5 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
                 activeTab === 'reviews'
                   ? 'border-indigo-600 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               <ChatBubbleLeftRightIcon className="w-4 h-4" />

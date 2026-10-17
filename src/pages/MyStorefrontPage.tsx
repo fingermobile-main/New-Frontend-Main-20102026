@@ -187,7 +187,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'overview'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Overview
@@ -197,7 +197,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'products'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Products
@@ -207,7 +207,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'analytics'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Analytics
@@ -217,7 +217,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'orders'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Orders
@@ -227,7 +227,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'storage'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Storage & Quota Plan
@@ -237,7 +237,7 @@ const MyStorefrontPage: React.FC = () => {
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'settings'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               Settings
@@ -550,8 +550,8 @@ const MyStorefrontPage: React.FC = () => {
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             product.status === 'published'
                               ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                          }`}
+                              : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                          }font-black`}
                         >
                           {product.category}
                         </span>
@@ -570,8 +570,8 @@ const MyStorefrontPage: React.FC = () => {
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             product.status === 'published'
                               ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                          }`}
+                              : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                          }font-black`}
                         >
                           {product.status}
                         </span>

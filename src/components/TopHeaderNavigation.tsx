@@ -178,9 +178,9 @@ const TopHeaderNavigation: React.FC = () => {
                     to={item.path}
                     className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-all ${
                       isActive
-                        ? 'text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                        ? 'text-gray-950'
+                        : 'bg-gray-100 text-gray-950 hover:bg-gray-200'
+                    }border border-gray-400 font-black`}
                     style={isActive ? { backgroundColor: '#FD5900' } : {}}
                   >
                     {item.label}

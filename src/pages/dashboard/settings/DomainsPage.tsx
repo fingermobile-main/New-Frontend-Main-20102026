@@ -63,46 +63,46 @@ const DomainsPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Domains</h1>
+      <h1 className="text-2xl font-black text-slate-900 mb-6">Domains</h1>
 
-      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-        <h2 className="text-xl font-bold mb-4">Primary Domain</h2>
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300 mb-8">
+        <h2 className="text-xl font-black text-slate-900 mb-4">Primary Domain</h2>
         {primaryDomain ? (
-          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+          <div className="flex justify-between items-center bg-slate-50 border border-slate-300 p-4 rounded-xl">
             <div>
-              <p className="font-semibold text-gray-900">{primaryDomain.domain}</p>
+              <p className="font-bold text-slate-900">{primaryDomain.domain}</p>
               <p className="text-xs text-slate-700 font-mono mt-0.5">SSL: {primaryDomain.ssl_status}</p>
             </div>
-            <span className="text-sm text-green-950 font-semibold bg-green-50 px-3 py-1 rounded-full border border-green-400 font-black">
+            <span className="text-sm text-emerald-950 font-black bg-emerald-100 px-3 py-1 rounded-full border border-emerald-400">
               Primary Active
             </span>
           </div>
         ) : (
-          <p className="text-slate-700">No primary domain configured.</p>
+          <p className="text-slate-700 font-medium">No primary domain configured.</p>
         )}
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <h2 className="text-xl font-bold mb-4">Custom Domains</h2>
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-300">
+        <h2 className="text-xl font-black text-slate-900 mb-4">Custom Domains</h2>
         <div className="space-y-3 mb-6">
           {customDomains.length === 0 ? (
-            <p className="text-sm text-slate-700">No custom domains added yet.</p>
+            <p className="text-sm text-slate-700 font-medium">No custom domains added yet.</p>
           ) : (
             customDomains.map((d) => (
-              <div key={d.id} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+              <div key={d.id} className="flex justify-between items-center bg-slate-50 border border-slate-300 p-4 rounded-xl">
                 <div>
-                  <p className="font-semibold text-gray-900">{d.domain}</p>
+                  <p className="font-bold text-slate-900">{d.domain}</p>
                   <p className="text-xs text-slate-700 font-mono mt-0.5">SSL: {d.ssl_status}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className={`text-sm font-semibold px-2.5 py-0.5 rounded-full ${
-                    d.ssl_status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                  }`}>
+                  <span className={`text-sm font-bold px-3 py-1 rounded-full ${
+                    d.ssl_status === 'active' ? 'bg-emerald-100 text-emerald-950 border border-emerald-400' : 'bg-amber-100 text-emerald-950 border border-emerald-400'
+                  }font-black`}>
                     {d.ssl_status}
                   </span>
                   <button
                     onClick={() => handleDeleteDomain(d.id)}
-                    className="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1 rounded hover:bg-red-50"
+                    className="text-xs text-rose-700 hover:text-rose-900 font-bold px-2.5 py-1 rounded-md hover:bg-rose-50 transition-colors"
                   >
                     Remove
                   </button>
@@ -111,8 +111,8 @@ const DomainsPage: React.FC = () => {
             ))
           )}
         </div>
-        <form onSubmit={handleAddDomain} className="border-t pt-4">
-          <label htmlFor="domainName" className="block text-sm font-medium text-gray-700 mb-2">Add a new domain</label>
+        <form onSubmit={handleAddDomain} className="border-t border-slate-300 pt-4">
+          <label htmlFor="domainName" className="block text-sm font-bold text-slate-800 mb-2">Add a new domain</label>
           <div className="flex gap-2">
             <input
               id="domainName"
@@ -121,13 +121,13 @@ const DomainsPage: React.FC = () => {
               value={domainInput}
               onChange={(e) => setDomainInput(e.target.value)}
               placeholder="subdomain.fingermobile.io"
-              className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-600 text-sm text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+              className="flex-1 p-2.5 border border-slate-300 rounded-lg text-slate-900 font-bold bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 text-sm"
               required
             />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="px-5 py-2.5 text-sm font-bold bg-brand-blue text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow-sm transition-colors"
             >
               {isSubmitting ? 'Connecting...' : 'Connect'}
             </button>

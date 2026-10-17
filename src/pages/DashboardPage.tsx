@@ -186,18 +186,18 @@ const DashboardPage: React.FC = () => {
                 to={card.route}
                 className="block transform transition-transform duration-200 hover:scale-105"
               >
-                <div className={`${card.color} rounded-xl shadow-lg p-6 ${isLightBg ? 'text-slate-950' : 'text-white'} hover:shadow-xl transition-shadow`}>
+                <div className={`${card.color} rounded-xl shadow-lg p-6 ${isLightBg ? 'text-slate-950' : 'text-slate-700'} hover:shadow-xl transition-shadow`}>
                   <div className="flex items-center">
                     <div className={`p-3 ${isLightBg ? 'bg-black/15' : 'bg-white bg-opacity-20'} rounded-lg`}>
                       {React.createElement(card.icon, { className: `h-6 w-6 ${isLightBg ? 'text-slate-950' : 'text-white'}` })}
                     </div>
                     <div className="ml-4 flex-1">
-                      <h3 className={`text-lg font-black ${isLightBg ? 'text-slate-950' : 'text-white'}`}>{card.title}</h3>
-                      <p className={`text-xs mt-1 ${isLightBg ? 'text-slate-950 font-bold' : 'text-white/95 font-medium'}`}>{card.description}</p>
+                      <h3 className={`text-lg font-black ${isLightBg ? 'text-slate-950' : 'text-slate-900'}`}>{card.title}</h3>
+                      <p className={`text-xs mt-1 ${isLightBg ? 'text-slate-950 font-bold' : 'text-slate-700 font-medium'}`}>{card.description}</p>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <button className={`inline-flex items-center text-xs font-black ${isLightBg ? 'text-slate-950 hover:underline' : 'text-white hover:underline'}`}>
+                    <button className={`inline-flex items-center text-xs font-black ${isLightBg ? 'text-slate-950 hover:underline' : 'text-slate-700 hover:underline'}`}>
                       Access Console
                       <ChevronRight className="ml-1 h-4 w-4" />
                     </button>

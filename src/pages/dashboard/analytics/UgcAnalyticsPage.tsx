@@ -102,7 +102,7 @@ const UgcAnalyticsPage: React.FC = () => {
             <div className="flex justify-between items-start">
               <div>
                 <h2 className="text-xl font-black text-slate-900">{community.name}</h2>
-                <span className="inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400">
+                <span className="inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 font-black">
                   {community.type}
                 </span>
               </div>

@@ -514,9 +514,9 @@ const MasterEcommerceConsole: React.FC = () => {
                     <td className="py-3.5 px-4 text-center">
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                         (prod.stock_quantity || 0) > 50
-                          ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                          : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
-                      }`}>
+                          ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-300'
+                          : 'bg-amber-50 text-emerald-950 dark:bg-amber-950 dark:text-amber-300'
+                      }border border-emerald-400 font-black`}>
                         {prod.stock_quantity} units
                       </span>
                     </td>
@@ -852,11 +852,11 @@ const MasterEcommerceConsole: React.FC = () => {
                         o.status === 'ESCROW_RELEASED'
                           ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300'
                           : o.status === 'DELIVERED'
-                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300'
+                            ? 'bg-blue-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-blue-950 dark:text-blue-300'
                             : o.status === 'IN_TRANSIT'
-                              ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300'
-                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300'
-                      }`}>
+                              ? 'bg-cyan-100 text-emerald-950 dark:bg-cyan-950 dark:text-cyan-300'
+                              : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-amber-950 dark:text-amber-300'
+                      }font-black`}>
                         {o.status.replace('_', ' ')}
                       </span>
                     </td>

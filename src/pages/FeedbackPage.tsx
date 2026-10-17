@@ -88,7 +88,7 @@ const FeedbackPage: React.FC = () => {
                       id="category"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="block w-full pl-5 pr-10 py-4 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all cursor-pointer shadow-sm appearance-none font-bold border border-slate-300"
+                      className="block w-full pl-5 pr-10 py-4 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all cursor-pointer shadow-sm appearance-none font-bold border border-slate-300 focus:ring-2"
                     >
                       <option value="general">General Suggestion</option>
                       <option value="bug">Bug Report</option>
@@ -145,7 +145,7 @@ const FeedbackPage: React.FC = () => {
                   required
                   value={formData.comment}
                   onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                  className="block w-full p-5 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all shadow-sm resize-y font-bold border border-slate-300 placeholder:text-slate-400"
+                  className="block w-full p-5 text-lg font-medium text-slate-900 border-2 border-slate-200/60 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 bg-white transition-all shadow-sm resize-y font-bold border border-slate-300 placeholder:text-slate-400 focus:ring-2"
                   placeholder="Please provide as much detail as possible to help us understand your feedback..."
                 />
               </div>

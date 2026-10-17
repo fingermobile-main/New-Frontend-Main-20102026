@@ -274,7 +274,7 @@ export const StructuredAboutSection: React.FC<StructuredAboutSectionProps> = ({
                     type="button"
                     onClick={() => handleTogglePin(detail.id)}
                     className={`p-1 rounded-md text-xs font-bold shrink-0 ${
-                      detail.is_pinned ? 'text-orange-600 hover:text-red-700' : 'text-slate-400 hover:text-slate-700'
+                      detail.is_pinned ? 'text-orange-600 hover:text-red-700' : 'text-slate-700 hover:text-slate-700'
                     }`}
                     title={detail.is_pinned ? 'Unpin this item' : 'Pin this item'}
                   >

@@ -229,7 +229,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
                 <select
                   value={selectedRecipientId}
                   onChange={(e) => setSelectedRecipientId(e.target.value)}
-                  className="text-xs bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 font-medium text-slate-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-bold border-slate-300"
+                  className="text-xs bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 font-medium text-slate-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-bold border-slate-300 focus:ring-2"
                 >
                   {availableRecipients.map((rec) => (
                     <option key={rec.id} value={rec.id}>

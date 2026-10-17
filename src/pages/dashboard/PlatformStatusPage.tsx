@@ -53,13 +53,13 @@ const PlatformStatusPage: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Platform Operations & Node Status</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Live PostgreSQL-backed cluster telemetry and service heartbeats</p>
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white">Platform Operations & Node Status</h1>
+          <p className="text-sm text-slate-700 dark:text-gray-300 mt-1 font-medium">Live PostgreSQL-backed cluster telemetry and service heartbeats</p>
         </div>
         <button
           onClick={handleRefresh}
           disabled={loading}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition shadow-sm text-sm"
+          className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-sm text-sm"
         >
           {loading ? 'Polling Nodes...' : 'Run Diagnostics'}
         </button>
@@ -70,28 +70,28 @@ const PlatformStatusPage: React.FC = () => {
           <div key={node.id} className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-slate-300 dark:border-gray-700 shadow-sm">
             <div className="flex justify-between items-start mb-3">
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-base">{node.service_name}</h3>
-                <span className="text-xs uppercase font-mono tracking-wider text-slate-700">{node.category}</span>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">{node.service_name}</h3>
+                <span className="text-xs uppercase font-mono tracking-wider text-slate-700 font-bold">{node.category}</span>
               </div>
               {getStatusBadge(node.status)}
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-200 dark:border-gray-700/50 text-sm">
               <div>
-                <span className="text-xs text-slate-700 block">Latency</span>
-                <span className="font-semibold text-gray-800 dark:text-gray-200">{node.latency_ms} ms</span>
+                <span className="text-xs text-slate-700 font-bold block mb-0.5">Latency</span>
+                <span className="font-bold text-slate-900 dark:text-gray-100">{node.latency_ms} ms</span>
               </div>
               <div>
-                <span className="text-xs text-slate-700 block">Uptime</span>
-                <span className="font-semibold text-green-600 dark:text-green-400">{node.uptime_pct}%</span>
+                <span className="text-xs text-slate-700 font-bold block mb-0.5">Uptime</span>
+                <span className="font-bold text-emerald-700 dark:text-emerald-400">{node.uptime_pct}%</span>
               </div>
               <div>
-                <span className="text-xs text-slate-700 block">Version</span>
-                <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{node.version}</span>
+                <span className="text-xs text-slate-700 font-bold block mb-0.5">Version</span>
+                <span className="font-mono text-xs text-slate-800 dark:text-gray-200 font-bold">{node.version}</span>
               </div>
               <div>
-                <span className="text-xs text-slate-700 block">Last Check</span>
-                <span className="text-xs text-gray-700 dark:text-gray-300">{node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'Just now'}</span>
+                <span className="text-xs text-slate-700 font-bold block mb-0.5">Last Check</span>
+                <span className="text-xs text-slate-800 dark:text-gray-200 font-bold">{node.last_check_at ? new Date(node.last_check_at).toLocaleTimeString() : 'Just now'}</span>
               </div>
             </div>
           </div>

@@ -106,8 +106,8 @@ const CommunitiesPage: React.FC = () => {
                     className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${
                       joinedMap[community.id]
                         ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                        : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                    }`}
+                        : 'bg-blue-50 text-green-950 hover:bg-blue-100'
+                    }font-black`}
                   >
                     {joinedMap[community.id] ? 'Joined' : 'Join'}
                   </button>

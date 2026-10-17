@@ -377,7 +377,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
                       className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border cursor-pointer ${
                         res.isAvailable
                           ? 'bg-emerald-100 text-emerald-950 border-emerald-400 font-bold'
-                          : 'bg-rose-100 text-rose-950 border-rose-400 font-bold'
+                          : 'bg-rose-100 text-emerald-950 border-emerald-400 font-bold'
                       }`}
                     >
                       {res.isAvailable ? '✓ Available' : '🔒 In Maintenance'}

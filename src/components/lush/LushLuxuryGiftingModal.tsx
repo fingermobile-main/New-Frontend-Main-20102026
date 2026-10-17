@@ -329,8 +329,8 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                     className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                       selectedItem.store === 'ownit'
                         ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
-                        : 'bg-rose-100 text-rose-800'
-                    }`}
+                        : 'bg-rose-100 text-emerald-950'
+                    }font-black`}
                   >
                     {selectedItem.store === 'ownit' ? 'OwnIt™ Sovereign Store' : 'Flamingo™ Haute Boutique'}
                   </span>
@@ -379,7 +379,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                       selectedItem.store === 'ownit' ? 'OwnIt' : 'Flamingo'
                     } in honor of your remarkable rating and grace...`}
                     rows={4}
-                    className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs font-bold border-slate-300 placeholder:text-slate-400"
+                    className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-2.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none shadow-2xs font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                   />
                 </form>
               </div>

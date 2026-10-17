@@ -710,7 +710,7 @@ const GuardianProtectionPage: React.FC = () => {
                           className={`p-3.5 rounded-xl border text-left transition ${
                             selectedAction === act.id
                               ? 'border-red-600 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 font-bold'
-                              : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 text-gray-600 dark:text-gray-400'
+                              : 'border-slate-300 dark:border-gray-800 hover:border-gray-300 text-gray-600 dark:text-gray-400'
                           }`}
                         >
                           <div className="text-sm font-bold">{act.label}</div>
@@ -810,9 +810,9 @@ const GuardianProtectionPage: React.FC = () => {
                           rule.severity === 'critical'
                             ? 'bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-950/60 dark:text-red-300'
                             : rule.severity === 'high'
-                              ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950/60 dark:text-amber-300'
-                              : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950/60 dark:text-blue-300'
-                        }`}>
+                              ? 'bg-amber-100 text-red-950 border border-red-400 font-bold dark:bg-amber-950/60 dark:text-amber-300'
+                              : 'bg-blue-100 text-red-950 border border-red-400 font-bold dark:bg-blue-950/60 dark:text-blue-300'
+                        }font-black`}>
                           {rule.severity}
                         </span>
                       </td>

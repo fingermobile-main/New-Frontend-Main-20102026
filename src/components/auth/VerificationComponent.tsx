@@ -163,7 +163,7 @@ const VerificationComponent: React.FC<VerificationProps> = ({ phone, onSuccess }
             disabled={resendDisabled || loading}
             className={`font-medium ${
               resendDisabled
-                ? 'text-gray-400 cursor-not-allowed'
+                ? 'text-slate-700 cursor-not-allowed'
                 : 'text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'
             }`}
           >

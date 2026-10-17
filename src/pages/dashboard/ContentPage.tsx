@@ -243,9 +243,9 @@ const ContentPage: React.FC = () => {
                         item.status === 'Published'
                           ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : item.status === 'Draft'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-gray-100 text-gray-800'
-                      }`}
+                            ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-gray-100 text-green-950'
+                      }font-black`}
                     >
                       {item.status}
                     </span>

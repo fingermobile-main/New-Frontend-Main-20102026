@@ -209,8 +209,8 @@ const RateLimitConfigPage: React.FC = () => {
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="text-lg font-semibold text-gray-900">{config.name}</h3>
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        config.isActive ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-gray-800'
-                      }`}>
+                        config.isActive ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : 'bg-gray-100 text-green-950'
+                      }font-black`}>
                         {config.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>
@@ -252,7 +252,7 @@ const RateLimitConfigPage: React.FC = () => {
                       className={`p-2 rounded-lg transition-colors ${
                         config.isActive
                           ? 'text-green-600 hover:bg-green-50'
-                          : 'text-gray-400 hover:bg-gray-50'
+                          : 'text-slate-700 hover:bg-gray-50'
                       }`}
                       title={config.isActive ? 'Disable' : 'Enable'}
                     >

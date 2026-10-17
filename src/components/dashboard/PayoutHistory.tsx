@@ -149,9 +149,9 @@ const PayoutHistory: React.FC = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
                     ${payout.status === 'completed' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                payout.status === 'processing' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
-                  payout.status === 'failed' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' :
-                    'bg-gray-100 text-gray-800'}`}>
+                payout.status === 'processing' ? 'bg-amber-100 text-green-950 border border-green-400 font-bold' :
+                  payout.status === 'failed' ? 'bg-red-100 text-green-950 border border-green-400 font-bold' :
+                    'bg-gray-100 text-green-950'}font-black`}>
                     {payout.status.charAt(0).toUpperCase() + payout.status.slice(1)}
                   </span>
                 </td>

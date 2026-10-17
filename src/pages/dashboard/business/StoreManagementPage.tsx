@@ -284,7 +284,7 @@ const StoreManagementPage: React.FC = () => {
                               e.target.value as StoreOrder['status']
                             )
                           }
-                          className="text-xs p-1 border rounded-md bg-white text-slate-900 outline-none focus:ring-1 focus:ring-blue-500 font-bold border-slate-300"
+                          className="text-xs p-1 border rounded-md bg-white text-slate-900 outline-none focus:ring-1 focus:ring-blue-500 font-bold border-slate-300 focus:ring-2"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Processing">Processing</option>

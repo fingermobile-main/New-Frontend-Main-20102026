@@ -107,7 +107,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
                   className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
                     downloadFormat === 'png'
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   PNG
@@ -117,7 +117,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
                   className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
                     downloadFormat === 'svg'
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   SVG

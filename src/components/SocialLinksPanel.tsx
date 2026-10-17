@@ -171,7 +171,7 @@ const SocialLinksPanel: React.FC = () => {
               className={`p-4 rounded-lg border ${
                 link.isVerified
                   ? 'border-green-200 bg-green-50'
-                  : 'border-gray-200 bg-gray-50'
+                  : 'border-slate-300 bg-gray-50'
               }`}
             >
               {editingId === link.id ? (

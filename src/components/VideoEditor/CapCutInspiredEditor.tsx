@@ -51,7 +51,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
               className={`p-3 rounded-lg border-2 transition-all ${
                 selectedTool === tool.id
                   ? 'border-purple-500 bg-purple-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  : 'border-slate-300 hover:border-gray-300'
               }`}
             >
               <div className="text-2xl mb-1">{tool.icon}</div>
@@ -77,7 +77,7 @@ const CapCutInspiredEditor: React.FC<CapCutInspiredEditorProps> = ({
                   className={`p-2 rounded-lg border-2 text-sm transition-all ${
                     effects.includes(effect)
                       ? 'border-purple-500 bg-purple-50 text-purple-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   {effect}

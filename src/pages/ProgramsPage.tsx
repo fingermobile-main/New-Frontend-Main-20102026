@@ -372,7 +372,7 @@ const ProgramsPage: React.FC = () => {
             >
               <AcademicCapIcon className="w-5 h-5" />
               <span>1. Academic Courses & Programs</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'courses' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'courses' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-white'}font-extrabold`}>
                 {courses.length}
               </span>
             </button>
@@ -387,7 +387,7 @@ const ProgramsPage: React.FC = () => {
             >
               <CheckCircleIcon className="w-5 h-5" />
               <span>2. Assessment Management</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'assessments' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'assessments' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-white'}font-extrabold`}>
                 {assessments.length} Active
               </span>
             </button>
@@ -402,7 +402,7 @@ const ProgramsPage: React.FC = () => {
             >
               <TrophyIcon className="w-5 h-5" />
               <span>3. Gradebook & GPA System</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'gradebook' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'gradebook' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-white'}font-extrabold`}>
                 GPA 3.92
               </span>
             </button>
@@ -417,7 +417,7 @@ const ProgramsPage: React.FC = () => {
             >
               <CreditCardIcon className="w-5 h-5" />
               <span>4. Financial & Quarterly Subscriptions</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'financial' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'financial' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-white'}font-extrabold`}>
                 ₦750M Fund
               </span>
             </button>
@@ -432,7 +432,7 @@ const ProgramsPage: React.FC = () => {
             >
               <CalendarIcon className="w-5 h-5" />
               <span>5. Academic Calendar</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'calendar' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${activeTab === 'calendar' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-white'}font-extrabold`}>
                 {calendarEvents.length} Events
               </span>
             </button>
@@ -717,9 +717,9 @@ const ProgramsPage: React.FC = () => {
                             asm.status === 'GRADED'
                               ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
                               : asm.status === 'ACTIVE'
-                                ? 'bg-blue-100 text-blue-950 border border-blue-400'
-                                : 'bg-slate-100 text-slate-800 border border-slate-300'
-                          }`}
+                                ? 'bg-blue-100 text-emerald-950 border border-emerald-400'
+                                : 'bg-slate-100 text-emerald-950 border border-emerald-400'
+                          }font-black`}
                         >
                           {asm.status}
                         </span>
@@ -1149,11 +1149,11 @@ const ProgramsPage: React.FC = () => {
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold ${
                             ev.status === 'COMPLETED'
-                              ? 'bg-slate-100 text-slate-700'
+                              ? 'bg-slate-100 text-slate-950'
                               : ev.status === 'IN_PROGRESS'
-                                ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 animate-pulse'
-                                : 'bg-blue-100 text-blue-950 border border-blue-400'
-                          }`}
+                                ? 'bg-emerald-100 text-slate-950 border border-slate-400 animate-pulse'
+                                : 'bg-blue-100 text-slate-950 border border-slate-400'
+                          }font-black`}
                         >
                           {ev.status.replace('_', ' ')}
                         </span>

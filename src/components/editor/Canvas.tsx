@@ -52,7 +52,7 @@ const Canvas: React.FC<CanvasProps> = ({
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                   selectedComponentId === component.id
                     ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-slate-300 hover:border-gray-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">

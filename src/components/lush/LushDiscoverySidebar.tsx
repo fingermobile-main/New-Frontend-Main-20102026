@@ -147,7 +147,7 @@ export const LushDiscoverySidebar: React.FC<LushDiscoverySidebarProps> = ({
               value={dailyAnswer}
               onChange={(e) => setDailyAnswer(e.target.value)}
               placeholder="Your answer..."
-              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300"
+              className="w-full bg-white text-slate-900 placeholder:text-slate-400 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 focus:outline-hidden transition shadow-2xs font-bold border-slate-300 focus:ring-2"
             />
             <div className="flex gap-2">
               <button

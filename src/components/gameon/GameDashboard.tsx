@@ -142,7 +142,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
               className={`p-4 rounded-lg border-2 transition-all ${
                 achievement.unlocked
                   ? 'border-yellow-400 bg-yellow-50'
-                  : 'border-gray-200 bg-gray-50 opacity-60'
+                  : 'border-slate-300 bg-gray-50 opacity-60'
               }`}
             >
               <div className="flex items-start space-x-3">

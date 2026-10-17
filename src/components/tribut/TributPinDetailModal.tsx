@@ -268,9 +268,9 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
               onClick={handleToggleLike}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition border ${
                 isLiked
-                  ? 'bg-rose-50 border-rose-300 text-rose-700'
-                  : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-50'
-              }`}
+                  ? 'bg-rose-50 border-rose-400 text-rose-950'
+                  : 'bg-white border-rose-400 text-rose-950 hover:bg-slate-50'
+              }font-black`}
               title="Like this design"
             >
               <span className="text-base leading-none">{isLiked ? '❤️' : '🤍'}</span>

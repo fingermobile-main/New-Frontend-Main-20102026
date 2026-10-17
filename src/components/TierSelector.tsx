@@ -141,7 +141,7 @@ const TierSelector: React.FC<TierSelectorProps> = ({
                 }}
                 className={`w-full px-4 py-3 rounded-lg font-medium transition-all ${
                   isSelected
-                    ? colorClasses.button + ' text-white'
+                    ? colorClasses.button + ' text-slate-700'
                     : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-gray-400'
                 }`}
               >

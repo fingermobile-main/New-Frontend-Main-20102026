@@ -627,7 +627,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                       className={`flex items-center gap-1 font-bold transition px-2.5 py-1 rounded-lg ${
                         isLiked
                           ? 'text-rose-600 bg-rose-50'
-                          : 'text-gray-500 hover:text-rose-600 hover:bg-gray-50'
+                          : 'text-slate-700 hover:text-rose-600 hover:bg-gray-50'
                       }`}
                     >
                       <HeartIcon className={`w-3.5 h-3.5 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />

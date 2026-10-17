@@ -97,37 +97,37 @@ const Navbar: React.FC = () => {
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               <Link
                 to="/"
-                className={`${isActive('/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Home
               </Link>
               <Link
                 to="/forum"
-                className={`${isActive('/forum') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/forum') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Forum
               </Link>
               <Link
                 to="/marketplace"
-                className={`${isActive('/marketplace') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/marketplace') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Marketplace
               </Link>
               <Link
                 to="/profile-enhancement"
-                className={`${isActive('/profile-enhancement') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/profile-enhancement') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Profile Enhancement
               </Link>
               <Link
                 to="/business-page"
-                className={`${isActive('/business-page') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/business-page') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Business Page
               </Link>
               <Link
                 to="/community-group"
-                className={`${isActive('/community-group') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                className={`${isActive('/community-group') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-slate-700 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
               >
                 Community
               </Link>
@@ -243,28 +243,28 @@ const Navbar: React.FC = () => {
           <div className="pt-2 pb-3 space-y-1">
             <Link
               to="/"
-              className={`${isActive('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+              className={`${isActive('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               to="/forum"
-              className={`${isActive('/forum') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+              className={`${isActive('/forum') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
               onClick={() => setIsMenuOpen(false)}
             >
               Forum
             </Link>
             <Link
               to="/marketplace"
-              className={`${isActive('/marketplace') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+              className={`${isActive('/marketplace') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
               onClick={() => setIsMenuOpen(false)}
             >
               Marketplace
             </Link>
             <Link
               to="/profile"
-              className={`${isActive('/profile') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+              className={`${isActive('/profile') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
               onClick={() => setIsMenuOpen(false)}
             >
               Profile
@@ -273,21 +273,21 @@ const Navbar: React.FC = () => {
               <>
                 <Link
                   to="/dashboard"
-                  className={`${isActive('/dashboard') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                  className={`${isActive('/dashboard') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
                 <Link
                   to="/wallet"
-                  className={`${isActive('/wallet') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                  className={`${isActive('/wallet') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Wallet
                 </Link>
                 <Link
                   to="/creators-center"
-                  className={`${isActive('/creators-center') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                  className={`${isActive('/creators-center') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-slate-700 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Creators Center & Services

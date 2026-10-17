@@ -115,7 +115,7 @@ export const PostSettingsPanel: React.FC<PostSettingsPanelProps> = ({
                     : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-slate-300'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-orange-500' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-orange-500' : 'text-slate-700'}`} />
                 <span className="truncate">{cat.label}</span>
               </button>
             );

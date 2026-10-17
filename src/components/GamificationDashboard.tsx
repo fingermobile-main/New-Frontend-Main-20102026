@@ -135,7 +135,7 @@ const GamificationDashboard: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'stats'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             <ChartBarIcon className="h-5 w-5 inline mr-2" />
@@ -146,7 +146,7 @@ const GamificationDashboard: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'achievements'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             <TrophyIcon className="h-5 w-5 inline mr-2" />
@@ -157,7 +157,7 @@ const GamificationDashboard: React.FC = () => {
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'leaderboard'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             <FireIcon className="h-5 w-5 inline mr-2" />
@@ -262,7 +262,7 @@ const GamificationDashboard: React.FC = () => {
                   className={`border rounded-lg p-4 ${
                     achievement.completed
                       ? 'border-green-200 bg-green-50'
-                      : 'border-gray-200 bg-white'
+                      : 'border-slate-300 bg-white'
                   }`}
                 >
                   <div className="flex items-start">

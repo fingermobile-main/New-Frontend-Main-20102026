@@ -450,7 +450,7 @@ const EmailServiceConsolePage: React.FC = () => {
                   placeholder="Search 16 categories by name, topic, or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full text-sm border focus:ring-0 text-slate-900 placeholder:text-slate-400 font-bold border-slate-300 rounded bg-white"
+                  className="w-full text-sm border focus:ring-0 text-slate-900 placeholder:text-slate-400 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
@@ -604,7 +604,7 @@ const EmailServiceConsolePage: React.FC = () => {
                       value={composerBody}
                       onChange={(e) => setComposerBody(e.target.value)}
                       rows={14}
-                      className="w-full font-mono text-sm border focus:ring-0 p-2 text-slate-900 leading-relaxed resize-none font-bold border-slate-300 rounded bg-white placeholder:text-slate-400"
+                      className="w-full font-mono text-sm border focus:ring-0 p-2 text-slate-900 leading-relaxed resize-none font-bold border-slate-300 rounded bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
                     />
                   ) : (
                     <div className="p-4 bg-slate-50 rounded-lg min-h-[300px] border border-slate-200 prose prose-sm max-w-none">

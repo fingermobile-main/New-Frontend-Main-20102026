@@ -164,7 +164,7 @@ const UGCMonetizationPanel = () => {
             className={`${
               activeTab === 'earnings'
                 ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Earnings
@@ -175,7 +175,7 @@ const UGCMonetizationPanel = () => {
             className={`${
               activeTab === 'withdraw'
                 ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Withdraw
@@ -226,9 +226,9 @@ const UGCMonetizationPanel = () => {
                         earning.status === 'paid'
                           ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : earning.status === 'pending'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                      }`}
+                            ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-blue-100 text-green-950 border border-green-400 font-bold'
+                      }font-black`}
                     >
                       {earning.status}
                     </span>

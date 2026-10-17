@@ -469,7 +469,7 @@ export const FingerLuxPaymentsPOS: React.FC<FingerLuxPaymentsPOSProps> = ({
                         className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full border ${
                           inv.status === 'paid'
                             ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
-                            : 'bg-amber-100 text-amber-950 border-amber-400'
+                            : 'bg-amber-100 text-emerald-950 border-emerald-400'
                         }`}
                       >
                         {inv.status}

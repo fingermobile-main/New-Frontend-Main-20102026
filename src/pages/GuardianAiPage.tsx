@@ -695,7 +695,7 @@ const GuardianAiPage: React.FC = () => {
               className={`${
                 activeTab === 'systems'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <Server className="h-4 w-4 mr-2" />
@@ -706,7 +706,7 @@ const GuardianAiPage: React.FC = () => {
               className={`${
                 activeTab === 'events'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <Activity className="h-4 w-4 mr-2" />
@@ -717,7 +717,7 @@ const GuardianAiPage: React.FC = () => {
               className={`${
                 activeTab === 'responses'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <ShieldCheck className="h-4 w-4 mr-2" />
@@ -728,7 +728,7 @@ const GuardianAiPage: React.FC = () => {
               className={`${
                 activeTab === 'reports'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -739,7 +739,7 @@ const GuardianAiPage: React.FC = () => {
               className={`${
                 activeTab === 'dashboard'
                   ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
             >
               <BarChart3 className="h-4 w-4 mr-2" />
@@ -758,7 +758,7 @@ const GuardianAiPage: React.FC = () => {
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 font-bold border-slate-300 focus:ring-2"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -994,7 +994,7 @@ const GuardianAiPage: React.FC = () => {
                               {event.systemName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.eventType === 'threat_detected' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.eventType === 'anomaly_found' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' : event.eventType === 'policy_violation' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${event.eventType === 'threat_detected' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.eventType === 'anomaly_found' ? 'bg-amber-100 text-red-950 border border-red-400 font-bold' : event.eventType === 'policy_violation' ? 'bg-orange-100 text-red-950' : 'bg-gray-100 text-red-950'}font-black`}>
                                 {event.eventType.replace('_', ' ')}
                               </span>
                             </td>
@@ -1110,7 +1110,7 @@ const GuardianAiPage: React.FC = () => {
                               {response.executedByName}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${response.outcome === 'success' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : response.outcome === 'failure' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${response.outcome === 'success' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : response.outcome === 'failure' ? 'bg-red-100 text-green-950 border border-green-400 font-bold' : 'bg-amber-100 text-green-950 border border-green-400 font-bold'}font-black`}>
                                 {response.outcome}
                               </span>
                             </td>
@@ -1203,7 +1203,7 @@ const GuardianAiPage: React.FC = () => {
                               <div className="text-sm text-slate-700 max-w-xs truncate">{report.description}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'daily' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'weekly' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' : report.type === 'monthly' ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${report.type === 'daily' ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'weekly' ? 'bg-green-100 text-blue-950 border border-blue-400 font-bold' : report.type === 'monthly' ? 'bg-purple-100 text-blue-950 border border-blue-400 font-bold' : 'bg-amber-100 text-blue-950 border border-blue-400 font-bold'}font-black`}>
                                 {report.type}
                               </span>
                             </td>
@@ -1381,7 +1381,7 @@ const GuardianAiPage: React.FC = () => {
                             <p className="font-medium">{event.name}</p>
                             <p className="text-sm text-slate-700">{event.system} • {event.timestamp}</p>
                           </div>
-                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${event.severity === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'}`}>
+                          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${event.severity === 'critical' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : event.severity === 'high' ? 'bg-orange-100 text-red-950' : 'bg-amber-100 text-red-950 border border-red-400 font-bold'}font-black`}>
                             {event.severity}
                           </span>
                         </div>
@@ -1418,7 +1418,7 @@ const GuardianAiPage: React.FC = () => {
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  currentPage === 1 ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 Previous
@@ -1427,7 +1427,7 @@ const GuardianAiPage: React.FC = () => {
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                  currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'
+                  currentPage === totalPages ? 'bg-gray-100 text-slate-700' : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 Next
@@ -1447,7 +1447,7 @@ const GuardianAiPage: React.FC = () => {
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                     className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === 1 ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                      currentPage === 1 ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="sr-only">Previous</span>
@@ -1461,7 +1461,7 @@ const GuardianAiPage: React.FC = () => {
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === i + 1
                           ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          : 'bg-white border-gray-300 text-slate-700 hover:bg-gray-50'
                       }`}
                     >
                       {i + 1}
@@ -1472,7 +1472,7 @@ const GuardianAiPage: React.FC = () => {
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${
-                      currentPage === totalPages ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-50'
+                      currentPage === totalPages ? 'text-slate-700' : 'text-slate-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="sr-only">Next</span>

@@ -279,9 +279,9 @@ const ProductManager: React.FC<ProductManagerProps> = ({ storeId }) => {
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   product.status === 'active' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                    product.status === 'draft' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
-                      'bg-gray-100 text-gray-800'
-                }`}>
+                    product.status === 'draft' ? 'bg-amber-100 text-green-950 border border-green-400 font-bold' :
+                      'bg-gray-100 text-green-950'
+                }font-black`}>
                   {product.status}
                 </span>
               </div>

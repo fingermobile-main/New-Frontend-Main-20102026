@@ -236,7 +236,7 @@ const CollaborationInviteModal: React.FC<CollaborationInviteModalProps> = ({
                       className={`w-full p-3 border-2 rounded-lg transition-all flex items-center gap-3 ${
                         role === r.id
                           ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          : 'border-slate-300 hover:border-gray-300'
                       }`}
                     >
                       <span className="text-2xl">{r.icon}</span>

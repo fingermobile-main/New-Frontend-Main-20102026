@@ -116,9 +116,9 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses: prop
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     course.status === 'published' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                      course.status === 'draft' ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold' :
-                        'bg-gray-100 text-gray-800'
-                  }`}>
+                      course.status === 'draft' ? 'bg-amber-100 text-green-950 border border-green-400 font-bold' :
+                        'bg-gray-100 text-green-950'
+                  }font-black`}>
                     {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
                   </span>
                 </div>

@@ -179,19 +179,19 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
             <Tab.List className="flex space-x-1 rounded-xl bg-gray-700 p-1">
               <Tab className={({ selected }: { selected: boolean }) =>
                 `w-full rounded-lg py-2.5 text-sm font-medium leading-5
-                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-slate-700'}`
               }>
                 Media
               </Tab>
               <Tab className={({ selected }: { selected: boolean }) =>
                 `w-full rounded-lg py-2.5 text-sm font-medium leading-5
-                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-slate-700'}`
               }>
                 Effects
               </Tab>
               <Tab className={({ selected }: { selected: boolean }) =>
                 `w-full rounded-lg py-2.5 text-sm font-medium leading-5
-                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-slate-700'}`
               }>
                 Text
               </Tab>
@@ -329,13 +329,13 @@ const ProfessionalVideoEditor: React.FC<ProfessionalVideoEditorProps> = ({ proje
             <Tab.List className="flex space-x-1 rounded-xl bg-gray-700 p-1">
               <Tab className={({ selected }: { selected: boolean }) =>
                 `w-full rounded-lg py-2.5 text-sm font-medium leading-5
-                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-slate-700'}`
               }>
                 Inspector
               </Tab>
               <Tab className={({ selected }: { selected: boolean }) =>
                 `w-full rounded-lg py-2.5 text-sm font-medium leading-5
-                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+                ${selected ? 'bg-white text-gray-900 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-slate-700'}`
               }>
                 Settings
               </Tab>

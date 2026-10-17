@@ -173,9 +173,9 @@ const CreatorMode: React.FC = () => {
                         article.status === 'published'
                           ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : article.status === 'draft'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                      }`}>
+                            ? 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-blue-100 text-green-950 border border-green-400 font-bold'
+                      }font-black`}>
                         {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
                       </span>
                     </td>

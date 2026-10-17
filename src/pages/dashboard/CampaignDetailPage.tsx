@@ -105,8 +105,8 @@ const DashboardCampaignDetailPage: React.FC = () => {
           className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
             analytics.campaign?.status === 'active'
               ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
-              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-          }`}
+              : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
+          }font-black`}
         >
           {analytics.campaign?.status || 'Active'}
         </span>

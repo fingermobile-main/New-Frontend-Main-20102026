@@ -187,7 +187,7 @@ const CamusPage: React.FC = () => {
         className={`p-4 rounded-2xl shadow-xs flex items-center gap-4 transition-all cursor-pointer border ${
           isSelected
             ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-500 shadow-md ring-2 ring-blue-500/20'
-            : 'bg-white dark:bg-gray-900 hover:bg-blue-50/50 dark:hover:bg-gray-800 border-gray-200 dark:border-gray-800'
+            : 'bg-white dark:bg-gray-900 hover:bg-blue-50/50 dark:hover:bg-gray-800 border-slate-300 dark:border-gray-800'
         }`}
         onClick={() => {
           handleFiltersChange({ category: isSelected ? 'all' : category.name });
@@ -199,7 +199,7 @@ const CamusPage: React.FC = () => {
         <div className="text-3xl p-2 rounded-xl bg-gray-50 dark:bg-gray-800">{category.icon}</div>
         <div>
           <h3 className="font-bold text-sm text-gray-900 dark:text-white">{category.name}</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{category.courseCount} Courses</p>
+          <p className="text-xs text-slate-700 dark:text-gray-400">{category.courseCount} Courses</p>
         </div>
       </div>
     );
@@ -221,7 +221,7 @@ const CamusPage: React.FC = () => {
           {[...Array(5)].map((_, i) => (
             <svg
               key={i}
-              className={`w-3.5 h-3.5 ${i < Math.floor(instructor.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+              className={`w-3.5 h-3.5 ${i < Math.floor(instructor.rating) ? 'text-yellow-400' : 'text-slate-500'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -260,7 +260,7 @@ const CamusPage: React.FC = () => {
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+            className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-slate-500'}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >

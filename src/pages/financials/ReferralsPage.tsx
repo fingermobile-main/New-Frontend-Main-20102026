@@ -220,7 +220,7 @@ const ReferralsPage: React.FC = () => {
                       <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider border ${
                         r.status === 'active'
                           ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
-                          : 'bg-amber-100 text-amber-950 border-amber-400'
+                          : 'bg-amber-100 text-emerald-950 border-emerald-400'
                       }`}>
                         {r.status}
                       </span>

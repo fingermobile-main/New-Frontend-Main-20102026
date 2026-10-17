@@ -174,7 +174,7 @@ const ReturnRequestForm: React.FC<ReturnRequestFormProps> = ({
                 className={`flex-1 px-3 py-2 rounded-lg border-2 transition-colors ${
                   formData.preferred_resolution === option.value
                     ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    : 'border-slate-300 bg-white text-gray-700 hover:border-gray-300'
                 }`}
               >
                 {option.label}

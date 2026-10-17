@@ -122,8 +122,8 @@ const PaymentPayoutsPage: React.FC = () => {
               isCompleted
                 ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
                 : isPending
-                ? 'bg-amber-100 text-amber-950 border-amber-400'
-                : 'bg-red-100 text-red-950 border-red-400'
+                ? 'bg-amber-100 text-emerald-950 border-emerald-400'
+                : 'bg-red-100 text-emerald-950 border-emerald-400'
             }`}
           >
             {request.status}

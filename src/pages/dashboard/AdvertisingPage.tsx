@@ -135,9 +135,9 @@ const DashboardAdvertisingPage: React.FC = () => {
                             campaign.status === 'active'
                               ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
                               : campaign.status === 'paused'
-                                ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                                : 'bg-slate-100 text-slate-700'
-                          }`}
+                                ? 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
+                                : 'bg-slate-100 text-emerald-950'
+                          }font-black`}
                         >
                           {campaign.status}
                         </span>

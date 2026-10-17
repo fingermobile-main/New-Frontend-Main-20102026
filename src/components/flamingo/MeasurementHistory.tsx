@@ -142,7 +142,7 @@ const MeasurementHistory: React.FC<MeasurementHistoryProps> = ({ userId }) => {
                     <span className={`text-lg font-bold ${isIncrease ? 'text-red-600' : 'text-green-600'}`}>
                       {isIncrease ? '↑' : '↓'} {Math.abs(parseFloat(change.diff))} {metrics.find(m => m.key === selectedMetric)?.unit}
                     </span>
-                    <span className={`text-xs px-2 py-1 rounded-full ${isIncrease ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-green-100 text-green-950 border border-green-400 font-bold'}`}>
+                    <span className={`text-xs px-2 py-1 rounded-full ${isIncrease ? 'bg-red-100 text-red-950 border border-red-400 font-bold' : 'bg-green-100 text-red-950 border border-red-400 font-bold'}font-black`}>
                       {change.percent}%
                     </span>
                   </>

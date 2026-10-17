@@ -123,7 +123,7 @@ const MembersPage: React.FC = () => {
                   placeholder="Search members..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue sm:text-sm text-slate-900 font-bold border-slate-300"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder:text-slate-400 focus:outline-none focus:placeholder:text-slate-400 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue sm:text-sm text-slate-900 font-bold border-slate-300 focus:ring-2"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg
@@ -209,9 +209,9 @@ const MembersPage: React.FC = () => {
                         member.status === 'Active'
                           ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                           : member.status === 'Suspended'
-                            ? 'bg-red-100 text-red-950 border border-red-400 font-bold'
-                            : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                      }`}
+                            ? 'bg-red-100 text-green-950 border border-green-400 font-bold'
+                            : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                      }font-black`}
                     >
                       {member.status}
                     </span>

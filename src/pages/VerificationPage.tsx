@@ -104,7 +104,7 @@ const VerificationPage: React.FC = () => {
                         className={`flex-1 flex flex-col items-center justify-center p-4 rounded-xl border ${
                           verificationMethod === 'phone'
                             ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-100'
-                            : 'border-gray-200 hover:border-gray-300'
+                            : 'border-slate-300 hover:border-gray-300'
                         }`}
                       >
                         <PhoneIcon className="h-6 w-6 text-blue-600 mb-2" />
@@ -115,7 +115,7 @@ const VerificationPage: React.FC = () => {
                         className={`flex-1 flex flex-col items-center justify-center p-4 rounded-xl border ${
                           verificationMethod === 'email'
                             ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-100'
-                            : 'border-gray-200 hover:border-gray-300'
+                            : 'border-slate-300 hover:border-gray-300'
                         }`}
                       >
                         <MailIcon className="h-6 w-6 text-blue-600 mb-2" />

@@ -1222,8 +1222,8 @@ export const SubscriptionsPage: React.FC = () => {
                           <span
                             className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
                               sub.status === 'active'
-                                ? 'bg-emerald-100 text-emerald-950 border border-emerald-300'
-                                : 'bg-slate-100 text-slate-800 border border-slate-300'
+                                ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                                : 'bg-slate-100 text-emerald-950 border border-emerald-400'
                             }`}
                           >
                             {sub.status}
@@ -1444,7 +1444,7 @@ export const SubscriptionsPage: React.FC = () => {
                       id="isPopular"
                       checked={!!editForm.isPopular}
                       onChange={(e) => setEditForm({ ...editForm, isPopular: e.target.checked })}
-                      className="rounded border-slate-300 text-slate-900 focus:ring-0 w-4 h-4 font-bold border bg-white placeholder:text-slate-400"
+                      className="rounded border-slate-300 text-slate-900 focus:ring-0 w-4 h-4 font-bold border bg-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
                     />
                     <label htmlFor="isPopular" className="text-xs text-slate-900 font-bold cursor-pointer">
                       Mark as "Recommended / Popular" Tier

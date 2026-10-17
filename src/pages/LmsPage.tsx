@@ -296,7 +296,7 @@ const LmsPage: React.FC = () => {
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
                           key={i}
-                          className={`w-4 h-4 ${i < Math.floor(course.rating) ? 'fill-current' : 'text-gray-300'}`}
+                          className={`w-4 h-4 ${i < Math.floor(course.rating) ? 'fill-current' : 'text-slate-700'}`}
                         />
                       ))}
                     </div>
@@ -413,9 +413,9 @@ const LmsPage: React.FC = () => {
                           assignment.submitted
                             ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
                             : assignment.completed
-                              ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                              : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                        }`}
+                              ? 'bg-blue-100 text-green-950 border border-green-400 font-bold'
+                              : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                        }font-black`}
                       >
                         {assignment.submitted
                           ? 'Submitted'

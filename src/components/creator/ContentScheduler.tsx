@@ -195,7 +195,7 @@ const ContentScheduler: React.FC<ContentSchedulerProps> = ({ creatorId, onSchedu
                 className={`p-3 border-2 rounded-lg transition-all ${
                   platforms.includes(platform.id)
                     ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-slate-300 hover:border-gray-300'
                 }`}
               >
                 <div className="text-2xl mb-1">{platform.icon}</div>

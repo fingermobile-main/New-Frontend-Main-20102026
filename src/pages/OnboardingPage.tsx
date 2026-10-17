@@ -1007,7 +1007,7 @@ const OnboardingPage: React.FC = () => {
                           : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <HeartIcon className={`h-4 w-4 mx-auto mb-1 ${selectedInterests.includes(interest) ? 'text-blue-500' : 'text-gray-400'}`} />
+                      <HeartIcon className={`h-4 w-4 mx-auto mb-1 ${selectedInterests.includes(interest) ? 'text-blue-500' : 'text-slate-700'}`} />
                       {interest}
                     </button>
                   ))}
@@ -1216,7 +1216,7 @@ const OnboardingPage: React.FC = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       Simple everyday user with limited features. No subscription options.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
+                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Basic features</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Standard visibility</li>
                   </ul>
@@ -1233,7 +1233,7 @@ const OnboardingPage: React.FC = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       For influencers, bloggers, and brand founders. Access to monetization features.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
+                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Monetization tools</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Hallmark Page Boosting</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Live Broadcast features</li>
@@ -1256,7 +1256,7 @@ const OnboardingPage: React.FC = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                       For companies and organizations. Required for running ads and e-commerce.
                   </p>
-                  <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
+                  <ul className="mt-2 space-y-1 text-xs text-slate-700 dark:text-gray-400">
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Ad capabilities</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> E-commerce tools</li>
                     <li className="flex items-center"><CheckCircleIcon className="h-3 w-3 text-green-500 mr-1" /> Business verification</li>

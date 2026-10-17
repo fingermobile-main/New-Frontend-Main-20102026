@@ -168,7 +168,7 @@ export const FeelingActivityModal: React.FC<FeelingActivityModalProps> = ({ isOp
             className={`flex flex-col items-center gap-1 p-3 rounded-xl border transition text-center ${
               selected === `${emoji} ${label}`
                 ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/40'
-                : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-orange-950/20'
+                : 'border-slate-300 dark:border-gray-700 hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-orange-950/20'
             }`}
           >
             <span className="text-2xl">{emoji}</span>
@@ -260,7 +260,7 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ isOpen, onClos
             {(['video', 'audio'] as const).map(t => (
               <button key={t} type="button" onClick={() => setRoomType(t)}
                 className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition ${
-                  roomType === t ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/40 text-orange-600' : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-orange-300'
+                  roomType === t ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/40 text-orange-600' : 'border-slate-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-orange-300'
                 }`}
               >{t === 'video' ? '📹 Video' : '🎙️ Audio Only'}</button>
             ))}

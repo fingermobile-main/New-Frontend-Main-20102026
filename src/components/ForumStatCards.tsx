@@ -18,7 +18,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon, trend
     <div className="flex items-center justify-between mb-3">
       <div className="text-slate-700 bg-slate-50 p-2 rounded-lg border border-slate-200 group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">{icon}</div>
       {trend && (
-        <div className={`text-xs font-bold px-2.5 py-1 rounded-full border ${trend.isPositive ? 'text-emerald-950 bg-emerald-100 border-emerald-400' : 'text-red-950 bg-red-100 border-red-400'}`}>
+        <div className={`text-xs font-bold px-2.5 py-1 rounded-full border ${trend.isPositive ? 'text-emerald-950 bg-emerald-100 border-emerald-400' : 'text-emerald-950 bg-red-100 border-emerald-400'}font-black`}>
           {trend.isPositive ? '+' : '-'}{Math.abs(trend.value)}%
         </div>
       )}

@@ -43,7 +43,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-left flex items-center justify-between"
       >
-        <span className={selectedOption ? 'text-gray-900' : 'text-gray-500'}>
+        <span className={selectedOption ? 'text-gray-900' : 'text-slate-700'}>
           {selectedOption?.label || placeholder}
         </span>
         <ChevronDownIcon className="w-5 h-5 text-slate-500" />

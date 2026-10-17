@@ -176,7 +176,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
             className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${
               activeTab === 'exchange'
                 ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-white dark:bg-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white'
+                : 'border-transparent text-slate-700 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Exchange 6–8 Digit PIN
@@ -186,7 +186,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
             className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${
               activeTab === 'synced'
                 ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-white dark:bg-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white'
+                : 'border-transparent text-slate-700 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Active Peers ({contacts.length})
@@ -196,7 +196,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
             className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${
               activeTab === 'syncPhone'
                 ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-white dark:bg-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white'
+                : 'border-transparent text-slate-700 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Phonebook Sync

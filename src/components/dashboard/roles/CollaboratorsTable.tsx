@@ -231,9 +231,9 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
                         collab.status === 'Active'
-                          ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-                          : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800'
-                      }`}
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-300 border-emerald-400 dark:border-emerald-800'
+                          : 'bg-amber-50 dark:bg-amber-950/40 text-emerald-950 dark:text-amber-300 border-emerald-400 dark:border-amber-800'
+                      }font-black`}
                     >
                       {collab.status}
                     </span>

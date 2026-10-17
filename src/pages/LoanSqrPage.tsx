@@ -629,9 +629,9 @@ export const LoanSqrPage: React.FC = () => {
                 <span
                   className={`text-xs px-2 py-0.5 rounded-full ${
                     activeTab === tab.id
-                      ? 'bg-indigo-700 text-indigo-100'
-                      : 'bg-slate-800 text-slate-400'
-                  }`}
+                      ? 'bg-indigo-700 text-white'
+                      : 'bg-slate-800 text-white'
+                  }text-white font-extrabold`}
                 >
                   {tab.count}
                 </span>

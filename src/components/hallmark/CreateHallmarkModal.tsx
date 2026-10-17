@@ -306,22 +306,22 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
 
         {/* Multi-step Breadcrumb */}
         <div className="px-6 py-2.5 bg-gray-50 dark:bg-gray-800/50 border-b border-slate-300 dark:border-gray-800 flex items-center justify-between text-xs font-medium">
-          <div className={`flex items-center gap-1.5 ${step === 1 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
+          <div className={`flex items-center gap-1.5 ${step === 1 ? 'text-[#ff6b00] font-bold' : 'text-slate-700'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">1</span>
             <span>Tier Selection</span>
           </div>
           <span className="text-slate-700">›</span>
-          <div className={`flex items-center gap-1.5 ${step === 2 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
+          <div className={`flex items-center gap-1.5 ${step === 2 ? 'text-[#ff6b00] font-bold' : 'text-slate-700'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">2</span>
             <span>Naming & Policy</span>
           </div>
           <span className="text-slate-700">›</span>
-          <div className={`flex items-center gap-1.5 ${step === 3 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
+          <div className={`flex items-center gap-1.5 ${step === 3 ? 'text-[#ff6b00] font-bold' : 'text-slate-700'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">3</span>
             <span>Verification & Roles</span>
           </div>
           <span className="text-slate-700">›</span>
-          <div className={`flex items-center gap-1.5 ${step === 4 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
+          <div className={`flex items-center gap-1.5 ${step === 4 ? 'text-[#ff6b00] font-bold' : 'text-slate-700'}`}>
             <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">4</span>
             <span>Subscription & Submit</span>
           </div>

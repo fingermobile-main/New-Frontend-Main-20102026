@@ -127,7 +127,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                   className={`p-4 border-2 rounded-lg transition-all ${
                     selectedAudience === 'automatic'
                       ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   <div className="text-2xl mb-2">🤖</div>
@@ -140,7 +140,7 @@ const BoostPostModal: React.FC<BoostPostModalProps> = ({
                   className={`p-4 border-2 rounded-lg transition-all ${
                     selectedAudience === 'custom'
                       ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-300 hover:border-gray-300'
                   }`}
                 >
                   <div className="text-2xl mb-2">🎯</div>

@@ -256,7 +256,7 @@ const PerksAndRosterComponent: React.FC = () => {
               className={`pb-3 text-xs font-bold transition-all border-b-2 ${
                 activeTierTab === t.tier
                   ? 'border-brand-blue text-brand-blue'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
+                  : 'border-transparent text-slate-700 hover:text-gray-800'
               }`}
             >
               {t.tierName}
@@ -390,9 +390,9 @@ const PerksAndRosterComponent: React.FC = () => {
                         sub.tier === 'tier_3'
                           ? 'bg-purple-100 text-purple-950 border border-purple-400 font-bold'
                           : sub.tier === 'tier_2'
-                            ? 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                            : 'bg-gray-100 text-gray-800'
-                      }`}
+                            ? 'bg-amber-100 text-purple-950 border border-purple-400 font-bold'
+                            : 'bg-gray-100 text-purple-950'
+                      }font-black`}
                     >
                       {sub.tierLabel}
                     </span>

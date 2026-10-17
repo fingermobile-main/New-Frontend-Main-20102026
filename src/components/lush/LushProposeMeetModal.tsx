@@ -270,7 +270,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   value={destinationCity}
                   onChange={(e) => setDestinationCity(e.target.value)}
                   placeholder="e.g. Lagos, Paris, London, Kyoto"
-                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                   required
                 />
               </div>
@@ -285,7 +285,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   value={customVenue}
                   onChange={(e) => setCustomVenue(e.target.value)}
                   placeholder="e.g. Musée d'Orsay, Private Rooftop Terrace"
-                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                 />
               </div>
             </div>
@@ -301,7 +301,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   type="date"
                   value={proposedDate}
                   onChange={(e) => setProposedDate(e.target.value)}
-                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                   required
                 />
               </div>
@@ -315,7 +315,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                   type="time"
                   value={proposedTime}
                   onChange={(e) => setProposedTime(e.target.value)}
-                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400"
+                  className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
                   required
                 />
               </div>
@@ -331,7 +331,7 @@ export const LushProposeMeetModal: React.FC<LushProposeMeetModalProps> = ({
                 onChange={(e) => setPersonalMessage(e.target.value)}
                 placeholder={`Dear ${member.name}, I would be delighted to host you for a curated ${currentOption.title.toLowerCase()}...`}
                 rows={3}
-                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none font-bold border-slate-300 placeholder:text-slate-400"
+                className="w-full bg-white text-slate-900 border border-gray-300 rounded-xl p-3 text-xs focus:ring-1 focus:ring-emerald-500 focus:border-emerald-600 outline-hidden resize-none font-bold border-slate-300 placeholder:text-slate-400 focus:ring-2"
               />
             </div>
 

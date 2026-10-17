@@ -139,7 +139,7 @@ const UserReportsPage: React.FC = () => {
                               </Badge>
                               <p className="font-medium mt-2">Report #{report.id}</p>
                             </div>
-                            <span className="text-sm text-gray-500">{report.timestamp}</span>
+                            <span className="text-sm text-slate-700">{report.timestamp}</span>
                           </div>
                           <p className="text-sm text-gray-600 mt-2">From: {report.reporter} to: {report.reportedUser}</p>
                           <div className="mt-2">

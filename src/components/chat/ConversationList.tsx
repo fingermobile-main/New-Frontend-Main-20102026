@@ -49,12 +49,12 @@ export const ConversationList: React.FC<ConversationListProps> = ({ conversation
                   <p className="text-sm font-medium text-gray-900 truncate">
                     {conversation.username}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-700">
                     {conversation.lastMessageTime}
                   </p>
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                  <p className="text-sm text-gray-500 truncate">
+                  <p className="text-sm text-slate-700 truncate">
                     {conversation.lastMessage}
                   </p>
                   {conversation.unreadCount > 0 && (

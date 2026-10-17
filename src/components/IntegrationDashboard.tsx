@@ -64,7 +64,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
                 className={`py-4 px-1 border-b-2 font-medium text-sm capitalize ${
                   activeTab === tab
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                    : 'border-transparent text-slate-700 hover:text-gray-700'
                 }`}
               >
                 {tab}
@@ -84,9 +84,9 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     integration.status === 'connected' ? 'bg-green-100 text-green-950 border border-green-400 font-bold' :
-                      integration.status === 'error' ? 'bg-red-100 text-red-950 border border-red-400 font-bold' :
-                        'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                  }`}>
+                      integration.status === 'error' ? 'bg-red-100 text-green-950 border border-green-400 font-bold' :
+                        'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                  }font-black`}>
                     {integration.status.charAt(0).toUpperCase() + integration.status.slice(1)}
                   </span>
                 </div>

@@ -445,7 +445,7 @@ const EditPostPage: React.FC = () => {
                 id="toneSelector"
                 value={selectedTone}
                 onChange={(e) => setSelectedTone(e.target.value)}
-                className="text-xs font-bold border border-slate-300 rounded-md px-2 py-1 bg-white text-slate-900 focus:ring-1 focus:ring-blue-500"
+                className="text-xs font-bold border border-slate-300 rounded-md px-2 py-1 bg-white text-slate-900 focus:ring-1 focus:ring-blue-500 focus:ring-2"
               >
                 <option value="balanced">Balanced</option>
                 <option value="persuasive">Persuasive</option>
@@ -510,7 +510,7 @@ const EditPostPage: React.FC = () => {
                 value={originalContent}
                 onChange={(e) => setOriginalContent(e.target.value)}
                 placeholder="Type or paste post content here..."
-                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400"
+                className="w-full h-64 sm:h-80 p-3 text-sm text-slate-900 bg-transparent border focus:ring-0 resize-none font-sans leading-relaxed font-bold border-slate-300 rounded placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 

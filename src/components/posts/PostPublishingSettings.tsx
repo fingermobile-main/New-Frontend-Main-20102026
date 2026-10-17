@@ -71,7 +71,7 @@ const PostPublishingSettings = () => {
             className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm ${
               activeTab === 'basic'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             Basic
@@ -81,7 +81,7 @@ const PostPublishingSettings = () => {
             className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm ${
               activeTab === 'monetization'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             Monetization
@@ -91,7 +91,7 @@ const PostPublishingSettings = () => {
             className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm ${
               activeTab === 'advanced'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             Advanced
@@ -101,7 +101,7 @@ const PostPublishingSettings = () => {
             className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm ${
               activeTab === 'demographics'
                 ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-slate-700 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             Demographics &amp; Geofence

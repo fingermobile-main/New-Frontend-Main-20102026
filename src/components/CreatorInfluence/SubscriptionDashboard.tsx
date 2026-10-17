@@ -206,8 +206,8 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                     subscription.auto_renew
                       ? 'bg-green-100 text-green-950 border border-green-400 font-bold'
-                      : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                  }`}>
+                      : 'bg-amber-100 text-green-950 border border-green-400 font-bold'
+                  }font-black`}>
                     {subscription.auto_renew ? 'Enabled' : 'Disabled'}
                   </span>
                 </div>

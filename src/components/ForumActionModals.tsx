@@ -86,7 +86,7 @@ export const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit })
               className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium border transition ${
                 reason === r
                   ? 'border-red-500 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300'
-                  : 'border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-red-300 hover:bg-red-50/50'
+                  : 'border-slate-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-red-300 hover:bg-red-50/50'
               }`}
             >{r}</button>
           ))}

@@ -482,7 +482,7 @@ const GameOnPage: React.FC = () => {
                       className={`p-3.5 rounded-2xl border text-left transition-all ${
                         selectedTeam === 'A'
                           ? 'border-purple-600 bg-purple-50 text-purple-950 font-black'
-                          : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                          : 'border-slate-300 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
                       <span className="text-xs block font-bold">{selectedMatch.team_a}</span>
@@ -495,7 +495,7 @@ const GameOnPage: React.FC = () => {
                       className={`p-3.5 rounded-2xl border text-left transition-all ${
                         selectedTeam === 'B'
                           ? 'border-purple-600 bg-purple-50 text-purple-950 font-black'
-                          : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                          : 'border-slate-300 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
                       <span className="text-xs block font-bold">{selectedMatch.team_b}</span>

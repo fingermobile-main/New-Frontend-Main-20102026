@@ -2010,8 +2010,8 @@ export const ProfilePage: React.FC = () => {
                               badge.tier === 'Diamond'
                                 ? 'bg-cyan-100 text-cyan-950 border border-cyan-400'
                                 : badge.tier === 'Platinum'
-                                  ? 'bg-indigo-100 text-indigo-950 border border-indigo-400'
-                                  : 'bg-amber-100 text-amber-950 border border-amber-400'
+                                  ? 'bg-indigo-100 text-cyan-950 border border-cyan-400'
+                                  : 'bg-amber-100 text-cyan-950 border border-cyan-400'
                             }`}
                           >
                             {badge.tier} Tier
@@ -2195,7 +2195,7 @@ export const ProfilePage: React.FC = () => {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                            ev.type === 'Proposed' ? 'bg-orange-100 text-orange-950 border border-orange-400' : 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                            ev.type === 'Proposed' ? 'bg-orange-100 text-orange-950 border border-orange-400' : 'bg-emerald-100 text-orange-950 border border-orange-400'
                           }`}>
                             {ev.type}
                           </span>
@@ -2267,7 +2267,7 @@ export const ProfilePage: React.FC = () => {
                     <div key={ls.id} className="p-5 rounded-2xl bg-slate-50 border border-slate-300 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                          ls.status === 'Scheduled' ? 'bg-sky-100 text-sky-950 border border-sky-400' : 'bg-slate-200 text-slate-800'
+                          ls.status === 'Scheduled' ? 'bg-sky-100 text-sky-950 border border-sky-400' : 'bg-slate-200 text-sky-950'
                         }`}>
                           {ls.status}
                         </span>
@@ -2347,8 +2347,8 @@ export const ProfilePage: React.FC = () => {
                             folder.isPrivate
                               ? isUnlocked
                                 ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
-                                : 'bg-orange-100 text-orange-950 border border-orange-400'
-                              : 'bg-blue-100 text-blue-950 border border-blue-400'
+                                : 'bg-orange-100 text-emerald-950 border border-emerald-400'
+                              : 'bg-blue-100 text-emerald-950 border border-emerald-400'
                           }`}>
                             {folder.isPrivate ? (isUnlocked ? 'Unlocked' : 'PIN Gated') : 'Public'}
                           </span>

@@ -1428,7 +1428,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         : currentApproval.status === 'PENDING_SUPER_ADMIN_APPROVAL'
                           ? 'bg-amber-600 text-white'
                           : 'bg-blue-700 text-white'
-                    }`}
+                    }font-extrabold`}
                   >
                     Status: {currentApproval.status.replace(/_/g, ' ')}
                   </span>

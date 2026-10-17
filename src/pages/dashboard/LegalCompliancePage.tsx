@@ -144,9 +144,9 @@ const LegalCompliancePage: React.FC = () => {
                         req.status === 'completed'
                           ? 'bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold'
                           : req.status === 'processing'
-                            ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
-                            : 'bg-amber-100 text-amber-950 border border-amber-400 font-bold'
-                      }`}>
+                            ? 'bg-blue-100 text-emerald-950 border border-emerald-400 font-bold'
+                            : 'bg-amber-100 text-emerald-950 border border-emerald-400 font-bold'
+                      }font-black`}>
                         {req.status}
                       </span>
                     </td>

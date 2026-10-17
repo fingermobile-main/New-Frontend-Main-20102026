@@ -53,7 +53,7 @@ const FontSelectionModal: React.FC<FontSelectionModalProps> = ({
                 className={`p-4 border-2 rounded-lg text-left transition-all ${
                   currentFont === font.name
                     ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-slate-300 hover:border-gray-300'
                 }`}
                 style={{ fontFamily: font.name }}
               >

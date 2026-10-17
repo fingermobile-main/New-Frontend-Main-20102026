@@ -883,7 +883,7 @@ export const MasterWidgetConsole: React.FC = () => {
                   placeholder="Search by name, title, category..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400"
+                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 focus:ring-2"
                 />
               </div>
 
@@ -1012,8 +1012,8 @@ export const MasterWidgetConsole: React.FC = () => {
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${
                             w.status === 'active'
                               ? 'bg-emerald-100 text-emerald-950 border-emerald-400'
-                              : 'bg-slate-100 text-slate-800 border-slate-300'
-                          }`}
+                              : 'bg-slate-100 text-emerald-950 border-emerald-400'
+                          }font-black`}
                         >
                           {w.status.toUpperCase()}
                         </button>
