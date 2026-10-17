@@ -281,7 +281,7 @@ const CamusPage: React.FC = () => {
             </div>
             <div className="ml-4">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border  border-blue-400 font-black">
                   LMS &amp; Academy Protocol
                 </span>
               </div>
@@ -309,7 +309,7 @@ const CamusPage: React.FC = () => {
                     >
                       <AcademicCapIcon className="w-5 h-5 mr-3 text-blue-600 dark:text-blue-400" />
                       <span>My Courses</span>
-                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 font-mono border text-blue-950 border-blue-400 font-black">
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 font-mono border  border-blue-400 font-black">
                         {enrolledCourseIds.length}
                       </span>
                     </button>
@@ -321,7 +321,7 @@ const CamusPage: React.FC = () => {
                     >
                       <BookOpenIcon className="w-5 h-5 mr-3 text-slate-700" />
                       <span>Certificates</span>
-                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 font-mono border text-emerald-950 border-emerald-400 font-black">
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 font-mono border  border-emerald-400 font-black">
                         3
                       </span>
                     </button>
@@ -333,7 +333,7 @@ const CamusPage: React.FC = () => {
                     >
                       <VideoCameraIcon className="w-5 h-5 mr-3 text-slate-700" />
                       <span>Live Sessions</span>
-                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-600 font-mono font-bold animate-pulse">
+                      <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-950 font-mono font-bold animate-pulse border border-red-400 font-black">
                         LIVE
                       </span>
                     </button>
@@ -716,7 +716,7 @@ const CamusPage: React.FC = () => {
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 font-black">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400  dark:bg-emerald-950 dark:text-emerald-300 font-black">
                         {cert.id}
                       </span>
                       <span className="text-[10px] text-slate-700 font-semibold">{cert.date}</span>

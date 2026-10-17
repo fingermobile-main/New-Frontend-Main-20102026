@@ -106,7 +106,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         </p>
 
         {/* Crystal Progress Loading Bar */}
-        <div className="w-full bg-slate-200/60 rounded-full h-1.5 overflow-hidden relative shadow-inner mb-3">
+        <div className="w-full bg-slate-200/60 rounded-full h-1.5 overflow-hidden relative shadow-inner mb-3 border text-slate-950 border-slate-400 font-black">
           <div
             className="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600 rounded-full animate-[progress_1.8s_ease-in-out_infinite]"
             style={{

@@ -82,7 +82,7 @@ export const LuminaAIModal: React.FC<LuminaModalProps> = ({ isOpen, onClose }) =
         <div className="flex flex-wrap gap-1.5">
           {['How do FIC tokens work?', 'What are the forum rules?', 'How do I earn from posts?'].map(q => (
             <button key={q} type="button" onClick={() => setQuestion(q)}
-              className="text-xs px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-700 hover:bg-violet-100 transition"
+              className="text-xs px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-950/40 text-violet-950 dark:text-violet-400 border border-violet-400 dark:border-violet-700 hover:bg-violet-100 transition font-black"
             >{q}</button>
           ))}
         </div>

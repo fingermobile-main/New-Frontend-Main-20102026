@@ -156,7 +156,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           {/* Instructor & Meta */}
           <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-gray-800 text-xs">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-300 font-bold flex items-center justify-center text-[10px] uppercase border text-blue-950 border-blue-400 font-black">
+              <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-300 font-bold flex items-center justify-center text-[10px] uppercase border  border-blue-400 font-black">
                 {instructorName.charAt(0)}
               </div>
               <span className="font-medium text-gray-700 dark:text-gray-300 truncate max-w-[130px]">

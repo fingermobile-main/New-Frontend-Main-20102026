@@ -129,7 +129,7 @@ export const LushPlushiesGiftCheckoutModal: React.FC<LushPlushiesGiftCheckoutMod
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 Send Lush Escrow Gift
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700">
+                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-900/60 dark:text-emerald-300   dark:border-emerald-700">
                   FIC Vault Protected
                 </span>
               </h2>

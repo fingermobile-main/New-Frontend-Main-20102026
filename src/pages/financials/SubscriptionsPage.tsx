@@ -812,7 +812,7 @@ export const SubscriptionsPage: React.FC = () => {
                     }`}
                   >
                     Annual
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-mono font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-400  font-black">
                       -20%
                     </span>
                   </button>
@@ -842,7 +842,7 @@ export const SubscriptionsPage: React.FC = () => {
                       {/* Top Badges & Edit Button */}
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-950 border border-amber-400 shadow-xs border-amber-400 font-black">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-950 border border-amber-400 shadow-xs  font-black">
                             {card.badge}
                           </span>
 
@@ -998,7 +998,7 @@ export const SubscriptionsPage: React.FC = () => {
                           {item.quotaBenefits}
                         </td>
                         <td className="p-4 whitespace-nowrap">
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400 shadow-xs border-amber-400">
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-400 shadow-xs ">
                             {item.gatedStatus}
                           </span>
                         </td>

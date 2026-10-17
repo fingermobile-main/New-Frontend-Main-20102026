@@ -200,7 +200,7 @@ const FeedFilterBar: React.FC<FeedFilterBarProps> = ({
           )}
 
           {dateRange !== 'all' && (
-            <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
+            <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium font-black">
               {dateRange} ✕
             </span>
           )}

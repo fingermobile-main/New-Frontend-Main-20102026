@@ -178,7 +178,7 @@ const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
                   {/* Progress Bar */}
                   {isRecording && (
                     <div className="mt-4">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className={`h-2 rounded-full transition-all ${
                             getProgressPercentage() > 80 ? 'bg-red-600' : 'bg-blue-600'

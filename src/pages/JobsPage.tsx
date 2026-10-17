@@ -217,7 +217,7 @@ const JobsPage: React.FC = () => {
                     <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-400 font-bold font-black">
                       {job.category || 'Engineering'}
                     </span>
-                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-mono">
+                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-mono font-black">
                       {job.salary_range || job.salaryRange || 'Competitive'}
                     </span>
                   </div>

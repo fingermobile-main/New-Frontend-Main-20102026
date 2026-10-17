@@ -196,7 +196,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
             onClick={() => setIsMiiCreatorOpen(true)}
             className="flex flex-col items-center gap-1.5 shrink-0 group cursor-pointer focus:outline-none"
           >
-            <div className="w-14 h-14 rounded-full border-2 border-dashed border-orange-500 flex items-center justify-center bg-orange-50/60 group-hover:bg-orange-100 group-hover:scale-105 transition-all shadow-xs">
+            <div className="w-14 h-14 rounded-full border-2 border-dashed border-orange-400 flex items-center justify-center bg-orange-50/60 group-hover:bg-orange-100 group-hover:scale-105 transition-all shadow-xs border text-orange-950 font-black">
               <PlusIcon className="w-5 h-5 text-orange-600 stroke-[2.5]" />
             </div>
             <span className="text-[10px] font-bold text-slate-800 tracking-tight">Create Mii™®©℠</span>

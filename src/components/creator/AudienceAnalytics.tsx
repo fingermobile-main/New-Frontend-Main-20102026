@@ -126,7 +126,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
                   <span className="text-gray-700">{ageGroup}</span>
                   <span className="font-medium">{Number(percentage)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-blue-600 h-2 rounded-full transition-all"
                     style={{ width: `${Number(percentage)}%` }}
@@ -147,7 +147,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
                   <span className="text-gray-700 capitalize">{gender}</span>
                   <span className="font-medium">{Number(percentage)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className={`h-2 rounded-full transition-all ${
                       gender === 'male' ? 'bg-blue-500' :
@@ -173,7 +173,7 @@ const AudienceAnalytics: React.FC<AudienceAnalyticsProps> = ({
                 <span className="text-gray-900">{item.country}</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-32 bg-gray-200 rounded-full h-2">
+                <div className="w-32 bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-green-600 h-2 rounded-full"
                     style={{ width: `${Number(item.percentage)}%` }}

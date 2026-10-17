@@ -120,7 +120,7 @@ const CreatorMode: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {topVoiceBadges.map((badge, index) => (
               <div key={index} className="flex flex-col items-center p-6 bg-gradient-to-r from-yellow-100 to-yellow-50 rounded-lg border border-yellow-200">
-                <div className="bg-yellow-200 rounded-full p-3 mb-3">
+                <div className="bg-yellow-200 rounded-full p-3 mb-3 border text-yellow-950 border-yellow-400 font-black">
                   <svg className="w-8 h-8 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                   </svg>

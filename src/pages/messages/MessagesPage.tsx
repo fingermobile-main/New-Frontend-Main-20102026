@@ -813,7 +813,7 @@ const MessagesPage: React.FC = () => {
                     key={suggestion}
                     type="button"
                     onClick={() => setTypedMessage(suggestion)}
-                    className="px-2.5 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold whitespace-nowrap transition-colors"
+                    className="px-2.5 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-400 text-slate-950 font-bold whitespace-nowrap transition-colors font-black"
                   >
                     {suggestion}
                   </button>

@@ -54,7 +54,7 @@ const OrganizationVisualization: React.FC<OrganizationVisualizationProps> = ({
             <div key={key} className="bg-white rounded-lg shadow-md p-5 border border-slate-200 hover:shadow-lg transition-shadow">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-semibold text-gray-800 text-base">{category.title}</h3>
-                <span className="px-2.5 py-0.5 bg-blue-100 text-blue-950 border border-blue-400 font-bold font-bold text-xs rounded-full font-black">
+                <span className="px-2.5 py-0.5 bg-blue-100 text-blue-950 border border-blue-400 font-bold  text-xs rounded-full font-black">
                   {category.count} items
                 </span>
               </div>

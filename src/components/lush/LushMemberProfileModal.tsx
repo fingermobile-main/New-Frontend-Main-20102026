@@ -86,7 +86,7 @@ export const LushMemberProfileModal: React.FC<LushMemberProfileModalProps> = ({
             </div>
 
             {/* Sovereign PIN Badge */}
-            <div className="px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs font-semibold text-emerald-950 flex items-center gap-1.5 text-emerald-950 border-emerald-400 font-black">
+            <div className="px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs font-semibold text-emerald-950 flex items-center gap-1.5   font-black">
               <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
               <span>6-Digit PIN Exchanged</span>
             </div>

@@ -180,7 +180,7 @@ export const LushLuxuryGiftingModal: React.FC<LushLuxuryGiftingModalProps> = ({
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                   Exclusive Luxury Gifting · OwnIt™ & Flamingo™
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 font-black">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400    font-black">
                   Subscription VIP Unlocked
                 </span>
               </div>

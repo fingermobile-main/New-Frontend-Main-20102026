@@ -1195,7 +1195,7 @@ const MasterMembersConsole: React.FC = () => {
                 Least-privilege mapping across all core public, UGC, commerce, governance, and treasury screens
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-950 dark:bg-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-900 text-blue-950 border-blue-400 font-black">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-950 dark:bg-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-900   font-black">
               Active Policy Matrix V4.2
             </span>
           </div>

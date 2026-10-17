@@ -414,7 +414,7 @@ const PerksAndRosterComponent: React.FC = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-16 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                      <div className="w-16 bg-gray-200 rounded-full h-1.5 overflow-hidden border text-gray-950 border-gray-400 font-black">
                         <div
                           className="bg-brand-blue h-1.5"
                           style={{ width: `${sub.engagementScore}%` }}

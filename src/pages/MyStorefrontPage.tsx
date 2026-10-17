@@ -322,7 +322,7 @@ const MyStorefrontPage: React.FC = () => {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="font-bold text-sm text-gray-900">{plan.title}</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-950 border border-blue-400  font-black">
                           {plan.badge}
                         </span>
                       </div>
@@ -757,7 +757,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 15, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                         Completed
                       </span>
                     </td>
@@ -786,7 +786,7 @@ const MyStorefrontPage: React.FC = () => {
                       Jun 14, 2023
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                         Completed
                       </span>
                     </td>
@@ -963,7 +963,7 @@ const MyStorefrontPage: React.FC = () => {
                       Profile Image
                     </label>
                     <div className="mt-1 flex items-center">
-                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 border text-gray-950 border-gray-400 font-black">
                         <svg
                           className="h-full w-full text-slate-500"
                           fill="currentColor"

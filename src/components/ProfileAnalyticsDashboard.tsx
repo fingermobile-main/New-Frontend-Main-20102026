@@ -96,7 +96,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
 
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-5 border border-green-100">
             <div className="flex items-center">
-              <div className="p-3 bg-green-100 rounded-full">
+              <div className="p-3 bg-green-100 rounded-full border text-green-950 border-green-400 font-black">
                 <HeartIcon className="h-6 w-6 text-green-600" />
               </div>
               <div className="ml-4">
@@ -179,7 +179,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
                   <span className="text-gray-600">Profile Completeness</span>
                   <span className="font-medium">{analytics.profileCompleteness}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full"
                     style={{ width: `${analytics.profileCompleteness}%` }}
@@ -191,7 +191,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
                   <span className="text-gray-600">Daily Active Minutes</span>
                   <span className="font-medium">{analytics.dailyActiveMinutes} min</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full"
                     style={{ width: `${(analytics.dailyActiveMinutes / 120) * 100}%` }}
@@ -221,7 +221,7 @@ const ProfileAnalyticsDashboard: React.FC = () => {
                   <span className="text-gray-600">Response Rate</span>
                   <span className="font-medium">{Math.round((analytics.messagesSent / analytics.messagesReceived) * 100)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-pink-600 h-2 rounded-full"
                     style={{ width: `${Math.min(100, (analytics.messagesSent / analytics.messagesReceived) * 100)}%` }}

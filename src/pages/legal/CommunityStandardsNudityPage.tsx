@@ -8,7 +8,7 @@ const CommunityStandardsNudityPage: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-10">
         {/* Header */}
         <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-rose-50 text-rose-700 text-xs font-bold rounded-full mb-3 border border-rose-200">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-rose-50 text-rose-950 text-xs font-bold rounded-full mb-3 border border-rose-400 font-black">
             <ShieldCheckIcon className="w-4 h-4" />
             <span>FingerMobile Protocol™ Community Standards</span>
           </div>

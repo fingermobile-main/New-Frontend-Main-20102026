@@ -102,7 +102,7 @@ const SessionManagementPage: React.FC = () => {
                         {session.memberAgent || session.userAgent || 'Web Browser'}
                       </h3>
                       {session.current && (
-                        <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full text-emerald-950 border-emerald-400 font-black">
+                        <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full   font-black">
                           Current Device
                         </span>
                       )}

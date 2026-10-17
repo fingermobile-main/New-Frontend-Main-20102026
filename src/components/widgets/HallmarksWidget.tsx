@@ -37,7 +37,7 @@ const HallmarksWidget: React.FC = () => {
           <div className="animate-pulse space-y-3">
             {[1, 2, 3].map(i => (
               <div key={i} className="flex items-center py-2">
-                <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full mr-4"></div>
+                <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full mr-4 border text-gray-950 border-gray-400 font-black"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
               </div>
             ))}

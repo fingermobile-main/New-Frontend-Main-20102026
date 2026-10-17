@@ -442,7 +442,7 @@ const MyDownloadsPage: React.FC = () => {
             </div>
 
             {/* Segmented Progress Bar */}
-            <div className="w-full h-3 rounded-full bg-slate-100 border border-slate-300 overflow-hidden flex p-0.5">
+            <div className="w-full h-3 rounded-full bg-slate-100 border border-slate-400 overflow-hidden flex p-0.5 text-slate-950 font-black">
               <div
                 className="h-full bg-amber-500 rounded-l-full transition-all duration-500"
                 style={{ width: `${audioPct}%` }}

@@ -75,7 +75,7 @@ const LegalIndexPage: React.FC = () => {
     <LegalLayout>
       <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-6 lg:p-10">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-950 text-xs font-bold rounded-full mb-3 border border-blue-400 text-blue-950 border-blue-400 font-black">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-950 text-xs font-bold rounded-full mb-3 border border-blue-400   font-black">
             <ShieldCheckIcon className="w-4 h-4" />
             <span>FingerMobile Protocol™ Legal Trust Center</span>
           </div>
@@ -100,7 +100,7 @@ const LegalIndexPage: React.FC = () => {
                   <div className="p-3 bg-gray-50 rounded-xl group-hover:bg-blue-50 transition-colors">
                     {doc.icon}
                   </div>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-950 border border-slate-400 font-black">
                     {doc.badge}
                   </span>
                 </div>

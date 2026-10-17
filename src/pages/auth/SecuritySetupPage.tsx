@@ -124,7 +124,7 @@ const SecuritySetupPage = () => {
       return (
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 border text-indigo-950 border-indigo-400 font-black">
               <Shield className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Two-Factor Authentication</h2>
@@ -157,7 +157,7 @@ const SecuritySetupPage = () => {
             <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center">
                 <div className="mr-3">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center border text-indigo-950 border-indigo-400 font-black">
                     <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">SMS</span>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ const SecuritySetupPage = () => {
             <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-center">
                 <div className="mr-3">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center border text-indigo-950 border-indigo-400 font-black">
                     <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">APP</span>
                   </div>
                 </div>
@@ -222,7 +222,7 @@ const SecuritySetupPage = () => {
       return (
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 border text-green-950 border-green-400 font-black">
               <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Security Setup Complete</h2>

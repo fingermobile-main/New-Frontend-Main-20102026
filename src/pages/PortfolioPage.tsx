@@ -320,7 +320,7 @@ const PortfolioPage: React.FC = () => {
                       {creatorProfile.name}
                     </h1>
                     {creatorProfile.isOpenForCommissions && (
-                      <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold text-xs font-bold rounded-full border border-green-200">
+                      <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold text-xs  rounded-full   font-black">
                         ● Open for Commissions
                       </span>
                     )}

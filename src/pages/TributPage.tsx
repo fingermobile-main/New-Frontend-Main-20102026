@@ -473,7 +473,7 @@ export const TributPage: React.FC = () => {
                   <span className="text-sm font-black text-slate-900">
                     {currentStyleMeta.label}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400 border-purple-400 font-black">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400  font-black">
                     {currentStyleMeta.layoutCount}
                   </span>
                 </div>

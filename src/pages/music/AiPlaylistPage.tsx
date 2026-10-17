@@ -77,7 +77,7 @@ const AiPlaylistPage: React.FC = () => {
                   key={p}
                   type="button"
                   onClick={() => setPrompt(p)}
-                  className="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200 transition-colors"
+                  className="px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200 transition-colors border text-gray-950 border-gray-400 font-black"
                 >
                   {p}
                 </button>

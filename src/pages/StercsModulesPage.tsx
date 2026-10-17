@@ -42,13 +42,13 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Online
                 </span>
                 <span className="text-xs text-slate-700">v1.5.7</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '95%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">95% health</div>
@@ -72,13 +72,13 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Online
                 </span>
                 <span className="text-xs text-slate-700">v3.0.2</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">99% health</div>
@@ -102,13 +102,13 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Online
                 </span>
                 <span className="text-xs text-slate-700">v1.2.1</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '92%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">92% health</div>
@@ -138,7 +138,7 @@ const StercsModulesPage: React.FC = () => {
                 <span className="text-xs text-slate-700">v0.9.8</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-yellow-500 h-1.5 rounded-full" style={{ width: '0%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">0% health</div>
@@ -162,13 +162,13 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Online
                 </span>
                 <span className="text-xs text-slate-700">v1.3.2</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '89%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">89% health</div>
@@ -192,13 +192,13 @@ const StercsModulesPage: React.FC = () => {
                 </div>
               </div>
               <div className="mt-3 flex justify-between items-center">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Online
                 </span>
                 <span className="text-xs text-slate-700">v1.4.0</span>
               </div>
               <div className="mt-3">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 border text-gray-950 border-gray-400 font-black">
                   <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '91%' }}></div>
                 </div>
                 <div className="text-right text-xs text-slate-700 mt-1">91% health</div>

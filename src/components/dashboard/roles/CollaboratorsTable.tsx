@@ -74,7 +74,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
           </nav>
           <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <span>Roles & Permissions</span>
-            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
+            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800   font-black">
               Enterprise RBAC
             </span>
           </h1>
@@ -116,7 +116,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
               </span>
             </div>
             {/* Progress bar */}
-            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
               <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                 style={{ width: `${Math.min(100, (seats.usedSeats / seats.totalSeats) * 100)}%` }}
@@ -142,7 +142,7 @@ export const CollaboratorsTable: React.FC<CollaboratorsTableProps> = ({
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-slate-900 dark:text-white">Collaborators</h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400 font-mono border border-slate-400 font-black">
               {collaborators.length}
             </span>
           </div>

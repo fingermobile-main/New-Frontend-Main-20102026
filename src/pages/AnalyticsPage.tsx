@@ -469,7 +469,7 @@ const AnalyticsPage: React.FC = () => {
                             <span className="text-sm font-medium text-gray-700">{device.device}</span>
                             <span className="text-sm font-medium text-gray-700">{device.percentage}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                             <div 
                               className="bg-blue-600 h-2 rounded-full" 
                               style={{ width: `${device.percentage}%` }}
@@ -489,7 +489,7 @@ const AnalyticsPage: React.FC = () => {
                             <span className="text-sm font-medium text-gray-700">{browser.browser}</span>
                             <span className="text-sm font-medium text-gray-700">{browser.percentage}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                             <div 
                               className="bg-green-600 h-2 rounded-full" 
                               style={{ width: `${browser.percentage}%` }}
@@ -671,7 +671,7 @@ const AnalyticsPage: React.FC = () => {
                             <span className="text-sm font-medium text-gray-700">{source.source}</span>
                             <span className="text-sm font-medium text-gray-700">${source.amount.toLocaleString()}</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                             <div 
                               className="bg-green-600 h-2 rounded-full" 
                               style={{ width: `${source.percentage}%` }}

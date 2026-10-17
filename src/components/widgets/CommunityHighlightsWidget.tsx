@@ -14,7 +14,7 @@ const CommunityHighlightsWidget: React.FC = () => {
         {communities.map((comm, index) => (
           <div key={index} className="flex items-center justify-between cursor-pointer group">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-lg">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-lg border text-gray-950 border-gray-400 font-black">
                 {comm.icon}
               </div>
               <div>

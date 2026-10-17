@@ -375,7 +375,7 @@ const TopicsPage: React.FC = () => {
                       <p className="font-black text-sm text-slate-900 hover:text-blue-600">{ht.tag}</p>
                       <p className="text-xs text-slate-600">{ht.category}</p>
                     </div>
-                    <span className="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
+                    <span className="text-xs font-bold text-slate-950 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-400 font-black">
                       {(ht.post_count).toLocaleString()} posts
                     </span>
                   </ReactRouterDOM.NavLink>

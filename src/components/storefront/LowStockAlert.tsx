@@ -112,7 +112,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-bold text-gray-900">Low Stock Alerts</h2>
           {lowStockItems.length > 0 && (
-            <span className="px-3 py-1 bg-red-100 text-red-950 border border-red-400 font-bold rounded-full text-sm font-semibold">
+            <span className="px-3 py-1 bg-red-100 text-red-950 border border-red-400 font-bold rounded-full text-sm font-semibold font-black">
               {lowStockItems.length} items need attention
             </span>
           )}
@@ -233,7 +233,7 @@ const LowStockAlert: React.FC<LowStockAlertProps> = ({ storeId, onRestock }) => 
                     <span>Stock Level</span>
                     <span>{Math.round((item.quantity / item.reorder_point) * 100)}% of reorder point</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                     <div
                       className={`h-2 rounded-full transition-all ${
                         item.quantity === 0 ? 'bg-red-600' :

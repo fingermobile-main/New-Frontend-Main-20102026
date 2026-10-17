@@ -78,7 +78,7 @@ const HelpPage: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 animate-in fade-in duration-500">
         {/* Header Hero */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800   font-black">
             <LifebuoyIcon className="w-4 h-4" />
             <span>FingerMobile Knowledge Center</span>
           </div>
@@ -130,7 +130,7 @@ const HelpPage: React.FC = () => {
                 className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-950 dark:text-blue-300 w-fit border text-blue-950 border-blue-400 font-black">
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-950 dark:text-blue-300 w-fit border  border-blue-400 font-black">
                     {topic.category}
                   </span>
                 </div>

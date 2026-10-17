@@ -584,7 +584,7 @@ const ProgramsPage: React.FC = () => {
                             <span className="text-slate-700 font-bold">National Quota Allocated</span>
                             <span className="text-slate-900 font-black">{course.enrolledCitizens} / {course.targetCitizens} ({enrollmentPercent}%)</span>
                           </div>
-                          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border text-slate-950 border-slate-400 font-black">
                             <div
                               className="bg-emerald-600 h-full rounded-full transition-all"
                               style={{ width: `${enrollmentPercent}%` }}
@@ -1562,7 +1562,7 @@ const ProgramsPage: React.FC = () => {
                 <div className="p-6 overflow-y-auto flex-1 space-y-6">
                   {examScoreResult ? (
                     <div className="text-center py-10 space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center mx-auto text-3xl font-black border-4 border-emerald-400">
+                      <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold flex items-center justify-center mx-auto text-3xl font-black border-4 ">
                         {examScoreResult.letterGrade}
                       </div>
                       <h4 className="text-2xl font-black text-slate-900">
@@ -1698,12 +1698,12 @@ const ProgramsPage: React.FC = () => {
                             {currentQ.type === 'AUDIO_RESPONSE' && (
                               <div className="pt-2 space-y-3">
                                 <div className="border border-slate-300 rounded-2xl p-6 bg-slate-50 text-center space-y-3">
-                                  <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center mx-auto animate-pulse">
+                                  <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-950 flex items-center justify-center mx-auto animate-pulse border border-rose-400 font-black">
                                     🎙️
                                   </div>
                                   <div className="text-sm font-bold text-slate-900">Oral Technical Defense Recording</div>
                                   <div className="text-xs text-slate-500">Recorded: 00:54 / 01:00 Seconds</div>
-                                  <div className="h-2 w-48 bg-slate-200 rounded-full mx-auto overflow-hidden">
+                                  <div className="h-2 w-48 bg-slate-200 rounded-full mx-auto overflow-hidden border text-slate-950 border-slate-400 font-black">
                                     <div className="h-full bg-rose-500 w-3/4 rounded-full" />
                                   </div>
                                 </div>

@@ -37,7 +37,7 @@ const DatabaseIntegrationDashboard: React.FC = () => {
             <div className="ml-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Database Integration Dashboard</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 font-black">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400    font-black">
                   B-Tree Indexed
                 </span>
               </div>

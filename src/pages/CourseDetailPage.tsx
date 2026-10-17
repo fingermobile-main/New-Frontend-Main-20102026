@@ -189,7 +189,7 @@ const CourseDetailPage: React.FC = () => {
                     <h3 className="font-bold text-base sm:text-lg lg:text-xl">
                       Your Progress
                     </h3>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 my-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 my-2 border text-gray-950 border-gray-400 font-black">
                       <div
                         className="bg-brand-blue h-2.5 rounded-full"
                         style={{ width: `${progress}%` }}

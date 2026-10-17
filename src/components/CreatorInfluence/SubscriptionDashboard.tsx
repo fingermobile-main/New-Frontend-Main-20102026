@@ -154,7 +154,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                 </p>
               </div>
               <div className="mt-4 md:mt-0">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Active
                 </span>
               </div>
@@ -169,7 +169,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       <span>Available Features</span>
                       <span>{usage.features_available}</span>
                     </div>
-                    <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                    <div className="mt-2 w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                       <div
                         className="bg-blue-600 h-2 rounded-full"
                         style={{ width: `${Math.min(100, usage.usage_percentage)}%` }}
@@ -296,7 +296,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
                       {formatCurrency(item.amount || 0)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                         {item.status || 'Completed'}
                       </span>
                     </td>
@@ -327,7 +327,7 @@ const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 border text-red-950 border-red-400 font-black">
                     <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>

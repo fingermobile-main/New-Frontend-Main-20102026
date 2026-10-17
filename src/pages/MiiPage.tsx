@@ -213,7 +213,7 @@ const MiiPage: React.FC = () => {
                       <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
                     Live ShowCase Activity
                     </h3>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border  border-emerald-400 font-black">
                     Live Broadcast
                     </span>
                   </div>
@@ -297,7 +297,7 @@ const MiiPage: React.FC = () => {
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border text-emerald-950 border-emerald-400 font-black">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border  border-emerald-400 font-black">
                               {story.duration}
                             </span>
                             <span className="text-[10px] font-mono text-slate-700">

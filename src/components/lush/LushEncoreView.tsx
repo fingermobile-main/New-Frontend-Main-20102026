@@ -513,7 +513,7 @@ export const LushEncoreView: React.FC<LushEncoreViewProps> = ({
                         </div>
 
                         {/* Rating Display */}
-                        <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-400 flex-shrink-0 text-amber-950 border-amber-400 font-black">
+                        <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-400 flex-shrink-0 text-amber-950  font-black">
                           <StarIconSolid className="w-3.5 h-3.5 text-amber-500" />
                           <span className="text-xs font-black text-amber-900">
                             {member.rating.toFixed(1)}

@@ -526,7 +526,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       {formData.subcategories.map((sub, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 rounded-full bg-slate-100 text-slate-900 font-bold text-xs border border-slate-300 flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-full bg-slate-100 text-slate-950 font-bold text-xs border border-slate-400 flex items-center gap-1.5 font-black"
                         >
                           <span>{sub}</span>
                           <button
@@ -706,7 +706,7 @@ export const ComprehensiveEditProfileModal: React.FC<ComprehensiveEditProfileMod
                       {formData.languages.map((lang, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 rounded-full bg-slate-100 text-slate-900 font-bold text-xs border border-slate-300 flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-full bg-slate-100 text-slate-950 font-bold text-xs border border-slate-400 flex items-center gap-1.5 font-black"
                         >
                           <span>{lang}</span>
                           <button

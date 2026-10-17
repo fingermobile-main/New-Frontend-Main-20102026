@@ -201,7 +201,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
                 <div>
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-indigo-950 text-base">{rec.title}</h3>
-                    <span className="px-2.5 py-0.5 text-[11px] font-black rounded-full bg-indigo-100 text-indigo-800">
+                    <span className="px-2.5 py-0.5 text-[11px] font-black rounded-full bg-indigo-100 text-indigo-950 border border-indigo-400">
                       {Math.round(rec.confidence_score * 100)}% Confidence
                     </span>
                   </div>
@@ -252,7 +252,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
                 <tr key={c.id} className="hover:bg-blue-50/30 transition-colors">
                   <td className="py-4 px-5 font-bold text-gray-900">{c.name}</td>
                   <td className="py-4 px-5">
-                    <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">
+                    <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-gray-100 text-gray-950 border border-gray-400 font-black">
                       {c.type}
                     </span>
                   </td>
@@ -260,7 +260,7 @@ Month-Over-Month Velocity,${stats?.trend_month_over_month || '+18.2%'},Last 30 D
                   <td className="py-4 px-5 text-gray-600">{c.posts}</td>
                   <td className="py-4 px-5 font-bold text-purple-700">{(c.engagement).toLocaleString()}</td>
                   <td className="py-4 px-5">
-                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-950 border border-green-400  font-black">
                       {c.trend}
                     </span>
                   </td>

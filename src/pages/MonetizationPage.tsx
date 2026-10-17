@@ -842,12 +842,12 @@ const MonetizationPage: React.FC = () => {
                             <td className="px-6 py-4 text-sm text-slate-800">
                               <div className="flex flex-wrap gap-1">
                                 {plan.features.slice(0, 2).map((feature, idx) => (
-                                  <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                  <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-950 border border-gray-400 font-black">
                                     {feature}
                                   </span>
                                 ))}
                                 {plan.features.length > 2 && (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-950 border border-gray-400 font-black">
                                     +{plan.features.length - 2} more
                                   </span>
                                 )}

@@ -83,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({
                   alt={`${user.firstName} ${user.lastName}`}
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center border text-indigo-950 border-indigo-400 font-black">
                   <span className="text-indigo-800 font-medium">
                     {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
                   </span>

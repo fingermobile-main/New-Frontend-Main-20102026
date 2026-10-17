@@ -65,7 +65,7 @@ const MembersPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Admin</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                       Active
                     </span>
                   </td>
@@ -80,7 +80,7 @@ const MembersPage: React.FC = () => {
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                      <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center border text-green-950 border-green-400 font-black">
                         <span className="text-green-800 font-medium">MG</span>
                       </div>
                       <div className="ml-4">
@@ -91,7 +91,7 @@ const MembersPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">Moderator</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                       Active
                     </span>
                   </td>

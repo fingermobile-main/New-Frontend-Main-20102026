@@ -94,7 +94,7 @@ const ComposerModal: React.FC<ComposerModalProps> = ({
               <span className={`${remaining < 20 ? 'text-red-600' : 'text-gray-500'}`}>
                 {remaining} characters remaining
               </span>
-              <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                 <div
                   className={`h-full transition-all ${
                     remaining < 20 ? 'bg-red-600' : 'bg-blue-600'

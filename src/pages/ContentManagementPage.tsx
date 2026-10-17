@@ -334,13 +334,13 @@ const ContentManagementPage: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                         <div className="flex flex-wrap gap-1">
                           {item.tags.slice(0, 3).map((tag, idx) => (
-                            <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-950 border border-gray-400 font-black">
                               <Tag className="h-3 w-3 mr-1" />
                               {tag}
                             </span>
                           ))}
                           {item.tags.length > 3 && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-950 border border-gray-400 font-black">
                               +{item.tags.length - 3}
                             </span>
                           )}

@@ -69,7 +69,7 @@ export default function CensoredPostWrapper({ options, children }: CensoredPostW
       {hasTags && (
         <div className="flex flex-wrap gap-2 mb-2 p-2 bg-gray-50 rounded-t-lg border-b border-slate-300">
           {options.tags.map(tag => (
-            <span key={tag} className="px-2 py-0.5 bg-red-100 text-red-950 border border-red-400 font-bold text-xs font-bold rounded">
+            <span key={tag} className="px-2 py-0.5 bg-red-100 text-red-950 border border-red-400 font-bold text-xs  rounded">
               [{tag}]
             </span>
           ))}

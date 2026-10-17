@@ -92,7 +92,7 @@ export const FingerLuxHeader: React.FC<FingerLuxHeaderProps> = ({
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-950 border border-amber-400 shadow-xs">
                 All-in-One Scheduling App
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-100 text-indigo-950 border border-indigo-300">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-100 text-indigo-950 border border-indigo-400 font-black">
                 Prestige Concierge
               </span>
             </div>

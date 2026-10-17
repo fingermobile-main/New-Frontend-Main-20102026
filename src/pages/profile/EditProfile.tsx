@@ -163,7 +163,7 @@ const EditProfile: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center mb-6">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden border text-gray-950 border-gray-400 font-black">
                 {avatar ? (
                   <img
                     src={avatar}

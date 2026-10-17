@@ -144,7 +144,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
                 <span className="px-3 py-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-full text-sm font-medium font-black">
                   #community
                 </span>
-                <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-sm font-medium font-black">
                   #learning
                 </span>
               </div>

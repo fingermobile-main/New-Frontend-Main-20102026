@@ -43,7 +43,7 @@ const LegalCompliancePage: React.FC = () => {
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-2 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-2 border border-blue-400 dark:border-blue-800   font-black">
             <ShieldCheckIcon className="w-4 h-4" />
             <span>NDPA 2023 & GDPR Compliance Center</span>
           </div>
@@ -211,7 +211,7 @@ const LegalCompliancePage: React.FC = () => {
                       {new Date(del.scheduled_purge_at).toLocaleDateString()}
                     </td>
                     <td className="p-3">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold font-black">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-950 border border-amber-400  font-black">
                         {del.status}
                       </span>
                     </td>

@@ -250,12 +250,12 @@ const PostCard: React.FC<PostCardProps> = ({
         </Link>
         <div className="flex items-center gap-2">
           {pollData && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-400 dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs font-black">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400    dark:bg-emerald-950 dark:text-emerald-300 shadow-2xs font-black">
               📊 Live Poll
             </span>
           )}
           {((post as any).is_ai_generated || (post as any).isAiGenerated) && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-400 shadow-xs flex-shrink-0 font-black">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-950 border border-purple-400 font-bold   shadow-xs flex-shrink-0 font-black">
               🤖 {((post as any).ai_badge_label || (post as any).aiBadgeLabel || 'AI Synthetic')}
             </span>
           )}
@@ -390,7 +390,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 {pollData.question}
               </h4>
             </div>
-            <span className="text-[11px] font-mono text-emerald-950 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
+            <span className="text-[11px] font-mono text-emerald-950 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full border  border-emerald-400 font-black">
               {totalPollVotes} votes
             </span>
           </div>
@@ -543,7 +543,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {onVote && (
           <button
             onClick={() => onVote(String(post.id), 'up')}
-            className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold text-emerald-950 border-emerald-400 font-black"
+            className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold   font-black"
           >
             ▲ Upvote
           </button>
@@ -614,7 +614,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {onOpenPollModal && (
           <button
             onClick={() => onOpenPollModal(String(post.id))}
-            className="px-3 py-1.5 bg-blue-50 text-blue-950 border border-blue-400 rounded-full hover:bg-blue-100 transition-colors text-xs font-bold text-blue-950 border-blue-400 font-black"
+            className="px-3 py-1.5 bg-blue-50 text-blue-950 border border-blue-400 rounded-full hover:bg-blue-100 transition-colors text-xs font-bold   font-black"
           >
             📊 Create Poll
           </button>
@@ -625,39 +625,39 @@ const PostCard: React.FC<PostCardProps> = ({
       {showMoreActions && (
         <div className="mt-3 pt-3 border-t border-slate-200 dark:border-gray-800 flex flex-wrap gap-2 items-center animate-fade-in">
           {onOpenGiftModal && (
-            <button onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-600 border border-yellow-100 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenGiftModal(String(post.id))} className="px-3 py-1.5 bg-yellow-50 text-yellow-950 border border-yellow-400 rounded-full hover:bg-yellow-100 transition-colors text-xs font-bold font-black">
               🎁 Gift
             </button>
           )}
           {onOpenGiftcardModal && (
-            <button onClick={() => onOpenGiftcardModal(String(post.id))} className="px-3 py-1.5 bg-orange-50 text-orange-600 border border-orange-100 rounded-full hover:bg-orange-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenGiftcardModal(String(post.id))} className="px-3 py-1.5 bg-orange-50 text-orange-950 border border-orange-400 rounded-full hover:bg-orange-100 transition-colors text-xs font-bold font-black">
               💳 Giftcard
             </button>
           )}
           {onOpenGemModal && (
-            <button onClick={() => onOpenGemModal(String(post.id))} className="px-3 py-1.5 bg-teal-50 text-teal-600 border border-teal-100 rounded-full hover:bg-teal-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenGemModal(String(post.id))} className="px-3 py-1.5 bg-teal-50 text-teal-950 border border-teal-400 rounded-full hover:bg-teal-100 transition-colors text-xs font-bold font-black">
               💎 Gem
             </button>
           )}
           {onOpenProductModal && (
-            <button onClick={() => onOpenProductModal(String(post.id))} className="px-3 py-1.5 bg-pink-50 text-pink-600 border border-pink-100 rounded-full hover:bg-pink-100 transition-colors text-xs font-bold">
+            <button onClick={() => onOpenProductModal(String(post.id))} className="px-3 py-1.5 bg-pink-50 text-pink-950 border border-pink-400 rounded-full hover:bg-pink-100 transition-colors text-xs font-bold font-black">
               🛍️ Product
             </button>
           )}
           {onOpenMarketplaceModal && (
-            <button onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold text-emerald-950 border-emerald-400 font-black">
+            <button onClick={() => onOpenMarketplaceModal(String(post.id))} className="px-3 py-1.5 bg-emerald-50 text-emerald-950 border border-emerald-400 rounded-full hover:bg-emerald-100 transition-colors text-xs font-bold   font-black">
               🏪 Storefront
             </button>
           )}
           {onOpenPaylinkModal && (
-            <button onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-950 border border-purple-400 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold text-purple-950 border-purple-400 font-black">
+            <button onClick={() => onOpenPaylinkModal(String(post.id))} className="px-3 py-1.5 bg-purple-50 text-purple-950 border border-purple-400 rounded-full hover:bg-purple-100 transition-colors text-xs font-bold   font-black">
               🔗 Paylink
             </button>
           )}
-          <button onClick={() => onTokenize(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold">
+          <button onClick={() => onTokenize(String(post.id))} className="px-3 py-1.5 bg-indigo-50 text-indigo-950 border border-indigo-400 rounded-full hover:bg-indigo-100 transition-colors text-xs font-bold font-black">
             Tokenize
           </button>
-          <button onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded-full hover:bg-red-100 transition-colors text-xs font-bold">
+          <button onClick={() => onDelete(String(post.id))} className="px-3 py-1.5 bg-red-50 text-red-950 border border-red-400 rounded-full hover:bg-red-100 transition-colors text-xs font-bold font-black">
             Delete
           </button>
         </div>

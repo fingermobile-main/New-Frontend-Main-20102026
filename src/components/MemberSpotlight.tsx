@@ -142,7 +142,7 @@ const MemberSpotlight: React.FC<MemberSpotlightProps> = ({
                   {Math.floor((spotlightMember.contributionScore % 2000) / 20)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className="w-full bg-gray-200 rounded-full h-3 border text-gray-950 border-gray-400 font-black">
                 <div
                   className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all"
                   style={{ width: `${(spotlightMember.contributionScore % 2000) / 20}%` }}

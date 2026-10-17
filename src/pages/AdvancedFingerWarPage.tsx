@@ -264,7 +264,7 @@ const AdvancedFingerWarPage: React.FC = () => {
             {/* Live Combat Pad */}
             <div className="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-300 shadow-sm flex flex-col justify-between space-y-6 text-center">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-300 text-slate-800 text-xs font-black uppercase mb-3">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-400 text-slate-950 text-xs font-black uppercase mb-3">
                   <Zap className="w-3.5 h-3.5 text-amber-500" />
                   <span>120 FPS High-Frequency Tap Engine</span>
                 </div>
@@ -528,7 +528,7 @@ const AdvancedFingerWarPage: React.FC = () => {
                       <span>Progress</span>
                       <span>{q.progress} / {q.target}</span>
                     </div>
-                    <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden border border-slate-200">
+                    <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden border border-slate-400 text-slate-950 font-black">
                       <div
                         className="h-full bg-orange-600 transition-all duration-500"
                         style={{ width: `${Math.min(100, (q.progress / q.target) * 100)}%` }}

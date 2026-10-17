@@ -586,7 +586,7 @@ const TrendsPage: React.FC = () => {
                         </span>
                         <div>
                           <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <span className="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 uppercase tracking-wider">
+                            <span className="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-950 uppercase tracking-wider border border-slate-400">
                               {trend.category.replace('_', ' ')}
                             </span>
                             <span className="text-xs text-slate-700">
@@ -603,7 +603,7 @@ const TrendsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-950 font-black text-xs rounded-full flex items-center gap-1 border text-emerald-950 border-emerald-400">
+                        <span className="px-3 py-1 bg-emerald-50 text-emerald-950 font-black text-xs rounded-full flex items-center gap-1 border  border-emerald-400">
                           <ArrowTrendingUpIcon className="w-3.5 h-3.5" />
                           {trend.velocityScore || 95} Velocity
                         </span>

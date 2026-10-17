@@ -281,7 +281,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
                       {f.operating_license_no}
                     </td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-indigo-50 text-indigo-700">
+                      <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-indigo-50 text-indigo-950 border border-indigo-400 font-black">
                         {f.tier}
                       </span>
                     </td>
@@ -292,7 +292,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
                       {f.total_locations || 1} units
                     </td>
                     <td className="py-4 px-5">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-950 border border-green-400  font-black">
                         <CheckCircleIcon className="w-3.5 h-3.5 text-green-600" />
                         Operational
                       </span>
@@ -338,7 +338,7 @@ const FranchiseManagementDashboard: React.FC<FranchiseManagementDashboardProps> 
                       {(f.total_net_payout || 0).toLocaleString()} FIC
                     </td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-950 border border-blue-400  font-black">
                         Settled via Smart Payout
                       </span>
                     </td>

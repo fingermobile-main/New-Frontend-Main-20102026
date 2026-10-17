@@ -239,7 +239,7 @@ STATUS: AUDITED & SEC REGISTERED`;
                       <div className="text-xs text-slate-700">Filed on: {new Date(r.filing_date).toLocaleDateString()}</div>
                     </td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-black">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400  font-black">
                         {r.report_type}
                       </span>
                     </td>

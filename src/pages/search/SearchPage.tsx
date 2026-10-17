@@ -163,7 +163,7 @@ const SearchPage: React.FC = () => {
                   <a
                     key={hashtag.id}
                     href={`/hashtag/${hashtag.name || hashtag.tag}`}
-                    className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border text-blue-950 border-blue-400 font-black"
+                    className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border  border-blue-400 font-black"
                   >
                     #{hashtag.name || hashtag.tag}
                   </a>
@@ -238,7 +238,7 @@ const SearchPage: React.FC = () => {
                 <a
                   key={hashtag.id}
                   href={`/hashtag/${hashtag.name || hashtag.tag}`}
-                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border text-blue-950 border-blue-400 font-black"
+                  className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-950 dark:text-blue-200 rounded-full text-sm border  border-blue-400 font-black"
                 >
                   #{hashtag.name || hashtag.tag}
                 </a>

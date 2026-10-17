@@ -75,7 +75,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
           style={phase === 'vertical' ? { transformOrigin: 'center' } : {}}
         />
       </div>
-      <div className="text-3xl font-bold text-blue-950 w-16 h-16 flex items-center justify-center bg-blue-50 rounded-full border-2 border-blue-400 shadow-inner border text-blue-950 border-blue-400 font-black">
+      <div className="text-3xl font-bold text-blue-950 w-16 h-16 flex items-center justify-center bg-blue-50 rounded-full border-2 border-blue-400 shadow-inner border   font-black">
         {value}
       </div>
     </div>

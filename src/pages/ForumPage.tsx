@@ -1702,7 +1702,7 @@ export const ForumPage: React.FC = () => {
                   <ListBulletIcon className="w-4 h-4 text-[#ff6b00]" />
                   Explore Channels
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-950 border border-orange-300 dark:bg-orange-950/60 dark:text-orange-300 dark:border-orange-800">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-950 border border-orange-400 dark:bg-orange-950/60 dark:text-orange-300 dark:border-orange-800 font-black">
                   Sovereign
                 </span>
               </div>
@@ -1731,7 +1731,7 @@ export const ForumPage: React.FC = () => {
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-3.5 shadow-xs relative">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-black uppercase text-slate-900 dark:text-white">Topic Categories</span>
-                <span className="text-[10px] text-orange-950 dark:text-orange-300 font-bold bg-orange-100 dark:bg-orange-950/60 px-2 py-0.5 rounded-full border border-orange-300 dark:border-orange-800">
+                <span className="text-[10px] text-orange-950 dark:text-orange-300 font-bold bg-orange-100 dark:bg-orange-950/60 px-2 py-0.5 rounded-full border border-orange-400 dark:border-orange-800 font-black">
                   {apiCategories.length} Topics
                 </span>
               </div>
@@ -1835,7 +1835,7 @@ export const ForumPage: React.FC = () => {
                   onClick={() => setIsMiiCreatorOpen(true)}
                   className="flex flex-col items-center gap-1 flex-shrink-0 group cursor-pointer"
                 >
-                  <div className="w-14 h-14 rounded-full border-2 border-dashed border-orange-400 flex items-center justify-center bg-orange-50/50 group-hover:bg-orange-100 transition">
+                  <div className="w-14 h-14 rounded-full border-2 border-dashed border-orange-400 flex items-center justify-center bg-orange-50/50 group-hover:bg-orange-100 transition border text-orange-950 font-black">
                     <PlusIcon className="w-5 h-5 text-orange-600" />
                   </div>
                   <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">Create Mii™®©℠</span>
@@ -2861,7 +2861,7 @@ export const ForumPage: React.FC = () => {
                           className="w-full text-left p-2 bg-white border border-orange-200 rounded-xl hover:bg-orange-100 font-semibold text-orange-950 flex justify-between items-center transition"
                         >
                           <span>🎵 {stem.title}</span>
-                          <span className="text-[10px] font-mono font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">{stem.format}</span>
+                          <span className="text-[10px] font-mono font-bold text-orange-950 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-400 font-black">{stem.format}</span>
                         </button>
                       ))}
                     </div>
@@ -2932,7 +2932,7 @@ export const ForumPage: React.FC = () => {
                           className="w-full text-left p-2 bg-white border border-purple-200 rounded-xl hover:bg-purple-100 font-semibold text-purple-950 flex justify-between items-center transition"
                         >
                           <span>📺 {stream.title}</span>
-                          <span className="text-[10px] font-mono font-bold text-purple-950 bg-purple-50 px-2 py-0.5 rounded-full border text-purple-950 border-purple-400 font-black">{stream.badge}</span>
+                          <span className="text-[10px] font-mono font-bold text-purple-950 bg-purple-50 px-2 py-0.5 rounded-full border  border-purple-400 font-black">{stream.badge}</span>
                         </button>
                       ))}
                     </div>
@@ -3367,7 +3367,7 @@ export const ForumPage: React.FC = () => {
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-black uppercase text-slate-700">Live Network</span>
-                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border  border-emerald-400 font-black">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                   P2P Online
                 </span>

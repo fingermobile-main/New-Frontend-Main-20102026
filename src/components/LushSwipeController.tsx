@@ -245,7 +245,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
 
             {currentProfile.isVerified && (
               <div className="flex items-center mt-1">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                   Verified
                 </span>
               </div>
@@ -286,7 +286,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
         <button
           onClick={() => handleSwipe('pass')}
           disabled={isRevealing}
-          className="p-4 bg-red-100 rounded-full text-red-600 hover:bg-red-200 disabled:opacity-50 transition-colors"
+          className="p-4 bg-red-100 rounded-full text-red-950 hover:bg-red-200 disabled:opacity-50 transition-colors border border-red-400 font-black"
           aria-label="Pass"
         >
           <XCircleIcon className="h-8 w-8" />
@@ -295,7 +295,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
         <button
           onClick={() => handleSwipe('super_like')}
           disabled={isRevealing}
-          className="p-4 bg-purple-100 rounded-full text-purple-950 hover:bg-purple-200 disabled:opacity-50 transition-colors border text-purple-950 border-purple-400 font-black"
+          className="p-4 bg-purple-100 rounded-full text-purple-950 hover:bg-purple-200 disabled:opacity-50 transition-colors border  border-purple-400 font-black"
           aria-label="Super Like"
         >
           <StarIcon className="h-8 w-8" />
@@ -304,7 +304,7 @@ const LushSwipeController: React.FC<SwipeControllerProps> = ({
         <button
           onClick={() => handleSwipe('like')}
           disabled={isRevealing}
-          className="p-4 bg-green-100 rounded-full text-green-600 hover:bg-green-200 disabled:opacity-50 transition-colors"
+          className="p-4 bg-green-100 rounded-full text-green-950 hover:bg-green-200 disabled:opacity-50 transition-colors border border-green-400 font-black"
           aria-label="Like"
         >
           <HeartIcon className="h-8 w-8" />

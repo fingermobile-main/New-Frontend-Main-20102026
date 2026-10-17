@@ -282,7 +282,7 @@ export const MiiPinExchangeModal: React.FC<PinExchangeModalProps> = ({
                         <div className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
                           <span>{contact.contact_phone_hash || 'Contact Peer'}</span>
                           {contact.pin_verified && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 font-bold border text-emerald-950 border-emerald-400 font-black">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 font-bold border  border-emerald-400 font-black">
                               PIN OK
                             </span>
                           )}
@@ -469,11 +469,11 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
                 <div>
                   <h4 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
                     {item.title}
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border  border-blue-400 font-black">
                       {item.timer}
                     </span>
                     {item.isPrivate && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border text-amber-950 border-amber-400 font-black">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border  border-amber-400 font-black">
                         PIN Required
                       </span>
                     )}

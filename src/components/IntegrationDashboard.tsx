@@ -47,7 +47,7 @@ const IntegrationDashboard: React.FC<IntegrationDashboardProps> = ({ integration
               <p className="text-sm text-gray-600">Errors</p>
               <p className="text-3xl font-bold text-red-600">{errorCount}</p>
             </div>
-            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center border text-red-950 border-red-400 font-black">
               <span className="text-red-600 font-bold">!</span>
             </div>
           </div>

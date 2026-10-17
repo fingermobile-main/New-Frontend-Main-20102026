@@ -938,7 +938,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       <span className="px-2.5 py-1 rounded-md text-xs font-extrabold uppercase tracking-wide bg-emerald-700 text-white">
                         {rail.currency} Rail
                       </span>
-                      <span className="text-[11px] font-black text-emerald-950 flex items-center gap-1.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-400 border-emerald-400">
+                      <span className="text-[11px] font-black text-emerald-950 flex items-center gap-1.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-400 ">
                         <span className="w-2 h-2 rounded-full bg-emerald-600" />
                         Active Online
                       </span>

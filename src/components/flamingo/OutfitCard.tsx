@@ -88,7 +88,7 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
           {outfit.occasion && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+            <span className="px-2 py-1 bg-gray-100 text-gray-950 text-xs rounded-full border border-gray-400 font-black">
               {occasionIcons[outfit.occasion as keyof typeof occasionIcons]} {outfit.occasion}
             </span>
           )}
@@ -104,12 +104,12 @@ const OutfitCard: React.FC<OutfitCardProps> = ({
           {outfit.style_tags && outfit.style_tags.length > 0 && (
             <>
               {outfit.style_tags.slice(0, 3).map((tag, idx) => (
-                <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-950 text-xs rounded-full border text-blue-950 border-blue-400 font-black">
+                <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-950 text-xs rounded-full border  border-blue-400 font-black">
                   {tag}
                 </span>
               ))}
               {outfit.style_tags.length > 3 && (
-                <span className="px-2 py-1 bg-gray-50 text-gray-600 text-xs rounded-full">
+                <span className="px-2 py-1 bg-gray-50 text-gray-950 text-xs rounded-full border border-gray-400 font-black">
                   +{outfit.style_tags.length - 3}
                 </span>
               )}

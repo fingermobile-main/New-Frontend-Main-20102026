@@ -90,7 +90,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
             {recommendation.alternative_sizes.map((size, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                className="px-3 py-1 bg-gray-100 text-gray-950 rounded-full text-sm border border-gray-400 font-black"
               >
                 {size}
               </span>

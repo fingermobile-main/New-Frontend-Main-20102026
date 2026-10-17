@@ -253,7 +253,7 @@ const HallmarkPage: React.FC = () => {
                   </div>
                   <div className="mt-4">
                     <div className="text-xs text-slate-700 mb-1">Progress</div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                       <div
                         className="bg-green-500 h-2 rounded-full"
                         style={{ width: `${achievement.progress}%` }}

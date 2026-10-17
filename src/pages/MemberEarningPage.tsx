@@ -167,7 +167,7 @@ const MemberEarningPage: React.FC = () => {
                 <div>
                   <div className="flex justify-between items-start gap-2">
                     <h3 className="font-bold text-gray-900 text-base">{service.title}</h3>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-950 font-semibold flex-shrink-0 border text-blue-950 border-blue-400 font-black">
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-950 font-semibold flex-shrink-0 border  border-blue-400 font-black">
                       {service.category}
                     </span>
                   </div>
@@ -196,7 +196,7 @@ const MemberEarningPage: React.FC = () => {
                 <span>Design & Creative Assets</span>
                 <span>$680.00 (54%)</span>
               </div>
-              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                 <div className="bg-blue-600 h-full rounded-full" style={{ width: '54%' }} />
               </div>
             </div>
@@ -205,7 +205,7 @@ const MemberEarningPage: React.FC = () => {
                 <span>Audio Engineering & Mixes</span>
                 <span>$340.00 (27%)</span>
               </div>
-              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                 <div className="bg-indigo-600 h-full rounded-full" style={{ width: '27%' }} />
               </div>
             </div>
@@ -214,7 +214,7 @@ const MemberEarningPage: React.FC = () => {
                 <span>Direct Smart Paylinks</span>
                 <span>$230.75 (19%)</span>
               </div>
-              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                 <div className="bg-purple-600 h-full rounded-full" style={{ width: '19%' }} />
               </div>
             </div>

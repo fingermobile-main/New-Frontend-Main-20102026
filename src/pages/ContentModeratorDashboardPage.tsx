@@ -320,7 +320,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                   <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                     Platform Governance & Moderation Console
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-800 font-black">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400  dark:bg-amber-950 dark:text-amber-300   dark:border-amber-800 font-black">
                     64-Bit Bitmask RBAC
                   </span>
                 </div>
@@ -411,7 +411,7 @@ export const ContentModeratorDashboardPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <span>Pending Flagged Incidents</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-400 border border-slate-400 font-black">
                       {filteredQueue.length}
                     </span>
                   </h2>

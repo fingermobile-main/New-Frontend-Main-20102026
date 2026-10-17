@@ -623,7 +623,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                 <ChartBarIcon className="w-4 h-4 text-purple-700" />
                 {pollData.question}
               </span>
-              <span className="text-[10px] text-purple-950 bg-purple-100 px-2 py-0.5 rounded-full font-bold border border-purple-400 border-purple-400 font-black">
+              <span className="text-[10px] text-purple-950 bg-purple-100 px-2 py-0.5 rounded-full font-bold border border-purple-400  font-black">
                 {pollData.totalVotes} votes • {pollData.durationDays}d left
               </span>
             </div>
@@ -744,7 +744,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                   className="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-300"
                 />
               ) : (
-                <div className="p-3 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-xl flex-shrink-0 border border-blue-300">
+                <div className="p-3 bg-blue-100 text-blue-950 border border-blue-400 font-bold rounded-xl flex-shrink-0  border-blue-300">
                   <LinkIcon className="w-5 h-5" />
                 </div>
               )}

@@ -138,7 +138,7 @@ const ShipmentDetailsPanel: React.FC<ShipmentDetailsPanelProps> = React.memo(({ 
             <span>Fulfillment Transit Stage</span>
             <span>{getProgress(shipment.status)}%</span>
           </div>
-          <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
+          <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden border text-slate-950 border-slate-400 font-black">
             <div
               className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${getProgress(shipment.status)}%` }}

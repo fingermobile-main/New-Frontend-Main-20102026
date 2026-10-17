@@ -191,7 +191,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-600 dark:text-gray-300 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-950 dark:text-gray-300 flex items-center justify-center transition-colors border border-gray-400 font-black"
           >
             <X className="w-4 h-4" />
           </button>
@@ -210,7 +210,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           >
             <div className="flex items-center justify-between w-full mb-1">
               <span className="p-2 rounded-xl bg-orange-500 text-white"><Film className="w-5 h-5" /></span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 dark:bg-orange-900/60 text-orange-900 dark:text-orange-200">$3.00/mo</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 dark:bg-orange-900/60 text-orange-950 dark:text-orange-200 border border-orange-400 font-black">$3.00/mo</span>
             </div>
             <span className="font-bold text-sm">Publicitee (Reels)</span>
             <span className="text-[11px] text-slate-700 dark:text-gray-400 mt-1">Short Films, Vlogs, Skits • 168h (7d) TTL • 1 Video Card only • Up to 1.5GB / 1h 55m</span>
@@ -227,7 +227,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           >
             <div className="flex items-center justify-between w-full mb-1">
               <span className="p-2 rounded-xl bg-purple-600 text-white"><Smartphone className="w-5 h-5" /></span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300">Free $0.00</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-950 text-green-950 dark:text-green-300 border border-green-400 font-black">Free $0.00</span>
             </div>
             <span className="font-bold text-sm">FingerShorts (Stories)</span>
             <span className="text-[11px] text-slate-700 dark:text-gray-400 mt-1">Disappearing Stories • 48h (2d) TTL • Up to 20 Media Cards • Max 20MB & 60s per Card</span>

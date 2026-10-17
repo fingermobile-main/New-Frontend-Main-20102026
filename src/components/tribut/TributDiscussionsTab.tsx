@@ -161,7 +161,7 @@ export const TributDiscussionsTab: React.FC<TributDiscussionsTabProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400 text-[10px] border-purple-400 font-black">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-950 font-bold border border-purple-400 text-[10px]  font-black">
                     {d.category}
                   </span>
                   <span className="text-slate-500 text-[11px]">{d.createdAt}</span>

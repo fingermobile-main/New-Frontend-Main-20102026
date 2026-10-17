@@ -269,7 +269,7 @@ const AdvancedGiftingEngine: React.FC = () => {
                 >
                   <span className="text-3xl mb-2">{tier.icon}</span>
                   <p className="text-xs font-bold text-gray-900 mb-1 leading-tight">{tier.name}</p>
-                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-pink-100 text-pink-800">
+                  <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-pink-100 text-pink-950 border border-pink-400 font-black">
                     {tier.priceFic} FIC
                   </span>
                 </button>

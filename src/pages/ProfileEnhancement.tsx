@@ -157,7 +157,7 @@ const ProfileEnhancement: React.FC = () => {
                 {skills.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-950 border border-blue-400 rounded-full text-xs font-medium text-blue-950 border-blue-400 font-black"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-950 border border-blue-400 rounded-full text-xs font-medium   font-black"
                   >
                     {skill}
                     <button

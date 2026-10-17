@@ -267,7 +267,7 @@ const DiscoverPage: React.FC = () => {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {['#Web3', '#Design', '#AI', '#Startups', '#Tech'].map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-600 cursor-pointer transition-colors">
+                    <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-950 rounded-full text-sm hover:bg-blue-100 hover:text-gray-950 cursor-pointer transition-colors border border-gray-400 font-black">
                       {tag}
                     </span>
                   ))}

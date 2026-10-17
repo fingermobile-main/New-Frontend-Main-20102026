@@ -196,7 +196,7 @@ export const ReelsSection: React.FC<ReelsSectionProps> = ({ isOwner, onToast }) 
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <span>Sovereign Reels & Short-Form Video</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 border-amber-400 font-black">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400  font-black">
                 Max 30s Playtime
               </span>
             </h3>

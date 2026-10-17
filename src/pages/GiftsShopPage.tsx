@@ -81,7 +81,7 @@ export const GiftsShopPage: React.FC = () => {
                 <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                   Lush Luxury Gift Shop
                 </h1>
-                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-400 font-black">
+                <span className="text-[10px] uppercase font-extrabold tracking-wider bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-2.5 py-0.5 rounded-full   font-black">
                   Escrow Protected
                 </span>
               </div>

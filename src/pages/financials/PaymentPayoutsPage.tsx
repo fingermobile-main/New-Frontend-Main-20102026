@@ -268,7 +268,7 @@ const PaymentPayoutsPage: React.FC = () => {
                 <Clock className="w-5 h-5 text-amber-600" />
                 Pending Requests ({pendingRequests.length})
               </h2>
-              <span className="text-xs font-bold text-amber-950 bg-amber-50 px-3 py-1 rounded-full border border-amber-400 text-amber-950 border-amber-400 font-black">
+              <span className="text-xs font-bold text-amber-950 bg-amber-50 px-3 py-1 rounded-full border border-amber-400   font-black">
                 In Verification Queue
               </span>
             </div>
@@ -295,7 +295,7 @@ const PaymentPayoutsPage: React.FC = () => {
                 <CheckCircle2 className="w-5 h-5 text-emerald-700" />
                 Payout History
               </h2>
-              <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full border border-slate-300">
+              <span className="text-xs font-bold text-slate-950 bg-slate-100 px-3 py-1 rounded-full border border-slate-400 font-black">
                 {processedRequests.length} Settled
               </span>
             </div>

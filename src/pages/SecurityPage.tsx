@@ -731,7 +731,7 @@ const SecurityPage: React.FC = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
                               <div className="flex items-center">
-                                <div className="h-2 w-32 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-2 w-32 bg-gray-200 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                                   <div 
                                     className="h-full bg-green-500" 
                                     style={{ width: `${threat.confidence}%` }}

@@ -304,7 +304,7 @@ const CanaryAdsPage: React.FC = () => {
                     <h2 className="text-xl font-black text-gray-900">Launch New Campaign</h2>
                     <p className="text-xs text-slate-700 mt-0.5">Configure objectives, creative destinations, and delivery schedule</p>
                   </div>
-                  <span className="px-3 py-1 bg-yellow-50 text-yellow-800 border border-yellow-200 text-xs font-black rounded-full">
+                  <span className="px-3 py-1 bg-yellow-50 text-yellow-950 border border-yellow-400 text-xs font-black rounded-full">
                     Canary Express
                   </span>
                 </div>
@@ -607,7 +607,7 @@ const CanaryAdsPage: React.FC = () => {
                   <h3 className="text-lg font-black text-gray-900">Cross-Placement Yield & Performance</h3>
                   <p className="text-xs text-slate-700">Live impression telemetry aggregated across all 8 native ad corridors</p>
                 </div>
-                <span className="text-xs font-black text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border text-emerald-950 border-emerald-400">
+                <span className="text-xs font-black text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border  border-emerald-400">
                   Verified Clean Traffic
                 </span>
               </div>

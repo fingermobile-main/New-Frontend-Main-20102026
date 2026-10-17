@@ -93,7 +93,7 @@ const CreatorInfluencePage: React.FC = () => {
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-950 border border-blue-400 font-bold font-black">
                 Followers: {followers.toLocaleString()}
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                 Engagement: {engagementRate}%
               </span>
             </div>

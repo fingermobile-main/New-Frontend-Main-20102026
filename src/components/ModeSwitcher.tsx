@@ -13,7 +13,7 @@ const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ currentMode, onModeChange }
         Adjust your experience between professional and social contexts
       </p>
 
-      <div className="flex rounded-full bg-gray-200 p-1 mb-3">
+      <div className="flex rounded-full bg-gray-200 p-1 mb-3 border text-gray-950 border-gray-400 font-black">
         <button
           onClick={() => onModeChange('professional')}
           className={`flex-1 py-2 px-3 rounded-full text-xs font-medium transition-colors ${

@@ -196,7 +196,7 @@ export const PhotoCreditCard: React.FC<PhotoCreditCardProps> = ({
               <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
             </span>
             {item.cohort && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-200 border border-slate-400 dark:border-slate-700 font-black">
                 {item.cohort}
               </span>
             )}

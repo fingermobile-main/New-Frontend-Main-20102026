@@ -122,7 +122,7 @@ const ContentAdminDashboardPage: React.FC = () => {
                     <span className="text-sm font-bold text-slate-700">Server Load</span>
                     <span className="text-sm font-bold text-emerald-500">42%</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2.5">
+                  <div className="w-full bg-slate-100 rounded-full h-2.5 border text-slate-950 border-slate-400 font-black">
                     <div className="bg-emerald-500 h-2.5 rounded-full" style={{ width: '42%' }}></div>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const ContentAdminDashboardPage: React.FC = () => {
                     <span className="text-sm font-bold text-slate-700">Database Capacity</span>
                     <span className="text-sm font-bold text-amber-500">78%</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2.5">
+                  <div className="w-full bg-slate-100 rounded-full h-2.5 border text-slate-950 border-slate-400 font-black">
                     <div className="bg-amber-500 h-2.5 rounded-full" style={{ width: '78%' }}></div>
                   </div>
                 </div>
@@ -142,7 +142,7 @@ const ContentAdminDashboardPage: React.FC = () => {
                     <span className="text-sm font-bold text-slate-700">Storage API</span>
                     <span className="text-sm font-bold text-rose-500">92%</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2.5">
+                  <div className="w-full bg-slate-100 rounded-full h-2.5 border text-slate-950 border-slate-400 font-black">
                     <div className="bg-rose-500 h-2.5 rounded-full" style={{ width: '92%' }}></div>
                   </div>
                 </div>

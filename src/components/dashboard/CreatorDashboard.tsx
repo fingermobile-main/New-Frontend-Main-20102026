@@ -380,7 +380,7 @@ const CreatorDashboard: React.FC = () => {
                       <div className="font-medium text-sm">{content.title}</div>
                       <div className="flex justify-between items-center mt-2">
                         <div className="text-xs text-gray-600 dark:text-gray-400">{content.date}</div>
-                        <span className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full">
+                        <span className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full border text-gray-950 border-gray-400 font-black">
                           {content.type}
                         </span>
                       </div>
@@ -593,7 +593,7 @@ const CreatorDashboard: React.FC = () => {
                         <span>{age.range}</span>
                         <span className="font-medium">{age.members}</span>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className="h-2 rounded-full bg-blue-600"
                           style={{ width: `${age.percentage}%` }}
@@ -638,7 +638,7 @@ const CreatorDashboard: React.FC = () => {
                         <span>{item.interest}</span>
                         <span className="font-medium">{item.percentage}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className="h-2 rounded-full bg-green-600"
                           style={{ width: `${item.percentage}%` }}
@@ -744,7 +744,7 @@ const CreatorDashboard: React.FC = () => {
                               <span>{item.source}</span>
                               <span className="font-medium">{item.amount}</span>
                             </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                               <div
                                 className={`h-2 rounded-full ${item.color}`}
                                 style={{ width: `${item.percentage}%` }}
@@ -811,7 +811,7 @@ const CreatorDashboard: React.FC = () => {
                         <div className="font-medium text-sm">{content.title}</div>
                         <div className="flex justify-between items-center mt-2">
                           <div className="text-xs text-gray-600 dark:text-gray-400">{content.date}</div>
-                          <span className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full border text-gray-950 border-gray-400 font-black">
                             {content.type}
                           </span>
                         </div>

@@ -156,7 +156,7 @@ const NotificationsPage: React.FC = () => {
                           alt={notification.actorName}
                         />
                       ) : (
-                        <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                        <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center border text-gray-950 border-gray-400 font-black">
                           {getNotificationIcon(notification.type)}
                         </div>
                       )}

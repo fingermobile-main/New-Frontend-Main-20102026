@@ -162,7 +162,7 @@ const DashboardHomePage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-300 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold">Trends & Insights</h2>
+              <h2 className="text-lg font-black text-slate-900">Trends & Insights</h2>
               <div className="flex gap-2">
                 {['7d', '30d', '90d'].map((range) => (
                   <button
@@ -170,8 +170,8 @@ const DashboardHomePage: React.FC = () => {
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1 text-sm rounded-full ${
                       timeRange === range
-                        ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-blue-100 text-blue-950 border border-blue-400 font-bold'
+                        : 'text-slate-700 font-bold hover:bg-slate-100'
                     }`}
                   >
                     {range}
@@ -188,13 +188,13 @@ const DashboardHomePage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-            <h2 className="text-lg font-bold mb-6">Wallet Balance</h2>
+            <h2 className="text-lg font-black text-slate-900 mb-6">Wallet Balance</h2>
             <div className="text-center">
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-3xl font-black text-slate-900">
                 {balance.toLocaleString()}{' '}
-                <span className="text-lg text-slate-700">FIC</span>
+                <span className="text-lg text-slate-600 font-bold">FIC</span>
               </p>
-              <p className="text-slate-700 mt-2">
+              <p className="text-slate-700 font-semibold mt-2">
                 ≈ $
                 {(balance * 0.1).toLocaleString(undefined, {
                   minimumFractionDigits: 2,
@@ -206,13 +206,13 @@ const DashboardHomePage: React.FC = () => {
               <div className="mt-6 space-y-3">
                 <button
                   onClick={() => navigate('/master-dashboard?tab=financials&subtab=fiat-rules')}
-                  className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="w-full py-2.5 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-sm"
                 >
                   Withdraw Funds
                 </button>
                 <button
                   onClick={() => navigate('/master-dashboard?tab=financials&subtab=cic-ledger')}
-                  className="w-full py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="w-full py-2.5 px-4 border border-slate-300 text-slate-800 font-bold rounded-xl hover:bg-slate-50 transition-colors"
                 >
                   View Transaction History
                 </button>
@@ -224,10 +224,10 @@ const DashboardHomePage: React.FC = () => {
         {/* Recent Content */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold">Recent Content</h2>
+            <h2 className="text-lg font-black text-slate-900">Recent Content</h2>
             <button
               onClick={() => navigate('/forum')}
-              className="text-blue-600 hover:text-blue-800 font-medium"
+              className="text-blue-600 hover:text-blue-800 font-bold"
             >
               View All
             </button>
@@ -252,7 +252,7 @@ const DashboardHomePage: React.FC = () => {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-6">
-          <h2 className="text-lg font-bold mb-6">Quick Actions</h2>
+          <h2 className="text-lg font-black text-slate-900 mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => navigate('/createpost')}
@@ -281,7 +281,7 @@ const DashboardHomePage: React.FC = () => {
               onClick={() => navigate('/stercs')}
               className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 border text-green-950 border-green-400 font-black">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-green-600"
@@ -327,7 +327,7 @@ const DashboardHomePage: React.FC = () => {
               onClick={() => navigate('/advancedanalytics')}
               className="flex flex-col items-center justify-center p-6 border border-slate-300 rounded-lg hover:bg-gray-50 transition-colors active:scale-95"
             >
-              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-3 border text-indigo-950 border-indigo-400 font-black">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-indigo-600"

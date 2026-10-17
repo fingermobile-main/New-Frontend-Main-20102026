@@ -39,7 +39,7 @@ const PostCreationGuidelines: React.FC<PostCreationGuidelinesProps> = ({ categor
       <div className="space-y-3">
         {selectedGuidelines.map((guideline, index) => (
           <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-100">
-            <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-950 font-bold text-sm border text-blue-950 border-blue-400 font-black">
+            <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-950 font-bold text-sm border  border-blue-400 font-black">
               {index + 1}
             </div>
             <div>

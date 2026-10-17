@@ -347,7 +347,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
             <div className="relative">
               <button
                 onClick={() => setShowBoardDropdown(!showBoardDropdown)}
-                className="flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 transition"
+                className="flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold text-slate-950 bg-slate-100 hover:bg-slate-200 transition border border-slate-400 font-black"
               >
                 <span className="truncate max-w-[90px]">{selectedBoardName}</span>
                 <ChevronDownIcon className="w-3.5 h-3.5 text-slate-600" />
@@ -493,7 +493,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                     </h3>
                     <div className="flex items-center gap-1.5 pt-0.5">
                       <span className="text-xs font-bold text-slate-700">{pin.author.handle}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 font-bold border border-emerald-400 border-emerald-400 font-black">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 font-bold border border-emerald-400  font-black">
                         {pin.author.domainReputation}
                       </span>
                     </div>
@@ -502,7 +502,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
 
                 <button
                   onClick={() => alert(`Followed ${pin.author.name} on FingerMobile Tribut`)}
-                  className="py-1.5 px-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs transition"
+                  className="py-1.5 px-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold text-xs transition border border-slate-400 font-black"
                 >
                   Follow
                 </button>
@@ -681,7 +681,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
 
                     {/* Add a Comment Input (Matching the Screenshot's footer with Emoji, GIF, and Media) */}
                     <form onSubmit={handleCommentSubmit} className="pt-2">
-                      <div className="relative flex items-center bg-slate-50 rounded-full border border-slate-300 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 p-1">
+                      <div className="relative flex items-center bg-slate-50 rounded-full border border-slate-400 focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-purple-200 p-1 text-slate-950 font-black">
                         <input
                           type="text"
                           value={commentText}

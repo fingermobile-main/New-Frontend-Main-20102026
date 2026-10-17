@@ -1005,17 +1005,17 @@ const MasterDashboardPage: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-950 dark:text-blue-300 font-black">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-100 text-blue-950 border border-blue-400  dark:bg-blue-950 dark:text-blue-300 font-black">
                 {rawGroup.length} Consoles Cataloged
               </span>
               {degradedInGroup.length > 0 && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1 font-black">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-950 border border-amber-400  dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1 font-black">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   {degradedInGroup.length} Degraded (&lt;85%)
                 </span>
               )}
               {benchmarkTelemetry && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1 font-black">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-950 border border-emerald-400  dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1 font-black">
                   ⚡ B-Tree Seek: {benchmarkTelemetry.executionTimeMs.toFixed(2)}ms
                 </span>
               )}
@@ -1164,7 +1164,7 @@ const MasterDashboardPage: React.FC = () => {
             <div>
               <div className="font-black text-sm flex items-center gap-2">
                 <span>3 Platform Consoles Operating with Degraded Health</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200 font-bold border text-amber-950 border-amber-400 font-black">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200 font-bold border  border-amber-400 font-black">
                   SLA NOTICE
                 </span>
               </div>
@@ -1629,7 +1629,7 @@ const MasterDashboardPage: React.FC = () => {
                   >
                     {component.status}
                   </span>
-                  <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="w-16 bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                     <div
                       className={`h-2 rounded-full ${
                         component.healthScore >= 90
@@ -1878,7 +1878,7 @@ const MasterDashboardPage: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                    <div className="w-16 bg-gray-200 rounded-full h-2 mr-2 border text-gray-950 border-gray-400 font-black">
                       <div
                         className={`h-2 rounded-full ${
                           section.healthScore >= 90
@@ -1958,7 +1958,7 @@ const MasterDashboardPage: React.FC = () => {
                       {component.responseTime}ms
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                     <div
                       className="bg-blue-500 h-2 rounded-full"
                       style={{
@@ -2116,7 +2116,7 @@ const MasterDashboardPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                      <div className="w-16 bg-gray-200 rounded-full h-2 mr-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className={`h-2 rounded-full ${
                             component.healthScore >= 90

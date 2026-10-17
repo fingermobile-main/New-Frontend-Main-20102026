@@ -127,7 +127,7 @@ const MyLearningPage: React.FC = () => {
             <h2 className="text-lg font-bold text-gray-900">Overall Course Progress</h2>
             <span className="text-sm font-semibold text-blue-600">{Math.round(overallProgress)}% Complete</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="w-full bg-gray-200 rounded-full h-3 border text-gray-950 border-gray-400 font-black">
             <div
               className="bg-blue-600 h-3 rounded-full transition-all duration-500"
               style={{ width: `${overallProgress}%` }}
@@ -185,7 +185,7 @@ const MyLearningPage: React.FC = () => {
                         <span>Progress</span>
                         <span>{Math.round(course.progress)}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className="bg-blue-600 h-2 rounded-full"
                           style={{ width: `${course.progress}%` }}

@@ -111,7 +111,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
           onClick={onOpenCreate}
           className="flex flex-col items-center flex-shrink-0 cursor-pointer group"
         >
-          <div className="relative w-16 h-16 rounded-full p-0.5 border-2 border-dashed border-gray-300 dark:border-gray-600 group-hover:border-emerald-500 transition-colors flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+          <div className="relative w-16 h-16 rounded-full p-0.5 border-2 border-dashed border-gray-400 dark:border-gray-600 group-hover:border-gray-400 transition-colors flex items-center justify-center bg-gray-50 dark:bg-gray-800 border text-gray-950 font-black">
             <Plus className="w-6 h-6 text-slate-500 group-hover:text-emerald-500" />
             <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-gray-900">
               +
@@ -124,7 +124,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
         {loading ? (
           <div className="flex space-x-3 items-center">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+              <div key={n} className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse border text-gray-950 border-gray-400 font-black" />
             ))}
           </div>
         ) : (

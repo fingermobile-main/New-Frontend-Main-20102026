@@ -106,7 +106,7 @@ const EnhancedAnalyticsDashboard: React.FC<EnhancedAnalyticsDashboardProps> = ({
               <div key={index} className="flex items-center justify-between">
                 <span className="text-sm text-gray-600 w-24">{item.period}</span>
                 <div className="flex-1 mx-4">
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
                       style={{ width: `${Math.min(item.retention_rate, 100)}%` }}

@@ -742,7 +742,7 @@ const StercsDashboardPage: React.FC = () => {
               <span className="text-sm font-bold text-slate-600">/ 100</span>
             </div>
             {/* SVG Semicircle Micro-gauge */}
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2">
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2 border text-slate-950 border-slate-400 font-black">
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full rounded-full" style={{ width: '97.4%' }} />
             </div>
             <p className="text-xs text-slate-700 font-medium flex items-center justify-between">
@@ -823,7 +823,7 @@ const StercsDashboardPage: React.FC = () => {
               <span className="text-3xl font-black text-slate-900 tracking-tight">99.98%</span>
             </div>
             {/* Multi-segment mini bar */}
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex mb-2">
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden flex mb-2 border text-slate-950 border-slate-400 font-black">
               <div className="bg-emerald-600 h-full" style={{ width: '99.98%' }} />
               <div className="bg-rose-600 h-full" style={{ width: '0.02%' }} />
             </div>
@@ -1029,7 +1029,7 @@ const StercsDashboardPage: React.FC = () => {
                       <span className="text-emerald-800 font-black">99.4% Verified Clean</span>
                     </div>
                     {/* Stacked 4-segment distribution bar */}
-                    <div className="w-full h-4 rounded-full overflow-hidden flex bg-slate-200 shadow-inner">
+                    <div className="w-full h-4 rounded-full overflow-hidden flex bg-slate-200 shadow-inner border text-slate-950 border-slate-400 font-black">
                       <div className="bg-emerald-600 h-full hover:opacity-90 transition-opacity" style={{ width: '92.4%' }} title="Clean: 92.4%" />
                       <div className="bg-blue-600 h-full hover:opacity-90 transition-opacity" style={{ width: '5.2%' }} title="Heuristics Scanned: 5.2%" />
                       <div className="bg-amber-500 h-full hover:opacity-90 transition-opacity" style={{ width: '2.1%' }} title="Quarantined: 2.1%" />
@@ -1697,7 +1697,7 @@ const StercsDashboardPage: React.FC = () => {
                         </td>
                         <td className="px-4 py-3 font-bold text-slate-800">{r.activeAgents} agents</td>
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px] border-emerald-400 font-black">
+                          <span className="inline-flex items-center gap-1 text-emerald-950 font-bold bg-emerald-100 border border-emerald-400 px-2 py-0.5 rounded-full text-[11px]  font-black">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             {r.status}
                           </span>

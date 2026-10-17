@@ -98,7 +98,7 @@ const ContentManagementPage: React.FC = () => {
                   <p className="text-sm text-slate-700">/{page.slug} &bull; Status: {page.status || 'published'}</p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">Active</span>
+                  <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">Active</span>
                 </div>
               </div>
             ))

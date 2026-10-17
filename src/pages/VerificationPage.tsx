@@ -235,7 +235,7 @@ const VerificationPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 text-center border border-green-100">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4 border text-green-950 border-green-400 font-black">
                       <ShieldCheckIcon className="h-8 w-8 text-green-600" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Account Verified!</h3>

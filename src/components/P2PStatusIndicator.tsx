@@ -75,7 +75,7 @@ const P2PStatusIndicator: React.FC<P2PStatusIndicatorProps> = ({
   const getAccountBadge = () => {
     if (accountType === 'business') {
       return (
-        <div className="flex items-center space-x-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-full text-xs font-bold" title="Verified Business (Enterprise)">
+        <div className="flex items-center space-x-1 bg-orange-100 text-orange-950 px-2 py-1 rounded-full text-xs font-bold border border-orange-400 font-black" title="Verified Business (Enterprise)">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
@@ -85,7 +85,7 @@ const P2PStatusIndicator: React.FC<P2PStatusIndicatorProps> = ({
     }
     if (accountType === 'creator') {
       return (
-        <div className="flex items-center space-x-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-1 rounded-full text-xs font-bold font-black" title="Professional Creator">
+        <div className="flex items-center space-x-1 bg-blue-100 text-blue-950 border border-blue-400 font-bold px-2 py-1 rounded-full text-xs  font-black" title="Professional Creator">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>

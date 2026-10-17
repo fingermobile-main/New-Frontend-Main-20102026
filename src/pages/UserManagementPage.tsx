@@ -365,7 +365,7 @@ const UserManagementPage: React.FC = () => {
             </select>
 
             <div className="flex items-center justify-end">
-              <span className="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-800 rounded-full border border-slate-300">
+              <span className="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-950 rounded-full border border-slate-400 font-black">
                 {filteredUsers.length} Users Listed
               </span>
             </div>
@@ -421,7 +421,7 @@ const UserManagementPage: React.FC = () => {
                     <tr key={user.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center font-bold text-sm border border-blue-400 font-black">
+                          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-bold flex items-center justify-center  text-sm   font-black">
                             <UserIcon className="h-5 w-5" />
                           </div>
                           <div className="ml-3">

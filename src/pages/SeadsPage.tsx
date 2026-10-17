@@ -262,7 +262,7 @@ const SeadsPage: React.FC = () => {
                       <span className="text-emerald-700 font-black">{progress}% Funded</span>
                       <span className="text-slate-700">{(proj.current_funding).toLocaleString()} / {(proj.target_funding).toLocaleString()} FIC</span>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                    <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden border text-gray-950 border-gray-400 font-black">
                       <div
                         className="bg-gradient-to-r from-emerald-500 to-green-600 h-full rounded-full transition-all duration-500"
                         style={{ width: `${progress}%` }}

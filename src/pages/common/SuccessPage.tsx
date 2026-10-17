@@ -53,7 +53,7 @@ const SuccessPage: React.FC = () => {
         <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3 tracking-tight">
           FingerMobile
         </div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 font-semibold text-sm mb-3 border border-green-200 dark:border-green-800">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 dark:bg-green-950/40 text-green-950 dark:text-green-300 font-semibold text-sm mb-3 border border-green-400 dark:border-green-800 font-black">
           <span>✓</span>
           <span>Onboarding Completed Successfully</span>
         </div>

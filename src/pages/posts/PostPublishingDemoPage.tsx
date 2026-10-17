@@ -99,7 +99,7 @@ const DemoContent: React.FC = () => {
 
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <div className="bg-green-100 rounded-full p-2">
+                    <div className="bg-green-100 rounded-full p-2 border text-green-950 border-green-400 font-black">
                       <svg className="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                         <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
@@ -166,7 +166,7 @@ const DemoContent: React.FC = () => {
 
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-green-100 rounded-full p-1">
+                    <div className="bg-green-100 rounded-full p-1 border text-green-950 border-green-400 font-black">
                       <svg className="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
@@ -194,7 +194,7 @@ const DemoContent: React.FC = () => {
 
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-yellow-100 rounded-full p-1">
+                    <div className="bg-yellow-100 rounded-full p-1 border text-yellow-950 border-yellow-400 font-black">
                       <svg className="h-6 w-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                       </svg>

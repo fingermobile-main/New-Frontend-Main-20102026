@@ -419,7 +419,7 @@ export const FingerLuxStaffResources: React.FC<FingerLuxStaffResourcesProps> = (
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-950 bg-amber-100 px-2 py-0.5 rounded border border-amber-400 font-black">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-950 bg-amber-100 px-2 py-0.5 rounded border border-amber-400 ">
                       {loc.badge || 'Global Hub'}
                     </span>
                     <h3 className="text-lg font-black text-slate-900 mt-1">{loc.name}</h3>

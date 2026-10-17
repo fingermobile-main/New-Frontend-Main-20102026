@@ -310,7 +310,7 @@ const LmsPage: React.FC = () => {
                       <span>Progress</span>
                       <span>{course.progress}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                       <div
                         className="bg-blue-600 h-2 rounded-full"
                         style={{ width: `${course.progress}%` }}

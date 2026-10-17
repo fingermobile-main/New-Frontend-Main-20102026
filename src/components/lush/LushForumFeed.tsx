@@ -332,7 +332,7 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
       ) : activeTab === 'discover' ? (
         <div className="bg-white rounded-3xl border border-emerald-100/90 p-5 sm:p-7 shadow-xs">
           <div className="text-center mb-5 space-y-1">
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-950 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-400   font-black">
               Cross-Device Swipe Engine
             </span>
             <h2 className="text-xl font-black text-gray-900 mt-2">
@@ -561,14 +561,14 @@ export const LushForumFeed: React.FC<LushForumFeedProps> = ({
                         onClick={() =>
                           onOpenChat?.(post.author.id, post.author.name)
                         }
-                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-400 transition text-emerald-950 border-emerald-400 font-black"
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-400 transition   font-black"
                         title={`Sovereign Encrypted Chat with ${post.author.name}`}
                       >
                         <LockClosedIcon className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Encrypted Chat</span>
                       </button>
 
-                      <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-1 rounded-full border border-emerald-400 hidden sm:inline text-emerald-950 border-emerald-400 font-black">
+                      <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-1 rounded-full border border-emerald-400 hidden sm:inline   font-black">
                         {post.author.intentTag}
                       </span>
                     </div>

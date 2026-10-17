@@ -101,7 +101,7 @@ const ExpiringWarrantiesList: React.FC<ExpiringWarrantiesListProps> = ({
           </p>
         </div>
         {expiringProducts.length > 0 && (
-          <span className="px-3 py-1 bg-red-100 text-red-950 border border-red-400 font-bold rounded-full text-sm font-semibold">
+          <span className="px-3 py-1 bg-red-100 text-red-950 border border-red-400 font-bold rounded-full text-sm font-semibold font-black">
             {expiringProducts.length} expiring soon
           </span>
         )}

@@ -236,7 +236,7 @@ const SocialLinksPanel: React.FC = () => {
                       <div className="flex items-center">
                         <h3 className="text-sm font-medium text-gray-900">{link.platform}</h3>
                         {link.isVerified && (
-                          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                             Verified
                           </span>
                         )}
@@ -273,7 +273,7 @@ const SocialLinksPanel: React.FC = () => {
 
           {links.length === 0 && (
             <div className="text-center py-8">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 border text-gray-950 border-gray-400 font-black">
                 <LinkIcon className="h-6 w-6 text-slate-700" />
               </div>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No social links</h3>

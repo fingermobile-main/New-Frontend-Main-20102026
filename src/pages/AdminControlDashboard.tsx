@@ -383,7 +383,7 @@ const AdminControlDashboard: React.FC = () => {
                               </span>
                             )}
                             {action.requiresConfirmation && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-950 border border-red-400 font-bold">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-950 border border-red-400 font-bold font-black">
                                 Confirmation
                               </span>
                             )}

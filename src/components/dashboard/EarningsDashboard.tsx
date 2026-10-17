@@ -134,7 +134,7 @@ const EarningsDashboard: React.FC = () => {
                   <span className="text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
                   <span className="text-gray-900 font-medium">${value.toFixed(2)}</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                   <div
                     className="bg-blue-600 h-2 rounded-full"
                     style={{ width: `${(value / earningsData.totalEarnings) * 100}%` }}

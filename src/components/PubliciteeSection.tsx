@@ -90,7 +90,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Publicitee</h2>
-              <span className="text-[11px] font-semibold uppercase tracking-wider bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300 px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-800 flex items-center gap-1">
+              <span className="text-[11px] font-semibold uppercase tracking-wider bg-orange-100 text-orange-950 dark:bg-orange-950/80 dark:text-orange-300 px-2 py-0.5 rounded-full border border-orange-400 dark:border-orange-800 flex items-center gap-1 font-black">
                 <Clock className="w-3 h-3" /> 168h TTL (7 Days)
               </span>
             </div>

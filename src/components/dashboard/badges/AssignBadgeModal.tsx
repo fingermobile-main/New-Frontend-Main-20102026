@@ -127,7 +127,7 @@ export const AssignBadgeModal: React.FC<AssignBadgeModalProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-800 dark:text-slate-200">
+                    <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-black text-xs text-slate-950 dark:text-slate-200 border border-slate-400">
                       {member.name.charAt(0)}
                     </div>
                     <div>

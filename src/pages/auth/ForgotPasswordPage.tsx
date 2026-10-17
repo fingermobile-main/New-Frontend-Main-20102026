@@ -78,7 +78,7 @@ const ForgotPasswordPage = () => {
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 border text-indigo-950 border-indigo-400 font-black">
               <Mail className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reset Password</h1>

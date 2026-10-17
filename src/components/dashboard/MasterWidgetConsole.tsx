@@ -1077,7 +1077,7 @@ export const MasterWidgetConsole: React.FC = () => {
                 <span>Positive Sentiment</span>
                 <span className="font-mono font-bold text-emerald-700">890 ratings</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2 border text-slate-950 border-slate-400 font-black">
                 <div className="bg-emerald-600 h-2 rounded-full w-[96%]" />
               </div>
 
@@ -1085,7 +1085,7 @@ export const MasterWidgetConsole: React.FC = () => {
                 <span>Neutral Sentiment</span>
                 <span className="font-mono font-bold text-amber-700">28 ratings</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2 border text-slate-950 border-slate-400 font-black">
                 <div className="bg-amber-500 h-2 rounded-full w-[3%]" />
               </div>
 
@@ -1093,7 +1093,7 @@ export const MasterWidgetConsole: React.FC = () => {
                 <span>Negative Sentiment</span>
                 <span className="font-mono font-bold text-rose-700">6 ratings</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2 border text-slate-950 border-slate-400 font-black">
                 <div className="bg-rose-500 h-2 rounded-full w-[1%]" />
               </div>
             </div>

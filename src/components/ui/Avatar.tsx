@@ -28,7 +28,7 @@ const Avatar: React.FC<AvatarProps> = ({
   if (children) {
     return (
       <div
-        className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden ${sizeClasses[size]} ${className}`}
+        className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden  border text-gray-950 border-gray-400 font-black${sizeClasses[size]} ${className}`}
       >
         {children}
       </div>
@@ -38,7 +38,7 @@ const Avatar: React.FC<AvatarProps> = ({
   // Otherwise use simple pattern with src/fallback props
   return (
     <div
-      className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden ${sizeClasses[size]} ${className}`}
+      className={`relative flex items-center justify-center rounded-full bg-gray-200 overflow-hidden  border text-gray-950 border-gray-400 font-black${sizeClasses[size]} ${className}`}
     >
       {src ? (
         <img

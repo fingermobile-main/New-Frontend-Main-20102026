@@ -71,7 +71,7 @@ const CommunitiesSection: React.FC = () => {
             </div>
 
             {community.isJoined ? (
-              <span className="text-xs bg-green-100 text-green-950 border border-green-400 font-bold px-2 py-1 rounded-full">
+              <span className="text-xs bg-green-100 text-green-950 border border-green-400 font-bold px-2 py-1 rounded-full font-black">
                 Joined
               </span>
             ) : (

@@ -82,7 +82,7 @@ const FAQPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 animate-in fade-in duration-500">
         {/* Hero */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-950 dark:text-blue-300 text-xs font-bold rounded-full mb-4 border border-blue-400 dark:border-blue-800   font-black">
             <QuestionMarkCircleIcon className="w-4 h-4" />
             <span>Official Knowledge Base</span>
           </div>

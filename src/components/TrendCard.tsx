@@ -31,7 +31,7 @@ const TrendCard: React.FC<TrendCardProps> = ({ trend, rank, onClick }) => {
     >
       <CardContent className="p-4">
         <div className="flex items-center gap-3">
-          <div className="text-2xl font-black text-slate-400 min-w-[40px]">
+          <div className="text-2xl font-black text-slate-700 min-w-[40px]">
             #{rank}
           </div>
           <div className="flex-1 min-w-0">

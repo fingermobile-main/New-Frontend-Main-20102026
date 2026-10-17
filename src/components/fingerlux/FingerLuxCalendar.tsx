@@ -397,7 +397,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
               <h3 className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                 <span>📋</span> Live Waitlist Queue ({waitlist.length})
               </h3>
-              <span className="text-[10px] text-indigo-950 font-black bg-indigo-100 border border-indigo-300 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-indigo-950 font-black bg-indigo-100 border border-indigo-400 px-2 py-0.5 rounded-full">
                 Auto-Notify
               </span>
             </div>
@@ -416,7 +416,7 @@ export const FingerLuxCalendar: React.FC<FingerLuxCalendarProps> = ({
                       <div className="text-xs font-black text-slate-900">{w.clientName}</div>
                       <div className="text-[10px] text-slate-700 font-semibold">{w.clientEmail}</div>
                     </div>
-                    <span className="text-[9px] font-black text-amber-950 bg-amber-100 border border-amber-400 px-2 py-0.5 rounded-full border-amber-400">
+                    <span className="text-[9px] font-black text-amber-950 bg-amber-100 border border-amber-400 px-2 py-0.5 rounded-full ">
                       {w.status}
                     </span>
                   </div>

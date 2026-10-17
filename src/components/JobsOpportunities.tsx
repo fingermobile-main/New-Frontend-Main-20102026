@@ -57,16 +57,16 @@ const JobsOpportunities: React.FC = () => {
           <button className="px-3 py-1.5 bg-fm-orange text-white rounded-full text-sm whitespace-nowrap">
             All Jobs
           </button>
-          <button className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">
+          <button className="px-3 py-1.5 bg-gray-100 text-gray-950 rounded-full text-sm whitespace-nowrap hover:bg-gray-200 border border-gray-400 font-black">
             Full-time
           </button>
-          <button className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">
+          <button className="px-3 py-1.5 bg-gray-100 text-gray-950 rounded-full text-sm whitespace-nowrap hover:bg-gray-200 border border-gray-400 font-black">
             Part-time
           </button>
-          <button className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">
+          <button className="px-3 py-1.5 bg-gray-100 text-gray-950 rounded-full text-sm whitespace-nowrap hover:bg-gray-200 border border-gray-400 font-black">
             Contract
           </button>
-          <button className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">
+          <button className="px-3 py-1.5 bg-gray-100 text-gray-950 rounded-full text-sm whitespace-nowrap hover:bg-gray-200 border border-gray-400 font-black">
             Remote
           </button>
         </div>

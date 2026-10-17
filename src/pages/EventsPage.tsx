@@ -533,7 +533,7 @@ const EventsPage: React.FC = () => {
 
                           <button
                             onClick={() => setGiftTicketEvent(event)}
-                            className="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+                            className="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold rounded-xl text-xs  flex items-center gap-1.5 transition-colors"
                           >
                             <GiftIcon className="w-4 h-4" />
                             <span>Gift</span>
@@ -541,7 +541,7 @@ const EventsPage: React.FC = () => {
 
                           <button
                             onClick={() => setPaylinkEvent(event)}
-                            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+                            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded-xl text-xs  flex items-center gap-1.5 transition-colors"
                           >
                             <LinkIcon className="w-4 h-4" />
                             <span>Paylink</span>

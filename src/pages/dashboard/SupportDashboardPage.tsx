@@ -60,8 +60,8 @@ const SupportDashboardPage: React.FC = () => {
           <textarea value={reply} onChange={e => setReply(e.target.value)} rows={3} className="w-full p-2 border rounded-md text-slate-900 font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" placeholder="Type your reply..."></textarea>
           <div className="flex justify-between items-center mt-2">
             <div className="flex gap-2">
-              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-full hover:bg-green-200">Mark as Resolved</button>
-              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} type="button" className="px-3 py-1 text-xs font-semibold bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Close Ticket</button>
+              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'resolved')} type="button" className="px-3 py-1 text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold rounded-full hover:bg-green-200 font-black">Mark as Resolved</button>
+              <button onClick={() => onUpdateStatus(selectedTicket!.id, 'closed')} type="button" className="px-3 py-1 text-xs font-semibold bg-gray-200 text-gray-950 rounded-full hover:bg-gray-300 border border-gray-400 font-black">Close Ticket</button>
             </div>
             <button type="submit" className="px-4 py-2 text-sm font-semibold bg-brand-blue text-white rounded-lg hover:bg-blue-700">Send Reply</button>
           </div>

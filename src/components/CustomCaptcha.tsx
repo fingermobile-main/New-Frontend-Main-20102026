@@ -42,7 +42,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
       
       {isVerified ? (
         <div className="flex flex-col items-center justify-center p-4">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3 border text-green-950 border-green-400 font-black">
             <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
             </svg>
@@ -67,7 +67,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   className="w-32 h-2 bg-white rounded-lg appearance-none cursor-pointer accent-blue-600 -rotate-90 origin-center text-slate-900 font-bold border border-slate-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full font-black">{valueUp}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400  px-3 py-1 rounded-full font-black">{valueUp}</span>
             </div>
 
             {/* Horizontal Slider */}
@@ -86,7 +86,7 @@ export const CustomCaptcha: React.FC<CustomCaptchaProps> = ({ onSuccess }) => {
                   style={{ direction: 'rtl' }}
                 />
               </div>
-              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400 font-bold px-3 py-1 rounded-full font-black">{valueDown}</span>
+              <span className="text-sm font-bold bg-blue-100 text-blue-950 border border-blue-400  px-3 py-1 rounded-full font-black">{valueDown}</span>
             </div>
           </div>
           

@@ -350,7 +350,7 @@ const FingerWarsPage: React.FC = () => {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl pointer-events-none" />
                   <div>
                     <div className="flex justify-between items-start gap-3 mb-3">
-                      <span className="px-3 py-1 bg-yellow-100 text-yellow-900 text-xs font-black rounded-full uppercase tracking-wider">
+                      <span className="px-3 py-1 bg-yellow-100 text-yellow-950 text-xs font-black rounded-full uppercase tracking-wider border border-yellow-400">
                         {t.status === 'active' ? '● In Progress' : 'Registration Open'}
                       </span>
                       <span className="text-xl font-black text-amber-600">
@@ -421,7 +421,7 @@ const FingerWarsPage: React.FC = () => {
                         <span>Progress</span>
                         <span>{c.progress}%</span>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
+                      <div className="w-full bg-gray-100 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className="bg-yellow-500 h-2 rounded-full transition-all"
                           style={{ width: `${Math.min(100, c.progress)}%` }}
@@ -508,13 +508,13 @@ const FingerWarsPage: React.FC = () => {
                 {leaderboard.map((player) => (
                   <tr key={player.rank} className="hover:bg-yellow-50/30 transition-colors">
                     <td className="py-4 px-5">
-                      <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-xs bg-yellow-100 text-yellow-900">
+                      <span className="w-7 h-7 rounded-full flex items-center justify-center font-black text-xs bg-yellow-100 text-yellow-950 border border-yellow-400">
                         #{player.rank}
                       </span>
                     </td>
                     <td className="py-4 px-5 font-bold text-gray-900">{player.username}</td>
                     <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-950 border text-purple-950 border-purple-400 font-black">
+                      <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-50 text-purple-950 border  border-purple-400 font-black">
                         {player.tier}
                       </span>
                     </td>

@@ -138,7 +138,7 @@ const FeatureTogglesPage: React.FC = () => {
               </form>
               <div className="flex flex-wrap gap-2">
                 {(tropicalGiftsToggle.specialDays || []).map((day: string) => (
-                  <div key={day} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
+                  <div key={day} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm border text-gray-950 border-gray-400 font-black">
                     <span>{day}</span>
                     <button onClick={() => handleRemoveSpecialDay(day)} className="text-red-500 font-bold text-xs leading-none hover:bg-red-100 rounded-full w-4 h-4 flex items-center justify-center">&times;</button>
                   </div>

@@ -770,7 +770,7 @@ const CataloguePage: React.FC = () => {
         {purchaseSuccessLicense && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-300 animate-in fade-in zoom-in-95 text-center">
-              <div className="w-14 h-14 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-14 h-14 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full flex items-center justify-center mx-auto mb-4 font-black">
                 <CheckCircleIcon className="w-8 h-8" />
               </div>
 

@@ -331,7 +331,7 @@ const CamusDashboardPage: React.FC = () => {
                             </span>
                           </div>
 
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden border text-gray-950 border-gray-400 font-black">
                             <div
                               className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                               style={{ width: `${course.progress}%` }}
@@ -398,7 +398,7 @@ const CamusDashboardPage: React.FC = () => {
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border text-blue-950 border-blue-400 font-black">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-950 dark:text-blue-300 border  border-blue-400 font-black">
                             {course.level || 'Beginner'}
                           </span>
                           <h3 className="font-bold text-base text-gray-900 dark:text-white mt-1">
@@ -410,7 +410,7 @@ const CamusDashboardPage: React.FC = () => {
                         </span>
                       </div>
 
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden border text-gray-950 border-gray-400 font-black">
                         <div
                           className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${course.progress}%` }}
@@ -515,7 +515,7 @@ const CamusDashboardPage: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-mono font-bold text-emerald-600 text-sm">{q.score}</span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold font-bold text-[10px] font-black">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold  text-[10px] font-black">
                           {q.status}
                         </span>
                       </div>

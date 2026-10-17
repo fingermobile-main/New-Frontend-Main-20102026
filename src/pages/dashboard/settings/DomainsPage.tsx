@@ -73,7 +73,7 @@ const DomainsPage: React.FC = () => {
               <p className="font-semibold text-gray-900">{primaryDomain.domain}</p>
               <p className="text-xs text-slate-700 font-mono mt-0.5">SSL: {primaryDomain.ssl_status}</p>
             </div>
-            <span className="text-sm text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full border border-green-200">
+            <span className="text-sm text-green-950 font-semibold bg-green-50 px-3 py-1 rounded-full border border-green-400 font-black">
               Primary Active
             </span>
           </div>

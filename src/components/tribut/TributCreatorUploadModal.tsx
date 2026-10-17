@@ -517,7 +517,7 @@ export const TributCreatorUploadModal: React.FC<TributCreatorUploadModalProps> =
               }`}
             >
               <div className="flex flex-col items-center justify-center space-y-2">
-                <div className="p-3 rounded-full bg-purple-100 border border-purple-400 text-purple-950 text-purple-950 border-purple-400 font-black">
+                <div className="p-3 rounded-full bg-purple-100 border border-purple-400 text-purple-950   font-black">
                   <UploadCloud className="w-6 h-6" />
                 </div>
                 <div>

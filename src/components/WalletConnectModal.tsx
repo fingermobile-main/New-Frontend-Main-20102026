@@ -116,7 +116,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-gray-900">{wallet.name}</h3>
                     {wallet.popular && (
-                      <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
+                      <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium font-black">
                         Popular
                       </span>
                     )}

@@ -73,7 +73,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
           </button>
           <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <span>Manage Roles</span>
-            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+            <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-slate-300 border border-slate-400 font-black">
               {roles.length} Total
             </span>
           </h1>
@@ -176,7 +176,7 @@ export const RoleCatalogView: React.FC<RoleCatalogViewProps> = ({
                   {/* Assigned Count */}
                   <td className="py-3.5 px-4">
                     {role.assignedUsersCount > 0 ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800 text-blue-950 border-blue-400 font-black">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-950 dark:text-blue-300 border border-blue-400 dark:border-blue-800   font-black">
                         {role.assignedUsersCount} Assigned
                       </span>
                     ) : (

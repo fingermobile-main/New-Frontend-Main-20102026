@@ -504,7 +504,7 @@ const PermanencePage: React.FC = () => {
                 <div className="p-5">
                   <div className="flex justify-between items-start">
                     <h3 className="text-lg font-semibold">{challenge.title}</h3>
-                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold">
+                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold font-black">
                       Viral
                     </span>
                   </div>
@@ -580,7 +580,7 @@ const PermanencePage: React.FC = () => {
                 <div className="flex justify-between items-start">
                   <h3 className="text-lg font-semibold">{stream.title}</h3>
                   {stream.isLive && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold flex items-center">
+                    <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-950 border border-red-400 font-bold flex items-center font-black">
                       <span className="w-2 h-2 bg-red-600 rounded-full mr-1"></span>
                       LIVE
                     </span>

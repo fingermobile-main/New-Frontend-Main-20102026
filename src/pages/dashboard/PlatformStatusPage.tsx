@@ -39,13 +39,13 @@ const PlatformStatusPage: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
     case 'healthy':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400">Operational</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400 font-black">Operational</span>;
     case 'degraded':
       return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-950 border border-amber-400 font-bold dark:bg-yellow-900/30 dark:text-yellow-400 font-black">Degraded</span>;
     case 'offline':
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-900/30 dark:text-red-400">Offline</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-950 border border-red-400 font-bold dark:bg-red-900/30 dark:text-red-400 font-black">Offline</span>;
     default:
-      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300">Maintenance</span>;
+      return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-950 dark:bg-gray-800 dark:text-gray-300 border border-gray-400 font-black">Maintenance</span>;
     }
   };
 

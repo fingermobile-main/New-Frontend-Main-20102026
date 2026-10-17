@@ -155,7 +155,7 @@ const GameDashboard: React.FC<GameDashboardProps> = ({
 
                   {!achievement.unlocked && achievement.progress !== undefined && (
                     <div className="mt-2">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2 border text-gray-950 border-gray-400 font-black">
                         <div
                           className="bg-purple-600 h-2 rounded-full transition-all"
                           style={{ width: `${achievement.progress}%` }}

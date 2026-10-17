@@ -120,7 +120,7 @@ export function ProtocolLushDrawer({
           <p className="text-[11px] text-slate-700 mt-0.5">{userLocation}</p>
 
           {/* Membership & Consent Pill */}
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs text-emerald-950 text-emerald-950 border-emerald-400 font-black">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-400 rounded-full text-xs text-emerald-950   font-black">
             <ShieldCheckIcon className="w-4 h-4 text-emerald-600" />
             <span>Consent Verified</span>
             <span className="font-mono font-semibold text-emerald-700 ml-1">
@@ -131,7 +131,7 @@ export function ProtocolLushDrawer({
           {/* Protocol Status Indicator */}
           <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-gray-600">
             <span className="text-slate-700">Security Grid:</span>
-            <span className="font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
+            <span className="font-semibold text-emerald-950 bg-emerald-50/70 px-2.5 py-0.5 rounded-full border border-emerald-400   font-black">
               STERCS™ Active
             </span>
           </div>
@@ -145,7 +145,7 @@ export function ProtocolLushDrawer({
             <SparklesIcon className="w-4 h-4 text-[#DC582A]" />
             Protocol Rewards
           </span>
-          <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border text-emerald-950 border-emerald-400 font-black">
+          <span className="text-[11px] font-semibold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded-full border  border-emerald-400 font-black">
             Level 5
           </span>
         </div>
@@ -156,7 +156,7 @@ export function ProtocolLushDrawer({
             <span>XP Progress</span>
             <span>850 / 1000 XP</span>
           </div>
-          <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
             <div
               className="h-full bg-gradient-to-r from-emerald-500 to-[#DC582A] rounded-full transition-all duration-500 w-[85%]"
             />

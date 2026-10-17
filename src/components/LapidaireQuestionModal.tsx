@@ -182,7 +182,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
               Completed
             </span>
           </div>
-          <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
             <div
               className="bg-gradient-to-r from-emerald-500 to-teal-500 h-full transition-all duration-300 rounded-full"
               style={{
@@ -194,7 +194,7 @@ export const LapidaireQuestionModal: React.FC<LapidaireQuestionModalProps> = ({
 
         {/* Question Content */}
         <div className="space-y-4">
-          <div className="inline-block px-2.5 py-1 rounded-full bg-emerald-100/70 text-emerald-950 text-[10px] font-bold uppercase tracking-wider border text-emerald-950 border-emerald-400 font-black">
+          <div className="inline-block px-2.5 py-1 rounded-full bg-emerald-100/70 text-emerald-950 text-[10px] font-bold uppercase tracking-wider border  border-emerald-400 font-black">
             {currentQ.category}
           </div>
 

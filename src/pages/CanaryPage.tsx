@@ -484,7 +484,7 @@ const CanaryPage: React.FC = () => {
                         Last checked: 5 minutes ago
                       </p>
                     </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium font-black">
                       {service.status}
                     </span>
                   </div>

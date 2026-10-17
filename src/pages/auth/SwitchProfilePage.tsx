@@ -180,7 +180,7 @@ const SwitchProfilePage: React.FC = () => {
         </div>
 
         <div className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-6 text-center bg-white/50 dark:bg-slate-800/30">
-          <div className="mx-auto w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center mb-3">
+          <div className="mx-auto w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center mb-3 border text-indigo-950 border-indigo-400 font-black">
             <PlusCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Need a specialized persona?</h3>

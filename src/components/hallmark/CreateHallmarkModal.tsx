@@ -288,7 +288,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
             <div className="flex items-center gap-2">
               <span className="text-xl">🏛️</span>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">Create a HallMarks™ Page</h2>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-orange-100 text-[#ff6b00] border border-orange-200">
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-orange-100 text-[#ff6b00] border border-orange-400 text-orange-950 font-black">
                 Official Entity Account
               </span>
             </div>
@@ -307,22 +307,22 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
         {/* Multi-step Breadcrumb */}
         <div className="px-6 py-2.5 bg-gray-50 dark:bg-gray-800/50 border-b border-slate-300 dark:border-gray-800 flex items-center justify-between text-xs font-medium">
           <div className={`flex items-center gap-1.5 ${step === 1 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
-            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">1</span>
+            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">1</span>
             <span>Tier Selection</span>
           </div>
           <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 2 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
-            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">2</span>
+            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">2</span>
             <span>Naming & Policy</span>
           </div>
           <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 3 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
-            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">3</span>
+            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">3</span>
             <span>Verification & Roles</span>
           </div>
           <span className="text-slate-700">›</span>
           <div className={`flex items-center gap-1.5 ${step === 4 ? 'text-[#ff6b00] font-bold' : 'text-gray-500'}`}>
-            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px]">4</span>
+            <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[11px] border text-gray-950 border-gray-400 font-black">4</span>
             <span>Subscription & Submit</span>
           </div>
         </div>
@@ -646,7 +646,7 @@ const CreateHallmarkModal: React.FC<CreateHallmarkModalProps> = ({
           {/* STEP 5: Success & Confirmation */}
           {step === 5 && (
             <div className="py-8 text-center space-y-4 animate-fade-in">
-              <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-300 flex items-center justify-center text-3xl mx-auto shadow-md">
+              <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/40 text-green-950 dark:text-green-300 flex items-center justify-center text-3xl mx-auto shadow-md border border-green-400 font-black">
                 ✓
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">

@@ -117,12 +117,12 @@ export const LushCallModal: React.FC<LushCallModalProps> = ({
 
         {activeCall.status === 'active' && (
           <div className="mt-6 flex justify-center space-x-4">
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-300 transition-colors">
+            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-300 transition-colors border border-gray-400 font-black">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
             </button>
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-300 transition-colors">
+            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-300 transition-colors border border-gray-400 font-black">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m1.414-4.243a5 5 0 000-7.072m-2.828 9.9a9 9 0 010-12.728" />
               </svg>

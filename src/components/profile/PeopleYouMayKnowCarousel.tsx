@@ -166,7 +166,7 @@ export const PeopleYouMayKnowCarousel: React.FC<PeopleYouMayKnowCarouselProps> =
           <div>
             <h3 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
               <span>{title}</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-300">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-100 text-slate-950 border border-slate-400 font-black">
                 {recommendations.length}
               </span>
             </h3>
@@ -238,7 +238,7 @@ export const PeopleYouMayKnowCarousel: React.FC<PeopleYouMayKnowCarouselProps> =
                 onClick={() => navigate(`/profile/${rec.handle || rec.id}`)}
                 className="cursor-pointer space-y-2 text-center"
               >
-                <div className="relative w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-white shadow-md ring-2 ring-emerald-500/80 bg-slate-200 group-hover:scale-105 transition-transform">
+                <div className="relative w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-white shadow-md ring-2 ring-emerald-500/80 bg-slate-200 group-hover:scale-105 transition-transform border text-slate-950 border-slate-400 font-black">
                   <img
                     src={rec.avatar}
                     alt={rec.name}

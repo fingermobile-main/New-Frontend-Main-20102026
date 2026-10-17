@@ -243,7 +243,7 @@ const ModerationDashboardPage: React.FC = () => {
                         </div>
 
                         <div className="mt-3 flex items-center justify-between">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-950 border border-gray-400 font-black">
                             Reason: {item.reason}
                           </span>
                           <div className="flex space-x-2">
@@ -484,7 +484,7 @@ const ModerationDashboardPage: React.FC = () => {
                         </div>
                         <button
                           type="button"
-                          className="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none bg-gray-200"
+                          className="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none bg-gray-200 border text-gray-950 border-gray-400 font-black"
                         >
                           <span className="sr-only">Use setting</span>
                           <span

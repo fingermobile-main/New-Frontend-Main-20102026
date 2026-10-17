@@ -79,7 +79,7 @@ const OrganizeThesePage: React.FC = () => {
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Organizing your data with AI</h3>
               <p className="text-gray-600">Analyzing content, connections, and behavioral patterns...</p>
-              <div className="mt-4 w-64 bg-gray-200 rounded-full h-2.5">
+              <div className="mt-4 w-64 bg-gray-200 rounded-full h-2.5 border text-gray-950 border-gray-400 font-black">
                 <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: '75%' }}></div>
               </div>
               <p className="text-sm text-gray-500 mt-2">75% complete</p>

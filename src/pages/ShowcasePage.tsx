@@ -16,7 +16,7 @@ const ShowcaseItem: React.FC<ShowcaseItemProps> = ({ item }) => (
     <div className="p-6">
       <h2 className="text-2xl font-bold text-gray-800">{item.title}</h2>
     </div>
-    <img src={item.imageUrl} alt={item.title} className="w-full h-auto object-contain bg-gray-100 max-w-full h-auto" loading="lazy"  />
+    <img src={item.imageUrl} alt={item.title} className="w-full h-auto object-contain bg-gray-100 max-w-full " loading="lazy"  />
     <div className="p-6">
       <h3 className="font-semibold text-lg mb-2">Description</h3>
       <p className="text-gray-600 mb-4">{item.description}</p>

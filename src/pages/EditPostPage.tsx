@@ -611,7 +611,7 @@ const EditPostPage: React.FC = () => {
                     <button
                       onClick={handleApplyAsBase}
                       title="Set this output as original to apply further chained edits"
-                      className="px-2.5 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold font-medium transition-colors"
+                      className="px-2.5 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-950  border-blue-400 font-bold font-medium transition-colors"
                     >
                       Use as Base
                     </button>

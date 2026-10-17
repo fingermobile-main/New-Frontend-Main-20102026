@@ -148,7 +148,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
                   <span className="text-gray-700 capitalize">{source.replace(/([A-Z])/g, ' $1').trim()}</span>
                   <span className="font-medium">{formatCurrency(amount as number)} ({percentage}%)</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3">
+                <div className="w-full bg-gray-200 rounded-full h-3 border text-gray-950 border-gray-400 font-black">
                   <div
                     className={`${colors[source]} h-3 rounded-full transition-all`}
                     style={{ width: `${percentage}%` }}
@@ -216,7 +216,7 @@ const EarningsTracker: React.FC<EarningsTrackerProps> = ({
                     {payout.method.replace('_', ' ')}
                   </td>
                   <td className="py-3 px-3">
-                    <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium">
+                    <span className="px-2 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-medium font-black">
                       {payout.status}
                     </span>
                   </td>

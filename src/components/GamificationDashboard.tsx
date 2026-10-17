@@ -197,7 +197,7 @@ const GamificationDashboard: React.FC = () => {
 
               <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-lg p-5 border border-rose-100">
                 <div className="flex items-center">
-                  <div className="p-3 bg-rose-100 rounded-full">
+                  <div className="p-3 bg-rose-100 rounded-full border text-rose-950 border-rose-400 font-black">
                     <FireIcon className="h-6 w-6 text-rose-600" />
                   </div>
                   <div className="ml-4">
@@ -213,7 +213,7 @@ const GamificationDashboard: React.FC = () => {
                 <h3 className="text-lg font-medium text-gray-900">Level Progress</h3>
                 <span className="text-sm font-medium text-gray-700">Level {stats.currentLevel + 1}</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
+              <div className="w-full bg-gray-200 rounded-full h-4 border text-gray-950 border-gray-400 font-black">
                 <div
                   className="bg-gradient-to-r from-blue-500 to-indigo-600 h-4 rounded-full"
                   style={{ width: `${stats.nextLevelProgress}%` }}
@@ -247,7 +247,7 @@ const GamificationDashboard: React.FC = () => {
                   {completedAchievements.length}/{achievements.length} completed
                 </span>
               </div>
-              <div className="mt-3 w-full bg-gray-200 rounded-full h-2.5">
+              <div className="mt-3 w-full bg-gray-200 rounded-full h-2.5 border text-gray-950 border-gray-400 font-black">
                 <div
                   className="bg-gradient-to-r from-green-500 to-emerald-600 h-2.5 rounded-full"
                   style={{ width: `${progressPercentage}%` }}
@@ -275,7 +275,7 @@ const GamificationDashboard: React.FC = () => {
                           {achievement.points} pts
                         </span>
                         {achievement.completed ? (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                             Completed
                           </span>
                         ) : (

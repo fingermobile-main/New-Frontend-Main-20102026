@@ -461,7 +461,7 @@ const GuardianProtectionPage: React.FC = () => {
                     Comprehensive continuous surveillance across client runtimes, gateway proxies, and database tiers.
                   </p>
                 </div>
-                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit font-black">
+                <span className="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-950 border border-emerald-400  dark:bg-emerald-950/60 dark:text-emerald-300 rounded-full w-fit font-black">
                   9 / 9 Subsystems Online
                 </span>
               </div>
@@ -477,7 +477,7 @@ const GuardianProtectionPage: React.FC = () => {
                         <div className="font-bold text-gray-900 dark:text-white text-base">
                           {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-950 dark:text-emerald-300 whitespace-nowrap border text-emerald-950 border-emerald-400 font-black">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-950 dark:text-emerald-300 whitespace-nowrap border  border-emerald-400 font-black">
                           {module.status}
                         </span>
                       </div>
@@ -664,7 +664,7 @@ const GuardianProtectionPage: React.FC = () => {
               {/* Step 4: Biometrics & MFA Handshake */}
               {authStep === 4 && (
                 <div className="space-y-5 text-center py-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-red-100 dark:bg-red-950/60 text-red-950 flex items-center justify-center border border-red-400 font-black">
                     <Activity className="w-8 h-8 animate-pulse" />
                   </div>
                   <div>
@@ -861,7 +861,7 @@ const GuardianProtectionPage: React.FC = () => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-gray-900 dark:text-white font-mono">{log.event_type}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-950 border border-blue-400 font-bold dark:bg-blue-900/40 dark:text-blue-300 font-black">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-950 border border-blue-400  dark:bg-blue-900/40 dark:text-blue-300 font-black">
                         {log.action_taken}
                       </span>
                     </div>

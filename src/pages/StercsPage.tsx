@@ -1337,7 +1337,7 @@ const StercsPage: React.FC = () => {
                             <span className="text-sm font-medium">{framework.name}</span>
                             <span className="text-sm font-medium">{framework.percentage}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2.5">
+                          <div className="w-full bg-gray-200 rounded-full h-2.5 border text-gray-950 border-gray-400 font-black">
                             <div
                               className="bg-blue-600 h-2.5 rounded-full"
                               style={{ width: `${framework.percentage}%` }}

@@ -202,7 +202,7 @@ export const LushChatPanel: React.FC<LushChatPanelProps> = ({
               </div>
 
               <div className="flex items-center gap-2 text-xs">
-                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-400 text-amber-950 text-[10px] font-medium text-amber-950 border-amber-400 font-black">
+                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-400 text-amber-950 text-[10px] font-medium   font-black">
                   <Clock className="w-3 h-3 text-amber-600" />
                   72h Rate Limit Protected
                 </div>

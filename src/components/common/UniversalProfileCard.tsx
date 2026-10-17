@@ -391,7 +391,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
           </div>
 
           {/* Consent Verified & 6-Digit PIN Pill */}
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-400 dark:border-emerald-800/40 rounded-full text-[11px] text-emerald-950 dark:text-emerald-300 text-emerald-950 border-emerald-400 font-black">
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-400 dark:border-emerald-800/40 rounded-full text-[11px] text-emerald-950 dark:text-emerald-300   font-black">
             <ShieldCheckIcon className="w-3.5 h-3.5 text-emerald-600" />
             <span className="font-semibold">Consent Verified</span>
             <button
@@ -406,7 +406,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <button
               type="button"
               onClick={() => setShowPinInfo(!showPinInfo)}
-              className="w-4 h-4 rounded-full bg-emerald-200 dark:bg-emerald-800 text-emerald-950 dark:text-emerald-200 text-[10px] font-bold flex items-center justify-center hover:bg-emerald-300 transition border text-emerald-950 border-emerald-400 font-black"
+              className="w-4 h-4 rounded-full bg-emerald-200 dark:bg-emerald-800 text-emerald-950 dark:text-emerald-200 text-[10px] font-bold flex items-center justify-center hover:bg-emerald-300 transition border  border-emerald-400 font-black"
               title="Why 6-Digit Protocol PIN? (Click for info)"
             >
               ?
@@ -463,7 +463,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <SparklesIcon className="w-3.5 h-3.5 text-[#DC582A]" />
             Lush Rewards
           </span>
-          <span className="text-[10px] font-semibold text-emerald-950 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-400 dark:border-emerald-800/40 text-emerald-950 border-emerald-400 font-black">
+          <span className="text-[10px] font-semibold text-emerald-950 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-400 dark:border-emerald-800/40   font-black">
             Level {level}
           </span>
         </div>
@@ -474,7 +474,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
             <span>XP: {xpCurrent} / {xpMax}</span>
             <span className="font-bold text-emerald-700 dark:text-emerald-400">{xpPercent}%</span>
           </div>
-          <div className="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden border text-gray-950 border-gray-400 font-black">
             <div
               className="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${xpPercent}%` }}

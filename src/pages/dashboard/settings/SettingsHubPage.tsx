@@ -252,7 +252,7 @@ export const SettingsHubPage: React.FC = () => {
         {/* Header Banner */}
         <div className="bg-white border border-slate-300 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-300 text-xs font-mono font-bold text-slate-900 uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-400 text-xs font-mono font-bold text-slate-950 uppercase tracking-wider mb-3 font-black">
               <Shield className="w-4 h-4 text-blue-700" />
               <span>Sovereign Protocol Management System</span>
             </div>
@@ -637,12 +637,12 @@ export const SettingsHubPage: React.FC = () => {
                         </td>
                         <td className="py-3.5 px-4 font-bold text-slate-800">{seat.email}</td>
                         <td className="py-3.5 px-4">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400 border-blue-400 font-black">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-950 border border-blue-400  font-black">
                             {seat.role}
                           </span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-950 border border-emerald-400  font-black">
                             {seat.status}
                           </span>
                         </td>
@@ -823,7 +823,7 @@ export const SettingsHubPage: React.FC = () => {
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-xs font-extrabold text-slate-900">{wh.id}</span>
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400 border-emerald-400 font-black">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-950 border border-emerald-400  font-black">
                             {wh.status}
                           </span>
                         </div>

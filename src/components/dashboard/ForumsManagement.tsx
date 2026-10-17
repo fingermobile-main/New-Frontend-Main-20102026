@@ -618,7 +618,7 @@ const ForumsManagement: React.FC = () => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-slate-900">@{item.author}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-950 border border-rose-400 font-black">
                         {item.reason}
                       </span>
                       <span className="text-[10px] text-slate-700">{item.time}</span>

@@ -492,7 +492,7 @@ const HallmarksPage: React.FC = () => {
 
         {/* Header */}
         <div className="text-center pt-2 pb-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-[#ff6b00] text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-[#ff6b00] text-xs font-bold uppercase tracking-wider mb-2 border text-orange-950 border-orange-400 font-black">
             <span>🛡️</span> Sovereign Recognition & Communities
           </div>
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">HallMarks™ Hub</h1>
@@ -724,7 +724,7 @@ const HallmarksPage: React.FC = () => {
                             <>
                               <button
                                 onClick={() => openModAction('warn', community)}
-                                className="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold text-[11px] font-bold transition"
+                                className="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold text-[11px]  transition"
                                 title="Issue formal policy warning (0 PINs)"
                               >
                                 ⚠️ Warn
@@ -738,7 +738,7 @@ const HallmarksPage: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => openModAction('freeze', community)}
-                                className="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold text-[11px] font-bold transition"
+                                className="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-400 font-bold text-[11px]  transition"
                                 title="Freeze for 6 hours (Consumes 1 PIN)"
                               >
                                 ❄️ Freeze (-1 PIN)
@@ -748,7 +748,7 @@ const HallmarksPage: React.FC = () => {
                           {isSuspended && (
                             <button
                               onClick={() => handleUnsuspend(community.id)}
-                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px] font-bold transition"
+                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px]  transition"
                             >
                               🔄 Restore / Unsuspend
                             </button>
@@ -756,7 +756,7 @@ const HallmarksPage: React.FC = () => {
                           {isFrozen && (
                             <button
                               onClick={() => handleUnfreeze(community.id)}
-                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px] font-bold transition"
+                              className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold text-[11px]  transition"
                             >
                               🔄 Restore / Unfreeze
                             </button>
@@ -872,7 +872,7 @@ const HallmarksPage: React.FC = () => {
                 Congratulate peers on milestone unlocks and share community hallmark accolades.
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-orange-50 text-[#ff6b00] rounded-full">
+            <span className="text-xs font-semibold px-2.5 py-1 bg-orange-50 text-[#ff6b00] rounded-full border text-orange-950 border-orange-400 font-black">
               {comments.length} Commendations
             </span>
           </div>

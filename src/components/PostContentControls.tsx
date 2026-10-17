@@ -202,7 +202,7 @@ export const PostContentControls: React.FC<PostContentControlsProps> = ({
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {privacyTokens.map((t, i) => (
-                      <span key={i} className="inline-block px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded border border-emerald-200">
+                      <span key={i} className="inline-block px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold rounded  border-emerald-200">
                         {t}
                       </span>
                     ))}

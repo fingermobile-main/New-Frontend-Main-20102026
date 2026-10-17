@@ -300,14 +300,14 @@ export const MasterDancia4TvConsole: React.FC = () => {
     switch (flag) {
     case 'red':
       return (
-        <span className="px-2.5 py-1 rounded-full bg-red-100 text-red-950 dark:bg-red-950 dark:text-red-300 border border-red-400 text-xs font-mono font-bold flex items-center gap-1">
+        <span className="px-2.5 py-1 rounded-full bg-red-100 text-red-950 dark:bg-red-950 dark:text-red-300 border border-red-400 text-xs font-mono font-bold flex items-center gap-1 font-black">
           <Flag size={12} className="fill-red-500 text-red-500" />
             RED FLAG
         </span>
       );
     case 'orange':
       return (
-        <span className="px-2.5 py-1 rounded-full bg-orange-100 text-orange-950 dark:bg-orange-950 dark:text-orange-300 border border-orange-400 text-xs font-mono font-bold flex items-center gap-1">
+        <span className="px-2.5 py-1 rounded-full bg-orange-100 text-orange-950 dark:bg-orange-950 dark:text-orange-300 border border-orange-400 text-xs font-mono font-bold flex items-center gap-1 font-black">
           <Flag size={12} className="fill-orange-500 text-orange-500" />
             ORANGE FLAG
         </span>
@@ -539,7 +539,7 @@ export const MasterDancia4TvConsole: React.FC = () => {
                           <Clock size={12} className={stream.ttlDays <= 3 ? 'text-rose-500' : stream.ttlDays <= 7 ? 'text-amber-500' : 'text-emerald-500'} />
                           <span>{stream.daysRemaining}d remaining</span>
                         </div>
-                        <div className="w-20 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div className="w-20 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden border text-slate-950 border-slate-400 font-black">
                           <div
                             className={`h-full ${stream.ttlDays <= 3 ? 'bg-rose-500' : stream.ttlDays <= 7 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                             style={{ width: `${Math.min(100, (stream.daysRemaining / stream.ttlDays) * 100)}%` }}

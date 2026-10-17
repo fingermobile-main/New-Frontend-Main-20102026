@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
                   <td className="py-3 px-4 text-gray-900 dark:text-white font-semibold">{node.service_name}</td>
                   <td className="py-3 px-4 uppercase text-xs font-mono">{node.category}</td>
                   <td className="py-3 px-4">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-950 border border-green-400 font-bold dark:bg-green-900/30 dark:text-green-400 font-black">
                       {node.status}
                     </span>
                   </td>

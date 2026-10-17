@@ -535,7 +535,7 @@ const CreatePostPage: React.FC = () => {
                     <div className="space-y-2">
                       {pollOptions.map((opt, idx) => (
                         <div key={idx} className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0">
+                          <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-950 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0 border border-slate-400 font-black">
                             {idx + 1}
                           </span>
                           <input

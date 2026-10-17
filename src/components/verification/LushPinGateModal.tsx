@@ -98,7 +98,7 @@ export const LushPinGateModal: React.FC<LushPinGateModalProps> = ({
         <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-600 via-teal-500 to-[#DC582A]" />
 
         <div className="text-center mb-6 pt-2">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-inner border text-emerald-950 border-emerald-400 font-black">
+          <div className="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-inner border text-emerald-950  font-black">
             <LockClosedIcon className="w-8 h-8 text-emerald-700" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">

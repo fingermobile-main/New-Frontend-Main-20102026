@@ -441,7 +441,7 @@ export const BlogTokenizeModal: React.FC<TokenizeModalProps> = ({
             </>
           ) : (
             <div className="py-6 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold flex items-center justify-center text-2xl mx-auto font-bold">
+              <div className="w-12 h-12 rounded-full bg-green-100 text-green-950 border border-green-400 font-bold flex items-center justify-center text-2xl mx-auto  font-black">
                 ✓
               </div>
               <h4 className="font-bold text-gray-900 dark:text-white text-base">Token Minted Successfully!</h4>

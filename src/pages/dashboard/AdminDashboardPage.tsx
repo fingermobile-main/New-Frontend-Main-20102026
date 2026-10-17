@@ -223,7 +223,7 @@ const AdminDashboardPage: React.FC = () => {
                         <span className="text-sm font-medium text-gray-900">
                           API Services
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                           Operational
                         </span>
                       </div>
@@ -231,7 +231,7 @@ const AdminDashboardPage: React.FC = () => {
                         <span className="text-sm font-medium text-gray-900">
                           Database
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                           Operational
                         </span>
                       </div>
@@ -247,7 +247,7 @@ const AdminDashboardPage: React.FC = () => {
                         <span className="text-sm font-medium text-gray-900">
                           Wallet System
                         </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                           Operational
                         </span>
                       </div>
@@ -330,7 +330,7 @@ const AdminDashboardPage: React.FC = () => {
                           <div className="text-sm text-gray-900">Admin</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                             Active
                           </span>
                         </td>
@@ -432,7 +432,7 @@ const AdminDashboardPage: React.FC = () => {
                           <div className="text-sm text-gray-900">Admin</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-950 border border-green-400 font-bold font-black">
                             Active
                           </span>
                         </td>

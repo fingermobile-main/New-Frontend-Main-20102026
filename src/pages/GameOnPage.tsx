@@ -364,7 +364,7 @@ const GameOnPage: React.FC = () => {
                       <span className="text-xs font-bold text-purple-600">Odds: {m.odds_a}x</span>
                     </div>
 
-                    <span className="text-xs font-black text-slate-700 px-3 py-1 bg-gray-100 rounded-full">VS</span>
+                    <span className="text-xs font-black text-gray-950 px-3 py-1 bg-gray-100 rounded-full border border-gray-400">VS</span>
 
                     <div className="text-left flex-1">
                       <p className="text-base font-black text-gray-900">{m.team_b}</p>

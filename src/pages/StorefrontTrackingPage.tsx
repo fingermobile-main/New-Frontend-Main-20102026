@@ -1169,7 +1169,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                         <span>Fulfillment Journey</span>
                         <span>{getProgressPercentage(selectedShipment.status)}%</span>
                       </div>
-                      <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border text-slate-950 border-slate-400 font-black">
                         <div
                           className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
                           style={{ width: `${getProgressPercentage(selectedShipment.status)}%` }}
@@ -1306,7 +1306,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                               <>
                                 <button
                                   onClick={() => handleToggleStoreStatus(st.id, 'suspended')}
-                                  className="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold border border-amber-300 rounded font-bold text-[10px]"
+                                  className="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-bold  border-amber-300 rounded  text-[10px]"
                                   title="Suspend Checkout"
                                 >
                                   Suspend
@@ -1322,7 +1322,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                             ) : (
                               <button
                                 onClick={() => handleToggleStoreStatus(st.id, 'active')}
-                                className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold border border-emerald-300 rounded font-bold text-[10px]"
+                                className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold  border-emerald-300 rounded  text-[10px]"
                                 title="Reactivate Store"
                               >
                                 Reactivate
@@ -1333,7 +1333,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                                 setTargetStoreForWarning(st);
                                 setIsWarningModalOpen(true);
                               }}
-                              className="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold border border-purple-300 rounded font-bold text-[10px]"
+                              className="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-400 font-bold  border-purple-300 rounded  text-[10px]"
                               title="Issue Warning"
                             >
                               Warn
@@ -1509,7 +1509,7 @@ export const StorefrontTrackingPage: React.FC = () => {
                     <h4 className="font-black text-sm text-slate-900">{wh.name}</h4>
                     <p className="text-[11px] text-slate-700 font-medium">{wh.region}</p>
                   </div>
-                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className={`h-2 rounded-full ${
                         wh.capacityUtilization > 80 ? 'bg-amber-600' : 'bg-emerald-600'

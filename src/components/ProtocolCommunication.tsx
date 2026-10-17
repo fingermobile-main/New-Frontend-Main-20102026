@@ -387,7 +387,7 @@ const ProtocolCommunication: React.FC<ProtocolCommunicationProps> = ({
           <span className="font-medium text-gray-800">
             Protocol Communication
           </span>
-          <span className="ml-3 text-xs px-2 py-1 rounded-full bg-gray-200 text-gray-700">
+          <span className="ml-3 text-xs px-2 py-1 rounded-full bg-gray-200 text-gray-950 border border-gray-400 font-black">
             {connectionStatus.connectionQuality}
           </span>
           {pingLatency !== null && (

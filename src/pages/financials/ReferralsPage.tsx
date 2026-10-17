@@ -183,7 +183,7 @@ const ReferralsPage: React.FC = () => {
             <h2 className="text-lg font-black text-slate-900">Referred Members Directory</h2>
             <p className="text-xs text-slate-700 font-medium">Real-time telemetry of users onboarded with your sovereign invite code</p>
           </div>
-          <span className="text-xs font-black text-slate-800 bg-slate-100 px-3 py-1 rounded-full border border-slate-300">
+          <span className="text-xs font-black text-slate-950 bg-slate-100 px-3 py-1 rounded-full border border-slate-400">
             {stats.referrals.length} Total Users
           </span>
         </div>
@@ -207,7 +207,7 @@ const ReferralsPage: React.FC = () => {
                   <tr key={r.id || idx} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-black flex items-center justify-center text-xs text-blue-950 border-blue-400">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-950 border border-blue-400 font-black flex items-center justify-center text-xs  ">
                           {(r.referredDisplayName || r.referredUsername || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>

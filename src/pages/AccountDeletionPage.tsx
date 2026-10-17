@@ -219,7 +219,7 @@ const AccountDeletionPage: React.FC = () => {
                 </>
               ) : (
                 <div className="text-center py-10">
-                  <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                  <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 border text-green-950 border-green-400 font-black">
                     <svg
                       className="h-8 w-8 text-green-600"
                       fill="none"

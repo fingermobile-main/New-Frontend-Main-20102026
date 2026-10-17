@@ -143,7 +143,7 @@ const LushPrivacyController: React.FC<LushPrivacyControllerProps> = ({
     return (
       <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-200">
         <div className="text-center py-8">
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 border text-indigo-950 border-indigo-400 font-black">
             <LockClosedIcon className="h-8 w-8 text-indigo-600" />
           </div>
           <h3 className="mt-4 text-lg font-medium text-gray-900">Content Access Restricted</h3>

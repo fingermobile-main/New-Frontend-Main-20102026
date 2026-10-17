@@ -201,7 +201,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-black border ${getScoreBadgeColor(defaultBreakdown.overallScore)}`}>
                   {defaultBreakdown.overallScore}/100 AI Score
                 </span>
-                <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-950 border border-indigo-400 dark:bg-indigo-950 dark:text-indigo-200">
+                <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-950 border border-indigo-400 dark:bg-indigo-950 dark:text-indigo-200 font-black">
                   MOS {defaultBreakdown.mosScore} / 5.0
                 </span>
               </div>
@@ -354,7 +354,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.science.sharpnessAndFocus.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.science.sharpnessAndFocus.score}%` }}
@@ -376,7 +376,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.science.resolutionAndPixels.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.science.resolutionAndPixels.score}%` }}
@@ -398,7 +398,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.science.exposureAndDynamicRange.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.science.exposureAndDynamicRange.score}%` }}
@@ -420,7 +420,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.science.colorAndContrast.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.science.colorAndContrast.score}%` }}
@@ -443,7 +443,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                         {defaultBreakdown.science.frameRateAndBitrate.score}/100
                       </span>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                       <div
                         className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                         style={{ width: `${defaultBreakdown.science.frameRateAndBitrate.score}%` }}
@@ -483,7 +483,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.art.composition.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-indigo-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.art.composition.score}%` }}
@@ -505,7 +505,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.art.lightingQuality.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-amber-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.art.lightingQuality.score}%` }}
@@ -527,7 +527,7 @@ export const PhotoCreditAiQualityModal: React.FC<PhotoCreditAiQualityModalProps>
                       {defaultBreakdown.art.eyeTrackingFlow.score}/100
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden border text-slate-950 border-slate-400 font-black">
                     <div
                       className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${defaultBreakdown.art.eyeTrackingFlow.score}%` }}

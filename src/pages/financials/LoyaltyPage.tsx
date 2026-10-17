@@ -131,7 +131,7 @@ const LoyaltyPage: React.FC = () => {
   const RewardRow: React.FC<{ reward: HistoryReward }> = ({ reward }) => (
     <div className="flex justify-between items-center py-3.5 border-b border-slate-200 last:border-b-0">
       <div className="flex items-center space-x-3">
-        <div className="bg-emerald-100 p-2 rounded-full text-emerald-950 border border-emerald-400 text-emerald-950 border-emerald-400 font-black">
+        <div className="bg-emerald-100 p-2 rounded-full text-emerald-950 border border-emerald-400   font-black">
           <SparklesIcon className="w-5 h-5" />
         </div>
         <div>
@@ -204,7 +204,7 @@ const LoyaltyPage: React.FC = () => {
                   <span>{nextTier.name} ({nextThreshold.toLocaleString()} pts)</span>
                 )}
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden p-0.5 border border-slate-300">
+              <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden p-0.5 border border-slate-400 text-slate-950 font-black">
                 <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
                   style={{ width: `${progressPercentage}%` }}

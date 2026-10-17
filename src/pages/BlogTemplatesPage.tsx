@@ -207,7 +207,7 @@ const BlogTemplatesPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs font-bold flex items-center gap-1">
+            <span className="px-3 py-1 bg-green-100 text-green-950 border border-green-400 font-bold rounded-full text-xs  flex items-center gap-1 font-black">
               <CheckBadgeIcon className="w-4 h-4 text-green-600" /> 100% Free Forever
             </span>
           </div>
@@ -261,7 +261,7 @@ const BlogTemplatesPage: React.FC = () => {
               <div className="p-6 space-y-4">
                 {/* Meta Badge Bar */}
                 <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-950 border border-indigo-400 font-black">
                     {tmpl.category}
                   </span>
                   <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-md border border-green-200">
