@@ -263,19 +263,23 @@ export const AudioNovelsTab: React.FC = () => {
     if (!title.trim() || !author.trim()) return;
 
     const primaryGenre = selectedGenres.join(', ');
-    await createAudioNovel(
-      title.trim(),
-      author.trim(),
-      synopsis.trim() || 'A sovereign generative narrative crafted with AI audio modeling.',
-      narratorVoice,
-      primaryGenre,
-      Math.min(30, Math.max(1, durationMinutes)),
-      aiPrompt.trim(),
-      creationSource,
-      uploadedFile || undefined,
-      recordedAudioUrl || undefined,
-      temporalTtlDays
-    );
+    try {
+      await createAudioNovel(
+        title.trim(),
+        author.trim(),
+        synopsis.trim() || 'A sovereign generative narrative crafted with AI audio modeling.',
+        narratorVoice,
+        primaryGenre,
+        Math.min(30, Math.max(1, durationMinutes)),
+        aiPrompt.trim(),
+        creationSource,
+        uploadedFile || undefined,
+        recordedAudioUrl || undefined,
+        temporalTtlDays
+      );
+    } catch {
+      return;
+    }
 
     // Reset Form
     setShowCreateModal(false);
@@ -290,12 +294,21 @@ export const AudioNovelsTab: React.FC = () => {
   };
 
   const handlePlayNovel = (novel: AudioNovelCard) => {
-    if (novel.moderationStatus === 'blocked') {
+    const status = String(novel.moderationStatus || 'draft');
+    if (status === 'blocked') {
       alert('This asset has been blocked by platform administration.');
       return;
     }
-    if (novel.moderationStatus === 'frozen') {
+    if (status === 'frozen') {
       alert('This asset is currently frozen under administrative review.');
+      return;
+    }
+    if (status !== 'active') {
+      alert('This AudioNovel is awaiting publication approval.');
+      return;
+    }
+    if (!novel.audioUrl) {
+      alert('This AudioNovel has no persistent media URL. Audio file storage is not connected yet.');
       return;
     }
     playTrack({

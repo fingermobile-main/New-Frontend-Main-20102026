@@ -187,7 +187,7 @@ export interface AudioNovelCard {
   sourceFileType?: string;
   recordingBlobUrl?: string;
   manuscriptText?: string;
-  moderationStatus?: 'active' | 'frozen' | 'blocked' | 'suspended';
+  moderationStatus?: 'draft' | 'active' | 'frozen' | 'blocked' | 'suspended' | 'archived';
   flag?: 'green' | 'yellow' | 'orange' | 'red';
   warningCount?: number;
   adminNotes?: string;
@@ -215,12 +215,114 @@ export interface PodcastCard {
   sourceType?: 'ai_prompt' | 'text_upload' | 'audio_upload' | 'live_recording';
   sourceFileName?: string;
   sourceFileSizeMb?: number;
+  sourceFileType?: string;
   recordingBlobUrl?: string;
-  moderationStatus?: 'active' | 'frozen' | 'blocked' | 'suspended';
+  moderationStatus?: 'draft' | 'active' | 'frozen' | 'blocked' | 'suspended' | 'archived';
   flag?: 'green' | 'yellow' | 'orange' | 'red';
   warningCount?: number;
   adminNotes?: string;
 }
+
+type BeatwaveCatalogRow = Record<string, unknown>;
+
+const asCatalogRow = (value: unknown): BeatwaveCatalogRow =>
+  typeof value === 'object' && value !== null ? value as BeatwaveCatalogRow : {};
+
+const readCatalogString = (row: BeatwaveCatalogRow, key: string, fallback = ''): string =>
+  typeof row[key] === 'string' ? row[key] as string : fallback;
+
+const readCatalogNumber = (row: BeatwaveCatalogRow, key: string, fallback = 0): number => {
+  const value = Number(row[key]);
+  return Number.isFinite(value) ? value : fallback;
+};
+
+const readTtl = (row: BeatwaveCatalogRow): 3 | 7 | 30 => {
+  const value = readCatalogNumber(row, 'ttl_days', 30);
+  return value === 3 || value === 7 ? value : 30;
+};
+
+const readModerationStatus = (row: BeatwaveCatalogRow): AudioNovelCard['moderationStatus'] => {
+  const status = row.moderation_status;
+  return ['draft', 'active', 'frozen', 'blocked', 'suspended', 'archived'].includes(String(status))
+    ? status as AudioNovelCard['moderationStatus']
+    : 'draft';
+};
+
+const readExpiry = (row: BeatwaveCatalogRow): string | undefined =>
+  typeof row.expires_at === 'string' ? row.expires_at : undefined;
+
+const getDaysRemaining = (expiresAt?: string): number => {
+  if (!expiresAt) return 0;
+  const remaining = new Date(expiresAt).getTime() - Date.now();
+  return Number.isFinite(remaining) ? Math.max(0, Math.ceil(remaining / 86400000)) : 0;
+};
+
+const mapAudioNovelRow = (value: unknown): AudioNovelCard => {
+  const row = asCatalogRow(value);
+  const temporalExpiresAt = readExpiry(row);
+  const durationMinutes = readCatalogNumber(row, 'duration_minutes', 1);
+  return {
+    id: readCatalogString(row, 'id'),
+    title: readCatalogString(row, 'title'),
+    author: readCatalogString(row, 'author'),
+    synopsis: readCatalogString(row, 'synopsis'),
+    narratorVoice: readCatalogString(row, 'narrator_voice'),
+    coverArt: readCatalogString(row, 'cover_art'),
+    durationMinutes,
+    genre: readCatalogString(row, 'genre', 'General'),
+    aiPromptUsed: readCatalogString(row, 'ai_prompt_used') || undefined,
+    createdAt: readCatalogString(row, 'created_at'),
+    ttlDays: readTtl(row),
+    daysRemaining: getDaysRemaining(temporalExpiresAt),
+    temporalExpiresAt,
+    isDownloaded: false,
+    sovereignExt: '.fmnovel',
+    audioUrl: readCatalogString(row, 'audio_url'),
+    chaptersCount: Math.ceil(durationMinutes / 7),
+    sourceType: readCatalogString(row, 'source_type') as AudioNovelCard['sourceType'],
+    sourceFileName: readCatalogString(row, 'source_file_name') || undefined,
+    sourceFileSizeMb: row.source_file_size_mb == null ? undefined : readCatalogNumber(row, 'source_file_size_mb'),
+    sourceFileType: readCatalogString(row, 'source_file_type') || undefined,
+    manuscriptText: readCatalogString(row, 'manuscript_text') || undefined,
+    moderationStatus: readModerationStatus(row),
+    flag: readCatalogString(row, 'risk_flag', 'green') as AudioNovelCard['flag'],
+    warningCount: readCatalogNumber(row, 'warning_count'),
+    adminNotes: readCatalogString(row, 'admin_notes'),
+  };
+};
+
+const mapPodcastRow = (value: unknown): PodcastCard => {
+  const row = asCatalogRow(value);
+  const temporalExpiresAt = readExpiry(row);
+  const tags = Array.isArray(row.tags) ? row.tags.filter((tag): tag is string => typeof tag === 'string') : [];
+  return {
+    id: readCatalogString(row, 'id'),
+    title: readCatalogString(row, 'title'),
+    host: readCatalogString(row, 'host'),
+    guest: readCatalogString(row, 'guest') || undefined,
+    description: readCatalogString(row, 'description'),
+    coverArt: readCatalogString(row, 'cover_art'),
+    durationMinutes: readCatalogNumber(row, 'duration_minutes', 1),
+    genre: readCatalogString(row, 'genre', 'General'),
+    episodeNumber: readCatalogNumber(row, 'episode_number', 1),
+    createdAt: readCatalogString(row, 'created_at'),
+    ttlDays: readTtl(row),
+    daysRemaining: getDaysRemaining(temporalExpiresAt),
+    temporalExpiresAt,
+    isDownloaded: false,
+    sovereignExt: '.fmpod',
+    audioUrl: readCatalogString(row, 'audio_url'),
+    tags,
+    sourceType: readCatalogString(row, 'source_type') as PodcastCard['sourceType'],
+    sourceFileName: readCatalogString(row, 'source_file_name') || undefined,
+    sourceFileSizeMb: row.source_file_size_mb == null ? undefined : readCatalogNumber(row, 'source_file_size_mb'),
+    sourceFileType: readCatalogString(row, 'source_file_type') || undefined,
+    moderationStatus: readModerationStatus(row),
+    flag: readCatalogString(row, 'risk_flag', 'green') as PodcastCard['flag'],
+    warningCount: readCatalogNumber(row, 'warning_count'),
+    adminNotes: readCatalogString(row, 'admin_notes'),
+  };
+};
 
 // BeatVlogs: Shared interest video/audio vlogs
 export interface BeatVlog {
@@ -484,7 +586,7 @@ export interface BeatwaveNGContextType {
 
   // Podcasts (up to 50 cards, 30 mins each, 30 days TTL, download to .fmpod)
   podcasts: PodcastCard[];
-  createPodcast: (title: string, host: string, description: string, durationMinutes: number, genre: string, tags: string[]) => Promise<PodcastCard>;
+  createPodcast: (title: string, host: string, description: string, durationMinutes: number, genre: string, tags: string[], guest?: string) => Promise<PodcastCard>;
   downloadPodcast: (podcastId: string) => void;
 
   // BeatVlogs (Curated shared interest vlogs)
@@ -1065,24 +1167,10 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   });
 
   // AudioNovels (up to 50 cards, 30 mins each)
-  const [audioNovels, setAudioNovels] = useState<AudioNovelCard[]>(() => {
-    try {
-      const saved = localStorage.getItem('bw_audio_novels');
-      return saved ? JSON.parse(saved) : SEED_AUDIO_NOVELS;
-    } catch {
-      return SEED_AUDIO_NOVELS;
-    }
-  });
+  const [audioNovels, setAudioNovels] = useState<AudioNovelCard[]>([]);
 
   // Podcasts (up to 50 cards, 30 mins each)
-  const [podcasts, setPodcasts] = useState<PodcastCard[]>(() => {
-    try {
-      const saved = localStorage.getItem('bw_podcasts');
-      return saved ? JSON.parse(saved) : SEED_PODCASTS;
-    } catch {
-      return SEED_PODCASTS;
-    }
-  });
+  const [podcasts, setPodcasts] = useState<PodcastCard[]>([]);
 
   // BeatVlogs
   const [beatVlogs, setBeatVlogs] = useState<BeatVlog[]>(() => {
@@ -1147,16 +1235,33 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, [virDrives]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem('bw_audio_novels', JSON.stringify(audioNovels));
-    } catch {}
-  }, [audioNovels]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('bw_podcasts', JSON.stringify(podcasts));
-    } catch {}
-  }, [podcasts]);
+    let active = true;
+    const loadAudioNovels = async () => {
+      try {
+        const response = await api.get('/beatwave/audio-novels');
+        if (active && Array.isArray(response.data.data)) {
+          setAudioNovels(response.data.data.map(mapAudioNovelRow));
+        }
+      } catch {
+        if (active) showToast('AudioNovel catalog could not be loaded from the platform database.', 'error');
+      }
+    };
+    const loadPodcasts = async () => {
+      try {
+        const response = await api.get('/beatwave/podcasts');
+        if (active && Array.isArray(response.data.data)) {
+          setPodcasts(response.data.data.map(mapPodcastRow));
+        }
+      } catch {
+        if (active) showToast('Podcast catalog could not be loaded from the platform database.', 'error');
+      }
+    };
+    void loadAudioNovels();
+    void loadPodcasts();
+    return () => {
+      active = false;
+    };
+  }, [showToast]);
 
   useEffect(() => {
     try {
@@ -1933,102 +2038,119 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     recordingBlobUrl?: string,
     temporalTtlDays: 3 | 7 | 30 = 30
   ): Promise<AudioNovelCard> => {
-    if (audioNovels.length >= 50) {
-      showToast('Maximum quota of 50 AudioNovels reached.', 'error');
-      throw new Error('50 AudioNovels limit reached');
-    }
     const cappedDuration = Math.min(30, Math.max(1, durationMinutes));
-    const now = new Date();
-    const expires = new Date(now.getTime() + temporalTtlDays * 24 * 60 * 60 * 1000);
-    const newCard: AudioNovelCard = {
-      id: `an-${Date.now()}`,
-      title,
-      author,
-      synopsis,
-      narratorVoice,
-      genre,
-      durationMinutes: cappedDuration,
-      coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
-      aiPromptUsed: aiPrompt || (sourceType === 'ai_prompt' ? 'AI Assisted Audio Storytelling Prompt' : undefined),
-      createdAt: now.toISOString(),
-      ttlDays: temporalTtlDays,
-      daysRemaining: temporalTtlDays,
-      temporalExpiresAt: expires.toISOString(),
-      isDownloaded: false,
-      sovereignExt: '.fmnovel',
-      audioUrl: recordingBlobUrl || sourceFile?.url || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
-      chaptersCount: Math.ceil(cappedDuration / 7),
-      sourceType,
-      sourceFileName: sourceFile?.name,
-      sourceFileSizeMb: sourceFile?.sizeMb,
-      sourceFileType: sourceFile?.type,
-      recordingBlobUrl,
-      manuscriptText: sourceFile?.textContent,
-      moderationStatus: 'active',
-      flag: 'green',
-      warningCount: 0
-    };
-    setAudioNovels((prev) => [newCard, ...prev]);
-    showToast(`AudioNovel "${title}" registered (${sourceType}) with ${temporalTtlDays}-day temporal TTL!`, 'success');
-    return newCard;
-  }, [audioNovels.length, showToast]);
+    const persistentAudioUrl = [recordingBlobUrl, sourceFile?.url]
+      .find(url => typeof url === 'string' && /^https?:\/\//i.test(url)) || '';
+    try {
+      const response = await api.post('/beatwave/audio-novels', {
+        title,
+        author,
+        synopsis,
+        narrator_voice: narratorVoice,
+        genre,
+        duration_minutes: cappedDuration,
+        ai_prompt_used: aiPrompt || '',
+        source_type: sourceType,
+        source_file_name: sourceFile?.name || '',
+        source_file_size_mb: sourceFile?.sizeMb,
+        source_file_type: sourceFile?.type || '',
+        audio_url: persistentAudioUrl,
+        manuscript_text: sourceFile?.textContent || '',
+        ttl_days: temporalTtlDays,
+      });
+      const novel = mapAudioNovelRow(response.data.data);
+      setAudioNovels(previous => [novel, ...previous.filter(item => item.id !== novel.id)]);
+      showToast('AudioNovel metadata saved as a draft for review. Media file bytes are not uploaded by this workflow.', 'warning');
+      return novel;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The database request failed.';
+      showToast(`AudioNovel submission failed: ${message}`, 'error');
+      throw error;
+    }
+  }, [showToast]);
 
   const downloadAudioNovel = useCallback((novelId: string) => {
-    setAudioNovels((prev) =>
-      prev.map((n) => (n.id === novelId ? { ...n, isDownloaded: true } : n))
-    );
-    showToast('AudioNovel downloaded as .fmnovel. TTL removed (Saved to MyDownloads permanent vault)!', 'success');
+    void novelId;
+    showToast('Offline media downloads are not connected to persistent storage yet.', 'warning');
   }, [showToast]);
 
   const updateAudioNovelModeration = useCallback((id: string, updates: Partial<AudioNovelCard>) => {
-    setAudioNovels((prev) =>
-      prev.map((novel) => (novel.id === id ? { ...novel, ...updates } : novel))
-    );
-    showToast('Asset moderation record updated in sync with Master Dashboard.', 'info');
+    const fields: Record<string, unknown> = {};
+    const mappings: Array<[keyof AudioNovelCard, string]> = [
+      ['title', 'title'],
+      ['author', 'author'],
+      ['synopsis', 'synopsis'],
+      ['narratorVoice', 'narrator_voice'],
+      ['coverArt', 'cover_art'],
+      ['durationMinutes', 'duration_minutes'],
+      ['genre', 'genre'],
+      ['audioUrl', 'audio_url'],
+      ['sourceFileName', 'source_file_name'],
+      ['sourceFileSizeMb', 'source_file_size_mb'],
+      ['sourceFileType', 'source_file_type'],
+      ['aiPromptUsed', 'ai_prompt_used'],
+      ['manuscriptText', 'manuscript_text'],
+      ['ttlDays', 'ttl_days'],
+      ['temporalExpiresAt', 'expires_at'],
+      ['adminNotes', 'admin_notes'],
+    ];
+    mappings.forEach(([key, field]) => {
+      if (updates[key] !== undefined) fields[field] = updates[key];
+    });
+    if (!Object.keys(fields).length) return;
+    void api.put(`/master-dashboard/ecosystems/beatwave/audio_novels/${encodeURIComponent(id)}`, fields)
+      .then(async () => {
+        const response = await api.get('/beatwave/audio-novels');
+        setAudioNovels(response.data.data.map(mapAudioNovelRow));
+        showToast('AudioNovel catalog update saved.', 'success');
+      })
+      .catch(error => {
+        const message = error instanceof Error ? error.message : 'The database request failed.';
+        showToast(`AudioNovel update failed: ${message}`, 'error');
+      });
+  }, [showToast]);
+
+  const runAudioNovelLifecycle = useCallback(async (
+    id: string,
+    action: 'freeze' | 'block' | 'restore' | 'archive' | 'flag' | 'warn',
+    extra: Record<string, unknown> = {}
+  ) => {
+    try {
+      const url = `/master-dashboard/ecosystems/beatwave/audio_novels/${encodeURIComponent(id)}/lifecycle`;
+      if (action === 'archive') await api.delete(`/master-dashboard/ecosystems/beatwave/audio_novels/${encodeURIComponent(id)}`);
+      else await api.patch(url, { action, ...extra });
+      const response = await api.get('/beatwave/audio-novels');
+      setAudioNovels(response.data.data.map(mapAudioNovelRow));
+      showToast(`AudioNovel ${action} action saved to the database.`, 'success');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The database request failed.';
+      showToast(`AudioNovel ${action} failed: ${message}`, 'error');
+    }
   }, [showToast]);
 
   const freezeAudioNovel = useCallback((id: string) => {
-    updateAudioNovelModeration(id, { moderationStatus: 'frozen', flag: 'orange' });
-    showToast('Asset stream has been frozen by administration.', 'warning');
-  }, [updateAudioNovelModeration, showToast]);
+    void runAudioNovelLifecycle(id, 'freeze');
+  }, [runAudioNovelLifecycle]);
 
   const blockAudioNovel = useCallback((id: string) => {
-    updateAudioNovelModeration(id, { moderationStatus: 'blocked', flag: 'red' });
-    showToast('Asset has been blocked from platform playback.', 'error');
-  }, [updateAudioNovelModeration, showToast]);
+    void runAudioNovelLifecycle(id, 'block');
+  }, [runAudioNovelLifecycle]);
 
   const unblockAudioNovel = useCallback((id: string) => {
-    updateAudioNovelModeration(id, { moderationStatus: 'active', flag: 'green' });
-    showToast('Asset unblocked. Normal playback restored.', 'success');
-  }, [updateAudioNovelModeration, showToast]);
+    void runAudioNovelLifecycle(id, 'restore');
+  }, [runAudioNovelLifecycle]);
 
   const setAudioNovelFlag = useCallback((id: string, flag: 'green' | 'yellow' | 'orange' | 'red') => {
-    updateAudioNovelModeration(id, { flag });
-  }, [updateAudioNovelModeration]);
+    void runAudioNovelLifecycle(id, 'flag', { risk_flag: flag });
+  }, [runAudioNovelLifecycle]);
 
   const issueAudioNovelWarning = useCallback((id: string, warningText: string) => {
-    setAudioNovels((prev) =>
-      prev.map((novel) => {
-        if (novel.id === id) {
-          const newCount = (novel.warningCount || 0) + 1;
-          const newFlag = newCount >= 3 ? 'red' : newCount >= 2 ? 'orange' : 'yellow';
-          return {
-            ...novel,
-            warningCount: newCount,
-            flag: newFlag,
-            adminNotes: warningText
-          };
-        }
-        return novel;
-      })
-    );
-    showToast('Warning issued to creator (Total: warning registered).', 'warning');
-  }, [showToast]);
+    void runAudioNovelLifecycle(id, 'warn', { reason: warningText });
+  }, [runAudioNovelLifecycle]);
 
   const deleteAudioNovel = useCallback((id: string) => {
-    setAudioNovels((prev) => prev.filter((novel) => novel.id !== id));
-    showToast('Asset purged and removed from cloud temporal cache.', 'info');
-  }, [showToast]);
+    void runAudioNovelLifecycle(id, 'archive');
+  }, [runAudioNovelLifecycle]);
 
   // Podcasts Handlers
   const createPodcast = useCallback(async (
@@ -2037,40 +2159,37 @@ export const BeatwaveNGProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     description: string,
     durationMinutes: number,
     genre: string,
-    tags: string[]
+    tags: string[],
+    guest = ''
   ): Promise<PodcastCard> => {
-    if (podcasts.length >= 50) {
-      showToast('Maximum quota of 50 Podcast cards reached.', 'error');
-      throw new Error('50 Podcasts limit reached');
-    }
     const cappedDuration = Math.min(30, Math.max(1, durationMinutes));
-    const newCard: PodcastCard = {
-      id: `pod-${Date.now()}`,
-      title,
-      host,
-      description,
-      durationMinutes: cappedDuration,
-      genre,
-      tags,
-      episodeNumber: podcasts.length + 1,
-      coverArt: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
-      createdAt: new Date().toISOString(),
-      ttlDays: 30,
-      daysRemaining: 30,
-      isDownloaded: false,
-      sovereignExt: '.fmpod',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3'
-    };
-    setPodcasts((prev) => [newCard, ...prev]);
-    showToast(`Podcast episode "${title}" created! 30-day TTL active.`, 'success');
-    return newCard;
+    try {
+      const response = await api.post('/beatwave/podcasts', {
+        title,
+        host,
+        guest,
+        description,
+        duration_minutes: cappedDuration,
+        genre,
+        episode_number: podcasts.length + 1,
+        tags,
+        ttl_days: 30,
+        source_type: 'audio_upload',
+      });
+      const podcast = mapPodcastRow(response.data.data);
+      setPodcasts(previous => [podcast, ...previous.filter(item => item.id !== podcast.id)]);
+      showToast('Podcast metadata saved as a draft for review. Media file bytes are not uploaded by this workflow.', 'warning');
+      return podcast;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The database request failed.';
+      showToast(`Podcast submission failed: ${message}`, 'error');
+      throw error;
+    }
   }, [podcasts.length, showToast]);
 
   const downloadPodcast = useCallback((podcastId: string) => {
-    setPodcasts((prev) =>
-      prev.map((p) => (p.id === podcastId ? { ...p, isDownloaded: true } : p))
-    );
-    showToast('Podcast saved offline as .fmpod file in MyDownloads!', 'success');
+    void podcastId;
+    showToast('Offline media downloads are not connected to persistent storage yet.', 'warning');
   }, [showToast]);
 
   // BeatVlogs Handlers

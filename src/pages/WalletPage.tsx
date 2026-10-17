@@ -3,16 +3,12 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import apiService from '../services/apiService';
 import { Button } from '../components/ui/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/Card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
 import {
-  CreditCardIcon,
   ArrowUpIcon,
   ArrowDownIcon,
   WalletIcon,
-  ChartBarIcon,
-  GiftIcon,
-  CurrencyDollarIcon,
   QrCodeIcon,
   PlusIcon
 } from '../icons';
@@ -28,27 +24,21 @@ import {
   Users,
   Copy,
   Check,
-  AlertCircle,
-  ArrowRight,
   Lock,
   RefreshCw,
   CreditCard,
-  ArrowUpRight,
-  Coins,
   Award,
   Zap,
   Globe,
   QrCode,
   ShieldAlert,
-  Smartphone,
   Sparkles
 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import {
   DEDICATED_TREASURY_RAIL,
   PLATFORM_OWNERSHIP,
-  FINANCIAL_ROLES_TAXONOMY,
-  AccountingRole
+  FINANCIAL_ROLES_TAXONOMY
 } from '../constants/platformOwnership';
 import { downloadFicReceiptPdf, FICReceiptData } from '../utils/ficReceiptPdf';
 
@@ -65,6 +55,7 @@ interface WalletTransaction {
 
 export type PaymentChannelType =
   | 'alternative_bank_transfer'
+  | 'paystack'
   | 'interswitch'
   | 'debit_card'
   | 'paypal'
@@ -88,6 +79,15 @@ export const PAYMENT_CHANNELS_LIST: PaymentChannelOption[] = [
     description: 'Direct manual bank transfer straight to Alternative Bank 0514108422',
     currency: 'NGN',
     feeNote: 'Zero gateway surcharge',
+    destinationAccount: '0514108422'
+  },
+  {
+    id: 'paystack',
+    title: 'Paystack Checkout',
+    badge: 'Cards, Bank & USSD',
+    description: 'Automated gateway direct to Alternative Bank 0514108422 (Paystack API)',
+    currency: 'NGN',
+    feeNote: 'Instant automated checkout',
     destinationAccount: '0514108422'
   },
   {
@@ -209,12 +209,9 @@ const WalletPage: React.FC = () => {
   const { toast } = useToast();
 
   // Wallet balances
-  const [balance, setBalance] = useState(0);
-  const [fiatBalance, setFiatBalance] = useState(0);
   const [ficBalance, setFicBalance] = useState(0);
   const [walletAddress, setWalletAddress] = useState('');
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Treasury funding state
   const [treasuryRequests, setTreasuryRequests] = useState<TreasuryFundingRequestItem[]>([]);
@@ -246,6 +243,9 @@ const WalletPage: React.FC = () => {
   const [cardCvv, setCardCvv] = useState('842');
   const [interswitchPhone, setInterswitchPhone] = useState('08031234567');
   const [paypalEmail, setPaypalEmail] = useState('member@fingermobileprotocol.com');
+  const [paystackEmail, setPaystackEmail] = useState('member@fingermobileprotocol.com');
+  const [paystackSubMethod, setPaystackSubMethod] = useState<'inline' | 'card' | 'bank_transfer' | 'ussd'>('inline');
+  const [interswitchSubMethod, setInterswitchSubMethod] = useState<'webpay_inline' | 'quickteller' | 'card'>('webpay_inline');
 
   // Post-payment CFO validation confirmation receipt state
   const [paymentConfirmationData, setPaymentConfirmationData] = useState<{
@@ -316,13 +316,10 @@ const WalletPage: React.FC = () => {
   // Fetch live wallet data
   const fetchWalletData = useCallback(async () => {
     try {
-      setLoading(true);
       const balanceData = await apiService.get('/api/wallet/balance');
       if (balanceData) {
         const bal = balanceData.balance || balanceData.ficBalance || 0;
-        setBalance(bal);
         setFicBalance(bal);
-        setFiatBalance(balanceData.fiatBalance || parseFloat((bal * 0.1).toFixed(2)));
         if (balanceData.data?.wallet_address) {
           setWalletAddress(balanceData.data.wallet_address);
         }
@@ -340,9 +337,8 @@ const WalletPage: React.FC = () => {
         setTransactions(txData.transactions || txData.data);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch live wallet data', err);
-    } finally {
-      setLoading(false);
     }
   }, [walletAddress]);
 
@@ -362,6 +358,7 @@ const WalletPage: React.FC = () => {
         setSovereignVaults(vaultsRes.vaults);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch live treasury data', err);
     } finally {
       setLoadingTreasury(false);
@@ -410,20 +407,125 @@ const WalletPage: React.FC = () => {
       let finalDepositorBank = depositorBank.trim() || 'Alternative Bank';
       let paymentMethodLabel = 'Alternative Bank Dedicated Sovereign Treasury Rail (0514108422)';
 
-      if (selectedChannel === 'interswitch') {
-        txReference = txReference || `ISW/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
+      if (selectedChannel === 'paystack') {
+        txReference = txReference || `PSTK-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+        finalDepositorBank = 'Paystack Automated Gateway';
+        paymentMethodLabel = 'Paystack Checkout (Direct to Alternative Bank 0514108422)';
+
+        const paystackRes = await apiService.post('/api/treasury/paystack/verify', {
+          reference: txReference,
+          amountFIC: fic,
+          rateType: fundRateType,
+          userWalletAddress: walletAddress || '0xDEF...987'
+        });
+
+        if (paystackRes?.success) {
+          const reqItem = paystackRes.data.fundingRequest;
+          setPaymentConfirmationData({
+            reference: reqItem.requestReference,
+            id: reqItem.id,
+            channel: 'paystack',
+            channelName: 'Paystack Checkout (Direct to Alternative Bank)',
+            amountFIC: fic,
+            amountNGN: ngn,
+            amountUSD: usdAmount,
+            timestamp: new Date().toISOString(),
+            depositorName: finalDepositorName,
+            destinationBank: DEDICATED_TREASURY_RAIL.bankName,
+            destinationAccount: DEDICATED_TREASURY_RAIL.accountNumber,
+            gatewayReference: reqItem.gatewayReference || txReference,
+            isApproved: false
+          });
+          toast({
+            title: 'Paystack Payment Confirmed — Queued for CFO Validation',
+            description: `Reference: ${reqItem.requestReference}. Settled to Alternative Bank 0514108422 escrow. Awaiting CFO Mrs. Mbah Eunice Emonena validation.`
+          });
+          setBankTxRef('');
+          fetchTreasuryData();
+          return;
+        }
+      } else if (selectedChannel === 'interswitch') {
+        txReference = txReference || `ISW-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
         finalDepositorBank = 'Interswitch WebPAY Rail';
         paymentMethodLabel = 'Interswitch WebPAY (Direct to Alternative Bank 0514108422)';
+
+        const iswRes = await apiService.post('/api/treasury/interswitch/verify', {
+          transactionReference: txReference,
+          amountNGN: ngn,
+          amountFIC: fic,
+          rateType: fundRateType,
+          userWalletAddress: walletAddress || '0xDEF...987'
+        });
+
+        if (iswRes?.success) {
+          const reqItem = iswRes.data.fundingRequest;
+          setPaymentConfirmationData({
+            reference: reqItem.requestReference,
+            id: reqItem.id,
+            channel: 'interswitch',
+            channelName: 'Interswitch WebPAY (Direct to Alternative Bank)',
+            amountFIC: fic,
+            amountNGN: ngn,
+            amountUSD: usdAmount,
+            timestamp: new Date().toISOString(),
+            depositorName: finalDepositorName,
+            destinationBank: DEDICATED_TREASURY_RAIL.bankName,
+            destinationAccount: DEDICATED_TREASURY_RAIL.accountNumber,
+            gatewayReference: reqItem.gatewayReference || txReference,
+            isApproved: false
+          });
+          toast({
+            title: 'Interswitch WebPAY Confirmed — Queued for CFO Validation',
+            description: `Reference: ${reqItem.requestReference}. ResponseCode: 00. Settled to Alternative Bank 0514108422 escrow. Awaiting CFO validation.`
+          });
+          setBankTxRef('');
+          fetchTreasuryData();
+          return;
+        }
+      } else if (selectedChannel === 'paypal') {
+        txReference = txReference || `PAYPAL-ORD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+        finalDepositorName = paypalEmail.trim() || finalDepositorName;
+        finalDepositorBank = 'PayPal International USD';
+        paymentMethodLabel = 'PayPal International (Direct to Alternative Bank Foreign Rail 0514108422)';
+
+        const paypalRes = await apiService.post('/api/treasury/paypal/capture-order', {
+          orderId: txReference,
+          amountFIC: fic,
+          amountUSD: usdAmount,
+          rateType: fundRateType,
+          userWalletAddress: walletAddress || '0xDEF...987'
+        });
+
+        if (paypalRes?.success) {
+          const reqItem = paypalRes.data.fundingRequest;
+          setPaymentConfirmationData({
+            reference: reqItem.requestReference,
+            id: reqItem.id,
+            channel: 'paypal',
+            channelName: 'PayPal International USD',
+            amountFIC: fic,
+            amountNGN: ngn,
+            amountUSD: usdAmount,
+            timestamp: new Date().toISOString(),
+            depositorName: finalDepositorName,
+            destinationBank: DEDICATED_TREASURY_RAIL.bankName,
+            destinationAccount: DEDICATED_TREASURY_RAIL.accountNumber,
+            gatewayReference: reqItem.gatewayReference || txReference,
+            isApproved: false
+          });
+          toast({
+            title: 'PayPal Payment Captured — Queued for CFO Validation',
+            description: `Reference: ${reqItem.requestReference}. Settled to Alternative Bank foreign rail in USD. Awaiting CFO validation.`
+          });
+          setBankTxRef('');
+          fetchTreasuryData();
+          return;
+        }
       } else if (selectedChannel === 'debit_card') {
         txReference = txReference || `CARD-ALT/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
         finalDepositorName = cardholderName.trim() || finalDepositorName;
         finalDepositorBank = 'Debit Card (Mastercard / Visa / Verve)';
         paymentMethodLabel = 'Debit Card (Direct to Alternative Bank 0514108422)';
-      } else if (selectedChannel === 'paypal') {
-        txReference = txReference || `PAYPAL-TX-${Date.now().toString(36).toUpperCase()}`;
-        finalDepositorName = paypalEmail.trim() || finalDepositorName;
-        finalDepositorBank = 'PayPal International USD';
-        paymentMethodLabel = 'PayPal International (Direct to Alternative Bank 0514108422)';
       } else if (selectedChannel === 'ussd_qr') {
         txReference = txReference || `USSD/${Date.now()}/${Math.floor(1000 + Math.random() * 9000)}`;
         paymentMethodLabel = 'USSD / Bank QR Direct (Alternative Bank 0514108422)';
@@ -702,7 +804,6 @@ const WalletPage: React.FC = () => {
           {/* DEDICATED SOVEREIGN TREASURY RAIL - HERO BANNER */}
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl border border-indigo-500/30 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-            
             <div className="relative z-10 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-indigo-400/20 pb-5">
                 <div className="flex items-center gap-3">
@@ -734,12 +835,20 @@ const WalletPage: React.FC = () => {
                 <span className="text-[11px] uppercase font-bold tracking-wider text-amber-300 block mb-2">
                   Direct Payment Rails into Alternative Bank (0514108422):
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs">
                   <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-amber-400 shrink-0" />
                     <div>
                       <p className="font-bold text-white text-[11px]">Bank Transfer</p>
                       <p className="text-[10px] text-slate-300">NIP / Instant</p>
+                    </div>
+                  </div>
+
+                  <div className="p-2 rounded-xl bg-black/40 border border-white/10 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-teal-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-[11px]">Paystack</p>
+                      <p className="text-[10px] text-slate-300">Cards, USSD & Bank</p>
                     </div>
                   </div>
 
@@ -1062,6 +1171,11 @@ const WalletPage: React.FC = () => {
                                 <span className="text-[10px] text-slate-700 font-semibold block">
                                   {new Date(req.createdAt).toLocaleDateString()} {new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
+                                {req.paymentChannel === 'paystack' && (
+                                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-950 border border-teal-400">
+                                    Paystack Checkout
+                                  </span>
+                                )}
                                 {req.paymentChannel === 'interswitch' && (
                                   <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-950 border border-indigo-400">
                                     Interswitch WebPAY
@@ -1463,10 +1577,10 @@ const WalletPage: React.FC = () => {
       {/* MODAL 1: FUND WALLET VIA ALTERNATIVE BANK SOVEREIGN RAIL                  */}
       {/* ========================================================================= */}
       {showFundModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 my-8 animate-in fade-in max-h-[92vh] overflow-y-auto border border-slate-300">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl my-3 sm:my-4 animate-in fade-in max-h-[90vh] flex flex-col border border-slate-300 overflow-hidden">
+            {/* Modal Header (Sticky Top) */}
+            <div className="flex items-center justify-between border-b border-slate-200 p-5 sm:p-6 pb-4 shrink-0 bg-white">
               <div>
                 <span className="text-[11px] font-mono font-bold text-amber-700 uppercase tracking-widest block">
                   Official Dedicated Treasury Rail
@@ -1475,7 +1589,7 @@ const WalletPage: React.FC = () => {
                   Fund Wallet via Alternative Bank (0514108422)
                 </h3>
                 <p className="text-xs text-slate-700 font-medium mt-0.5">
-                  Direct Bank Transfer, Interswitch WebPAY, Debit Cards, and PayPal
+                  Paystack, Interswitch WebPAY, Debit Cards, PayPal USD & Direct Bank Transfer
                 </p>
               </div>
               <button
@@ -1491,7 +1605,7 @@ const WalletPage: React.FC = () => {
 
             {/* SCREEN 1: POST-PAYMENT CFO VALIDATION CONFIRMATION */}
             {paymentConfirmationData ? (
-              <div className="space-y-5 animate-in fade-in">
+              <div className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 animate-in fade-in">
                 {/* Status Header Badge */}
                 <div className={`p-4 rounded-2xl border ${
                   paymentConfirmationData.isApproved
@@ -1595,399 +1709,518 @@ const WalletPage: React.FC = () => {
               </div>
             ) : (
               /* SCREEN 2: INITIAL PAYMENT SUBMISSION FORM */
-              <form onSubmit={handleSubmitTreasuryFunding} className="space-y-4 text-xs">
-                {/* Bank details quick card */}
-                <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-mono text-xs space-y-2.5">
-                  <div className="flex justify-between items-center text-amber-400">
-                    <span className="font-bold flex items-center gap-1.5">
-                      <Building2 className="w-4 h-4 text-amber-400" />
-                      Alternative Bank Direct Settlement
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                      CBN Supervised
-                    </span>
+              <form onSubmit={handleSubmitTreasuryFunding} className="flex flex-col flex-1 overflow-hidden">
+                <div className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 text-xs">
+                  {/* Bank details quick card */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-mono text-xs space-y-2.5">
+                    <div className="flex justify-between items-center text-amber-400">
+                      <span className="font-bold flex items-center gap-1.5">
+                        <Building2 className="w-4 h-4 text-amber-400" />
+                        Alternative Bank Direct Settlement
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                        CBN Supervised
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300 font-sans">Treasury Account Number:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-amber-300">0514108422</span>
+                        <button
+                          type="button"
+                          onClick={copyAccountNumber}
+                          className="p-1 bg-white/10 hover:bg-white/20 rounded text-amber-300 cursor-pointer"
+                          title="Copy Account Number"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span className="text-slate-300 font-sans">Corporate Beneficiary:</span>
+                      <span className="font-semibold text-white">FingerMobile Protocol Communication</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-300 font-sans">Treasury Account Number:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl font-bold text-amber-300">0514108422</span>
+
+                  {/* PAYMENT CHANNEL SELECTOR */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                      Select Payment Rail to Alternative Bank (0514108422)
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {PAYMENT_CHANNELS_LIST.map((channel) => {
+                        const isSelected = selectedChannel === channel.id;
+                        return (
+                          <button
+                            key={channel.id}
+                            type="button"
+                            onClick={() => setSelectedChannel(channel.id)}
+                            className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
+                                : 'bg-white border-slate-300 hover:bg-slate-50'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-black text-slate-900 text-xs block">{channel.title}</span>
+                              {channel.id === 'paystack' && <Sparkles className="w-3.5 h-3.5 text-teal-600" />}
+                              {channel.id === 'interswitch' && <Zap className="w-3.5 h-3.5 text-indigo-600" />}
+                              {channel.id === 'debit_card' && <CreditCard className="w-3.5 h-3.5 text-blue-600" />}
+                              {channel.id === 'paypal' && <Globe className="w-3.5 h-3.5 text-sky-600" />}
+                              {channel.id === 'ussd_qr' && <QrCode className="w-3.5 h-3.5 text-purple-600" />}
+                              {channel.id === 'alternative_bank_transfer' && <Building2 className="w-3.5 h-3.5 text-amber-600" />}
+                            </div>
+                            <span className="text-[10px] text-slate-700 font-semibold block">{channel.badge}</span>
+                            <span className="text-[10px] text-emerald-800 font-bold block mt-1">
+                              Settles to Acc 0514108422
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Rate Tier Selector */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                      Pricing Tier & Vault Allocation
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
-                        onClick={copyAccountNumber}
-                        className="p-1 bg-white/10 hover:bg-white/20 rounded text-amber-300 cursor-pointer"
-                        title="Copy Account Number"
+                        onClick={() => handleRateTypeChange('treasury_seed')}
+                        className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                          fundRateType === 'treasury_seed'
+                            ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
+                            : 'bg-white border-slate-300 hover:bg-slate-50'
+                        }`}
                       >
-                        <Copy className="w-3.5 h-3.5" />
+                        <span className="font-black text-amber-950 block">Wallet 004 Seed Tier</span>
+                        <span className="text-amber-950 font-mono font-bold text-xs mt-0.5 block">₦65.00 / FIC ($0.05)</span>
+                        <span className="text-[10px] text-slate-700 font-semibold block mt-1">Depleted 1st</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRateTypeChange('standard')}
+                        className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                          fundRateType === 'standard'
+                            ? 'bg-indigo-50 border-2 border-indigo-600 shadow-sm ring-1 ring-indigo-400'
+                            : 'bg-white border-slate-300 hover:bg-slate-50'
+                        }`}
+                      >
+                        <span className="font-black text-indigo-950 block">Standard Protocol Rate</span>
+                        <span className="text-indigo-950 font-mono font-bold text-xs mt-0.5 block">₦650.00 / FIC ($0.50)</span>
+                        <span className="text-[10px] text-slate-700 font-semibold block mt-1">Official Anchor</span>
                       </button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span className="text-slate-300 font-sans">Corporate Beneficiary:</span>
-                    <span className="font-semibold text-white">FingerMobile Protocol Communication</span>
-                  </div>
-                </div>
 
-                {/* PAYMENT CHANNEL SELECTOR */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                    Select Payment Rail to Alternative Bank (0514108422)
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {PAYMENT_CHANNELS_LIST.map((channel) => {
-                      const isSelected = selectedChannel === channel.id;
-                      return (
-                        <button
-                          key={channel.id}
-                          type="button"
-                          onClick={() => setSelectedChannel(channel.id)}
-                          className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
-                              : 'bg-white border-slate-300 hover:bg-slate-50'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-black text-slate-900 text-xs block">{channel.title}</span>
-                            {channel.id === 'interswitch' && <Zap className="w-3.5 h-3.5 text-indigo-600" />}
-                            {channel.id === 'debit_card' && <CreditCard className="w-3.5 h-3.5 text-blue-600" />}
-                            {channel.id === 'paypal' && <Globe className="w-3.5 h-3.5 text-sky-600" />}
-                            {channel.id === 'ussd_qr' && <QrCode className="w-3.5 h-3.5 text-purple-600" />}
-                            {channel.id === 'alternative_bank_transfer' && <Building2 className="w-3.5 h-3.5 text-amber-600" />}
-                          </div>
-                          <span className="text-[10px] text-slate-700 font-semibold block">{channel.badge}</span>
-                          <span className="text-[10px] text-emerald-800 font-bold block mt-1">
-                            Settles to Acc 0514108422
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Rate Tier Selector */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                    Pricing Tier & Vault Allocation
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleRateTypeChange('treasury_seed')}
-                      className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
-                        fundRateType === 'treasury_seed'
-                          ? 'bg-amber-50 border-2 border-amber-500 shadow-sm ring-1 ring-amber-400'
-                          : 'bg-white border-slate-300 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span className="font-black text-amber-950 block">Wallet 004 Seed Tier</span>
-                      <span className="text-amber-950 font-mono font-bold text-xs mt-0.5 block">₦65.00 / FIC ($0.05)</span>
-                      <span className="text-[10px] text-slate-700 font-semibold block mt-1">Depleted 1st</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleRateTypeChange('standard')}
-                      className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
-                        fundRateType === 'standard'
-                          ? 'bg-indigo-50 border-2 border-indigo-600 shadow-sm ring-1 ring-indigo-400'
-                          : 'bg-white border-slate-300 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span className="font-black text-indigo-950 block">Standard Protocol Rate</span>
-                      <span className="text-indigo-950 font-mono font-bold text-xs mt-0.5 block">₦650.00 / FIC ($0.50)</span>
-                      <span className="text-[10px] text-slate-700 font-semibold block mt-1">Official Anchor</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Amount Inputs */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">Quantity in FIC</label>
-                    <input
-                      type="number"
-                      min="1"
-                      step="any"
-                      value={fundAmountFic}
-                      onChange={(e) => handleFicAmountChange(e.target.value)}
-                      placeholder="e.g. 500"
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
-                      Amount to Pay ({selectedChannel === 'paypal' ? 'USD Equivalent' : 'NGN'})
-                    </label>
-                    <div className="relative">
+                  {/* Amount Inputs */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">Quantity in FIC</label>
                       <input
                         type="number"
                         min="1"
                         step="any"
-                        value={fundAmountNgn}
-                        onChange={(e) => handleNgnAmountChange(e.target.value)}
-                        placeholder="e.g. 32500"
+                        value={fundAmountFic}
+                        onChange={(e) => handleFicAmountChange(e.target.value)}
+                        placeholder="e.g. 500"
                         className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                         required
                       />
-                      {selectedChannel === 'paypal' && (
-                        <span className="absolute right-3 top-2.5 font-mono font-bold text-slate-700 text-xs">
-                          ≈ ${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                        Amount to Pay ({selectedChannel === 'paypal' ? 'USD Equivalent' : 'NGN'})
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          min="1"
+                          step="any"
+                          value={fundAmountNgn}
+                          onChange={(e) => handleNgnAmountChange(e.target.value)}
+                          placeholder="e.g. 32500"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                          required
+                        />
+                        {selectedChannel === 'paypal' && (
+                          <span className="absolute right-3 top-2.5 font-mono font-bold text-slate-700 text-xs">
+                            ≈ ${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 1. PAYSTACK SPECIFIC FIELDS (https://paystack.com/docs/api/) */}
+                  {selectedChannel === 'paystack' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-teal-50/70 border border-teal-300">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-teal-950 uppercase tracking-wider block flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+                          Paystack Automated Gateway (Official API)
                         </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* CHANNEL-SPECIFIC FIELDS */}
-                {selectedChannel === 'alternative_bank_transfer' && (
-                  <div className="space-y-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-300">
-                    <span className="text-[11px] font-bold text-slate-900 uppercase tracking-wider block">
-                      Alternative Bank Direct Transfer Details
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">Depositor Full Name</label>
-                        <input
-                          type="text"
-                          value={depositorName}
-                          onChange={(e) => setDepositorName(e.target.value)}
-                          placeholder="Name on bank transfer receipt"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">Sending Bank</label>
-                        <select
-                          value={depositorBank}
-                          onChange={(e) => setDepositorBank(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                        <a
+                          href="https://paystack.com/docs/api/"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] font-mono text-teal-800 hover:text-teal-950 font-bold underline flex items-center gap-1"
                         >
-                          {NIGERIAN_BANKS.map((b) => (
-                            <option key={b} value={b}>{b}</option>
-                          ))}
-                        </select>
+                          paystack.com/docs/api <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {[
+                          { id: 'inline', label: 'Inline Popup', desc: 'JS Popup SDK' },
+                          { id: 'card', label: 'Debit Card', desc: 'Visa/Master/Verve' },
+                          { id: 'bank_transfer', label: 'Virtual Transfer', desc: 'Instant NIP' },
+                          { id: 'ussd', label: 'USSD Rail', desc: '*737#, *822#' }
+                        ].map((m) => (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onClick={() => setPaystackSubMethod(m.id as any)}
+                            className={`p-2 rounded-xl text-left border text-xs transition-all cursor-pointer ${
+                              paystackSubMethod === m.id
+                                ? 'bg-teal-700 text-white font-bold border-teal-800 shadow-xs'
+                                : 'bg-white text-slate-800 border-slate-300 hover:bg-teal-50'
+                            }`}
+                          >
+                            <span className="block font-bold text-[11px]">{m.label}</span>
+                            <span className={`block text-[9px] ${paystackSubMethod === m.id ? 'text-teal-100' : 'text-slate-600'}`}>{m.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Paystack Payer Email</label>
+                          <input
+                            type="email"
+                            value={paystackEmail}
+                            onChange={(e) => setPaystackEmail(e.target.value)}
+                            placeholder="member@fingermobileprotocol.com"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-teal-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Settlement Destination</label>
+                          <div className="p-2 bg-white border border-slate-300 rounded-xl font-mono text-slate-900 font-black text-xs flex items-center justify-between">
+                            <span>0514108422 (Alternative Bank)</span>
+                            <span className="text-[10px] text-teal-800 font-sans font-bold">Auto-Settled</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-900 mb-1">Bank Reference / NIP Session ID</label>
-                      <input
-                        type="text"
-                        value={bankTxRef}
-                        onChange={(e) => setBankTxRef(e.target.value)}
-                        placeholder="e.g. NIP/20261017/991823"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
-                      />
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {selectedChannel === 'interswitch' && (
-                  <div className="space-y-3 p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-indigo-950 uppercase tracking-wider block flex items-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 text-indigo-600" />
-                        Interswitch WebPAY Gateway Details
-                      </span>
-                      <span className="text-[10px] font-mono text-indigo-900 font-bold">Alternative Bank 0514108422 Rail</span>
+                  {/* 2. INTERSWITCH SPECIFIC FIELDS (https://docs.interswitchgroup.com/docs/quickstart-accept-your-first-payment-in-5-minutes) */}
+                  {selectedChannel === 'interswitch' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-300">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-indigo-950 uppercase tracking-wider block flex items-center gap-1.5">
+                          <Zap className="w-3.5 h-3.5 text-indigo-600" />
+                          Interswitch WebPAY Gateway (5-Minute Quickstart)
+                        </span>
+                        <a
+                          href="https://docs.interswitchgroup.com/docs/quickstart-accept-your-first-payment-in-5-minutes"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] font-mono text-indigo-800 hover:text-indigo-950 font-bold underline flex items-center gap-1"
+                        >
+                          interswitch docs <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {[
+                          { id: 'webpay_inline', label: 'WebPAY Inline SDK', desc: 'Modal Checkout' },
+                          { id: 'quickteller', label: 'Quickteller', desc: 'Direct Switch' },
+                          { id: 'card', label: 'Verve / Visa / MC', desc: 'Interswitch Acquire' }
+                        ].map((m) => (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onClick={() => setInterswitchSubMethod(m.id as any)}
+                            className={`p-2 rounded-xl text-left border text-xs transition-all cursor-pointer ${
+                              interswitchSubMethod === m.id
+                                ? 'bg-indigo-700 text-white font-bold border-indigo-800 shadow-xs'
+                                : 'bg-white text-slate-800 border-slate-300 hover:bg-indigo-50'
+                            }`}
+                          >
+                            <span className="block font-bold text-[11px]">{m.label}</span>
+                            <span className={`block text-[9px] ${interswitchSubMethod === m.id ? 'text-indigo-100' : 'text-slate-600'}`}>{m.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
+                        <div className="p-2 bg-white rounded-xl border border-indigo-200">
+                          <span className="text-[10px] text-slate-600 font-sans block">Merchant Code:</span>
+                          <span className="font-bold text-indigo-900">MX6072</span>
+                        </div>
+                        <div className="p-2 bg-white rounded-xl border border-indigo-200">
+                          <span className="text-[10px] text-slate-600 font-sans block">Payable Code:</span>
+                          <span className="font-bold text-indigo-900">9405967</span>
+                        </div>
+                        <div className="p-2 bg-white rounded-xl border border-indigo-200">
+                          <span className="text-[10px] text-slate-600 font-sans block">Currency ISO:</span>
+                          <span className="font-bold text-indigo-900">566 (NGN)</span>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Payer Full Name</label>
+                          <input
+                            type="text"
+                            value={depositorName}
+                            onChange={(e) => setDepositorName(e.target.value)}
+                            placeholder="Your full name"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Interswitch Phone (OTP)</label>
+                          <input
+                            type="text"
+                            value={interswitchPhone}
+                            onChange={(e) => setInterswitchPhone(e.target.value)}
+                            placeholder="08031234567"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
+                            required
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  )}
+
+                  {/* 3. DEBIT CARD SPECIFIC FIELDS */}
+                  {selectedChannel === 'debit_card' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-blue-950 uppercase tracking-wider block flex items-center gap-1.5">
+                          <CreditCard className="w-3.5 h-3.5 text-blue-600" />
+                          Debit Card (Mastercard / Visa / Verve)
+                        </span>
+                        <span className="text-[10px] font-mono text-blue-900 font-bold">Direct Alternative Bank Acquiring</span>
+                      </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">Payer Full Name</label>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Cardholder Name</label>
                         <input
                           type="text"
-                          value={depositorName}
-                          onChange={(e) => setDepositorName(e.target.value)}
-                          placeholder="Your full name"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                          value={cardholderName}
+                          onChange={(e) => setCardholderName(e.target.value)}
+                          placeholder="John Doe"
+                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
                           required
                         />
                       </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Card Number</label>
+                          <input
+                            type="text"
+                            value={cardNumber}
+                            onChange={(e) => setCardNumber(e.target.value)}
+                            placeholder="5399 •••• •••• ••••"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500"
+                            required
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="block text-xs font-bold text-slate-900 mb-1">Exp (MM/YY)</label>
+                            <input
+                              type="text"
+                              value={cardExpiry}
+                              onChange={(e) => setCardExpiry(e.target.value)}
+                              placeholder="12/28"
+                              className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-slate-900 mb-1">CVV</label>
+                            <input
+                              type="password"
+                              maxLength={3}
+                              value={cardCvv}
+                              onChange={(e) => setCardCvv(e.target.value)}
+                              placeholder="•••"
+                              className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 4. PAYPAL REST API v2 SPECIFIC FIELDS (https://developer.paypal.com/api/rest) */}
+                  {selectedChannel === 'paypal' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-sky-50/70 border border-sky-300">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-sky-950 uppercase tracking-wider block flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5 text-sky-600" />
+                          PayPal REST API v2 (Orders / Capture)
+                        </span>
+                        <a
+                          href="https://developer.paypal.com/api/rest"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] font-mono text-sky-800 hover:text-sky-950 font-bold underline flex items-center gap-1"
+                        >
+                          developer.paypal.com <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">PayPal Account Email</label>
+                          <input
+                            type="email"
+                            value={paypalEmail}
+                            onChange={(e) => setPaypalEmail(e.target.value)}
+                            placeholder="member@paypal.com"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-sky-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">USD Settlement (Intent: CAPTURE)</label>
+                          <div className="p-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-black text-sm flex items-center justify-between">
+                            <span>${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD</span>
+                            <span className="text-[10px] text-sky-800 font-sans font-bold">Alternative Bank FX Rail</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 5. USSD / QR CODE SPECIFIC FIELDS */}
+                  {selectedChannel === 'ussd_qr' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-purple-50/60 border border-purple-200">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-purple-950 uppercase tracking-wider block flex items-center gap-1.5">
+                          <QrCode className="w-3.5 h-3.5 text-purple-600" />
+                          USSD & Alternative Bank Dynamic QR
+                        </span>
+                        <span className="text-[10px] font-mono text-purple-900 font-bold">Instant Mobile Dial</span>
+                      </div>
+                      <div className="p-3 bg-white rounded-xl border border-purple-300 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] text-slate-700 font-semibold block">Dial on your phone:</span>
+                          <span className="text-base font-mono font-black text-purple-900">
+                            *999*0514108422*{fundAmountNgn}#
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`*999*0514108422*${fundAmountNgn}#`);
+                            toast({ title: 'USSD String Copied' });
+                          }}
+                          className="p-1.5 bg-purple-100 hover:bg-purple-200 rounded-lg text-purple-900 cursor-pointer"
+                        >
+                          <Copy className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 6. ALTERNATIVE BANK DIRECT TRANSFER FIELDS */}
+                  {selectedChannel === 'alternative_bank_transfer' && (
+                    <div className="space-y-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-300">
+                      <span className="text-[11px] font-bold text-slate-900 uppercase tracking-wider block">
+                        Alternative Bank Direct Transfer Details
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Depositor Full Name</label>
+                          <input
+                            type="text"
+                            value={depositorName}
+                            onChange={(e) => setDepositorName(e.target.value)}
+                            placeholder="Name on bank transfer receipt"
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-900 mb-1">Sending Bank</label>
+                          <select
+                            value={depositorBank}
+                            onChange={(e) => setDepositorBank(e.target.value)}
+                            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-indigo-500"
+                          >
+                            {NIGERIAN_BANKS.map((b) => (
+                              <option key={b} value={b}>{b}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">Interswitch Phone (OTP)</label>
+                        <label className="block text-xs font-bold text-slate-900 mb-1">Bank Reference / NIP Session ID</label>
                         <input
                           type="text"
-                          value={interswitchPhone}
-                          onChange={(e) => setInterswitchPhone(e.target.value)}
-                          placeholder="08031234567"
+                          value={bankTxRef}
+                          onChange={(e) => setBankTxRef(e.target.value)}
+                          placeholder="e.g. NIP/20261017/991823"
                           className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
-                          required
                         />
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {selectedChannel === 'debit_card' && (
-                  <div className="space-y-3 p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-blue-950 uppercase tracking-wider block flex items-center gap-1.5">
-                        <CreditCard className="w-3.5 h-3.5 text-blue-600" />
-                        Debit Card (Mastercard / Visa / Verve)
-                      </span>
-                      <span className="text-[10px] font-mono text-blue-900 font-bold">Direct Alternative Bank Acquiring</span>
-                    </div>
+                  {/* Recipient Email & Memo */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-900 mb-1">Cardholder Name</label>
+                      <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                        Recipient Email (Official PDF Receipt)
+                      </label>
                       <input
-                        type="text"
-                        value={cardholderName}
-                        onChange={(e) => setCardholderName(e.target.value)}
-                        placeholder="John Doe"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:ring-2 focus:ring-blue-500"
+                        type="email"
+                        value={receiptEmail}
+                        onChange={(e) => setReceiptEmail(e.target.value)}
+                        placeholder="Where official PDF receipt will be sent"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
                         required
                       />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div className="sm:col-span-2">
-                        <label className="block text-xs font-bold text-slate-900 mb-1">Card Number</label>
-                        <input
-                          type="text"
-                          value={cardNumber}
-                          onChange={(e) => setCardNumber(e.target.value)}
-                          placeholder="5399 •••• •••• ••••"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500"
-                          required
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="block text-xs font-bold text-slate-900 mb-1">Exp (MM/YY)</label>
-                          <input
-                            type="text"
-                            value={cardExpiry}
-                            onChange={(e) => setCardExpiry(e.target.value)}
-                            placeholder="12/28"
-                            className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold text-slate-900 mb-1">CVV</label>
-                          <input
-                            type="password"
-                            maxLength={3}
-                            value={cardCvv}
-                            onChange={(e) => setCardCvv(e.target.value)}
-                            placeholder="•••"
-                            className="w-full px-2 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-blue-500 text-center"
-                            required
-                          />
-                        </div>
-                      </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+                        Notes / Deposit Memo
+                      </label>
+                      <input
+                        type="text"
+                        value={proofNotes}
+                        onChange={(e) => setProofNotes(e.target.value)}
+                        placeholder="e.g. Alternative Bank Sovereign Rail Direct Transfer"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
+                      />
                     </div>
                   </div>
-                )}
 
-                {selectedChannel === 'paypal' && (
-                  <div className="space-y-3 p-3.5 rounded-2xl bg-sky-50/60 border border-sky-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-sky-950 uppercase tracking-wider block flex items-center gap-1.5">
-                        <Globe className="w-3.5 h-3.5 text-sky-600" />
-                        PayPal International USD Settlement
-                      </span>
-                      <span className="text-[10px] font-mono text-sky-900 font-bold">Alternative Bank FX Corridor</span>
+                  {/* CRITICAL MANDATORY CFO VALIDATION GOVERNANCE RULE CALLOUT */}
+                  <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-500 text-xs text-slate-900 space-y-1.5">
+                    <div className="flex items-center gap-2 font-black text-amber-950 uppercase tracking-wider">
+                      <ShieldAlert className="w-4 h-4 text-amber-700" />
+                      Mandatory Protocol Governance & CFO Validation Rule
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">PayPal Account Email</label>
-                        <input
-                          type="email"
-                          value={paypalEmail}
-                          onChange={(e) => setPaypalEmail(e.target.value)}
-                          placeholder="member@paypal.com"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:ring-2 focus:ring-sky-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-900 mb-1">USD Settlement Consideration</label>
-                        <div className="p-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-black text-sm">
-                          ${(parseFloat(fundAmountFic || '0') * (fundRateType === 'treasury_seed' ? 0.05 : 0.50)).toFixed(2)} USD
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {selectedChannel === 'ussd_qr' && (
-                  <div className="space-y-3 p-3.5 rounded-2xl bg-purple-50/60 border border-purple-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-purple-950 uppercase tracking-wider block flex items-center gap-1.5">
-                        <QrCode className="w-3.5 h-3.5 text-purple-600" />
-                        USSD & Alternative Bank Dynamic QR
-                      </span>
-                      <span className="text-[10px] font-mono text-purple-900 font-bold">Instant Mobile Dial</span>
-                    </div>
-                    <div className="p-3 bg-white rounded-xl border border-purple-300 flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] text-slate-700 font-semibold block">Dial on your phone:</span>
-                        <span className="text-base font-mono font-black text-purple-900">
-                          *999*0514108422*{fundAmountNgn}#
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`*999*0514108422*${fundAmountNgn}#`);
-                          toast({ title: 'USSD String Copied' });
-                        }}
-                        className="p-1.5 bg-purple-100 hover:bg-purple-200 rounded-lg text-purple-900 cursor-pointer"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Recipient Email & Memo */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
-                      Recipient Email (Official PDF Receipt)
-                    </label>
-                    <input
-                      type="email"
-                      value={receiptEmail}
-                      onChange={(e) => setReceiptEmail(e.target.value)}
-                      placeholder="Where official PDF receipt will be sent"
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
-                      Notes / Deposit Memo
-                    </label>
-                    <input
-                      type="text"
-                      value={proofNotes}
-                      onChange={(e) => setProofNotes(e.target.value)}
-                      placeholder="e.g. Alternative Bank Sovereign Rail Direct Transfer"
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs placeholder:text-slate-400"
-                    />
+                    <p className="font-bold leading-relaxed text-slate-900">
+                      Under FingerMobile Protocol sovereign financial rules, members can pay directly to Alternative Bank (0514108422) using <strong>Paystack</strong>, <strong>Interswitch</strong>, <strong>Debit Cards</strong>, <strong>PayPal</strong>, <strong>USSD</strong>, or <strong>Bank Transfer</strong>.
+                    </p>
+                    <p className="text-slate-800 font-semibold leading-relaxed">
+                      Regardless of payment gateway used, <strong>until payment confirmation is received and validated by Executive CFO Mrs. Mbah Eunice Emonena, the FIC credit value is NOT released to your wallet</strong>. Once validated by the CFO, the FIC value is automatically credited from Central FIC Wallet 004 and your official PDF receipt is dispatched.
+                    </p>
                   </div>
                 </div>
 
-                {/* CRITICAL MANDATORY CFO VALIDATION GOVERNANCE RULE CALLOUT */}
-                <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-500 text-xs text-slate-900 space-y-1.5">
-                  <div className="flex items-center gap-2 font-black text-amber-950 uppercase tracking-wider">
-                    <ShieldAlert className="w-4 h-4 text-amber-700" />
-                    Mandatory Protocol Governance & CFO Validation Rule
-                  </div>
-                  <p className="font-bold leading-relaxed">
-                    Under FingerMobile Protocol sovereign financial rules, members can pay directly to Alternative Bank (0514108422) using Interswitch, Debit Cards, PayPal, USSD, or Bank Transfer.
-                  </p>
-                  <p className="text-slate-800 font-semibold leading-relaxed">
-                    However, until payment confirmation is received and validated by Executive CFO Mrs. Mbah Eunice Emonena, the FIC credit value is NOT released to your wallet. Once validated by the CFO, the FIC value is automatically credited from Central FIC Wallet 004 and your official PDF receipt is dispatched.
-                  </p>
-                </div>
-
-                {/* Submit & Cancel Buttons */}
-                <div className="flex gap-3 pt-3">
+                {/* Sticky Footer: Submit & Cancel Buttons */}
+                <div className="p-4 px-6 border-t border-slate-200 bg-white flex gap-3 shrink-0">
                   <Button
                     type="button"
                     variant="outline"

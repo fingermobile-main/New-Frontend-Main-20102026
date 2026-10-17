@@ -6,10 +6,7 @@ import {
   Download,
   Play,
   Pause,
-  ShieldCheck,
   CheckCircle2,
-  Mic2,
-  Tag
 } from 'lucide-react';
 import { useBeatwaveNG, PodcastCard } from '../../contexts/BeatwaveNGContext';
 
@@ -36,14 +33,19 @@ export const PodcastsTab: React.FC = () => {
     e.preventDefault();
     if (!title.trim() || !host.trim()) return;
     const tags = tagsInput.split(',').map((t) => t.trim()).filter(Boolean);
-    await createPodcast(
-      title.trim(),
-      host.trim(),
-      description.trim() || 'A sovereign audio podcast card on BeatwaveNG.',
-      Math.min(30, Math.max(1, durationMinutes)),
-      genre,
-      tags
-    );
+    try {
+      await createPodcast(
+        title.trim(),
+        host.trim(),
+        description.trim() || 'A sovereign audio podcast card on BeatwaveNG.',
+        Math.min(30, Math.max(1, durationMinutes)),
+        genre,
+        tags,
+        guest.trim()
+      );
+    } catch {
+      return;
+    }
     setShowCreateModal(false);
     setTitle('');
     setHost('');
@@ -52,6 +54,14 @@ export const PodcastsTab: React.FC = () => {
   };
 
   const handlePlayPodcast = (pod: PodcastCard) => {
+    if (pod.moderationStatus !== 'active') {
+      alert('This podcast is awaiting publication approval.');
+      return;
+    }
+    if (!pod.audioUrl) {
+      alert('This podcast has no persistent media URL. Audio file storage is not connected yet.');
+      return;
+    }
     playTrack({
       id: pod.id,
       title: pod.title,
